@@ -33,7 +33,7 @@
                  v-if="cancelStatus==1">
               <div class="van-step__circle-container right"><i class="van-step__circle van-step__circle--default"></i></div>
               <div class="van-step__line right"></div>
-              <div class="van-step__title right"></div>
+              <div class="van-step__title right before">取消成功</div>
               <div class="van-step__time right"></div>
             </div>
             <div class="van-hairline van-step van-step--horizontal"
@@ -252,6 +252,9 @@ export default {
   text-align: center;
   &.van-step__title--error {
     color: #ff3a30;
+  }
+  &.before {
+    color: rgba(51, 51, 51, 0.6);
   }
   &.left {
     transform: translateX(-41%);

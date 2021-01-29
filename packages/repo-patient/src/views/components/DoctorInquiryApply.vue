@@ -1337,6 +1337,26 @@ export default {
             }
             //电子健康卡检验仅适用于五莲县人民医院，故屏蔽
             // this.checkHealthCard()
+            if (params[0].intAge <= 6 && !params[0].isGuardian) {
+              // 小于6岁无监护人的就诊人
+              Dialog.confirm({
+                message: '就诊人小于6岁，需填写监护人信息',
+                confirmButtonText: '去填写'
+              }).then(() => {
+                //去添加监护人
+                // this.$router.push({ path: `/setting/myFamilyMembers` })
+                let canShowSelf = !this.current.answerList.find((item) => item.relation === '本人') ? 1 : 2
+                const json = peace.util.encode({
+                  type: 'addGuardian',
+                  id: params[0].accid,
+                  idcard: params[0].idcard,
+                  emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY,
+                  canShowSelf: canShowSelf
+                })
+                this.$router.push({ path: `/setting/addGuardian/${json}` })
+              })
+              return false
+            }
           } else {
             return false
           }

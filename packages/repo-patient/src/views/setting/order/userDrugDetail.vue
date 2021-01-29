@@ -431,23 +431,15 @@ export default {
 
     // 是否显示取消订单
     canShowCancel() {
-      return (
-        this.order &&
-        this.order.isShowCancelButton == ENUM.CANCEL_BUTTON_STATUS.显示 &&
-        (this.order.callOrderStatus === ENUM.ORDER_STATUS.待下单 ||
-          this.order.callOrderStatus === ENUM.ORDER_STATUS.已下单 ||
-          (this.order.callOrderStatus === ENUM.ORDER_STATUS.已接单 && this.order.shippingMethod == ENUM.SHIPPING_METHOD.配送到家))
-      )
+      return this.order && this.order.callOrderStatus === ENUM.ORDER_STATUS.待下单
     },
     //是否显示取消订单 - top
 
     canShowCancelTop() {
       return (
         this.order &&
-        this.order.isShowCancelButton == ENUM.CANCEL_BUTTON_STATUS.显示 &&
         (this.order.callOrderStatus === ENUM.ORDER_STATUS.已下单 ||
-          (this.order.shippingMethod == ENUM.SHIPPING_METHOD.配送到家 && this.order.callOrderStatus === ENUM.ORDER_STATUS.已接单)) &&
-        this.order.CustomerType != ENUM.DRUG_STORE_TYPE.云药房
+          (this.order.shippingMethod == ENUM.SHIPPING_METHOD.配送到家 && this.order.callOrderStatus === ENUM.ORDER_STATUS.已接单))
       )
     },
     isCloudPharmacy() {

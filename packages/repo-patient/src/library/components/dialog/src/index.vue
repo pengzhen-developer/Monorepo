@@ -1,9 +1,13 @@
 <template>
   <transition name="van-slide-up">
-    <div class="full-screen-dialog" ref="dialog" v-if="visible">
+    <div class="full-screen-dialog"
+         ref="dialog"
+         v-if="visible">
       <div class="title">
         <van-nav-bar :title="title">
-          <van-icon @click="close" name="cross" slot="left" />
+          <van-icon @click="close"
+                    name="cross"
+                    slot="left" />
         </van-nav-bar>
       </div>
 

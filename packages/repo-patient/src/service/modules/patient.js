@@ -77,6 +77,18 @@ export function DelFamily(params) {
 
   return peace.http.post(DelFamily, params)
 }
+/**
+ * 添加家人验证身份证
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function CheckFamilyIdCard(params) {
+  const CheckFamilyIdCard = 'client/v1/Patient/checkFamilyIdCard'
+  // const CheckFamilyIdCard = 'http://devyapi.holoalpha.com/mock/25/client/v1/Patient/checkFamilyIdCard'
+  return peace.http.post(CheckFamilyIdCard, params)
+}
 
 /**
  * 获取病历详情
@@ -352,7 +364,10 @@ export function perfectInfo(params) {
   const perfectInfo = 'client/v1/Patient/perfectInfo'
   return peace.http.post(perfectInfo, params)
 }
-
+export function bindFamilyGuardian(params) {
+  const bindFamilyGuardian = 'client/v1/Patient/bindFamilyGuardian'
+  return peace.http.post(bindFamilyGuardian, params)
+}
 export function getDefaultAddress(params) {
   const getDefaultAddress = 'client/v1/Address/getDefaultAddress'
   return peace.http.post(getDefaultAddress, params)
@@ -466,6 +481,8 @@ export default {
   upbindFamily,
   /** 删除我的家人 */
   DelFamily,
+  /** 添加家人验证身份证 */
+  CheckFamilyIdCard,
   /** 获取病历详情 */
   getCaseInfo,
   /** 获取处方列表 */
@@ -512,6 +529,7 @@ export default {
   healthcardInfo,
   getGuardianList,
   perfectInfo,
+  bindFamilyGuardian,
   getDefaultAddress,
   setDefaultAddress,
 

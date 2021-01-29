@@ -1,13 +1,13 @@
 <template>
   <div>
-    <van-field class="require"
+    <van-field class="is__require"
                label="收货人"
                v-model="internalAddr.consignee"
                data-name="consignee"
                type="text"
                maxlength="12"
                placeholder="请输入收货人的真实姓名" />
-    <van-field class="require"
+    <van-field class="is__require"
                type="phone"
                label="手机号"
                v-model="internalAddr.mobile"
@@ -15,7 +15,7 @@
                maxlength="11"
                minlength="11"
                placeholder="请输入收货人的手机号码" />
-    <van-field class="require"
+    <van-field class="is__require"
                readonly
                is-link
                clickable
@@ -31,7 +31,7 @@
                      @onCancel="onCancel"
                      @onConfirm="onConfirm" />
     </van-popup>
-    <van-field class="require"
+    <van-field class="is__require"
                label="详细地址"
                type="textarea"
                autosize

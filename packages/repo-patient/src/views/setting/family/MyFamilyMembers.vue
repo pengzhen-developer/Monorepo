@@ -3,7 +3,7 @@
        :class="{ 'none-family': members.length == 0 }">
     <template v-if="members && members.length > 0 ">
       <div v-if="$route.params.link !== 'recordCondition'"
-           class="card-line">点击家人记录查看电子健康卡/就诊卡信息</div>
+           class="card-line">点击家人记录查看医保卡/就诊卡信息</div>
       <div class="content">
         <van-cell :key="item.id"
                   @click="toViewDetails(item)"

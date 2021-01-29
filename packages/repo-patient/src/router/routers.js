@@ -382,7 +382,19 @@ const routers = [
     },
     component: () => import('@src/views/setting/family/FamilyMembersModel.vue')
   },
-
+  // 请填写监护人信息
+  {
+    path: '/setting/addGuardian/:json',
+    name: '/setting/addGuardian/:json',
+    meta: {
+      auth: true,
+      navbar: {
+        title: '请填写监护人信息',
+        back: true
+      }
+    },
+    component: () => import('@src/views/setting/family/AddGuardian.vue')
+  },
   // 电子健康卡详情
   {
     path: '/card/cardDetail/:json',

@@ -151,6 +151,9 @@ export default {
       if (!this.refundDialog.selectMsg) {
         return peace.util.alert('请输入或填写取消原因')
       }
+      if (!this.cancelReason.trim()) {
+        return peace.util.alert('请填写取消原因')
+      }
       const reason = this.selectMsg !== '其他' ? this.selectMsg : this.cancelReason
       const params = {
         orderNo: this.info.orderNo,
@@ -275,14 +278,16 @@ export default {
       padding: 8px;
       line-height: 24px;
       font-size: 16px;
-
+      /deep/textarea {
+        word-break: break-all;
+      }
       /deep/.van-field__word-limit {
-        // position: relative;
-        // height: 74px;
+        position: relative;
+        height: 46px;
         .van-field__word-num {
-          // position: absolute;
-          // right: 0px;
-          // bottom: 0px;
+          position: absolute;
+          right: -2px;
+          bottom: 0px;
           font-size: 100px;
           font-weight: bold;
           color: #333333;
