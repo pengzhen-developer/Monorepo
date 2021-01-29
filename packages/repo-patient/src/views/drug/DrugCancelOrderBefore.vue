@@ -151,7 +151,7 @@ export default {
       if (!this.refundDialog.selectMsg) {
         return peace.util.alert('请输入或填写取消原因')
       }
-      if (!this.cancelReason.trim()) {
+      if (this.selectMsg == '其他' && !this.cancelReason.trim()) {
         return peace.util.alert('请填写取消原因')
       }
       const reason = this.selectMsg !== '其他' ? this.selectMsg : this.cancelReason
