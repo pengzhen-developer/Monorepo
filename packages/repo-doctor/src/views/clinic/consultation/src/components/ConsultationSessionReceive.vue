@@ -118,7 +118,7 @@ export default {
     .count-down {
       margin: 0 5px;
       font-weight: bold;
-      color: #00c6ae;
+      color: #3099a6;
     }
   }
 

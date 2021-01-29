@@ -221,7 +221,7 @@ export default {
 
 <style lang="scss" scoped>
 .private-doctor {
-  background: #00c6ae;
+  background: #3099a6;
   color: #ffffff;
   height: 17px;
   font-size: 12px;

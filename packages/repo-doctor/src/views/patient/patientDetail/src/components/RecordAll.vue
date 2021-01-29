@@ -306,7 +306,7 @@ export default {
       .time-line-node {
         width: 5px;
         height: 5px;
-        background: #00c6ae;
+        background: #3099a6;
         border-radius: 50%;
         margin: 0 20px 0 0;
       }

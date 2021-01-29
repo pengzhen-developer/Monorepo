@@ -174,7 +174,7 @@ export default {
   height: 17px;
   font-size: 12px;
   font-weight: 400;
-  background: #00c6ae;
+  background: #3099a6;
   color: #ffffff;
   line-height: 17px;
   padding: 0 4px;

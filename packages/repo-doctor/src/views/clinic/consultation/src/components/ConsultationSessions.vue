@@ -15,7 +15,7 @@
                   <i class="icon_ic_wait_groupconsultation"></i>
                   <span>距开始还剩</span>
 
-                  <span style="margin: 0 5px; color: #00C6AE;">{{ Peace.consultationComponent.getIntervalValue(session) }}</span>
+                  <span style="margin: 0 5px; color: #3099a6;">{{ Peace.consultationComponent.getIntervalValue(session) }}</span>
                 </div>
 
                 <!-- <div v-else-if="Peace.consultationComponent.getIntervalStatus(session) === Peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.距结束">
@@ -27,7 +27,7 @@
 
                 <div v-else>
                   <i class="icon_ic_ing_groupconsultation"></i>
-                  <span style="color: #00C6AE;">
+                  <span style="color: #3099a6;">
                     {{ 
                     Object.keys(Peace.type.CONSULTATION.CONSULTATION_STATUS).find(
                       key =>

@@ -442,7 +442,7 @@ export default {
     align-items: center;
   }
   .module-body .blue-full {
-    background: #00c6ae;
+    background: #3099a6;
     color: #fff;
     border-color: transparent;
   }
@@ -461,7 +461,7 @@ export default {
       content: '';
       width: 4px;
       height: 15px;
-      background: #00c6ae;
+      background: #3099a6;
       margin-right: 8px;
       margin-bottom: -2px;
     }

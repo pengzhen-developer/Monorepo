@@ -232,7 +232,7 @@ export default {
 .header-container {
   margin: 0 auto;
   height: 100%;
-  background: #00c6ae;
+  background: #3099a6;
   margin: 0 auto;
   padding: 0;
 
@@ -285,7 +285,7 @@ export default {
 
       &.online {
         .el-badge__content {
-          background-color: #00c6ae;
+          background-color: #3099a6;
         }
       }
 

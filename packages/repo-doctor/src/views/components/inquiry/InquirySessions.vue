@@ -36,7 +36,7 @@
                       type="warning"
                       v-if="session.content.inquiryInfo.inquiryStatus === Peace.type.INQUIRY.INQUIRY_STATUS.待接诊">{{ getInquiryStatus(session) }}</el-tag>
               <el-tag effect="plain"
-                      style="border-radius: 20px; border-color: #00c6ae; color: #00c6ae; background: #dafaf6;"
+                      style="border-radius: 20px; border-color: #3099a6; color: #3099a6; background: #dafaf6;"
                       type="primary"
                       v-if="session.content.inquiryInfo.inquiryStatus  === Peace.type.INQUIRY.INQUIRY_STATUS.问诊中">{{ getInquiryStatus(session) }}</el-tag>
             </div>

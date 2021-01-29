@@ -113,9 +113,9 @@ export default {
       } else {
         return {
           ['background']: '#dafaf6',
-          ['color']: '#00c6ae',
+          ['color']: '#3099a6',
           ['border-radius']: '20px',
-          ['border-color']: '#00c6ae'
+          ['border-color']: '#3099a6'
         }
       }
     },

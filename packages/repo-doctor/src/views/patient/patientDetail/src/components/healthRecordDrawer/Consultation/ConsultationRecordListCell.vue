@@ -109,7 +109,7 @@ export default {
         content: '';
         width: 5px;
         height: 5px;
-        background: #00c6ae;
+        background: #3099a6;
         border-radius: 50%;
         margin: 0 8px 0 0;
         vertical-align: middle;

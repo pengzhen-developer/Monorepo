@@ -17,7 +17,7 @@
           <div class="content patient">
             <div class="item">
               <div class="doctor-img"
-                   style="width: 40px; height: 40px; background: #00c6ae; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
+                   style="width: 40px; height: 40px; background: #3099a6; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
                 <span style="color: #fff; margin: 0;">{{
                   data.familyName.substr(
                     data.familyName.length - 2,

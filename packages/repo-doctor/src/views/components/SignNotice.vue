@@ -111,7 +111,7 @@ export default {
     text-align: center;
     margin-top: 15px;
     span {
-      color: #00c6ae;
+      color: #3099a6;
     }
   }
   .code {

@@ -169,7 +169,7 @@ $--header-height: 50px;
         text-align: center;
 
         &.is-active {
-          border-top: 2px solid #00c6ae;
+          border-top: 2px solid #3099a6;
         }
       }
 

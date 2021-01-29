@@ -68,7 +68,7 @@ export default {}
 
       .count-down-time {
         font-size: 18px;
-        color: #00c6ae;
+        color: #3099a6;
       }
 
       .count-down-message {

@@ -335,7 +335,7 @@ export default {
 
       &::before {
         content: '';
-        border-right: 4px solid #00c6ae;
+        border-right: 4px solid #3099a6;
 
         height: 18px;
         display: inline-block;

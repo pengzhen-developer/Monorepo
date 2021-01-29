@@ -157,7 +157,7 @@ export default {
         cursor: pointer;
 
         .active {
-          color: #00c6ae;
+          color: #3099a6;
         }
       }
     }
@@ -200,7 +200,7 @@ export default {
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #00c6ae;
+    background: #3099a6;
     margin: 0 10px 0 0;
   }
 
@@ -208,7 +208,7 @@ export default {
     display: inline-block;
     width: 5px;
     height: 14px;
-    background: #00c6ae;
+    background: #3099a6;
     margin: 0 10px 0 0;
   }
 }
