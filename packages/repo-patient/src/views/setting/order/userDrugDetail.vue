@@ -439,7 +439,8 @@ export default {
       return (
         this.order &&
         (this.order.callOrderStatus === ENUM.ORDER_STATUS.已下单 ||
-          (this.order.shippingMethod == ENUM.SHIPPING_METHOD.配送到家 && this.order.callOrderStatus === ENUM.ORDER_STATUS.已接单))
+          this.order.callOrderStatus === ENUM.ORDER_STATUS.已接单 ||
+          (this.order.shippingMethod == ENUM.SHIPPING_METHOD.到店取药 && this.order.callOrderStatus === ENUM.ORDER_STATUS.已备药_已发货))
       )
     },
     isCloudPharmacy() {
