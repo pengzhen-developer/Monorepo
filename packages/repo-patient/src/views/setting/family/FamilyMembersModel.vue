@@ -120,7 +120,7 @@
                     @onSuccess="onSuccess"></YibaoCardAdd>
     </template>
     <!-- 添加家人 -->
-    <template v-if="from == 'add'">
+    <template v-if="from == 'add'||from == 'addGuardian'">
       <div class="add-tip">国家卫健委要求，就医行为必须实名登记</div>
       <div class="form form-for-family">
         <van-field label="姓名"
@@ -324,7 +324,8 @@
       <div class="header">提示</div>
       <div class="content">
         <div class="title">请核对您填写的身份证号</div>
-        <van-field label="身份证号"
+        <van-field type="number"
+                   label="身份证号"
                    :class="{'is__error':idcardDialog.error.idcard}"
                    placeholder="请输入"
                    :error-message="idcardDialog.error.idcard"
@@ -503,12 +504,13 @@ export default {
   },
   mounted() {
     let json = peace.util.decode(this.$route.params.json)
-    if (json.type != 'add') {
-      this.getFamilyInfo()
-    } else {
-      this.from = 'add'
+
+    if (json.type == 'add' || json.type == 'addGuardian') {
+      this.from = json.type
       // 添加页面 只需加载民族列表
       this.getNationList()
+    } else {
+      this.getFamilyInfo()
     }
     if (json.canShowSelf) {
       this.canShowSelf = json.canShowSelf == 1 ? true : false
@@ -841,27 +843,37 @@ export default {
         .bindFamily(params)
         .then((res) => {
           const params = peace.util.decode(this.$route.params.json)
-          if (this.addGardian) {
-            this.gardianName = this.model.name
-            this.gardianId = this.model.idcard
-            for (let i in this.childInfo) {
-              this.model[i] = this.childInfo[i]
-            }
-            this.gDialog.visible = false
-            this.addGardian = false
-            this.gardianSet = true
-            this.submit()
+          if (this.from == 'addGuardian') {
+            this.$router.go(-1)
+            //缓存监护人信息
+            peace.cache.set('gardianInfo', {
+              name: this.model.name,
+              idcard: this.model.idcard
+            })
           } else {
-            peace.util.alert(res.msg)
-            //新增家人后断连接IM
-            peace.service.IM.initNIMS({ type: 'add', ...res.data })
-            this.familyId = res.data.accid
-            if (params.emit) {
-              $peace.$emit(params.emit, res)
-              this.$router.go(-1)
+            if (this.addGardian) {
+              this.gardianName = this.model.name
+              this.gardianId = this.model.idcard
+              for (let i in this.childInfo) {
+                this.model[i] = this.childInfo[i]
+              }
+              this.gDialog.visible = false
+              this.addGardian = false
+              this.gardianSet = true
+              this.submit()
             } else {
-              this.getFamilyInfo({ id: res.data.accid, source: 2 })
-              this.from = ''
+              peace.util.alert(res.msg)
+              //新增家人后断连接IM
+              peace.service.IM.initNIMS({ type: 'add', ...res.data })
+              this.familyId = res.data.accid
+              if (params.emit) {
+                $peace.$emit(params.emit, res)
+                this.$router.go(-1)
+              } else {
+                this.getFamilyInfo({ id: res.data.accid, source: 2 })
+                this.from = ''
+                this.idcardDialog.visible = false
+              }
             }
           }
         })

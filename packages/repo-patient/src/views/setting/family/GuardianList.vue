@@ -52,7 +52,14 @@ export default {
   name: 'GuardianList',
 
   components: {},
-
+  props: {
+    from: {
+      type: String,
+      default: () => {
+        return ''
+      }
+    }
+  },
   data() {
     return {
       guardianList: [],
@@ -72,7 +79,12 @@ export default {
     },
 
     setGardianInfo(item) {
-      this.$emit('setGardianInfo', item)
+      if (this.guardianList.length == 0 && this.from == 'addGuardian') {
+        const json = peace.util.encode({ type: 'addGuardian', canShowSelf: true })
+        this.$router.push(`/setting/familyMember/${json}`)
+      } else {
+        this.$emit('setGardianInfo', item)
+      }
     }
   }
 }

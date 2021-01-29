@@ -53,7 +53,7 @@
       <peace-dialog :title="gDialog.title"
                     :visible.sync="gDialog.visible"
                     @update:visible="checkGardian">
-        <GuardianList :data="gDialog.data"
+        <GuardianList :from="params.type"
                       @setGardianInfo="setGardianInfo" />
       </peace-dialog>
     </div>
@@ -142,6 +142,19 @@ export default {
       params: {}
     }
   },
+  activated() {
+    const gardianInfo = peace.cache.get('gardianInfo')
+    if (gardianInfo) {
+      this.gardianSet = true
+      this.gardianId = gardianInfo.idcard
+      this.gardianName = gardianInfo.name
+      this.idcardDialog.error.idcard = ''
+      this.gDialog.visible = false
+    }
+  },
+  destroyed() {
+    peace.cache.remove('gardianInfo')
+  },
   mounted() {
     this.getFamilyInfo()
   },
@@ -152,10 +165,14 @@ export default {
       peace.service.patient.getFamilyInfo(this.params).then((res) => {
         this.model = res.data
         this.model.idcard = this.params.idcard
+        this.age = this.getAgeByIdCard(this.params.idcard)
       })
     },
     submit() {
       this.checkGardian()
+      if (this.gardianId == '' && this.gardianName == '') {
+        return
+      }
       if (this.hasClick) {
         return
       }
@@ -209,7 +226,35 @@ export default {
 
       this.gDialog.visible = false
     },
-
+    getAgeByIdCard(identityCard) {
+      this.gardianSet = false
+      var len = (identityCard + '').length
+      if (len == 0) {
+        return 0
+      } else {
+        if (len != 15 && len != 18) {
+          //身份证号码只能为15位或18位其它不合法
+          return 0
+        }
+      }
+      var strBirthday = ''
+      if (len == 18) {
+        //处理18位的身份证号码从号码中得到生日和性别代码
+        strBirthday = identityCard.substr(6, 4) + '/' + identityCard.substr(10, 2) + '/' + identityCard.substr(12, 2)
+      }
+      if (len == 15) {
+        strBirthday = '19' + identityCard.substr(6, 2) + '/' + identityCard.substr(8, 2) + '/' + identityCard.substr(10, 2)
+      }
+      //时间字符串里，必须是“/”
+      var birthDate = new Date(strBirthday)
+      var nowDateTime = new Date()
+      var age = nowDateTime.getFullYear() - birthDate.getFullYear()
+      //再考虑月、天的因素;.getMonth()获取的是从0开始的，这里进行比较，不需要加1
+      if (nowDateTime.getMonth() < birthDate.getMonth() || (nowDateTime.getMonth() == birthDate.getMonth() && nowDateTime.getDate() < birthDate.getDate())) {
+        age--
+      }
+      return age
+    },
     goToGardian() {
       if (!this.addGardian) {
         this.childInfo = Object.assign({}, this.model)
@@ -217,9 +262,8 @@ export default {
       this.gDialog.visible = true
     },
     checkGardian() {
-      const idcard = this.from == 'addGardian' ? this.model.guardianIdCard : this.model.idcard
       if (this.addGardian) {
-        let gardianAge = this.getAgeByIdCard(idcard)
+        let gardianAge = this.getAgeByIdCard(this.gardianId)
         if (gardianAge < 18) {
           this.error.gardian = '监护人年龄不得小于18岁'
         } else {
@@ -379,6 +423,12 @@ export default {
         line-height: 24px;
       }
     }
+  }
+}
+/deep/.van-cell__value--alone {
+  overflow: visible;
+  .van-field__error-message {
+    transform: translateX(16px);
   }
 }
 </style>
