@@ -85,14 +85,14 @@
 
         <PeaceTableColumn label="订单状态">
           <template slot-scope="scope">
-            {{ scope.row.OrderStatus | filterDictionary(source.DistributionOrderStatus, '--') }}
+            {{ (scope.row.OrderStatus).toString() | filterDictionary(source.DistributionOrderStatus, '--') }}
           </template>
         </PeaceTableColumn>
 
         <PeaceTableColumn label="取消状态">
           <template slot-scope="scope">
             <div :class="{operatingColor : isPending(scope.row.Result)}">
-              {{ scope.row.Result | filterDictionary(source.OrderChangeResult, '--') }}
+              {{ (scope.row.Result).toString() | filterDictionary(source.OrderChangeResult, '--') }}
             </div>
           </template>
         </PeaceTableColumn>
