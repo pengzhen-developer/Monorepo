@@ -517,14 +517,14 @@ export default {
 
   methods: {
     checkName() {
-      this.error.name = !this.model.name ? '请输入姓名' : ''
+      this.error.name = !this.model.name ? '姓名不能为空' : ''
     },
     checkIdCardAgain() {
       if (!this.idcardDialog.model.idcard) {
-        this.idcardDialog.error.idcard = '请输入身份证号'
+        this.idcardDialog.error.idcard = '身份证号不能为空'
       } else {
         if (!peace.validate.idCard(this.idcardDialog.model.idcard)) {
-          this.idcardDialog.error.idcard = '请输入正确身份证号'
+          this.idcardDialog.error.idcard = '身份证号不正确'
         } else {
           this.idcardDialog.error.idcard = ''
         }
@@ -532,10 +532,10 @@ export default {
     },
     checkIdCard() {
       if (!this.model.idcard) {
-        this.error.idcard = '请输入身份证号'
+        this.error.idcard = '身份证号不能为空'
       } else {
         if (!peace.validate.idCard(this.model.idcard)) {
-          this.error.idcard = '请输入正确身份证号'
+          this.error.idcard = '身份证号不正确'
         } else {
           this.error.idcard = ''
         }
