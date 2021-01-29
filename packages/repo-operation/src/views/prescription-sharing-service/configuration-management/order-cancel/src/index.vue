@@ -3,10 +3,8 @@
     <el-alert type="warning"
               class="q-mb-16"
               v-bind:closable="false">
-      <div slot="title">
-        <div>1、请先在【基础管理--机构列表】中配置好机构的订单承接系统，若不设置，将默认该机构不支持申请订单取消流程；</div>
-        <div>2、机构需开通 "药品供应服务" 并审核通过，否则将不会出现在下方列表中。</div>
-      </div>
+      <div>1、请先在【基础管理--机构列表】中配置好机构的订单承接系统，若不设置，将默认该机构不支持申请订单取消流程；</div>
+      <div>2、机构需开通 "药品供应服务" 并审核通过，否则将不会出现在下方列表中。</div>
     </el-alert>
     <div class="card">
       <peace-table ref="table"
