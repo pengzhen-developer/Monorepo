@@ -11,7 +11,7 @@ export const SYSTEM = {
     /** 成功类型 */
     SUCCESS: 'success',
     /** 警告类型 */
-    WARNING: 'warning',
+    WARNING: 'warning'
   },
 
   /** 系统缓存类型常量 */
@@ -19,7 +19,7 @@ export const SYSTEM = {
     /** 存储类型 - localStorage */
     LOCAL_STORAGE: 'localStorage',
     /** 存储类型 - sessionStorage */
-    SESSION_STORAGE: 'sessionStorage',
+    SESSION_STORAGE: 'sessionStorage'
   },
 
   // 是否已完成平台微信授权，储存 plateform_openId
@@ -32,7 +32,7 @@ export const SYSTEM = {
   // 当前登录用户机构来源
   NETHOSPITALID: 'NETHOSPITALID',
   // 当前登录用户渠道来源
-  CHANNELID: 'CHANNELID',
+  CHANNELID: 'CHANNELID'
 }
 
 /**
@@ -58,7 +58,7 @@ export const EMIT = {
   SUPPLEMENTARY_ALLERGIES: 'SUPPLEMENTARY_ALLERGIES',
 
   /**复诊 - 重新选择号源 */
-  DOCTOR_RETURNVISIT_RESELECT_NUMBER: 'DoctorReturnVisitReselectNumber',
+  DOCTOR_RETURNVISIT_RESELECT_NUMBER: 'DoctorReturnVisitReselectNumber'
 }
 
 /**
@@ -67,12 +67,13 @@ export const EMIT = {
 export const USER = {
   /** user info */
   INFO: 'h5.user.info',
-
+  /** user tel */
+  TEL: 'h5.user.tel',
   /** user token */
   TOKEN: 'h5.user.token',
 
   /** 最近操作功能列表 */
-  TAB_LIST: 'h5.user.tabList',
+  TAB_LIST: 'h5.user.tabList'
 }
 
 /**
@@ -89,25 +90,25 @@ export const INQUIRY = {
     问诊中: 3,
     已退诊: 4,
     已完成: 5,
-    已取消: 6,
+    已取消: 6
   },
 
   /** 问诊类型 */
   INQUIRY_TYPE: {
     图文问诊: 'image',
-    视频问诊: 'video',
+    视频问诊: 'video'
   },
 
   /** 是否发送病历 */
   ISSEND_CASE: {
     未发送病历: 0,
-    已发送病历: 1,
+    已发送病历: 1
   },
 
   /** 是否私人医生 */
   IS_PRIVATE_DOCTOR: {
     非私人医生: 0,
-    是私人医生: 1,
+    是私人医生: 1
   },
 
   /** 自定义推送消息 - 字典 */
@@ -130,7 +131,7 @@ export const INQUIRY = {
     会诊单: '792',
     检查单: '793',
     问诊卡片: '794',
-    转诊卡片: '795',
+    转诊卡片: '795'
   },
 
   /** 用户操作 */
@@ -145,7 +146,7 @@ export const INQUIRY = {
     发会诊: 'SEND_CONSULTATION',
 
     /** 重置操作 */
-    重置操作: 'RESET_ACTION',
+    重置操作: 'RESET_ACTION'
   },
 
   /** 视频问诊状态 */
@@ -154,8 +155,8 @@ export const INQUIRY = {
     收到: 2,
     接听: 3,
     拒绝: 4,
-    挂断: 5,
-  },
+    挂断: 5
+  }
 }
 
 export default {
@@ -169,5 +170,5 @@ export default {
   USER,
 
   /** 问诊常量 */
-  INQUIRY,
+  INQUIRY
 }
