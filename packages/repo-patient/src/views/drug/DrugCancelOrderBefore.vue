@@ -159,11 +159,15 @@ export default {
         orderNo: this.info.orderNo,
         reason: reason
       }
-      peace.service.purchasedrug.CancelOrder(params).then((res) => {
-        peace.util.alert(res.msg)
-        const json = peace.util.encode({ orderNo: this.info.orderNo })
-        this.$router.replace(`/drug/drugCancelOrder/${json}`)
-      })
+      peace.service.purchasedrug
+        .CancelOrder(params)
+        .then((res) => {
+          peace.util.alert(res.msg)
+        })
+        .finally(() => {
+          const json = peace.util.encode({ orderNo: this.info.orderNo })
+          this.$router.replace(`/drug/drugCancelOrder/${json}`)
+        })
     },
     save() {
       this.refundDialog.visible = false
