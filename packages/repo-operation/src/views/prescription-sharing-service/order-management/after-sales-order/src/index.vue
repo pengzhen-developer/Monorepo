@@ -145,6 +145,8 @@ export default {
   data() {
     return {
       model: {
+        OrderId: '',
+        Sponsor: '',
         Source: '',
         TimeRange: [],
         StartTime: '',

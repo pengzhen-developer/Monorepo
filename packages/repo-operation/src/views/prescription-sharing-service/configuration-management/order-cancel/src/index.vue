@@ -3,8 +3,10 @@
     <el-alert type="warning"
               class="q-mb-16"
               v-bind:closable="false">
-      <div>1、请先在【基础管理--机构列表】中配置好机构的订单承接系统，若不设置，将默认该机构不支持申请订单取消流程；</div>
-      <div>2、机构需开通 "药品供应服务" 并审核通过，否则将不会出现在下方列表中。</div>
+      <div slot="title">
+        <div>1、请先在【基础管理--机构列表】中配置好机构的订单承接系统，若不设置，将默认该机构不支持申请订单取消流程；</div>
+        <div>2、机构需开通 "药品供应服务" 并审核通过，否则将不会出现在下方列表中。</div>
+      </div>
     </el-alert>
     <div class="card">
       <peace-table ref="table"
@@ -25,7 +27,8 @@
         <peace-table-column label="是否支持申请订单取消"
                             prop="IsSuCancel">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.IsSuCancel"
+            <el-switch v-bind:disabled="scope.row.sys_name == null || scope.row.sys_name == '' "
+                       v-model="scope.row.IsSuCancel"
                        v-on:change="update(scope.row)">
             </el-switch>
             <span style="margin-left: 16px;">{{ scope.row.IsSuCancel? "支持":"不支持"}}</span>
