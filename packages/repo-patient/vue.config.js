@@ -22,6 +22,10 @@ module.exports = {
 
   // https://cli.vuejs.org/config/#chainwebpack
   chainWebpack: (config) => {
+    // 移除 prefetch preload 插件
+    config.plugins.delete('prefetch')
+    config.plugins.delete('preload')
+
     config.resolve.alias
       .set('@public', path.join(__dirname, 'public'))
       .set('@src', path.join(__dirname, 'src'))
