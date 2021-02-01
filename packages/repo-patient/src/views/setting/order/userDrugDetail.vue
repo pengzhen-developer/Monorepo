@@ -623,14 +623,11 @@ export default {
     },
     //申请取消订单-跳页面
     cancelOrderByNext() {
+      const params = peace.util.encode({ orderNo: this.order.orderNo })
       //取消状态时间轴
       //1. cancelList.length==0 未发起申请
       //2. cancelList.length>0    cancelStatus  1取消申请2取消成功3取消失败
       //canceType   1手动取消2自动取消
-      const params = {
-        canceType: 1,
-        orderNo: this.order.orderNo
-      }
       if (this.order.cancelList.length == 0) {
         this.$router.push(`/drug/drugCancelOrderBefore/${params}`)
       } else {
@@ -639,7 +636,11 @@ export default {
     },
     //申请取消订单-当前页面
     cancelOrderByCurrent() {
-      const params = peace.util.decode(this.$route.params.json)
+      //canceType   1手动取消2自动取消
+      const params = {
+        canceType: 1,
+        orderNo: this.order.orderNo
+      }
       let resTxt = ''
       if (this.order.callOrderStatus == 0) {
         resTxt = '取消订单后药房将不再为您预留药品。是否取消订单？'
