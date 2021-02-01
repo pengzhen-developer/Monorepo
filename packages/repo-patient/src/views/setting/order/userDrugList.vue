@@ -198,7 +198,8 @@ export default {
 
   methods: {
     finishHander(item) {
-      const params = { orderNo: item.orderNo, reason: '超时未支付，系统自动取消订单' }
+      //canceType   1手动取消2自动取消
+      const params = { orderNo: item.orderNo, canceType: 2 }
       peace.service.purchasedrug.CancelOrder(params).finally(() => {
         this.get('init')
       })
@@ -291,7 +292,8 @@ export default {
       this.$router.replace(`/order/userDrugDetail/${json}`)
     },
     canselOrder(item) {
-      const params = { orderNo: item.orderNo }
+      //canceType   1手动取消2自动取消
+      const params = { orderNo: item.orderNo, canceType: 1 }
       let resTxt = ''
       if (item.callOrderStatus == 0) {
         resTxt = '取消订单后药房将不再为您预留药品。是否取消订单？'

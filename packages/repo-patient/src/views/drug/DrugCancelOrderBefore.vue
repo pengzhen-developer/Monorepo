@@ -148,9 +148,11 @@ export default {
         return peace.util.alert('请填写取消原因')
       }
       const reason = this.selectMsg !== '其他' ? this.selectMsg : this.cancelReason
+      //canceType   1手动取消2自动取消
       const params = {
         orderNo: this.info.orderNo,
-        reason: reason
+        reason: reason,
+        canceType: 1
       }
       peace.service.purchasedrug
         .CancelOrder(params)
