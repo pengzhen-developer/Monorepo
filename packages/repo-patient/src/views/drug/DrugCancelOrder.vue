@@ -9,7 +9,7 @@
         </div>
         <div class="cancel-money">
           <div class="cancel-money-label">退款金额</div>
-          <div class="cancel-money-value">￥{{info.payMoney}}</div>
+          <div class="cancel-money-value">￥{{payMoney}}</div>
         </div>
         <!-- 取消订单时间轴 -->
         <div class="van-steps van-steps--horizontal">
@@ -52,7 +52,7 @@
         </div>
         <!-- 药品信息 -->
         <DrugList v-bind:info="info"
-                  v-bind:totalMoney="info.payMoney"
+                  v-bind:totalMoney="payMoney"
                   v-bind:showMore="true"
                   v-bind:showInstructions="false"
                   v-bind:onlyWatch="true"></DrugList>
@@ -76,6 +76,9 @@ export default {
     }
   },
   computed: {
+    payMoney() {
+      return this.info.payMoney.toFixed(2)
+    },
     cancelStatus() {
       return this.info?.cancelList[this.info?.cancelList?.length - 1]?.cancelStatus
     },
