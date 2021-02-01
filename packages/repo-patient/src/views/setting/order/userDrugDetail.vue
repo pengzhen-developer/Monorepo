@@ -585,6 +585,7 @@ export default {
         this.PickUpCode = res.data.expressNo
         this.QRCodeURL = res.data.QRCodeURL
         this.cbDialog.data.money = this.order.orderMoney.toFixed(2)
+        this.phoneDialog.data.phone = res.data.tel
         if (this.order.expireTime > this.order.currentTime) {
           this.time = this.order.expireTime - this.order.currentTime
         }
