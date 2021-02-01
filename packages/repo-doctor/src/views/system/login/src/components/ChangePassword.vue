@@ -86,7 +86,7 @@
                           label="">
               <el-input v-model="step2Model.newPass"
                         show-password
-                        placeholder="请输入6-20位数字或密码组合"></el-input>
+                        placeholder="请输入6-20位数字或字母组合"></el-input>
             </el-form-item>
             <el-form-item prop="confirmPassword"
                           label="">
