@@ -26,7 +26,7 @@
                    label="取消原因"
                    type="textarea"
                    class="textarea"
-                   rows="1"
+                   rows="3"
                    autosize
                    maxlength="50"
                    show-word-limit
@@ -286,12 +286,14 @@ export default {
       font-size: 16px;
       /deep/textarea {
         word-break: break-all;
+        position: relative;
+        z-index: 20;
       }
       /deep/.van-field__word-limit {
         position: relative;
-        height: 46px;
         .van-field__word-num {
           position: absolute;
+          z-index: 10;
           right: -2px;
           bottom: 0px;
           font-size: 100px;

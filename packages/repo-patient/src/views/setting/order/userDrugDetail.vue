@@ -1155,6 +1155,7 @@ export default {
     line-height: 16px;
     margin-bottom: 10px;
     margin-top: -5px;
+    text-align: center;
   }
   .tracking-number {
     font-size: 12px;

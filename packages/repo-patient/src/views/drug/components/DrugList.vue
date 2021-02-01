@@ -36,7 +36,7 @@
           </div>
         </div>
         <div class="drug-shadow"
-             v-if="showMoreInfo(index)&&index==1"></div>
+             v-if="canShowOperateModel&&index==1"></div>
       </div>
     </template>
 
