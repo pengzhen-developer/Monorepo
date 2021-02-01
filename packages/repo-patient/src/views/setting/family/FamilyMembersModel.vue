@@ -986,6 +986,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-height: 100%;
   padding-top: 10px;
   .id-card-container {
     width: 343px;
@@ -1206,8 +1207,7 @@ export default {
     flex: 1;
   }
   .bottom {
-    position: fixed;
-    bottom: 0;
+    background: #fff;
     width: 100%;
     padding: 15px;
     display: flex;
