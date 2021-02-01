@@ -1137,8 +1137,7 @@ export default {
 }
 .order {
   box-sizing: border-box;
-  width: 220px;
-  margin: 0 auto;
+  width: 100%;
 }
 .order-card {
   display: flex;
