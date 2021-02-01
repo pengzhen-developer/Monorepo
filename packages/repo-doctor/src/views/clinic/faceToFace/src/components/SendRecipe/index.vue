@@ -194,7 +194,6 @@
         <template v-if="dialog.title === '疾病诊断'">
           <el-select :remote-method="getPresent"
                      @change="chooseItem"
-                     allow-create
                      filterable
                      placeholder="请输入疾病诊断"
                      remote
@@ -209,11 +208,10 @@
 
       </div>
 
-      <div class="q-mx-10"
-           v-if="dialog.chooseData.length > 0">
+      <div v-if="dialog.chooseData.length > 0">
         <p>已选{{ dialog.title }}</p>
 
-        <div class="q-ma-10">
+        <div class="q-my-10">
 
           <el-tag :key="item.id"
                   @close="closeItem(item)"
@@ -225,10 +223,10 @@
       </div>
 
       <template v-if="dialog.title === '疾病诊断'">
-        <div style="margin: 10px 0;">
+        <div>
           <p>常见{{ dialog.title }}</p>
 
-          <div class="q-ma-10">
+          <div class="q-my-10">
             <el-tag :key="item.code"
                     :type="selectTagClass(item)"
                     @click="chooseItem(item)"
@@ -698,7 +696,7 @@ export default {
 }
 
 .tag-style {
-  margin: 2px 10px 2px 0;
+  margin: 4px 10px 4px 0;
   min-width: 62px;
   text-align: center;
   border: none;

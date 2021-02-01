@@ -169,7 +169,6 @@
 
         <el-select v-bind:remote-method="getPresent"
                    v-on:change="chooseItem"
-                   allow-create
                    filterable
                    placeholder="请输入疾病诊断"
                    remote
@@ -182,11 +181,10 @@
         </el-select>
       </div>
 
-      <div class="q-mx-10"
-           v-if="dialog.chooseData.length > 0">
+      <div v-if="dialog.chooseData.length > 0">
         <p>已选{{ dialog.title }}</p>
 
-        <div class="q-ma-10">
+        <div class="q-my-10">
           <el-tag v-bind:key="item.id"
                   v-on:close="closeItem(item)"
                   closable
@@ -196,10 +194,10 @@
       </div>
 
       <template>
-        <div class="q-mx-10">
+        <div>
           <p>常见{{ dialog.title }}</p>
 
-          <div class="q-ma-10">
+          <div class="q-my-10">
             <el-tag v-bind:key="item.code"
                     v-bind:type="selectTagClass(item)"
                     v-on:click="chooseItem(item)"
@@ -656,7 +654,7 @@ export default {
 }
 
 .tag-style {
-  margin: 2px 10px 2px 0;
+  margin: 4px 10px 4px 0;
   min-width: 62px;
   text-align: center;
   border: none;

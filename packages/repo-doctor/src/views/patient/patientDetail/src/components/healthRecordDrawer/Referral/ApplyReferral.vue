@@ -163,7 +163,6 @@
       <div style="margin-bottom: 10px">
         <el-select :remote-method="getPresent"
                    @change="chooseItem"
-                   allow-create
                    filterable
                    placeholder="请输入初步诊断"
                    remote

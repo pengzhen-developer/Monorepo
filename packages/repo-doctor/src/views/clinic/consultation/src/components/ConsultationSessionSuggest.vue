@@ -52,7 +52,6 @@
       <div style="margin-bottom: 10px">
         <el-select :remote-method="getPresent"
                    @change="chooseItem"
-                   allow-create
                    filterable
                    placeholder="请输入疾病诊断"
                    remote

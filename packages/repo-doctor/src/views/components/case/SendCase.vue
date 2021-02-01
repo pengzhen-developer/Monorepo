@@ -256,7 +256,6 @@
         <template v-if="dialog.title === '疾病诊断'">
           <el-select :remote-method="getPresent"
                      @change="chooseItem"
-                     allow-create
                      filterable
                      placeholder="请输入疾病诊断"
                      remote
@@ -270,24 +269,23 @@
         </template>
       </div>
 
-      <div style="margin: 10px 0;"
-           v-if="dialog.chooseData.length > 0">
+      <div v-if="dialog.chooseData.length > 0">
         <p>已选{{ dialog.title }}</p>
 
-        <div style="margin: 10px 0;">
+        <div class="q-my-10">
           <el-tag :key="item.id"
                   @close="closeItem(item)"
                   closable
-                  style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+                  style="margin: 4px 10px 4px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
                   v-for="item in dialog.chooseData">{{ item.name }}</el-tag>
         </div>
       </div>
 
       <template v-if="dialog.title === '疾病诊断'">
-        <div style="margin: 10px 0;">
+        <div>
           <p>常见{{ dialog.title }}</p>
 
-          <div style="margin: 10px 0;">
+          <div class="q-my-10">
             <el-tag :key="item.id"
                     :type="
                 dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1
@@ -295,17 +293,17 @@
                   : 'primary'
               "
                     @click="chooseItem(item)"
-                    style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+                    style="cursor: pointer; margin: 4px 10px 4px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
                     v-for="item in dialog.source.IllnessList">{{ item.name }}</el-tag>
           </div>
         </div>
       </template>
 
       <template v-if="dialog.title === '过敏史'">
-        <div style="margin: 10px 0;">
+        <div>
           <p>常见{{ dialog.title }}</p>
 
-          <div style="margin: 10px 0;">
+          <div class="q-my-10">
             <el-tag :key="item.id"
                     :type="
                 dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1
@@ -313,17 +311,17 @@
                   : 'primary'
               "
                     @click="chooseItem(item)"
-                    style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+                    style="cursor: pointer; margin: 4px 10px 4px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
                     v-for="item in dialog.source.allergens">{{ item.name }}</el-tag>
           </div>
         </div>
       </template>
 
       <template v-if="dialog.title === '既往史'">
-        <div style="margin: 10px 0;">
+        <div>
           <p>常见{{ dialog.title }}</p>
 
-          <div style="margin: 10px 0;">
+          <div class="q-my-10">
             <el-tag :key="item.id"
                     :type="
                 dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1
@@ -331,7 +329,7 @@
                   : 'primary'
               "
                     @click="chooseItem(item)"
-                    style="cursor: pointer; margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
+                    style="cursor: pointer; margin: 4px 10px 4px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
                     v-for="item in dialog.source.OldIllnessList">{{ item.name }}</el-tag>
           </div>
         </div>
