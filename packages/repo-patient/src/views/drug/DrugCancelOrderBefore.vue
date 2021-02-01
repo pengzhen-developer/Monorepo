@@ -1,40 +1,42 @@
 <template>
-  <div v-bind:style="{'padding-bottom':footerHeight+'px'}">
-    <!-- 药店信息 -->
-    <div class="drug-store">
-      <van-image :src="info.drugStoreLogo"
-                 class="logo"></van-image>
-      <div class="title">{{info.drugStoreName}}</div>
+  <div class="drugs-container">
+    <div class="content">
+      <!-- 药店信息 -->
+      <div class="drug-store">
+        <van-image :src="info.drugStoreLogo"
+                   class="logo"></van-image>
+        <div class="title">{{info.drugStoreName}}</div>
+      </div>
+      <!-- 药品信息 -->
+      <DrugList v-bind:info="info"
+                v-bind:totalMoney="info.payMoney"
+                v-bind:showMore="true"
+                v-bind:showInstructions="false"
+                v-bind:onlyWatch="true"
+                v-if="info&&info.payMoney"></DrugList>
+      <!-- 申请退款 -->
+      <van-cell-group class="refund">
+        <van-cell title="退款原因"
+                  v-bind:value="selectMsg||'请选择'"
+                  v-on:click="showRefundDialog"
+                  is-link></van-cell>
+        <van-field v-if="canShowLimit"
+                   v-model="cancelReason"
+                   v-on:input="changeLimitNum"
+                   label="取消原因"
+                   type="textarea"
+                   class="textarea"
+                   rows="1"
+                   autosize
+                   maxlength="50"
+                   show-word-limit
+                   placeholder="请输入补充说明">
+        </van-field>
+        <van-cell title="退款金额"
+                  v-bind:value="info.payMoney"></van-cell>
+        <div class="tip">商家同意取消订单后，系统将为您返还实付金额，医保/商保支付金额原路返还。</div>
+      </van-cell-group>
     </div>
-    <!-- 药品信息 -->
-    <DrugList v-bind:info="info"
-              v-bind:totalMoney="info.payMoney"
-              v-bind:showMore="true"
-              v-bind:showInstructions="false"
-              v-bind:onlyWatch="true"
-              v-if="info&&info.payMoney"></DrugList>
-    <!-- 申请退款 -->
-    <van-cell-group class="refund">
-      <van-cell title="退款原因"
-                v-bind:value="selectMsg||'请选择'"
-                v-on:click="showRefundDialog"
-                is-link></van-cell>
-      <van-field v-if="canShowLimit"
-                 v-model="cancelReason"
-                 v-on:input="changeLimitNum"
-                 label="取消原因"
-                 type="textarea"
-                 class="textarea"
-                 rows="1"
-                 autosize
-                 maxlength="50"
-                 show-word-limit
-                 placeholder="请输入补充说明">
-      </van-field>
-      <van-cell title="退款金额"
-                v-bind:value="info.payMoney"></van-cell>
-      <div class="tip">商家同意取消订单后，系统将为您返还实付金额，医保/商保支付金额原路返还。</div>
-    </van-cell-group>
     <div class="footer">
       <peace-button class="pay-btn btn-pay"
                     v-bind:disabled="!hasSelected"
@@ -86,7 +88,6 @@ export default {
       },
       cancelReason: '',
       limitElement: null,
-      footerHeight: 0,
       info: {}
     }
   },
@@ -125,14 +126,6 @@ export default {
       },
       immediate: true
     }
-  },
-  mounted() {
-    this.$nextTick(() => {
-      const element = document.querySelector('.footer')
-      if (element) {
-        this.footerHeight = element.clientHeight
-      }
-    })
   },
   activated() {
     this.getDrugOrderDetail()
@@ -187,6 +180,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// 安卓手机 fixed定位会被软键盘顶起导致布局紊乱
+//2021-02-01
+//解决方案  container min-height 100% + flex布局  conent flex:1  footer不用绝对定位
+.drugs-container {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  .content {
+    flex: 1;
+    margin-bottom: 2px;
+  }
+}
 .drug-store {
   width: calc(100% - 16px);
   margin-left: 16px;
@@ -219,10 +224,7 @@ export default {
   }
 }
 .footer {
-  position: fixed;
   width: 100%;
-  bottom: 0;
-  left: 0;
   background: #fff;
   box-shadow: 0px -1px 1px 0px rgba(51, 51, 51, 0.16);
   padding: 8px 16px 24px;
