@@ -106,7 +106,7 @@ export default {
       let text = ''
       switch (cancelStatus) {
         case 1:
-          text = `失败原因：${reason}`
+          text = `取消原因：${reason}`
           break
         case 2:
           text = `取消订单所付款项将在1-3个工作日内原路退回。`
