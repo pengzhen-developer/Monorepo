@@ -132,6 +132,7 @@
                    @blur="checkName" />
         <van-field label="身份证号"
                    label-width="6m"
+                   type="number"
                    class="is__require"
                    :class="{'is__error':error.idcard}"
                    placeholder="请输入"
@@ -267,6 +268,7 @@
                    v-model="model.name" />
         <van-field :disabled="isEdit"
                    label="身份证"
+                   type="number"
                    placeholder="请输入身份证号"
                    v-model="model.idcard" />
         <van-field :disabled="isEdit"
@@ -305,6 +307,7 @@
                      v-model="model.guardianName" />
           <van-field :disabled="isEdit"
                      label="监护人身份证号"
+                     type="number"
                      placeholder="请输入身份证号"
                      v-model="model.guardianIdCard" />
         </template>

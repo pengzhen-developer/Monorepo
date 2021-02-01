@@ -23,6 +23,7 @@
                        v-model="model.name">
             </van-field>
             <van-field label="身份证号"
+                       type="number"
                        placeholder="请输入身份证号"
                        v-model="model.idcard" />
             <van-field @click="showPopupRelation"
@@ -59,6 +60,7 @@
                          v-model="model.guardianName">
               </van-field>
               <van-field class="w8"
+                         type="number"
                          label="监护人身份证号"
                          placeholder="请输入身份证号"
                          v-model="model.guardianIdCard" />
