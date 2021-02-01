@@ -117,7 +117,7 @@
           </el-table-column>
           <el-table-column label="操作"
                            align="left"
-                           width="270px"
+                           width="300px"
                            fixed="right">
             <template slot-scope="scope">
               <el-button type="text"
