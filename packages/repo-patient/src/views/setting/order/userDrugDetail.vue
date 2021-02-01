@@ -544,7 +544,10 @@ export default {
       this.showQRCode = true
     },
     finishHander() {
-      const params = peace.util.decode(this.$route.params.json)
+      const params = {
+        reason: '超时未支付，系统自动取消订单',
+        orderNo: this.order.orderNo
+      }
       peace.service.purchasedrug.CancelOrder(params).finally(() => {
         this.getDrugOrderDetail()
       })

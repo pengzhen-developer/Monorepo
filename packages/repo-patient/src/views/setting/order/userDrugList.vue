@@ -198,7 +198,7 @@ export default {
 
   methods: {
     finishHander(item) {
-      const params = { orderNo: item.orderNo }
+      const params = { orderNo: item.orderNo, reason: '超时未支付，系统自动取消订单' }
       peace.service.purchasedrug.CancelOrder(params).finally(() => {
         this.get('init')
       })
