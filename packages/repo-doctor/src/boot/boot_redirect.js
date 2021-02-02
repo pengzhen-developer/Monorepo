@@ -21,6 +21,13 @@ const notifyPasswordSafety = () => {
   const userInfo = Util.user.getUserInfo()
 
   if (userInfo.list.docInfo.firstLogin === 0) {
+    // 更新用户信息
+    userInfo.list.docInfo.firstLogin = 1
+    // 储存用户信息
+    Util.user.setUserInfo(userInfo)
+    // 更新 vuex
+    Peace.$store.commit('user/setUserInfo', userInfo)
+
     Peace.$confirm('您的登录密码为初始密码，为了账号安全建议进行密码修改', '提示', {
       confirmButtonText: '去修改',
       cancelButtonText: '取消',
