@@ -265,11 +265,12 @@
       </div>
     </div>
 
-    <el-divider></el-divider>
-
     <!-- 物流信息 -->
     <div class="q-mb-lg"
-         v-if="data.LogisticsInfo || data.ExpressName || data.PickUpCode">
+         v-if="showLogisticsInfo(data)">
+
+      <el-divider></el-divider>
+
       <div class="title q-mb-md">
         <span class="before before-vertical-line text-subtitle1 text-weight-bold">物流信息</span>
       </div>
@@ -461,12 +462,9 @@ export default {
   watch: {
     'data.ShippingMethod': {
       async handler() {
-        //DistributionOrderStatus  配送订单状态    1
-        //SelfOrderStatus  自提订单状态  0
-        const requestKey =
-          this.data.ShippingMethod?.toString() === this.source.ShippingMethod.find((item) => item.label === '自提')?.value?.toString()
-            ? 'SelfOrderStatus'
-            : 'DistributionOrderStatus'
+        // DistributionOrderStatus  配送订单状态    1
+        // SelfOrderStatus  自提订单状态  0
+        const requestKey = this.data.ShippingMethod?.toString() === '0' ? 'SelfOrderStatus' : 'DistributionOrderStatus'
         this.source.OrderStatus = await peace.identity.dictionary.getList(requestKey)
       },
       immediate: true
@@ -493,6 +491,14 @@ export default {
       for (var i = 0; i < Math.floor((value.length - (1 + i)) / 3); i++)
         value = value.substring(0, value.length - (4 * i + 3)) + ',' + value.substring(value.length - (4 * i + 3))
       return (sign ? '' : '-') + value + '.' + cents
+    }
+  },
+  methods: {
+    showLogisticsInfo(data) {
+      // 配送订单展示物流详情
+      const isSelf = this.data.ShippingMethod.toString() === '1'
+
+      return isSelf && (data.LogisticsInfo || data.ExpressName || data.PickUpCode)
     }
   }
 }
