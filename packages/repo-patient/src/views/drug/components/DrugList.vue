@@ -256,6 +256,9 @@ export default {
     justify-content: center;
     align-items: center;
     padding: 36px 0 12px 0;
+    > div {
+      line-height: 16px;
+    }
     &.show {
       padding: 13px 0 10px 0;
     }
