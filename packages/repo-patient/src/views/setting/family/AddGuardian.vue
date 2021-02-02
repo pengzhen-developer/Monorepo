@@ -8,7 +8,6 @@
                  placeholder="请输入"
                  v-model="model.name" />
       <van-field label="身份证号"
-                 type="number"
                  readonly
                  label-width="6m"
                  class="is__require"

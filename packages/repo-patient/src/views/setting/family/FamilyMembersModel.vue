@@ -131,7 +131,6 @@
                    v-model="model.name"
                    @blur="checkName" />
         <van-field label="身份证号"
-                   type="number"
                    class="is__require"
                    :class="{'is__error':error.idcard}"
                    placeholder="请输入"
@@ -267,7 +266,6 @@
                    v-model="model.name" />
         <van-field :disabled="isEdit"
                    label="身份证"
-                   type="number"
                    placeholder="请输入身份证号"
                    v-model="model.idcard" />
         <van-field :disabled="isEdit"
@@ -307,7 +305,6 @@
           <van-field :disabled="isEdit"
                      label-width="7.2em"
                      label="监护人身份证号"
-                     type="number"
                      placeholder="请输入身份证号"
                      v-model="model.guardianIdCard" />
         </template>
@@ -327,8 +324,7 @@
       <div class="header">提示</div>
       <div class="content">
         <div class="title">请核对您填写的身份证号</div>
-        <van-field type="number"
-                   label="身份证号"
+        <van-field label="身份证号"
                    :class="{'is__error':idcardDialog.error.idcard}"
                    placeholder="请输入"
                    :error-message="idcardDialog.error.idcard"
@@ -519,11 +515,14 @@ export default {
     checkIdCardAgain() {
       if (!this.idcardDialog.model.idcard) {
         this.idcardDialog.error.idcard = '身份证号不能为空'
+        return false
       } else {
         if (!peace.validate.idCard(this.idcardDialog.model.idcard)) {
           this.idcardDialog.error.idcard = '身份证号不正确'
+          return false
         } else {
           this.idcardDialog.error.idcard = ''
+          return true
         }
       }
     },
@@ -947,6 +946,9 @@ export default {
     },
     //身份证二次检验-确认
     confirmAgain() {
+      if (!this.checkIdCardAgain()) {
+        return
+      }
       const params = {
         idCard: this.idcardDialog.model.idcard,
         name: this.idcardDialog.model.name
