@@ -445,23 +445,15 @@ export default {
       return this.yibaoCardList.length > 0
     },
     canShowGardian() {
-      return !this.addGardian && (this.gardianSet || (this.age != null && this.age < this.ageLimit))
+      return !this.addGardian && (this.gardianSet || (this.age != null && this.age <= this.ageLimit))
     },
     canSubmit() {
       let result = false
-      if (!(this.model.name && this.model.idcard && this.model.relation && this.model.sex && this.model.birthday)) {
-        result = false
-      } else {
+      if (this.model.name && this.model.idcard && this.model.relation && this.model.sex && this.model.birthday) {
         result = true
+      } else {
+        result = false
       }
-      if (this.canShowGardian) {
-        if (this.error.gardian) {
-          result = false
-        } else {
-          result = true
-        }
-      }
-
       return result
     }
   },
@@ -564,7 +556,7 @@ export default {
           this.error.gardian = ''
         }
       } else {
-        if (this.age && this.age < this.ageLimit && this.gardianName == '' && this.gardianId == '') {
+        if (this.age != null && this.age <= this.ageLimit && this.gardianName == '' && this.gardianId == '') {
           this.error.gardian = '请选择监护人'
         } else {
           this.error.gardian = ''
@@ -803,6 +795,11 @@ export default {
 
       if (!this.canSubmit) {
         return
+      }
+      if (this.canShowGardian) {
+        if (!(this.gardianId && this.gardianName)) {
+          return
+        }
       }
       if (this.hasClick) {
         return
