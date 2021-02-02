@@ -19,6 +19,7 @@
             <el-form-item prop="tel"
                           label="">
               <el-input class="full-width"
+                        clearable=""
                         placeholder="请输入手机号码"
                         v-model="step1Model.tel"></el-input>
             </el-form-item>
