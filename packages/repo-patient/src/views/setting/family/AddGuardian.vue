@@ -271,7 +271,7 @@ export default {
           this.error.gardian = ''
         }
       } else {
-        if (this.age && this.age <= this.ageLimit && this.gardianName == '' && this.gardianId == '') {
+        if (this.age != null && this.age <= this.ageLimit && this.gardianName == '' && this.gardianId == '') {
           this.error.gardian = '请选择监护人'
         } else {
           this.error.gardian = ''
@@ -306,10 +306,6 @@ export default {
       color: $primary;
       border: 1px solid $primary;
     }
-  }
-  /deep/ .van-cell__title {
-    flex: 1;
-    width: auto;
   }
 }
 /deep/ .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {

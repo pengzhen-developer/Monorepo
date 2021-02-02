@@ -131,7 +131,6 @@
                    v-model="model.name"
                    @blur="checkName" />
         <van-field label="身份证号"
-                   label-width="6m"
                    type="number"
                    class="is__require"
                    :class="{'is__error':error.idcard}"
@@ -306,6 +305,7 @@
                      placeholder="请输入姓名"
                      v-model="model.guardianName" />
           <van-field :disabled="isEdit"
+                     label-width="7.2em"
                      label="监护人身份证号"
                      type="number"
                      placeholder="请输入身份证号"
@@ -1216,10 +1216,6 @@ export default {
       color: $primary;
       border: 1px solid $primary;
     }
-  }
-  /deep/ .van-cell__title {
-    flex: 1;
-    width: auto;
   }
 }
 /deep/ .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {
