@@ -19,9 +19,8 @@ const initNIM = () => {
 /** 提醒密码安全性 */
 const notifyPasswordSafety = () => {
   const userInfo = Util.user.getUserInfo()
-  const hasNotifyPasswordSafety = window.localStorage.getItem('hasNotifyPasswordSafety') ?? false
 
-  if (userInfo.list.docInfo.isUpdate === 0 && hasNotifyPasswordSafety === false) {
+  if (userInfo.list.docInfo.firstLogin === 0) {
     Peace.$confirm('您的登录密码为初始密码，为了账号安全建议进行密码修改', '提示', {
       confirmButtonText: '去修改',
       cancelButtonText: '取消',
@@ -32,9 +31,6 @@ const notifyPasswordSafety = () => {
       })
       .catch(() => {
         Peace.$router.push({ path: '/home' })
-      })
-      .finally(() => {
-        window.localStorage.setItem('hasNotifyPasswordSafety', true)
       })
   }
 }
