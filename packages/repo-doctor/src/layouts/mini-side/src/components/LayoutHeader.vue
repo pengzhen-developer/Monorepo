@@ -50,12 +50,12 @@
             <img v-if="workStatus"
                  class="q-mr-md"
                  style="width: 20px; height: 20px;"
-                 src="./../assets/img/work.svg">
+                 src="./../assets/img/icon_work_checked.svg">
 
             <img v-if="!workStatus"
                  class="q-mr-md"
                  style="width: 20px; height: 20px;"
-                 src="./../assets/img/rest.svg">
+                 src="./../assets/img/icon_rest_checked.svg">
 
             <span>欢迎您，</span>
             <span>{{ docInfo.name }}</span>
@@ -68,16 +68,26 @@
               <p class="text-h7 text-bold q-mb-sm">工作状态</p>
               <el-dropdown-item @click.native="setWorkstatus(1)"
                                 class="dropdown-item">
-                <img class="q-mr-md"
+                <img v-if="workStatus"
+                     class="q-mr-md"
                      style="width: 20px; height: 20px;"
-                     src="./../assets/img/work.svg">
+                     src="./../assets/img/icon_work_checked.svg">
+                <img v-if="!workStatus"
+                     class="q-mr-md"
+                     style="width: 20px; height: 20px;"
+                     src="./../assets/img/icon_work_unchecked.svg">
                 <span>工作中</span>
               </el-dropdown-item>
               <el-dropdown-item @click.native="setWorkstatus(2)"
                                 class="dropdown-item">
-                <img class="q-mr-md"
+                <img v-if="!workStatus"
+                     class="q-mr-md"
                      style="width: 20px; height: 20px;"
-                     src="./../assets/img/rest.svg">
+                     src="./../assets/img/icon_rest_checked.svg">
+                <img v-if="workStatus"
+                     class="q-mr-md"
+                     style="width: 20px; height: 20px;"
+                     src="./../assets/img/icon_rest_unchecked.svg">
                 <span>休息中</span>
               </el-dropdown-item>
               <hr />
@@ -85,7 +95,7 @@
                                 style="justify-content: center;"
                                 class="dropdown-item">
                 <img class="q-mr-md"
-                     style="width: 20px; height: 20px;"
+                     style="width: 18px; height: 20px;"
                      src="./../assets/img/ic_sign_out.svg">
                 <span>退出登录</span>
               </el-dropdown-item>
