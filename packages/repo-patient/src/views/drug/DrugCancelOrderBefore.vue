@@ -33,7 +33,7 @@
                    placeholder="请输入补充说明">
         </van-field>
         <van-cell title="退款金额"
-                  v-bind:value="info.payMoney"></van-cell>
+                  v-bind:value="payMoney"></van-cell>
         <div class="tip">商家同意取消订单后，系统将为您返还实付金额，医保/商保支付金额原路返还。</div>
       </van-cell-group>
     </div>
@@ -92,6 +92,9 @@ export default {
     }
   },
   computed: {
+    payMoney() {
+      return this.info && this.info.payMoney ? `￥${this.info.payMoney.toFixed(2)}` : ''
+    },
     hasSelected() {
       return this.selectMsg && (this.selectMsg !== '其他' || (this.selectMsg === '其他' && this.cancelReason)) ? true : false
     },

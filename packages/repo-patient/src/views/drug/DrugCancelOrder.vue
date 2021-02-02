@@ -53,7 +53,7 @@
         <!-- 药品信息 -->
         <DrugList v-bind:info="info"
                   v-bind:totalMoney="payMoney"
-                  v-bind:showMore="true"
+                  v-bind:showMore="false"
                   v-bind:showInstructions="false"
                   v-bind:onlyWatch="true"></DrugList>
 

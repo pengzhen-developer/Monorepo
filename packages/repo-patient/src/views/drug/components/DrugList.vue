@@ -36,7 +36,7 @@
           </div>
         </div>
         <div class="drug-shadow"
-             v-if="canShowOperateModel&&index==1"></div>
+             v-if="showShadow(index)"></div>
       </div>
     </template>
 
@@ -44,7 +44,7 @@
     <div class="moeny"
          v-if="canShowMoney">
       <div>实付金额</div>
-      <div>￥{{totalMoney}}</div>
+      <div>￥{{totalMoney.toFixed(2)}}</div>
     </div>
 
     <!-- 收起/展开 -->
@@ -53,7 +53,7 @@
          v-on:click="changeIsOpen"
          v-if="canShowOperateModel">
       <div>{{!isOpen?'点击展开':'收起'}}</div>
-      <van-image :src="!isOpen?require('@src/assets/images/ic_arrow_up.png'):require('@src/assets/images/ic_arrow_down.png')"></van-image>
+      <van-image :src="!isOpen?require('@src/assets/images/ic_arrow_down.png'):require('@src/assets/images/ic_arrow_up.png')"></van-image>
     </div>
   </div>
 </template>
@@ -150,6 +150,9 @@ export default {
     this.isOpen = this.info.drugJson.length > 2 ? false : true
   },
   methods: {
+    showShadow(index) {
+      return this.canShowOperateModel && index == this.info?.drugJson?.length - 1
+    },
     showMoreInfo(index) {
       if (!this.showMore) {
         return true
