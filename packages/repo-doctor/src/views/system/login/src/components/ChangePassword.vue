@@ -107,7 +107,7 @@
 
     </template>
 
-    <template v-if="stepActive === 2">
+    <template v-if="stepActive === 3">
 
       <div class="flex justify-center q-mt-md q-pb-xl">
         <div class="flex column justify-center items-center"
@@ -246,7 +246,7 @@ export default {
     updateModify() {
       this.$refs.step2Form.validate().then(() => {
         Service.updateModify(this.step2Model).then(() => {
-          this.stepActive++
+          this.stepActive += 2
 
           Util.user.removeUserInfo()
         })
