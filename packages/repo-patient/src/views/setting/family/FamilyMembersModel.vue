@@ -316,8 +316,9 @@
                     type="primary">保存</van-button>
       </div>
     </van-popup>
-    <!-- 修改身份证 -->
+    <!-- 修改身份证  cancelAgain-->
     <van-popup position="bottom"
+               @click-overlay="cancelAgain"
                round
                class="popup-card"
                v-model="idcardDialog.visible">
