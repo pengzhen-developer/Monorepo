@@ -50,15 +50,13 @@
       </div>
       <div class="title"
            :class="{'selected':checked}">
-        请输入19位医保卡号
+        请输入医保卡号
         <span>(上图红框位置数字)</span>
       </div>
       <van-field v-model.trim="cardInfo.medCardNo"
                  :disabled="!checked"
                  pattern="\d*"
                  type="digit"
-                 maxlength="19"
-                 minlength="19"
                  @input="formateNumber"
                  @blur="formateNumber"
                  class="input" />
@@ -168,9 +166,7 @@ export default {
         this.changeFlag()
         return
       }
-      if (this.cardInfo.medCardNo.length !== 19) {
-        return peace.util.warning('请输入19位医保卡号')
-      }
+
       this.loading = true
 
       try {
