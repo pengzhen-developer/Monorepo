@@ -446,11 +446,21 @@ export default {
     },
     canSubmit() {
       let result = false
+      if (this.from == 'addGuardian' || this.addGardian) {
+        let gardianAge = this.getAgeByIdCard(this.model.idcard)
+        if (gardianAge < 18) {
+          result = false
+        } else {
+          result = true
+        }
+      }
+
       if (this.model.name && this.model.idcard && this.model.relation && this.model.sex && this.model.birthday) {
         result = true
       } else {
         result = false
       }
+
       return result
     }
   },
@@ -534,7 +544,12 @@ export default {
         if (!peace.validate.idCard(this.model.idcard)) {
           this.error.idcard = '身份证号不正确'
         } else {
-          this.error.idcard = ''
+          let gardianAge = this.getAgeByIdCard(this.model.idcard)
+          if ((this.from == 'addGuardian' || this.addGardian) && gardianAge < 18) {
+            this.error.idcard = '监护人年龄不得小于18岁'
+          } else {
+            this.error.idcard = ''
+          }
         }
       }
     },
@@ -643,6 +658,7 @@ export default {
 
         this.addGardian = true
         this.age = null
+
         this.model = {
           name: '',
           idcard: '',
@@ -652,8 +668,13 @@ export default {
           allergic_history: '',
           foodAllergy: '',
           nationCode: '',
-          nationName: ''
+          nationName: '',
+          isReconfirm: 0
         }
+
+        this.gardianId = ''
+        this.gardianName = ''
+        this.gardianSet = false
       }
 
       this.gDialog.visible = false
@@ -839,6 +860,7 @@ export default {
         params.guardianName = this.gardianName
         params.guardianIdCard = this.gardianId
       }
+
       peace.service.patient
         .bindFamily(params)
         .then((res) => {

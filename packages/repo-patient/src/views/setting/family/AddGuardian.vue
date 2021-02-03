@@ -150,6 +150,12 @@ export default {
       this.gardianName = gardianInfo.name
       this.idcardDialog.error.idcard = ''
       this.gDialog.visible = false
+    } else {
+      this.gardianSet = false
+      this.gardianId = ''
+      this.gardianName = ''
+      this.idcardDialog.error.idcard = ''
+      this.gDialog.visible = false
     }
   },
   destroyed() {
@@ -192,7 +198,7 @@ export default {
           }
         })
         .catch((err) => {
-          peace.util.alert(err.msg)
+          peace.util.alert(err.data.msg)
         })
         .finally(() => {
           this.hasClick = false
@@ -260,6 +266,7 @@ export default {
         this.childInfo = Object.assign({}, this.model)
       }
       this.gDialog.visible = true
+      peace.cache.remove('gardianInfo')
     },
     checkGardian() {
       if (this.addGardian) {

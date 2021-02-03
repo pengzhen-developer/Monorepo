@@ -79,7 +79,7 @@ export default {
     },
 
     setGardianInfo(item) {
-      if (this.guardianList.length == 0 && this.from == 'addGuardian') {
+      if (this.from == 'addGuardian') {
         const json = peace.util.encode({ type: 'addGuardian', canShowSelf: true })
         this.$router.push(`/setting/familyMember/${json}`)
       } else {
