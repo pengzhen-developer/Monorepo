@@ -5,13 +5,24 @@
          v-if="canShowInfo">
       <!--TOP-->
       <div class="module top">
-        <div class="strong">
-          {{ internalData.inquiryInfo.statusTxt }}
-          <div class='typeTag fz'
-               v-if="retrunVisitBlock">
-            复诊</div>
-          <div class='typeTag zx'
-               v-else>咨询</div>
+        <div class="top-title">
+          <div class="strong">
+            {{ internalData.inquiryInfo.statusTxt }}
+            <div class='typeTag fz'
+                 v-if="retrunVisitBlock">
+              复诊</div>
+            <div class='typeTag zx'
+                 v-else>咨询</div>
+
+          </div>
+          <div class="cancelTip"
+               v-on:click="showRefundTip"
+               v-if="canShowRefundTip">
+            <van-icon name="warning-o"
+                      size="12"
+                      color="#999999" />
+            <span>退费说明</span>
+          </div>
         </div>
 
         <div class="brief"
@@ -23,10 +34,6 @@
           {{internalData.inquiryInfo.overCause}}
         </div>
 
-        <div class="cancelText"
-             v-if="canShowCancelText">
-          订单取消后退款将在1-3个工作日内原路返回，请注意查收
-        </div>
         <div class="waitText"
              v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.待接诊">
           <div class="cancelText">
@@ -393,6 +400,11 @@
       <InvoiceModel v-model="showInvoiceModel"
                     :receiptNumber="internalData.orderInfo.divisionId"></InvoiceModel>
     </template>
+    <!-- 退费说明弹窗 -->
+    <template v-if="internalData&&internalData.orderInfo">
+      <RefundTip v-model="refundTipDialog.visible"
+                 :divisionId="refundTipDialog.data.divisionId"></RefundTip>
+    </template>
     <!-- 电话弹框 -->
     <template>
       <CallPhone v-model="phoneDialog.visible"
@@ -427,6 +439,7 @@ import TheRecipeList from '@src/views/components/TheRecipeList'
 import MessageList from '@src/views/components/MessageList'
 import ExpenseDetail from '@src/views/components//ExpenseDetail'
 import InvoiceModel from '@src/views/components/InvoiceModel'
+import RefundTip from '@src/views/components/RefundTip'
 import CallPhone from '@src/views/components/CallPhone'
 import PayCallback from '@src/views/components/PayCallback'
 import ApplyForInvoice from '@src/views/components/ApplyForInvoice'
@@ -462,6 +475,7 @@ export default {
     MessageList,
     ExpenseDetail,
     InvoiceModel,
+    RefundTip,
     CallPhone,
     PayCallback,
     ApplyForInvoice,
@@ -518,6 +532,12 @@ export default {
       invoiceDialog: {
         visible: false,
         data: {}
+      },
+      refundTipDialog: {
+        visible: false,
+        data: {
+          divisionId: ''
+        }
       },
       imagePreview: {
         visible: false,
@@ -580,13 +600,11 @@ export default {
         this.internalData.supplementaryInfo
       )
     },
-    canShowCancelText() {
+    canShowRefundTip() {
       return (
-        this.internalData &&
-        this.internalData.inquiryInfo &&
-        (this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已取消 ||
-          this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已退诊) &&
-        this.internalData.orderInfo.payMoney != '0.00'
+        this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已退诊 ||
+        (this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已取消 &&
+          (this.internalData.orderInfo.payMoney != '0.00' || (this.internalData.orderInfo.payMoney == 0 && this.internalData.orderInfo.orderMoney == 0)))
       )
     },
     canShowSupplementaryInfo() {
@@ -692,6 +710,10 @@ export default {
           this.refreshTimer = null
         }
       }, 1000)
+    },
+    showRefundTip() {
+      this.refundTipDialog.data.divisionId = this.internalData.orderInfo.divisionId
+      this.refundTipDialog.visible = true
     },
     callPhone() {
       this.phoneDialog.visible = true
@@ -920,6 +942,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.top-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  .strong {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+  }
+  .cancelTip {
+    display: flex;
+    align-items: center;
+    .van-icon,
+    .van-image {
+      width: 12px;
+      height: 12px;
+      margin-right: 3px;
+    }
+    span {
+      font-size: 12px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #999999;
+      line-height: 12px;
+    }
+  }
+}
 .flex-1 {
   flex: 1;
 }
@@ -1376,14 +1428,7 @@ export default {
   .typeTag.fz {
     background-color: #fa8c16;
   }
-  .module .strong {
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 21px;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-  }
+
   .module .brief {
     font-size: 13px;
   }
