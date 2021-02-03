@@ -98,7 +98,7 @@ export const goDetail = (type, data) => {
     $peace.$router.push(`/file/fileRecordDetail/${json}`)
   } else if (type === '首诊') {
     const token = $peace.cache.get($peace.type.USER.INFO).loginInfo.accessToken
-    const url = `hybrid/health/firstOption/${process.env.VUE_APP_IFRAME_BASE_PLATFORM}/${token}/${data.dataNo}`
+    const url = `health/firstOption/${process.env.VUE_APP_IFRAME_BASE_PLATFORM}/${token}/${data.dataNo}`
     const json = peace.util.encode({
       url
     })

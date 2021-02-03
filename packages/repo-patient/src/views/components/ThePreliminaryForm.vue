@@ -207,7 +207,7 @@ export default {
     },
     gotoCaseDetail(dataNo) {
       const token = $peace.cache.get($peace.type.USER.INFO).loginInfo.accessToken
-      const url = `hybrid/health/firstOption/${process.env.VUE_APP_IFRAME_BASE_PLATFORM}/${token}/${dataNo}`
+      const url = `health/firstOption/${process.env.VUE_APP_IFRAME_BASE_PLATFORM}/${token}/${dataNo}`
       const json = peace.util.encode({
         url
       })

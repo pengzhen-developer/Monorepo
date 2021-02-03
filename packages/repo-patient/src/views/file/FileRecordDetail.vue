@@ -20,7 +20,7 @@ export default {
   },
   activated() {
     const params = peace.util.decode(this.$route.params.json)
-    this.src = `${process.env.VUE_APP_IFRAME_BASE_URL}hybrid/health/${params.type}/${process.env.VUE_APP_IFRAME_BASE_PLATFORM}/${this.token}/${params.checkId}`
+    this.src = `${process.env.VUE_APP_IFRAME_BASE_URL}health/${params.type}/${process.env.VUE_APP_IFRAME_BASE_PLATFORM}/${this.token}/${params.checkId}`
   }
 }
 </script>
