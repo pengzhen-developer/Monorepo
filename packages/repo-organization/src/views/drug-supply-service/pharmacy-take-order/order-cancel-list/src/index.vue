@@ -83,10 +83,8 @@
                           label="订单来源">
         </PeaceTableColumn>
 
-        <PeaceTableColumn label="订单状态">
-          <template slot-scope="scope">
-            {{ (scope.row.OrderStatus).toString() | filterDictionary(source.DistributionOrderStatus, '--') }}
-          </template>
+        <PeaceTableColumn label="订单状态"
+                          prop="OrderStatusStr">
         </PeaceTableColumn>
 
         <PeaceTableColumn label="取消状态">
@@ -188,8 +186,7 @@ export default {
       },
 
       source: {
-        OrderChangeResult: [], //取消状态
-        DistributionOrderStatus: [] //配送订单状态
+        OrderChangeResult: [] //取消状态
       },
 
       toRoleDialog: {
@@ -207,7 +204,6 @@ export default {
   mounted() {
     this.$nextTick().then(async () => {
       this.source.OrderChangeResult = await Peace.identity.dictionary.getList('order_change_result')
-      this.source.DistributionOrderStatus = await Peace.identity.dictionary.getList('DistributionOrderStatus')
     })
     this.$nextTick().then(this.fetch)
   },
