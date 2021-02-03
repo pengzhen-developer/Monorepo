@@ -446,6 +446,12 @@ export default {
     },
     canSubmit() {
       let result = false
+
+      if (this.model.name && this.model.idcard && this.model.relation && this.model.sex && this.model.birthday) {
+        result = true
+      } else {
+        result = false
+      }
       if (this.from == 'addGuardian' || this.addGardian) {
         let gardianAge = this.getAgeByIdCard(this.model.idcard)
         if (gardianAge < 18) {
@@ -454,13 +460,6 @@ export default {
           result = true
         }
       }
-
-      if (this.model.name && this.model.idcard && this.model.relation && this.model.sex && this.model.birthday) {
-        result = true
-      } else {
-        result = false
-      }
-
       return result
     }
   },
