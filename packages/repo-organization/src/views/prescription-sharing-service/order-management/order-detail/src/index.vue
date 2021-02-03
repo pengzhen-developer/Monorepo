@@ -207,11 +207,9 @@
       </div>
     </div>
 
-    <el-divider></el-divider>
-
     <!-- 物流信息 -->
     <div class="q-mb-lg"
-         v-if="data.LogisticsInfo || data.ExpressName || data.PickUpCode">
+         v-if="showLogisticsInfo(data)">
 
       <div class="title q-mb-md">
         <span class="before before-vertical-line text-subtitle1 text-weight-bold">物流信息</span>
@@ -417,12 +415,9 @@ export default {
   watch: {
     'data.ShippingMethod': {
       async handler() {
-        //DistributionOrderStatus  配送订单状态    1
-        //SelfOrderStatus  自提订单状态  0
-        const requestKey =
-          this.data.ShippingMethod?.toString() === this.source.ShippingMethod.find((item) => item.label === '自提')?.value?.toString()
-            ? 'SelfOrderStatus'
-            : 'DistributionOrderStatus'
+        // DistributionOrderStatus  配送订单状态    1
+        // SelfOrderStatus  自提订单状态  0
+        const requestKey = this.data.ShippingMethod?.toString() === '0' ? 'SelfOrderStatus' : 'DistributionOrderStatus'
         this.source.OrderStatus = await Peace.identity.dictionary.getList(requestKey)
       },
       immediate: true
@@ -434,6 +429,15 @@ export default {
     this.source.OrderType.map((item) => {
       item.value = parseInt(item.value)
     })
+  },
+
+  methods: {
+    showLogisticsInfo(data) {
+      // 配送订单展示物流详情
+      const isSelf = this.data.ShippingMethod?.toString() === '1'
+
+      return isSelf && (data.LogisticsInfo || data.ExpressName || data.PickUpCode)
+    }
   }
 }
 </script>
