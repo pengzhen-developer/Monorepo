@@ -100,16 +100,18 @@ export default {
   },
 
   created() {
-    // step_1 替换浏览器历史
-    history.pushState(null, null, document.URL)
+    //仅H5支付返回应用需监听
+    if (tradeType) {
+      // step_1 替换浏览器历史
+      history.pushState(null, null, document.URL)
 
-    // step_2 监听回退
-    if (!peace.lockEventPopstate) {
-      peace.lockEventPopstate = true
+      // step_2 监听回退
+      if (!peace.lockEventPopstate) {
+        peace.lockEventPopstate = true
 
-      window.addEventListener('popstate', this.goBack, false)
+        window.addEventListener('popstate', this.goBack, false)
+      }
     }
-
     if (this.validateParams()) {
       this.removeCache()
       this.cacheParams()
@@ -128,9 +130,13 @@ export default {
             const json = peace.util.encode({
               tradeType: 'tradeType'
             })
-            this.$router.replace(`/components/theRecipe/${json}`)
+            this.$router.replace(`/components/theRecipe/${json}`).then(() => {
+              window.removeEventListener('popstate', this.goBack, false)
+            })
           } else {
-            this.$router.push(peace.config.system.homePage)
+            this.$router.push(peace.config.system.homePage).then(() => {
+              window.removeEventListener('popstate', this.goBack, false)
+            })
           }
         }
       })
