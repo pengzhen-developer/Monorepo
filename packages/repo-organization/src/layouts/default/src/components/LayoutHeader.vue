@@ -39,7 +39,7 @@
                round
                dense
                icon="arrow_drop_down">
-          <q-popup-proxy v-if="showSignOut">
+          <q-popup-proxy>
             <q-list dense
                     bordered
                     padding
@@ -81,10 +81,6 @@ export default {
 
     tel() {
       return this.user?.tel
-    },
-
-    showSignOut() {
-      return !window.sessionStorage.getItem('original-href')
     }
   },
 
