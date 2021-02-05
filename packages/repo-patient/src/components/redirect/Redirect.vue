@@ -100,18 +100,16 @@ export default {
   },
 
   created() {
-    //仅H5支付返回应用需监听
-    if (tradeType) {
-      // step_1 替换浏览器历史
-      history.pushState(null, null, document.URL)
+    // step_1 替换浏览器历史
+    history.pushState(null, null, document.URL)
 
-      // step_2 监听回退
-      if (!peace.lockEventPopstate) {
-        peace.lockEventPopstate = true
+    // step_2 监听回退
+    if (!peace.lockEventPopstate) {
+      peace.lockEventPopstate = true
 
-        window.addEventListener('popstate', this.goBack, false)
-      }
+      window.addEventListener('popstate', this.goBack, false)
     }
+
     if (this.validateParams()) {
       this.removeCache()
       this.cacheParams()
@@ -121,25 +119,24 @@ export default {
 
   methods: {
     goBack(e) {
-      // 回到中间页，跳转首页
-      const pathNameList = ['/order/userDrugDetail', '/setting/userConsultDetail', '/setting/order/userOrderDetail']
-      pathNameList.forEach((pathName) => {
-        if (e.currentTarget.location.pathname.indexOf(pathName) != -1) {
-          //购药订单-单独处理 回到处方详情 - 处方id 在缓存取
-          if (e.currentTarget.location.pathname.indexOf('/order/userDrugDetail') != -1) {
-            const json = peace.util.encode({
-              tradeType: 'tradeType'
-            })
-            this.$router.replace(`/components/theRecipe/${json}`).then(() => {
-              window.removeEventListener('popstate', this.goBack, false)
-            })
-          } else {
-            this.$router.push(peace.config.system.homePage).then(() => {
-              window.removeEventListener('popstate', this.goBack, false)
-            })
+      //仅H5支付返回应用需监听
+      if (tradeType) {
+        // 回到中间页，跳转首页
+        const pathNameList = ['/order/userDrugDetail', '/setting/userConsultDetail', '/setting/order/userOrderDetail']
+        pathNameList.forEach((pathName) => {
+          if (e.currentTarget.location.pathname.indexOf(pathName) != -1) {
+            //购药订单-单独处理 回到处方详情 - 处方id 在缓存取
+            if (e.currentTarget.location.pathname.indexOf('/order/userDrugDetail') != -1) {
+              const json = peace.util.encode({
+                tradeType: 'tradeType'
+              })
+              this.$router.replace(`/components/theRecipe/${json}`)
+            } else {
+              this.$router.push(peace.config.system.homePage)
+            }
           }
-        }
-      })
+        })
+      }
     },
     /**
      * 验证跳转参数是否合法
