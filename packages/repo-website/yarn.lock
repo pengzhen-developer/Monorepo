@@ -905,10 +905,10 @@
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/library@^0.1.26":
-  version "0.1.26"
-  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.26.tgz#acb69f239ad1688c603be38401326b5f7494cdaa"
-  integrity sha512-gFZdZWX+NYFyn7Ll9Uia9c+Xxcm9MupunT38KK3vOtxlNJ2RGs6SV8Yfre8vDTGMeTXaZlBJew4DHuP2KLwD1w==
+"@jk998/library@^0.1.27":
+  version "0.1.27"
+  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.27.tgz#8ae0a8a584602b3975654146cd64118a966d2525"
+  integrity sha512-tHppAZzcKX6maP27QozOiR8tKVLo2e7/wHGlnq68pCNWjk6v6ecnM9i8aF4VY7VPtPZ+ApkaO3/GAAU6uXIkvQ==
   dependencies:
     axios "^0.20.0"
     dayjs "^1.8.35"
