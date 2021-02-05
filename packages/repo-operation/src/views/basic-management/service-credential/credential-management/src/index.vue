@@ -10,31 +10,30 @@
                   size="mini"
                   v-bind:page-size="5"
                   pagination>
-        <el-table-column label="序号"
-                         type="index"
-                         align="center"
-                         width="80px">
+        <PeaceTableColumn label="序号"
+                          type="index"
+                          width="80px">
           <template slot-scope="{ $index, _self }">
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column label="凭证来源"
-                         prop="sourceName"></el-table-column>
-        <el-table-column label="凭证详情"
-                         prop="configDetails"></el-table-column>
-        <el-table-column label="创建时间"
-                         prop="createTime"></el-table-column>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="凭证来源"
+                          prop="sourceName"></PeaceTableColumn>
+        <PeaceTableColumn label="凭证详情"
+                          prop="configDetails"></PeaceTableColumn>
+        <PeaceTableColumn label="创建时间"
+                          prop="createTime"></PeaceTableColumn>
 
-        <el-table-column fixed="right"
-                         width="150px"
-                         label="操作">
+        <PeaceTableColumn fixed="right"
+                          width="150px"
+                          label="操作">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="changeItem(scope.row)">修改</el-button>
             <el-button type="text"
                        v-on:click="deleteItem(scope.row)">删除</el-button>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
       </PeaceTable>
     </div>
 

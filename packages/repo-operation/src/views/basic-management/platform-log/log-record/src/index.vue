@@ -4,8 +4,9 @@
     <div class="card card-search q-mb-md">
       <el-form inline
                label-width="auto"
+               label-suffix="："
                v-bind:model="model">
-        <el-form-item label="业务名称：">
+        <el-form-item label="业务名称">
           <el-select placeholder="全部"
                      v-model="model.bizModule"
                      clearable>
@@ -15,11 +16,11 @@
                        v-bind:value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="功能名称：">
+        <el-form-item label="功能名称">
           <el-input placeholder="请输入"
                     v-model="model.functionName"></el-input>
         </el-form-item>
-        <el-form-item label="操作类型：">
+        <el-form-item label="操作类型">
           <el-select placeholder="全部"
                      v-model="model.optType"
                      clearable>
@@ -30,7 +31,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="操作日期：">
+        <el-form-item label="操作日期">
           <peace-date-picker type="daterange"
                              v-model="timeRange"
                              value-format="yyyy-MM-dd"></peace-date-picker>
@@ -47,40 +48,39 @@
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
-        <el-table-column label="序号"
-                         type="index"
-                         align="center"
-                         width="80px">
+        <PeaceTableColumn label="序号"
+                          type="index"
+                          width="80px">
           <template slot-scope="{ $index, _self }">
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column min-width="200px"
-                         label="业务名称"
-                         prop="bizModule">
+        </PeaceTableColumn>
+        <PeaceTableColumn min-width="200px"
+                          label="业务名称"
+                          prop="bizModule">
           <template slot-scope="scope">
             {{scope.row.bizModule | getLabel(source.ENUM_BIZMODULE_STATUS)}}
           </template>
-        </el-table-column>
-        <el-table-column min-width="200px"
-                         label="功能名称"
-                         prop="functionName"></el-table-column>
-        <el-table-column min-width="160px"
-                         label="操作类型"
-                         prop="optType">
+        </PeaceTableColumn>
+        <PeaceTableColumn min-width="200px"
+                          label="功能名称"
+                          prop="functionName"></PeaceTableColumn>
+        <PeaceTableColumn min-width="160px"
+                          label="操作类型"
+                          prop="optType">
           <template slot-scope="scope">
             {{scope.row.optType | getLabel(source.ENUM_OPTTYPE_STATUS)}}
           </template>
-        </el-table-column>
-        <el-table-column min-width="200px"
-                         label="备注"
-                         prop="remarks"></el-table-column>
-        <el-table-column min-width="160px"
-                         label="操作人"
-                         prop="createBy"></el-table-column>
-        <el-table-column width="160px"
-                         label="操作时间"
-                         prop="createTime"></el-table-column>
+        </PeaceTableColumn>
+        <PeaceTableColumn min-width="200px"
+                          label="备注"
+                          prop="remarks"></PeaceTableColumn>
+        <PeaceTableColumn min-width="160px"
+                          label="操作人"
+                          prop="createBy"></PeaceTableColumn>
+        <PeaceTableColumn width="160px"
+                          label="操作时间"
+                          prop="createTime"></PeaceTableColumn>
 
       </PeaceTable>
     </div>

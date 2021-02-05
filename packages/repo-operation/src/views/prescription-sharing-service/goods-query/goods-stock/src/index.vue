@@ -4,9 +4,10 @@
     <div class="card card-search q-mb-md">
       <el-form inline
                label-width="auto"
+               label-suffix="："
                v-bind:model="model"
                v-on:submit.native.prevent>
-        <el-form-item label="供应门店/仓："
+        <el-form-item label="供应门店/仓"
                       required>
           <el-select clearable
                      filterable
@@ -19,13 +20,13 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="商品名称："
+        <el-form-item label="商品名称"
                       required>
           <el-input v-model.trim="model.GoodName"
                     placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item label="更新日期：">
+        <el-form-item label="更新日期">
           <peace-date-picker value-format="yyyy-MM-dd"
                              type="daterange"
                              v-model.trim="DateValue"></peace-date-picker>

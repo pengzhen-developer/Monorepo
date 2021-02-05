@@ -3,6 +3,7 @@
     <div class="card card-search q-mb-md">
       <el-form inline
                label-width="auto"
+               label-suffix="："
                v-bind:model="model"
                v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent>
@@ -61,54 +62,46 @@
     <div class="card">
       <peace-table pagination
                    ref="table">
-        <el-table-column prop="OrderId"
-                         label="订单编号"
-                         align="center"
-                         width="180px">
+        <PeaceTableColumn prop="OrderId"
+                          label="订单编号"
+                          min-width="180px">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="showOrderDetail(scope.row)">{{ scope.row.OrderId }}</el-button>
           </template>
-        </el-table-column>
-        <el-table-column prop="UserName"
-                         label="客户姓名"
-                         align="center"
-                         width="120px"></el-table-column>
+        </PeaceTableColumn>
+        <PeaceTableColumn prop="UserName"
+                          label="客户姓名"
+                          min-width="120px"></PeaceTableColumn>
 
-        <el-table-column prop="CreateOrderTime"
-                         label="同步时间"
-                         align="center"
-                         width="160px"></el-table-column>
+        <PeaceTableColumn prop="CreateOrderTime"
+                          label="同步时间"
+                          min-width="160px"></PeaceTableColumn>
 
-        <el-table-column prop="DrugStoreName"
-                         label="药房"
-                         align="center"
-                         width="160px"></el-table-column>
+        <PeaceTableColumn prop="DrugStoreName"
+                          label="药房"
+                          min-width="160px"></PeaceTableColumn>
 
-        <el-table-column label="订单状态"
-                         align="center"
-                         width="120px">
+        <PeaceTableColumn label="订单状态"
+                          min-width="120px">
           <template slot-scope="scope">
             <span>{{ scope.row.OrderStatus | formatDictionary(remoteSource.OrderStatus, '-') }}</span>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column label="流转状态"
-                         align="center"
-                         width="120px">
+        <PeaceTableColumn label="流转状态"
+                          min-width="120px">
           <template slot-scope="scope">
             <span :class="{'text-red': scope.row.CirculationStatus == 2}">{{ scope.row.CirculationStatus | formatDictionary(remoteSource.SendWarehouseStatus, '-') }}</span>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column prop="OrderSource"
-                         label="订单来源"
-                         align="center"
-                         width="120px"></el-table-column>
-        <el-table-column label="操作"
-                         align="center"
-                         min-width="180px"
-                         fixed="right">
+        <PeaceTableColumn prop="OrderSource"
+                          label="订单来源"
+                          min-width="120px"></PeaceTableColumn>
+        <PeaceTableColumn label="操作"
+                          min-width="200px"
+                          fixed="right">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="showOrderRecord(scope.row)">订单流转日志</el-button>
@@ -116,7 +109,7 @@
                        type="text"
                        v-on:click="showSyncOrder(scope.row)">同步订单</el-button>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
       </peace-table>
     </div>
 
@@ -134,25 +127,23 @@
                  v-bind:visible.sync="orderRecordDialog.visible">
       <el-table :data="orderRecordDialog.list">
 
-        <el-table-column label="流转状态"
-                         align="center"
-                         width="120px">
+        <PeaceTableColumn label="流转状态"
+                          width="120px">
           <template slot-scope="scope">
             <span>{{ scope.row.Status | formatDictionary(remoteSource.SendWarehouseStatus, '-') }}</span>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column label="拦截方"
-                         align="center"
-                         width="120px">
+        <PeaceTableColumn label="拦截方"
+                          width="120px">
           <template slot-scope="scope">
             {{scope.row.InterceptName || '——'}}
 
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column label="备注"
-                         width="360px">
+        <PeaceTableColumn label="备注"
+                          width="360px">
           <template slot-scope="scope">
             <div v-if="scope.row.RemarkList === null || scope.row.RemarkList.length === 0">——</div>
             <div v-else>
@@ -171,12 +162,11 @@
               </el-popover>
             </div>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column prop="CreateTime"
-                         label="拦截/流转时间"
-                         align="center"
-                         width="150px"></el-table-column>
+        <PeaceTableColumn prop="CreateTime"
+                          label="拦截/流转时间"
+                          width="160px"></PeaceTableColumn>
       </el-table>
     </PeaceDialog>
 

@@ -3,15 +3,14 @@
     <div class="card card-search q-mb-md">
       <el-form v-bind:model="model"
                inline="inline"
-               label-width="85px"
-               label-position="right"
-               label-suffix
+               label-width="auto"
+               label-suffix="："
                size="mini">
-        <el-form-item label="订单来源：">
+        <el-form-item label="订单来源">
           <el-input v-model.trim="model.OrderSource"
                     placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="统计日期：">
+        <el-form-item label="统计日期">
           <peace-date-picker value-format="yyyy-MM-dd HH:mm:ss"
                              v-bind:default-time="['00:00:00', '23:59:59']"
                              format="yyyy-MM-dd"
@@ -34,25 +33,21 @@
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
-        <el-table-column label="序号"
-                         type="index"
-                         align="center"
-                         width="80px">
+        <PeaceTableColumn label="序号"
+                          type="index"
+                          width="80px">
           <template slot-scope="{ $index, _self }">
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column label="订单来源"
-                         prop="OrderSource"></el-table-column>
-        <el-table-column label="订单总量"
-                         prop="Zcount"
-                         align="center"></el-table-column>
-        <el-table-column label="仓配订单"
-                         prop="Ccount"
-                         align="center"></el-table-column>
-        <el-table-column label="店配订单"
-                         prop="Dcount"
-                         align="center"></el-table-column>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="订单来源"
+                          prop="OrderSource"></PeaceTableColumn>
+        <PeaceTableColumn label="订单总量"
+                          prop="Zcount"></PeaceTableColumn>
+        <PeaceTableColumn label="仓配订单"
+                          prop="Ccount"></PeaceTableColumn>
+        <PeaceTableColumn label="店配订单"
+                          prop="Dcount"></PeaceTableColumn>
       </PeaceTable>
     </div>
 

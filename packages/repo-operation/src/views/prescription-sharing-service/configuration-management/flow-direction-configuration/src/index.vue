@@ -4,8 +4,9 @@
     <div class="q-mb-lg"
          v-if="displayView === '编辑' || displayView === '详情'">
       <el-button type="primary"
+                 plain
                  v-on:click="back">
-        <div class="q-px-md q-py-sm">
+        <div>
           <i class="el-icon-arrow-left"></i>
           <span>返回上一页</span>
         </div>

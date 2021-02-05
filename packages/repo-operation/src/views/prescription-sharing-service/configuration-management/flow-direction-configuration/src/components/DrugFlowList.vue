@@ -3,11 +3,10 @@
     <div class="card card-search q-mb-md">
       <el-form v-bind:model="model"
                inline="inline"
-               label-width="85px"
-               label-position="right"
-               label-suffix=""
+               label-width="auto"
+               label-suffix="："
                size="mini">
-        <el-form-item label="机构名称：">
+        <el-form-item label="机构名称">
           <el-input v-model.trim="model.custName"
                     placeholder="请输入机构名称"></el-input>
         </el-form-item>
@@ -23,27 +22,26 @@
       <PeaceTable ref="table"
                   pagination
                   size="mini">
-        <el-table-column label="序号"
-                         type="index"
-                         align="center"
-                         width="80px">
+        <PeaceTableColumn label="序号"
+                          type="index"
+                          width="80px">
           <template slot-scope="{ $index, _self }">
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column label="机构名称"
-                         prop="Name"></el-table-column>
-        <el-table-column label="已配置药品供应方"
-                         prop="ConfSupplyNum">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="机构名称"
+                          prop="Name"></PeaceTableColumn>
+        <PeaceTableColumn label="已配置药品供应方"
+                          prop="ConfSupplyNum">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="goDetailView(scope.row)">{{ scope.row.ConfSupplyNum }}</el-button>
           </template>
-        </el-table-column>
-        <el-table-column label="机构认证时间"
-                         prop="CreateTime"></el-table-column>
-        <el-table-column label="配置更新时间"
-                         prop="LastConfTime"></el-table-column>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="机构认证时间"
+                          prop="CreateTime"></PeaceTableColumn>
+        <PeaceTableColumn label="配置更新时间"
+                          prop="LastConfTime"></PeaceTableColumn>
         <peace-table-column label="操作"
                             prop="">
           <template slot-scope="scope">

@@ -4,16 +4,14 @@
     <div class="card card-search q-mb-md">
       <el-form v-bind:model="model"
                inline="inline"
-               label-width="85px"
-               label-position="right"
-               label-suffix
+               label-width="auto"
+               label-suffix="："
                size="mini">
-        <el-form-item label="处方来源机构："
-                      label-width="115px">
+        <el-form-item label="处方来源机构">
           <el-input v-model.trim="model.sourceHospitalName"
                     placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="审方机构：">
+        <el-form-item label="审方机构">
           <el-input v-model.trim="model.checkHospitalName"
                     placeholder="请输入"></el-input>
         </el-form-item>
@@ -30,38 +28,36 @@
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
-        <el-table-column label="序号"
-                         type="index"
-                         align="center"
-                         width="80px">
+        <PeaceTableColumn label="序号"
+                          type="index"
+                          width="80px">
           <template slot-scope="{ $index, _self }">
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column min-width="180px"
-                         label="处方来源机构"
-                         prop="SourceHospitalName">
-        </el-table-column>
-        <el-table-column width="260px"
-                         label="审方机构"
-                         prop="CheckHospitalNames">
+        </PeaceTableColumn>
+        <PeaceTableColumn min-width="180px"
+                          label="处方来源机构"
+                          prop="SourceHospitalName">
+        </PeaceTableColumn>
+        <PeaceTableColumn width="260px"
+                          label="审方机构"
+                          prop="CheckHospitalNames">
           <template slot-scope="scope">
             {{ getName(scope.row) }} </template>
-        </el-table-column>
-        <el-table-column min-width="100px"
-                         label="审方方案数目"
-                         prop="ProjectCount"></el-table-column>
-        <el-table-column min-width="180px"
-                         align="center"
-                         fixed="right"
-                         label="操作">
+        </PeaceTableColumn>
+        <PeaceTableColumn min-width="100px"
+                          label="审方方案数目"
+                          prop="ProjectCount"></PeaceTableColumn>
+        <PeaceTableColumn min-width="180px"
+                          fixed="right"
+                          label="操作">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="toDetail(scope.row)">审方团队</el-button>
             <el-button type="text"
                        v-on:click="redirect(scope.row)">审方方案</el-button>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
       </PeaceTable>
     </div>
 

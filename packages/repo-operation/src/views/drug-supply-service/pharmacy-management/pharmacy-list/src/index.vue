@@ -7,9 +7,8 @@
         <el-button type="primary"
                    plain
                    class="q-mb-24"
-                   v-on:click="back"
-                   style="padding:1px 4px">
-          <div class="q-px-md q-py-sm">
+                   v-on:click="back">
+          <div>
             <i class="el-icon-arrow-left"></i>
             <span>返回上一页</span>
           </div>
@@ -27,9 +26,8 @@
         <div class="card card-search q-mb-md">
           <el-form v-bind:model="model"
                    inline="inline"
-                   label-width="85px"
-                   label-position="right"
-                   label-suffix
+                   label-width="auto"
+                   label-suffix="："
                    size="mini">
             <el-form-item label="药房名称：">
               <el-input v-model.trim="model.Name"
@@ -93,46 +91,44 @@
           </el-form>
         </div>
         <div class="card">
-          <peace-table ref="table"
-                       pagination
-                       size="mini">
-            <el-table-column label="序号"
-                             type="index"
-                             align="center"
-                             width="80px">
-            </el-table-column>
-            <el-table-column label="药房名称"
-                             prop="Name"
-                             min-width="180px"></el-table-column>
-            <el-table-column label="药房性质"
-                             prop="CustType"
-                             min-width="100px"></el-table-column>
-            <el-table-column label="药房类型"
-                             prop="DrugStoreType"
-                             min-width="120px">
+          <PeaceTable ref="table"
+                      pagination
+                      size="mini">
+            <PeaceTableColumn label="序号"
+                              type="index"
+                              width="80px">
+            </PeaceTableColumn>
+            <PeaceTableColumn label="药房名称"
+                              prop="Name"
+                              min-width="180px"></PeaceTableColumn>
+            <PeaceTableColumn label="药房性质"
+                              prop="CustType"
+                              min-width="100px"></PeaceTableColumn>
+            <PeaceTableColumn label="药房类型"
+                              prop="DrugStoreType"
+                              min-width="120px">
               <template slot-scope="scope">
                 {{scope.row.DrugStoreType | getEnumLabel(source.DRUG_STORE_TYPE)}}
               </template>
-            </el-table-column>
-            <el-table-column label="所属机构"
-                             prop="CustName"
-                             min-width="140px"></el-table-column>
-            <el-table-column label="对接系统"
-                             prop="sys_name"
-                             min-width="100px"></el-table-column>
-            <el-table-column label="系统属性"
-                             prop="sys_attribute_name"
-                             min-width="100px"></el-table-column>
-            <el-table-column label="已上架商品数量"
-                             prop="GoodNums"
-                             align="center"
-                             min-width="140px"></el-table-column>
-            <el-table-column label="创建时间"
-                             prop="CreateTime"
-                             min-width="160px"></el-table-column>
-            <el-table-column label="启用状态"
-                             prop="EnableStatus"
-                             min-width="140px">
+            </PeaceTableColumn>
+            <PeaceTableColumn label="所属机构"
+                              prop="CustName"
+                              min-width="140px"></PeaceTableColumn>
+            <PeaceTableColumn label="对接系统"
+                              prop="sys_name"
+                              min-width="100px"></PeaceTableColumn>
+            <PeaceTableColumn label="系统属性"
+                              prop="sys_attribute_name"
+                              min-width="100px"></PeaceTableColumn>
+            <PeaceTableColumn label="已上架商品数量"
+                              prop="GoodNums"
+                              min-width="140px"></PeaceTableColumn>
+            <PeaceTableColumn label="创建时间"
+                              prop="CreateTime"
+                              min-width="160px"></PeaceTableColumn>
+            <PeaceTableColumn label="启用状态"
+                              prop="EnableStatus"
+                              min-width="140px">
               <template slot-scope="scope">
                 <div class="table-status">
                   <div class="table-status-text">{{scope.row.EnableStatus | getEnumLabel(source.ENABLE_STATUS)}}</div>
@@ -142,19 +138,18 @@
                              @change="changeStatus(scope.row)"></el-switch>
                 </div>
               </template>
-            </el-table-column>
-            <el-table-column label="操作"
-                             align="center"
-                             width="180px"
-                             fixed="right">
+            </PeaceTableColumn>
+            <PeaceTableColumn label="操作"
+                              width="180px"
+                              fixed="right">
               <template slot-scope="scope">
                 <el-button type="text"
                            v-on:click="pharmacyDetails(scope.row)">药房详情</el-button>
                 <el-button type="text"
                            v-on:click="pharmacyOperate(scope.row)">运营信息</el-button>
               </template>
-            </el-table-column>
-          </peace-table>
+            </PeaceTableColumn>
+          </PeaceTable>
         </div>
       </template>
 

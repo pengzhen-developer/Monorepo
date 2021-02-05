@@ -3,36 +3,21 @@
     <div class="card card-search q-mb-md">
       <el-form inline=""
                label-width="auto"
-               label-position="left">
-        <el-form-item>
-          <div class="flex inline"
-               slot="label">
-            <span>账号</span>
-            <span class="text-center q-ml-sm">：</span>
-          </div>
+               label-suffix="：">
+        <el-form-item label="账号">
           <el-input v-model="model.username"
                     placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item>
-          <div class="flex inline"
-               slot="label">
-            <span>姓名</span>
-            <span class="text-center q-ml-sm">：</span>
-          </div>
+        <el-form-item label="姓名">
           <el-input v-model="model.name"
                     placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item>
-          <div class="flex inline"
-               slot="label">
-            <span>创建日期</span>
-            <span class="text-center q-ml-sm">：</span>
-          </div>
-          <peace-date-picker type="daterange"
-                             v-model="model.pickDate"
-                             value-format="yyyy-MM-dd"
-                             start-placeholder="开始日期"
-                             end-placeholder="结束日期"></peace-date-picker>
+        <el-form-item label="创建日期">
+          <PeaceDatePicker type="daterange"
+                           v-model="model.pickDate"
+                           value-format="yyyy-MM-dd"
+                           start-placeholder="开始日期"
+                           end-placeholder="结束日期"></PeaceDatePicker>
         </el-form-item>
         <el-form-item label="">
           <el-button type="primary"
@@ -54,25 +39,24 @@
                     pageSize: 'size'
                   }"
                   max-height="600">
-        <el-table-column label="序号"
-                         type="index"
-                         align="center"
-                         width="80px">
+        <PeaceTableColumn label="序号"
+                          type="index"
+                          width="80px">
           <template slot-scope="{ $index, _self }">
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column prop="username"
-                         label="账号"></el-table-column>
-        <el-table-column prop="name"
-                         label="姓名"></el-table-column>
-        <el-table-column prop="roleList"
-                         label="角色">
+        </PeaceTableColumn>
+        <PeaceTableColumn prop="username"
+                          label="账号"></PeaceTableColumn>
+        <PeaceTableColumn prop="name"
+                          label="姓名"></PeaceTableColumn>
+        <PeaceTableColumn prop="roleList"
+                          label="角色">
           <template slot-scope="scope">
             <span>{{scope.row.roleList | getRoleNames}}</span>
           </template>
-        </el-table-column>
-        <el-table-column label="账号状态">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="账号状态">
           <template slot-scope="scope">
             <div class="table-status">
               <div class="table-status-text">{{scope.row.lockFlag | getEnumLabel(CONSTANT.ENUM_ACCOUNT_STATUS)}}</div>
@@ -82,21 +66,20 @@
                          @change="changeStatus(scope.row)"></el-switch>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column prop="createTime"
-                         label="创建时间">
-        </el-table-column>
-        <el-table-column min-width="100px"
-                         align="center"
-                         fixed="right"
-                         label="操作">
+        </PeaceTableColumn>
+        <PeaceTableColumn prop="createTime"
+                          label="创建时间">
+        </PeaceTableColumn>
+        <PeaceTableColumn min-width="100px"
+                          fixed="right"
+                          label="操作">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="toAccount(scope.row)">修改</el-button>
             <el-button type="text"
                        v-on:click="resetPassword(scope.row)">重置密码</el-button>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
       </PeaceTable>
     </div>
 

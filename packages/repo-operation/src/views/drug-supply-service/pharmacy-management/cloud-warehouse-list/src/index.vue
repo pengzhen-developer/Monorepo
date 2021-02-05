@@ -9,7 +9,7 @@
                    class="q-mb-lg"
                    v-on:click="back"
                    style="margin-bottom:24px">
-          <div class="q-px-md q-py-sm">
+          <div>
             <i class="el-icon-arrow-left"></i>
             <span>返回上一页</span>
           </div>
@@ -131,10 +131,7 @@ p {
   margin: 0;
   padding: 0;
 }
-.el-button--mini,
-.el-button--mini.is-round {
-  padding: 1px 4px !important;
-}
+
 .item-title {
   display: flex;
   flex-direction: row;

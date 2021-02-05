@@ -5,25 +5,15 @@
         <el-form v-bind:model="model"
                  inline="inline"
                  label-width="auto"
-                 label-position="right"
-                 label-suffix
+                 label-suffix="："
                  size="mini">
 
-          <el-form-item>
-            <template slot="label">
-              <span class="em-4-justify">机构名称</span>
-              <span>：</span>
-            </template>
+          <el-form-item label="机构名称">
             <el-input v-model.trim="model.hospitalName"
                       placeholder="请输入"></el-input>
           </el-form-item>
 
-          <el-form-item>
-            <template slot="label">
-              <span class="em-4-justify">机构类型</span>
-              <span>：</span>
-            </template>
-
+          <el-form-item label="机构类型">
             <el-select clearable
                        v-model.trim="model.orgType"
                        placeholder="全部">
@@ -34,15 +24,8 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item>
-
-            <template slot="label">
-              <span class="em-6-justify">使用中的服务</span>
-              <span>：</span>
-            </template>
-
-            <el-select style="width: 240px;"
-                       clearable
+          <el-form-item label="使用中的服务">
+            <el-select clearable
                        multiple
                        v-model.trim="model.serviceType">
               <el-option v-for="(value, label) in CONSTANT.ENUM_ORGANIZATION_SERVICE"
@@ -68,50 +51,42 @@
         <PeaceTable ref="table"
                     size="mini"
                     pagination>
-          <el-table-column label="序号"
-                           align="center"
-                           width="80px"
-                           prop="orderNumber">
-          </el-table-column>
-          <el-table-column min-width="180px"
-                           align="left"
-                           label="机构名称"
-                           prop="hospitalName">
+          <PeaceTableColumn label="序号"
+                            width="80px"
+                            prop="orderNumber">
+          </PeaceTableColumn>
+          <PeaceTableColumn min-width="180px"
+                            label="机构名称"
+                            prop="hospitalName">
             <template slot-scope="scope">
               {{scope.row.hospitalName || '—'}}
             </template>
-          </el-table-column>
-          <el-table-column min-width="120px"
-                           label="机构类型"
-                           prop="role"
-                           align="center"></el-table-column>
-          <el-table-column min-width="100px"
-                           label="入驻方式"
-                           align="center"
-                           prop="source"></el-table-column>
-          <el-table-column min-width="160px"
-                           label="使用中的服务"
-                           align="center">
+          </PeaceTableColumn>
+          <PeaceTableColumn min-width="120px"
+                            label="机构类型"
+                            prop="role"></PeaceTableColumn>
+          <PeaceTableColumn min-width="100px"
+                            label="入驻方式"
+                            prop="source"></PeaceTableColumn>
+          <PeaceTableColumn min-width="160px"
+                            label="使用中的服务">
             <template slot-scope="scope">
               <div v-html="formatServiceName(scope.row)"></div>
             </template>
-          </el-table-column>
-          <el-table-column min-width="160px"
-                           label="认证时间"
-                           align="center"
-                           prop="checkTime">
+          </PeaceTableColumn>
+          <PeaceTableColumn min-width="160px"
+                            label="认证时间"
+                            prop="checkTime">
             <template slot-scope="scope">
               {{ 
                 scope.row.source == '运营添加' ? scope.row.createdTime : 
                 scope.row.source == '机构注册' ? scope.row.checkTime : '—'
               }}
             </template>
-          </el-table-column>
-          <el-table-column width="240px"
-                           align="left"
-                           header-align="center"
-                           fixed="right"
-                           label="操作">
+          </PeaceTableColumn>
+          <PeaceTableColumn width="240px"
+                            fixed="right"
+                            label="操作">
             <template slot-scope="scope">
               <el-button type="text"
                          v-on:click="toDetail(scope.row)">基本信息</el-button>
@@ -121,7 +96,7 @@
                          type="text"
                          v-on:click="dockingConfig(scope.row)">对接配置</el-button>
             </template>
-          </el-table-column>
+          </PeaceTableColumn>
         </PeaceTable>
       </div>
 

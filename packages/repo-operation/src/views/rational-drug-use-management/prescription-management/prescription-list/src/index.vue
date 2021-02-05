@@ -5,14 +5,15 @@
         <div class="card card-search q-mb-md">
           <el-form inline
                    label-width="auto"
+                   label-suffix="："
                    v-bind:model="model">
-            <el-form-item label="处方编号：">
+            <el-form-item label="处方编号">
               <el-input v-model="model.prescriptionNo"
                         placeholder="请输入"
                         clearable></el-input>
             </el-form-item>
 
-            <el-form-item label="机构名称：">
+            <el-form-item label="机构名称">
               <el-select v-model="model.hosCode"
                          placeholder="全部"
                          clearable>
@@ -23,7 +24,7 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="处方来源：">
+            <el-form-item label="处方来源">
               <el-select v-model="model.prescriptionSource"
                          placeholder="不限">
                 <el-option v-for="(value, label) in source.SOURCES_PRESCRIPTION_TYPE"
@@ -33,7 +34,7 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="科室：">
+            <el-form-item label="科室">
 
               <el-autocomplete v-bind:readonly="true"
                                v-model="localModel.deptName"
@@ -45,7 +46,7 @@
 
             </el-form-item>
 
-            <el-form-item label="提交方式：">
+            <el-form-item label="提交方式">
               <el-select v-model="model.submitType"
                          placeholder="全部">
                 <el-option v-for="(value, label) in source.SUBMISSION_TYPE"
@@ -55,7 +56,7 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="处方状态：">
+            <el-form-item label="处方状态">
               <el-select v-model="model.prescriptionState"
                          placeholder="全部">
                 <el-option v-for="(value, label) in source.PRESCRIPTION_STATUS"
@@ -65,7 +66,7 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="审核通过方式：">
+            <el-form-item label="审核通过方式">
               <el-select v-model="model.pharmacistCheckMode"
                          placeholder="全部">
                 <el-option v-for="(value, label) in source.AUDIT_MODE_TYPE"
@@ -75,7 +76,7 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="系统审方结果：">
+            <el-form-item label="系统审方结果">
               <el-select v-model="model.actionMsg"
                          placeholder="全部">
                 <el-option v-for="(value, label) in source.SYSTEM_AUDIT_RESULTS_TYPE"
@@ -85,7 +86,7 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="药师审方结果：">
+            <el-form-item label="药师审方结果">
               <el-select v-model="model.pharmacistCheckResult"
                          placeholder="全部">
                 <el-option v-for="(value, label) in source.RESULTS_AUDIT_PHARMACIST_TYPE"
@@ -95,19 +96,19 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="患者名称：">
+            <el-form-item label="患者名称">
               <el-input v-model="model.patientName"
                         placeholder="请输入"
                         clearable></el-input>
             </el-form-item>
 
-            <el-form-item label="处方创建日期：">
+            <el-form-item label="处方创建日期">
               <peace-date-picker type="daterange"
                                  value-format="yyyy-MM-dd"
                                  v-model="model.timeRange"></peace-date-picker>
             </el-form-item>
 
-            <el-form-item label="审方药师：">
+            <el-form-item label="审方药师">
               <el-select v-model="model.pharmacistCode"
                          placeholder="请选择"
                          clearable>
@@ -119,7 +120,7 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="处方类别：">
+            <el-form-item label="处方类别">
               <el-select v-model="model.prescriptionType"
                          placeholder="请选择">
                 <el-option v-for="(value, label) in source.PRESCRIPTION_TYPE"
@@ -184,100 +185,80 @@
                       pagination
                       stripe>
 
-            <el-table-column label="处方编号"
-                             align="center"
-                             prop="prescriptionNo"
-                             min-width="160px"></el-table-column>
+            <PeaceTableColumn label="处方编号"
+                              prop="prescriptionNo"
+                              min-width="160px"></PeaceTableColumn>
 
-            <el-table-column label="处方状态"
-                             align="center"
-                             prop="stateName"
-                             min-width="100px"></el-table-column>
+            <PeaceTableColumn label="处方状态"
+                              prop="stateName"
+                              min-width="100px"></PeaceTableColumn>
 
-            <el-table-column label="药师审方结果"
-                             align="center"
-                             prop="pharmacistExamineResult"
-                             min-width="120px"></el-table-column>
+            <PeaceTableColumn label="药师审方结果"
+                              prop="pharmacistExamineResult"
+                              min-width="120px"></PeaceTableColumn>
 
-            <el-table-column label="系统审方结果"
-                             align="center"
-                             prop="examineResult"
-                             min-width="120px"></el-table-column>
+            <PeaceTableColumn label="系统审方结果"
+                              prop="examineResult"
+                              min-width="120px"></PeaceTableColumn>
 
-            <el-table-column label="处方创建时间"
-                             align="center"
-                             prop="createTime"
-                             min-width="160px"></el-table-column>
+            <PeaceTableColumn label="处方创建时间"
+                              prop="createTime"
+                              min-width="160px"></PeaceTableColumn>
 
-            <el-table-column label="机构名称"
-                             align="center"
-                             prop="organName"
-                             min-width="120px"></el-table-column>
+            <PeaceTableColumn label="机构名称"
+                              prop="organName"
+                              min-width="120px"></PeaceTableColumn>
 
-            <el-table-column label="患者姓名"
-                             align="center"
-                             prop="patientName"
-                             min-width="100px"></el-table-column>
+            <PeaceTableColumn label="患者姓名"
+                              prop="patientName"
+                              min-width="100px"></PeaceTableColumn>
 
-            <el-table-column label="开方医生"
-                             min-width="100px"
-                             prop="doctorName"
-                             align="center"></el-table-column>
+            <PeaceTableColumn label="开方医生"
+                              min-width="100px"
+                              prop="doctorName"></PeaceTableColumn>
 
-            <el-table-column label="科室"
-                             align="center"
-                             prop="deptName"
-                             min-width="100px"></el-table-column>
+            <PeaceTableColumn label="科室"
+                              prop="deptName"
+                              min-width="100px"></PeaceTableColumn>
 
-            <el-table-column label="处方类别"
-                             align="center"
-                             prop="prescriptionType"
-                             min-width="100px"></el-table-column>
+            <PeaceTableColumn label="处方类别"
+                              prop="prescriptionType"
+                              min-width="100px"></PeaceTableColumn>
 
-            <el-table-column label="处方来源"
-                             align="center"
-                             prop="prescriptionSource"
-                             min-width="100px"></el-table-column>
+            <PeaceTableColumn label="处方来源"
+                              prop="prescriptionSource"
+                              min-width="100px"></PeaceTableColumn>
 
-            <el-table-column label="审核通过方式"
-                             align="center"
-                             min-width="120px">
+            <PeaceTableColumn label="审核通过方式"
+                              min-width="120px">
               <template slot-scope="scope">
                 {{ scope.row.pharmacistCheckMode || '--' }}
               </template>
-            </el-table-column>
+            </PeaceTableColumn>
 
-            <el-table-column label="提交方式"
-                             align="center"
-                             prop="submitMode"
-                             min-width="100px"></el-table-column>
+            <PeaceTableColumn label="提交方式"
+                              prop="submitMode"
+                              min-width="100px"></PeaceTableColumn>
 
-            <el-table-column label="审方药师"
-                             align="center"
-                             min-width="100px">
+            <PeaceTableColumn label="审方药师"
+                              min-width="100px">
               <template slot-scope="scope">
                 {{ scope.row.pharmacyName || '--' }}
               </template>
-            </el-table-column>
+            </PeaceTableColumn>
 
-            <el-table-column label="审方时间"
-                             align="center"
-                             prop="pharmacistExamTime"
-                             min-width="160px"></el-table-column>
+            <PeaceTableColumn label="审方时间"
+                              prop="pharmacistExamTime"
+                              min-width="160px"></PeaceTableColumn>
 
-            <el-table-column label="操作"
-                             align="center"
-                             fixed="right"
-                             width="100px">
-
+            <PeaceTableColumn label="操作"
+                              fixed="right"
+                              width="100px">
               <template slot-scope="scope">
-
                 <el-button type="text"
                            v-on:click="detail(scope.row)">查看详情</el-button>
-
               </template>
-
-            </el-table-column>
+            </PeaceTableColumn>
           </PeaceTable>
         </div>
       </div>

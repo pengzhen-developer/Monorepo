@@ -4,24 +4,24 @@
     <div class="card card-search q-mb-md">
       <el-form inline
                label-width="auto"
+               label-suffix="："
                v-on:keyup.enter.native="get"
                v-on:submit.native.prevent
                v-bind:model="model">
-        <el-form-item label="医院名称：">
+        <el-form-item label="医院名称">
           <el-input v-model="model.hosName"
                     placeholder=""></el-input>
         </el-form-item>
-        <el-form-item label="开方医生：">
+        <el-form-item label="开方医生">
           <el-input v-model="model.docName"
                     placeholder=""></el-input>
         </el-form-item>
-        <el-form-item label="科别：">
+        <el-form-item label="科别">
           <el-input v-model="model.deptName"
                     placeholder=""></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary"
-                     style="min-width: 80px;"
                      v-on:click="get">查询</el-button>
         </el-form-item>
       </el-form>
@@ -38,39 +38,30 @@
                   pagination>
         <PeaceTableColumn label="序号"
                           prop="orderNumber"
-                          align="center"
                           width="80px">
         </PeaceTableColumn>
         <PeaceTableColumn width="100px"
-                          align="center"
                           label="来源"
                           prop="source"></PeaceTableColumn>
         <PeaceTableColumn min-width="150px"
-                          align="center"
                           label="医院名称"
                           prop="hosName"></PeaceTableColumn>
         <PeaceTableColumn min-width="120px"
-                          align="center"
                           label="医生姓名"
                           prop="docName"></PeaceTableColumn>
         <PeaceTableColumn min-width="120px"
-                          align="center"
                           label="科别"
                           prop="deptName"></PeaceTableColumn>
         <PeaceTableColumn width="120px"
-                          align="center"
                           label="开方药品数量"
                           prop="drugNum"></PeaceTableColumn>
         <PeaceTableColumn min-width="80px"
-                          align="center"
                           label="商品件数"
                           prop="drugTypeNum"></PeaceTableColumn>
         <PeaceTableColumn width="160px"
-                          align="center"
                           label="操作时间"
                           prop="createdTime"></PeaceTableColumn>
         <PeaceTableColumn width="120px"
-                          align="center"
                           label="操作"
                           fixed="right">
           <template slot-scope="scope">

@@ -4,11 +4,10 @@
       <el-form v-bind:model="model"
                inline="inline"
                label-width="auto"
-               label-position="right"
-               label-suffix=""
+               label-suffix="："
                size="mini">
 
-        <el-form-item label="调用来源：">
+        <el-form-item label="调用来源">
           <el-select v-model="model.source"
                      placeholder="全部"
                      clearable>
@@ -19,7 +18,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="调用环境：">
+        <el-form-item label="调用环境">
           <el-select v-model="model.ambient"
                      placeholder="全部"
                      clearable>
@@ -30,22 +29,22 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="签名人：">
+        <el-form-item label="签名人">
           <el-input v-model="model.signer"
                     placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item label="处方编号：">
+        <el-form-item label="处方编号">
           <el-input v-model="model.prescriptionNo"
                     placeholder="请输入"></el-input>
         </el-form-item>
 
-        <!-- <el-form-item label="业务主键值：">
+        <!-- <el-form-item label="业务主键值">
         <el-input v-model="model.primaryKey"
                   placeholder="请输入"></el-input>
       </el-form-item> -->
 
-        <el-form-item label="操作日期：">
+        <el-form-item label="操作日期">
           <peace-date-picker type="daterange"
                              value-format="yyyy-MM-dd"
                              v-model="model.timeRange"></peace-date-picker>
@@ -63,34 +62,28 @@
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
-        <el-table-column label="序号"
-                         type="index"
-                         align="center"
-                         width="80px">
+        <PeaceTableColumn label="序号"
+                          type="index"
+                          width="80px">
           <template slot-scope="{ $index, _self }">
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="调用来源"
-                         prop="source"></el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="调用环境"
-                         prop="ambient"></el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="签名人"
-                         prop="signer"></el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="处方编号"
-                         prop="prescriptionNo"></el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="调用时间"
-                         prop="callTime"></el-table-column>
+        </PeaceTableColumn>
+        <PeaceTableColumn min-width="150px"
+                          label="调用来源"
+                          prop="source"></PeaceTableColumn>
+        <PeaceTableColumn min-width="150px"
+                          label="调用环境"
+                          prop="ambient"></PeaceTableColumn>
+        <PeaceTableColumn min-width="150px"
+                          label="签名人"
+                          prop="signer"></PeaceTableColumn>
+        <PeaceTableColumn min-width="150px"
+                          label="处方编号"
+                          prop="prescriptionNo"></PeaceTableColumn>
+        <PeaceTableColumn min-width="150px"
+                          label="调用时间"
+                          prop="callTime"></PeaceTableColumn>
 
       </PeaceTable>
     </div>

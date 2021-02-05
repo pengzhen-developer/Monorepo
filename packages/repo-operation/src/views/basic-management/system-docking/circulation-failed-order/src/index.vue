@@ -5,19 +5,18 @@
       <div class="card card-search q-mb-md">
         <el-form v-bind:model="model"
                  inline="inline"
-                 label-width="110px"
-                 label-position="right"
-                 label-suffix
+                 label-width="auto"
+                 label-suffix="："
                  size="mini">
-          <el-form-item label="医院订单编号：">
+          <el-form-item label="医院订单编号">
             <el-input v-model.trim="model.CustOrderKey"
                       placeholder="请输入"></el-input>
           </el-form-item>
-          <el-form-item label="医院名称：">
+          <el-form-item label="医院名称">
             <el-input v-model.trim="model.MedicalInstitutionName"
                       placeholder="请输入"></el-input>
           </el-form-item>
-          <el-form-item label="异常类型：">
+          <el-form-item label="异常类型">
             <el-select v-model="model.ErrorType"
                        placeholder="全部"
                        clearable>
@@ -27,7 +26,7 @@
                          v-bind:value="item.value"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="同步状态：">
+          <el-form-item label="同步状态">
             <el-select v-model="model.SycnStatus"
                        placeholder="全部"
                        clearable>
@@ -37,7 +36,7 @@
                          v-bind:value="item.value"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="首次同步时间：">
+          <el-form-item label="首次同步时间">
             <PeaceDatePicker type="daterange"
                              value-format="yyyy-MM-dd"
                              v-model="timeRange"></PeaceDatePicker>
@@ -50,58 +49,57 @@
         </el-form>
       </div>
       <div class="card">
-        <peace-table ref="table"
-                     pagination
-                     size="mini">
-          <el-table-column label="序号"
-                           type="index"
-                           align="center"
-                           width="80px">
+        <PeaceTable ref="table"
+                    pagination
+                    size="mini">
+          <PeaceTableColumn label="序号"
+                            type="index"
+                            width="80px">
             <template slot-scope="{ $index, _self }">
               {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
             </template>
-          </el-table-column>
-          <el-table-column label="医院订单编号"
-                           prop="CustOrderKey"
-                           width="260px">
+          </PeaceTableColumn>
+          <PeaceTableColumn label="医院订单编号"
+                            prop="CustOrderKey"
+                            width="260px">
             <template slot-scope="scope">
               <el-button type="text"
                          v-on:click="showDetail(scope.row)">{{scope.row.CustOrderKey}}</el-button>
             </template>
-          </el-table-column>
-          <el-table-column label="医院名称"
-                           prop="MedicalInstitutionName"
-                           min-width="160px">
+          </PeaceTableColumn>
+          <PeaceTableColumn label="医院名称"
+                            prop="MedicalInstitutionName"
+                            min-width="160px">
             <template slot-scope="scope">
               {{ scope.row.MedicalInstitutionName || '--' }}
             </template>
-          </el-table-column>
-          <el-table-column label="订单总额"
-                           prop="OrderAmount"
-                           min-width="140px">
-          </el-table-column>
-          <el-table-column label="异常类型"
-                           prop="dockingSystem"
-                           width="140px">
+          </PeaceTableColumn>
+          <PeaceTableColumn label="订单总额"
+                            prop="OrderAmount"
+                            min-width="140px">
+          </PeaceTableColumn>
+          <PeaceTableColumn label="异常类型"
+                            prop="dockingSystem"
+                            width="140px">
             <template slot-scope="scope">
               {{scope.row.ErrorType | getLabel(source.ErrorTypeDict)}}
             </template>
-          </el-table-column>
+          </PeaceTableColumn>
 
-          <el-table-column label="同步状态"
-                           prop="SycnStatus"
-                           width="140px">
+          <PeaceTableColumn label="同步状态"
+                            prop="SycnStatus"
+                            width="140px">
             <template slot-scope="scope">
               <div v-bind:class="scope.row.SycnStatus==0?'red':'grey'">
                 {{scope.row.SycnStatus | getLabel(source.SycnStatusDict)}}
               </div>
             </template>
-          </el-table-column>
+          </PeaceTableColumn>
 
-          <el-table-column label="首次同步时间"
-                           prop="CreateTime"
-                           width="180px"></el-table-column>
-        </peace-table>
+          <PeaceTableColumn label="首次同步时间"
+                            prop="CreateTime"
+                            width="180px"></PeaceTableColumn>
+        </PeaceTable>
       </div>
 
     </div>

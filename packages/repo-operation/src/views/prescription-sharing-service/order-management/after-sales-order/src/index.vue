@@ -3,6 +3,7 @@
     <div class="card card-search q-mb-md">
       <el-form inline
                label-width="auto"
+               label-suffix="："
                v-bind:model="model"
                v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent>
@@ -60,51 +61,52 @@
         <el-button v-on:click="exportFile">导出</el-button>
       </div>
 
-      <peace-table pagination
-                   ref="table">
-        <el-table-column prop="OrderId"
-                         label="订单编号"
-                         width="180px">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn prop="OrderId"
+                          label="订单编号"
+                          width="180px">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="showCancelDetail(scope.row)">{{ scope.row.OrderId }}</el-button>
           </template>
-        </el-table-column>
-        <el-table-column prop="UserName"
-                         label="客户姓名"
-                         width="120px"></el-table-column>
-        <el-table-column prop="TotalAmoun"
-                         label="订单总额"
-                         width="120px"></el-table-column>
-        <el-table-column prop="Source"
-                         label="订单来源"
-                         width="120px"></el-table-column>
-        <el-table-column prop="DrugStoreName"
-                         label="药房"
-                         width="160px"></el-table-column>
-        <el-table-column prop="Sponsor"
-                         label="发起人"
-                         width="120px"
-                         v-bind:formatter="formatSponsor"></el-table-column>
-        <el-table-column prop="CreateTime"
-                         label="申请取消时间"
-                         width="180px"></el-table-column>
-        <el-table-column prop="Result"
-                         label="取消状态"
-                         width="120px"
-                         v-bind:formatter="formatResult"></el-table-column>
-        <el-table-column prop="OrderStatus"
-                         label="订单状态"
-                         width="120px"
-                         v-bind:formatter="formatOrderStatus"></el-table-column>
-        <el-table-column label="操作"
-                         fixed="right">
+        </PeaceTableColumn>
+        <PeaceTableColumn prop="UserName"
+                          label="客户姓名"
+                          width="120px"></PeaceTableColumn>
+        <PeaceTableColumn prop="TotalAmoun"
+                          label="订单总额"
+                          width="120px"></PeaceTableColumn>
+        <PeaceTableColumn prop="Source"
+                          label="订单来源"
+                          width="120px"></PeaceTableColumn>
+        <PeaceTableColumn prop="DrugStoreName"
+                          label="药房"
+                          width="160px"></PeaceTableColumn>
+        <PeaceTableColumn prop="Sponsor"
+                          label="发起人"
+                          width="120px"
+                          v-bind:formatter="formatSponsor"></PeaceTableColumn>
+        <PeaceTableColumn prop="CreateTime"
+                          label="申请取消时间"
+                          width="180px"></PeaceTableColumn>
+        <PeaceTableColumn prop="Result"
+                          label="取消状态"
+                          width="120px"
+                          v-bind:formatter="formatResult"></PeaceTableColumn>
+        <PeaceTableColumn prop="OrderStatus"
+                          label="订单状态"
+                          width="120px"
+                          v-bind:formatter="formatOrderStatus"></PeaceTableColumn>
+        <PeaceTableColumn label="操作"
+                          width="100px"
+                          fixed="right">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="showCancelRecord(scope.row)">取消记录</el-button>
           </template>
-        </el-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+      </PeaceTable>
     </div>
 
     <PeaceDialog title="取消记录"

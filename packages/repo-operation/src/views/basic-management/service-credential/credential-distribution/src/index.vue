@@ -10,21 +10,20 @@
                   size="mini"
                   v-bind:page-size="5"
                   pagination>
-        <el-table-column label="序号"
-                         type="index"
-                         align="center"
-                         width="80px">
+        <PeaceTableColumn label="序号"
+                          type="index"
+                          width="80px">
           <template slot-scope="{ $index, _self }">
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column label="系统名称"
-                         prop="name"></el-table-column>
-        <el-table-column label="系统属性"
-                         prop="attributeName"></el-table-column>
-        <el-table-column label="Accesskey  ID"
-                         prop="accessId"></el-table-column>
-        <el-table-column label="AccessKey Secret">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="系统名称"
+                          prop="name"></PeaceTableColumn>
+        <PeaceTableColumn label="系统属性"
+                          prop="attributeName"></PeaceTableColumn>
+        <PeaceTableColumn label="Accesskey  ID"
+                          prop="accessId"></PeaceTableColumn>
+        <PeaceTableColumn label="AccessKey Secret">
 
           <template slot-scope="scope">
             <div class="status-item">
@@ -39,19 +38,19 @@
             </div>
           </template>
 
-        </el-table-column>
-        <el-table-column label="创建时间"
-                         prop="createTime"></el-table-column>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="创建时间"
+                          prop="createTime"></PeaceTableColumn>
 
-        <el-table-column fixed="right"
-                         width="150px"
-                         label="使用状态">
+        <PeaceTableColumn fixed="right"
+                          width="150px"
+                          label="使用状态">
           <template slot-scope="scope">
             {{scope.row.enableStatus ? '已启用':'未启用'}}
             <el-switch v-model="scope.row.enableStatus"
                        @change="changeStatus(scope.row)"></el-switch>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
       </PeaceTable>
     </div>
 

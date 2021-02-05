@@ -8,12 +8,11 @@
                ref="Form"
                inline="inline"
                label-width="auto"
-               label-position="right"
-               label-suffix
+               label-suffix="："
                size="mini"
                class="q-mb-lg"
                style="border-bottom:1px dashed #e9e9e9;">
-        <el-form-item label="同步异常短信提醒：">
+        <el-form-item label="同步异常短信提醒">
           <el-switch v-model="query.warnSwitch"
                      active-value="1"
                      inactive-value="0"
@@ -32,7 +31,6 @@
             <el-input v-model.trim="query.phone"
                       placeholder="请输入"></el-input>
             <el-button type="text"
-                       style="min-width: 50px;;"
                        v-on:click="save"
                        v-bind:disabled="isdisable">保存</el-button>
           </template>
@@ -40,15 +38,14 @@
       </el-form>
       <el-form v-bind:model="model"
                inline="inline"
-               label-width="85px"
-               label-position="right"
-               label-suffix
+               label-width="auto"
+               label-suffix="："
                size="mini">
-        <el-form-item label="业务编号：">
+        <el-form-item label="业务编号">
           <el-input v-model.trim="model.bizCode"
                     placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="业务类型：">
+        <el-form-item label="业务类型">
           <el-select v-model="model.bizType"
                      placeholder="全部"
                      clearable>
@@ -58,7 +55,7 @@
                        v-bind:value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="对接系统：">
+        <el-form-item label="对接系统">
           <el-select v-model="model.dockingSystem"
                      placeholder="全部"
                      clearable>
@@ -68,7 +65,7 @@
                        v-bind:value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="同步状态：">
+        <el-form-item label="同步状态">
           <el-select v-model="model.synStatus"
                      placeholder="全部"
                      clearable>
@@ -78,7 +75,7 @@
                        v-bind:value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="机构名称：">
+        <el-form-item label="机构名称">
           <el-input v-model.trim="model.organName"
                     placeholder="请输入"></el-input>
         </el-form-item>
@@ -93,58 +90,55 @@
       <peace-table ref="table"
                    pagination
                    size="mini">
-        <el-table-column label="序号"
-                         type="index"
-                         align="center"
-                         width="80px">
+        <PeaceTableColumn label="序号"
+                          type="index"
+                          width="80px">
           <template slot-scope="{ $index, _self }">
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column label="业务编号"
-                         prop="bizCode"
-                         width="260px"></el-table-column>
-        <el-table-column label="机构名称"
-                         prop="organName"
-                         min-width="160px">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="业务编号"
+                          prop="bizCode"
+                          width="260px"></PeaceTableColumn>
+        <PeaceTableColumn label="机构名称"
+                          prop="organName"
+                          min-width="160px">
           <template slot-scope="scope">
             {{ scope.row.organName || '--' }}
           </template>
-        </el-table-column>
-        <el-table-column label="业务类型"
-                         prop="bizType"
-                         min-width="180px">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="业务类型"
+                          prop="bizType"
+                          min-width="180px">
           <template slot-scope="scope">
             {{scope.row.bizType | getLabel(dictdata.bizTypeDict)}}
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column label="对接系统"
-                         prop="dockingSystem"
-                         width="160px">
+        <PeaceTableColumn label="对接系统"
+                          prop="dockingSystem"
+                          width="160px">
           <template slot-scope="scope">
             {{scope.row.dockingSystem | getLabel(dictdata.synSysDict)}}
           </template>
-        </el-table-column>
-        <el-table-column label="同步状态"
-                         prop="synStatus"
-                         width="100px"
-                         align="center">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="同步状态"
+                          prop="synStatus"
+                          width="100px">
           <template slot-scope="scope">
             <div v-bind:class="scope.row.synStatus==0?'red':'grey'">
               {{scope.row.synStatus | getLabel(dictdata.synStatusDict)}}
             </div>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column label="首次同步时间"
-                         prop="firstSynTime"
-                         width="180px"></el-table-column>
+        <PeaceTableColumn label="首次同步时间"
+                          prop="firstSynTime"
+                          width="180px"></PeaceTableColumn>
 
-        <el-table-column label="操作"
-                         align="left"
-                         width="160px"
-                         fixed="right">
+        <PeaceTableColumn label="操作"
+                          width="160px"
+                          fixed="right">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="nonitorDetail(scope.row)">查看详情</el-button>
@@ -152,7 +146,7 @@
                        v-on:click="manualSyn(scope.row)"
                        v-if="scope.row.synStatus==0&&scope.row.manualSyn==1">手工同步</el-button>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
       </peace-table>
     </div>
 

@@ -3,6 +3,7 @@
     <div class="card card-search q-mb-md">
       <el-form inline
                label-width="auto"
+               label-suffix="："
                v-bind:model="model"
                v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent>
@@ -101,97 +102,84 @@
                    v-on:click="showSetting">异常提醒设置</el-button>
       </div>
 
-      <peace-table pagination
-                   ref="table">
-        <el-table-column prop="OrderId"
-                         label="订单编号"
-                         align="center"
-                         width="180px">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn prop="OrderId"
+                          label="订单编号"
+                          width="180px">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="showCancelDetail(scope.row)">{{ scope.row.OrderId }}</el-button>
           </template>
-        </el-table-column>
-        <el-table-column prop="UserName"
-                         label="客户姓名"
-                         align="center"
-                         width="120px"></el-table-column>
+        </PeaceTableColumn>
+        <PeaceTableColumn prop="UserName"
+                          label="客户姓名"
+                          width="120px"></PeaceTableColumn>
 
-        <el-table-column prop="TotalAmoun"
-                         label="订单总额"
-                         align="center"
-                         width="120px"></el-table-column>
+        <PeaceTableColumn prop="TotalAmoun"
+                          label="订单总额"
+                          width="120px"></PeaceTableColumn>
 
-        <el-table-column prop="CreateTime"
-                         label="同步时间"
-                         align="center"
-                         width="160px"></el-table-column>
+        <PeaceTableColumn prop="CreateTime"
+                          label="同步时间"
+                          width="160px"></PeaceTableColumn>
 
-        <el-table-column prop="DrugStoreName"
-                         label="药房"
-                         align="center"
-                         width="160px"></el-table-column>
+        <PeaceTableColumn prop="DrugStoreName"
+                          label="药房"
+                          width="160px"></PeaceTableColumn>
 
-        <el-table-column label="取货方式"
-                         align="center"
-                         width="120px">
+        <PeaceTableColumn label="取货方式"
+                          width="120px">
 
           <template slot-scope="scope">
             <span>{{ scope.row.ShippingMethod | filterDictionary(remoteSource.ShippingMethod, '-') }}</span>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column label="订单状态"
-                         align="center"
-                         width="120px">
+        <PeaceTableColumn label="订单状态"
+                          width="120px">
           <template slot-scope="scope">
             <span>{{ scope.row.OrderStatusStr || '-' }}</span>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column label="支付状态"
-                         align="center"
-                         width="120px">
+        <PeaceTableColumn label="支付状态"
+                          width="120px">
           <template slot-scope="scope">
             <span>{{ scope.row.IsPay | filterDictionary(remoteSource.PayStatus, '-') }}</span>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column prop="Source"
-                         label="订单来源"
-                         align="center"
-                         width="120px"></el-table-column>
+        <PeaceTableColumn prop="Source"
+                          label="订单来源"
+                          width="120px"></PeaceTableColumn>
 
-        <el-table-column label="处方类型"
-                         align="center"
-                         width="120px">
+        <PeaceTableColumn label="处方类型"
+                          width="120px">
           <template slot-scope="scope">
             <span>{{ scope.row.OrderTypeDisplay }}</span>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column prop="SourceSysName"
-                         label="订单来源系统"
-                         align="center"
-                         width="120px">
+        <PeaceTableColumn prop="SourceSysName"
+                          label="订单来源系统"
+                          width="120px">
           <template slot-scope="scope">
             <span>{{ scope.row.SourceSysName || '-' }}</span>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column prop="ReceiveSysName"
-                         label="订单承接系统"
-                         align="center"
-                         width="120px">
+        <PeaceTableColumn prop="ReceiveSysName"
+                          label="订单承接系统"
+                          width="120px">
           <template slot-scope="scope">
             <span>{{ scope.row.ReceiveSysName || '-' }}</span>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column label="操作"
-                         align="center"
-                         min-width="180px"
-                         fixed="right">
+        <PeaceTableColumn label="操作"
+                          min-width="180px"
+                          fixed="right">
           <template slot-scope="scope">
 
             <el-button type="text"
@@ -207,8 +195,8 @@
               修改运单号
             </el-button>
           </template>
-        </el-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+      </PeaceTable>
     </div>
     <!-- 异常提醒设置 -->
     <PeaceDialog title="异常提醒设置"
@@ -240,64 +228,55 @@
                  :v-if="dialog3.visible"
                  v-bind:visible.sync="dialog3.visible">
 
-      <peace-table :data="dialog3.data">
+      <PeaceTable :data="dialog3.data">
 
-        <el-table-column prop="DrugCode"
-                         label="药品编码"
-                         align="center"
-                         width="120px"></el-table-column>
+        <PeaceTableColumn prop="DrugCode"
+                          label="药品编码"
+                          width="120px"></PeaceTableColumn>
 
-        <el-table-column prop="DrugName"
-                         label="药品名称"
-                         align="center"
-                         min-width="160px"></el-table-column>
+        <PeaceTableColumn prop="DrugName"
+                          align="center"
+                          min-width="160px"></PeaceTableColumn>
 
-        <el-table-column label="药品规格"
-                         align="center"
-                         width="120px">
+        <PeaceTableColumn label="药品规格"
+                          width="120px">
           <template slot-scope="scope">
             {{ scope.row.DrugSpecifications || '--' }}
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column label="包装单位"
-                         align="center"
-                         min-width="120px">
+        <PeaceTableColumn label="包装单位"
+                          min-width="120px">
           <template slot-scope="scope">
             {{ scope.row.PackUnit || '--' }}
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column label="生产厂家"
-                         align="center"
-                         min-width="120px">
+        <PeaceTableColumn label="生产厂家"
+                          min-width="120px">
           <template slot-scope="scope">
             {{ scope.row.EnterpriseName || '--' }}
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
 
-        <el-table-column label="批次号"
-                         align="center"
-                         min-width="100px">
+        <PeaceTableColumn label="批次号"
+                          min-width="100px">
           <template slot-scope="scope">
             {{ scope.row.BatchNumber || '--' }}
           </template>
-        </el-table-column>
-        <el-table-column prop="DrugNumber"
-                         label="数量"
-                         align="center"
-                         min-width="70px">
-        </el-table-column>
-        <el-table-column prop="ValidityDate"
-                         label="有效期"
-                         align="center"
-                         width="160px"></el-table-column>
+        </PeaceTableColumn>
+        <PeaceTableColumn prop="DrugNumber"
+                          label="数量"
+                          min-width="70px">
+        </PeaceTableColumn>
+        <PeaceTableColumn prop="ValidityDate"
+                          label="有效期"
+                          width="160px"></PeaceTableColumn>
 
-        <el-table-column prop="ManufactureDate"
-                         label="生产日期"
-                         align="center"
-                         width="160px"></el-table-column>
-      </peace-table>
+        <PeaceTableColumn prop="ManufactureDate"
+                          label="生产日期"
+                          width="160px"></PeaceTableColumn>
+      </PeaceTable>
     </PeaceDialog>
 
     <PeaceDialog width="400px"

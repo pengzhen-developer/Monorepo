@@ -3,15 +3,14 @@ sequence <template>
     <div class="card card-search q-mb-md">
       <el-form v-bind:model="model"
                inline="inline"
-               label-width="85px"
-               label-position="right"
-               label-suffix
+               label-width="auto"
+               label-suffix="："
                size="mini">
-        <el-form-item label="药房名称：">
+        <el-form-item label="药房名称">
           <el-input v-model.trim="model.Name"
                     placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="药房类型：">
+        <el-form-item label="药房类型">
           <el-select v-model="model.StoreType"
                      placeholder="全部"
                      clearable>
@@ -21,7 +20,7 @@ sequence <template>
                        v-bind:value="value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="机构类型：">
+        <el-form-item label="机构类型">
           <el-select v-model="model.CustType"
                      placeholder="全部"
                      clearable>
@@ -31,7 +30,7 @@ sequence <template>
                        v-bind:value="value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="认证状态：">
+        <el-form-item label="认证状态">
           <el-select v-model="model.Status"
                      placeholder="全部"
                      clearable>
@@ -41,19 +40,19 @@ sequence <template>
                        v-bind:value="value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="申请时间：">
+        <el-form-item label="申请时间">
           <PeaceDatePicker value-format="yyyy-MM-dd HH:mm:ss"
                            v-bind:default-time="['00:00:00', '23:59:59']"
                            format="yyyy-MM-dd"
                            type="daterange"
                            v-model.trim="DateValue"></PeaceDatePicker>
         </el-form-item>
-        <el-form-item label="审核时间：">
-          <peace-date-picker value-format="yyyy-MM-dd HH:mm:ss"
-                             v-bind:default-time="['00:00:00', '23:59:59']"
-                             format="yyyy-MM-dd"
-                             type="daterange"
-                             v-model.trim="DateValue2"></peace-date-picker>
+        <el-form-item label="审核时间">
+          <PeaceDatePicker value-format="yyyy-MM-dd HH:mm:ss"
+                           v-bind:default-time="['00:00:00', '23:59:59']"
+                           format="yyyy-MM-dd"
+                           type="daterange"
+                           v-model.trim="DateValue2"></PeaceDatePicker>
         </el-form-item>
         <el-form-item label-width="0">
           <el-button type="primary"
@@ -62,62 +61,60 @@ sequence <template>
       </el-form>
     </div>
     <div class="card">
-      <peace-table ref="table"
-                   pagination
-                   size="mini">
-        <el-table-column label="序号"
-                         type="index"
-                         align="center"
-                         width="80px">
+      <PeaceTable ref="table"
+                  pagination
+                  size="mini">
+        <PeaceTableColumn label="序号"
+                          type="index"
+                          width="80px">
           <template slot-scope="{ $index, _self }">
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column label="药房名称"
-                         prop="StoreName"
-                         min-width="180px"></el-table-column>
-        <el-table-column label="药房类型"
-                         prop="CustomerType"
-                         min-width="80px">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="药房名称"
+                          prop="StoreName"
+                          min-width="180px"></PeaceTableColumn>
+        <PeaceTableColumn label="药房类型"
+                          prop="CustomerType"
+                          min-width="80px">
           <template slot-scope="scope">
             {{ scope.row.CustomerType == 0 ? '院内药房' : '院外药房' }}
           </template>
-        </el-table-column>
-        <el-table-column label="所属机构"
-                         prop="CustName"
-                         min-width="80px"></el-table-column>
-        <el-table-column label="机构类型"
-                         prop="CustomerType"
-                         min-width="80px">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="所属机构"
+                          prop="CustName"
+                          min-width="80px"></PeaceTableColumn>
+        <PeaceTableColumn label="机构类型"
+                          prop="CustomerType"
+                          min-width="80px">
           <template slot-scope="scope">
             {{ scope.row.CustomerType == 0 ? '医疗机构' : '店配机构' }}
           </template>
-        </el-table-column>
-        <el-table-column label="申请时间"
-                         prop="CreateTime"
-                         min-width="160px"></el-table-column>
-        <el-table-column label="认证状态"
-                         prop="ExamineStatus"
-                         min-width="100px">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="申请时间"
+                          prop="CreateTime"
+                          min-width="160px"></PeaceTableColumn>
+        <PeaceTableColumn label="认证状态"
+                          prop="ExamineStatus"
+                          min-width="100px">
           <template slot-scope="scope">
             <span class="dot"
                   v-bind:class="getColorType(scope.row)"></span>
             <span>{{scope.row.ExamineStatus | getEnumLabel(source.CERTIFICATION_STATUS)}}</span>
           </template>
-        </el-table-column>
-        <el-table-column label="审核时间"
-                         prop="CommitExamineDateTime"
-                         min-width="160px"></el-table-column>
-        <el-table-column label="操作"
-                         align="center"
-                         width="100px"
-                         fixed="right">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="审核时间"
+                          prop="CommitExamineDateTime"
+                          min-width="160px"></PeaceTableColumn>
+        <PeaceTableColumn label="操作"
+                          width="100px"
+                          fixed="right">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="auditPharmacy(scope.row)">{{scope.row.ExamineStatus == 10 ? '审核' : '基本详情'}}</el-button>
           </template>
-        </el-table-column>
-      </peace-table>
+        </PeaceTableColumn>
+      </PeaceTable>
     </div>
     <PeaceDialog v-if="detailDialog.visible"
                  width="618px"

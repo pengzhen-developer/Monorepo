@@ -3,10 +3,11 @@
     <div class="card card-search q-mb-md">
       <el-form inline
                label-width="auto"
+               label-suffix="："
                v-on:keyup.enter.native="get"
                v-on:submit.native.prevent
                v-bind:model="model">
-        <el-form-item label="查询时间：">
+        <el-form-item label="查询时间">
           <PeaceDatePicker type="daterange"
                            value-format="yyyy-MM-dd"
                            v-model="model.timeRange"></PeaceDatePicker>
@@ -14,7 +15,6 @@
 
         <el-form-item>
           <el-button type="primary"
-                     style="min-width: 80px;"
                      v-on:click="get">查询</el-button>
         </el-form-item>
       </el-form>
@@ -22,44 +22,36 @@
 
     <div class="card">
       <div class="q-mb-md">
-        <el-button style="min-width: 80px"
-                   v-on:click="exportFile">导出</el-button>
+        <el-button v-on:click="exportFile">导出</el-button>
       </div>
 
       <PeaceTable ref="table"
                   pagination>
-        <el-table-column label="序号"
-                         type="index"
-                         align="center"
-                         width="80px">
+        <PeaceTableColumn label="序号"
+                          type="index"
+                          width="80px">
           <template slot-scope="{ $index, _self }">
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="输入内容"
-                         prop="keyWord"></el-table-column>
-        <el-table-column min-width="110px"
-                         align="center"
-                         label="查询结果总数"
-                         prop="drugNum"></el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="医院名称"
-                         prop="hosName"></el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="医生姓名"
-                         prop="docName"></el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="科别"
-                         prop="deptName"></el-table-column>
-        <el-table-column min-width="150px"
-                         align="center"
-                         label="查询时间"
-                         prop="createdTime"></el-table-column>
+        </PeaceTableColumn>
+        <PeaceTableColumn min-width="150px"
+                          label="输入内容"
+                          prop="keyWord"></PeaceTableColumn>
+        <PeaceTableColumn min-width="110px"
+                          label="查询结果总数"
+                          prop="drugNum"></PeaceTableColumn>
+        <PeaceTableColumn min-width="150px"
+                          label="医院名称"
+                          prop="hosName"></PeaceTableColumn>
+        <PeaceTableColumn min-width="150px"
+                          label="医生姓名"
+                          prop="docName"></PeaceTableColumn>
+        <PeaceTableColumn min-width="150px"
+                          label="科别"
+                          prop="deptName"></PeaceTableColumn>
+        <PeaceTableColumn min-width="150px"
+                          label="查询时间"
+                          prop="createdTime"></PeaceTableColumn>
 
       </PeaceTable>
     </div>

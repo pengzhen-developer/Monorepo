@@ -3,15 +3,14 @@
     <div class="card card-search q-mb-md">
       <el-form v-bind:model="model"
                inline="inline"
-               label-width="85px"
-               label-position="right"
-               label-suffix
+               label-width="auto"
+               label-suffix="："
                size="mini">
-        <el-form-item label="机构名称：">
+        <el-form-item label="机构名称">
           <el-input v-model.trim="model.hospitalName"
                     placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="机构类型：">
+        <el-form-item label="机构类型">
           <el-select v-model="model.role"
                      placeholder="全部"
                      clearable>
@@ -21,7 +20,7 @@
                        v-bind:value="value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="认证状态：">
+        <el-form-item label="认证状态">
           <el-select v-model="model.checkStatus"
                      placeholder="全部"
                      clearable>
@@ -43,52 +42,45 @@
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
-        <el-table-column label="序号"
-                         type="index"
-                         align="center"
-                         width="80px">
+        <PeaceTableColumn label="序号"
+                          type="index"
+                          width="80px">
           <template slot-scope="{ $index, _self }">
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column min-width="180px"
-                         label="机构名称"
-                         prop="hospitalName"></el-table-column>
-        <el-table-column min-width="120px"
-                         label="机构类型"
-                         prop="role"
-                         align="center">
+        </PeaceTableColumn>
+        <PeaceTableColumn min-width="180px"
+                          label="机构名称"
+                          prop="hospitalName"></PeaceTableColumn>
+        <PeaceTableColumn min-width="120px"
+                          label="机构类型"
+                          prop="role">
           <template slot-scope="scope">{{ scope.row.role | getEnumLabel(source.ENUM_ORGANIZATION_TYPE) }}</template>
-        </el-table-column>
-        <el-table-column min-width="100px"
-                         label="联系人"
-                         prop="linkman"></el-table-column>
-        <el-table-column width="120px"
-                         label="手机号码"
-                         prop="tel"
-                         align="center"></el-table-column>
-        <el-table-column min-width="110px"
-                         align="center"
-                         label="认证状态"
-                         prop="checkStatus">
+        </PeaceTableColumn>
+        <PeaceTableColumn min-width="100px"
+                          label="联系人"
+                          prop="linkman"></PeaceTableColumn>
+        <PeaceTableColumn width="120px"
+                          label="手机号码"
+                          prop="tel"></PeaceTableColumn>
+        <PeaceTableColumn min-width="110px"
+                          label="认证状态"
+                          prop="checkStatus">
           <template slot-scope="scope">
             <span class="dot"
                   v-bind:class="getColorType(scope.row)"></span>
             <span>{{ scope.row.checkStatus | getEnumLabel(source.ENUM_CHECK_STATUS) }}</span>
           </template>
-        </el-table-column>
-        <el-table-column min-width="160px"
-                         align="center"
-                         label="申请时间"
-                         prop="applyTime"></el-table-column>
-        <el-table-column min-width="160px"
-                         align="center"
-                         label="审核时间"
-                         prop="checkTime"></el-table-column>
-        <el-table-column min-width="80px"
-                         align="center"
-                         fixed="right"
-                         label="操作">
+        </PeaceTableColumn>
+        <PeaceTableColumn min-width="160px"
+                          label="申请时间"
+                          prop="applyTime"></PeaceTableColumn>
+        <PeaceTableColumn min-width="160px"
+                          label="审核时间"
+                          prop="checkTime"></PeaceTableColumn>
+        <PeaceTableColumn min-width="80px"
+                          fixed="right"
+                          label="操作">
           <template slot-scope="scope">
             <el-button type="text"
                        v-if="canShowAduit(scope.row)"
@@ -98,7 +90,7 @@
                        v-on:click="detail(scope.row)">详情</el-button>
             <span v-if="!canShowAduit(scope.row) && !canShowDetail(scope.row)">——</span>
           </template>
-        </el-table-column>
+        </PeaceTableColumn>
       </PeaceTable>
     </div>
 
