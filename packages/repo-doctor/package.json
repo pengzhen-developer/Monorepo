@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@jk998/identity": "^0.2.5",
-    "@jk998/library": "^0.1.26",
+    "@jk998/library": "^0.1.27",
     "@jk998/peace-element-ui": "^0.1.20",
     "@quasar/extras": "^1.0.0",
     "axios": "^0.19.0",
