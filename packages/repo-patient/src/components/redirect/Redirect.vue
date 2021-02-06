@@ -119,8 +119,9 @@ export default {
 
   methods: {
     goBack(e) {
+      const params = peace.util.decode(this.$route.params.json)
       //仅H5支付返回应用需监听
-      if (tradeType) {
+      if (params.tradeType) {
         // 回到中间页，跳转首页
         const pathNameList = ['/order/userDrugDetail', '/setting/userConsultDetail', '/setting/order/userOrderDetail']
         pathNameList.forEach((pathName) => {
