@@ -103,7 +103,7 @@
         <div class="dl-packet">
           <div class="dt">支付及配送方式：</div>
           <div class="dd more"
-               @click="changeShowPopup">{{payName}} - {{page.tabIndex == '0' ? '到店取药': '配送到家'}}</div>
+               @click="changeShowPopup">{{payName}} - {{page.tabIndex == '0' ? '到店自提': '配送到家'}}</div>
         </div>
       </div>
       <div class="module str">

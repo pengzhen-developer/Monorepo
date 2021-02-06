@@ -22,7 +22,7 @@
           </div>
           <div class="block">
             <div class="card-small"
-                 v-if="item.ShippingMethod!='1'">到店取药</div>
+                 v-if="item.ShippingMethod!='1'">到店自提</div>
             <div class="card-small"
                  v-if="item.ShippingMethod!='0'">配送到家</div>
           </div>

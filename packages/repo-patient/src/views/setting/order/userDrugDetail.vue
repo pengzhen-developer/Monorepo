@@ -113,7 +113,7 @@
         <div class="dl-packet">
           <div class="dt">配送方式：</div>
           <div class="dd">
-            {{order.shippingMethod == ENUM.SHIPPING_METHOD.到店取药 ? '到店取药': '配送到家'}}
+            {{order.shippingMethodTxt}}
           </div>
         </div>
         <div class="dl-packet">
