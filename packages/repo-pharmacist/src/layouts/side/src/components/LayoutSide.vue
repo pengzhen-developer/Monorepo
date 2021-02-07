@@ -2,7 +2,8 @@
   <q-scroll-area v-bind:thumb-style="thumbStyle"
                  v-bind:style="scrollAreaStyle">
     <el-menu v-bind:default-active="menuActive"
-             v-on:select="selectMenu">
+             v-on:select="selectMenu"
+             class="element-ui-default">
       <LayoutSideNavItem v-bind:data="menuTree"></LayoutSideNavItem>
     </el-menu>
   </q-scroll-area>

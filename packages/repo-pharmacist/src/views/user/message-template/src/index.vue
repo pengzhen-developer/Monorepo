@@ -1,6 +1,6 @@
 <template>
   <div class="layout-route">
-    <div class="bg-white  q-px-lg q-pt-xs">
+    <div class="bg-white  q-px-lg q-py-sm">
       <el-tabs v-model="activeName"
                class="element-ui-default">
         <el-tab-pane label="审核模板"
