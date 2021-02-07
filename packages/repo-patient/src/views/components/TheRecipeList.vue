@@ -278,6 +278,10 @@ export default {
     border-radius: 2px;
     text-align: center;
     line-height: normal;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .tag-new {
     width: 39px;

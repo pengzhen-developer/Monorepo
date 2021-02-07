@@ -47,6 +47,9 @@
 
     <div class="file-blood-detail-control">
       <van-button @click="goReportAddData"
+                  round
+                  size="large"
+                  class="full"
                   type="primary">手动添加</van-button>
     </div>
   </div>
@@ -110,12 +113,12 @@ export default {
     getOscillogram() {
       const params = $peace.util.decode($peace.$route.params.json)
 
-      peace.service.health.getOscillogram(params).then(res => {
+      peace.service.health.getOscillogram(params).then((res) => {
         const upData = res.data.upInfo
         const downData = res.data.downInfo
 
-        const xAxisData = downData.bodyFat.map(item => item.createTime.toDate().formatDate('MM-dd'))
-        const seriesDataOne = downData.bodyFat.map(item => item.bfr)
+        const xAxisData = downData.bodyFat.map((item) => item.createTime.toDate().formatDate('MM-dd'))
+        const seriesDataOne = downData.bodyFat.map((item) => item.bfr)
 
         this.options.xAxis.data = xAxisData
         this.options.series[0].data = seriesDataOne
@@ -262,21 +265,9 @@ export default {
     background: #fff;
     padding: 12px 14px;
 
-    // .charts-header {
-    // }
-
     .charts {
       width: 100%;
       height: 150px;
-    }
-  }
-
-  .file-blood-detail-control {
-    background: #fff;
-    padding: 0 10px;
-
-    .van-button {
-      width: 100%;
     }
   }
 }

@@ -220,7 +220,8 @@
     </div>
 
     <div class="footer ">
-      <peace-button @click="apply"
+      <peace-button round
+                    @click="apply"
                     type="primary"
                     throttle
                     :throttleTime="3000"
@@ -611,14 +612,14 @@ export default {
     min-width: 70px;
     position: relative;
     text-align: right;
-    font-family: monospace;
+    font-family: PingFangSC-Regular, PingFang SC;
     .y {
       font-size: 12px;
       color: #999999;
     }
     .m {
-      font-size: 17px;
-      font-weight: 600;
+      font-size: 15px;
+      font-weight: 400;
       color: #333333;
     }
   }
@@ -640,7 +641,7 @@ export default {
     .case-left {
       width: 35px;
       height: 35px;
-      margin: 15px 15px 15px 14px;
+      margin: 15px 16px 15px 14px;
       text-align: left;
       position: relative;
     }
@@ -791,7 +792,7 @@ export default {
       padding-bottom: 12px;
     }
     &.order {
-      padding: 5px 15px;
+      padding: 5px 16px;
       .b {
         padding-left: 0 !important;
       }
@@ -981,7 +982,7 @@ export default {
 
   .card {
     background: #fff;
-    padding: 10px 15px;
+    padding: 10px 16px;
     position: relative;
   }
   .b {
@@ -994,6 +995,7 @@ export default {
       content: '';
       width: 4px;
       height: 15px;
+      border-radius: 4px;
       background: #00c6ae;
       margin-right: 8px;
       margin-bottom: -2px;

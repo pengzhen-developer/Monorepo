@@ -78,6 +78,9 @@
 
     <div class="file-blood-detail-control">
       <van-button @click="goReportAddData"
+                  round
+                  size="large"
+                  class="full"
                   type="primary">手动添加</van-button>
     </div>
   </div>
@@ -313,7 +316,6 @@ export default {
       width: 50%;
 
       .van-button {
-        width: 100%;
         border-color: transparent !important;
         background-color: transparent !important;
         color: #000 !important;
@@ -345,15 +347,6 @@ export default {
     .charts {
       width: 100%;
       height: 150px;
-    }
-  }
-
-  .file-blood-detail-control {
-    background: #fff;
-    padding: 0 10px;
-
-    .van-button {
-      width: 100%;
     }
   }
 }

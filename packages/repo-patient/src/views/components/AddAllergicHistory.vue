@@ -66,7 +66,10 @@
       <div v-if="!showAllergicSearchList"
            class="save">
         <van-button @click="save"
-                    style="width: 100%;"
+                    round
+                    style="margin-bottom: 15px;"
+                    size="large"
+                    class="full"
                     type="primary">保存</van-button>
       </div>
     </template>
@@ -91,7 +94,10 @@
           </van-cell>
         </van-cell-group>
         <van-button @click="saveAllergic"
-                    style="width: 100%;position: fixed;bottom: 0;left: 0;"
+                    style="position: fixed;bottom: 15px;left: 0;"
+                    round
+                    size="large"
+                    class="full"
                     type="primary">保存</van-button>
 
         <van-popup position="bottom"
@@ -164,7 +170,7 @@ export default {
 
     // 删除 「无」
     deleteNone() {
-      const index = this.allergicHistory.findIndex(item => item.value === '无')
+      const index = this.allergicHistory.findIndex((item) => item.value === '无')
 
       if (index !== -1) {
         this.allergicHistoryCommonly[0].checked = false
@@ -214,7 +220,7 @@ export default {
     },
 
     checkUniq(name) {
-      const allergyNames = this.allergicHistory.map(el => {
+      const allergyNames = this.allergicHistory.map((el) => {
         return el.value
       })
       const seen = new Set(allergyNames)
@@ -224,8 +230,8 @@ export default {
     getAllergicHistoryCommonly() {
       const params = { type: '2', isCommon: '1' }
 
-      return peace.service.inquiry.searchIllInfo(params).then(res => {
-        this.allergicHistoryCommonly = res.data.map(item => {
+      return peace.service.inquiry.searchIllInfo(params).then((res) => {
+        this.allergicHistoryCommonly = res.data.map((item) => {
           return {
             value: item.name,
             checked: false,
@@ -243,11 +249,11 @@ export default {
         //   this.internalValue = this.internalValue.split(',')
         // }
 
-        this.internalValue.forEach(allergic => {
+        this.internalValue.forEach((allergic) => {
           this.allergicHistory.push({ value: allergic.value, checked: true, type: allergic.type })
 
-          if (this.allergicHistoryCommonly.find(item => item.value === allergic.value)) {
-            this.allergicHistoryCommonly.find(item => item.value === allergic.value).checked = true
+          if (this.allergicHistoryCommonly.find((item) => item.value === allergic.value)) {
+            this.allergicHistoryCommonly.find((item) => item.value === allergic.value).checked = true
           }
         })
       }
@@ -259,15 +265,15 @@ export default {
         type: '2'
       }
       this.showCancel = true
-      peace.service.inquiry.searchIllInfo(params).then(res => {
-        const include = res.data.find(allergy => {
+      peace.service.inquiry.searchIllInfo(params).then((res) => {
+        const include = res.data.find((allergy) => {
           return allergy.name === this.searchAllergicHistory
         })
         if (!include && this.searchAllergicHistory !== '') {
           res.data.push({ name: this.searchAllergicHistory, needAdd: true })
         }
 
-        this.allergicHistoryList = res.data.map(item => {
+        this.allergicHistoryList = res.data.map((item) => {
           return {
             text: item.name,
             needAdd: item.needAdd,
@@ -306,11 +312,11 @@ export default {
       // 选择'无'， 重置所有
       if (currentItem.value === '无') {
         this.allergicHistory = []
-        this.allergicHistoryCommonly.forEach(item => (item.checked = false))
+        this.allergicHistoryCommonly.forEach((item) => (item.checked = false))
       }
       // 非 '无'， 删除 '无' 选中
       else {
-        const index = this.allergicHistory.findIndex(item => item.value === '无')
+        const index = this.allergicHistory.findIndex((item) => item.value === '无')
 
         if (index !== -1) {
           this.allergicHistoryCommonly[0].checked = false
@@ -319,8 +325,8 @@ export default {
       }
       if (currentItem.checked) {
         currentItem.checked = false
-        const index = this.allergicHistory.findIndex(item => item.value === currentItem.value)
-        const indexCommonly = this.allergicHistoryCommonly.findIndex(item => item.value === currentItem.value)
+        const index = this.allergicHistory.findIndex((item) => item.value === currentItem.value)
+        const indexCommonly = this.allergicHistoryCommonly.findIndex((item) => item.value === currentItem.value)
 
         if (index !== -1) {
           this.allergicHistory.splice(index, 1)
@@ -346,7 +352,7 @@ export default {
       currentItem.checked = true
       this.allergicHistory.push(currentItem)
 
-      const indexCommonly = this.allergicHistoryCommonly.findIndex(item => item.value === currentItem.value)
+      const indexCommonly = this.allergicHistoryCommonly.findIndex((item) => item.value === currentItem.value)
       if (indexCommonly !== -1) {
         this.allergicHistoryCommonly[indexCommonly].checked = true
       }
@@ -354,7 +360,7 @@ export default {
     save() {
       const foodAllergy = []
       const drugAllergy = []
-      this.allergicHistory.forEach(allergy => {
+      this.allergicHistory.forEach((allergy) => {
         const type = allergy.type
         if (ALLERGY_TYPE.DRUG === type) {
           drugAllergy.push(allergy)
@@ -362,7 +368,7 @@ export default {
           foodAllergy.push(allergy)
         }
       })
-      let len = this.allergicHistory.map(item => item.value).join(',').length
+      let len = this.allergicHistory.map((item) => item.value).join(',').length
       if (len > 100) {
         return peace.util.alert('过敏史信息不得超过100字')
       }
@@ -404,12 +410,13 @@ export default {
 
     h4 {
       color: #999999;
-      margin: 10px 15px 10px 15px;
+      margin: 10px 16px;
+      font-weight: normal;
     }
 
     .checked-list,
     .not-checked-list {
-      padding: 0 15px;
+      padding: 0 16px;
       margin: 0 0 20px 0;
       font-size: 12px;
 

@@ -135,7 +135,7 @@
             <div class="fz-card flex column row"
                  v-for="(item,index) in returnVisitList"
                  :key='index'>
-              <div class="fz-card-time">{{item.timeSharing}} {{item.AMPM == "AM" ? "上午" : "下午"}}</div>
+              <div class="fz-card-time">{{item.timeSharing}} <span>{{item.AMPM == "AM" ? "上午" : "下午"}}</span></div>
               <div class="fz-card-tag">{{item.sourceLevelType == 1 ? "普通门诊" : "专家门诊"}}</div>
               <div class="flex between"
                    style="width:100%;">
@@ -1219,25 +1219,28 @@ export default {
       }
 
       .fz-card-list {
-        overflow-y: auto;
+        overflow-x: auto;
         .fz-card {
           align-items: flex-start;
           flex: none;
           width: 142px;
           // width: calc(50% - 5px);
-          height: 102px;
+          height: 103px;
           background: rgba(249, 249, 249, 1);
           border-radius: 7px;
           margin-right: 10px;
           margin-bottom: 0;
-          padding: 15px 10px;
+          padding: 10px 10px 16px;
           &:last-child {
             margin-right: 0;
           }
           .fz-card-time {
             font-size: 15px;
             color: #333;
-            font-weight: bold;
+            font-weight: 600;
+            span {
+              font-weight: normal;
+            }
           }
           .fz-card-tag {
             color: #999;

@@ -41,7 +41,9 @@
     <div class="save">
       <van-button @click="save"
                   round
-                  style="width: 100%;"
+                  style="margin-bottom: 15px;"
+                  size="large"
+                  class="full"
                   type="primary">保存</van-button>
     </div>
 

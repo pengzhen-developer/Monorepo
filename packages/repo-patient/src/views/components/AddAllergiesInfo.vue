@@ -18,7 +18,10 @@
       </van-cell>
     </van-cell-group>
     <van-button @click="save"
-                style="width: 100%;position: fixed;bottom: 0;left: 0;"
+                style="position: fixed;bottom: 15px;left: 0;"
+                round
+                size="large"
+                class="full"
                 type="primary">保存</van-button>
 
     <van-popup position="bottom"
@@ -43,7 +46,10 @@ export default {
       type: null,
       typeValue: null,
       showAllergicTypePicker: false,
-      allergicTypeColumns: [{ text: '药物', value: 2 }, { text: '食物/接触物', value: 6 }]
+      allergicTypeColumns: [
+        { text: '药物', value: 2 },
+        { text: '食物/接触物', value: 6 }
+      ]
     }
   },
   methods: {

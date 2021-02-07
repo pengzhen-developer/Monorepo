@@ -27,8 +27,7 @@
             <span>首页</span>
           </van-tabbar-item>
 
-          <template
-                    v-if="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0) > 0">
+          <template v-if="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0) > 0">
             <van-tabbar-item :info="this.$store.state.inquiry.sessions.reduce((accumulator, currentValue) => accumulator + currentValue.unread, 0)"
                              to="/message/index">
               <i class="van-icon van-icon-comment"
@@ -156,7 +155,7 @@ export default {
   flex-direction: column;
 
   /deep/ .van-tabbar {
-    border-top: 1px solid #eeeeee50;
+    border-top: 1px solid #eeeeee;
 
     [class*='van-hairline']::after {
       border-bottom: 0;

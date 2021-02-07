@@ -174,7 +174,7 @@ export default {
       min-width: 70px;
       position: relative;
       text-align: right;
-      font-family: monospace;
+      font-family: PingFangSC-Regular, PingFang SC;
       &.show {
         .m,
         .y {
@@ -186,8 +186,8 @@ export default {
         color: #999999;
       }
       .m {
-        font-size: 17px;
-        font-weight: 600;
+        font-size: 15px;
+        font-weight: 400;
         color: #333333;
       }
     }
@@ -215,7 +215,7 @@ export default {
       .case-left {
         width: 35px;
         height: 35px;
-        margin: 15px 15px 15px 14px;
+        margin: 15px 16px 15px 14px;
         text-align: left;
         position: relative;
       }

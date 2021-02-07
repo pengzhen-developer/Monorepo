@@ -40,7 +40,9 @@
     <div class="save">
       <van-button @click="save"
                   round
-                  style="width: 100%;"
+                  style="margin-bottom: 15px;"
+                  size="large"
+                  class="full"
                   type="primary">保存</van-button>
     </div>
 
@@ -226,12 +228,13 @@ export default {
 
     h4 {
       color: #999999;
-      margin: 10px 15px 10px 15px;
+      margin: 10px 16px;
+      font-weight: normal;
     }
 
     .checked-list,
     .not-checked-list {
-      padding: 0 15px;
+      padding: 0 16px;
       margin: 0 0 20px 0;
 
       .tag {

@@ -39,7 +39,10 @@
 
     <div class="save">
       <van-button @click="save"
-                  style="width: 100%;"
+                  round
+                  style="margin-bottom: 15px;"
+                  size="large"
+                  class="full"
                   type="primary">保存</van-button>
     </div>
 
@@ -91,8 +94,8 @@ export default {
 
   methods: {
     getAllFamilyHistoryCommonly() {
-      return peace.service.health.getPersonInfo({ type: 4, keyword: '' }).then(res => {
-        this.allFamilyHistoryCommonly = res.data.map(item => {
+      return peace.service.health.getPersonInfo({ type: 4, keyword: '' }).then((res) => {
+        this.allFamilyHistoryCommonly = res.data.map((item) => {
           return {
             value: item.name,
             checked: false
@@ -107,11 +110,11 @@ export default {
           this.internalValue = this.internalValue.split(',')
         }
 
-        this.internalValue.forEach(habit => {
+        this.internalValue.forEach((habit) => {
           this.allFamilyHistory.push({ value: habit, checked: true })
 
-          if (this.allFamilyHistoryCommonly.find(item => item.value === habit)) {
-            this.allFamilyHistoryCommonly.find(item => item.value === habit).checked = true
+          if (this.allFamilyHistoryCommonly.find((item) => item.value === habit)) {
+            this.allFamilyHistoryCommonly.find((item) => item.value === habit).checked = true
           }
         })
       }
@@ -122,15 +125,12 @@ export default {
         keyword: this.searchFamilyHistory,
         type: 4
       }
-      peace.service.health.getPersonInfo(params).then(res => {
-        this.allFamilyHistoryList = (res.data && res.data.length
-          ? res.data
-          : [{ name: this.searchFamilyHistory, needAdd: true }]
-        ).map(item => {
+      peace.service.health.getPersonInfo(params).then((res) => {
+        this.allFamilyHistoryList = (res.data && res.data.length ? res.data : [{ name: this.searchFamilyHistory, needAdd: true }]).map((item) => {
           return {
             text: item.name,
             needAdd: item.needAdd,
-            disabled: !!this.allFamilyHistory.find(temp => temp.value === item.name)
+            disabled: !!this.allFamilyHistory.find((temp) => temp.value === item.name)
           }
         })
 
@@ -152,11 +152,11 @@ export default {
       // 选择'无'， 重置所有
       if (currentItem.value === this.none) {
         this.allFamilyHistory = []
-        this.allFamilyHistoryCommonly.forEach(item => (item.checked = false))
+        this.allFamilyHistoryCommonly.forEach((item) => (item.checked = false))
       }
       // 非 '无'， 删除 '无' 选中
       else {
-        const index = this.allFamilyHistory.findIndex(item => item.value === this.none)
+        const index = this.allFamilyHistory.findIndex((item) => item.value === this.none)
 
         if (index !== -1) {
           this.allFamilyHistoryCommonly[0].checked = false
@@ -166,8 +166,8 @@ export default {
 
       if (currentItem.checked) {
         currentItem.checked = false
-        const index = this.allFamilyHistory.findIndex(item => item.value === currentItem.value)
-        const indexCommonly = this.allFamilyHistoryCommonly.findIndex(item => item.value === currentItem.value)
+        const index = this.allFamilyHistory.findIndex((item) => item.value === currentItem.value)
+        const indexCommonly = this.allFamilyHistoryCommonly.findIndex((item) => item.value === currentItem.value)
 
         if (index !== -1) {
           this.allFamilyHistory.splice(index, 1)
@@ -193,13 +193,13 @@ export default {
       currentItem.checked = true
       this.allFamilyHistory.push(currentItem)
 
-      const indexCommonly = this.allFamilyHistoryCommonly.findIndex(item => item.value === currentItem.value)
+      const indexCommonly = this.allFamilyHistoryCommonly.findIndex((item) => item.value === currentItem.value)
       if (indexCommonly !== -1) {
         this.allFamilyHistoryCommonly[indexCommonly].checked = true
       }
     },
     save() {
-      this.$emit('input', this.allFamilyHistory.map(item => item.value).toString())
+      this.$emit('input', this.allFamilyHistory.map((item) => item.value).toString())
 
       this.$emit('onSave')
     }
@@ -226,12 +226,13 @@ export default {
 
     h4 {
       color: #999999;
-      margin: 10px 15px 10px 15px;
+      margin: 10px 16px;
+      font-weight: normal;
     }
 
     .checked-list,
     .not-checked-list {
-      padding: 0 15px;
+      padding: 0 16px;
       margin: 0 0 20px 0;
 
       .tag {

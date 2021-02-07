@@ -358,6 +358,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.fixed-bottom {
+  bottom: 15px;
+  padding: 0 15px;
+  .btn {
+    margin: 0;
+    border-radius: 30px;
+  }
+}
 .nbsp {
   text-align-last: justify;
   padding-right: 4%;

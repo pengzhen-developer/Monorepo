@@ -269,7 +269,7 @@ export default {
   flex-direction: column;
 
   /deep/ .van-tabbar {
-    border-top: 1px solid #eeeeee50;
+    border-top: 1px solid #eeeeee;
 
     [class*='van-hairline']::after {
       border-bottom: 0;

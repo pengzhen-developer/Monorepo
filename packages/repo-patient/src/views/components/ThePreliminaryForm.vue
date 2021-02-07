@@ -260,14 +260,14 @@ export default {
     min-width: 70px;
     position: relative;
     text-align: right;
-    font-family: monospace;
+    font-family: PingFangSC-Regular, PingFang SC;
     .y {
       font-size: 12px;
       color: #999999;
     }
     .m {
-      font-size: 17px;
-      font-weight: 600;
+      font-size: 15px;
+      font-weight: 400;
       color: #333333;
     }
   }
@@ -285,10 +285,11 @@ export default {
     .case-card-note-content {
       display: flex;
       align-items: center;
-      padding: 6px 0px 6px 16px;
     }
     .case-left {
-      width: 50px;
+      width: 35px;
+      height: 35px;
+      margin: 15px 16px 15px 14px;
       text-align: left;
       position: relative;
     }

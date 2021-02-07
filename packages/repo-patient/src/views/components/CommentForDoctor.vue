@@ -47,8 +47,14 @@
         </van-cell-group>
       </div>
       <div class="fixed-bottom">
-        <div :class="['btn',canSubmit ? 'btn-blue' : 'disabled']"
-             @click="submit">提交</div>
+        <peace-button round
+                      class="full"
+                      size="large"
+                      type="primary"
+                      throttle
+                      :throttleTime="3000"
+                      :disabled="!canSubmit"
+                      @click="submit">提交</peace-button>
       </div>
     </div>
     <div class="form-body"
@@ -119,7 +125,7 @@ export default {
   },
   methods: {
     isComment(inquiryNo) {
-      peace.service.group.isComment({ inquiryNo: inquiryNo }).then(res => {
+      peace.service.group.isComment({ inquiryNo: inquiryNo }).then((res) => {
         if (res.code == '200') {
           this.hasComment = res.data.isComment
           if (!this.hasComment) {
@@ -131,7 +137,7 @@ export default {
       })
     },
     getComment(inquiryNo) {
-      peace.service.group.commentDetail({ inquiryNo: inquiryNo }).then(res => {
+      peace.service.group.commentDetail({ inquiryNo: inquiryNo }).then((res) => {
         if (res.code == '200') {
           this.doctorInfo = res.data.doctorInfo
           this.model.content = res.data.content
@@ -141,7 +147,7 @@ export default {
       })
     },
     getBaseInfo(inquiryNo) {
-      peace.service.group.getBaseInfo({ inquiryNo: inquiryNo }).then(res => {
+      peace.service.group.getBaseInfo({ inquiryNo: inquiryNo }).then((res) => {
         if (res.code == '200') {
           this.doctorInfo = res.data.doctorInfo
           this.placeholder = res.data.content
@@ -162,7 +168,7 @@ export default {
     },
     setTags() {
       let labels = []
-      this.labels.map(item => {
+      this.labels.map((item) => {
         if (item.select) {
           labels.push(item.id)
         }
@@ -258,7 +264,7 @@ export default {
   .label {
     height: 33px;
     border-radius: 33px;
-    border: 1px solid rgba(200, 200, 200, 1);
+    border: 0.5px solid rgba(200, 200, 200, 1);
     color: #666;
     font-size: 13px;
     width: 30%;

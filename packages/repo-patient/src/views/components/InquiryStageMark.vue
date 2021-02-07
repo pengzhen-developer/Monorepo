@@ -7,8 +7,6 @@
         <span :key="index"
               :class="{'active':current==stage.key}">{{stage.value}}</span>
         <van-icon :name="require('@src/assets/images/icons/icon-next.jpg')"
-                  width="7"
-                  height="12"
                   :key="index"
                   v-if="index!=stages.length-1"></van-icon>
       </template>
@@ -75,7 +73,7 @@ export default {
   padding: 15px 16px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   background: #fff;
   width: 100%;
 
@@ -86,9 +84,11 @@ export default {
     z-index: 99;
     box-sizing: border-box;
   }
+
   span {
     color: #999;
     font-size: 14px;
+    line-height: 1;
     &.active {
       color: $primary;
     }

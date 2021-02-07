@@ -700,6 +700,10 @@ export default {
 .btn-group {
   margin-top: -10px;
   background-color: #fff;
+  .btn {
+    margin: 15px 16px;
+    border-radius: 30px;
+  }
 }
 .btn-blue {
   border-color: #00c6ae;

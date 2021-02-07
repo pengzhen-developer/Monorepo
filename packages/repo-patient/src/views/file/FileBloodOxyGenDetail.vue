@@ -51,6 +51,9 @@
 
     <div class="file-blood-detail-control">
       <van-button @click="goReportAddData"
+                  round
+                  size="large"
+                  class="full"
                   type="primary">手动添加</van-button>
     </div>
   </div>
@@ -113,12 +116,12 @@ export default {
     getOscillogram() {
       const params = $peace.util.decode($peace.$route.params.json)
 
-      peace.service.health.getOscillogram(params).then(res => {
+      peace.service.health.getOscillogram(params).then((res) => {
         const upData = res.data.upInfo
         const downData = res.data.downInfo
 
-        const xAxisData = downData.bloodOxygenData.map(item => item.measureTime.toDate().formatDate('MM-dd'))
-        const seriesDataOne = downData.bloodOxygenData.map(item => item.bloodOxygen)
+        const xAxisData = downData.bloodOxygenData.map((item) => item.measureTime.toDate().formatDate('MM-dd'))
+        const seriesDataOne = downData.bloodOxygenData.map((item) => item.bloodOxygen)
         let lastData = downData.bloodOxygenData[downData.bloodOxygenData.length - 1]
         this.$peace.cache.set('bloodOxyGenLastData', lastData)
         this.options.xAxis.data = xAxisData
@@ -239,7 +242,6 @@ export default {
       width: 50%;
 
       .van-button {
-        width: 100%;
         border-color: transparent !important;
         background-color: transparent !important;
         color: #000 !important;
@@ -271,15 +273,6 @@ export default {
     .charts {
       width: 100%;
       height: 150px;
-    }
-  }
-
-  .file-blood-detail-control {
-    background: #fff;
-    padding: 0 10px;
-
-    .van-button {
-      width: 100%;
     }
   }
 }

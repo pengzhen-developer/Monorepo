@@ -18,11 +18,11 @@
                             v-if="inquiryStatus==Constant.INQUIRY_STATUS.问诊中">
               <template #default="timeData">
                 <span class="text-gery"
-                      v-if="timeData.hours>=1">(<span class="text-red">{{timeData.hours}}小时</span>后结束)</span>
+                      v-if="timeData.hours>=1">（<span class="text-red">{{timeData.hours}}小时</span>后结束）</span>
                 <span class="text-gery"
-                      v-else-if="timeData.minutes>=1&&timeData.hours<1">(<span class="text-red">{{timeData.minutes}}分钟</span>后结束)</span>
+                      v-else-if="timeData.minutes>=1&&timeData.hours<1">（<span class="text-red">{{timeData.minutes}}分钟</span>后结束）</span>
                 <span class="text-gery"
-                      v-else-if="timeData.minutes<1&&timeData.seconds>0">(<span class="text-red">1分钟</span>后结束)</span>
+                      v-else-if="timeData.minutes<1&&timeData.seconds>0">（<span class="text-red">1分钟</span>后结束）</span>
                 <span v-else></span>
               </template>
             </van-count-down>
@@ -707,7 +707,7 @@ export default {
   .header-left {
     font-size: 13px;
     color: #000;
-    padding-left: 12px;
+    padding-left: 8px;
     position: relative;
     display: flex;
     align-items: center;
@@ -723,7 +723,7 @@ export default {
       border-radius: 4px;
       background: #999;
       position: absolute;
-      left: 4px;
+      left: 0px;
       top: 50%;
       transform: translateY(-50%);
     }

@@ -78,3 +78,8 @@ input {
   color: #000; // 其实改color的时候，文字颜色和光标颜色都变了
   caret-color: $primary; //只改光标颜色
 }
+
+//input  搜索icon
+.van-icon.van-icon-search {
+  color: #c7c7c7;
+}

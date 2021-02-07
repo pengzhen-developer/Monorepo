@@ -185,6 +185,7 @@ export default {
 
     .message-item-avatar {
       width: 50px;
+      height: 50px;
 
       img {
         width: 50px;
@@ -207,13 +208,15 @@ export default {
 
     .message-item-detail {
       width: calc(100% - 50px);
+      height: 50px;
       padding: 0 10px;
-
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       .message-item-detail-title {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin: 0 0 5px 0;
 
         .message-item-detail-title-doctor {
           font-size: 16px;

@@ -294,7 +294,12 @@ export default {
       font-size: inherit;
       padding: 5px 5px;
       justify-content: center;
-
+      &:first-child {
+        padding-left: 0;
+      }
+      &:last-child {
+        padding-right: 0;
+      }
       .block-tit {
         text-align: center;
         font-size: 16px;

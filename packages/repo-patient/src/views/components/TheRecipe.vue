@@ -320,6 +320,7 @@ export default {
   background: #fff;
   .btn {
     margin: 10px 15px;
+    border-radius: 30px;
   }
 }
 .shadow {

@@ -12,10 +12,12 @@
     </div>
 
     <div class="layout-footer">
-      <van-button size="large"
-                  :loading="loading"
-                  type="primary"
-                  @click="confirm">确定</van-button>
+      <peace-button size="large"
+                    round
+                    class="full"
+                    :loading="loading"
+                    type="primary"
+                    @click="confirm">确定</peace-button>
     </div>
   </div>
 </template>
@@ -55,7 +57,7 @@ export default {
         files = [file]
       }
 
-      files.forEach(item => {
+      files.forEach((item) => {
         if (item.type !== 'image/jpeg' && item.type !== 'image/jpg' && item.type !== 'image/png') {
           $peace.util.alert('请上传 jpeg、jpg、png 格式图片')
           flag = false
@@ -84,13 +86,13 @@ export default {
         if (Array.isArray(dataArray) && dataArray.length) {
           // 压缩
           const compress = () => {
-            return new Promise(resolve => {
+            return new Promise((resolve) => {
               const files = []
               for (let i = 0; i < dataArray.length; i++) {
                 new Compressor(dataArray[i].file, {
                   quality: 0.4,
                   convertSize: 50000,
-                  success: fileBlob => {
+                  success: (fileBlob) => {
                     files.push(new File([fileBlob], fileBlob.name, { type: fileBlob.type }))
 
                     if (files.length === dataArray.length) {
@@ -104,17 +106,17 @@ export default {
 
           // 上传
           compress()
-            .then(files => {
-              let Promises = files.map(item => {
+            .then((files) => {
+              let Promises = files.map((item) => {
                 return this.uploader(item)
               })
-              Promise.all(Promises).then(datas => {
+              Promise.all(Promises).then((datas) => {
                 this.list = this.list.concat(datas)
 
                 resolve(this.list)
               })
             })
-            .catch(err => {
+            .catch((err) => {
               peace.util.alert(err.msg || '图片上传失败，请稍后再试')
               this.loading = false
               reject(err)
@@ -134,10 +136,10 @@ export default {
       return new Promise((resolve, reject) => {
         peace.service.inquiry
           .images(params)
-          .then(res => {
+          .then((res) => {
             resolve(res.data[0])
           })
-          .catch(error => {
+          .catch((error) => {
             peace.util.alert('图片上传失败，请稍后再试')
             reject(error)
           })
@@ -176,6 +178,7 @@ export default {
   }
 
   .layout-footer {
+    padding-bottom: 15px;
   }
 }
 </style>
