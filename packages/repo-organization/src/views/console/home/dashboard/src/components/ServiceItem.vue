@@ -264,7 +264,7 @@ export default {
 </style>
 
 <style lang="scss">
-.service-item-confirm {
+.el-message-box.service-item-confirm {
   padding-bottom: 0;
   width: auto;
 
