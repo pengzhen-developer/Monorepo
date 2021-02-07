@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center full-width bg-white">
-    <el-tabs class="layout-tabs"
+    <el-tabs class="layout-tabs element-ui-default"
              v-model="tabActive"
              v-on:tab-click="tabClick"
              v-on:tab-remove="tabRemove">

@@ -33,6 +33,7 @@ module.exports = {
     // externals 配置后，import 将不会被 webpack 编译
     // 相关资源可以通过 CDN 服务器从 index.html 引入, 避免 vendors 过大
     config.externals = {
+      // e.g.
       ['vue']: 'Vue',
       ['vuex']: 'Vuex',
       ['vue-router']: 'VueRouter',
