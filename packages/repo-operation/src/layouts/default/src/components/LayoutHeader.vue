@@ -1,5 +1,5 @@
 <template>
-  <q-toolbar class="q-px-none"
+  <q-toolbar class="q-px-none "
              style="height: 80px;">
     <div class="full-width full-height flex justify-between items-center bg-primary">
       <div style="width: 240px; background: #2c8d98; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);"
@@ -27,6 +27,7 @@
                     leave-active-class="animated jump-up">
           <div class="animated jump-down">
             <el-menu mode="horizontal"
+                     class="element-ui-default"
                      v-bind:default-active="defaultActive"
                      v-on:select="parentMenuSelect">
               <el-menu-item v-for="menu in menuTree"

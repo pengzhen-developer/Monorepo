@@ -2,6 +2,7 @@
   <q-scroll-area v-bind:thumb-style="thumbStyle"
                  v-bind:style="scrollAreaStyle">
     <el-menu v-on:select="menuSelect"
+             class="element-ui-default"
              v-bind:default-active="defaultActive">
 
       <LayoutNavItem v-for="menu in childrenMenuTree"
