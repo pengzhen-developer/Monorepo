@@ -78,7 +78,7 @@ export const removeAccountMenuList = () => {
  * @returns
  */
 export const removeOriginalHref = () => {
-  window.sessionStorage.removeItem('original-href')
+  Peace.cache.sessionStorage.remove('original-href')
 }
 
 export default {
