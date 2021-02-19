@@ -53,7 +53,7 @@
 
         .message-body {
           color: rgba(255, 255, 255, 1);
-          background: rgba(0, 198, 174, 1);
+          background: var(--q-color-primary);
         }
 
         .message-avatar {

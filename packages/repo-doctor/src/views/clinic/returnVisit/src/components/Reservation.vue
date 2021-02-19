@@ -8,8 +8,8 @@
                type="primary"
                v-on:click="getReservationList">查看预约记录</el-button>
 
-    <peace-dialog title="复诊预约记录"
-                  v-bind:visible.sync="dialog.visible">
+    <PeaceDialog title="复诊预约记录"
+                 v-bind:visible.sync="dialog.visible">
       <PeaceTable ref="table"
                   v-bind:data="dialog.data">
         <PeaceTableColumn label="姓名"
@@ -26,11 +26,10 @@
                           prop="returnVisitTime"></PeaceTableColumn>
         <PeaceTableColumn label="病情描述"
                           min-width="150px"
-                          align="left"
                           prop="illDescription"></PeaceTableColumn>
 
       </PeaceTable>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

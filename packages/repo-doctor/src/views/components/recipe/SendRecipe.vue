@@ -1,104 +1,94 @@
 <template>
   <div>
-    <el-alert style="border-radius: 0;"
-              type="success"
-              v-bind:closable="false">
-      <div slot="title">
-        <span>开处方</span>
-        <i v-on:click="close"
-           class="el-alert__closebtn el-icon-error"></i>
-      </div>
-    </el-alert>
-
     <div class="q-px-md q-mt-sm">
       <div class="q-mb-md text-center">
         <p class="text-subtitle1">{{ docInfo.netHospital_name }}</p>
         <p class="text-h5">普通处方笺</p>
       </div>
 
-      <div class="row q-mb-md">
-        <div class="col">
-          <span class="text-grey-7">姓名</span>
-          <span class="q-mx-sm">：</span>
-          <span>{{ caseInfo.patient_name }}</span>
-        </div>
-        <div class="col">
-          <span class="text-grey-7">性别</span>
-          <span class="q-mx-sm">：</span>
-          <span>{{ caseInfo.sex }}</span>
-        </div>
-        <div class="col">
-          <span class="text-grey-7">年龄</span>
-          <span class="q-mx-sm">：</span>
-          <span>{{ caseInfo.age }}</span>
-        </div>
-        <div class="col">
-          <span class="text-grey-7">科别</span>
-          <span class="q-mx-sm">：</span>
-          <span>{{ caseInfo.netdept_child }}</span>
-        </div>
-        <div class="col"
-             v-if="showPayType">
-          <span class="text-grey-7">费用</span>
-          <span class="q-mx-sm">：</span>
-          <span>{{ payTypeText }}</span>
-        </div>
-      </div>
+      <el-form v-bind:model="{}"
+               space-sm
+               label-width="auto">
+        <div class="row">
+          <div class="col">
+            <el-form-item label="姓名：">
+              <span>{{ caseInfo.patient_name }}</span>
+            </el-form-item>
+          </div>
+          <div class="col">
+            <el-form-item label="性别：">
+              <span>{{ caseInfo.sex }}</span>
+            </el-form-item>
+          </div>
+          <div class="col">
+            <el-form-item label="年龄：">
+              <span>{{ caseInfo.age }}</span>
+            </el-form-item>
+          </div>
+          <div class="col">
+            <el-form-item label="科别：">
+              <span>{{ caseInfo.netdept_child }}</span>
+            </el-form-item>
+          </div>
+          <div v-if="showPayType"
+               class="col">
+            <el-form-item label="费用：">
+              <span>{{ payTypeText }}</span>
+            </el-form-item>
+          </div>
 
-      <div class="row q-mb-md">
-        <div class="col-12 flex items-center">
-          <span class="text-grey-7 text-justify"
-                style="width: 60px;">体重</span>
-          <span class="q-mx-sm">：</span>
-          <div class="flex">
-            <el-input-number style="width: 120px;"
-                             controls-position="right"
-                             v-bind:min="0"
-                             v-bind:max="200"
-                             v-model="weight"
-                             v-bind:precision="1">
-            </el-input-number>
-            <div class="flex items-center q-px-sm"
-                 style="border-radius: 5px">
-              kg
-            </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <el-form-item label="体重：">
+              <div class="flex">
+                <el-input-number style="width: 100px;"
+                                 controls-position="right"
+                                 v-bind:min="0"
+                                 v-bind:max="200"
+                                 v-model="weight"
+                                 v-bind:precision="1">
+                </el-input-number>
+                <div class="flex items-center q-px-sm"
+                     style="border-radius: 5px">
+                  kg
+                </div>
+              </div>
+            </el-form-item>
           </div>
         </div>
-      </div>
 
-      <div class="row q-mb-md">
-        <div class="col-12 flex items-center">
-          <span class="text-grey-7 text-justify"
-                style="width: 60px;">初步诊断</span>
-          <span class="q-mx-sm">：</span>
-          <!-- <span>{{ caseInfo.diagnose }}</span> -->
+        <div class="row">
+          <div class="col">
+            <el-form-item required=""
+                          v-bind:show-message="false"
+                          label="初步诊断：">
+              <template v-if="diagnoseList && diagnoseList.length > 0">
+                <el-tag v-bind:key="item.id"
+                        class="tag-style"
+                        type="info"
+                        v-for="item in diagnoseList">{{ item.name }}</el-tag>
+                <el-button v-on:click="changeDialog('疾病诊断')"
+                           type="text">修改</el-button>
+              </template>
 
-          <template v-if="diagnoseList && diagnoseList.length > 0">
-            <el-tag v-bind:key="item.id"
-                    class="tag-style"
-                    type="info"
-                    v-for="item in diagnoseList">{{ item.name }}</el-tag>
-            <el-button v-on:click="changeDialog('疾病诊断')"
-                       type="text">修改</el-button>
-          </template>
-
-          <template v-else>
-            <el-button v-on:click="showDialog('疾病诊断')"
-                       type="text">请选择</el-button>
-          </template>
-
+              <template v-else>
+                <el-button v-on:click="showDialog('疾病诊断')"
+                           type="text">请选择</el-button>
+              </template>
+            </el-form-item>
+          </div>
         </div>
 
-      </div>
-
-      <div class="row q-mb-md">
-        <div class="col-12 flex items-center">
-          <span class="text-grey-7 text-justify"
-                style="width: 60px;">过敏史</span>
-          <span class="q-mx-sm">：</span>
-          <span>{{ caseInfo.allergy_history || '无' }}</span>
+        <div class="row">
+          <div class="col">
+            <el-form-item label="过敏史：">
+              <span>{{ caseInfo.allergy_history || '无' }}</span>
+            </el-form-item>
+          </div>
         </div>
-      </div>
+      </el-form>
 
       <el-divider style="margin: 8px 0;"></el-divider>
 
@@ -123,9 +113,9 @@
       </div>
     </div>
 
-    <peace-dialog width="500px"
-                  title="库存提示"
-                  v-bind:visible.sync="stock.visible">
+    <PeaceDialog width="500px"
+                 title="库存提示"
+                 v-bind:visible.sync="stock.visible">
       <div class="q-pa-md">
         <div class="q-mb-md">
           <p v-for="(item, index) in stock.data"
@@ -145,14 +135,14 @@
                      v-on:click="stock.visible = false">知道了</el-button>
         </div>
       </div>
-    </peace-dialog>
+    </PeaceDialog>
 
     <!-- 系统审方结果 -->
-    <peace-dialog title="系统审方结果"
-                  v-bind:visible.sync="audit.visible"
-                  v-loading="sending"
-                  element-loading-text="拼命加载中"
-                  element-loading-background="rgba(0, 0, 0, 0.4)">
+    <PeaceDialog title="系统审方结果"
+                 v-bind:visible.sync="audit.visible"
+                 v-loading="sending"
+                 element-loading-text="拼命加载中"
+                 element-loading-background="rgba(0, 0, 0, 0.4)">
       <RecipeAudit v-bind:data="audit.data"></RecipeAudit>
 
       <div class="q-my-md flex justify-center">
@@ -160,11 +150,11 @@
         <el-button type="primary"
                    v-on:click="audit.visible = false">返回修改</el-button>
       </div>
-    </peace-dialog>
+    </PeaceDialog>
 
     <!-- 修改诊断 -->
-    <peace-dialog v-bind:title="'添加' + dialog.title"
-                  v-bind:visible.sync="dialog.visible">
+    <PeaceDialog v-bind:title="'添加' + dialog.title"
+                 v-bind:visible.sync="dialog.visible">
       <div class="q-mb-10">
 
         <el-select v-bind:remote-method="getPresent"
@@ -212,7 +202,7 @@
         <el-button v-on:click="saveItem"
                    type="primary">保存</el-button>
       </div>
-    </peace-dialog>
+    </PeaceDialog>
 
   </div>
 </template>
@@ -454,14 +444,17 @@ export default {
      * 发送处方
      */
     send() {
-      const validObject = this.$refs.drugSelect.validDrugList()
-
-      if (validObject.isValid === false) {
-        return Peace.util.warning(validObject.message)
+      if (this.inquiryNo && this.diagnoseList.length === 0) {
+        return Peace.util.warning('请选择初步诊断')
       }
 
-      if (this.drugList.length < 1) {
+      if (this.drugList.length === 0) {
         return Peace.util.warning('请添加处方药品')
+      }
+
+      const validObject = this.$refs.drugSelect.validDrugList()
+      if (validObject.isValid === false) {
+        return Peace.util.warning(validObject.message)
       }
 
       if (this.drugList.some((drug) => drug.drugStatus === 'disable')) {
@@ -654,13 +647,13 @@ export default {
 }
 
 .tag-style {
-  margin: 4px 10px 4px 0;
+  margin: 4px 8px 4px 0;
   min-width: 62px;
   text-align: center;
   border: none;
   border-radius: 2px;
-  height: 28px;
-  line-height: 28px;
+  height: 24px;
+  line-height: 24px;
 }
 
 ::v-deep .el-loading-spinner {

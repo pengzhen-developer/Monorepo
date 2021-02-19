@@ -12,13 +12,13 @@
         <span>{{ netDeptName }}</span>
       </div>
     </div>
-    <peace-dialog :visible.sync="referralVisible"
-                  v-if="referralVisible"
-                  append-to-body
-                  title="转诊详情">
+    <PeaceDialog :visible.sync="referralVisible"
+                 v-if="referralVisible"
+                 append-to-body
+                 title="转诊详情">
       <TheTransferDetail :data="referralData"
                          @close="() => referralVisible = false"></TheTransferDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

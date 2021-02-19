@@ -170,24 +170,24 @@
       </div>
     </el-card>
 
-    <peace-dialog :visible.sync="caseDialog.visible"
-                  append-to-body
-                  title="病历详情">
+    <PeaceDialog :visible.sync="caseDialog.visible"
+                 append-to-body
+                 title="病历详情">
       <InquiryNewCaseDetail :data="caseDialog.data"></InquiryNewCaseDetail>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog :visible.sync="optionDialog.visible"
-                  append-to-body
-                  title="诊疗记录">
+    <PeaceDialog :visible.sync="optionDialog.visible"
+                 append-to-body
+                 title="诊疗记录">
       <InquiryOptionRecord :data="optionDialog.data"></InquiryOptionRecord>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog v-if="dialog.visible"
-                  :visible.sync="dialog.visible"
-                  append-to-body
-                  title="处方详情">
+    <PeaceDialog v-if="dialog.visible"
+                 :visible.sync="dialog.visible"
+                 append-to-body
+                 title="处方详情">
       <FirstOptionDetail :prescriptionCode="dialog.data"></FirstOptionDetail>
-    </peace-dialog>
+    </PeaceDialog>
 
   </div>
 </template>

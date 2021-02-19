@@ -13,11 +13,11 @@
       <p class="record-case-right-text">{{ data.netHospitalName }} | {{ data.netDeptName }}</p>
     </div>
 
-    <peace-dialog :visible.sync="caseDialog.visible"
-                  append-to-body
-                  title="病历详情">
+    <PeaceDialog :visible.sync="caseDialog.visible"
+                 append-to-body
+                 title="病历详情">
       <InquiryNewCaseDetail :data="caseDialog.data"></InquiryNewCaseDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

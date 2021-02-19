@@ -186,9 +186,9 @@
       </PeaceTable>
     </div>
 
-    <peace-dialog :visible.sync="receiveDialog.visible"
-                  class="receive-dialog"
-                  title="接单意见">
+    <PeaceDialog :visible.sync="receiveDialog.visible"
+                 class="receive-dialog"
+                 title="接单意见">
       <el-form :model="receiveDialog.data"
                inline
                label-width="90px">
@@ -279,7 +279,7 @@
           </div>
         </template>
       </el-form>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

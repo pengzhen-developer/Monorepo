@@ -118,19 +118,19 @@
     </div>
 
     <!-- 模态框 - 填写拒绝原因 -->
-    <peace-dialog width="348px"
-                  top="25vh"
-                  class="no-header"
-                  v-if="overInquiryVisible"
-                  v-bind:visible.sync="overInquiryVisible">
+    <PeaceDialog width="348px"
+                 top="25vh"
+                 class="no-header"
+                 v-if="overInquiryVisible"
+                 v-bind:visible.sync="overInquiryVisible">
       <OverInquiry v-on:close="overInquiryVisible = false"></OverInquiry>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog v-bind:visible.sync="caseDetail.visible"
-                  append-to-body
-                  title="病历详情">
+    <PeaceDialog v-bind:visible.sync="caseDetail.visible"
+                 append-to-body
+                 title="病历详情">
       <CaseDetail v-bind:data="caseDetail.data"></CaseDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

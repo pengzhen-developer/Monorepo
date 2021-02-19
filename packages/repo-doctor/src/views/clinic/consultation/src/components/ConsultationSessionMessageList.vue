@@ -172,27 +172,27 @@
           </div>
         </template> -->
 
-        <peace-dialog :visible.sync="caseDetail.visible"
-                      v-if="caseDetail.visible"
-                      appendToBody
-                      title="病历详情">
+        <PeaceDialog :visible.sync="caseDetail.visible"
+                     v-if="caseDetail.visible"
+                     appendToBody
+                     title="病历详情">
           <ConsultationSessionCaseDetail :data="caseDetail.data"></ConsultationSessionCaseDetail>
-        </peace-dialog>
+        </PeaceDialog>
 
-        <peace-dialog :visible.sync="recipeDetail.visible"
-                      v-if="recipeDetail.visible"
-                      appendToBody
-                      title="处方详情">
+        <PeaceDialog :visible.sync="recipeDetail.visible"
+                     v-if="recipeDetail.visible"
+                     appendToBody
+                     title="处方详情">
           <ConsultationSessionRecipeDetail :data="recipeDetail.data">
           </ConsultationSessionRecipeDetail>
-        </peace-dialog>
+        </PeaceDialog>
 
-        <peace-dialog :visible.sync="consultDetail.visible"
-                      v-if="consultDetail.visible"
-                      appendToBody
-                      title="会诊单详情">
+        <PeaceDialog :visible.sync="consultDetail.visible"
+                     v-if="consultDetail.visible"
+                     appendToBody
+                     title="会诊单详情">
           <ConsultationDetail :data="consultDetail.data"></ConsultationDetail>
-        </peace-dialog>
+        </PeaceDialog>
       </div>
     </template>
   </div>

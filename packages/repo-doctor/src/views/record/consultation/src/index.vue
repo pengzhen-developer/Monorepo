@@ -13,7 +13,8 @@
     <div :key="source.action.OUT"
          class="content"
          v-if="view.action === source.action.OUT">
-      <el-form :model="view.outModel"
+      <el-form v-bind:model="view.outModel"
+               space-none
                inline>
         <el-form-item label="邀请医生">
           <el-input placeholder
@@ -49,12 +50,10 @@
                           prop="familyAge"></PeaceTableColumn>
         <PeaceTableColumn label="性别"
                           prop="familySex"></PeaceTableColumn>
-        <PeaceTableColumn align="left"
-                          label="疾病诊断"
+        <PeaceTableColumn label="疾病诊断"
                           min-width="200px"
                           prop="familyDisagnose"></PeaceTableColumn>
-        <PeaceTableColumn align="left"
-                          label="邀请机构"
+        <PeaceTableColumn label="邀请机构"
                           min-width="160px"
                           prop="toHospitalName"></PeaceTableColumn>
         <PeaceTableColumn label="邀请医生"
@@ -88,7 +87,8 @@
     <div :key="source.action.IN"
          class="content"
          v-if="view.action === source.action.IN">
-      <el-form :model="view.inModel"
+      <el-form v-bind:model="view.inModel"
+               space-none
                inline>
         <el-form-item label="申请医生">
           <el-input placeholder
@@ -124,12 +124,10 @@
                           prop="familyAge"></PeaceTableColumn>
         <PeaceTableColumn label="性别"
                           prop="familySex"></PeaceTableColumn>
-        <PeaceTableColumn align="left"
-                          label="疾病诊断"
+        <PeaceTableColumn label="疾病诊断"
                           min-width="200px"
                           prop="familyDisagnose"></PeaceTableColumn>
-        <PeaceTableColumn align="left"
-                          label="申请机构"
+        <PeaceTableColumn label="申请机构"
                           min-width="160px"
                           prop="fromHospitalName"></PeaceTableColumn>
         <PeaceTableColumn label="申请医生"
@@ -159,17 +157,17 @@
       </PeaceTable>
     </div>
 
-    <peace-dialog :visible.sync="dialog.visible"
-                  title="会诊详情">
+    <PeaceDialog :visible.sync="dialog.visible"
+                 title="会诊详情">
       <TheConsultationDetail :data="dialog.data"
                              @close="() => dialog.visible = false"></TheConsultationDetail>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog :visible.sync="chatRecord.visible"
-                  title="会诊详情">
+    <PeaceDialog :visible.sync="chatRecord.visible"
+                 title="会诊详情">
       <ConsultationSessionMessageList :data="chatRecord.data"
                                       @close="() => chatRecord.visible = false"></ConsultationSessionMessageList>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

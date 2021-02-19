@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-form :model="view.model"
+    <el-form v-bind:model="view.model"
+             space-none
              inline>
       <el-form-item label="患者姓名">
         <el-input v-model="view.model.name"></el-input>
@@ -41,8 +42,7 @@
       <PeaceTableColumn label="咨询单号"
                         prop="inquiry_no"
                         min-width="180"></PeaceTableColumn>
-      <PeaceTableColumn align="left"
-                        label="患者姓名"
+      <PeaceTableColumn label="患者姓名"
                         prop="name"
                         min-width="120"></PeaceTableColumn>
       <PeaceTableColumn label="性别"
@@ -62,11 +62,11 @@
       </PeaceTableColumn>
       <PeaceTableColumn label="订单金额"
                         prop="order_money"
-                        width="120">
+                        min-width="80">
       </PeaceTableColumn>
       <PeaceTableColumn label="订单时间"
                         prop="created_time"
-                        width="180"></PeaceTableColumn>
+                        min-width="160"></PeaceTableColumn>
       <PeaceTableColumn label="订单状态"
                         prop="status"
                         min-width="120"></PeaceTableColumn>
@@ -82,16 +82,16 @@
       </PeaceTableColumn>
     </PeaceTable>
 
-    <peace-dialog title="问诊记录"
-                  v-bind:visible.sync="dialog.visible"
-                  v-if="dialog.visible">
+    <PeaceDialog title="问诊记录"
+                 v-bind:visible.sync="dialog.visible"
+                 v-if="dialog.visible">
 
       <MessageList v-bind:data="dialog.data"
                    v-bind:doctorInfo="dialog.doctorInfo"
                    v-bind:patientInfo="dialog.patientInfo">
       </MessageList>
 
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

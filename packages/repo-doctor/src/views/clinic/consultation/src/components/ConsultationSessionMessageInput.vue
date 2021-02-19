@@ -44,9 +44,9 @@
       </el-button>
     </div>
 
-    <peace-dialog :visible.sync="invitedDialog.visible"
-                  class="invited-dialog"
-                  title="邀请协同医生">
+    <PeaceDialog :visible.sync="invitedDialog.visible"
+                 class="invited-dialog"
+                 title="邀请协同医生">
       <div>
         <el-input placeholder="请输入医生姓名、职称、科室"
                   style="width: calc(100% - 120px); margin-right: 20px;"
@@ -117,18 +117,18 @@
                      type="primary">确定</el-button>
         </div>
       </template>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog :visible.sync="consultSuggestDialog.visible"
-                  title="填写会诊小结">
+    <PeaceDialog :visible.sync="consultSuggestDialog.visible"
+                 title="填写会诊小结">
       <ConsultationSessionSuggest @close="consultSuggestDialog.visible = false"></ConsultationSessionSuggest>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog :visible.sync="caseDialog.visible"
-                  v-if="caseDialog.visible"
-                  title="病历详情">
+    <PeaceDialog :visible.sync="caseDialog.visible"
+                 v-if="caseDialog.visible"
+                 title="病历详情">
       <ConsultationSessionCaseDetail :data="caseDialog.data"></ConsultationSessionCaseDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

@@ -51,7 +51,7 @@
                     pagination
                     v-bind:row-class-name="rowClass"
                     v-bind:show-header="false">
-          <PeaceTableColumn align="left">
+          <PeaceTableColumn>
             <template slot-scope="scope">
               <el-tag class="q-mr-sm"
                       effect="dark"
@@ -76,14 +76,14 @@
     </div>
 
     <!-- 添加药品用法 -->
-    <peace-dialog title="药品用法"
-                  append-to-body
-                  v-if="drugUsageDialog.visible"
-                  v-bind:visible.sync="drugUsageDialog.visible">
+    <PeaceDialog title="药品用法"
+                 append-to-body
+                 v-if="drugUsageDialog.visible"
+                 v-bind:visible.sync="drugUsageDialog.visible">
       <CommonlyPrescriptionDrugUsageAdd v-bind:data="prescriptionDrug"
                                         v-on:success="onDrugUsageSuccess"
                                         v-on:cancel="onDrugUsageCancel"></CommonlyPrescriptionDrugUsageAdd>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

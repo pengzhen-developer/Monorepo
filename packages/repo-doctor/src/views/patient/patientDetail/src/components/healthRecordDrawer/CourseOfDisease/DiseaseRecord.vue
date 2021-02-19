@@ -133,9 +133,9 @@
       </div>
     </div>
 
-    <peace-dialog append-to-body
-                  title="诊断"
-                  :visible.sync="dialog.diagnoseVisible">
+    <PeaceDialog append-to-body
+                 title="诊断"
+                 :visible.sync="dialog.diagnoseVisible">
       <div style="margin-bottom: 10px">
         <el-select :remote-method="getPresent"
                    @change="chooseItem"
@@ -151,11 +151,10 @@
         </el-select>
       </div>
 
-      <div style="margin: 10px 0;"
-           v-if="dialog.chooseData.length > 0">
+      <div v-if="dialog.chooseData.length > 0">
         <p>已选诊断</p>
 
-        <div style="margin: 10px 0;">
+        <div class="q-my-10">
           <el-tag :key="item + index.toString()"
                   @close="closeItem(item)"
                   closable
@@ -164,10 +163,10 @@
         </div>
       </div>
 
-      <div style="margin: 10px 0;">
+      <div>
         <p>常见诊断</p>
 
-        <div style="margin: 10px 0;">
+        <div class="q-my-10">
           <el-tag :key="item + index.toString()"
                   :type="dialog.chooseData.findIndex((existItem) => existItem === item) === -1 ? 'info' : 'primary'"
                   @click="chooseItem(item)"
@@ -181,11 +180,11 @@
         <el-button @click="saveItem"
                    type="primary">保存</el-button>
       </div>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog append-to-body
-                  title="添加标签"
-                  :visible.sync="dialog.visible">
+    <PeaceDialog append-to-body
+                 title="添加标签"
+                 :visible.sync="dialog.visible">
       <div style="margin-bottom: 10px">
         <el-select @change="chooseItem"
                    allow-create
@@ -230,7 +229,7 @@
         <el-button @click="saveLabel"
                    type="primary">保存</el-button>
       </div>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

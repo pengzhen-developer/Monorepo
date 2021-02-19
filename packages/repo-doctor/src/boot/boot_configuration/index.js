@@ -13,7 +13,7 @@ export default {
    * 可选： #00C6AE / #3099A6
    */
   theme: {
-    primary: '#00C6AE'
+    primary: '#3099A6'
   },
 
   /**

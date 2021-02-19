@@ -105,26 +105,26 @@
       </div>
     </div>
 
-    <peace-dialog v-bind:append-to-body="true"
-                  v-bind:visible.sync="dialogHZ.visible"
-                  title="会诊详情">
+    <PeaceDialog v-bind:append-to-body="true"
+                 v-bind:visible.sync="dialogHZ.visible"
+                 title="会诊详情">
       <TheConsultationDetail :data="dialogHZ.data"
                              @close="() => (dialogHZ.visible = false)"></TheConsultationDetail>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog v-bind:append-to-body="true"
-                  v-bind:visible.sync="dialogNotice.visible"
-                  title="签名提醒">
+    <PeaceDialog v-bind:append-to-body="true"
+                 v-bind:visible.sync="dialogNotice.visible"
+                 title="签名提醒">
       <SignNotice :num="dialogNotice.num"
                   @close="() => (dialogNotice.visible = false)"></SignNotice>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog v-bind:append-to-body="true"
-                  v-bind:visible.sync="dialogOrg.visible"
-                  title="详情">
+    <PeaceDialog v-bind:append-to-body="true"
+                 v-bind:visible.sync="dialogOrg.visible"
+                 title="详情">
       <OrgNotice :data="dialogOrg.data"
                  @close="() => (dialogOrg.visible = false)"></OrgNotice>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

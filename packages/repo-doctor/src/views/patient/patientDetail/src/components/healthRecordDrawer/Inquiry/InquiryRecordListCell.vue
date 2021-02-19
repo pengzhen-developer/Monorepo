@@ -53,11 +53,11 @@
       </div>
     </div>
 
-    <peace-dialog :visible.sync="dialog.visible"
-                  append-to-body
-                  title="问诊记录">
+    <PeaceDialog :visible.sync="dialog.visible"
+                 append-to-body
+                 title="问诊记录">
       <InquirySessionMessageList :data="dialog.data"></InquirySessionMessageList>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

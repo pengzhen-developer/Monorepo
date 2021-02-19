@@ -80,11 +80,11 @@
                  type="primary">发送</el-button>
     </div>
 
-    <peace-dialog :visible.sync="caseDetail.visible"
-                  append-to-body
-                  title="病历详情">
+    <PeaceDialog :visible.sync="caseDetail.visible"
+                 append-to-body
+                 title="病历详情">
       <InquirySessionCaseDetail :data="caseDetail.data"></InquirySessionCaseDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

@@ -46,9 +46,9 @@
       </div>
     </el-form>
 
-    <peace-dialog :visible.sync="diagnoseDialog.visible"
-                  append-to-body
-                  title="疾病诊断">
+    <PeaceDialog :visible.sync="diagnoseDialog.visible"
+                 append-to-body
+                 title="疾病诊断">
       <div style="margin-bottom: 10px">
         <el-select :remote-method="getPresent"
                    @change="chooseItem"
@@ -64,11 +64,10 @@
         </el-select>
       </div>
 
-      <div style="margin: 10px 0;"
-           v-if="diagnoseDialog.chooseData.length > 0">
+      <div v-if="diagnoseDialog.chooseData.length > 0">
         <p>疾病诊断</p>
 
-        <div style="margin: 10px 0;">
+        <div class="q-my-10">
           <el-tag :key="item.id"
                   @close="closeItem(item)"
                   closable
@@ -77,10 +76,10 @@
         </div>
       </div>
 
-      <div style="margin: 10px 0;">
+      <div>
         <p>疾病诊断</p>
 
-        <div style="margin: 10px 0;">
+        <div class="q-my-10">
           <el-tag :key="item.id"
                   :type="diagnoseDialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1 ? 'info' : 'primary'"
                   @click="chooseItem(item)"
@@ -94,7 +93,7 @@
         <el-button @click="saveItem"
                    type="primary">保存</el-button>
       </div>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

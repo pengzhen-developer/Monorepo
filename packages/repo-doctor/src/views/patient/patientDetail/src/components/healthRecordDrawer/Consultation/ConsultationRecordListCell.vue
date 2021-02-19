@@ -35,14 +35,14 @@
         </div>
       </div>
     </div>
-    <peace-dialog :append-to-body="true"
-                  :visible.sync="dialog.visible"
-                  custom-class="dialog"
-                  title="会诊详情">
+    <PeaceDialog :append-to-body="true"
+                 :visible.sync="dialog.visible"
+                 custom-class="dialog"
+                 title="会诊详情">
       <TheConsultationDetail :data="dialog.data"
                              :type="type"
                              @close="() => (dialog.visible = false)"></TheConsultationDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

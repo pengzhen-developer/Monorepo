@@ -122,27 +122,27 @@
                  v-on:click="saveCommonlyPrescription">保存</el-button>
     </div>
 
-    <peace-dialog title="添加药品"
-                  heigth="600px"
-                  style="heigth: 600px;"
-                  append-to-body
-                  v-if="drugAddDialog.visible"
-                  v-bind:visible.sync="drugAddDialog.visible">
+    <PeaceDialog title="添加药品"
+                 heigth="600px"
+                 style="heigth: 600px;"
+                 append-to-body
+                 v-if="drugAddDialog.visible"
+                 v-bind:visible.sync="drugAddDialog.visible">
       <CommonlyPrescriptionDrugAdd v-bind:addedList="drugAddDialog.addedList"
                                    v-bind:prescriptionTag="model.prescriptionTag"
                                    v-on:success="onDrugAddSuccess"
                                    v-on:cancel="onDrugAddCancel"></CommonlyPrescriptionDrugAdd>
-    </peace-dialog>
+    </PeaceDialog>
 
     <!-- 添加药品用法 -->
-    <peace-dialog title="药品用法"
-                  append-to-body
-                  v-if="drugUsageAddDialog.visible"
-                  v-bind:visible.sync="drugUsageAddDialog.visible">
+    <PeaceDialog title="药品用法"
+                 append-to-body
+                 v-if="drugUsageAddDialog.visible"
+                 v-bind:visible.sync="drugUsageAddDialog.visible">
       <CommonlyPrescriptionDrugUsageAdd v-bind:data="prescriptionDrug"
                                         v-on:success="onDrugUsageAddSuccess"
                                         v-on:cancel="onDrugUsageAddCancel"></CommonlyPrescriptionDrugUsageAdd>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

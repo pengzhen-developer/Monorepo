@@ -1,6 +1,7 @@
 <template>
   <div class="prescription">
-    <el-form :model="view.model"
+    <el-form v-bind:model="view.model"
+             space-none
              inline>
       <el-form-item label="患者姓名">
         <el-input v-model="view.model.familyName"></el-input>
@@ -37,21 +38,22 @@
                         min-width="120"></PeaceTableColumn>
       <PeaceTableColumn label="性别"
                         prop="patient_sex"
-                        min-width="100"></PeaceTableColumn>
+                        min-width="120"></PeaceTableColumn>
       <PeaceTableColumn label="年龄"
                         prop="patient_age"
-                        min-width="100"></PeaceTableColumn>
+                        min-width="120"></PeaceTableColumn>
       <PeaceTableColumn label="身份证号"
                         prop="idcard"
-                        min-width="120"></PeaceTableColumn>
+                        min-width="140"></PeaceTableColumn>
       <PeaceTableColumn label="处方状态"
                         prop="prescription_status"
                         min-width="120"></PeaceTableColumn>
       <PeaceTableColumn label="开具时间"
                         prop="created_time"
-                        width="180"></PeaceTableColumn>
+                        min-width="160"></PeaceTableColumn>
       <PeaceTableColumn fixed="right"
-                        label="操作">
+                        label="操作"
+                        width="120">
         <template slot-scope="scope">
           <el-button @click="showDetail(scope.row)"
                      type="text">查看详情</el-button>
@@ -59,11 +61,11 @@
       </PeaceTableColumn>
     </PeaceTable>
 
-    <peace-dialog :visible.sync="dialog.visible"
-                  append-to-body
-                  title="处方详情">
+    <PeaceDialog :visible.sync="dialog.visible"
+                 append-to-body
+                 title="处方详情">
       <RecipeDetail :data="dialog.data"></RecipeDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

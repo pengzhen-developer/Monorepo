@@ -34,7 +34,6 @@
       </el-form>
 
       <el-button plain
-                 type="primary"
                  v-on:click="showCommonlyPrescription">引用处方</el-button>
 
     </div>
@@ -45,41 +44,39 @@
                   v-bind:data="value">
         <PeaceTableColumn label="药品名称"
                           prop="drugName"
-                          align="left"
                           min-width="140px">
           <template slot-scope="{ row }">
-            <el-tooltip effect="light"
-                        placement="top">
-              <div class="ellipsis">
+            <div class="ellipsis">
+              <el-tooltip effect="light"
+                          placement="top-start">
                 <span>{{ row.drugName }}</span>
-              </div>
 
-              <div style="max-width: 200px;"
-                   slot="content">
-                <div class="flex q-mb-sm">
-                  <span class="text-black"
-                        style="width: 60px;">药品名称：</span>
-                  <span class="col">{{ row.drugName }}</span>
+                <div style="max-width: 200px;"
+                     slot="content">
+                  <div class="flex q-mb-sm">
+                    <span class="text-black"
+                          style="width: 60px;">药品名称：</span>
+                    <span class="col">{{ row.drugName }}</span>
+                  </div>
+                  <div class="flex q-mb-sm">
+                    <span class="text-black"
+                          style="width: 60px;">药品规格：</span>
+                    <span class="col">{{ row.specification }}</span>
+                  </div>
+                  <div class="flex q-mb-sm">
+                    <span class="text-black"
+                          style="width: 60px;">生产厂家：</span>
+                    <span class="col">{{ row.companyName }}</span>
+                  </div>
                 </div>
-                <div class="flex q-mb-sm">
-                  <span class="text-black"
-                        style="width: 60px;">药品规格：</span>
-                  <span class="col">{{ row.specification }}</span>
-                </div>
-                <div class="flex q-mb-sm">
-                  <span class="text-black"
-                        style="width: 60px;">生产厂家：</span>
-                  <span class="col">{{ row.companyName }}</span>
-                </div>
-              </div>
-            </el-tooltip>
+              </el-tooltip>
+            </div>
           </template>
         </PeaceTableColumn>
 
         <PeaceTableColumn show-overflow-tooltip
                           label="药品规格"
                           prop="specification"
-                          align="left"
                           min-width="70px">
           <template slot-scope="{ row }">
             {{ row.specification }}
@@ -87,7 +84,6 @@
         </PeaceTableColumn>
 
         <PeaceTableColumn label="单次剂量"
-                          align="left"
                           min-width="100px">
           <template slot="header">
             <span class="text-red">*</span>
@@ -117,7 +113,6 @@
         </PeaceTableColumn>
 
         <PeaceTableColumn label="用药频次"
-                          align="left"
                           min-width="90px">
           <template slot="header">
             <span class="text-red">*</span>
@@ -146,7 +141,6 @@
         </PeaceTableColumn>
 
         <PeaceTableColumn label="给药途径"
-                          align="left"
                           min-width="90px">
           <template slot="header">
             <span class="text-red">*</span>
@@ -174,7 +168,6 @@
         </PeaceTableColumn>
 
         <PeaceTableColumn label="用药天数"
-                          align="left"
                           min-width="90px">
           <template slot="header">
             <span class="text-red">*</span>
@@ -202,7 +195,6 @@
         </PeaceTableColumn>
 
         <PeaceTableColumn label="药品数量"
-                          align="left"
                           min-width="100px">
           <template slot="header">
             <span class="text-red">*</span>
@@ -271,10 +263,10 @@
       </template>
     </el-autocomplete>
 
-    <peace-dialog v-if="commonlyPrescriptionDialog.visible"
-                  v-bind:visible.sync="commonlyPrescriptionDialog.visible"
-                  title="常用处方"
-                  width="800px">
+    <PeaceDialog v-if="commonlyPrescriptionDialog.visible"
+                 v-bind:visible.sync="commonlyPrescriptionDialog.visible"
+                 title="常用处方"
+                 width="800px">
       <PeaceTable pagination
                   ref="table">
         <PeaceTableColumn label="疾病诊断"
@@ -286,8 +278,7 @@
         <PeaceTableColumn label="年龄"
                           width="120px"
                           prop="age"></PeaceTableColumn>
-        <PeaceTableColumn align="left"
-                          label="处方药品"
+        <PeaceTableColumn label="处方药品"
                           min-width="300px"
                           prop="drugjson">
           <template slot-scope="scope">
@@ -320,7 +311,7 @@
           </template>
         </PeaceTableColumn>
       </PeaceTable>
-    </peace-dialog>
+    </PeaceDialog>
 
   </div>
 </template>

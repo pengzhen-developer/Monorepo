@@ -45,11 +45,11 @@
                         min-width="160px"></PeaceTableColumn>
     </PeaceTable>
 
-    <peace-dialog :visible.sync="dialog.visible"
-                  append-to-body
-                  title="处方详情">
+    <PeaceDialog :visible.sync="dialog.visible"
+                 append-to-body
+                 title="处方详情">
       <RecipeDetail :data="dialog.data"></RecipeDetail>
-    </peace-dialog>
+    </PeaceDialog>
 
   </div>
 

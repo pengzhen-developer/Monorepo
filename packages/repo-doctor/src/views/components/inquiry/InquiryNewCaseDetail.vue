@@ -194,11 +194,11 @@
     </el-tabs>
 
     <!-- 前置审方详情 -->
-    <peace-dialog title="系统审方结果"
-                  v-bind:visible.sync="audit.visible"
-                  append-to-body>
+    <PeaceDialog title="系统审方结果"
+                 v-bind:visible.sync="audit.visible"
+                 append-to-body>
       <RecipeAudit v-bind:data="audit.data"></RecipeAudit>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 <script>

@@ -1,22 +1,13 @@
 <template>
   <div>
-    <el-alert v-bind:closable="false"
-              type="success">
-      <div slot="title">
-        <span>写病历</span>
-        <i v-on:click="close"
-           class="el-alert__closebtn el-icon-error"></i>
-      </div>
-    </el-alert>
-
-    <el-form :model="medical.model"
-             :rules="medical.rules"
+    <el-form space-sm
+             :model="medical.model"
              label-position="right"
-             label-width="100px"
+             label-width="auto"
              ref="form">
       <el-row>
         <el-form-item label="写病历">
-          <span slot="label">写病历</span>
+          <span slot="label">写病历：</span>
           <el-select @change="handleChangeType"
                      v-model="medical.type">
             <el-option key="base"
@@ -32,21 +23,23 @@
       <el-row>
         <el-form-item label="就诊时间"
                       prop="visit_date">
-          <span slot="label">就诊时间</span>
+          <span slot="label">就诊时间：</span>
           <span>{{ medical.model.visit_date }}</span>
         </el-form-item>
       </el-row>
       <el-row>
         <el-form-item label="科别"
                       prop="dep_id">
-          <span slot="label">科别</span>
+          <span slot="label">科别：</span>
           <span>{{ $store.state.user.userInfo.list.docInfo.netdept_child }}</span>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="主诉"
+        <el-form-item required=""
+                      v-bind:show-message="false"
+                      label="主诉"
                       prop="base_illness">
-          <span slot="label">主诉</span>
+          <span slot="label">主诉：</span>
           <el-input :rows="3"
                     placeholder
                     type="textarea"
@@ -56,7 +49,7 @@
       <el-row>
         <el-form-item label="现病史"
                       prop="present_history">
-          <span slot="label">现病史</span>
+          <span slot="label">现病史：</span>
           <el-select :remote-method="getPresent"
                      allow-create
                      filterable
@@ -75,7 +68,7 @@
       <el-row>
         <el-form-item label="过敏史"
                       prop="allergy_history">
-          <span slot="label">过敏史</span>
+          <span slot="label">过敏史：</span>
           <template v-if="medical.model.allergy_history && medical.model.allergy_history.length > 0">
             <el-tag :key="item.id"
                     style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
@@ -94,7 +87,7 @@
       <el-row>
         <el-form-item label="既往史"
                       prop="past_history">
-          <span slot="label">既往史</span>
+          <span slot="label">既往史：</span>
 
           <template v-if="medical.model.past_history && medical.model.past_history.length > 0">
             <el-tag :key="item.id"
@@ -113,7 +106,7 @@
       </el-row>
       <el-row>
         <el-form-item label="检查指标">
-          <span slot="label">检查指标</span>
+          <span slot="label">检查指标：</span>
           <div class="inspect">
             <div class="item">
               <span>体温</span>
@@ -146,7 +139,7 @@
       </el-row>
       <el-row>
         <el-form-item label="辅助检查">
-          <span slot="label">辅助检查</span>
+          <span slot="label">辅助检查：</span>
           <el-input :rows="3"
                     placeholder="请输入辅助检查"
                     type="textarea"
@@ -154,9 +147,11 @@
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="诊断"
+        <el-form-item required=""
+                      v-bind:show-message="false"
+                      label="诊断"
                       prop="diagnose">
-          <span slot="label">诊断</span>
+          <span slot="label">诊断：</span>
           <template v-if="medical.model.diagnose && medical.model.diagnose.length > 0">
             <el-tag :key="item.id"
                     style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
@@ -175,7 +170,7 @@
       <el-row>
         <el-form-item label="医嘱小结"
                       prop="summary">
-          <span slot="label">医嘱小结</span>
+          <span slot="label">医嘱小结：</span>
           <el-input placeholder
                     v-model="medical.model.summary"></el-input>
         </el-form-item>
@@ -207,7 +202,8 @@
           </div>
         </el-form-item>
       </el-row>
-      <el-row style="text-align: center;">
+      <el-row class="q-mt-md"
+              style="text-align: center;">
         <el-form-item label=" ">
           <el-button @click="close">取消</el-button>
           <el-button @click="saveMedical"
@@ -219,8 +215,8 @@
       </el-row>
     </el-form>
 
-    <peace-dialog :title="'添加' + dialog.title"
-                  :visible.sync="dialog.visible">
+    <PeaceDialog :title="'添加' + dialog.title"
+                 :visible.sync="dialog.visible">
       <div style="margin-bottom: 10px">
         <template v-if="dialog.title === '过敏史'">
           <el-select :remote-method="getAllergy"
@@ -340,7 +336,7 @@
         <el-button @click="saveItem"
                    type="primary">保存</el-button>
       </div>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 
@@ -375,12 +371,7 @@ export default {
         },
         type: '',
 
-        rules: {
-          visit_date: [{ required: true, message: '请输入就诊时间', trigger: 'blur' }],
-          dep_id: [{ required: true, message: '请输入科别', trigger: 'blur' }],
-          base_illness: [{ required: true, message: '请输入主诉', trigger: 'blur' }],
-          diagnose: [{ required: true, message: '请输入疾病诊断', trigger: 'blur' }]
-        }
+        rules: {}
       },
       typeOptions: [
         { value: 1, label: '通用病历模板' },
@@ -504,99 +495,105 @@ export default {
     },
 
     sendMedical() {
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          if (this.medical.model.Inspection_index.temperature && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.temperature)) {
-            Peace.util.warning('请输入正确的体温，最多保留一位小数')
-            return
-          }
-          if (this.medical.model.Inspection_index.weight && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.weight)) {
-            Peace.util.warning('请输入正确的体重，最多保留一位小数')
-            return
-          }
-          if (this.medical.model.Inspection_index.heart_rate && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.heart_rate)) {
-            Peace.util.warning('请输入正确的心率，最多保留一位小数')
-            return
-          }
-          if (this.medical.model.blood_pressure_begin && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_begin)) {
-            Peace.util.warning('请输入正确的血压，最多保留一位小数')
-            return
-          }
-          if (this.medical.model.blood_pressure_end && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_end)) {
-            Peace.util.warning('请输入正确的血压，最多保留一位小数')
-            return
-          }
+      if (!this.medical.model.base_illness) {
+        Peace.util.warning('请输入主诉')
+        return
+      }
 
-          if (Peace.validate.isEmpty(this.medical.model.blood_pressure_end) || Peace.validate.isEmpty(this.medical.model.blood_pressure_begin)) {
-            this.medical.model.Inspection_index.blood_pressure = ''
-          }
+      if (this.medical.model.diagnose.length === 0) {
+        Peace.util.warning('请选择诊断')
+        return
+      }
 
-          const alt = this.medical.model.ALT
-          const ast = this.medical.model.AST
-          // const hbv = this.medical.model.HBV
+      if (this.medical.model.Inspection_index.temperature && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.temperature)) {
+        Peace.util.warning('请输入正确的体温，最多保留一位小数')
+        return
+      }
+      if (this.medical.model.Inspection_index.weight && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.weight)) {
+        Peace.util.warning('请输入正确的体重，最多保留一位小数')
+        return
+      }
+      if (this.medical.model.Inspection_index.heart_rate && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.heart_rate)) {
+        Peace.util.warning('请输入正确的心率，最多保留一位小数')
+        return
+      }
+      if (this.medical.model.blood_pressure_begin && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_begin)) {
+        Peace.util.warning('请输入正确的血压，最多保留一位小数')
+        return
+      }
+      if (this.medical.model.blood_pressure_end && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_end)) {
+        Peace.util.warning('请输入正确的血压，最多保留一位小数')
+        return
+      }
 
-          if ((alt && !/^\d+(\.\d{1,1})?$/.test(alt)) || parseInt(alt) < 0 || parseInt(alt) > 1000) {
-            Peace.util.warning('请输入正确的谷丙转氨酶(ALT)，最多保留一位小数 (数值范围 0-1000)')
-            return
-          }
-          if ((ast && !/^\d+(\.\d{1,1})?$/.test(ast)) || parseInt(ast) < 0 || parseInt(ast) > 1000) {
-            Peace.util.warning('请输入正确的谷草转氨酶(AST)，最多保留一位小数 (数值范围 0-1000)')
-            return
-          }
+      if (Peace.validate.isEmpty(this.medical.model.blood_pressure_end) || Peace.validate.isEmpty(this.medical.model.blood_pressure_begin)) {
+        this.medical.model.Inspection_index.blood_pressure = ''
+      }
 
-          const params = {
-            inquiry_no: this.inquiryNo,
-            consultNo: this.consultNo,
-            patient_id: this.$store.getters['inquiry/patientInfo'].patientId,
-            family_id: this.$store.getters['inquiry/patientInfo'].familyId,
-            patient_name: this.$store.getters['inquiry/patientInfo'].familyName,
-            sex: this.$store.getters['inquiry/patientInfo'].familySex,
-            age: this.$store.getters['inquiry/patientInfo'].familyAge,
-            id_card: this.$store.getters['inquiry/patientInfo'].idCard,
+      const alt = this.medical.model.ALT
+      const ast = this.medical.model.AST
+      // const hbv = this.medical.model.HBV
 
-            ...this.medical.model
-          }
+      if ((alt && !/^\d+(\.\d{1,1})?$/.test(alt)) || parseInt(alt) < 0 || parseInt(alt) > 1000) {
+        Peace.util.warning('请输入正确的谷丙转氨酶(ALT)，最多保留一位小数 (数值范围 0-1000)')
+        return
+      }
+      if ((ast && !/^\d+(\.\d{1,1})?$/.test(ast)) || parseInt(ast) < 0 || parseInt(ast) > 1000) {
+        Peace.util.warning('请输入正确的谷草转氨酶(AST)，最多保留一位小数 (数值范围 0-1000)')
+        return
+      }
 
-          // 病历模板
-          const type = this.medical.type
-          if (type) {
-            params.templateId = type
-          }
+      const params = {
+        inquiry_no: this.inquiryNo,
+        consultNo: this.consultNo,
+        patient_id: this.$store.getters['inquiry/patientInfo'].patientId,
+        family_id: this.$store.getters['inquiry/patientInfo'].familyId,
+        patient_name: this.$store.getters['inquiry/patientInfo'].familyName,
+        sex: this.$store.getters['inquiry/patientInfo'].familySex,
+        age: this.$store.getters['inquiry/patientInfo'].familyAge,
+        id_card: this.$store.getters['inquiry/patientInfo'].idCard,
 
-          params.Inspection_index = JSON.stringify(params.Inspection_index)
-          params.present_history = params.present_history.toString()
-          params.allergy_history = params.allergy_history && params.allergy_history.map((item) => item.name).toString()
-          params.past_history = params.past_history && params.past_history.map((item) => item.name).toString()
+        ...this.medical.model
+      }
 
-          // 兼容会诊和问诊
-          if (this.inquiryNo) {
-            // 诊断上传 JSON 数据 ，此处需要转换上传参数
-            params.diagnoseList = params.diagnose.map((item) => {
-              item.diagnoseCode = item.code
-              item.diagnoseName = item.name
-              return item
-            })
+      // 病历模板
+      const type = this.medical.type
+      if (type) {
+        params.templateId = type
+      }
 
-            params.diagnose = params.diagnose && params.diagnose.map((item) => item.name).toString()
-            params.diagnose = params.diagnose.replace(/,/g, ' | ')
+      params.Inspection_index = JSON.stringify(params.Inspection_index)
+      params.present_history = params.present_history.toString()
+      params.allergy_history = params.allergy_history && params.allergy_history.map((item) => item.name).toString()
+      params.past_history = params.past_history && params.past_history.map((item) => item.name).toString()
 
-            Peace.service.inquiry.addCase(params).then((res) => {
-              Peace.util.success(res.msg)
+      // 兼容会诊和问诊
+      if (this.inquiryNo) {
+        // 诊断上传 JSON 数据 ，此处需要转换上传参数
+        params.diagnoseList = params.diagnose.map((item) => {
+          item.diagnoseCode = item.code
+          item.diagnoseName = item.name
+          return item
+        })
 
-              this.$emit('close')
-            })
-          } else if (this.consultNo) {
-            //TODO: 会诊当前版本区分处理
-            params.diagnose = params.diagnose && params.diagnose.map((item) => item.name).toString()
-            params.diagnose = params.diagnose.replace(/,/g, ' | ')
-            Peace.service.inquiry.offlineAddCase(params).then((res) => {
-              Peace.util.success(res.msg)
+        params.diagnose = params.diagnose && params.diagnose.map((item) => item.name).toString()
+        params.diagnose = params.diagnose.replace(/,/g, ' | ')
 
-              this.$emit('close')
-            })
-          }
-        }
-      })
+        Peace.service.inquiry.addCase(params).then((res) => {
+          Peace.util.success(res.msg)
+
+          this.$emit('close')
+        })
+      } else if (this.consultNo) {
+        //TODO: 会诊当前版本区分处理
+        params.diagnose = params.diagnose && params.diagnose.map((item) => item.name).toString()
+        params.diagnose = params.diagnose.replace(/,/g, ' | ')
+        Peace.service.inquiry.offlineAddCase(params).then((res) => {
+          Peace.util.success(res.msg)
+
+          this.$emit('close')
+        })
+      }
     },
 
     showDialog(title) {
@@ -698,16 +695,7 @@ export default {
 
 <style lang="scss" scoped>
 .el-form {
-  padding-top: 20px;
-  padding-right: 20px;
-
-  .el-form-item__label span {
-    text-align-last: justify;
-    text-align: justify;
-    text-justify: distribute-all-lines;
-    width: 4em;
-    display: inline-block;
-  }
+  padding: 24px;
 }
 
 .inspect {

@@ -81,13 +81,13 @@
       </template>
     </div>
 
-    <peace-dialog :visible.sync="dialog.visible"
-                  title="会诊详情"
-                  width="550px">
+    <PeaceDialog :visible.sync="dialog.visible"
+                 title="会诊详情"
+                 width="550px">
       <TheConsultationDetail :data="dialog.data"
                              @close="() => dialog.visible = false">
       </TheConsultationDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-form :model="view.model"
+    <el-form v-bind:model="view.model"
+             space-none
              inline>
       <el-form-item label="患者姓名">
         <el-input placeholder
@@ -24,9 +25,11 @@
 
     <hr />
 
-    <el-button @click="addPatient"
-               type="primary"
-               icon="el-icon-circle-plus-outline">添加患者</el-button>
+    <div class="q-mb-md">
+      <el-button @click="addPatient"
+                 type="primary"
+                 icon="el-icon-circle-plus-outline">添加患者</el-button>
+    </div>
 
     <PeaceTable pagination
                 ref="table">
@@ -69,15 +72,15 @@
       </PeaceTableColumn>
     </PeaceTable>
 
-    <peace-dialog :before-close="handleClose"
-                  :visible.sync="addPatientDialog.visible"
-                  width="387px"
-                  title="添加患者">
+    <PeaceDialog :before-close="handleClose"
+                 :visible.sync="addPatientDialog.visible"
+                 width="387px"
+                 title="添加患者">
       <AddPatient ref="checkInput"
                   @handleClose="handleClose"
                   v-on:updateList="updateList">
       </AddPatient>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

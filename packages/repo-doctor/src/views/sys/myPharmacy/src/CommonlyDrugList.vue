@@ -24,16 +24,16 @@
       </PeaceTableColumn>
       <PeaceTableColumn label="药品名称"
                         min-width="200"
-                        align="left"
                         prop="drugName"> </PeaceTableColumn>
       <PeaceTableColumn label="药品规格"
-                        prop="specification"></PeaceTableColumn>
+                        prop="specification"
+                        min-width="200"></PeaceTableColumn>
       <PeaceTableColumn label="厂家"
                         min-width="200"
                         prop="companyName"></PeaceTableColumn>
       <PeaceTableColumn label="添加时间"
                         prop="createdTime"
-                        width="160"></PeaceTableColumn>
+                        min-width="160"></PeaceTableColumn>
       <PeaceTableColumn fixed="right"
                         label="操作"
                         width="150">
@@ -46,25 +46,25 @@
       </PeaceTableColumn>
     </PeaceTable>
 
-    <peace-dialog title="添加药品"
-                  v-if="addCommonlyDrugDialog.visible"
-                  v-bind:visible.sync="addCommonlyDrugDialog.visible">
+    <PeaceDialog title="添加药品"
+                 v-if="addCommonlyDrugDialog.visible"
+                 v-bind:visible.sync="addCommonlyDrugDialog.visible">
       <CommonlyDrugAdd v-on:success="onCommonlyDrugAddSuccess"></CommonlyDrugAdd>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog title="药品说明书列表"
-                  width="800px"
-                  v-if="instructionsListDialog.visible"
-                  v-bind:visible.sync="instructionsListDialog.visible">
+    <PeaceDialog title="药品说明书列表"
+                 width="800px"
+                 v-if="instructionsListDialog.visible"
+                 v-bind:visible.sync="instructionsListDialog.visible">
       <DrugInstructionsList v-on:showInstructions="showInstructions"
                             v-bind:data="instructionsListDialog.data"></DrugInstructionsList>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog title="药品说明书"
-                  v-if="instructionsDialog.visible"
-                  v-bind:visible.sync="instructionsDialog.visible">
+    <PeaceDialog title="药品说明书"
+                 v-if="instructionsDialog.visible"
+                 v-bind:visible.sync="instructionsDialog.visible">
       <DrugInstructions v-bind:data="instructionsDialog.data"></DrugInstructions>
-    </peace-dialog>
+    </PeaceDialog>
 
   </div>
 </template>

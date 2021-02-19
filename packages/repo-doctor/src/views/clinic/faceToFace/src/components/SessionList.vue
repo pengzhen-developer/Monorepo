@@ -47,17 +47,17 @@
       </template>
     </div>
 
-    <peace-dialog :visible.sync="addPatientDialog.visible"
-                  v-if="addPatientDialog.visible"
-                  :before-close="closeMenu"
-                  append-to-body
-                  width="420px"
-                  title="添加患者">
+    <PeaceDialog :visible.sync="addPatientDialog.visible"
+                 v-if="addPatientDialog.visible"
+                 :before-close="closeMenu"
+                 append-to-body
+                 width="420px"
+                 title="添加患者">
       <AddPatient ref="checkInput"
                   v-on:closeMenu="closeMenu"
                   v-on:sendRecipe="sendRecipe"
                   v-on:updateList="updateList"> </AddPatient>
-    </peace-dialog>
+    </PeaceDialog>
   </SessionListContainer>
 </template>
 

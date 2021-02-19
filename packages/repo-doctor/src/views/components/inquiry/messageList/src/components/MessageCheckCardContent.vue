@@ -2,13 +2,13 @@
   <div>
     <MessageCheckCard :checkOrderTxt="checkOrderTxt"
                       @onClickDetail="onClickDetail"></MessageCheckCard>
-    <peace-dialog :visible.sync="checkOrder.visible"
-                  v-if="checkOrder.visible"
-                  append-to-body
-                  title="检查单详情">
+    <PeaceDialog :visible.sync="checkOrder.visible"
+                 v-if="checkOrder.visible"
+                 append-to-body
+                 title="检查单详情">
       <InquiryCheckOrderInfo :data="checkOrder.data"
                              @close="() => checkOrder.visible = false"></InquiryCheckOrderInfo>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

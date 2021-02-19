@@ -13,11 +13,11 @@
       <p class="record-prescribe-right-text">{{ data.netHospitalName }} | {{ data.netdeptName }}</p>
     </div>
 
-    <peace-dialog :visible.sync="prescribeDialog.visible"
-                  append-to-body
-                  title="病历详情">
+    <PeaceDialog :visible.sync="prescribeDialog.visible"
+                 append-to-body
+                 title="病历详情">
       <InquirySessionRecipeDetail :data="prescribeDialog.data"></InquirySessionRecipeDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

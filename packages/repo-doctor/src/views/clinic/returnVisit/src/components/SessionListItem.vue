@@ -108,14 +108,14 @@ export default {
           ['background']: '#e3f0f0',
           ['color']: '#4395f5',
           ['border-radius']: '20px',
-          ['border-color']: '#4395f5'
+          ['border-color']: '#00C6AE'
         }
       } else {
         return {
           ['background']: '#dafaf6',
           ['color']: '#3099a6',
           ['border-radius']: '20px',
-          ['border-color']: '#3099a6'
+          ['border-color']: '#00C6AE'
         }
       }
     },

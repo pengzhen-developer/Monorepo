@@ -67,11 +67,11 @@
       </template>
     </div>
 
-    <peace-dialog :visible.sync="over.visible"
-                  class="over-dialog"
-                  title
-                  top="25vh"
-                  width="348px">
+    <PeaceDialog :visible.sync="over.visible"
+                 class="over-dialog"
+                 title
+                 top="25vh"
+                 width="348px">
       <h4 style="margin: 0 0 30px 0; font-size: 18px;">您是否已经解决了患者的问题？</h4>
 
       <el-radio-group v-model="over.state">
@@ -108,7 +108,7 @@
                    @click="overConfirmAgain"
                    type="primary">确认</el-button>
       </div>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

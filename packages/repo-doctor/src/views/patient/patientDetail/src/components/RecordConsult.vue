@@ -12,13 +12,13 @@
         <span>{{ netDeptName }}</span>
       </div>
     </div>
-    <peace-dialog :visible.sync="consultVisible"
-                  v-if="consultVisible"
-                  append-to-body
-                  title="会诊详情">
+    <PeaceDialog :visible.sync="consultVisible"
+                 v-if="consultVisible"
+                 append-to-body
+                 title="会诊详情">
       <consult-detail :data="consultData"
                       @close="() => consultVisible = false"></consult-detail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

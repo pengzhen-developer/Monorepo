@@ -1,7 +1,8 @@
 <template>
   <q-scroll-area v-bind:thumb-style="thumbStyle"
                  v-bind:style="scrollAreaStyle">
-    <el-menu v-on:select="menuSelect"
+    <el-menu class="element-ui-default"
+             v-on:select="menuSelect"
              v-bind:collapse="true"
              v-bind:default-active="defaultActive">
 

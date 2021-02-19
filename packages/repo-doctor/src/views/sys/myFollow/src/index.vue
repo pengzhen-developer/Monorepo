@@ -10,11 +10,9 @@
 
     <PeaceTable pagination
                 ref="table">
-      <PeaceTableColumn align="left"
-                        label="患教标题"
+      <PeaceTableColumn label="患教标题"
                         prop="title"></PeaceTableColumn>
-      <PeaceTableColumn align="left"
-                        label="疾病"
+      <PeaceTableColumn label="疾病"
                         prop="diseaseTag"
                         width="200"></PeaceTableColumn>
       <PeaceTableColumn label="操作"
@@ -30,22 +28,22 @@
       </PeaceTableColumn>
     </PeaceTable>
 
-    <peace-dialog :title="dialog.title"
-                  :visible.sync="dialog.visible"
-                  v-if="dialog.visible">
+    <PeaceDialog :title="dialog.title"
+                 :visible.sync="dialog.visible"
+                 v-if="dialog.visible">
       <PatientEducationModel :data="dialog.data"
                              @close="closeDialog"
                              @edit="edit"
                              @submit="submit" />
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog :visible.sync="previewDialog.visible"
-                  title="患教详情"
-                  v-if="previewDialog.visible"
-                  width="375px">
+    <PeaceDialog :visible.sync="previewDialog.visible"
+                 title="患教详情"
+                 v-if="previewDialog.visible"
+                 width="375px">
       <PatientEducationPreview :data="previewDialog.data" />
       <!-- <iframe :src="previewDialog.data.detailUrl" class="iframe" frameborder="0"></iframe> -->
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

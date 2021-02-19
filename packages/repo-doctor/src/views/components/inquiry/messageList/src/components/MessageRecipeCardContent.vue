@@ -4,12 +4,12 @@
                        :drugInfo="drugInfo"
                        :visitingTime="visitingTime"
                        @onClickDetail="onClickDetail"></MessageRecipeCard>
-    <peace-dialog :visible.sync="recipeDetail.visible"
-                  v-if="recipeDetail.visible"
-                  append-to-body
-                  title="处方详情">
+    <PeaceDialog :visible.sync="recipeDetail.visible"
+                 v-if="recipeDetail.visible"
+                 append-to-body
+                 title="处方详情">
       <RecipeDetail v-bind:data="recipeDetail.data"></RecipeDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

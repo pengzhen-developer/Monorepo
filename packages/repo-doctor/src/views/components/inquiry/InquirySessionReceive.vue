@@ -15,11 +15,11 @@
         <span>接诊</span>
       </div>
     </div>
-    <peace-dialog :visible.sync="over.visible"
-                  class="over-dialog"
-                  title
-                  top="25vh"
-                  width="348px">
+    <PeaceDialog :visible.sync="over.visible"
+                 class="over-dialog"
+                 title
+                 top="25vh"
+                 width="348px">
       <p style="margin: 0 0 16px 0; font-size: 16px; font-weight:400; color:rgba(51,51,51,1);">
         请选择您的退诊原因</p>
 
@@ -53,7 +53,7 @@
                    class="el-button-style"
                    type="primary">确认</el-button>
       </div>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 
 </template>

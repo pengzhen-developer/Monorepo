@@ -15,15 +15,15 @@
       <el-button @click="addNewScheme"
                  type="primary">新建自定义方案 </el-button>
     </div>
-    <peace-dialog :append-to-body="true"
-                  :before-close="handleClose"
-                  :visible.sync="addSchemeDialog.visible"
-                  width="470px"
-                  title="自定义随访方案">
+    <PeaceDialog :append-to-body="true"
+                 :before-close="handleClose"
+                 :visible.sync="addSchemeDialog.visible"
+                 width="470px"
+                 title="自定义随访方案">
       <AddNewScheme ref="addScheme"
                     @handleClose="handleClose"
                     v-on:updateList="updateList"> </AddNewScheme>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

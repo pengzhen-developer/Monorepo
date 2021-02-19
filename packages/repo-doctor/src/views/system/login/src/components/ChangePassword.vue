@@ -1,12 +1,20 @@
 <template>
   <div class="full-width">
-    <el-steps class="q-py-md"
-              align-center
-              v-bind:active="stepActive">
-      <el-step title="身份验证"></el-step>
-      <el-step title="设置新密码"></el-step>
-      <el-step title="完成"></el-step>
-    </el-steps>
+
+    <div class="q-px-md q-mb-lg">
+      <el-steps simple=""
+                v-bind:active="stepActive">
+        <el-step title="身份验证">
+          <div slot="icon">1</div>
+        </el-step>
+        <el-step title="设置新密码">
+          <div slot="icon">2</div>
+        </el-step>
+        <el-step title="完成">
+          <div slot="icon">3</div>
+        </el-step>
+      </el-steps>
+    </div>
 
     <template v-if="stepActive === 0">
 

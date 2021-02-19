@@ -338,54 +338,54 @@
       </div>
     </template>
 
-    <peace-dialog :visible.sync="caseDetail.visible"
-                  append-to-body
-                  title="病历详情">
+    <PeaceDialog :visible.sync="caseDetail.visible"
+                 append-to-body
+                 title="病历详情">
       <InquirySessionCaseDetail :data="caseDetail.data"></InquirySessionCaseDetail>
-    </peace-dialog>
-    <peace-dialog :visible.sync="recipeDetail.visible"
-                  v-if="recipeDetail.visible"
-                  append-to-body
-                  title="处方详情">
+    </PeaceDialog>
+    <PeaceDialog :visible.sync="recipeDetail.visible"
+                 v-if="recipeDetail.visible"
+                 append-to-body
+                 title="处方详情">
       <InquirySessionRecipeDetail :data="recipeDetail.data"></InquirySessionRecipeDetail>
-    </peace-dialog>
-    <peace-dialog :visible.sync="transfer.visible"
-                  v-if="transfer.visible"
-                  append-to-body
-                  title="转诊详情">
+    </PeaceDialog>
+    <PeaceDialog :visible.sync="transfer.visible"
+                 v-if="transfer.visible"
+                 append-to-body
+                 title="转诊详情">
       <InquiryTransferDetail :data="transfer.data"
                              :type="transfer.referral_type"
                              @close="() => transfer.visible = false"></InquiryTransferDetail>
-    </peace-dialog>
-    <peace-dialog :visible.sync="consultation.visible"
-                  v-if="consultation.visible"
-                  width="500"
-                  append-to-body
-                  title="会诊详情">
+    </PeaceDialog>
+    <PeaceDialog :visible.sync="consultation.visible"
+                 v-if="consultation.visible"
+                 width="500"
+                 append-to-body
+                 title="会诊详情">
       <InquiryConsultationDetail :data="consultation.data"
                                  @close="() => consultation.visible = false">
       </InquiryConsultationDetail>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog :visible.sync="preliminary.visible"
-                  v-if="preliminary.visible"
-                  append-to-body
-                  title="问诊单详情">
+    <PeaceDialog :visible.sync="preliminary.visible"
+                 v-if="preliminary.visible"
+                 append-to-body
+                 title="问诊单详情">
       <InquiryPreliminary :data="preliminary.data"
                           @close="() => preliminary.visible = false"></InquiryPreliminary>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog :visible.sync="checkOrder.visible"
-                  v-if="checkOrder.visible"
-                  append-to-body
-                  title="检查单详情">
+    <PeaceDialog :visible.sync="checkOrder.visible"
+                 v-if="checkOrder.visible"
+                 append-to-body
+                 title="检查单详情">
       <InquiryCheckOrderInfo :data="checkOrder.data"
                              @close="() => checkOrder.visible = false"></InquiryCheckOrderInfo>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog v-bind:visible.sync="recipeDetail.visible">
+    <PeaceDialog v-bind:visible.sync="recipeDetail.visible">
       <RecipeDetail v-bind:data="recipeDetail.data"></RecipeDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

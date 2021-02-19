@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-steps simple
+    <el-steps class="element-ui-default"
+              simple
               v-bind:active="stepActive">
       <el-step title="验证手机号"
                icon="el-icon-key"></el-step>

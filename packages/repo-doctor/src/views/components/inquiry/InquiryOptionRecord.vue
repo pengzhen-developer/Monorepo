@@ -32,12 +32,12 @@
 
     </el-timeline-item>
 
-    <peace-dialog v-if="optionDialog.visible"
-                  :visible.sync="optionDialog.visible"
-                  append-to-body
-                  title="处方详情">
+    <PeaceDialog v-if="optionDialog.visible"
+                 :visible.sync="optionDialog.visible"
+                 append-to-body
+                 title="处方详情">
       <FirstOptionDetail :prescriptionCode="optionDialog.data"></FirstOptionDetail>
-    </peace-dialog>
+    </PeaceDialog>
 
   </el-timeline>
 </template>

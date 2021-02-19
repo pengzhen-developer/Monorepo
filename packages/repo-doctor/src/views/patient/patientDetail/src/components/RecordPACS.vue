@@ -11,10 +11,10 @@
       <p class="record-case-right-text">{{ data.netHospitalName }} | {{ data.netDeptName }}</p>
     </div>
 
-    <peace-dialog title="报告单"
-                  v-bind:visible.sync="recordPACSDetailDialog.visible">
+    <PeaceDialog title="报告单"
+                 v-bind:visible.sync="recordPACSDetailDialog.visible">
       <RecordPACSDetail v-bind:data="recordPACSDetailDialog.data"></RecordPACSDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

@@ -28,21 +28,19 @@
                 ref="table"
                 v-bind:pageSize="5">
       <PeaceTableColumn label="疾病诊断"
-                        min-width="200px"
-                        align="left"
+                        min-width="200"
                         prop="diagnosis"></PeaceTableColumn>
 
       <PeaceTableColumn label="性别"
-                        align="left"
+                        min-width="120"
                         prop="sex"></PeaceTableColumn>
 
       <PeaceTableColumn label="年龄"
-                        width="200px"
+                        min-width="120"
                         prop="age"></PeaceTableColumn>
 
-      <PeaceTableColumn align="left"
-                        label="处方药品"
-                        min-width="200px">
+      <PeaceTableColumn label="处方药品"
+                        min-width="200">
         <template slot-scope="scope">
           <span>{{ getDrugInfos(scope.row) }}</span>
         </template>
@@ -51,7 +49,7 @@
       <PeaceTableColumn :show-overflow-tooltip="false"
                         fixed="right"
                         label="操作"
-                        width="180px">
+                        width="180">
         <template slot-scope="scope">
           <el-button type="text"
                      v-on:click="showCommonlyPrescription(scope.row)">查看详情</el-button>
@@ -63,22 +61,22 @@
       </PeaceTableColumn>
     </PeaceTable>
 
-    <peace-dialog title="添加处方"
-                  v-if="addDialog.visible"
-                  v-bind:visible.sync="addDialog.visible">
+    <PeaceDialog title="添加处方"
+                 v-if="addDialog.visible"
+                 v-bind:visible.sync="addDialog.visible">
       <CommonlyPrescriptionAdd v-bind:data="addDialog.data"
                                v-bind:prescriptionTag="addDialog.prescriptionTag"
                                v-on:success="onAddSuccess"
                                v-on:cancel="onAddCancel"></CommonlyPrescriptionAdd>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog title="处方详情"
-                  v-if="detailedlyDialog.visible"
-                  v-bind:visible.sync="detailedlyDialog.visible">
+    <PeaceDialog title="处方详情"
+                 v-if="detailedlyDialog.visible"
+                 v-bind:visible.sync="detailedlyDialog.visible">
       <CommonlyPrescriptionAdd detailedly
                                v-bind:data="detailedlyDialog.data"
                                v-bind:prescriptionTag="detailedlyDialog.data.prescriptionTag"></CommonlyPrescriptionAdd>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

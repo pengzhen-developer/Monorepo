@@ -93,9 +93,9 @@
       </el-row>
     </el-form>
 
-    <peace-dialog :visible.sync="dialog.visible"
-                  title="选择会诊医生"
-                  width="700px">
+    <PeaceDialog :visible.sync="dialog.visible"
+                 title="选择会诊医生"
+                 width="700px">
       <div>
         <el-input clearable
                   placeholder="请输入地区、医院或医生姓名"
@@ -137,7 +137,7 @@
           </template>
         </PeaceTableColumn>
       </PeaceTable>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

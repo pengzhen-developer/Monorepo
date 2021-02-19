@@ -266,33 +266,33 @@
       </el-scrollbar>
     </div>
 
-    <peace-dialog :visible.sync="caseDialog.visible"
-                  v-if="caseDialog.visible"
-                  title="病历详情">
+    <PeaceDialog :visible.sync="caseDialog.visible"
+                 v-if="caseDialog.visible"
+                 title="病历详情">
       <ConsultationSessionCaseDetail :data="caseDialog.data"></ConsultationSessionCaseDetail>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog :visible.sync="recipeDialog.visible"
-                  v-if="recipeDialog.visible"
-                  title="处方详情">
+    <PeaceDialog :visible.sync="recipeDialog.visible"
+                 v-if="recipeDialog.visible"
+                 title="处方详情">
       <ConsultationSessionRecipeDetail :data="recipeDialog.data"></ConsultationSessionRecipeDetail>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog :visible.sync="consultDetail.visible"
-                  v-if="consultDetail.visible"
-                  title="会诊单详情">
+    <PeaceDialog :visible.sync="consultDetail.visible"
+                 v-if="consultDetail.visible"
+                 title="会诊单详情">
       <ConsultationDetail :data="consultDetail.data"></ConsultationDetail>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog :visible.sync="inquiry.visible"
-                  class="chat-room-bg"
-                  v-if="inquiry.visible"
-                  title="问诊记录">
+    <PeaceDialog :visible.sync="inquiry.visible"
+                 class="chat-room-bg"
+                 v-if="inquiry.visible"
+                 title="问诊记录">
       <InquirySessionMessageList :data="inquiry.data"
                                  :patientInfo="inquiry.patientInfo"
                                  :doctorInfo="inquiry.doctorInfo"
                                  type="consult"></InquirySessionMessageList>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

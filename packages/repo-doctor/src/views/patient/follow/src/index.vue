@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-form :model="viewModel"
+    <el-form v-bind:model="viewModel"
+             space-none
              inline>
       <el-form-item label="随访状态">
         <el-select placeholder="请选择"
@@ -71,10 +72,10 @@
       </PeaceTableColumn>
     </PeaceTable>
 
-    <peace-dialog :visible.sync="dialog.visible"
+    <PeaceDialog :visible.sync="dialog.visible"
                   title="病程管理">
       <DiseaseCourse :id="dialog.id"></DiseaseCourse>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

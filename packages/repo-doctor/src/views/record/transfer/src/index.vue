@@ -12,7 +12,8 @@
     <div class="content"
          key="out"
          v-if="view.model.referral_type === source.state['我转诊的']">
-      <el-form :model="view.model"
+      <el-form v-bind:model="view.model"
+               space-none
                inline>
         <el-form-item label="转入医生">
           <el-input placeholder
@@ -81,7 +82,8 @@
     <div class="content"
          key="in"
          v-if="view.model.referral_type === source.state['转给我的']">
-      <el-form :model="view.model"
+      <el-form v-bind:model="view.model"
+               space-none
                inline>
         <el-form-item label="转出机构">
           <el-input placeholder
@@ -103,12 +105,10 @@
                           prop="age"></PeaceTableColumn>
         <PeaceTableColumn label="性别"
                           prop="sex"></PeaceTableColumn>
-        <PeaceTableColumn align="left"
-                          label="疾病诊断"
+        <PeaceTableColumn label="疾病诊断"
                           min-width="200px"
                           prop="diagnose"></PeaceTableColumn>
-        <PeaceTableColumn align="left"
-                          label="转出机构"
+        <PeaceTableColumn label="转出机构"
                           min-width="200px"
                           prop="netHospital_name"></PeaceTableColumn>
         <PeaceTableColumn label="转出医生"
@@ -134,13 +134,13 @@
       </PeaceTable>
     </div>
 
-    <peace-dialog :visible.sync="dialog.visible"
-                  custom-class="dialog"
-                  title="转诊详情">
+    <PeaceDialog :visible.sync="dialog.visible"
+                 custom-class="dialog"
+                 title="转诊详情">
       <TheTransferDetail :data="dialog.data"
                          :type="view.model.referral_type"
                          @close="close"></TheTransferDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

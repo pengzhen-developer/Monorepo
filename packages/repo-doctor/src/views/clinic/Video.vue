@@ -11,16 +11,16 @@
               type="audio/mp3">
     </audio>
 
-    <peace-dialog :close-on-click-modal="false"
-                  :close-on-press-escape="false"
-                  :show-close="false"
-                  :title="video.title"
-                  :visible.sync="video.visible"
-                  :modal="false"
-                  center
-                  custom-class="video-dialog"
-                  v-drag
-                  width="800px">
+    <PeaceDialog :close-on-click-modal="false"
+                 :close-on-press-escape="false"
+                 :show-close="false"
+                 :title="video.title"
+                 :visible.sync="video.visible"
+                 :modal="false"
+                 center
+                 custom-class="video-dialog"
+                 v-drag
+                 width="800px">
       <div class="video-container">
         <div id="localContainer"></div>
         <div id="remoteContainer"></div>
@@ -30,7 +30,7 @@
                    circle
                    class="hang_up"></el-button>
       </div>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

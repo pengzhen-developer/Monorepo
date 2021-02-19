@@ -226,19 +226,19 @@
     </div>
 
     <!-- 前置审方详情 -->
-    <peace-dialog title="智能审方结果"
-                  v-bind:visible.sync="visible"
-                  append-to-body>
+    <PeaceDialog title="智能审方结果"
+                 v-bind:visible.sync="visible"
+                 append-to-body>
       <RecipeAudit v-bind:data="audit"></RecipeAudit>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog title="原始处方"
-                  v-bind:visible.sync="originVisible"
-                  append-to-body>
+    <PeaceDialog title="原始处方"
+                 v-bind:visible.sync="originVisible"
+                 append-to-body>
       <img v-if="data.pngUrl"
            v-bind:src="data.pngUrl"
            class="full-width" />
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

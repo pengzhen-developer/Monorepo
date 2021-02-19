@@ -112,10 +112,10 @@
       </el-row>
     </el-form>
 
-    <peace-dialog :append-to-body="true"
-                  :visible.sync="dialog.visible"
-                  title="选择转诊医生"
-                  width="700px">
+    <PeaceDialog :append-to-body="true"
+                 :visible.sync="dialog.visible"
+                 title="选择转诊医生"
+                 width="700px">
       <div>
         <el-input clearable
                   placeholder="请输入医院或医生姓名"
@@ -155,11 +155,11 @@
           </template>
         </PeaceTableColumn>
       </PeaceTable>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog :append-to-body="true"
-                  title="初步诊断"
-                  :visible.sync="dialog.diagnoseVisible">
+    <PeaceDialog :append-to-body="true"
+                 title="初步诊断"
+                 :visible.sync="dialog.diagnoseVisible">
       <div style="margin-bottom: 10px">
         <el-select :remote-method="getPresent"
                    @change="chooseItem"
@@ -205,7 +205,7 @@
         <el-button @click="saveItem"
                    type="primary">保存</el-button>
       </div>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

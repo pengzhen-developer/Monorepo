@@ -3,11 +3,11 @@
     <MessageFirstOptionCard :firstInfo="firstInfo"
                             @onClickDetail="onClickDetail"></MessageFirstOptionCard>
 
-    <peace-dialog :visible.sync="optionDialog.visible"
-                  append-to-body
-                  title="诊疗记录">
+    <PeaceDialog :visible.sync="optionDialog.visible"
+                 append-to-body
+                 title="诊疗记录">
       <FirstOptionDetail :prescriptionCode="optionDialog.data"></FirstOptionDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

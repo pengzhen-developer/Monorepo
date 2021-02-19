@@ -14,12 +14,12 @@
       <p class="record-case-right-title">处方</p>
       <p class="record-case-right-text">{{ data.netHospitalName }} | {{ data.netDeptName }}</p>
     </div>
-    <peace-dialog v-if="dialog.visible"
-                  :visible.sync="dialog.visible"
-                  append-to-body
-                  title="处方详情">
+    <PeaceDialog v-if="dialog.visible"
+                 :visible.sync="dialog.visible"
+                 append-to-body
+                 title="处方详情">
       <FirstOptionDetail :prescriptionCode="dialog.data"></FirstOptionDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

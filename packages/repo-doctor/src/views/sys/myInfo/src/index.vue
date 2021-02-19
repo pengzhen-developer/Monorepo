@@ -5,6 +5,7 @@
                    label="个人资料">
 
         <el-form :model="view.model"
+                 space-sm
                  label-suffix
                  label-width="120px">
           <el-form-item label="个人头像：">
@@ -74,6 +75,7 @@
       <el-tab-pane name="1"
                    label="账号设置">
         <el-form :model="view.model"
+                 space-sm
                  label-suffix
                  label-width="120px">
           <el-form-item label="手机号码：">

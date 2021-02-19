@@ -6,17 +6,17 @@
                v-on:click="invokeExtDLL">查看医保记录</el-button>
 
     <!-- 模态框 - 填写拒绝原因 -->
-    <peace-dialog width="348px"
-                  top="25vh"
-                  class="no-header"
-                  v-if="overInquiryVisible"
-                  v-bind:visible.sync="overInquiryVisible">
+    <PeaceDialog width="348px"
+                 top="25vh"
+                 class="no-header"
+                 v-if="overInquiryVisible"
+                 v-bind:visible.sync="overInquiryVisible">
       <OverInquiry v-on:close="overInquiryVisible = false"></OverInquiry>
-    </peace-dialog>
+    </PeaceDialog>
 
-    <peace-dialog width="440px"
-                  title="异常提示"
-                  v-bind:visible.sync="invoke.visible">
+    <PeaceDialog width="440px"
+                 title="异常提示"
+                 v-bind:visible.sync="invoke.visible">
       <div class="q-pa-md">
         <p class="text-bold q-mb-sm">医保记录调取失败，失败原因可能有：</p>
         <p>1. 电脑未安装“就医信息共享系统”程序，请联系信息科处理。 </p>
@@ -29,7 +29,7 @@
                      v-on:click="invoke.visible = false">知道了</el-button>
         </div>
       </div>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

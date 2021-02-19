@@ -32,13 +32,13 @@
     </div>
 
     <!-- 模态框 - 填写拒绝原因 -->
-    <peace-dialog width="348px"
-                  top="25vh"
-                  class="no-header"
-                  v-if="refuseVisible"
-                  v-bind:visible.sync="refuseVisible">
+    <PeaceDialog width="348px"
+                 top="25vh"
+                 class="no-header"
+                 v-if="refuseVisible"
+                 v-bind:visible.sync="refuseVisible">
       <RefuseInquiry v-on:close="refuseVisible = false"></RefuseInquiry>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

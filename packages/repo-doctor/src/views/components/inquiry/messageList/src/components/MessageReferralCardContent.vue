@@ -7,14 +7,14 @@
                          :doctorDeptName="doctorDeptName"
                          :doctorHospitalName="doctorHospitalName"
                          @onClickDetail="onClickDetail"></MessageReferralCard>
-    <peace-dialog :visible.sync="transfer.visible"
-                  v-if="transfer.visible"
-                  append-to-body
-                  title="转诊详情">
+    <PeaceDialog :visible.sync="transfer.visible"
+                 v-if="transfer.visible"
+                 append-to-body
+                 title="转诊详情">
       <InquiryTransferDetail :data="transfer.data"
                              :type="transfer.referral_type"
                              @close="() => transfer.visible = false"></InquiryTransferDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 

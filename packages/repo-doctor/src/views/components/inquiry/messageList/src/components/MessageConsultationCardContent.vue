@@ -8,14 +8,14 @@
                              :doctorDeptName="doctorDeptName"
                              :doctorHospitalName="doctorHospitalName"
                              @onClickDetail="onClickDetail"></MessageConsultationCard>
-    <peace-dialog :visible.sync="consultation.visible"
-                  v-if="consultation.visible"
-                  append-to-body
-                  title="会诊详情">
+    <PeaceDialog :visible.sync="consultation.visible"
+                 v-if="consultation.visible"
+                 append-to-body
+                 title="会诊详情">
       <InquiryConsultationDetail :data="consultation.data"
                                  @close="() => consultation.visible = false">
       </InquiryConsultationDetail>
-    </peace-dialog>
+    </PeaceDialog>
   </div>
 </template>
 
