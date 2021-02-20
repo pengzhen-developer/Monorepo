@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import Util from '@/src/util'
+import Util from '@src/util'
 import { path } from '@src/router/generateRoutes'
 export default {
   name: 'info-header',

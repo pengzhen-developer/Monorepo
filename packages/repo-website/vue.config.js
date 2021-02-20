@@ -17,10 +17,10 @@ module.exports = {
   chainWebpack: (config) => {
     // 移除 prefetch 插件
     config.plugins.delete('prefetch')
+    config.plugins.delete('preload')
 
     // 设置别名
     config.resolve.alias
-      .set('@', path.join(__dirname, ''))
       .set('@public', path.join(__dirname, 'public'))
       .set('@src', path.join(__dirname, 'src'))
       .set('@library', path.join(__dirname, 'src/library'))
@@ -46,6 +46,8 @@ module.exports = {
       // ['vue']: 'Vue',
       // ['element-ui']: 'ELEMENT',
       ['vue']: 'Vue',
+      ['vuex']: 'Vuex',
+      ['vue-router']: 'VueRouter',
       ['element-ui']: 'ELEMENT',
       ['jquery']: 'window.$'
     }
