@@ -1,6 +1,6 @@
 {
   "name": "@jk998/vue-cli-template",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": true,
   "scripts": {
     "dev": "npm run serve",
@@ -17,7 +17,7 @@
   "dependencies": {
     "@jk998/identity": "^0.2.5",
     "@jk998/library": "^0.1.27",
-    "@jk998/peace-element-ui": "^0.1.20",
+    "@jk998/peace-element-ui": "^0.1.21",
     "@quasar/extras": "^1.0.0",
     "core-js": "^3.6.5",
     "echarts": "^4.8.0",

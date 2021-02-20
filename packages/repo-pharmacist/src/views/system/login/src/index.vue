@@ -29,8 +29,8 @@
         </el-form-item>
         <el-form-item>
           <div class="bottom-top-item">
-            <img src="./assets/img/ic_gjgcsys.svg"
-                 style="width:28px; height:28px;margin-right:5px"
+            <img src="./assets/img/ic_gjgcsys.png"
+                 style="width:20px; height:20px;margin-right:5px"
                  alt="">
             互联网医疗系统与应用国家工程实验室
           </div>

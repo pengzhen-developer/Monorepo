@@ -16,6 +16,7 @@ module.exports = {
   chainWebpack: (config) => {
     // 移除 prefetch 插件
     config.plugins.delete('prefetch')
+    config.plugins.delete('preload')
 
     // 设置别名
     config.resolve.alias
@@ -33,10 +34,10 @@ module.exports = {
     // 相关资源可以通过 CDN 服务器从 index.html 引入, 避免 vendors 过大
     config.externals = {
       // e.g.
-      // ['vue']: 'Vue',
-      // ['element-ui']: 'ELEMENT',
-      // ['@public/static/IM/NIM_Web_NIM_v7.0.0']: 'NIM',
-      // ['@public/static/IM/NIM_Web_WebRTC_v7.0.0']: 'WebRTC'
+      ['vue']: 'Vue',
+      ['vuex']: 'Vuex',
+      ['vue-router']: 'VueRouter',
+      ['element-ui']: 'ELEMENT'
     }
   },
 

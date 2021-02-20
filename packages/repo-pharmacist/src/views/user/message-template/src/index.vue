@@ -1,15 +1,15 @@
 <template>
   <div class="layout-route">
-    <div class="bg-white  q-px-32 q-pb-24">
+    <div class="bg-white  q-px-lg q-py-sm">
       <el-tabs v-model="activeName"
                class="element-ui-default">
         <el-tab-pane label="审核模板"
                      name="first">
-          <AuditTemplate></AuditTemplate>
+          <AuditTemplate class="q-pb-mb"></AuditTemplate>
         </el-tab-pane>
         <el-tab-pane label="点评模板"
                      name="second">
-          <CommentTemplate></CommentTemplate>
+          <CommentTemplate class="q-pb-mb"></CommentTemplate>
         </el-tab-pane>
       </el-tabs>
     </div>
