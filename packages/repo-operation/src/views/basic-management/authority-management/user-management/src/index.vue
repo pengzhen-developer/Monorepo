@@ -19,7 +19,7 @@
                            start-placeholder="开始日期"
                            end-placeholder="结束日期"></PeaceDatePicker>
         </el-form-item>
-        <el-form-item label="">
+        <el-form-item>
           <el-button type="primary"
                      v-on:click="get">查询</el-button>
         </el-form-item>

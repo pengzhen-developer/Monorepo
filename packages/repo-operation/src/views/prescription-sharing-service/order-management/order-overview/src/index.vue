@@ -17,8 +17,7 @@
                              type="daterange"
                              v-model.trim="DateValue"></peace-date-picker>
         </el-form-item>
-        <el-form-item label
-                      label-width="0">
+        <el-form-item>
           <el-button type="primary"
                      v-on:click="get">查询</el-button>
         </el-form-item>

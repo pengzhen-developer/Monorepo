@@ -45,7 +45,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label-width="0">
+        <el-form-item>
           <el-button type="primary"
                      v-on:click="fetch">查询</el-button>
           <el-button type="primary"

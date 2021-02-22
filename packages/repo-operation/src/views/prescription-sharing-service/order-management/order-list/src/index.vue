@@ -89,8 +89,11 @@
           </el-select>
         </el-form-item>
 
-        <el-button type="primary"
-                   v-on:click="fetch">查询</el-button>
+        <el-form-item>
+          <el-button type="primary"
+                     v-on:click="fetch">查询</el-button>
+        </el-form-item>
+
       </el-form>
     </div>
 

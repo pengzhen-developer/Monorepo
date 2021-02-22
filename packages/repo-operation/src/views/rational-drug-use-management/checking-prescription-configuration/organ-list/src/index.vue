@@ -15,8 +15,7 @@
           <el-input v-model.trim="model.checkHospitalName"
                     placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label
-                      label-width="0">
+        <el-form-item>
           <el-button type="primary"
                      v-bind:disabled="searching"
                      v-on:click="get">查询</el-button>

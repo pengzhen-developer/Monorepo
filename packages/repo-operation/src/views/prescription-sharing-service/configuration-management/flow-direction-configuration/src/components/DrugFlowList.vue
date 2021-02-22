@@ -11,7 +11,7 @@
                     placeholder="请输入机构名称"></el-input>
         </el-form-item>
 
-        <el-form-item label="">
+        <el-form-item>
           <el-button type="primary"
                      v-on:click="fetch">查询</el-button>
         </el-form-item>
