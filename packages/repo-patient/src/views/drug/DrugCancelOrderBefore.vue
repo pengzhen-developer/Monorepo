@@ -92,10 +92,10 @@ export default {
   },
   computed: {
     totalMoney() {
-      return this.info && this.info.payMoney && this.info.payMoney.toFixed(2)
+      return this.info && this.formatMoney(this.info.payMoney)
     },
     payMoney() {
-      return this.info && this.info.payMoney ? `￥${this.info.payMoney.toFixed(2)}` : ''
+      return this.info && `￥${this.formatMoney(this.info.payMoney)}`
     },
     hasSelected() {
       return this.selectMsg && (this.selectMsg !== '其他' || (this.selectMsg === '其他' && this.cancelReason)) ? true : false
@@ -136,6 +136,9 @@ export default {
     this.getDrugOrderDetail()
   },
   methods: {
+    formatMoney(n) {
+      return n ? (n - 0).toFixed(2) : '0.00'
+    },
     changeLimitNum() {
       this.limitElement.innerHTML = this.limitNum
     },

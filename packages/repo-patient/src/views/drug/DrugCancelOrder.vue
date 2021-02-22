@@ -77,7 +77,7 @@ export default {
   },
   computed: {
     payMoney() {
-      return this.info.payMoney.toFixed(2)
+      return this.formatMoney(this.info.payMoney)
     },
     cancelStatus() {
       return this.info?.cancelList[this.info?.cancelList?.length - 1]?.cancelStatus
@@ -123,6 +123,9 @@ export default {
     this.getDrugOrderDetail()
   },
   methods: {
+    formatMoney(n) {
+      return n ? (n - 0).toFixed(2) : '0.00'
+    },
     getDrugOrderDetail() {
       const params = peace.util.decode(this.$route.params.json)
       peace.service.purchasedrug.SelectOrderDetApi(params).then((res) => {
