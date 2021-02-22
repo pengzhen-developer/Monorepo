@@ -205,6 +205,10 @@ export default {
     > .title {
       font-size: 16px;
       font-family: PingFangSC-Regular, PingFang SC;
+      width: calc(100% - 50px);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
 }

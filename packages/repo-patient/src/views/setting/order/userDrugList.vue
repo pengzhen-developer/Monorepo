@@ -42,7 +42,9 @@
                 <van-image :src="item.drugStoreLogo"
                            class="avatar-cicular"></van-image>
               </div>
-              <div class="strip-info">{{item.drugStoreName}}</div>
+              <div class="strip-info">
+                <div>{{item.drugStoreName}}</div>
+              </div>
               <div :class="{ [`color-a${item.callOrderStatus}`] : true }"
                    class="strip-eye">
                 {{item.callOrderStatusTxt}}
@@ -593,6 +595,12 @@ export default {
 .strip-info {
   flex: 1;
   color: #000;
+  > div {
+    max-width: 210px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 }
 .strip-eye {
   flex: 0 0 auto;

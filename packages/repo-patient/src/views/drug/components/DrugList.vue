@@ -101,7 +101,7 @@ export default {
   },
   data() {
     return {
-      isOpen: false,
+      // isOpen: false,
       canShowOperateModel: false
     }
   },
@@ -119,11 +119,14 @@ export default {
     }
   },
   computed: {
+    isOpen() {
+      return this.info?.drugJson?.length > 2 ? false : true
+    },
     canShowMoney() {
       if (!this.showMore) {
         return true
       }
-      if (this.info.drugJson.length < 2) {
+      if (this.info?.drugJson?.length < 2) {
         return true
       } else {
         if (this.isOpen) {
@@ -140,15 +143,16 @@ export default {
         if (val == false) {
           this.canShowOperateModel = val
         } else if (val == true) {
-          this.canShowOperateModel = this.info.drugJson.length > 2 ? true : false
+          this.canShowOperateModel = this.info?.drugJson?.length > 2 ? true : false
         }
       },
       immediate: true
     }
   },
-  created() {
-    this.isOpen = this.info.drugJson.length > 2 ? false : true
-  },
+
+  // created() {
+  //   this.isOpen = this.info.drugJson.length > 2 ? false : true
+  // },
   methods: {
     showShadow(index) {
       return this.canShowOperateModel && index == this.info?.drugJson?.length - 1
@@ -157,7 +161,7 @@ export default {
       if (!this.showMore) {
         return true
       }
-      if (this.info.drugJson.length < 2) {
+      if (this.info?.drugJson?.length < 2) {
         return true
       } else {
         if (this.isOpen) {
