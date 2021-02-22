@@ -9,11 +9,10 @@
       </div>
       <!-- 药品信息 -->
       <DrugList v-bind:info="info"
-                v-bind:totalMoney="info.payMoney"
+                v-bind:totalMoney="totalMoney"
                 v-bind:showMore="true"
                 v-bind:showInstructions="false"
-                v-bind:onlyWatch="true"
-                v-if="info&&info.payMoney"></DrugList>
+                v-bind:onlyWatch="true"></DrugList>
       <!-- 申请退款 -->
       <van-cell-group class="refund">
         <van-cell title="退款原因"
@@ -92,6 +91,9 @@ export default {
     }
   },
   computed: {
+    totalMoney() {
+      return this.info && this.info.payMoney && this.info.payMoney.toFixed(2)
+    },
     payMoney() {
       return this.info && this.info.payMoney ? `￥${this.info.payMoney.toFixed(2)}` : ''
     },
