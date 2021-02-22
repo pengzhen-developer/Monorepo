@@ -51,8 +51,10 @@
           </el-select>
         </el-form-item>
 
-        <el-button type="primary"
-                   v-on:click="fetch">查询</el-button>
+        <el-form-item>
+          <el-button type="primary"
+                     v-on:click="fetch">查询</el-button>
+        </el-form-item>
       </el-form>
     </div>
 
@@ -65,7 +67,7 @@
                   ref="table">
         <PeaceTableColumn prop="OrderId"
                           label="订单编号"
-                          width="180px">
+                          min-width="180px">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="showCancelDetail(scope.row)">{{ scope.row.OrderId }}</el-button>
@@ -73,33 +75,33 @@
         </PeaceTableColumn>
         <PeaceTableColumn prop="UserName"
                           label="客户姓名"
-                          width="120px"></PeaceTableColumn>
+                          min-width="120px"></PeaceTableColumn>
         <PeaceTableColumn prop="TotalAmoun"
                           label="订单总额"
-                          width="120px"></PeaceTableColumn>
+                          min-width="120px"></PeaceTableColumn>
         <PeaceTableColumn prop="Source"
                           label="订单来源"
-                          width="120px"></PeaceTableColumn>
+                          min-width="120px"></PeaceTableColumn>
         <PeaceTableColumn prop="DrugStoreName"
                           label="药房"
-                          width="160px"></PeaceTableColumn>
+                          min-width="160px"></PeaceTableColumn>
         <PeaceTableColumn prop="Sponsor"
                           label="发起人"
-                          width="120px"
+                          min-width="120px"
                           v-bind:formatter="formatSponsor"></PeaceTableColumn>
         <PeaceTableColumn prop="CreateTime"
                           label="申请取消时间"
-                          width="180px"></PeaceTableColumn>
+                          min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn prop="Result"
                           label="取消状态"
-                          width="120px"
+                          min-width="120px"
                           v-bind:formatter="formatResult"></PeaceTableColumn>
         <PeaceTableColumn prop="OrderStatus"
                           label="订单状态"
-                          width="120px"
+                          min-width="120px"
                           v-bind:formatter="formatOrderStatus"></PeaceTableColumn>
         <PeaceTableColumn label="操作"
-                          width="100px"
+                          min-width="100px"
                           fixed="right">
           <template slot-scope="scope">
             <el-button type="text"
