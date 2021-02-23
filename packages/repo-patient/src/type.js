@@ -41,7 +41,8 @@ export const SYSTEM = {
 export const EMIT = {
   /** 问诊 - 新增家人 */
   DOCTOR_INQUIRY_APPLY_FAMLIY: 'DoctorInquiryApplyFamliy',
-
+  /** 问诊 - 添加监护人 */
+  DOCTOR_INQUIRY_APPLY_FAMLIY_GUARDIAN: 'DoctorInquiryApplyFamilyGuardian',
   /** 问诊 - 新增附件 */
   DOCTOR_INQUIRY_APPLY_UPLOAD: 'DoctorInquiryApplyUpload',
 

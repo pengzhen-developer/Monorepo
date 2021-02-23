@@ -1005,6 +1005,7 @@ export default {
           //1：正常  2：库中无此身份证号码
           this.model.isReconfirm = res.data?.status == 2 ? 1 : 0
           this.model.idcard = this.idcardDialog.model.idcard
+          this.idcardDialog.visible = false
           this.saveFamily()
         })
         .catch((err) => {

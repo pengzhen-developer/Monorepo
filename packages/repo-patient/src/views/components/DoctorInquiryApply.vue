@@ -668,6 +668,8 @@ export default {
         consultationList: [],
         doctorInfo: {}
       },
+      //仅用于添加监护人保存当前家人信息，用于回填回答问题
+      currentFamilyInfo: {},
 
       sending: false,
 
@@ -829,6 +831,7 @@ export default {
 
     onEmits() {
       $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY, this.addFamilyCallback)
+      $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY_GUARDIAN, this.addFamilyGuardianCallback)
       $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_UPLOAD, this.uploaderCallback)
       $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_ILLNESS, this.illnessCallback)
       $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_ALLERGIES_SAVE, this.supplementaryAllergiesSaveCallback)
@@ -838,6 +841,7 @@ export default {
 
     offEmits() {
       $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY)
+      $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY_GUARDIAN)
       $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_UPLOAD)
       $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_ILLNESS)
       $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_SUPPLEMENTARY_ALLERGIES_SAVE)
@@ -927,7 +931,13 @@ export default {
         this.getFamilyList()
       }
     },
-
+    addFamilyGuardianCallback(res) {
+      if (res.success) {
+        this.getFamilyList('addGuardian')
+        this.currentFamilyInfo.isGuardian = 1
+        this.answer(this.currentFamilyInfo)
+      }
+    },
     uploaderCallback(res) {
       // 兼容 answer auguments
       if (res && res.length) {
@@ -1049,7 +1059,7 @@ export default {
         }
       })
     },
-    getFamilyList() {
+    getFamilyList(type = '') {
       peace.service.IM.getImlist().then((res) => {
         const famliyQuestion = this.questionList.find((item) => item.field === this.ANSWER_FIELD.FAMILY)
 
@@ -1060,7 +1070,9 @@ export default {
         })
 
         famliyQuestion.answerList = familyList
-        this.current.answerList = familyList
+        if (type == '') {
+          this.current.answerList = familyList
+        }
       })
     },
 
@@ -1350,9 +1362,10 @@ export default {
                   type: 'addGuardian',
                   id: params[0].accid,
                   idcard: params[0].idcard,
-                  emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY,
+                  emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY_GUARDIAN,
                   canShowSelf: canShowSelf
                 })
+                this.currentFamilyInfo = params[0]
                 this.$router.push({ path: `/setting/addGuardian/${json}` })
               })
               return false
