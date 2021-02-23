@@ -361,19 +361,27 @@ export default {
       })
     },
 
+    // 北辰医院流程
     // 检查是否建档
     checkIsBuilding() {
+      const config = Peace.cache.sessionStorage.get('config')
       const params = {
         familyId: this.familyId
       }
 
-      Service.checkIsBuilding(params).then((res) => {
-        if (res.data.status === 2) {
-          // 未建档，默认选择外延处方
-          this.isBuilding = false
-          this.prescriptionTag = 2
-        }
-      })
+      if (config.hospitalTag !== 'beichen') {
+        return Promise.resolve()
+      } else {
+        return Service.checkIsBuilding(params).then((res) => {
+          if (res.data.status === 2) {
+            // 未建档，默认选择外延处方
+            this.isBuilding = false
+            this.prescriptionTag = 2
+
+            console.log('checkIsBuilding' + this.prescriptionTag)
+          }
+        })
+      }
     },
 
     getPrevInquiry() {
@@ -389,6 +397,8 @@ export default {
 
             this.drugList = res.data.drugList
             this.prescriptionTag = res.data.prescriptionTag
+
+            console.log('getPrevInquiry' + this.prescriptionTag)
           }
         })
       }
@@ -401,6 +411,7 @@ export default {
         this.weight = recipeCache.weight
         this.drugList = recipeCache.drugList
         this.prescriptionTag = recipeCache.prescriptionTag
+        console.log('resetDataFromCache' + this.prescriptionTag)
 
         this.diagnoseList = recipeCache.diagnoseList.concat([])
         this.dialog.chooseData = recipeCache.diagnoseList.concat([])
