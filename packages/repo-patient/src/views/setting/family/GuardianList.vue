@@ -70,6 +70,12 @@ export default {
       default: () => {
         return ''
       }
+    },
+    canShowSelf: {
+      type: [String, Number],
+      default: () => {
+        return ''
+      }
     }
   },
   data() {
@@ -96,7 +102,7 @@ export default {
         if (item.idCard) {
           this.bindFamilyGuardian(item)
         } else {
-          const json = peace.util.encode({ type: 'addGuardian', emit: this.emit, childrenId: this.familyId, canShowSelf: true })
+          const json = peace.util.encode({ type: 'addGuardian', emit: this.emit, childrenId: this.familyId, canShowSelf: this.canShowSelf })
           this.$router.push(`/setting/familyMember/${json}`)
         }
       } else {

@@ -1356,7 +1356,6 @@ export default {
                 confirmButtonText: '去填写'
               }).then(() => {
                 //去添加监护人
-                // this.$router.push({ path: `/setting/myFamilyMembers` })
                 let canShowSelf = !this.current.answerList.find((item) => item.relation === '本人') ? 1 : 2
                 const json = peace.util.encode({
                   type: 'addGuardian',

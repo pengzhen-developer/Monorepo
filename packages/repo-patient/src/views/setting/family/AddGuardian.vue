@@ -56,6 +56,7 @@
         <GuardianList :from="params.type"
                       :familyId="model.id"
                       :emit="params.emit"
+                      :canShowSelf="params.canShowSelf"
                       @setGardianInfo="setGardianInfo" />
       </peace-dialog>
     </div>
@@ -153,12 +154,17 @@ export default {
   },
 
   mounted() {
+    this.params = peace.util.decode(this.$route.params.json)
+
+    //关系列表是否展示‘本人’
+    if (this.params.canShowSelf != 1) {
+      this.relations.splice(0, 1)
+    }
+
     this.getFamilyInfo()
   },
   methods: {
     getFamilyInfo() {
-      this.params = peace.util.decode(this.$route.params.json)
-
       peace.service.patient.getFamilyInfo(this.params).then((res) => {
         this.model = res.data
         this.model.idcard = this.params.idcard
