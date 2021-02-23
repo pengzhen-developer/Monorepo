@@ -164,9 +164,7 @@ export default {
       }
       peace.service.purchasedrug
         .CancelOrder(params)
-        .then((res) => {
-          peace.util.alert(res.msg)
-        })
+        .then(() => {})
         .finally(() => {
           const json = peace.util.encode({ orderNo: this.info.orderNo })
           this.$router.replace(`/drug/drugCancelOrder/${json}`)
