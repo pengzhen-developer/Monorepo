@@ -411,6 +411,7 @@ export default {
         title: '选择监护人',
         visible: false
       },
+      params: null,
       nationName: '',
       relations: ['本人', '父母', '爱人', '孩子', '挚友'],
       sexs: ['男', '女'],
@@ -442,7 +443,7 @@ export default {
       return this.yibaoCardList.length > 0
     },
     canShowGardian() {
-      return !this.addGardian && (this.gardianSet || (this.age != null && this.age <= this.ageLimit))
+      return !this.addGardian && this.from != 'addGuardian' && (this.gardianSet || (this.age != null && this.age <= this.ageLimit))
     },
     canSubmit() {
       let result = false
@@ -452,14 +453,14 @@ export default {
       } else {
         result = false
       }
-      if (this.from == 'addGuardian' || this.addGardian) {
-        let gardianAge = this.getAgeByIdCard(this.model.idcard)
-        if (gardianAge < 18) {
-          result = false
-        } else {
-          result = true
-        }
-      }
+      // if (this.from == 'addGuardian' || this.addGardian) {
+      //   let gardianAge = this.getAgeByIdCard(this.model.idcard)
+      //   if (gardianAge < 18) {
+      //     result = false
+      //   } else {
+      //     result = true
+      //   }
+      // }
       return result
     }
   },
@@ -505,7 +506,7 @@ export default {
   },
   mounted() {
     let json = peace.util.decode(this.$route.params.json)
-
+    this.params = json
     if (json.type == 'add' || json.type == 'addGuardian') {
       this.from = json.type
       // 添加页面 只需加载民族列表
@@ -816,6 +817,12 @@ export default {
       if (!this.canSubmit) {
         return
       }
+      if (this.from == 'addGuardian' || this.addGardian) {
+        let gardianAge = this.getAgeByIdCard(this.model.idcard)
+        if (gardianAge < 18) {
+          return
+        }
+      }
       if (this.canShowGardian) {
         if (!(this.gardianId && this.gardianName)) {
           return
@@ -865,12 +872,11 @@ export default {
         .then((res) => {
           const params = peace.util.decode(this.$route.params.json)
           if (this.from == 'addGuardian') {
-            this.$router.go(-1)
-            //缓存监护人信息
-            peace.cache.set('gardianInfo', {
+            const info = {
               name: this.model.name,
-              idcard: this.model.idcard
-            })
+              idCard: this.model.idcard
+            }
+            this.bindFamilyGuardian(info)
           } else {
             if (this.addGardian) {
               this.gardianName = this.model.name
@@ -881,7 +887,6 @@ export default {
               this.gDialog.visible = false
               this.addGardian = false
               this.gardianSet = true
-              this.submit()
             } else {
               peace.util.alert(res.msg)
               //新增家人后断连接IM
@@ -900,6 +905,25 @@ export default {
         })
         .finally(() => {
           this.hasClick = false
+        })
+    },
+    bindFamilyGuardian(info) {
+      const param = {
+        guardianName: info.name,
+        guardianIdCard: info.idCard,
+        familyId: this.params.childrenId
+      }
+      peace.service.patient
+        .bindFamilyGuardian(param)
+        .then((res) => {
+          peace.util.alert(res.msg)
+          if (this.params.emit) {
+            $peace.$emit(this.params.emit, res)
+            this.$router.go(-2)
+          }
+        })
+        .catch((err) => {
+          peace.util.alert(err.data.msg)
         })
     },
     perfectInfo() {

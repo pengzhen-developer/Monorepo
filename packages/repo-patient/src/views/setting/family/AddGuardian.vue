@@ -54,6 +54,8 @@
                     :visible.sync="gDialog.visible"
                     @update:visible="checkGardian">
         <GuardianList :from="params.type"
+                      :familyId="model.id"
+                      :emit="params.emit"
                       @setGardianInfo="setGardianInfo" />
       </peace-dialog>
     </div>
@@ -143,24 +145,13 @@ export default {
     }
   },
   activated() {
-    const gardianInfo = peace.cache.get('gardianInfo')
-    if (gardianInfo) {
-      this.gardianSet = true
-      this.gardianId = gardianInfo.idcard
-      this.gardianName = gardianInfo.name
-      this.idcardDialog.error.idcard = ''
-      this.gDialog.visible = false
-    } else {
-      this.gardianSet = false
-      this.gardianId = ''
-      this.gardianName = ''
-      this.idcardDialog.error.idcard = ''
-      this.gDialog.visible = false
-    }
+    this.gardianSet = false
+    this.gardianId = ''
+    this.gardianName = ''
+    this.idcardDialog.error.idcard = ''
+    this.gDialog.visible = false
   },
-  destroyed() {
-    peace.cache.remove('gardianInfo')
-  },
+
   mounted() {
     this.getFamilyInfo()
   },

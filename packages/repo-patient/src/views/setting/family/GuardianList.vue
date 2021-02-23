@@ -58,6 +58,18 @@ export default {
       default: () => {
         return ''
       }
+    },
+    familyId: {
+      type: String,
+      default: () => {
+        return ''
+      }
+    },
+    emit: {
+      type: String,
+      default: () => {
+        return ''
+      }
     }
   },
   data() {
@@ -79,12 +91,36 @@ export default {
     },
 
     setGardianInfo(item) {
-      if (this.from == 'addGuardian' && !item.idCard) {
-        const json = peace.util.encode({ type: 'addGuardian', canShowSelf: true })
-        this.$router.push(`/setting/familyMember/${json}`)
+      //医生助手-
+      if (this.from == 'addGuardian') {
+        if (item.idCard) {
+          this.bindFamilyGuardian(item)
+        } else {
+          const json = peace.util.encode({ type: 'addGuardian', emit: this.emit, childrenId: this.familyId, canShowSelf: true })
+          this.$router.push(`/setting/familyMember/${json}`)
+        }
       } else {
         this.$emit('setGardianInfo', item)
       }
+    },
+    bindFamilyGuardian(info) {
+      const param = {
+        guardianName: info.name,
+        guardianIdCard: info.idCard,
+        familyId: this.familyId
+      }
+      peace.service.patient
+        .bindFamilyGuardian(param)
+        .then((res) => {
+          peace.util.alert(res.msg)
+          if (this.emit) {
+            $peace.$emit(this.emit, res)
+            this.$router.go(-1)
+          }
+        })
+        .catch((err) => {
+          peace.util.alert(err.data.msg)
+        })
     }
   }
 }
