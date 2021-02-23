@@ -1238,6 +1238,7 @@ export default {
             font-size: 15px;
             color: #333;
             font-weight: 600;
+            margin-right: -10px;
             span {
               font-weight: normal;
             }
