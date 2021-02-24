@@ -2,7 +2,7 @@
   <div class="drugs">
     <template v-for="(drug,index) in info.drugJson">
       <div class="drug-item"
-           v-if="showMoreInfo(index)"
+           v-show="showMoreInfo(index)"
            v-bind:key="index">
         <van-image :src="drug.DrugImage"
                    class="error--image drug-logo">
@@ -101,8 +101,7 @@ export default {
   },
   data() {
     return {
-      // isOpen: false,
-      canShowOperateModel: false
+      isOpen: false
     }
   },
 
@@ -119,8 +118,12 @@ export default {
     }
   },
   computed: {
-    isOpen() {
-      return this.info?.drugJson?.length > 2 ? false : true
+    canShowOperateModel() {
+      if (this.showMore == true) {
+        return this.info?.drugJson?.length > 2 ? true : false
+      } else {
+        return false
+      }
     },
     canShowMoney() {
       if (!this.showMore) {
@@ -138,21 +141,13 @@ export default {
     }
   },
   watch: {
-    showMore: {
+    info: {
       handler(val) {
-        if (val == false) {
-          this.canShowOperateModel = val
-        } else if (val == true) {
-          this.canShowOperateModel = this.info?.drugJson?.length > 2 ? true : false
-        }
-      },
-      immediate: true
+        this.isOpen = val?.drugJson?.length > 2 ? false : true
+      }
     }
   },
 
-  // created() {
-  //   this.isOpen = this.info.drugJson.length > 2 ? false : true
-  // },
   methods: {
     showShadow(index) {
       return this.canShowOperateModel && index == this.info?.drugJson?.length - 1
