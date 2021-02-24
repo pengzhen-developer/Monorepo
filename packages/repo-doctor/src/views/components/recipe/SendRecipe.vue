@@ -143,12 +143,16 @@
                  v-loading="sending"
                  element-loading-text="拼命加载中"
                  element-loading-background="rgba(0, 0, 0, 0.4)">
-      <RecipeAudit v-bind:data="audit.data"></RecipeAudit>
+      <div style="max-height: 70vh; overflow: auto;">
 
-      <div class="q-my-md flex justify-center">
-        <el-button v-on:click="sendConfirm">继续发送</el-button>
-        <el-button type="primary"
-                   v-on:click="audit.visible = false">返回修改</el-button>
+        <RecipeAudit v-bind:data="audit.data"></RecipeAudit>
+
+        <div class="q-my-md flex justify-center">
+          <el-button v-on:click="sendConfirm">继续发送</el-button>
+          <el-button type="primary"
+                     v-on:click="audit.visible = false">返回修改</el-button>
+        </div>
+
       </div>
     </PeaceDialog>
 
