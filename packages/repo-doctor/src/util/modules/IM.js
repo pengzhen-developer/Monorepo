@@ -320,20 +320,27 @@ export const inquiryHelper = {
     }
 
     // 排序规则:
-    // 1. 按照私人医生排序
-    // 2. 按照会话时间排序
+    // 1. 按照问诊状态排序
+    // 2. 按照私人医生排序
+    // 3. 按照会话时间排序
     const sortMethod = (prev, next) => {
       if (prev.content && next.content) {
+        const prevInquiryStatus = prev.content.inquiryInfo.inquiryStatus
+        const nextInquiryStatus = next.content.inquiryInfo.inquiryStatus
         const prevIsPrivateDoctor = prev.content.inquiryInfo.isPrivateDoctor
         const nextIsPrivateDoctor = next.content.inquiryInfo.isPrivateDoctor
         const prevTime = prev.updateTime
         const nextTime = next.updateTime
 
-        if (prevIsPrivateDoctor === nextIsPrivateDoctor) {
-          return nextTime - prevTime
-        } else {
+        if (prevInquiryStatus === nextInquiryStatus) {
+          if (prevIsPrivateDoctor === nextIsPrivateDoctor) {
+            return nextTime - prevTime
+          }
+
           return nextIsPrivateDoctor - prevIsPrivateDoctor
         }
+
+        return prevInquiryStatus - nextInquiryStatus
       }
     }
 
