@@ -461,8 +461,8 @@ const IMAGES_UPLOAD_TYPE = {
   // 患处
   AFFECTED_IMAGES: 2
 }
-/**在线咨询 INQUIRY_QUESTION_LISI*/
-const INQUIRY_QUESTION_LISI = [
+/**在线咨询 INQUIRY_QUESTION_LIST*/
+const INQUIRY_QUESTION_LIST = [
   {
     no: 0,
     answerList: [],
@@ -478,7 +478,7 @@ const INQUIRY_QUESTION_LISI = [
     mode: ANSWER_MODE.INPUT
   }
 ]
-const FUZHEN_HAS_HIS_QUESTION_LISI = [
+const FUZHEN_HAS_HIS_QUESTION_LIST = [
   {
     no: 0,
     answerList: [],
@@ -502,8 +502,8 @@ const FUZHEN_HAS_HIS_QUESTION_LISI = [
     mode: ANSWER_MODE.INPUT
   }
 ]
-/**复诊续方 FUZHEN_QUESTION_LISI*/
-const FUZHEN_QUESTION_LISI = [
+/**复诊续方 FUZHEN_QUESTION_LIST*/
+const FUZHEN_QUESTION_LIST = [
   {
     no: 0,
     answerList: [],
@@ -1033,7 +1033,7 @@ export default {
       this.model.isAgain = params.serviceType == 'returnVisit' ? '1' : '0'
       this.model.price = Number(params.price)
       this.model.AMPM = params.AMPM || ''
-      this.questionList = params.serviceType == 'returnVisit' ? FUZHEN_QUESTION_LISI : INQUIRY_QUESTION_LISI
+      this.questionList = params.serviceType == 'returnVisit' ? FUZHEN_QUESTION_LIST : INQUIRY_QUESTION_LIST
       this.supplementaryFlag = params.serviceType == 'returnVisit' ? true : false
     },
     getFirstOptionList(familyId) {
@@ -1345,7 +1345,7 @@ export default {
             this.selectCase = null
             //更换家人-先选择第一个家人的病历，然后撤回 重选家人 需重置问题列表
             if (this.model.serviceType === 'returnVisit') {
-              this.questionList = [].concat(FUZHEN_QUESTION_LISI)
+              this.questionList = [].concat(FUZHEN_QUESTION_LIST)
             }
             //电子健康卡检验仅适用于五莲县人民医院，故屏蔽
             // this.checkHealthCard()
@@ -1402,10 +1402,12 @@ export default {
         this.model.caseInfo = params[0]
         this.selectCase = !params[0] ? false : true
         if (this.selectCase) {
-          this.questionList = [].concat(FUZHEN_HAS_HIS_QUESTION_LISI)
-          // 重新设置问题列表后，更新家人列表至问题列表
-          this.getFamilyList()
+          this.questionList = [].concat(FUZHEN_HAS_HIS_QUESTION_LIST)
+        } else {
+          this.questionList = [].concat(FUZHEN_QUESTION_LIST)
         }
+        // 重新设置问题列表后，更新家人列表至问题列表
+        this.getFamilyList()
       }
 
       // 上传附件
