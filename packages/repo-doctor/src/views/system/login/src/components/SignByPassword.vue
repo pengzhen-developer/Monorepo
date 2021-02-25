@@ -24,13 +24,20 @@
 
       <el-form-item prop="password">
         <el-input ref="password"
-                  v-model.trim="model.password"
-                  show-password
                   minlength="6"
                   maxlength="20"
-                  placeholder="请输入登录密码">
+                  placeholder="请输入登录密码"
+                  v-bind:type="this.showPassword ? 'text' : 'password'"
+                  v-model.trim="model.password">
           <div slot="prepend">
             <i class="el-icon-lock"></i>
+          </div>
+          <div slot="suffix"
+               v-on:click="showPassword = !showPassword">
+            <i v-if="this.showPassword"
+               class="icon icon_xianshimima q-mr-xs cursor-pointer"></i>
+            <i v-else
+               class="icon icon_yincangmima q-mr-xs cursor-pointer"></i>
           </div>
         </el-input>
       </el-form-item>
@@ -101,7 +108,9 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' },
           { pattern: Peace.validate.pattern.password, message: '请输入6-20位数字或密码组合' }
         ]
-      }
+      },
+
+      showPassword: false
     }
   },
 

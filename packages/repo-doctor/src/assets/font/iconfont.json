@@ -1,100 +1,247 @@
 {
-  "id": "1149079",
-  "name": "医生pc端",
+  "id": "2354522",
+  "name": "智药云 - 医生端",
   "font_family": "iconfont",
   "css_prefix_text": "icon_",
   "description": "",
   "glyphs": [
     {
-      "icon_id": "9818308",
-      "name": "V0.6",
-      "font_class": "V",
-      "unicode": "e6a3",
-      "unicode_decimal": 59043
+      "icon_id": "16601274",
+      "name": "隐藏密码",
+      "font_class": "yincangmima",
+      "unicode": "e675",
+      "unicode_decimal": 58997
     },
     {
-      "icon_id": "9818309",
-      "name": "ic_talk log",
-      "font_class": "ic_talklog",
-      "unicode": "e6a4",
-      "unicode_decimal": 59044
+      "icon_id": "16601275",
+      "name": "显示密码",
+      "font_class": "xianshimima",
+      "unicode": "e676",
+      "unicode_decimal": 58998
     },
     {
-      "icon_id": "8473213",
-      "name": "ptgk",
-      "font_class": "ic_datatrends",
-      "unicode": "e622",
-      "unicode_decimal": 58914
+      "icon_id": "19700887",
+      "name": "ic_rest_check",
+      "font_class": "rest",
+      "unicode": "e602",
+      "unicode_decimal": 58882
     },
     {
-      "icon_id": "9701737",
-      "name": "ic_data interpretation",
-      "font_class": "ic_datainterpretation",
-      "unicode": "e6a1",
-      "unicode_decimal": 59041
+      "icon_id": "19700877",
+      "name": "icon_work_check",
+      "font_class": "work",
+      "unicode": "e601",
+      "unicode_decimal": 58881
     },
     {
-      "icon_id": "9701739",
-      "name": "ic_measure",
-      "font_class": "ic_measure",
-      "unicode": "e6a2",
-      "unicode_decimal": 59042
+      "icon_id": "19700819",
+      "name": "ic_sign_out",
+      "font_class": "sign_out",
+      "unicode": "e600",
+      "unicode_decimal": 58880
     },
     {
-      "icon_id": "9675849",
-      "name": "ic_medical record",
-      "font_class": "ic_medicalrecord",
-      "unicode": "e69d",
-      "unicode_decimal": 59037
+      "icon_id": "8536604",
+      "name": "archives_icon_allergy",
+      "font_class": "archives_icon_allergy",
+      "unicode": "e628",
+      "unicode_decimal": 58920
     },
     {
-      "icon_id": "9675850",
-      "name": "ic_rp",
-      "font_class": "ic_rp",
-      "unicode": "e69e",
-      "unicode_decimal": 59038
+      "icon_id": "8536605",
+      "name": "archives_icon_marry copy",
+      "font_class": "archives_icon_marrycopy",
+      "unicode": "e629",
+      "unicode_decimal": 58921
     },
     {
-      "icon_id": "9641111",
-      "name": "archives_icon_drug",
-      "font_class": "archives_icon_drug",
-      "unicode": "e69f",
-      "unicode_decimal": 59039
+      "icon_id": "8536607",
+      "name": "archives_icon_habit",
+      "font_class": "archives_icon_habit",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
     },
     {
-      "icon_id": "9641112",
-      "name": "archives_icon_son",
-      "font_class": "archives_icon_son",
-      "unicode": "e6a0",
-      "unicode_decimal": 59040
+      "icon_id": "8536608",
+      "name": "archives_icon_marry",
+      "font_class": "archives_icon_marry",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
     },
     {
-      "icon_id": "9552568",
-      "name": "ic_blood pressure",
-      "font_class": "ic_bloodpressure",
-      "unicode": "e699",
-      "unicode_decimal": 59033
+      "icon_id": "8536609",
+      "name": "archives_icon_medical",
+      "font_class": "archives_icon_medical",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
     },
     {
-      "icon_id": "9552569",
-      "name": "ic_blood oxygen",
-      "font_class": "ic_bloodoxygen",
-      "unicode": "e69a",
-      "unicode_decimal": 59034
+      "icon_id": "8536610",
+      "name": "electronicmedical_icon",
+      "font_class": "electronicmedical_icon",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
     },
     {
-      "icon_id": "9552570",
-      "name": "ic_blood sugar",
-      "font_class": "ic_bloodsugar",
-      "unicode": "e69b",
-      "unicode_decimal": 59035
+      "icon_id": "8536611",
+      "name": "ic_modify",
+      "font_class": "ic_modify",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
     },
     {
-      "icon_id": "9552571",
-      "name": "ic_body fat",
-      "font_class": "ic_bodyfat",
-      "unicode": "e69c",
-      "unicode_decimal": 59036
+      "icon_id": "8536612",
+      "name": "ic_remind",
+      "font_class": "ic_remind",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "8536613",
+      "name": "ic_refuse copy",
+      "font_class": "ic_refusecopy",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "8536617",
+      "name": "ic_no news",
+      "font_class": "ic_nonews",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "8536618",
+      "name": "ic_no one copy",
+      "font_class": "ic_noonecopy",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "8536619",
+      "name": "open",
+      "font_class": "open",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "8545482",
+      "name": "nav_icon_home copy 3",
+      "font_class": "nav_icon_homecopy",
+      "unicode": "e631",
+      "unicode_decimal": 58929
+    },
+    {
+      "icon_id": "8545971",
+      "name": "ic_consulting room",
+      "font_class": "ic_consultingroom",
+      "unicode": "e635",
+      "unicode_decimal": 58933
+    },
+    {
+      "icon_id": "8546026",
+      "name": "ic_inquiry",
+      "font_class": "ic_inquiry",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "8546111",
+      "name": "ic_my",
+      "font_class": "ic_my",
+      "unicode": "e637",
+      "unicode_decimal": 58935
+    },
+    {
+      "icon_id": "8546158",
+      "name": "ic_help",
+      "font_class": "ic_help",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "8672718",
+      "name": "ic_huanzhe",
+      "font_class": "ic_huanzhe",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
+      "icon_id": "9067345",
+      "name": "ic_wait_group consultation",
+      "font_class": "ic_wait_groupconsultation",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "9067346",
+      "name": "ic_ing_group consultation",
+      "font_class": "ic_ing_groupconsultation",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "9174821",
+      "name": "archives_icon_patient",
+      "font_class": "archives_icon_patient",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
+    },
+    {
+      "icon_id": "9174822",
+      "name": "archives_icon_doctor",
+      "font_class": "archives_icon_doctor",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
+    },
+    {
+      "icon_id": "9175113",
+      "name": "archives_icon_application information",
+      "font_class": "archives_icon_applicationinformation",
+      "unicode": "e63f",
+      "unicode_decimal": 58943
+    },
+    {
+      "icon_id": "9175247",
+      "name": "archives_icon_to examine",
+      "font_class": "archives_icon_toexamine",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    },
+    {
+      "icon_id": "9175432",
+      "name": "ic_group consultation",
+      "font_class": "ic_groupconsultation1",
+      "unicode": "e641",
+      "unicode_decimal": 58945
+    },
+    {
+      "icon_id": "9215651",
+      "name": "ic_daojishi_green",
+      "font_class": "ic_daojishi_green",
+      "unicode": "e687",
+      "unicode_decimal": 59015
+    },
+    {
+      "icon_id": "9215652",
+      "name": "ic_daojishi_red",
+      "font_class": "ic_daojishi_red",
+      "unicode": "e688",
+      "unicode_decimal": 59016
+    },
+    {
+      "icon_id": "9235542",
+      "name": "ic_video_left",
+      "font_class": "ic_video_left",
+      "unicode": "e689",
+      "unicode_decimal": 59017
+    },
+    {
+      "icon_id": "9235543",
+      "name": "ic_video_right",
+      "font_class": "ic_video_right",
+      "unicode": "e68a",
+      "unicode_decimal": 59018
     },
     {
       "icon_id": "9435690",
@@ -195,207 +342,102 @@
       "unicode_decimal": 59032
     },
     {
-      "icon_id": "9235542",
-      "name": "ic_video_left",
-      "font_class": "ic_video_left",
-      "unicode": "e689",
-      "unicode_decimal": 59017
+      "icon_id": "9552568",
+      "name": "ic_blood pressure",
+      "font_class": "ic_bloodpressure",
+      "unicode": "e699",
+      "unicode_decimal": 59033
     },
     {
-      "icon_id": "9235543",
-      "name": "ic_video_right",
-      "font_class": "ic_video_right",
-      "unicode": "e68a",
-      "unicode_decimal": 59018
+      "icon_id": "9552569",
+      "name": "ic_blood oxygen",
+      "font_class": "ic_bloodoxygen",
+      "unicode": "e69a",
+      "unicode_decimal": 59034
     },
     {
-      "icon_id": "9215651",
-      "name": "ic_daojishi_green",
-      "font_class": "ic_daojishi_green",
-      "unicode": "e687",
-      "unicode_decimal": 59015
+      "icon_id": "9552570",
+      "name": "ic_blood sugar",
+      "font_class": "ic_bloodsugar",
+      "unicode": "e69b",
+      "unicode_decimal": 59035
     },
     {
-      "icon_id": "9215652",
-      "name": "ic_daojishi_red",
-      "font_class": "ic_daojishi_red",
-      "unicode": "e688",
-      "unicode_decimal": 59016
+      "icon_id": "9552571",
+      "name": "ic_body fat",
+      "font_class": "ic_bodyfat",
+      "unicode": "e69c",
+      "unicode_decimal": 59036
     },
     {
-      "icon_id": "9175432",
-      "name": "ic_group consultation",
-      "font_class": "ic_groupconsultation1",
-      "unicode": "e641",
-      "unicode_decimal": 58945
+      "icon_id": "9641111",
+      "name": "archives_icon_drug",
+      "font_class": "archives_icon_drug",
+      "unicode": "e69f",
+      "unicode_decimal": 59039
     },
     {
-      "icon_id": "9175247",
-      "name": "archives_icon_to examine",
-      "font_class": "archives_icon_toexamine",
-      "unicode": "e640",
-      "unicode_decimal": 58944
+      "icon_id": "9641112",
+      "name": "archives_icon_son",
+      "font_class": "archives_icon_son",
+      "unicode": "e6a0",
+      "unicode_decimal": 59040
     },
     {
-      "icon_id": "9175113",
-      "name": "archives_icon_application information",
-      "font_class": "archives_icon_applicationinformation",
-      "unicode": "e63f",
-      "unicode_decimal": 58943
+      "icon_id": "9675849",
+      "name": "ic_medical record",
+      "font_class": "ic_medicalrecord",
+      "unicode": "e69d",
+      "unicode_decimal": 59037
     },
     {
-      "icon_id": "9174822",
-      "name": "archives_icon_doctor",
-      "font_class": "archives_icon_doctor",
-      "unicode": "e63e",
-      "unicode_decimal": 58942
+      "icon_id": "9675850",
+      "name": "ic_rp",
+      "font_class": "ic_rp",
+      "unicode": "e69e",
+      "unicode_decimal": 59038
     },
     {
-      "icon_id": "9174821",
-      "name": "archives_icon_patient",
-      "font_class": "archives_icon_patient",
-      "unicode": "e63d",
-      "unicode_decimal": 58941
+      "icon_id": "9701737",
+      "name": "ic_data interpretation",
+      "font_class": "ic_datainterpretation",
+      "unicode": "e6a1",
+      "unicode_decimal": 59041
     },
     {
-      "icon_id": "9067345",
-      "name": "ic_wait_group consultation",
-      "font_class": "ic_wait_groupconsultation",
-      "unicode": "e63a",
-      "unicode_decimal": 58938
+      "icon_id": "9701739",
+      "name": "ic_measure",
+      "font_class": "ic_measure",
+      "unicode": "e6a2",
+      "unicode_decimal": 59042
     },
     {
-      "icon_id": "9067346",
-      "name": "ic_ing_group consultation",
-      "font_class": "ic_ing_groupconsultation",
-      "unicode": "e63b",
-      "unicode_decimal": 58939
+      "icon_id": "8473213",
+      "name": "ptgk",
+      "font_class": "ic_datatrends",
+      "unicode": "e622",
+      "unicode_decimal": 58914
     },
     {
-      "icon_id": "8672718",
-      "name": "ic_huanzhe",
-      "font_class": "ic_huanzhe",
-      "unicode": "e639",
-      "unicode_decimal": 58937
+      "icon_id": "9818308",
+      "name": "V0.6",
+      "font_class": "V",
+      "unicode": "e6a3",
+      "unicode_decimal": 59043
     },
     {
-      "icon_id": "8545482",
-      "name": "nav_icon_home copy 3",
-      "font_class": "nav_icon_homecopy",
-      "unicode": "e631",
-      "unicode_decimal": 58929
+      "icon_id": "9818309",
+      "name": "ic_talk log",
+      "font_class": "ic_talklog",
+      "unicode": "e6a4",
+      "unicode_decimal": 59044
     },
     {
-      "icon_id": "8545971",
-      "name": "ic_consulting room",
-      "font_class": "ic_consultingroom",
-      "unicode": "e635",
-      "unicode_decimal": 58933
-    },
-    {
-      "icon_id": "8546026",
-      "name": "ic_inquiry",
-      "font_class": "ic_inquiry",
-      "unicode": "e636",
-      "unicode_decimal": 58934
-    },
-    {
-      "icon_id": "8546111",
-      "name": "ic_my",
-      "font_class": "ic_my",
-      "unicode": "e637",
-      "unicode_decimal": 58935
-    },
-    {
-      "icon_id": "8546158",
-      "name": "ic_help",
-      "font_class": "ic_help",
-      "unicode": "e638",
-      "unicode_decimal": 58936
-    },
-    {
-      "icon_id": "8536604",
-      "name": "archives_icon_allergy",
-      "font_class": "archives_icon_allergy",
-      "unicode": "e628",
-      "unicode_decimal": 58920
-    },
-    {
-      "icon_id": "8536605",
-      "name": "archives_icon_marry copy",
-      "font_class": "archives_icon_marrycopy",
-      "unicode": "e629",
-      "unicode_decimal": 58921
-    },
-    {
-      "icon_id": "8536607",
-      "name": "archives_icon_habit",
-      "font_class": "archives_icon_habit",
-      "unicode": "e62a",
-      "unicode_decimal": 58922
-    },
-    {
-      "icon_id": "8536608",
-      "name": "archives_icon_marry",
-      "font_class": "archives_icon_marry",
-      "unicode": "e62b",
-      "unicode_decimal": 58923
-    },
-    {
-      "icon_id": "8536609",
-      "name": "archives_icon_medical",
-      "font_class": "archives_icon_medical",
-      "unicode": "e62c",
-      "unicode_decimal": 58924
-    },
-    {
-      "icon_id": "8536610",
-      "name": "electronicmedical_icon",
-      "font_class": "electronicmedical_icon",
-      "unicode": "e62d",
-      "unicode_decimal": 58925
-    },
-    {
-      "icon_id": "8536611",
-      "name": "ic_modify",
-      "font_class": "ic_modify",
-      "unicode": "e62e",
-      "unicode_decimal": 58926
-    },
-    {
-      "icon_id": "8536612",
-      "name": "ic_remind",
-      "font_class": "ic_remind",
-      "unicode": "e62f",
-      "unicode_decimal": 58927
-    },
-    {
-      "icon_id": "8536613",
-      "name": "ic_refuse copy",
-      "font_class": "ic_refusecopy",
-      "unicode": "e630",
-      "unicode_decimal": 58928
-    },
-    {
-      "icon_id": "8536617",
-      "name": "ic_no news",
-      "font_class": "ic_nonews",
-      "unicode": "e632",
-      "unicode_decimal": 58930
-    },
-    {
-      "icon_id": "8536618",
-      "name": "ic_no one copy",
-      "font_class": "ic_noonecopy",
-      "unicode": "e633",
-      "unicode_decimal": 58931
-    },
-    {
-      "icon_id": "8536619",
-      "name": "open",
-      "font_class": "open",
-      "unicode": "e634",
-      "unicode_decimal": 58932
+      "icon_id": "17677242",
+      "name": "密码",
+      "font_class": "mima",
+      "unicode": "e6a5",
+      "unicode_decimal": 59045
     }
   ]
 }

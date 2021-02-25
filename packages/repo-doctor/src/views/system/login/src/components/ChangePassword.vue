@@ -93,15 +93,45 @@
                    v-bind:rules="step2Rules">
             <el-form-item prop="newPass"
                           label="">
-              <el-input v-model="step2Model.newPass"
-                        show-password
-                        placeholder="请输入6-20位数字或字母组合"></el-input>
+              <el-input ref="password"
+                        minlength="6"
+                        maxlength="20"
+                        placeholder="6-20位字母和数字的组合"
+                        v-bind:type="this.showPassword1 ? 'text' : 'password'"
+                        v-model.trim="step2Model.newPass">
+                <div slot="prepend">
+                  <i class="el-icon-lock"></i>
+                </div>
+                <div class="flex items-center full-height"
+                     slot="suffix"
+                     v-on:click="showPassword1 = !showPassword1">
+                  <i v-if="this.showPassword1"
+                     class="icon icon_xianshimima q-mr-xs cursor-pointer"></i>
+                  <i v-else
+                     class="icon icon_yincangmima q-mr-xs cursor-pointer"></i>
+                </div>
+              </el-input>
             </el-form-item>
             <el-form-item prop="confirmPassword"
                           label="">
-              <el-input v-model="step2Model.confirmPass"
-                        show-password
-                        placeholder="请再次输入新密码"></el-input>
+              <el-input ref="password"
+                        minlength="6"
+                        maxlength="20"
+                        placeholder="请再次输入新密码"
+                        v-bind:type="this.showPassword2 ? 'text' : 'password'"
+                        v-model.trim="step2Model.confirmPass">
+                <div slot="prepend">
+                  <i class="el-icon-lock"></i>
+                </div>
+                <div class="flex items-center full-height"
+                     slot="suffix"
+                     v-on:click="showPassword2 = !showPassword2">
+                  <i v-if="this.showPassword2"
+                     class="icon icon_xianshimima q-mr-xs cursor-pointer"></i>
+                  <i v-else
+                     class="icon icon_yincangmima q-mr-xs cursor-pointer"></i>
+                </div>
+              </el-input>
             </el-form-item>
           </el-form>
 
@@ -197,7 +227,10 @@ export default {
             }
           }
         ]
-      }
+      },
+
+      showPassword1: false,
+      showPassword2: false
     }
   },
 
