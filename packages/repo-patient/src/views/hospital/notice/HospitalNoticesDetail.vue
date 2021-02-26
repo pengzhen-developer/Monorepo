@@ -36,7 +36,7 @@ export default {
     get() {
       const params = peace.util.decode($peace.$route.params.json)
 
-      peace.service.advert.getNoticeDetail(params).then(res => {
+      peace.service.advert.getNoticeDetail(params).then((res) => {
         this.data = res.data
       })
     }
@@ -70,6 +70,7 @@ export default {
   margin: 0 10px 0 0;
 }
 .panel-content .panel-body {
+  white-space: pre-wrap;
   font-size: 15px;
   color: #333;
 }
