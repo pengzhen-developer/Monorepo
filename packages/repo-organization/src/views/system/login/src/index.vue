@@ -43,7 +43,7 @@ export default {
 
   methods: {
     // 静默登录
-    doLogin() {
+    async doLogin() {
       if (!this.token) {
         throw new Error('缺少必要参数【token】，请重新登录。')
       }
@@ -51,14 +51,15 @@ export default {
       Peace.identity.auth.setAuth({ access_token: this.token })
       Peace.identity.auth.setHeaderAfterAuth(this.token)
 
-      Service.doLogin()
-        .then((res) => {
-          Util.user.setUserInfo(res.data)
-          Util.location.redirectToIndex()
-        })
-        .finally(() => {
-          this.isLoading = false
-        })
+      // 获取用户信息
+      let user = await Service.doLogin()
+      Util.user.setUserInfo(user.data)
+      // 获取互联网医院信息
+      let hospital = await Service.getHospitalInfo()
+      Util.user.setHospitalInfo(hospital.data.loginInfo)
+
+      Util.location.redirectToIndex()
+      this.isLoading = false
     }
   }
 }

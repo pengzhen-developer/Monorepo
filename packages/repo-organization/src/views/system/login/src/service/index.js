@@ -17,6 +17,24 @@ export default {
       return res
     })
   },
+  /**
+   * 获取互联网医院信息
+   *
+   * @param {*} params
+   */
+  getHospitalInfo() {
+    const isMock = false
+
+    const apiPath = 'external/hospital/authorize'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_HOSPITAL + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi).then((res) => {
+      return res
+    })
+  },
 
   getAccountMenuList(params) {
     const isMock = false

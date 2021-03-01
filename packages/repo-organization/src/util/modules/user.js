@@ -1,5 +1,6 @@
 /** 用户信息常量 */
 const USER_INFO = 'user_info'
+const HOSPITAL_INFO = 'hospital_info'
 const ACCOUNT_MENU_LIST = 'account_menu_list'
 
 /**
@@ -46,6 +47,25 @@ export const removeUserInfo = () => {
 }
 
 /**
+ * 缓存互联网医院信息
+ *
+ * @param {*} hospitalInfo 互联网医院信息
+ * @returns
+ */
+export const setHospitalInfo = (hospitalInfo) => {
+  return Peace.cache.localStorage.set(HOSPITAL_INFO, hospitalInfo)
+}
+
+/**
+ * 获取互联网医院信息（缓存）
+ *
+ * @returns
+ */
+export const getHospitalInfo = () => {
+  return Peace.cache.localStorage.get(HOSPITAL_INFO)
+}
+
+/**
  * 缓存账户菜单信息
  *
  * @param {*} accountMenuList 账户菜单信息
@@ -86,6 +106,9 @@ export default {
   getUserInfo,
   removeUserInfo,
   removeSessionUserInfo,
+
+  setHospitalInfo,
+  getHospitalInfo,
 
   setAccountMenuList,
   getAccountMenuList,
