@@ -42,7 +42,6 @@
     </div>
     <div class="card">
       <peace-table ref="table"
-                   stripe
                    pagination
                    size="mini">
 

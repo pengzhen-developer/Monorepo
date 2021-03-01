@@ -78,7 +78,6 @@
 
       <PeaceTable ref="table"
                   style="width: 100%"
-                  stripe
                   pagination>
         <PeaceTableColumn label="处方编号"
                           prop="prescriptionNo"

@@ -44,7 +44,6 @@
 
       <PeaceTable ref="table"
                   style="width: 100%"
-                  stripe
                   pagination>
         <PeaceTableColumn label="序号"
                           type="index"

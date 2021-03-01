@@ -110,7 +110,6 @@
 
         <PeaceTable ref="table"
                     style="width: 100%"
-                    stripe
                     pagination>
           <PeaceTableColumn label="预约单号"
                             width="200"

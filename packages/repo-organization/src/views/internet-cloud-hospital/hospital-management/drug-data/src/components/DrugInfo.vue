@@ -110,7 +110,7 @@ export default {
           col1: '推荐用量单位',
           col2: drug.drug_useunit,
           col3: '储存条件',
-          col4: this.getDrugStorage(drug.drug_storage)
+          col4: drug.drug_storage
         }
       ]
     }

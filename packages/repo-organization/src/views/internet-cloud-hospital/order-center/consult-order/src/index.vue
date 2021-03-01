@@ -97,7 +97,6 @@
 
       <PeaceTable ref="table"
                   style="width: 100%"
-                  stripe
                   pagination>
         <PeaceTableColumn label="问诊单号"
                           prop="inquiry_no"

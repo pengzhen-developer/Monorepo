@@ -91,7 +91,6 @@
 
       <PeaceTable ref="table"
                   style="width: 100%"
-                  stripe
                   pagination
                   max-height="600">
         <el-table-column prop="CustDrugsCode"

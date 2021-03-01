@@ -46,7 +46,6 @@
 
     <div class="card">
       <peace-table ref="table"
-                   stripe
                    pagination
                    size="mini">
         <el-table-column label="编号"

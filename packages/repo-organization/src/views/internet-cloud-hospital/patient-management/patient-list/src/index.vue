@@ -28,7 +28,6 @@
 
       <PeaceTable ref="table"
                   style="width: 100%"
-                  stripe
                   pagination>
         <PeaceTableColumn label="姓名"
                           prop="name"></PeaceTableColumn>

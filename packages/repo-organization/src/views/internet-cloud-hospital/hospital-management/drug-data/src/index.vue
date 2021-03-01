@@ -97,7 +97,6 @@
 
       <PeaceTable ref="table"
                   style="width: 100%"
-                  stripe
                   pagination>
         <PeaceTableColumn label="药品编号"
                           width="150"

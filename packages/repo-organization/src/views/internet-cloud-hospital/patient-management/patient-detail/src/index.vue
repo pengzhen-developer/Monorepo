@@ -39,8 +39,7 @@
           <PeaceTable v-if="activeName === 'inquiry'"
                       :data="info.inquirylist"
                       key="inquiry"
-                      size="medium"
-                      stripe>
+                      size="medium">
             <PeaceTableColumn label="问诊单号"
                               prop="inquiry_no"
                               width="180"></PeaceTableColumn>
@@ -112,8 +111,7 @@
           <PeaceTable v-if="activeName === 'returnVisit'"
                       :data="info.returnVisitlist"
                       key="returnVisit"
-                      size="medium"
-                      stripe>
+                      size="medium">
             <PeaceTableColumn label="问诊单号"
                               prop="inquiry_no"
                               width="180"></PeaceTableColumn>
@@ -170,8 +168,7 @@
           <PeaceTable v-if="activeName === 'pres'"
                       :data="info.preslist"
                       key="prescription"
-                      size="medium"
-                      stripe>
+                      size="medium">
             <PeaceTableColumn label="处方编号"
                               prop="prescriptionNo"
                               width="200"></PeaceTableColumn>

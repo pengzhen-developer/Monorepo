@@ -50,7 +50,6 @@
 
       <PeaceTable ref="table"
                   style="width: 100%"
-                  stripe
                   pagination>
         <PeaceTableColumn label="患者姓名"
                           prop="familyName"></PeaceTableColumn>
