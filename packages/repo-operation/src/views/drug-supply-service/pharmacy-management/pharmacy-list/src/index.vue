@@ -29,11 +29,11 @@
                    label-width="auto"
                    label-suffix="："
                    size="mini">
-            <el-form-item label="药房名称：">
+            <el-form-item label="药房名称">
               <el-input v-model.trim="model.Name"
                         placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="药房性质：">
+            <el-form-item label="药房性质">
               <el-select v-model="model.CustType"
                          placeholder="全部"
                          clearable>
@@ -43,11 +43,11 @@
                            v-bind:value="value"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="所属机构：">
+            <el-form-item label="所属机构">
               <el-input v-model.trim="model.CustName"
                         placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="启用状态：">
+            <el-form-item label="启用状态">
               <el-select v-model="model.EnableStatus"
                          placeholder="全部"
                          clearable>
@@ -57,14 +57,14 @@
                            v-bind:value="value"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="创建时间：">
+            <el-form-item label="创建时间">
               <peace-date-picker value-format="yyyy-MM-dd HH:mm:ss"
                                  v-bind:default-time="['00:00:00', '23:59:59']"
                                  format="yyyy-MM-dd"
                                  type="daterange"
                                  v-model.trim="DateValue"></peace-date-picker>
             </el-form-item>
-            <el-form-item label="对接系统：">
+            <el-form-item label="对接系统">
               <el-select v-model="model.DockingSys"
                          placeholder="全部"
                          clearable>
@@ -74,7 +74,7 @@
                            v-bind:value="item.value"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="系统属性：">
+            <el-form-item label="系统属性">
               <el-select v-model="model.SysAttribute"
                          placeholder="全部"
                          clearable>
