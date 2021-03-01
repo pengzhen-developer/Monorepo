@@ -77,10 +77,12 @@
           </div>
           <div class="info-row-content">
             <div class="imgs">
-              <preview-img :key="'img_' + index"
-                           :src="img.image_path"
-                           v-for="(img, index) in info.image_list.filter(img=>img.type==1)">
-              </preview-img>
+              <el-image class="preview-img"
+                        :z-index="9999"
+                        :key="'img_' + index"
+                        :src="img.image_path"
+                        :preview-src-list="info.image_list.filter(img=>img.type==1)"
+                        v-for="(img, index) in info.image_list.filter(img=>img.type==1)"></el-image>
             </div>
           </div>
         </div>
@@ -113,10 +115,12 @@
           </div>
           <div class="info-row-content">
             <div class="imgs">
-              <preview-img :key="'img_' + index"
-                           :src="img.image_path"
-                           v-for="(img, index) in info.image_list.filter(img=>img.type==2)">
-              </preview-img>
+              <el-image class="preview-img"
+                        :z-index="9999"
+                        :key="'img_' + index"
+                        :src="img.image_path"
+                        :preview-src-list="info.image_list.filter(img=>img.type==2)"
+                        v-for="(img, index) in info.image_list.filter(img=>img.type==2)"></el-image>
             </div>
           </div>
         </div>
@@ -201,9 +205,7 @@
 </template>
 <script>
 import Constant from '../constant'
-import PreviewImg from './PreviewImg'
 export default {
-  components: { PreviewImg },
   name: 'advisory-order-info',
   props: {
     info: Object

@@ -1,30 +1,23 @@
 <template>
   <!-- 消息内容 -->
   <div>
-    <preview-img :src="imgUrl"></preview-img>
-    <!-- <el-image @click="viewImage"
-               :width="imgWidth"
-               :height="imgHeight"
-               lazy-load
-               :src="imgUrl">
+    <el-image @click="viewImage"
+              :width="imgWidth"
+              :height="imgHeight"
+              :preview-src-list="imgUrl"
+              lazy-load
+              :src="imgUrl">
       <template v-slot:loading>
         <van-loading type="spinner"
                      size="20" />
       </template>
       <template v-slot:error>加载失败</template>
-    </el-image> -->
+    </el-image>
   </div>
 </template>
 
 <script>
-// import Vue from 'vue'
-// import { ImagePreview, Lazyload } from 'vant'
-
-// Vue.use(ImagePreview, Lazyload)
-
-import PreviewImg from './PreviewImg'
 export default {
-  components: { PreviewImg },
   props: {
     /*
      * 图片地址

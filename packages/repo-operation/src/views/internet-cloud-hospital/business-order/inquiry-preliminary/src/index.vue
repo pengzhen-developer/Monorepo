@@ -49,10 +49,12 @@
             <div class="form-img"
                  style="display: inline-block; ">
               <div class="imgs">
-                <preview-img :key="'img_' + index"
-                             :src="img"
-                             v-for="(img, index) in internalData.inquiryOrderInfo.imgs">
-                </preview-img>
+                <el-image class="preview-img"
+                          :z-index="9999"
+                          :key="'img_' + index"
+                          :src="img"
+                          :preview-src-list="internalData.inquiryOrderInfo.imgs"
+                          v-for="(img, index) in internalData.inquiryOrderInfo.imgs"></el-image>
               </div>
             </div>
           </div>
@@ -103,10 +105,12 @@
             <div class="form-img"
                  style="display: inline-block; ">
               <div class="imgs">
-                <preview-img :key="'img_' + index"
-                             :src="img"
-                             v-for="(img, index) in internalData.inquiryOrderInfo.aImages">
-                </preview-img>
+                <el-image class="preview-img"
+                          :z-index="9999"
+                          :key="'img_' + index"
+                          :src="img"
+                          :preview-src-list="internalData.inquiryOrderInfo.aImages"
+                          v-for="(img, index) in internalData.inquiryOrderInfo.aImages"></el-image>
               </div>
             </div>
           </div>
@@ -129,9 +133,7 @@
 </template>
 <script>
 import Service from './service'
-import PreviewImg from './components/PreviewImg'
 export default {
-  components: { PreviewImg },
   props: {
     data: Object
   },
