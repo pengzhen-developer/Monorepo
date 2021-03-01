@@ -58,10 +58,16 @@
         <PeaceTableColumn label="收款商户名称"
                           prop="mchName"
                           min-width="180px"></PeaceTableColumn>
+        <PeaceTableColumn label="商户号"
+                          prop="mchNo"
+                          min-width="120px"></PeaceTableColumn>
         <PeaceTableColumn label="订单类型"
                           prop="orderTypeTxt"></PeaceTableColumn>
         <PeaceTableColumn label="订单状态"
                           prop="orderStatusTxt"></PeaceTableColumn>
+        <PeaceTableColumn label="业务主体"
+                          prop="servicePrincipal"
+                          min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="完单时间"
                           prop="completionTime"
                           width="160px"></PeaceTableColumn>
@@ -70,6 +76,9 @@
                           width="100px"></PeaceTableColumn>
         <PeaceTableColumn label="实付金额"
                           prop="payMoney"
+                          width="100px"></PeaceTableColumn>
+        <PeaceTableColumn label="支付方式"
+                          prop="payMode"
                           width="100px"></PeaceTableColumn>
         <PeaceTableColumn label="快递费用"
                           prop="expressFee"
