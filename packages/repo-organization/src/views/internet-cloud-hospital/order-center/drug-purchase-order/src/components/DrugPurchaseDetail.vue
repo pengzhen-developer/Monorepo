@@ -1,144 +1,148 @@
 <template>
+  <div class="purchase-detail">
 
-  <div class="purchase-info">
-    <div class="store">
-      <div class="store-pic">
-        <el-image :src="info.drugStoreLogo"></el-image>
+    <div class="drug-store">
+      <div class="store-content">
+        <div class="store-logo">
+          <el-image :src="info.drugStoreLogo"></el-image>
+        </div>
+        <div class="store-info">
+          <div class="store-name">{{ info.drugStoreName }}</div>
+          <div class="view-prescription"
+               @click="viewRpInfo">查看处方</div>
+        </div>
       </div>
-      <div class="store-title ml-sm">
-        <strong>{{ info.drugStoreName }}</strong>
-        <el-button @click="viewRpInfo"
-                   class="ml-sm"
-                   type="text">查看处方</el-button>
+      <div class="purchase-type">
+        <div class="purchase-type-item"
+             :class="!isToStore && 'to-home'">{{info.shippingMethodTxt}}</div>
+        <div class="purchase-type-item payment">{{paymentTypesText}} </div>
       </div>
-      <div class="order-type"
-           :class="!isToStore&&'to-home'">{{info.shippingMethodTxt}}</div>
-      <div class="order-type store">{{paymentTypesText}} </div>
     </div>
-    <div class="address">
-      <template v-if="!isToStore">
-        <div class="address-label">收货地址</div>
-        <div class="address-content">
-          <div>
-            <span>{{ info.consignee }}</span>
-            <span>{{ info.tel }}</span>
-          </div>
-          <div>{{ info.consigneeAddress }}</div>
+
+    <div class="user-info">
+      <div class="address-type">{{!isToStore ? '收货信息:':'自提信息:'}} </div>
+      <div class="user-content">
+        <div>
+          <span class="q-mr-16">{{ info.consignee }}</span>
+          <span>{{ info.tel }}</span>
         </div>
-      </template>
-      <template v-else>
-        <div class="address-label">自提地址</div>
-        <div class="address-content">
-          <div>{{ info.consigneeAddress }}</div>
-        </div>
-        <div class="address-label">取货人</div>
-        <div class="address-content">
-          <div>
-            <span>{{ info.consignee }}</span>
-            <span>{{ info.tel }}</span>
-          </div>
-        </div>
-      </template>
+        <div class="user-address">{{ info.consigneeAddress }}</div>
+      </div>
     </div>
-    <div class="drugs">
-      <div class="drug">
-        <div :key="drug.DrugCode"
-             class="drug-item"
-             v-for="drug in info.drugJson">
-          <div class="drug-image">
+
+    <div class="drug-order-info">
+
+      <div class="drug-list">
+        <div class="drug-item"
+             v-for="drug in info.drugJson"
+             :key="drug.DrugCode">
+          <div class="drug-logo">
             <el-image :src="drug.DrugImage">
               <template slot="error">
-                <el-image :src="require('@src/views/internet-cloud-hospital/order-center/drug-purchase-order/src/assets/images/ic_no_drug.png')"></el-image>
+                <el-image :src="require('../assets/images/ic_no_drug.png')"></el-image>
               </template>
             </el-image>
           </div>
-          <div class="drug-info">
-            <div class="drug-info-title">{{ drug.DrugName }}</div>
-            <div class="drug-info-num">{{ drug.DrugSpecification }}</div>
-          </div>
-          <div class="drug-price">
-            <div class="trademark">
-              说明书
-              <span class="reg"
-                    title="暂无说明">&reg;</span>
+          <div class="drug-content">
+            <div class="drug-info-item">
+              <div class="drug-name">{{drug.DrugName}}</div>
+              <div class="drug-storage"></div>
             </div>
-            <div>
-              <span class="red">¥{{ drug.DrugUnitPrice }}</span> X
-              <span>{{ drug.DrugQty }}</span>
+            <div class="drug-info-item">
+              <div class="drug-specification">{{ drug.DrugSpecification }}</div>
+              <div class="drug-price">
+                <span class="drug-price-num"> ¥ {{ drug.DrugUnitPrice }}</span>
+                <span class="drug-qty"> x {{ drug.DrugQty }}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="total-info">
+
+      <div class="money-record">
         <template v-if="info.moneyRecord && info.moneyRecord.length > 0">
-          <div v-for="item in info.moneyRecord"
+          <div class="money-record-item"
+               v-for="item in info.moneyRecord"
                :key="item.name">
-            <span>{{item.name}}</span>
-            <span>{{ item.value }}</span>
+            <div class="money-record-label">{{item.name}}</div>
+            <div class="money-record-value">{{ item.value }}</div>
           </div>
         </template>
         <template v-else>
-          <div>
-            <span>药品金额</span>
-            <span>￥{{Number(info.orderMoney).toFixed(2)}}</span>
+          <div class="money-record-item">
+            <div class="money-record-label">药品金额</div>
+            <div class="money-record-value"> ¥ {{Number(info.orderMoney).toFixed(2)}}</div>
           </div>
-          <div v-if="!isToStore">
-            <span>配送费</span>
-            <span>￥{{Number(info.expressFee).toFixed(2)}}</span>
+          <div class="money-record-item"
+               v-if="!isToStore">
+            <div class="money-record-label">配送费</div>
+            <div class="money-record-value"> ¥ {{Number(info.expressFee).toFixed(2)}}</div>
           </div>
-          <div v-if="info.deductionMoney">
-            <span>商保抵扣</span>
-            <span>-￥{{Number(info.deductionMoney).toFixed(2)}}</span>
+          <div class="money-record-item"
+               v-if="info.deductionMoney">
+            <div class="money-record-label">商保抵扣</div>
+            <div class="money-record-value">- ¥ {{Number(info.deductionMoney).toFixed(2)}}</div>
           </div>
-          <div v-if="info.medicalMoney">
-            <span>医保抵扣</span>
-            <span>-￥{{Number(info.expressFee).toFixed(2)}}</span>
-          </div>
+          <template v-if="info.accountPay > 0 || info.insurePay > 0">
+            <div class="money-record-item">
+              <div class="money-record-label">医保统筹账户支付</div>
+              <div class="money-record-value">- ¥ {{ Number(info.insurePay).toFixed(2) }}</div>
+            </div>
+            <div class="money-record-item">
+              <div class="money-record-label">医保个人账户支付</div>
+              <div class="money-record-value">- ¥ {{ Number(info.accountPay).toFixed(2) }}</div>
+            </div>
+          </template>
         </template>
-        <div>
-          <span>{{ info.payStatus>=3||info.payTime?'实付金额':'应付金额' }}</span>
-          <span class="red">¥{{ info.orderMoney.toFixed(2) }}<span v-if="info.refundTime"
-                  class="gary">(已退款)</span></span>
+      </div>
+      <div class="pay-money">
+        <div class="pay-money-label">{{ info.payStatus>=3||info.payTime?'实付金额 :':'应付金额 :' }}</div>
+        <div class="pay-money-value">
+          <span> ¥ {{ info.orderMoney.toFixed(2) }}</span>
+          <span v-if="info.refundTime"
+                class="pay-money-refund"> (已退款)</span>
         </div>
       </div>
+      <div class="order-status">订单状态 : {{ orderStatusText }}</div>
     </div>
-    <div class="order-status">
-      <span class="order-status-label">订单状态</span>
-      <span class="order-status-content">{{ orderStatusText }}</span>
-    </div>
-    <div class="order-fullinfo">
-      <div>
-        <span>订单编号</span>
-        <span>{{ info.orderNo }}</span>
+
+    <div class="order-detail">
+      <div class="order-item">
+        <div class="order-label">订单编号</div>
+        <div>{{ info.orderNo }}</div>
       </div>
-      <div>
-        <span>创建时间</span>
-        <span>{{ info.createdTime }}</span>
+      <div class="order-item">
+        <div class="order-label">创建时间</div>
+        <div>{{ info.createdTime }}</div>
       </div>
-      <div>
-        <span>支付方式</span>
-        <span>{{ info.paymentTypeTxt }}</span>
+      <div class="order-item">
+        <div class="order-label">支付方式</div>
+        <div>{{ info.paymentTypeTxt }}</div>
       </div>
       <template v-if="timeList && timeList.length > 0">
-        <div v-for="item in timeList"
+        <div class="order-item"
+             v-for="item in timeList"
              :key="item.status">
-          <span>{{ item.timeStatusTxt }}</span>
-          <span>{{ item.createdTime }}</span>
+          <div class="order-label">{{ item.timeStatusTxt }}</div>
+          <div>{{ item.createdTime }}</div>
         </div>
       </template>
       <template v-else>
-        <div v-if="info.payStatus >= 3 || info.payTime">
-          <span>支付时间</span>
-          <span>{{ info.payTime || '--' }}</span>
+        <div class="order-item"
+             v-if="info.payStatus >= 3 || info.payTime">
+          <div class="order-label">支付时间</div>
+          <div>{{ info.payTime || '--' }}</div>
         </div>
-        <div v-if="info.expressNo">
-          <span>运单编号</span>
-          <span>{{ info.expressNo }}</span>
+        <div class="order-item"
+             v-if="info.expressNo">
+          <div class="order-label">运单编号</div>
+          <div>{{ info.expressNo }}</div>
         </div>
       </template>
-      <div v-if="info.refundTime">
-        <span>退款时间</span>
-        <span>{{info.refundTime}}</span>
+      <div class="order-item"
+           v-if="info.refundTime">
+        <div class="order-label">退款时间</div>
+        <div>{{info.refundTime}}</div>
       </div>
     </div>
   </div>
@@ -224,230 +228,248 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-$text: #23313f;
-$grey-text: #778899;
-$border-color: #eee;
-
-.small-text {
-  font-size: 12px;
+.purchase-detail {
+  padding: 0 8px;
 }
-.purchase-info {
-  margin: 0 -16px;
-  color: $text;
-  & > div {
-    padding: 10px 20px;
-    border-bottom: 1px solid $border-color;
-    &:last-of-type {
-      border-bottom: 0;
+
+.drug-store {
+  position: relative;
+  border-bottom: 1px solid #eaeaea;
+  .store-content {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 16px 0;
+  }
+  .store-logo {
+    flex: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    .el-image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      ::v-deep .el-image__error {
+        font-size: 0;
+      }
     }
   }
-  .store {
-    position: relative;
-    &-pic,
-    &-title {
-      display: inline-block;
-      vertical-align: middle;
-    }
-    &-pic {
-      width: 62px;
-      height: 62px;
-      line-height: 62px;
-      font-size: 36px;
-      text-align: center;
-      border: 1px solid $border-color;
-      border-radius: 100%;
-      overflow: hidden;
-      .el-image {
-        width: 100%;
-        height: 100%;
-        font-size: 12px;
-        display: block;
-        ::v-deep .el-image__error {
-          font-size: 0;
-        }
-      }
-    }
-    &-title {
-      font-size: 16px;
-      strong,
-      .el-button {
-        vertical-align: middle;
-      }
-      .el-button {
-        padding: 4px 10px;
-        border-radius: 5px;
-        border: 1px solid;
-      }
-    }
-    .order-type {
-      position: absolute;
-      top: 10px;
-      right: 0;
-      color: #fff;
-      line-height: 1.75;
-      padding: 0 20px;
+  .store-info {
+    flex: 1;
+    margin-left: 8px;
+  }
+  .store-name {
+    max-width: 360px;
+    margin-bottom: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333333;
+    line-height: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .view-prescription {
+    box-sizing: border-box;
+    width: 72px;
+    height: 24px;
+    background: #ffffff;
+    border-radius: 4px;
+    border: 1px solid rgba(51, 51, 51, 0.2);
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(51, 51, 51, 0.6);
+    line-height: 22px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .purchase-type {
+    position: absolute;
+    top: 12px;
+    right: -24px;
+    .purchase-type-item {
+      width: 96px;
+      height: 24px;
+      margin-bottom: 6px;
       background-color: var(--q-color-primary);
-      border-radius: 15px 0 0 15px;
-      &.to-home {
-        background-color: var(--q-color-primary);
-      }
-      &.store {
-        top: 40px;
-        background-color: var(--q-color-warning);
-      }
+      border-radius: 12px 0 0 12px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #ffffff;
+      line-height: 24px;
+      text-align: center;
+    }
+    .to-home {
+      background-color: #2699fb;
+    }
+    .payment {
+      background-color: #ee9b60;
     }
   }
-  .address {
-    &-label,
-    &-content {
-      line-height: 1.75;
-      display: inline-block;
-      vertical-align: top;
-    }
-    &-label {
-      text-align: right;
-      width: 5em;
-      white-space: nowrap;
-      color: $grey-text;
-      &:after {
-        content: '：';
-      }
-    }
-    &-content {
-      padding-left: 0.5em;
-      width: calc(100% - 5em);
-      span + span {
-        margin-left: 1em;
-      }
+}
+
+.user-info {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 16px 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: #333333;
+  line-height: 20px;
+}
+
+.address-type {
+  flex: none;
+  width: 70px;
+}
+
+.user-content {
+  flex: 1;
+}
+
+.user-address {
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+.drug-order-info {
+  margin-bottom: 16px;
+  background-color: #fbfbfb;
+  .drug-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px dashed #eaeaea;
+  }
+  .drug-logo {
+    flex: none;
+    width: 64px;
+    height: 64px;
+    .el-image {
+      display: block;
+      width: 100%;
+      height: 100%;
     }
   }
-  .drugs {
-    padding: 10px 10px 20px 10px;
-    .drug {
-      max-height: 260px;
-      border-bottom: 1px dashed #f3f3f3;
-      overflow-y: auto;
-      &-item {
-        padding: 10px;
-        border-bottom: 1px dashed #f3f3f3;
-        &:first-of-type {
-          padding-top: 0;
-        }
-        &:last-of-type {
-          border-bottom: 0;
-        }
-      }
-      &-image,
-      &-info,
-      &-price {
-        display: inline-block;
-        vertical-align: middle;
-      }
-      &-image {
-        width: 60px;
-        height: 60px;
-        line-height: 60px;
-        font-size: 12px;
-        overflow: hidden;
-        border-radius: 2px;
-        border: 1px solid #dcdfe6;
-        .el-image {
-          width: 100%;
-          height: 100%;
-          font-size: 12px;
-          display: block;
-        }
-      }
-      &-info {
-        padding-left: 12px;
-        line-height: 24px;
-        &-num {
-          font-size: 12px;
-          color: #778899;
-        }
-      }
-      &-price {
-        max-width: 100px;
-        padding: 4px 0;
-        float: right;
-        line-height: 24px;
-        .trademark {
-          font-size: 12px;
-          color: #778899;
-          & > .reg {
-            color: var(--q-color-primary);
-          }
-        }
+  .drug-content {
+    flex: 1;
+    margin-left: 8px;
+  }
+  .drug-info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .drug-name {
+    flex: none;
+    width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333333;
+    line-height: 24px;
+  }
+  .drug-specification {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(51, 51, 51, 0.6);
+    line-height: 20px;
+  }
+  .drug-price {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    .drug-price-num {
+      color: #333333;
+    }
+    .drug-qty {
+      color: rgba(51, 51, 51, 0.6);
+    }
+  }
+  .money-record {
+    padding: 16px;
+    .money-record-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      &:last-child {
+        margin-bottom: 0;
       }
     }
-    .total-info {
-      margin-top: 15px;
-      text-align: right;
-      & > div {
-        padding-right: 10px;
-        font-size: 12px;
-        line-height: 1.5;
-        display: inline-block;
-        &:last-of-type {
-          margin-top: 10px;
-          font-size: 14px;
-        }
-        & > span {
-          &:first-of-type {
-            color: $grey-text;
-            width: 240px;
-            text-align: right;
-            display: inline-block;
-            &:after {
-              content: '：';
-            }
-          }
-          &:last-of-type {
-            min-width: 90px;
-            display: inline-block;
-          }
-        }
+    .money-record-label {
+      color: rgba(51, 51, 51, 0.6);
+      &::after {
+        content: ' :';
       }
+    }
+    .money-record-value {
+      color: #333333;
+    }
+  }
+  .pay-money {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px 16px 16px;
+    border-bottom: 1px solid #eaeaea;
+    .pay-money-label {
+      font-size: 14px;
+      font-weight: 400;
+      color: #333333;
+      line-height: 20px;
+    }
+    .pay-money-value {
+      font-size: 14px;
+      font-weight: 400;
+      color: #ea3930;
+      line-height: 20px;
+    }
+    .pay-money-refund {
+      color: #333333;
     }
   }
   .order-status {
-    &-label,
-    &-content {
-      font-weight: bold;
-    }
-    &-label {
-      color: $grey-text;
-      &:after {
-        content: '：';
-      }
-    }
+    padding: 16px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333333;
+    line-height: 20px;
   }
-  .order-fullinfo {
-    font-size: 12px;
-    line-height: 1.5;
-    color: $text;
-    width: 100%;
+}
+
+.order-detail {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-bottom: 30px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(51, 51, 51, 0.6);
+  line-height: 20px;
+  .order-item {
+    flex: none;
+    width: 62%;
+    margin-bottom: 8px;
     display: flex;
-    flex-wrap: wrap;
-    > div {
-      width: 50%;
-    }
-    & > div > span:first-of-type {
-      color: $grey-text;
-      &:after {
-        content: '：';
-      }
+    justify-content: flex-start;
+    align-items: center;
+    &:nth-child(2n) {
+      width: 38%;
     }
   }
-}
-.red {
-  color: red;
-}
-.gary {
-  font-size: 12px;
-  color: rgb(153, 153, 153);
-}
-.store-title {
-  width: calc(100% - 200px);
+  .order-label:after {
+    content: ' : ';
+  }
 }
 </style>

@@ -72,8 +72,6 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="订单金额（元）"
-                          align="right"
-                          header-align="right"
                           width="125"
                           prop="orderMoney"></PeaceTableColumn>
         <PeaceTableColumn label="下单时间"

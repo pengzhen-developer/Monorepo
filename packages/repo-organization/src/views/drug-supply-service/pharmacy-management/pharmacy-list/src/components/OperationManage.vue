@@ -7,7 +7,8 @@
       </div>
 
       <el-form>
-        <el-form-item label="是否收费：">
+        <el-form-item label="是否收费："
+                      :style="{'margin-bottom': model.Shipping == 1 ? '0px':''}">
           <el-radio-group v-model="model.Shipping"
                           @change="chargeChange">
             <el-radio v-bind:label=1>否</el-radio>
@@ -26,6 +27,7 @@
 
         <el-form-item label="费用计算方式："
                       class="discount"
+                      style="margin-bottom: 0px;"
                       v-if="model.Shipping===2">
           <el-radio-group v-model="model.CalculationType">
             <el-radio v-bind:label=0>
@@ -88,11 +90,26 @@
         <p class="title">标签设置</p>
       </div>
       <el-checkbox-group v-model="model.Tags"
-                         class="q-mb-48">
+                         class="q-mb-12">
         <el-checkbox-button v-for="item in tagList"
                             :label="item"
                             :key="item">{{item}}</el-checkbox-button>
       </el-checkbox-group>
+    </div>
+    <div class="line"></div>
+    <div class="content-item q-mb-24">
+      <div class="item-title">
+        <div class="title-left"></div>
+        <p class="title">取药知情同意书</p>
+      </div>
+      <el-input type="textarea"
+                style="width: 802px;"
+                rows="7"
+                maxlength="500"
+                show-word-limit
+                placeholder="请输入内容"
+                v-model="model.InformedConsent">
+      </el-input>
     </div>
     <el-button type="primary"
                v-on:click="save"
@@ -120,7 +137,8 @@ export default {
         Promotions: 0,
         PromotionsFull: '',
         PromotionsCut: '',
-        Tags: []
+        Tags: [],
+        InformedConsent: ''
       },
       tagList: ['政府监督', '正品保证', '到店医保', '到店有礼'],
       isLoading: false
@@ -243,5 +261,9 @@ p {
   background-color: #eaf4f6;
   color: #3099a6;
   box-shadow: none;
+}
+
+::v-deep .el-textarea:not(.element-ui-default).el-input--mini .el-textarea__inner {
+  padding: 16px;
 }
 </style>

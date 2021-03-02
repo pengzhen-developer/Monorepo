@@ -2,77 +2,117 @@
   <div class="flex full-width">
     <div class="layout-route full-width"
          v-loading="loading">
-      <div class="q-pa-lg  bg-white full-height">
-        <div class="item-content">
-          <div class="item-title">
-            <div class="title-left"></div>
-            <p class="title">云仓信息</p>
-          </div>
-          <div v-if="!isHasWare">
-            <el-button type="primary"
-                       icon="el-icon-plus"
-                       v-on:click="wareVisible = true">新增云仓</el-button>
-            <p class="noInfo">您还未创建云仓，赶紧新建一个吧~</p>
-          </div>
-          <div v-else>
-            <div class="item-child">
-              <p class="child-key">云仓名称</p>
-              <p>：</p>
-              <p class="child-value">{{warehouseInfo.Name}}</p>
-              <el-image :src="require('./assets/img/zyy-icon-xiugai.png')"
-                        v-on:click="wareVisible = true"></el-image>
+      <div class="bg-white full-height q-pt-16 q-pb-32">
+
+        <el-tabs v-model="activeName"
+                 @tab-click="handleClick">
+          <el-tab-pane label="基础信息"
+                       name="base"
+                       class="q-px-32 q-py-10">
+            <div class="item-content">
+              <div class="item-title">
+                <div class="title-left"></div>
+                <p class="title">云仓信息</p>
+              </div>
+              <div v-if="!isHasWare">
+                <el-button type="primary"
+                           icon="el-icon-plus"
+                           v-on:click="wareVisible = true">新增云仓</el-button>
+                <p class="noInfo">您还未创建云仓，赶紧新建一个吧~</p>
+              </div>
+              <div v-else>
+                <div class="item-child">
+                  <p class="child-key">云仓名称</p>
+                  <p>：</p>
+                  <p class="child-value">{{warehouseInfo.Name}}</p>
+                  <el-image :src="require('./assets/img/zyy-icon-xiugai.png')"
+                            v-on:click="wareVisible = true"></el-image>
+                </div>
+                <div class="item-child">
+                  <p class="child-key">系统名称</p>
+                  <p>：</p>
+                  <p class="child-value">{{currentSystemForm.Name}}</p>
+                </div>
+                <div class="item-child"
+                     v-for="item in currentSystemForm.item"
+                     :key="item.Label">
+                  <p class="child-key">{{item.Label}}</p>
+                  <p>：</p>
+                  <p class="child-value">{{warehouseInfo[item.Name]}}</p>
+                </div>
+              </div>
             </div>
-            <div class="item-child">
-              <p class="child-key">系统名称</p>
-              <p>：</p>
-              <p class="child-value">{{currentSystemForm.Name}}</p>
+            <div class="line"></div>
+            <div class="item-content">
+              <div class="item-title">
+                <div class="title-left"></div>
+                <p class="title">机构开户信息</p>
+              </div>
+              <div v-if="isHasWare">
+                <el-button type="primary"
+                           icon="el-icon-plus"
+                           v-on:click="orgVisible = true">新增开户机构</el-button>
+              </div>
+              <p class="noInfo"
+                 v-if="!isHasOrg">暂无机构开户信息</p>
+              <OrgList v-bind:prentCustList="warehouseInfo.PrentCustList"
+                       v-bind:orgDict="orgDict"
+                       v-bind:systemCode="warehouseInfo.SystemCode"
+                       v-on:onUpdateOrgan="getInfo()"></OrgList>
+
             </div>
-            <div class="item-child"
-                 v-for="item in currentSystemForm.item"
-                 :key="item.Label">
-              <p class="child-key">{{item.Label}}</p>
-              <p>：</p>
-              <p class="child-value">{{warehouseInfo[item.Name]}}</p>
+          </el-tab-pane>
+          <el-tab-pane label="运营信息"
+                       name="operate"
+                       class="q-px-32 q-py-10">
+            <div v-if="!isHasWare">
+              <el-button type="primary"
+                         icon="el-icon-plus"
+                         v-on:click="wareVisible = true">新增云仓</el-button>
+              <p class="noInfo">您还未创建云仓，赶紧新建一个吧~</p>
             </div>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="item-content">
-          <div class="item-title">
-            <div class="title-left"></div>
-            <p class="title">机构开户信息</p>
-          </div>
-          <div v-if="isHasWare">
-            <el-button type="primary"
-                       icon="el-icon-plus"
-                       v-on:click="orgVisible = true">新增开户机构</el-button>
-          </div>
-          <p class="noInfo"
-             v-if="!isHasOrg">暂无机构开户信息</p>
-          <OrgList v-bind:prentCustList="warehouseInfo.PrentCustList"
-                   v-bind:orgDict="orgDict"
-                   v-bind:systemCode="warehouseInfo.SystemCode"
-                   v-on:onUpdateOrgan="getInfo()"></OrgList>
-          <PeaceDialog v-if="wareVisible"
-                       width="400px"
-                       v-bind:visible.sync="wareVisible"
-                       :title="isHasWare?'修改云仓信息':'新建云仓'">
-            <AddWarehouse v-on:onCloseWare="oncloseWare"
-                          v-bind:data="warehouseInfo"
-                          v-bind:config="systemDict"></AddWarehouse>
-          </PeaceDialog>
-          <PeaceDialog v-if="orgVisible"
-                       width="516px"
-                       v-bind:visible.sync="orgVisible"
-                       title="新增机构">
-            <AddOrgan v-on:onCloseOrgan="oncloseOrgan"
-                      v-bind:data="currentOrg"
-                      v-bind:systemCode="warehouseInfo.systemCode"
-                      v-bind:config="currentOrgForm"></AddOrgan>
-          </PeaceDialog>
-        </div>
+            <div v-else>
+              <div class="content-item q-mb-24">
+                <!-- <div class="item-title">
+                <div class="title-left"></div>
+                <p class="title">取药知情同意书</p>
+              </div> -->
+                <el-input type="textarea"
+                          style="width: 802px;"
+                          rows="7"
+                          maxlength="500"
+                          show-word-limit
+                          placeholder="请输入内容"
+                          v-model="InformedConsent">
+                </el-input>
+              </div>
+              <el-button type="primary"
+                         v-on:click="saveInformed"
+                         v-bind:loading="saveLoading">保存</el-button>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
       </div>
     </div>
+
+    <PeaceDialog v-if="wareVisible"
+                 width="400px"
+                 v-bind:visible.sync="wareVisible"
+                 :title="isHasWare?'修改云仓信息':'新建云仓'">
+      <AddWarehouse v-on:onCloseWare="oncloseWare"
+                    v-bind:data="warehouseInfo"
+                    v-bind:config="systemDict"></AddWarehouse>
+    </PeaceDialog>
+    <PeaceDialog v-if="orgVisible"
+                 width="516px"
+                 v-bind:visible.sync="orgVisible"
+                 title="新增机构">
+      <AddOrgan v-on:onCloseOrgan="oncloseOrgan"
+                v-bind:data="currentOrg"
+                v-bind:systemCode="warehouseInfo.systemCode"
+                v-bind:config="currentOrgForm"></AddOrgan>
+    </PeaceDialog>
+
   </div>
 </template>
 
@@ -94,6 +134,7 @@ export default {
   data() {
     return {
       loading: true,
+      activeName: 'base',
       // 是否开通云仓
       isHasWare: false,
       // 是否有机构
@@ -112,6 +153,7 @@ export default {
         IDIn3PartPlatform: '', // 运营方ID
         PrentCustList: [] // 机构数据信息
       },
+
       // 选中的机构
       currentOrg: {
         PrentId: '', // 云仓唯一标识
@@ -141,6 +183,14 @@ export default {
         Name: '',
         Type: '',
         item: []
+      },
+
+      saveLoading: false,
+      InformedConsent: '',
+      operationInfo: {
+        ID: '',
+        CustID: '',
+        InformedConsent: ''
       }
     }
   },
@@ -161,6 +211,9 @@ export default {
             this.isHasOrg = res.data.GetCustIn3PartRes.PrentCustList.length > 0 ? true : false
             this.currentOrg.PrentId = res.data.GetCustIn3PartRes.Id
 
+            this.operationInfo = res.data.OperationInfo
+            this.InformedConsent = res.data.OperationInfo.InformedConsent || ''
+
             // 根据当前系统取对应配置
             this.currentSystemForm = this.systemDict.find((item) => item.SystemCode === this.warehouseInfo.SystemCode)
             this.currentOrgForm = this.orgDict.find((item) => item.SystemCode === this.warehouseInfo.SystemCode)
@@ -177,6 +230,26 @@ export default {
     oncloseOrgan() {
       this.orgVisible = false
       this.getInfo()
+    },
+    handleClick() {
+      if (this.activeName == 'operate') {
+        this.InformedConsent = this.operationInfo.InformedConsent || ''
+      }
+    },
+    saveInformed() {
+      this.saveLoading = true
+
+      let params = {
+        InformedConsent: this.InformedConsent
+      }
+      Service.saveInformedConsentInfo(params)
+        .then(() => {
+          Peace.util.success('保存成功')
+          this.getInfo()
+        })
+        .finally(() => {
+          this.saveLoading = false
+        })
     }
   }
 }
@@ -248,5 +321,9 @@ p {
 .child-value {
   font-size: 14px;
   color: var(--q-color-grey-666);
+}
+
+::v-deep .el-textarea:not(.element-ui-default).el-input--mini .el-textarea__inner {
+  padding: 16px;
 }
 </style>

@@ -52,15 +52,12 @@ export default {
 </script>
 <style lang="scss" scoped>
 .return-visit-open {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 156px;
+  margin-bottom: 30px;
   background-color: #fff;
   .img {
     & > img {

@@ -67,7 +67,8 @@
           <div class="panel-title">病情描述</div>
         </div>
         <div class="panel-body">
-          <div class="panel-info">{{ info.describe }}</div>
+          <div class="panel-info"
+               style="color: #333333;">{{ info.describe }}</div>
         </div>
       </div>
 
@@ -90,7 +91,7 @@
                 <div class="first-card">
                   <div class="first-info">
                     <img class="first-icon"
-                         :src="required('../assets/images/ic_medical_record')">
+                         :src="require('../assets/images/ic_medical_record.png')">
                     <div>
                       <div class="first-title">{{item.title}}</div>
                       <div class="first-hospital">{{item.hospitalName}} | {{item.deptName}}</div>
@@ -199,7 +200,7 @@
           <div class="panel-info">
             <div class="panel-label">订单费用</div>
             <div class="panel-value"
-                 v-if="info.order_money">{{ info.order_money }}</div>
+                 v-if="info.order_money"> ¥ {{ info.order_money }}</div>
           </div>
           <!-- <div class="panel-info">
             <div class="panel-label">优惠金额</div>
@@ -211,19 +212,25 @@
                  style="width:104px;">商保权益抵扣</div>
             <div class="panel-value">-{{ info.deductionMoney }}</div>
           </div>
-          <div class="panel-info"
-               v-if="info.medicalMoney">
-            <div class="panel-label">医保抵扣</div>
-            <div class="panel-value">-¥{{ info.medicalMoney }}</div>
-          </div>
+          <template v-if="info.accountPay > 0 || info.insurePay > 0">
+            <div class="panel-info">
+              <div class="panel-label"
+                   style="width: 142px;">医保统筹账户支付</div>
+              <div class="panel-value">- ¥ {{ info.insurePay }}</div>
+            </div>
+            <div class="panel-info">
+              <div class="panel-label"
+                   style="width: 142px;">医保个人账户支付</div>
+              <div class="panel-value">- ¥ {{ info.accountPay }}</div>
+            </div>
+          </template>
           <div class="panel-info"
                v-if="!(info.inquiryStatus === 7 || info.inquiryStatus === 8)">
             <div class="panel-label">{{moneyText}}</div>
             <div class="panel-value">
               <span class="red"
-                    v-if="info.pay_money">¥{{ info.pay_money }}</span>
-              <span v-if="info.orderStatus === 5"
-                    style="font-size: 12px;">(已退款)</span>
+                    v-if="info.pay_money"> ¥ {{ info.pay_money }}</span>
+              <span v-if="info.orderStatus === 5"> (已退款)</span>
             </div>
           </div>
 
@@ -363,7 +370,7 @@ export default {
         position: relative;
         padding-left: 12px;
         font-size: 16px;
-        font-weight: 500;
+        font-weight: 600;
         color: #333333;
         &:before {
           content: '';
@@ -373,7 +380,7 @@ export default {
           width: 4px;
           height: 16px;
           background-color: var(--q-color-primary);
-          border-radius: 2px 2px 0px 2px;
+          border-radius: 2px;
         }
       }
     }
@@ -389,6 +396,9 @@ export default {
       white-space: normal;
       word-wrap: normal;
       word-break: break-all;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 20px;
       &:last-child {
         margin-bottom: 0;
       }
@@ -400,7 +410,7 @@ export default {
         padding-right: 20px;
         font-size: 14px;
         font-weight: 400;
-        color: #333333;
+        color: rgba(0, 0, 0, 0.6);
         line-height: 20px;
         text-align: justify;
         text-align-last: justify;
@@ -417,7 +427,7 @@ export default {
         flex: 1;
         font-size: 14px;
         font-weight: 400;
-        color: rgba(51, 51, 51, 0.8);
+        color: #333333;
         line-height: 20px;
         white-space: normal;
         word-wrap: normal;
@@ -443,7 +453,7 @@ export default {
       .first-item {
         display: flex;
         justify-content: flex-start;
-        align-items: flex-start;
+        align-items: stretch;
       }
       .first-time {
         position: relative;
@@ -487,7 +497,7 @@ export default {
   }
 
   .red {
-    font-size: 16px;
+    font-weight: 600;
     color: #f56c6c;
   }
 }

@@ -145,17 +145,20 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="药店"
-                          min-width="180"
+                          min-width="200"
                           prop="drugStore"></PeaceTableColumn>
         <PeaceTableColumn label="配送类型"
-                          min-width="120">
+                          min-width="100">
           <template slot-scope="scope">
             <span>{{ scope.row.sendType | getEnumLabel(source.ShippingMethod) }}</span>
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn label="订单金额（元）"
+        <PeaceTableColumn label="订单金额"
                           prop="orderMoney"
-                          width="125">
+                          min-width="100">
+          <template slot-scope="scope">
+            <span> ¥ {{ scope.row.orderMoney }}</span>
+          </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="支付类型"
                           min-width="120">
@@ -164,13 +167,13 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="订单状态"
-                          min-width="120">
+                          min-width="100">
           <template slot-scope="scope">
             <span>{{ getOrderStatusText(scope.row) }}</span>
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="支付状态"
-                          min-width="120">
+                          min-width="100">
           <template slot-scope="scope">
             <span>{{ scope.row.orderPayStatus | getEnumLabel(source.ENUM_ORDER_PAY_STATUS) }}</span>
           </template>
@@ -203,7 +206,7 @@
     </PeaceDialog>
     <PeaceDialog :visible.sync="drugPurchaseOrder.visible"
                  append-to-body
-                 title="购药详情"
+                 title="购药订单详情"
                  v-if="drugPurchaseOrder.visible"
                  width="580px">
       <drug-purchase-detail :info="drugPurchaseOrder.data"
