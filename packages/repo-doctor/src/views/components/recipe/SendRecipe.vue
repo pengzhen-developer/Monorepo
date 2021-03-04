@@ -210,6 +210,10 @@ export default {
       return Peace.$store.state.user?.userInfo?.list?.docInfo
     },
 
+    inquiryInfo() {
+      return this.session?.content?.inquiryInfo
+    },
+
     inquiryNo() {
       return this.session?.content?.inquiryInfo?.inquiryNo
     },
@@ -219,7 +223,20 @@ export default {
     },
 
     payTypeText() {
-      return Object.keys(Type.INQUIRY.INQUIRY_PAY_TYPE).find((key) => Type.INQUIRY.INQUIRY_PAY_TYPE[key] === this.session?.content?.inquiryInfo?.paymentType)
+      if (this.inquiryInfo.paymentType === 1) {
+        return '自费'
+      }
+      if (this.inquiryInfo.paymentType === 2) {
+        return '普通城镇职工医保'
+      }
+      if (this.inquiryInfo.paymentType === 3) {
+        return '商保'
+      }
+      if (this.inquiryInfo.paymentType === 4) {
+        return `门特-${this.inquiryInfo.medicalDiseases}`
+      }
+
+      return ''
     }
   },
 

@@ -27,9 +27,11 @@
       <span v-html="lastMessage"></span>
     </div>
     <div class="row justify-between items-center">
-      <span v-if="showPayType"
-            class="tag-style">{{ payTypeText }}</span>
-      <div v-else></div>
+      <div>
+        <el-tag v-if="showPayType"
+                style="transform: scale(0.8);"
+                type="warning">{{ payTypeText }}</el-tag>
+      </div>
       <div class="text-grey text-caption">
         <PeaceCountdown v-bind:time="1000 * 60 * 60 * 24 * 365">
           <template slot-scope="props">
@@ -86,16 +88,6 @@ export default {
 
     inquiryTypeText() {
       return Object.keys(Type.INQUIRY.INQUIRY_TYPE).find((key) => Type.INQUIRY.INQUIRY_TYPE[key] === this.inquiryInfo?.inquiryType)
-    },
-
-    inquiryTypeImage() {
-      if (this.inquiryInfo?.inquiryType === Type.INQUIRY.INQUIRY_TYPE.图文问诊) {
-        return require('./../assets/img/chat_icon_pic@2x.png')
-      } else if (this.inquiryInfo?.inquiryType === Type.INQUIRY.INQUIRY_TYPE.视频问诊) {
-        return require('./../assets/img/chat_icon_video@2x.png')
-      }
-
-      return ''
     },
 
     inquiryStatusText() {

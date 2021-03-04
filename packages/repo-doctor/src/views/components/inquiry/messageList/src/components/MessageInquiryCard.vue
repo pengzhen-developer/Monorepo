@@ -11,8 +11,9 @@
       <span>|</span>
       <span v-text="familyAge"></span>
 
-      <span v-if="paymentType != 1"
-            class="tag-style">{{ payTypeText }}</span>
+      <el-tag v-if="showPayType"
+              style="transform: scale(0.8);"
+              type="warning">{{ payTypeText }}</el-tag>
       <!-- <span>
         {{ familyName }} |
         {{ familySex }} |
@@ -98,6 +99,10 @@ export default {
   },
 
   computed: {
+    showPayType() {
+      return this.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
+    },
+
     payTypeText() {
       return Object.keys(Type.INQUIRY.INQUIRY_PAY_TYPE).find((key) => Type.INQUIRY.INQUIRY_PAY_TYPE[key] === this.paymentType)
     }

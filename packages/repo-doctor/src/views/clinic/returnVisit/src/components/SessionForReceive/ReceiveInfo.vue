@@ -14,35 +14,33 @@
     </div>
 
     <el-card class="q-mb-lg bg-grey-2 no-shadow">
-      <div class="q-mb-sm text-subtitle1 text-bold row items-center">
-        <span>个人信息</span>
-        <span v-if="showPayType"
-              class="tag-style">{{ payTypeText }}</span>
-      </div>
-
       <div class="q-mb-xs row">
-        <div class="col-4">
+        <div class="col">
           <span class="label-4 q-mr-sm text-grey-7">姓名：</span>
           <span>{{ inquiryOrderInfo.patientsName }}</span>
         </div>
-        <div class="col-4">
+        <div class="col">
           <span class="label-4 q-mr-sm text-grey-7">年龄：</span>
           <span>{{ inquiryOrderInfo.age  }}</span>
         </div>
-        <div class="col-4">
+        <div class="col">
           <span class="label-4 q-mr-sm text-grey-7">性别：</span>
           <span>{{ inquiryOrderInfo.sex }}</span>
         </div>
-      </div>
-
-      <div class="row"
-           v-if="showGuardian">
-        <div class="col-4">
+        <div v-if="showGuardian"
+             class="col">
           <span class="label-4 q-mr-sm text-grey-7">监护人：</span>
           <span>{{ inquiryOrderInfo.guardianName }} |
             {{ inquiryOrderInfo.guardianSex }} |
             {{ inquiryOrderInfo.guardianAge }}
           </span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <span class="label-4 q-mr-sm text-grey-7">费用：</span>
+          <span>{{ payTypeText }}</span>
         </div>
       </div>
     </el-card>
@@ -239,16 +237,33 @@ export default {
       return this.$store?.state?.inquiry?.sessionMessages?.[0]?.content?.data?.inquiryInfo.inquiryNo ?? ''
     },
 
+    inquiryInfo() {
+      return this.$store?.state?.inquiry?.sessionMessages?.[0]?.content?.data?.inquiryInfo ?? {}
+    },
+
     inquiryOrderInfo() {
       return this.$store?.state?.inquiry?.sessionMessages?.[0]?.content?.data?.inquiryOrderInfo ?? {}
     },
 
     showPayType() {
-      return this.inquiryOrderInfo.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
+      return this.inquiryInfo.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
     },
 
     payTypeText() {
-      return Object.keys(Type.INQUIRY.INQUIRY_PAY_TYPE).find((key) => Type.INQUIRY.INQUIRY_PAY_TYPE[key] === this.inquiryOrderInfo.paymentType)
+      if (this.inquiryInfo.paymentType === 1) {
+        return '自费'
+      }
+      if (this.inquiryInfo.paymentType === 2) {
+        return '普通城镇职工医保'
+      }
+      if (this.inquiryInfo.paymentType === 3) {
+        return '商保'
+      }
+      if (this.inquiryInfo.paymentType === 4) {
+        return `门特-${this.inquiryInfo.medicalDiseases}`
+      }
+
+      return ''
     },
 
     showImages() {

@@ -68,7 +68,8 @@ export const INQUIRY = {
   INQUIRY_PAY_TYPE: {
     自费: 1,
     医保: 2,
-    商保: 3
+    商保: 3,
+    门特: 4
   },
 
   /** 是否发送病历 */
