@@ -10,9 +10,16 @@ const initNIM = () => {
   if (!Peace?.NIM?.isConnected()) {
     // 同步执行会造成 quasar loading bar 无限加载状态
     // 暂时关闭 loading bar
-    Peace.$q.loadingBar.stop()
     Peace.NIM = Util.IM.initIM()
     Peace.WebRTC = Util.IM.initWebRTC(Peace.NIM)
+
+    var isConnectedInterval = setInterval(() => {
+      if (Peace?.NIM?.isConnected()) {
+        window.clearInterval(isConnectedInterval)
+
+        Peace.$q.loadingBar.calls = 0
+      }
+    }, 100)
   }
 }
 

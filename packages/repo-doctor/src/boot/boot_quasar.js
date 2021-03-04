@@ -40,7 +40,8 @@ export default ({ Vue, configuration }) => {
         primary: configuration.theme.primary
       },
       loadingBar: {
-        color: 'blue'
+        size: '4px',
+        color: 'grey-1'
       },
       notify: {
         position: 'top',
