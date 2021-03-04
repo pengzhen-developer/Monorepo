@@ -86,13 +86,9 @@
 
           <span class="text-justify"
                 style="width: 4em;">疾病诊断</span>
-
           <span class="q-mx-xs">：</span>
-
-          <span class="col text-weight-bold"
-                v-for="diagnosis in data.DiagnosisInfos"
-                v-bind:key="diagnosis.DiagnosisName">
-            {{ diagnosis.DiagnosisName }}
+          <span class="text-weight-bold">
+            {{ data.diagnoseList && data.diagnoseList.map(item => item.name).join(' | ') }}
           </span>
 
           <!-- <div class="info-row-content">

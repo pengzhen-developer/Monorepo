@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import SendRecipe from './SendRecipe/index'
-import RecipeList from './RecipeList/index'
+import SendRecipe from './SendRecipe'
+import RecipeList from './RecipeList'
 import { store } from '../store'
 
 export default {

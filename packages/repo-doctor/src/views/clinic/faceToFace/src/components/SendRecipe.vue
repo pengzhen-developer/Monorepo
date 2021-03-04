@@ -1,8 +1,10 @@
 <template>
   <div>
+    <div class="patient-title-style">{{ patientInfo.name }}</div>
+
     <div class="q-px-md q-mt-sm">
       <div class="q-mb-md text-center">
-        <p class="text-subtitle1">{{ docInfo.netHospital_name }}</p>
+        <p class="text-subtitle1">{{ baseInfo.doctorInfo.hospitalName }}</p>
         <p class="text-h5">普通处方笺</p>
       </div>
 
@@ -12,34 +14,24 @@
         <div class="row">
           <div class="col">
             <el-form-item label="姓名：">
-              <span>{{ caseInfo.patient_name }}</span>
+              <span>{{ baseInfo.patientInfo.patientName }}</span>
             </el-form-item>
           </div>
           <div class="col">
             <el-form-item label="性别：">
-              <span>{{ caseInfo.sex }}</span>
+              <span>{{ baseInfo.patientInfo.sex }}</span>
             </el-form-item>
           </div>
           <div class="col">
             <el-form-item label="年龄：">
-              <span>{{ caseInfo.age }}</span>
+              <span>{{ baseInfo.patientInfo.age }}</span>
             </el-form-item>
           </div>
           <div class="col">
             <el-form-item label="科别：">
-              <span>{{ caseInfo.netdept_child }}</span>
+              <span>{{ baseInfo.doctorInfo.deptName }}</span>
             </el-form-item>
           </div>
-          <div v-if="showPayType"
-               class="col">
-            <el-form-item label="费用：">
-              <span>{{ payTypeText }}</span>
-            </el-form-item>
-          </div>
-
-        </div>
-
-        <div class="row">
           <div class="col">
             <el-form-item label="体重：">
               <div class="flex">
@@ -60,20 +52,39 @@
         </div>
 
         <div class="row">
-          <div class="col">
-            <el-form-item required=""
-                          v-bind:show-message="false"
-                          label="初步诊断：">
-              <QuickSelectDiagnose style="width: 400px;"
-                                   v-model="model.diagnoseList"></QuickSelectDiagnose>
-            </el-form-item>
-          </div>
+          <el-form-item required=""
+                        v-bind:show-message="false"
+                        label="诊断：">
+            <QuickSelectDiagnose style="width: 400px"
+                                 v-model="model.diagnoseList"></QuickSelectDiagnose>
+          </el-form-item>
+        </div>
+
+        <div class="row">
+          <el-form-item required=""
+                        v-bind:show-message="false"
+                        label="过敏史：">
+            <QuickSelectAllergyHistory allow-create
+                                       style="width: 400px"
+                                       v-model="model.allergyHistoryList"></QuickSelectAllergyHistory>
+          </el-form-item>
         </div>
 
         <div class="row">
           <div class="col">
-            <el-form-item label="过敏史：">
-              <span>{{ caseInfo.allergy_history || '无' }}</span>
+            <el-form-item required=""
+                          v-bind:show-message="false"
+                          label="主诉：">
+              <div class="flex">
+                <el-input class="col"
+                          type="textarea"
+                          show-word-limit
+                          placeholder="请输入内容"
+                          v-bind:maxlength="500"
+                          v-bind:autosize="{ minRows: 2, maxRows: 4}"
+                          v-model="model.baseIllness">
+                </el-input>
+              </div>
             </el-form-item>
           </div>
         </div>
@@ -89,7 +100,7 @@
       <div class="q-mb-sm">
         <DrugSelect ref="drugSelect"
                     v-model="model.drugList"
-                    v-bind:isBuilding="isBuilding"
+                    v-bind:type="`faceToFace`"
                     v-bind:prescriptionTag.sync="model.prescriptionTag"
                     v-bind:max-count="5"></DrugSelect>
       </div>
@@ -149,43 +160,49 @@
 
 
 <script>
-import Service from './service'
-import Type from '@src/type'
-import RecipeAudit from './RecipeAudit'
+import { mutations, store } from './../store'
+import Service from './../service/index'
+
+import RecipeAudit from '@src/views/components/recipe/RecipeAudit'
 import DrugSelect from '@src/views/components/drug/DrugSelect'
+import QuickSelectAllergyHistory from '@src/views/components/quick-select/src/components/QuickSelectAllergyHistory'
 import QuickSelectDiagnose from '@src/views/components/quick-select/src/components/QuickSelectDiagnose'
 
 export default {
   components: {
+    QuickSelectAllergyHistory,
     QuickSelectDiagnose,
     RecipeAudit,
     DrugSelect
   },
 
-  props: {
-    // 会话对象
-    session: Object,
-
-    // 缓存键，处理【问诊】、【复诊】、【面诊】、【会诊】等场景下的处方缓存
-    cacheKey: String
-  },
-
   data() {
     return {
-      // 病历详情
-      caseInfo: {},
-      // 是否建档
-      isBuilding: undefined,
+      // 处方基础信息
+      baseInfo: {
+        doctorInfo: {},
+        patientInfo: {}
+      },
 
       model: {
         // 体重
         weight: undefined,
         // 诊断
         diagnoseList: [],
-        // 处方类型：院内、外延
-        prescriptionTag: undefined,
+        // 过敏史
+        allergyHistoryList: [{ code: 'empty', name: '无' }],
+        // 主诉
+        baseIllness: '',
+        // 处方类型：院内、外延（面诊开放，只能选择外延）
+        prescriptionTag: 2,
         // 处方药品
         drugList: []
+      },
+
+      // 前置审方
+      auditDialog: {
+        visible: false,
+        data: {}
       },
 
       // 库存提示
@@ -193,12 +210,6 @@ export default {
         visible: false,
         operatorContact: '',
         data: []
-      },
-
-      // 前置审方
-      auditDialog: {
-        visible: false,
-        data: {}
       },
 
       sending: false
@@ -210,111 +221,56 @@ export default {
       return Peace.$store.state.user?.userInfo?.list?.docInfo
     },
 
-    inquiryNo() {
-      return this.session?.content?.inquiryInfo?.inquiryNo
-    },
-
-    showPayType() {
-      return this.inquiryNo && this.session?.content?.inquiryInfo?.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
-    },
-
-    payTypeText() {
-      return Object.keys(Type.INQUIRY.INQUIRY_PAY_TYPE).find((key) => Type.INQUIRY.INQUIRY_PAY_TYPE[key] === this.session?.content?.inquiryInfo?.paymentType)
+    patientInfo() {
+      return store.activePatient
     }
   },
 
   created() {
-    Promise.all([this.getCase(), this.getPrevInquiry(), this.checkIsBuilding()]).then(() => {
-      this.resetDataFromCache()
-    })
+    this.getPatientDetailInfo()
   },
 
   methods: {
-    /**
-     * 获取病历，展示患者基本信息
-     *
-     */
-    getCase() {
+    // 获取患者信息
+    getPatientDetailInfo() {
       const params = {
-        inquiry_no: this.inquiryNo
+        patientNo: this.patientInfo.patientNo,
+        patientId: this.patientInfo.patientId,
+        familyId: this.patientInfo.familyId
       }
 
-      return Service.getCase(params).then((res) => {
+      Service.getBaseInfo(params).then((res) => {
+        this.baseInfo = res.data
+
         const date1 = Peace.dayjs()
-        const date2 = Peace.dayjs(res.data.birthday)
+        const date2 = Peace.dayjs(res.data.patientInfo.birthday)
 
         if (date1.diff(date2, 'year') < 6) {
           this.$alert('当前患者为 6 岁以下儿童，请先确认患儿有监护人和相关专业医师陪伴，否则请勿开具处方', '提示', {
             confirmButtonText: '确认'
           })
         }
-
-        this.model.diagnoseList = res.data.diagnoseList
-        this.caseInfo = res.data
       })
-    },
-
-    // 北辰医院流程
-    // 检查是否建档
-    checkIsBuilding() {
-      const config = Peace.cache.sessionStorage.get('config')
-      const params = {
-        familyId: this.session.content.patientInfo.familyId
-      }
-
-      if (config.hospitalTag !== 'beichen') {
-        return Promise.resolve()
-      } else {
-        return Service.checkIsBuilding(params).then((res) => {
-          if (res.data.status === 2) {
-            // 未建档，默认选择外延处方
-            this.isBuilding = false
-            this.prescriptionTag = 2
-
-            console.log('checkIsBuilding' + this.prescriptionTag)
-          }
-        })
-      }
-    },
-
-    getPrevInquiry() {
-      const recipeCache = this.cacheKey && Peace.cache.sessionStorage.get(this.cacheKey)
-      const params = {
-        familyId: this.session.content.patientInfo.familyId
-      }
-
-      if (recipeCache) {
-        return Promise.resolve()
-      } else {
-        return Service.getLastInfo(params).then((res) => {
-          if (res.data.drugList?.length > 0) {
-            Peace.util.success('当前预填处方信息是带入了就诊人上一次的处方，仅作为参考，可修改！')
-
-            this.model.drugList = res.data.drugList
-            this.model.prescriptionTag = res.data.prescriptionTag
-          }
-        })
-      }
-    },
-
-    resetDataFromCache() {
-      const recipeCache = this.cacheKey && Peace.cache.sessionStorage.get(this.cacheKey)
-
-      if (recipeCache) {
-        this.model.weight = recipeCache.weight
-        this.model.drugList = recipeCache.drugList
-        this.model.prescriptionTag = recipeCache.prescriptionTag
-
-        this.model.diagnoseList = recipeCache.diagnoseList.concat([])
-      }
     },
 
     /**
      * 检验处方
      */
     valid() {
-      if (this.inquiryNo && this.model.diagnoseList.length === 0) {
-        Peace.util.warning('请选择初步诊断')
+      if (this.model.diagnoseList.length === 0) {
+        Peace.util.warning('请选择诊断')
+
+        return false
+      }
+
+      if (this.model.allergyHistoryList.length === 0) {
+        Peace.util.warning('请选择过敏史')
+
+        return false
+      }
+
+      if (Peace.validate.isEmpty(this.model.baseIllness)) {
+        Peace.util.warning('请输入主诉')
 
         return false
       }
@@ -353,9 +309,11 @@ export default {
 
           const params = Peace.util.deepClone(this.model)
           params.openId = this.docInfo.openid
-          params.inquiryNo = this.inquiryNo
+          params.patientNo = this.baseInfo.patientInfo.patientNo
+          params.patientId = this.baseInfo.patientInfo.patientId
+          params.familyId = this.baseInfo.patientInfo.familyId
 
-          Service.onlineSubmit(params)
+          Service.sendRecipe(params)
             .then((res) => {
               // 缺货提醒
               if (res.data.stockWarnStatus === 1) {
@@ -374,10 +332,10 @@ export default {
               }
               // 系统验证成功，发送处方成功
               else {
-                this.cacheKey && Peace.cache.sessionStorage.remove(this.cacheKey)
                 Peace.util.success(res.msg)
+                Peace.cache.sessionStorage.remove(store.activePatient.patientId)
 
-                this.$emit('close')
+                mutations.setShowWriteRecipe(false)
               }
             })
             .finally(() => {
@@ -388,27 +346,23 @@ export default {
     },
 
     /**
-     * 前置审方失败，医生手动确认继续发送处方
+     * 系统审方提醒
+     * 确认发送处方
      */
     sendConfirm() {
       this.sending = true
 
       const params = {
-        openId: this.docInfo?.openid,
-        businessNo: this.inquiryNo || this.consultNo,
+        openId: this.docInfo.openid,
+        businessNo: this.inquiryNo,
         prescriptionNo: this.auditDialog.prescriptionNo
-      }
-
-      if (this.consultNo) {
-        params.sourceAction = 'offline'
       }
 
       Service.confirmSend(params)
         .then((res) => {
-          this.cacheKey && Peace.cache.sessionStorage.remove(this.cacheKey)
+          Peace.cache.sessionStorage.remove(store.activePatient.patientId)
           Peace.util.success(res.msg)
-
-          this.$emit('close')
+          mutations.setShowWriteRecipe(false)
         })
         .finally(() => {
           this.sending = false
@@ -416,45 +370,28 @@ export default {
     },
 
     close() {
-      const recipeCache = {
-        weight: this.model.weight,
-        prescriptionTag: this.model.prescriptionTag,
-        diagnoseList: this.model.diagnoseList,
-        drugList: this.model.drugList
-      }
-
-      this.cacheKey && Peace.cache.sessionStorage.set(this.cacheKey, recipeCache)
-
-      this.$emit('close')
+      mutations.setShowWriteRecipe(false)
     }
   }
 }
 </script>
 
-<style lang="scss">
-.message-short-stock {
-  .el-message-box__header {
-    background: #e9edf1;
-    padding-top: 14px;
+<style lang="scss" scoped>
+.patient-title-style {
+  padding: 12px;
+  background-color: #f9f9f9;
+  font-size: 18px;
+  margin: 0px;
+}
 
-    .el-message-box__title {
-      justify-content: flex-start;
-    }
-  }
-
-  .el-message-box__content {
-    padding: 24px 16px;
-  }
-
-  .el-message-box__btns {
-    .el-button {
-      min-width: 80px;
-    }
+.require-style {
+  &::before {
+    content: '*';
+    color: red;
+    margin: 0 4px 0 0;
   }
 }
-</style>
 
-<style lang="scss" scoped>
 .text-justify {
   text-align: justify;
   text-align-last: justify;
@@ -476,7 +413,7 @@ export default {
 
 ::v-deep .el-loading-spinner {
   width: 160px;
-  left: 42%;
+  left: 50%;
   padding: 30px;
   border-radius: 8px;
   background: white;

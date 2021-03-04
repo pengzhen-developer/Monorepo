@@ -147,14 +147,14 @@ export const config = {
         title: '转诊记录',
         path: '/record/transfer'
       },
-      {
-        id: 45,
-        pid: 4,
-        closable: true,
-        name: '会诊记录',
-        title: '会诊记录',
-        path: '/record/consultation'
-      },
+      // {
+      //   id: 45,
+      //   pid: 4,
+      //   closable: true,
+      //   name: '会诊记录',
+      //   title: '会诊记录',
+      //   path: '/record/consultation'
+      // },
       {
         id: 5,
         pid: null,

@@ -5,11 +5,9 @@
     <template v-if="isSign">
       <div class="q-ml-md q-mb-md">
         <el-alert type="warning"
+                  show-icon=""
                   v-bind:closable="false">
-          <div class="flex items-center q-mb-xs">
-            <i class="el-alert__icon el-icon-warning q-mr-sm"></i>
-            <span class="text-grey-7 text-subtitle2">当前复诊排班信息及预约价格由医院统一安排，您仅可查看医院为您填写的排班信息，不可自主编辑。排班后，复诊复方服务自动开启，且您不可自主关闭。</span>
-          </div>
+          <span>当前复诊排班信息及预约价格由医院统一安排，您仅可查看医院为您填写的排班信息，不可自主编辑。排班后，复诊复方服务自动开启，且您不可自主关闭。</span>
         </el-alert>
       </div>
 

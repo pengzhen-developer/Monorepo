@@ -3,11 +3,11 @@
     <el-form inline=""
              v-bind:model="model"
              v-on:keyup.enter.native="getCommonlyPrescriptionList">
-      <el-form-item label="疾病诊断">
+      <el-form-item label="疾病诊断：">
         <el-input v-model="model.name"></el-input>
       </el-form-item>
 
-      <el-form-item label=" ">
+      <el-form-item label="">
         <el-button type="primary"
                    icon="el-icon-search"
                    v-on:click="getCommonlyPrescriptionList">查询</el-button>
@@ -29,7 +29,11 @@
                 v-bind:pageSize="5">
       <PeaceTableColumn label="疾病诊断"
                         min-width="200"
-                        prop="diagnosis"></PeaceTableColumn>
+                        prop="diagnosis">
+        <template slot-scope="scope">
+          {{ scope.row.diagnoseList.map(item => item.name).join(' | ') }}
+        </template>
+      </PeaceTableColumn>
 
       <PeaceTableColumn label="性别"
                         min-width="120"

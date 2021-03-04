@@ -1,17 +1,14 @@
 // 前置审方
 
 <template>
-  <div>
+  <div v-if="data">
     <div class="q-mb-lg q-mt-sm flex justify-center items-center"
          v-bind:class="getTextThemeClass()">
-
       <el-image style="width: 30px; height: 30px;"
                 v-bind:src="getIcon()"></el-image>
-
       <span class="text-h5 text-weight-bold q-ml-md">
         {{ data.auditResult }}
       </span>
-
     </div>
 
     <div class="card q-mb-md q-mx-sm"

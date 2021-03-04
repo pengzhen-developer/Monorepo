@@ -215,17 +215,17 @@ export default {
         menuAlias: 'Transfer',
         virtual: 0
       },
-      {
-        id: '45',
-        closable: true,
-        menuName: '会诊记录',
-        menuRoute: '/record/consultation',
-        menuPath: 'views/record/consultation',
-        parentId: '4',
-        enable: true,
-        menuAlias: 'Consultation',
-        virtual: 0
-      },
+      // {
+      //   id: '45',
+      //   closable: true,
+      //   menuName: '会诊记录',
+      //   menuRoute: '/record/consultation',
+      //   menuPath: 'views/record/consultation',
+      //   parentId: '4',
+      //   enable: true,
+      //   menuAlias: 'Consultation',
+      //   virtual: 0
+      // },
       {
         id: '5',
         closable: true,

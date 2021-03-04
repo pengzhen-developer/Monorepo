@@ -76,7 +76,7 @@ export default {
    *
    * @param {*} params
    */
-  subPrescrip(params) {
+  onlineSubmit(params) {
     const isMock = false
 
     const apiPath = 'client/v100/prescription/prescribeprescrip/onlineSubmit'

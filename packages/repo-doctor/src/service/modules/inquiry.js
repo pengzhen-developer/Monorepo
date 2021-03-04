@@ -154,31 +154,8 @@ export function offlineAddCase({
  * @param {*} params
  * @returns
  */
-export function addCase({
-  inquiry_no,
-  allergy_history,
-  diagnose,
-  base_illness,
-  present_history,
-  past_history,
-  Inspection_index,
-  summary,
-  templateId,
-  diagnoseList
-}) {
-  const params = {
-    inquiryNo: inquiry_no,
-    allergyHistory: allergy_history,
-    diagnose,
-    baseIllness: base_illness,
-    presentHistory: present_history,
-    pastHistory: past_history,
-    inspectionIndex: Inspection_index,
-    summary,
-    aliverId: templateId,
-    diagnoseList
-  }
-  const addCase = 'client/v1/Prescribeprescrip/addCase'
+export function addCase(params) {
+  const addCase = 'client/v1/casehistory/addCase'
 
   return Peace.http.post(addCase, params)
 }

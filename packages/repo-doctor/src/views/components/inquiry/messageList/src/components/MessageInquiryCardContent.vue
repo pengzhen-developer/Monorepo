@@ -11,7 +11,6 @@
                         @onClickContent="onClickContent"></MessageInquiryCard>
     <PeaceDialog :visible.sync="preliminary.visible"
                  v-if="preliminary.visible"
-                 width="500"
                  append-to-body
                  title="问诊单详情">
       <InquiryPreliminary :data="preliminary.data"

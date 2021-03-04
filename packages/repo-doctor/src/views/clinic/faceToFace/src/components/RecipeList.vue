@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { mutations, store } from '../../store'
+import { mutations, store } from './../store'
 import RecipeDetail from '@src/views/components/recipe/RecipeDetail'
 export default {
   inject: ['provideGetTab', 'provideAddTab'],

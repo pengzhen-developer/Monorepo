@@ -1,202 +1,149 @@
 <template>
   <div>
     <el-form space-sm
-             :model="medical.model"
              label-position="right"
              label-width="auto"
-             ref="form">
+             ref="form"
+             v-bind:model="model">
       <el-row>
-        <el-form-item label="写病历">
-          <span slot="label">写病历：</span>
-          <el-select @change="handleChangeType"
-                     v-model="medical.type">
+        <el-form-item label="写病历：">
+          <el-select v-on:change="changeTemplate"
+                     v-model="template.aliverId">
             <el-option key="base"
                        label="通用模板"
-                       value></el-option>
-            <el-option :key="type.templateName"
-                       :label="type.templateName"
-                       :value="type.templateId"
-                       v-for="type in typeOptions"></el-option>
+                       value=""></el-option>
+            <el-option v-bind:key="type.templateName"
+                       v-bind:label="type.templateName"
+                       v-bind:value="type.templateId"
+                       v-for="type in template.list"></el-option>
           </el-select>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="就诊时间"
-                      prop="visit_date">
-          <span slot="label">就诊时间：</span>
-          <span>{{ medical.model.visit_date }}</span>
+        <el-form-item label="就诊时间：">
+          <span>{{ new Date().formatDate() }}</span>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="科别"
+        <el-form-item label="科别："
                       prop="dep_id">
-          <span slot="label">科别：</span>
           <span>{{ $store.state.user.userInfo.list.docInfo.netdept_child }}</span>
         </el-form-item>
       </el-row>
       <el-row>
         <el-form-item required=""
-                      v-bind:show-message="false"
-                      label="主诉"
-                      prop="base_illness">
-          <span slot="label">主诉：</span>
-          <el-input :rows="3"
-                    placeholder
+                      label="主诉："
+                      prop="baseIllness"
+                      v-bind:show-message="false">
+          <el-input placeholder
                     type="textarea"
-                    v-model="medical.model.base_illness"></el-input>
+                    v-bind:rows="3"
+                    v-model="model.baseIllness"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="现病史"
-                      prop="present_history">
-          <span slot="label">现病史：</span>
-          <el-select :remote-method="getPresent"
-                     allow-create
-                     filterable
-                     multiple
-                     placeholder="请输入现病史"
-                     remote
-                     style="width: 100%;"
-                     v-model="medical.model.present_history">
-            <el-option :key="item.id"
-                       :label="item.name"
-                       :value="item.name"
-                       v-for="item in dialog.source.present_history"></el-option>
-          </el-select>
+        <el-form-item label="现病史："
+                      prop="presentHistoryList">
+          <QuickSelectDiagnose allow-create
+                               style="width: 400px;"
+                               v-model="model.presentHistoryList"></QuickSelectDiagnose>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="过敏史"
-                      prop="allergy_history">
-          <span slot="label">过敏史：</span>
-          <template v-if="medical.model.allergy_history && medical.model.allergy_history.length > 0">
-            <el-tag :key="item.id"
-                    style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-                    type="info"
-                    v-for="item in medical.model.allergy_history">{{ item.name }}</el-tag>
-            <el-button @click="changeDialog('过敏史')"
-                       type="text">修改</el-button>
-          </template>
-
-          <template v-else>
-            <el-button @click="showDialog('过敏史')"
-                       type="text">请选择</el-button>
-          </template>
+        <el-form-item label="过敏史："
+                      prop="allergyHistoryList">
+          <QuickSelectAllergyHistory allow-create
+                                     style="width: 400px;"
+                                     v-model="model.allergyHistoryList"></QuickSelectAllergyHistory>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="既往史"
-                      prop="past_history">
-          <span slot="label">既往史：</span>
-
-          <template v-if="medical.model.past_history && medical.model.past_history.length > 0">
-            <el-tag :key="item.id"
-                    style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-                    type="info"
-                    v-for="item in medical.model.past_history">{{ item.name }}</el-tag>
-            <el-button @click="changeDialog('既往史')"
-                       type="text">修改</el-button>
-          </template>
-
-          <template v-else>
-            <el-button @click="showDialog('既往史')"
-                       type="text">请选择</el-button>
-          </template>
+        <el-form-item label="既往史："
+                      prop="pastHistoryList">
+          <QuickSelectDiagnoseHistory allow-create
+                                      style="width: 400px;"
+                                      v-model="model.pastHistoryList"></QuickSelectDiagnoseHistory>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="检查指标">
-          <span slot="label">检查指标：</span>
+        <el-form-item label="检查指标：">
           <div class="inspect">
             <div class="item">
               <span>体温</span>
               <el-input placeholder
-                        v-model="medical.model.Inspection_index.temperature"></el-input>
+                        v-model="model.inspectionIndex.temperature"></el-input>
               <span>度</span>
             </div>
             <div class="item">
               <span>体重</span>
               <el-input placeholder
-                        v-model="medical.model.Inspection_index.weight"></el-input>
+                        v-model="model.inspectionIndex.weight"></el-input>
               <span>kg</span>
             </div>
             <div class="item">
               <span>心率</span>
               <el-input placeholder
-                        v-model="medical.model.Inspection_index.heart_rate"></el-input>
+                        v-model="model.inspectionIndex.heart_rate"></el-input>
               <span>bpm</span>
             </div>
             <div class="item">
               <span>血压</span>
               <el-input placeholder
-                        v-model="medical.model.blood_pressure_begin"></el-input>/
+                        v-model="blood_pressure_begin"></el-input>/
               <el-input placeholder
-                        v-model="medical.model.blood_pressure_end"></el-input>
+                        v-model="blood_pressure_end"></el-input>
               <span>mmHg</span>
             </div>
           </div>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="辅助检查">
-          <span slot="label">辅助检查：</span>
+        <el-form-item label="辅助检查：">
           <el-input :rows="3"
                     placeholder="请输入辅助检查"
                     type="textarea"
-                    v-model="medical.model.Inspection_index.More"></el-input>
+                    v-model="model.inspectionIndex.More"></el-input>
         </el-form-item>
       </el-row>
       <el-row>
         <el-form-item required=""
+                      label="诊断："
+                      prop="diagnoseList"
                       v-bind:show-message="false"
-                      label="诊断"
-                      prop="diagnose">
-          <span slot="label">诊断：</span>
-          <template v-if="medical.model.diagnose && medical.model.diagnose.length > 0">
-            <el-tag :key="item.id"
-                    style="margin: 2px 10px 2px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-                    type="info"
-                    v-for="item in medical.model.diagnose">{{ item.name }}</el-tag>
-            <el-button @click="changeDialog('疾病诊断')"
-                       type="text">修改</el-button>
-          </template>
-
-          <template v-else>
-            <el-button @click="showDialog('疾病诊断')"
-                       type="text">请选择</el-button>
-          </template>
+                      v-bind:rules="[ { type: 'array' }]">
+          <QuickSelectDiagnose style="width: 400px;"
+                               v-model="model.diagnoseList"></QuickSelectDiagnose>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-form-item label="医嘱小结"
+        <el-form-item label="医嘱小结："
                       prop="summary">
-          <span slot="label">医嘱小结：</span>
           <el-input placeholder
-                    v-model="medical.model.summary"></el-input>
+                    v-model="model.summary"></el-input>
         </el-form-item>
       </el-row>
-      <el-row v-if="medical.type === 'ldqonaubvy'">
-        <el-form-item label="其他检查"
-                      prop="summary">
+
+      <el-row v-if="template.aliverId === 'ldqonaubvy'">
+        <el-form-item prop="summary">
           <span class="primary"
-                slot="label">其他检查</span>
+                slot="label">其他检查：</span>
           <div class="inspect small-text">
             <div class="item">
               <span>谷丙转氨酶(ALT)</span>
               <el-input placeholder
-                        v-model="medical.model.ALT"></el-input>
+                        v-model="model.ALT"></el-input>
               <span>IU/ml</span>
             </div>
             <div class="item">
               <span>谷草转氨酶(AST)</span>
               <el-input placeholder
-                        v-model="medical.model.AST"></el-input>
+                        v-model="model.AST"></el-input>
               <span>IU/ml</span>
             </div>
             <div class="item">
               <span>HBV-DNA</span>
               <el-input placeholder
-                        v-model="medical.model.HBV"></el-input>
+                        v-model="model.HBV"></el-input>
               <span>IU/ml</span>
             </div>
           </div>
@@ -205,201 +152,61 @@
       <el-row class="q-mt-md"
               style="text-align: center;">
         <el-form-item label=" ">
-          <el-button @click="close">取消</el-button>
-          <el-button @click="saveMedical"
-                     type="success"
-                     v-show="false">保存</el-button>
-          <el-button @click="sendMedical"
+          <el-button v-on:click="close">取消</el-button>
+          <el-button v-on:click="send"
                      type="primary">发送</el-button>
         </el-form-item>
       </el-row>
     </el-form>
-
-    <PeaceDialog :title="'添加' + dialog.title"
-                 :visible.sync="dialog.visible">
-      <div style="margin-bottom: 10px">
-        <template v-if="dialog.title === '过敏史'">
-          <el-select :remote-method="getAllergy"
-                     @change="chooseItem"
-                     allow-create
-                     filterable
-                     placeholder="请输入过敏史"
-                     remote
-                     style="width: 100%;"
-                     v-model="dialog.chooseItem"
-                     value-key="id">
-            <el-option :key="item.id"
-                       :label="item.name"
-                       :value="item"
-                       v-for="item in dialog.source.allergy_history"></el-option>
-          </el-select>
-        </template>
-        <template v-if="dialog.title === '既往史'">
-          <el-select :remote-method="getPresent"
-                     @change="chooseItem"
-                     allow-create
-                     filterable
-                     placeholder="请输入既往史"
-                     remote
-                     style="width: 100%;"
-                     v-model="dialog.chooseItem">
-            <el-option :key="item.id"
-                       :label="item.name"
-                       :value="item.name"
-                       v-for="item in dialog.source.present_history"></el-option>
-          </el-select>
-        </template>
-        <template v-if="dialog.title === '疾病诊断'">
-          <el-select :remote-method="getPresent"
-                     @change="chooseItem"
-                     filterable
-                     placeholder="请输入疾病诊断"
-                     remote
-                     style="width: 100%;"
-                     v-model="dialog.chooseItem">
-            <el-option :key="item.id"
-                       :label="item.name"
-                       :value="item.name"
-                       v-for="item in dialog.source.present_history"></el-option>
-          </el-select>
-        </template>
-      </div>
-
-      <div v-if="dialog.chooseData.length > 0">
-        <p>已选{{ dialog.title }}</p>
-
-        <div class="q-my-10">
-          <el-tag :key="item.id"
-                  @close="closeItem(item)"
-                  closable
-                  style="margin: 4px 10px 4px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-                  v-for="item in dialog.chooseData">{{ item.name }}</el-tag>
-        </div>
-      </div>
-
-      <template v-if="dialog.title === '疾病诊断'">
-        <div>
-          <p>常见{{ dialog.title }}</p>
-
-          <div class="q-my-10">
-            <el-tag :key="item.id"
-                    :type="
-                dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1
-                  ? 'info'
-                  : 'primary'
-              "
-                    @click="chooseItem(item)"
-                    style="cursor: pointer; margin: 4px 10px 4px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-                    v-for="item in dialog.source.IllnessList">{{ item.name }}</el-tag>
-          </div>
-        </div>
-      </template>
-
-      <template v-if="dialog.title === '过敏史'">
-        <div>
-          <p>常见{{ dialog.title }}</p>
-
-          <div class="q-my-10">
-            <el-tag :key="item.id"
-                    :type="
-                dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1
-                  ? 'info'
-                  : 'primary'
-              "
-                    @click="chooseItem(item)"
-                    style="cursor: pointer; margin: 4px 10px 4px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-                    v-for="item in dialog.source.allergens">{{ item.name }}</el-tag>
-          </div>
-        </div>
-      </template>
-
-      <template v-if="dialog.title === '既往史'">
-        <div>
-          <p>常见{{ dialog.title }}</p>
-
-          <div class="q-my-10">
-            <el-tag :key="item.id"
-                    :type="
-                dialog.chooseData.findIndex(existItem => existItem.id === item.id) === -1
-                  ? 'info'
-                  : 'primary'
-              "
-                    @click="chooseItem(item)"
-                    style="cursor: pointer; margin: 4px 10px 4px 0; min-width: 62px; text-align: center; border: none; border-radius: 2px; height: 28px; line-height: 28px;"
-                    v-for="item in dialog.source.OldIllnessList">{{ item.name }}</el-tag>
-          </div>
-        </div>
-      </template>
-
-      <div style="margin-bottom: 10px; text-align: center;">
-        <el-button @click="dialog.visible = false">取消</el-button>
-        <el-button @click="saveItem"
-                   type="primary">保存</el-button>
-      </div>
-    </PeaceDialog>
   </div>
 </template>
 
 <script>
+import { QuickSelectAllergyHistory, QuickSelectDiagnoseHistory, QuickSelectDiagnose } from '@src/views/components/quick-select/index'
+
 export default {
+  components: {
+    QuickSelectAllergyHistory,
+    QuickSelectDiagnoseHistory,
+    QuickSelectDiagnose
+  },
+
   data() {
     return {
-      medical: {
-        visible: false,
+      blood_pressure_begin: '',
+      blood_pressure_end: '',
 
-        model: {
-          visit_date: new Date().formatDate(),
-          dep_id: this.$store.state.user.userInfo.list.docInfo.netdept_childId,
-          base_illness: '',
-          present_history: [],
-          allergy_history: [],
-          past_history: [],
-          diagnose: [],
-          blood_pressure_begin: '',
-          blood_pressure_end: '',
-          summary: '',
-          Inspection_index: {
-            blood_pressure: '',
-            temperature: '',
-            weight: '',
-            heart_rate: '',
-            More: ''
-          },
-          ALT: '',
-          AST: '',
-          HBV: ''
+      model: {
+        // 主诉
+        baseIllness: '',
+        // 现病史
+        presentHistoryList: [],
+        // 过敏史
+        allergyHistoryList: [{ code: 'empty', name: '无' }],
+        // 既往史
+        pastHistoryList: [{ code: 'empty', name: '无' }],
+        // 诊断
+        diagnoseList: [],
+        // 医嘱小结
+        summary: '',
+        // 检查指标
+        inspectionIndex: {
+          blood_pressure: '',
+          temperature: '',
+          weight: '',
+          heart_rate: '',
+          More: ''
         },
-        type: '',
-
-        rules: {}
+        ALT: '',
+        AST: '',
+        HBV: ''
       },
-      typeOptions: [
-        { value: 1, label: '通用病历模板' },
-        { value: 2, label: '肝病病历模板' }
-      ],
 
-      dialog: {
-        visible: false,
+      template: {
+        key: 'templateChangeTips',
 
-        // 标题
-        title: '',
-        // 已选中项
-        chooseData: [],
-        // 当前选中项
-        chooseItem: '',
-
-        // 远程搜素数据源
-        source: {
-          present_history: [],
-          allergy_history: [],
-
-          // 过敏史
-          allergens: [],
-          // 既往史
-          OldIllnessList: [],
-          // 诊断
-          IllnessList: []
-        }
+        aliverId: '',
+        list: []
       }
     }
   },
@@ -408,285 +215,140 @@ export default {
     session: Object
   },
 
-  computed: {
-    inquiryNo() {
-      return this.session?.content?.inquiryInfo?.inquiryNo
-    },
-
-    consultNo() {
-      return this.session?.content?.consultInfo?.consultNo
-    }
-  },
-
   watch: {
-    'medical.model.blood_pressure_begin'() {
-      this.medical.model.Inspection_index.blood_pressure = this.medical.model.blood_pressure_begin + '/' + this.medical.model.blood_pressure_end
+    blood_pressure_begin() {
+      this.model.inspectionIndex.blood_pressure = this.blood_pressure_begin + '/' + this.blood_pressure_end
     },
-    'medical.model.blood_pressure_end'() {
-      this.medical.model.Inspection_index.blood_pressure = this.medical.model.blood_pressure_begin + '/' + this.medical.model.blood_pressure_end
+    blood_pressure_end() {
+      this.model.inspectionIndex.blood_pressure = this.blood_pressure_begin + '/' + this.blood_pressure_end
     }
   },
 
   created() {
-    this.getOptions()
+    this.getTemplate()
 
-    Peace.service.patient.allergens().then((res) => {
-      this.dialog.source.allergens = res.data.list
-    })
-
-    Peace.service.patient.IllnessList().then((res) => {
-      this.dialog.source.IllnessList = res.data.list
-    })
-
-    Peace.service.patient.OldIllnessList().then((res) => {
-      this.dialog.source.OldIllnessList = res.data.list
-    })
+    this.initialData = Peace.util.deepClone(this.$data)
   },
 
-  mounted() {},
-
   methods: {
-    handleChangeType(val) {
-      if (!val) return
-      const templateKey = 'templateChangeTips'
-      const currentTemplate = Peace.cache.localStorage.get(templateKey)
-      if (currentTemplate !== val) {
-        this.$alert('肝病病历增加了 其他检查 (ALT、AST、HBV-DHA)', '提示', {
-          confirmButtonText: '知道了'
-        })
-        Peace.cache.localStorage.set(templateKey, val)
-      }
-    },
-
-    getOptions() {
+    getTemplate() {
       Peace.service.inquiry.getRecordTemplate().then((res) => {
         const data = res.data.info
 
-        this.typeOptions = data.templateList
-        this.medical.type = data.choseTemplateId
-        this.handleChangeType(this.medical.type)
+        this.template.aliverId = data.choseTemplateId
+        this.template.list = data.templateList
+
+        this.changeTemplate(this.template.aliverId)
       })
     },
 
-    getPresent(query) {
-      if (query !== '' && query.length > 0) {
-        const params = { name: query }
-        Peace.service.patient.getDiseaseInfo(params).then((res) => {
-          this.dialog.source.present_history = res.data.list
-        })
-      } else {
-        this.dialog.source.present_history = []
+    changeTemplate(key) {
+      if (key) {
+        const templateKey = Peace.cache.localStorage.get(this.template.key)
+
+        if (templateKey !== key) {
+          const template = this.template.list.find((item) => item.templateId === key)
+
+          this.$alert(`${template.templateName}${template.templateTxt}`, '提示', {
+            confirmButtonText: '知道了'
+          })
+
+          Peace.cache.localStorage.set(this.template.key, key)
+        }
       }
     },
 
-    getAllergy(query) {
-      if (query !== '' && query.length > 0) {
-        const params = { name: query }
-        Peace.service.patient.allergenList(params).then((res) => {
-          this.dialog.source.allergy_history = res.data.list
-        })
-      } else {
-        this.dialog.source.allergy_history = []
+    /**
+     * 校验病历
+     */
+    valid() {
+      // 验证必填
+      const isRequired = () => {
+        if (Peace.validate.isEmpty(this.model.baseIllness)) {
+          Peace.util.warning('请输入主诉')
+
+          return false
+        }
+
+        if (this.model.diagnoseList.length === 0) {
+          Peace.util.warning('请选择诊断')
+
+          return false
+        }
+
+        return true
       }
+
+      const isValid = () => {
+        if (this.model.inspectionIndex.temperature && !/^\d+(\.\d{1,1})?$/.test(this.model.inspectionIndex.temperature)) {
+          Peace.util.warning('请输入正确的体温，最多保留一位小数')
+          return false
+        }
+
+        if (this.model.inspectionIndex.weight && !/^\d+(\.\d{1,1})?$/.test(this.model.inspectionIndex.weight)) {
+          Peace.util.warning('请输入正确的体重，最多保留一位小数')
+          return false
+        }
+
+        if (this.model.inspectionIndex.heart_rate && !/^\d+(\.\d{1,1})?$/.test(this.model.inspectionIndex.heart_rate)) {
+          Peace.util.warning('请输入正确的心率，最多保留一位小数')
+          return false
+        }
+
+        if (this.blood_pressure_begin && !/^\d+(\.\d{1,1})?$/.test(this.blood_pressure_begin)) {
+          Peace.util.warning('请输入正确的血压，最多保留一位小数')
+          return false
+        }
+
+        if (this.blood_pressure_end && !/^\d+(\.\d{1,1})?$/.test(this.blood_pressure_end)) {
+          Peace.util.warning('请输入正确的血压，最多保留一位小数')
+          return false
+        }
+
+        const alt = this.model.ALT
+        if ((alt && !/^\d+(\.\d{1,1})?$/.test(alt)) || parseInt(alt) < 0 || parseInt(alt) > 1000) {
+          Peace.util.warning('请输入正确的谷丙转氨酶(ALT)，最多保留一位小数 (数值范围 0-1000)')
+          return false
+        }
+
+        const ast = this.model.AST
+        if ((ast && !/^\d+(\.\d{1,1})?$/.test(ast)) || parseInt(ast) < 0 || parseInt(ast) > 1000) {
+          Peace.util.warning('请输入正确的谷草转氨酶(AST)，最多保留一位小数 (数值范围 0-1000)')
+          return false
+        }
+
+        return true
+      }
+
+      return isRequired() && isValid()
     },
 
-    saveMedical() {
-      this.medical.visible = false
-    },
+    /**
+     * 发送病历
+     */
+    send() {
+      if (this.valid()) {
+        const params = Peace.util.deepClone(this.model)
 
-    sendMedical() {
-      if (!this.medical.model.base_illness) {
-        Peace.util.warning('请输入主诉')
-        return
-      }
-
-      if (this.medical.model.diagnose.length === 0) {
-        Peace.util.warning('请选择诊断')
-        return
-      }
-
-      if (this.medical.model.Inspection_index.temperature && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.temperature)) {
-        Peace.util.warning('请输入正确的体温，最多保留一位小数')
-        return
-      }
-      if (this.medical.model.Inspection_index.weight && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.weight)) {
-        Peace.util.warning('请输入正确的体重，最多保留一位小数')
-        return
-      }
-      if (this.medical.model.Inspection_index.heart_rate && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.Inspection_index.heart_rate)) {
-        Peace.util.warning('请输入正确的心率，最多保留一位小数')
-        return
-      }
-      if (this.medical.model.blood_pressure_begin && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_begin)) {
-        Peace.util.warning('请输入正确的血压，最多保留一位小数')
-        return
-      }
-      if (this.medical.model.blood_pressure_end && !/^\d+(\.\d{1,1})?$/.test(this.medical.model.blood_pressure_end)) {
-        Peace.util.warning('请输入正确的血压，最多保留一位小数')
-        return
-      }
-
-      if (Peace.validate.isEmpty(this.medical.model.blood_pressure_end) || Peace.validate.isEmpty(this.medical.model.blood_pressure_begin)) {
-        this.medical.model.Inspection_index.blood_pressure = ''
-      }
-
-      const alt = this.medical.model.ALT
-      const ast = this.medical.model.AST
-      // const hbv = this.medical.model.HBV
-
-      if ((alt && !/^\d+(\.\d{1,1})?$/.test(alt)) || parseInt(alt) < 0 || parseInt(alt) > 1000) {
-        Peace.util.warning('请输入正确的谷丙转氨酶(ALT)，最多保留一位小数 (数值范围 0-1000)')
-        return
-      }
-      if ((ast && !/^\d+(\.\d{1,1})?$/.test(ast)) || parseInt(ast) < 0 || parseInt(ast) > 1000) {
-        Peace.util.warning('请输入正确的谷草转氨酶(AST)，最多保留一位小数 (数值范围 0-1000)')
-        return
-      }
-
-      const params = {
-        inquiry_no: this.inquiryNo,
-        consultNo: this.consultNo,
-        patient_id: this.$store.getters['inquiry/patientInfo'].patientId,
-        family_id: this.$store.getters['inquiry/patientInfo'].familyId,
-        patient_name: this.$store.getters['inquiry/patientInfo'].familyName,
-        sex: this.$store.getters['inquiry/patientInfo'].familySex,
-        age: this.$store.getters['inquiry/patientInfo'].familyAge,
-        id_card: this.$store.getters['inquiry/patientInfo'].idCard,
-
-        ...this.medical.model
-      }
-
-      // 病历模板
-      const type = this.medical.type
-      if (type) {
-        params.templateId = type
-      }
-
-      params.Inspection_index = JSON.stringify(params.Inspection_index)
-      params.present_history = params.present_history.toString()
-      params.allergy_history = params.allergy_history && params.allergy_history.map((item) => item.name).toString()
-      params.past_history = params.past_history && params.past_history.map((item) => item.name).toString()
-
-      // 兼容会诊和问诊
-      if (this.inquiryNo) {
-        // 诊断上传 JSON 数据 ，此处需要转换上传参数
-        params.diagnoseList = params.diagnose.map((item) => {
-          item.diagnoseCode = item.code
-          item.diagnoseName = item.name
-          return item
-        })
-
-        params.diagnose = params.diagnose && params.diagnose.map((item) => item.name).toString()
-        params.diagnose = params.diagnose.replace(/,/g, ' | ')
+        params.inquiryNo = this.session.content.inquiryInfo.inquiryNo
+        params.aliverId = this.template.aliverId
+        params.inspectionIndex = JSON.stringify(this.model.inspectionIndex)
 
         Peace.service.inquiry.addCase(params).then((res) => {
           Peace.util.success(res.msg)
 
           this.$emit('close')
         })
-      } else if (this.consultNo) {
-        //TODO: 会诊当前版本区分处理
-        params.diagnose = params.diagnose && params.diagnose.map((item) => item.name).toString()
-        params.diagnose = params.diagnose.replace(/,/g, ' | ')
-        Peace.service.inquiry.offlineAddCase(params).then((res) => {
-          Peace.util.success(res.msg)
-
-          this.$emit('close')
-        })
       }
-    },
-
-    showDialog(title) {
-      this.dialog.title = title
-      this.dialog.chooseData = []
-
-      this.dialog.visible = true
-    },
-
-    changeDialog(title) {
-      this.showDialog(title)
-
-      this.$nextTick(function() {
-        if (title === '过敏史') {
-          this.dialog.chooseData = [...this.medical.model.allergy_history]
-        } else if (title === '既往史') {
-          this.dialog.chooseData = [...this.medical.model.past_history]
-        } else if (title === '疾病诊断') {
-          this.dialog.chooseData = [...this.medical.model.diagnose]
-        }
-      })
-    },
-
-    chooseItem(item) {
-      if (!item.id) {
-        item = {
-          name: item,
-          code: item.code
-        }
-      }
-      if (this.dialog.title === '过敏史') {
-        if (item.name === '无') {
-          this.dialog.chooseData = []
-        } else {
-          const index = this.dialog.chooseData.findIndex((existItem) => existItem.name === '无')
-
-          if (index !== -1) {
-            this.dialog.chooseData.splice(index, 1)
-          }
-        }
-      }
-
-      const index = this.dialog.chooseData.findIndex((existItem) => existItem.id === item.id && existItem.name === item.name)
-
-      if (index === -1) {
-        this.dialog.chooseData.push(item)
-
-        // 选中后， 清空状态
-        this.dialog.chooseItem = ''
-        this.dialog.source.present_history = []
-        this.dialog.source.allergy_history = []
-      }
-    },
-
-    closeItem(item) {
-      const index = this.dialog.chooseData.findIndex((existItem) => existItem === item)
-
-      if (index !== -1) {
-        this.dialog.chooseData.splice(index, 1)
-      }
-    },
-
-    saveItem() {
-      if (this.dialog.title === '过敏史') {
-        this.medical.model.allergy_history = [...this.dialog.chooseData]
-      } else if (this.dialog.title === '既往史') {
-        this.medical.model.past_history = [...this.dialog.chooseData]
-      } else if (this.dialog.title === '疾病诊断') {
-        this.medical.model.diagnose = [...this.dialog.chooseData]
-      }
-      this.dialog.visible = false
     },
 
     close() {
-      if (
-        this.medical.model.base_illness ||
-        this.medical.model.present_history.length > 0 ||
-        this.medical.model.allergy_history.length > 0 ||
-        this.medical.model.past_history.length > 0 ||
-        this.medical.model.diagnose.length > 0 ||
-        this.medical.model.blood_pressure_begin ||
-        this.medical.model.blood_pressure_end ||
-        this.medical.model.Inspection_index.temperature ||
-        this.medical.model.Inspection_index.weight ||
-        this.medical.model.Inspection_index.heart_rate ||
-        this.medical.model.Inspection_index.More ||
-        this.medical.model.summary
-      ) {
+      if (Peace.util.deepCompare(this.initialData.model, this.model)) {
+        this.$emit('close')
+      } else {
         Peace.util.confirm('确定要退出病历吗？当前所有数据将会被清除!', undefined, undefined, () => {
           this.$emit('close')
         })
-      } else {
-        this.$emit('close')
       }
     }
   }

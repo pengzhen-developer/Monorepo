@@ -1,8 +1,8 @@
 
 <template>
-  <div class="q-pa-md"
+  <div class="q-pa-md flex"
        style="min-width: 1300px; max-width: 1440px; margin: 0 auto; ">
-    <div class="consultation flex"
+    <div class="col consultation flex"
          style="border: 1px solid #f4f4f4;">
       <div class="consultation-left">
         <ConsultationSessions></ConsultationSessions>
@@ -162,8 +162,6 @@ export default {
   margin: 0 !important;
   padding: 0 !important;
   display: flex;
-
-  height: calc(100vh - 56px - 40px - 24px);
 
   .consultation-left {
     width: 230px;

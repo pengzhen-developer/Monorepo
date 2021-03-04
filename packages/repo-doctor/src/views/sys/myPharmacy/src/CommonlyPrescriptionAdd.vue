@@ -2,29 +2,19 @@
 
 <template>
   <div class="q-px-lg q-py-sm">
-    <div class="q-mb-md row">
+    <div class="row items-center q-mb-md">
       <span class="text-justify em-4">疾病诊断</span>
       <span class="q-mx-sm">：</span>
-      <el-select class="col"
-                 remote
-                 filterable
-                 placeholder="请输入诊断"
-                 ref="diagnosis"
-                 v-bind:disabled="detailedly"
-                 v-bind:remote-method="getDiagnosisList"
-                 v-model="model.diagnosis">
-        <el-option v-bind:key="item.id"
-                   v-bind:label="item.name"
-                   v-bind:value="item.name"
-                   v-for="item in diagnosisList"></el-option>
-      </el-select>
+
+      <QuickSelectDiagnose class="col"
+                           v-model="model.diagnoseList"></QuickSelectDiagnose>
     </div>
 
-    <div class="row q-mb-md">
-      <div class="col-6">
+    <div class="row q-col-gutter-x-md q-mb-md">
+      <div class="col-6 flex items-center">
         <span class="text-justify em-4">性别</span>
         <span class="q-mx-sm">：</span>
-        <el-select style="width: 140px"
+        <el-select class="col"
                    placeholder="请选择"
                    v-bind:disabled="detailedly"
                    v-model="model.sex">
@@ -35,10 +25,10 @@
         </el-select>
       </div>
 
-      <div class="col-6">
+      <div class="col-6 flex items-center">
         <span class="text-justify em-4">年龄</span>
         <span class="q-mx-sm">：</span>
-        <el-select style="width: 140px"
+        <el-select class="col"
                    placeholder="请选择"
                    v-bind:disabled="detailedly"
                    v-model="model.age">
@@ -50,7 +40,7 @@
       </div>
     </div>
 
-    <div class="q-mb-md row">
+    <div class="row q-mb-md">
       <span class="text-justify em-4">Rp类型</span>
       <span class="q-mx-sm">：</span>
       <div>
@@ -70,7 +60,7 @@
 
     <div class="q-mb-md">
       <PeaceTable style="min-height: 200px"
-                  v-bind:data="prescriptionDrugList"
+                  v-bind:data="model.drugList"
                   v-bind:show-header="false">
         <PeaceTableColumn>
           <template slot-scope="scope">
@@ -149,6 +139,7 @@
 <script>
 import Service from './../service'
 
+import QuickSelectDiagnose from '@src/views/components/quick-select/src/components/QuickSelectDiagnose'
 import CommonlyPrescriptionDrugAdd from './CommonlyPrescriptionDrugAdd'
 import CommonlyPrescriptionDrugUsageAdd from './CommonlyPrescriptionDrugUsageAdd'
 
@@ -173,6 +164,7 @@ export default {
   },
 
   components: {
+    QuickSelectDiagnose,
     CommonlyPrescriptionDrugAdd,
     CommonlyPrescriptionDrugUsageAdd
   },
@@ -183,16 +175,19 @@ export default {
       ageList: ['不限', '初生~1个月', '1个月~6个月', '6个月~1岁', '1~2岁', '2~4岁', '4~6岁', '6~9岁', '9~14岁', '14~18岁', '18~60岁', '60~80岁', '80岁以上'],
 
       model: {
-        diagnosis: '',
+        // 疾病诊断
+        diagnoseList: [],
+        // 性别
         sex: '不限',
+        // 年龄
         age: '不限',
-        prescriptionTag: 1
+        // 处方类型
+        prescriptionTag: 1,
+        // 处方药品
+        drugList: []
       },
 
-      prescriptionDrugList: [],
       prescriptionDrug: {},
-
-      diagnosisList: [],
 
       drugAddDialog: {
         visible: false,
@@ -224,10 +219,10 @@ export default {
         return
       }
 
-      if (this.prescriptionDrugList.length) {
+      if (this.model.drugList.length) {
         this.$confirm('一张处方中只可开具同类药品目录，更换类型则已添加药品将清空，请确认', '提示', { center: true })
           .then(() => {
-            this.prescriptionDrugList.splice(0, this.prescriptionDrugList.length)
+            this.model.drugList.splice(0, this.model.drugList.length)
 
             this.$emit('update:prescriptionTag', newValue)
           })
@@ -247,35 +242,21 @@ export default {
 
   methods: {
     setPropsToModel() {
-      this.model.diagnosis = this.data.diagnosis ?? ''
+      this.__lockRpCheck = this.prescriptionTag
+
       this.model.age = this.data.age ?? '不限'
       this.model.sex = this.data.sex ?? '不限'
-
-      this.__lockRpCheck = this.prescriptionTag
       this.model.prescriptionTag = this.prescriptionTag
-      this.prescriptionDrugList = this.data.drugList ?? []
-    },
-
-    getDiagnosisList(queryString) {
-      if (queryString) {
-        const params = {
-          name: queryString
-        }
-
-        Service.getDiagnosisInfo(params).then((res) => {
-          this.diagnosisList = res.data.list
-        })
-      } else {
-        this.diagnosisList = []
-      }
+      this.model.drugList = this.data.drugList ?? []
+      this.model.diagnoseList = this.data.diagnoseList ?? []
     },
 
     addCommonlyPrescriptionDrug() {
-      if (this.prescriptionDrugList.length >= 5) {
+      if (this.model.drugList.length >= 5) {
         Peace.util.warning('处方药品最多可添加 5 种药品')
       } else {
         this.drugAddDialog.visible = true
-        this.drugAddDialog.addedList = this.prescriptionDrugList
+        this.drugAddDialog.addedList = this.model.drugList
       }
     },
 
@@ -286,9 +267,9 @@ export default {
 
     removeCommonlyPrescriptionDrugUsage(row) {
       this.$confirm(`确定从处方中删除【${row.drugName}】`, '提示', { center: true }).then(() => {
-        const drugIndex = this.prescriptionDrugList.findIndex((prescriptionDrug) => prescriptionDrug.drugId === row.drugId)
+        const drugIndex = this.model.drugList.findIndex((prescriptionDrug) => prescriptionDrug.drugId === row.drugId)
 
-        this.prescriptionDrugList.splice(drugIndex, 1)
+        this.model.drugList.splice(drugIndex, 1)
       })
     },
 
@@ -301,7 +282,7 @@ export default {
         const params = {
           ...this.model,
 
-          drugList: this.prescriptionDrugList
+          drugList: this.model.drugList
         }
 
         if (this.data.commonPrescriptionId) {
@@ -321,7 +302,7 @@ export default {
         }
       }
 
-      if (!this.model.diagnosis) {
+      if (this.model.diagnoseList.length === 0) {
         return Peace.util.confirm(
           '诊断尚未选择，选择后才能保存',
           '提示',
@@ -337,7 +318,7 @@ export default {
         )
       }
 
-      if (this.prescriptionDrugList.length === 0) {
+      if (this.model.drugList.length === 0) {
         return Peace.util.confirm(
           '处方药品尚未添加，添加后才能保存',
           '提示',
@@ -353,7 +334,7 @@ export default {
         )
       }
 
-      if (this.prescriptionDrugList.some((drug) => drug.drugStatus === 'disable')) {
+      if (this.model.drugList.some((drug) => drug.drugStatus === 'disable')) {
         return Peace.util.confirm(
           '处方内含有停用药品，是否保存为常用处方？',
           '提示',
@@ -375,12 +356,12 @@ export default {
     onDrugAddSuccess(drug) {
       this.drugAddDialog.visible = false
 
-      const drugIndex = this.prescriptionDrugList.findIndex((prescriptionDrug) => prescriptionDrug.drugId === drug.drugId)
+      const drugIndex = this.model.drugList.findIndex((prescriptionDrug) => prescriptionDrug.drugId === drug.drugId)
 
       if (drugIndex === -1) {
-        this.prescriptionDrugList.push(drug)
+        this.model.drugList.push(drug)
       } else {
-        this.prescriptionDrugList.splice(drugIndex, 1, drug)
+        this.model.drugList.splice(drugIndex, 1, drug)
       }
     },
 
@@ -391,12 +372,12 @@ export default {
     onDrugUsageAddSuccess(drug) {
       this.drugUsageAddDialog.visible = false
 
-      const drugIndex = this.prescriptionDrugList.findIndex((prescriptionDrug) => prescriptionDrug.drugId === drug.drugId)
+      const drugIndex = this.model.drugList.findIndex((prescriptionDrug) => prescriptionDrug.drugId === drug.drugId)
 
       if (drugIndex === -1) {
-        this.prescriptionDrugList.push(drug)
+        this.model.drugList.push(drug)
       } else {
-        this.prescriptionDrugList.splice(drugIndex, 1, drug)
+        this.model.drugList.splice(drugIndex, 1, drug)
       }
     },
 

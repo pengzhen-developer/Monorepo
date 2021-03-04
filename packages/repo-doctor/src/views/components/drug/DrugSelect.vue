@@ -220,12 +220,11 @@
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn fixed="right"
-                          label="操作"
-                          width="40px">
+        <PeaceTableColumn label="操作"
+                          width="50px">
           <template slot-scope="scope">
-            <span class="cursor-pointer text-caption"
-                  v-on:click="deleteDrugList(scope.row)">删除</span>
+            <el-button type="text text-black text-caption"
+                       v-on:click="deleteDrugList(scope.row)">删除</el-button>
           </template>
         </PeaceTableColumn>
       </PeaceTable>
@@ -271,7 +270,9 @@
                   ref="table">
         <PeaceTableColumn label="疾病诊断"
                           min-width="160px"
-                          prop="diagnosis"></PeaceTableColumn>
+                          prop="diagnosis">
+          <template slot-scope="scope">{{ scope.row.diagnoseList.map(item => item.name).join(' | ') }}</template>
+        </PeaceTableColumn>
         <PeaceTableColumn label="性别"
                           width="80px"
                           prop="sex"></PeaceTableColumn>

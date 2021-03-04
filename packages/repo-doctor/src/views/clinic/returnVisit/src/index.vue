@@ -1,7 +1,7 @@
 <template>
-  <div class="q-pa-md"
+  <div class="flex q-pa-md"
        style="min-width: 1300px; max-width: 1440px; margin: 0 auto; ">
-    <div class="inquiry flex"
+    <div class="col inquiry flex"
          style="border: 1px solid #f4f4f4;">
 
       <!-- 复诊续方会话列表 -->
@@ -50,8 +50,6 @@ export default {
 
 <style lang="scss" scoped>
 .inquiry {
-  height: calc(100vh - 56px - 40px - 24px);
-
   .session-list {
     width: 230px;
     min-width: 230px;
