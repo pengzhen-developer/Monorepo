@@ -145,7 +145,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .imports {
-  margin: 20px 0;
   margin-bottom: 5px;
 }
 .el-select {

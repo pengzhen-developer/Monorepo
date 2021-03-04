@@ -5,28 +5,25 @@
                label-width="auto"
                label-position="left">
         <el-form-item>
-          <div class="flex inline"
-               slot="label">
+          <div slot="label">
             <span>账号</span>
-            <span class="text-center q-ml-sm">：</span>
+            <span>：</span>
           </div>
           <el-input v-model="model.username"
                     placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item>
-          <div class="flex inline"
-               slot="label">
+          <div slot="label">
             <span>姓名</span>
-            <span class="text-center q-ml-sm">：</span>
+            <span>：</span>
           </div>
           <el-input v-model="model.name"
                     placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item>
-          <div class="flex inline"
-               slot="label">
+        <el-form-item label-width="90px">
+          <div slot="label">
             <span>创建日期</span>
-            <span class="text-center q-ml-sm">：</span>
+            <span>：</span>
           </div>
           <peace-date-picker type="daterange"
                              v-model="model.pickDate"
@@ -59,16 +56,20 @@
           </template>
         </el-table-column>
         <el-table-column prop="username"
+                         min-width="120"
                          label="账号"></el-table-column>
         <el-table-column prop="name"
+                         min-width="120"
                          label="姓名"></el-table-column>
         <el-table-column prop="roleList"
+                         min-width="200"
                          label="角色">
           <template slot-scope="scope">
             <span>{{scope.row.roleList | getRoleNames}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="账号状态">
+        <el-table-column min-width="120"
+                         label="账号状态">
           <template slot-scope="scope">
             <div class="table-status">
               <div class="table-status-text">{{scope.row.lockFlag | getEnumLabel(CONSTANT.ENUM_ACCOUNT_STATUS)}}</div>
@@ -80,10 +81,11 @@
           </template>
         </el-table-column>
         <el-table-column prop="createTime"
+                         min-width="160"
                          label="创建时间">
         </el-table-column>
-        <el-table-column min-width="100px"
-                         align="center"
+        <el-table-column width="160"
+                         align="left"
                          fixed="right"
                          label="操作">
           <template slot-scope="scope">

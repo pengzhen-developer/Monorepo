@@ -11,7 +11,7 @@
             <span>：</span>
           </span>
           <el-input v-model="model.drugname"
-                    placeholder="请输入药品名称、编码等搜索"></el-input>
+                    placeholder="请输入药品名称、编码等"></el-input>
         </el-form-item>
 
         <el-form-item>
