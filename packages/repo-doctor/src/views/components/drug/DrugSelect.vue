@@ -126,6 +126,7 @@
                             inline-message
                             prop="drugFrequencyId">
                 <el-select clearable
+                           filterable
                            class="editable"
                            placeholder="请选择"
                            v-on:change="calculateCount(row)"
@@ -154,6 +155,7 @@
                             inline-message
                             prop="drugRouteId">
                 <el-select clearable
+                           filterable
                            class="editable"
                            placeholder="请选择"
                            v-model="row.drugRouteId">
