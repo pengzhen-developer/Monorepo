@@ -166,8 +166,13 @@ export const IMHelper = {
    */
   onSysmsg(message) {
     console.warn('【 IM 】【 onSysmsg 】', new Date(), message)
+  },
 
-    Peace.$store.dispatch('notification/getList')
+  /** 收到自定义系统通知 */
+  onCustomSysMsg(message) {
+    console.warn('【 IM 】【 onCustomSysMsg 】', new Date(), message)
+
+    Peace.$store.commit('notification/setNotify', message)
   },
 
   /**
@@ -610,8 +615,9 @@ export const initIM = () => {
     onsessions: IMHelper.onSessions,
     onupdatesession: IMHelper.onUpdateSession,
 
-    /** 通知*/
-    onSysmsg: IMHelper.onSysmsg,
+    /** 通知 */
+    onsysmsg: IMHelper.onSysmsg,
+    oncustomsysmsg: IMHelper.onCustomSysMsg,
 
     /** 消息 */
     onMsg: IMHelper.onMsg

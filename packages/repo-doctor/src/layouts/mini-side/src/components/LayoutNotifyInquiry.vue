@@ -94,8 +94,8 @@ export default {
         this.fecth()
       }
 
-      message.onReceive = () => {
-        message.onClose()
+      message.onAccept = () => {
+        message.onReject()
 
         // 在线咨询
         if (inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.图文 || inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.视频) {
@@ -129,7 +129,7 @@ export default {
         }
       }
 
-      message.onClose = () => {
+      message.onReject = () => {
         message.instance.close()
 
         this.pauseAudio()
@@ -145,8 +145,8 @@ export default {
             </div>
           </div>
           <div class="text-right">
-            <el-button onclick={message.onClose}>暂不处理</el-button>
-            <el-button type="primary" onclick={message.onReceive}>
+            <el-button onclick={message.onReject}>暂不处理</el-button>
+            <el-button type="primary" onclick={message.onAccept}>
               立即接诊
             </el-button>
           </div>

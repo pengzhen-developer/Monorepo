@@ -14,11 +14,14 @@
     <div class="card q-mb-md q-mx-sm"
          v-for="checkItem in data.checkInfo"
          v-bind:key="checkItem.productCode">
-      <div class="flex items-center text-weight-bold q-py-md q-px-lg bg-grey-2">
-        <div v-bind:class="getBackgroudThemeClass()"
-             class="relative-position"
-             style="width: 4px; height: 16px; left: -24px"></div>
-        <span class="q-mr-md text-subtitle2 text-weight-bolder">{{ checkItem.drugName }}</span>
+      <div class="flex row items-center text-weight-bold q-py-md q-px-lg bg-grey-2">
+        <div class="absolute">
+          <div v-bind:class="getBackgroudThemeClass()"
+               class="relative-position"
+               style="width: 4px; height: 16px; left: -24px"></div>
+        </div>
+
+        <span class="col-4 text-subtitle2 text-weight-bolder">{{ checkItem.drugName }}</span>
         <span v-bind:class="getBackgroudThemeClass()"
               class="text-white text-caption q-py-none q-px-sm">{{ checkItem.actionMsg }}</span>
       </div>
@@ -28,8 +31,8 @@
         <div class="row"
              v-for="(checkLastItem, index) in checkItem.checkInfo"
              v-bind:key="checkLastItem.productCode + index">
-          <div class="col-2 text-weight-bold text-justify">{{ checkLastItem.ruleMsg }}</div>
-          <div class="col-1 text-weight-bold"
+          <div class="col-2 text-weight-bold">{{ checkLastItem.ruleMsg }}</div>
+          <div class="col-2 text-weight-bold"
                v-bind:class="getTextThemeClass(checkLastItem.actionCode)">{{ checkLastItem.actionMsg }}</div>
           <div class="col">{{ checkLastItem.ruleMsgText }}</div>
 

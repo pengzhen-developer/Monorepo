@@ -8,6 +8,14 @@ const mutations = {
     state.tabs = menus
   },
 
+  updateTab(state, menu) {
+    const index = state.tabs.findIndex((stateTab) => stateTab.id === menu.id)
+
+    if (index !== -1) {
+      state.tabs[index] = menu
+    }
+  },
+
   addTab(state, menu) {
     if (state.tabs.findIndex((stateTab) => stateTab.id === menu.id) === -1) {
       state.tabs.push(menu)

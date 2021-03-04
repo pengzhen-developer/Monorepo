@@ -52,32 +52,14 @@
           <span>过敏史</span>
         </div>
         <div class="info-row-content">
-          <template v-if="internalData.allergy_history">
-            <el-tag :key="item"
-                    style="margin: 0px 5px 0 0; "
-                    type="info"
-                    v-for="item in internalData.allergy_history.split(',')">{{item}}</el-tag>
-          </template>
-          <template v-else>
-            <span>无</span>
-          </template>
+          <div>{{ internalData.allergy_history || '无' }}</div>
         </div>
       </div>
       <div class="info-row">
         <div class="info-row-label">
           <span>既往史</span>
         </div>
-        <div class="info-row-content">
-          <template v-if="internalData.past_history">
-            <el-tag :key="item"
-                    style="margin: 0px 5px 0 0; "
-                    type="info"
-                    v-for="item in internalData.past_history.split(',')">{{item}}</el-tag>
-          </template>
-          <template v-else>
-            <span>无</span>
-          </template>
-        </div>
+        <div class="info-row-content">{{ internalData.past_history || '无' }}</div>
       </div>
       <div class="info-row"
            v-if="internalData.Inspection_index && 

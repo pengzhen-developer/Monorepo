@@ -2,222 +2,237 @@
 
 <template>
   <div class="q-px-lg p-py-md">
+    <img-viewer ref="viewer" />
+
     <div class="text-grey-6 row items-center justify-between">
       <span>No.{{ data.PrescriptionNo }}</span>
       <el-button v-if="data.pngUrl"
                  type="text"
                  v-on:click="showOriginInfo">查看原始处方</el-button>
     </div>
-    <img-viewer ref="viewer" />
 
-    <!-- 处方标题 -->
-    <div class="relative-position text-center q-mb-lg">
-      <p class="text-h5 text-weight-bolder">{{ data.MedicalInstitutionName }}</p>
-      <p class="text-h5 text-weight-bolder">处方笺</p>
-      <!-- 处方状态图片 -->
-      <img v-if="data.stampUrl"
-           v-bind:src="data.stampUrl"
-           class="absolute"
-           style="width: 72px; height: 72px; right: 36px; bottom: -10px;" />
-
-      <div class="q-mt-md"
-           style="border-bottom: 1px dashed #e2e2e2;"></div>
-    </div>
-
-    <!-- 处方基础信息 -->
-    <div class="q-mb-md">
-      <div class="q-mb-xs row q-col-gutter-md">
-        <div class="row col-6">
-          <span class="text-justify"
-                style="width: 4em;">姓名</span>
-          <span class="q-mx-xs">：</span>
-          <span class="col text-weight-bold">{{ data.PatientName }}</span>
-        </div>
-        <div class="row col-6">
-          <span class="text-justify"
-                style="width: 4em;">性别</span>
-          <span class="q-mx-xs">：</span>
-          <span class="col text-weight-bold">{{ data.PatientGender }}</span>
-        </div>
+    <div class="q-px-sm">
+      <!-- 处方标题 -->
+      <div class="relative-position text-center">
+        <p class="text-h5 q-mb-none text-weight-bolder">{{ data.MedicalInstitutionName }}</p>
+        <p class="text-h5 q-mb-md text-weight-bolder">处方笺</p>
+        <!-- 处方状态图片 -->
+        <img v-if="data.stampUrl"
+             v-bind:src="data.stampUrl"
+             class="absolute"
+             style="width: 72px; height: 72px; right: 36px; bottom: -70px;" />
       </div>
 
-      <div class="q-mb-xs row q-col-gutter-md">
-        <div class="row col-6">
-          <span class="text-justify"
-                style="width: 4em;">年龄</span>
-          <span class="q-mx-xs">：</span>
-          <span class="col text-weight-bold">{{ data.Age }}</span>
-        </div>
-        <div class="row col-6">
-          <span class="text-justify"
-                style="width: 4em;">科别</span>
-          <span class="q-mx-xs">：</span>
-          <span class="col text-weight-bold">{{ data.MedicalDepartmentName }}</span>
-        </div>
-      </div>
+      <div class="q-mt-sm q-mb-xl dashed-line"></div>
 
-      <div class="q-mb-xs row q-col-gutter-md"
-           v-if="data.weight">
-        <div class="row col-6">
-          <span class="text-justify"
-                style="width: 4em;">体重</span>
-          <span class="q-mx-xs">：</span>
-          <span class="col text-weight-bold">{{ data.weight + 'kg' }}</span>
-        </div>
-      </div>
-
-      <div class="q-mb-xs row q-col-gutter-md">
-        <div class="row col-6">
-          <span class="text-justify"
-                style="width: 4em;">开具时间</span>
-          <span class="q-mx-xs">：</span>
-          <span class="col text-weight-bold">{{ data.PrescriptionTime }}</span>
-        </div>
-        <div class="row col-6">
-          <span class="text-justify"
-                style="width: 4em;">病历号</span>
-          <span class="q-mx-xs">：</span>
-          <span class="col text-weight-bold">{{ data.caseNo }}</span>
-        </div>
-      </div>
-
-      <div class="q-mb-xs row q-col-gutter-md">
-        <div class="row col-12">
-
-          <span class="text-justify"
-                style="width: 4em;">疾病诊断</span>
-          <span class="q-mx-xs">：</span>
-          <span class="text-weight-bold">
-            {{ data.diagnoseList && data.diagnoseList.map(item => item.name).join(' | ') }}
-          </span>
-
-          <!-- <div class="info-row-content">
-            <template v-if="data.diagnoseList">
-              <el-tag :key="item"
-                      class="q-mr-6 q-mt-6"
-                      type="info"
-                      v-for="item in data.diagnoseList">{{item.diagnoseName}}</el-tag>
-            </template>
-            <template v-else>
-              <span>无</span>
-            </template>
-          </div> -->
-
-        </div>
-      </div>
-    </div>
-
-    <!-- 处方明细信息 -->
-    <div class="q-mb-md">
-      <div class="flex justify-between items-end q-mb-xs">
-        <span class="text-h6 text-weight-bolder">Rp</span>
-        <div class="flex items-baseline"
-             v-if="canShowAudit"
-             v-bind:class="getThemeClass()">
-          <span class="text-subtitle1 text-weight-bold q-mr-sm">{{ data.PrescriptionAudit.auditResult }}</span>
-          <i v-on:click="showAudit"
-             class="text-subtitle2 cursor-pointer el-icon-question"
-             style="line-height: none;"></i>
-        </div>
-      </div>
-
-      <div style="border-bottom: 1px solid #F3F3F3;"></div>
-
-      <!-- 药品 -->
-      <div class="q-mb-none">
-        <div v-for="(drug, index) in data.DrugList"
-             v-bind:key="drug.drugCode">
-          <div class="q-py-md">
-            <div class="flex justify-between q-mb-sm text-subtitle1 text-weight-bold">
-              <div>
-                <span class="q-mr-sm">{{ drug.drugName }}</span>
-                <span>{{ drug.drugSpecifications }}</span>
-              </div>
-              <div>
-                <span>x</span>
-                <span>{{ drug.drugQty + drug.drugQuantityUnit }}</span>
-              </div>
-            </div>
-            <div class="text-grey-6">
-              <span>
-                用法用量: {{ drug.drugRoute }}。
-                每次{{ drug.OnceDose}}{{ drug.OnceUnit }}，
-                {{ drug.medicationFrequency }}
-                {{
-                drug.medication_days ? "，" + drug.medication_days + "天" : ""
-              }}
-              </span>
-            </div>
-          </div>
-
-          <div v-show="index !== data.DrugList.length - 1"
-               style="border-bottom: 1px dashed #e2e2e2;"></div>
-        </div>
-      </div>
-
-      <!-- 审核 -->
+      <!-- 处方基础信息 -->
       <div class="q-mb-md">
-        <div class="q-mb-xs row q-col-gutter-md">
-          <div class="row col-6">
-            <span class="text-justify"
-                  style="width: 4em;">医师</span>
-            <span class="q-mx-xs">：</span>
-            <span class="col text-weight-bold">
-              {{data.DoctorName}}
-            </span>
+        <el-form space-view>
+          <div class="q-mb-xs row q-col-gutter-x-md">
+            <el-form-item class="col">
+              <div slot="label">
+                <span class="inline-block text-justify"
+                      style="width: 4em;">姓名</span>
+                <span>：</span>
+              </div>
+              <span class="col text-weight-bold">{{ data.PatientName }}</span>
+            </el-form-item>
+            <el-form-item class="col">
+              <div slot="label">
+                <span class="inline-block text-justify"
+                      style="width: 4em;">性别</span>
+                <span>：</span>
+              </div>
+              <span class="col text-weight-bold">{{ data.PatientGender }}</span>
+            </el-form-item>
           </div>
-          <div class="row col-6">
-            <span class="text-justify"
-                  style="width: 4em;">审方药师</span>
-            <span class="q-mx-xs">：</span>
-            <span class="col text-weight-bold">
-              {{data.PrescriptionPharmacistName}}
-            </span>
+
+          <div class="q-mb-xs row q-col-gutter-x-md">
+            <el-form-item class="col">
+              <div slot="label">
+                <span class="inline-block text-justify"
+                      style="width: 4em;">年龄</span>
+                <span>：</span>
+              </div>
+              <span class="col text-weight-bold">{{ data.Age }}</span>
+            </el-form-item>
+            <el-form-item class="col">
+              <div slot="label">
+                <span class="inline-block text-justify"
+                      style="width: 4em;">科别</span>
+                <span>：</span>
+              </div>
+              <span class="col text-weight-bold">{{ data.MedicalDepartmentName }}</span>
+            </el-form-item>
+          </div>
+
+          <div v-if="data.weight"
+               class="q-mb-xs row q-col-gutter-x-md">
+            <el-form-item class="col">
+              <div slot="label">
+                <span class="inline-block text-justify"
+                      style="width: 4em;">体重</span>
+                <span>：</span>
+              </div>
+              <span class="col text-weight-bold">{{ data.weight + 'kg' }}</span>
+            </el-form-item>
+          </div>
+
+          <div class="q-mb-xs row q-col-gutter-x-md">
+            <el-form-item class="col">
+              <div slot="label">
+                <span class="inline-block text-justify"
+                      style="width: 4em;">开具时间</span>
+                <span>：</span>
+              </div>
+              <span class="col text-weight-bold">{{ data.PrescriptionTime }}</span>
+            </el-form-item>
+            <el-form-item class="col">
+              <div slot="label">
+                <span class="inline-block text-justify"
+                      style="width: 4em;">病历号</span>
+                <span>：</span>
+              </div>
+              <span class="col text-weight-bold">{{ data.caseNo }}</span>
+            </el-form-item>
+          </div>
+
+          <div class="q-mb-xs row q-col-gutter-md">
+            <el-form-item class="col">
+              <div slot="label">
+                <span class="text-justify"
+                      style="width: 4em;">疾病诊断</span>
+                <span>：</span>
+              </div>
+              <span class="text-weight-bold">
+                {{ data.diagnoseList && data.diagnoseList.map(item => item.name).join(' | ') }}
+              </span>
+            </el-form-item>
+          </div>
+        </el-form>
+
+      </div>
+
+      <!-- 处方明细信息 -->
+      <div class="q-mb-md">
+        <div class="flex justify-between items-end q-mb-xs">
+          <span class="text-h6 text-weight-bold">Rp</span>
+          <div class="flex items-baseline cursor-pointer"
+               v-if="canShowAudit"
+               v-on:click="showAudit"
+               v-bind:class="getThemeClass()">
+            <span class="text-subtitle1 text-weight-bold q-mr-sm">{{ data.PrescriptionAudit.auditResult }}</span>
+            <i class="text-subtitle2 el-icon-question"
+               style="line-height: none;"></i>
           </div>
         </div>
-        <div class="q-mb-xs row q-col-gutter-md">
-          <div class="row col-6">
-            <span class="text-justify"
-                  style="width: 4em;">调配药师</span>
-            <span class="q-mx-xs">：</span>
-            <span class="col text-weight-bold">
-              <!-- 暂未对接 -->
-            </span>
-          </div>
-          <div class="row col-6">
-            <span class="text-justify"
-                  style="width: 4em;">核对发药</span>
-            <span class="q-mx-xs">：</span>
-            <span class="col text-weight-bold">
-              <!-- 暂未对接 -->
-            </span>
-          </div>
+
+        <div class="dashed-line"></div>
+
+        <!-- 药品 -->
+        <div class="q-mb-xl">
+          <template v-for="(drug, index) in data.DrugList">
+            <div v-bind:key="drug.drugCode"
+                 class="q-py-md">
+              <div class="flex justify-between q-mb-sm text-subtitle1 text-weight-bold">
+                <div>
+                  <span class="q-mr-sm">{{ drug.drugName }}</span>
+                  <span>{{ drug.drugSpecifications }}</span>
+                </div>
+                <div>
+                  <span>x</span>
+                  <span>{{ drug.drugQty + drug.drugQuantityUnit }}</span>
+                </div>
+              </div>
+              <div class="text-grey-6">
+                <span>用法用量：</span>
+                <span>{{ `${ drug.drugRoute }，` }}</span>
+                <span>每次</span>
+                <span>{{ `${ drug.OnceDose }${ drug.OnceUnit }，` }}</span>
+                <span>{{ `${ drug.medicationFrequency }，` }}</span>
+                <span>{{ `${ drug.medication_days }天。` }}</span>
+              </div>
+            </div>
+
+            <div v-if="index === data.DrugList.length - 1"
+                 v-bind:key="drug.drugName"
+                 class="oblique-line"></div>
+            <div v-else
+                 v-bind:key="drug.drugName"
+                 class="dashed-line"></div>
+          </template>
         </div>
+      </div>
+
+      <!-- 处方审核信息 -->
+      <div class="q-mb-md">
+        <el-form space-view>
+          <div class="q-mb-xs row q-col-gutter-x-md">
+            <el-form-item class="col">
+              <div slot="label">
+                <span class="inline-block text-justify"
+                      style="width: 4em;">医师</span>
+                <span>：</span>
+              </div>
+              <span class="col">{{ data.DoctorName }}</span>
+            </el-form-item>
+            <el-form-item class="col">
+              <div slot="label">
+                <span class="inline-block text-justify"
+                      style="width: 4em;">审方药师</span>
+                <span>：</span>
+              </div>
+              <span class="col">{{ data.PrescriptionPharmacistName }}</span>
+            </el-form-item>
+          </div>
+
+          <div class="q-mb-xs row q-col-gutter-md">
+            <el-form-item class="col">
+              <div slot="label">
+                <span class="inline-block text-justify"
+                      style="width: 4em;">调配药师</span>
+                <span>：</span>
+              </div>
+              <span class="col">
+                <!-- 暂未对接 -->
+              </span>
+            </el-form-item>
+            <el-form-item class="col">
+              <div slot="label">
+                <span class="inline-block text-justify"
+                      style="width: 4em;">核对发药</span>
+                <span>：</span>
+              </div>
+              <span class="col">
+                <!-- 暂未对接 -->
+              </span>
+            </el-form-item>
+          </div>
+        </el-form>
       </div>
 
       <div class="q-mb-md"
            style="border-bottom: 1px solid #F3F3F3;"></div>
-    </div>
 
-    <!-- 处方审核信息 -->
-    <div class="q-mb-md">
-      <div class="row q-mb-xs q-col-gutter-x-md">
-        <div class="row col-6">
-          <span class="text-justify"
-                style="width: 6em;">药师审方结果</span>
-          <span class="q-mx-xs">：</span>
-          <span class="col text-weight-bold">
-            {{ data.PrescriptionExamMemo }}
-          </span>
-        </div>
-        <div class="col-6">
-          <span class="text-justify"
-                style="width: 6em;">系统审方结果</span>
-          <span class="q-mx-xs">：</span>
-          <span class="col text-weight-bold">
-            <!-- 暂未对接 -->
-          </span>
-        </div>
+      <!-- 药师审核信息 -->
+      <div class="q-mb-md">
+        <el-form class="row q-col-gutter-x-md"
+                 label-width="auto"
+                 space-view>
+          <el-form-item class="col-6"
+                        label="药师审方结果：">
+            <span>{{ data.PrescriptionExamMemo }}</span>
+          </el-form-item>
+          <el-form-item class="col-6"
+                        label="系统审方结果：">
+            <!-- 暂无对接 -->
+          </el-form-item>
+          <el-form-item class="col-6"
+                        label="药师质疑原因："
+                        v-if="data.queryReason">
+            <span>{{ data.queryReason }}</span>
+          </el-form-item>
+        </el-form>
       </div>
     </div>
 
@@ -314,5 +329,25 @@ export default {
 
 .text-justify {
   text-align-last: justify;
+}
+
+.dashed-line {
+  border-bottom: 1px dashed #e2e2e2;
+}
+
+.oblique-line {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 172px;
+    border: 1px solid transparent;
+    border-image: linear-gradient(to left, #999999, #eee);
+    border-image-slice: 1;
+    transform: rotateZ(170deg) scale(1);
+  }
 }
 </style>

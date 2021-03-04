@@ -205,6 +205,17 @@ export default {
         virtual: 0
       },
       {
+        id: '35',
+        closable: true,
+        menuName: '质疑处方',
+        menuRoute: '/record/prescription-doubt/:id',
+        menuPath: 'views/record/prescription-doubt',
+        parentId: '3',
+        enable: true,
+        menuAlias: 'PrescriptionDoubt',
+        virtual: 1
+      },
+      {
         id: '44',
         closable: true,
         menuName: '转诊记录',

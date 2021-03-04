@@ -9,8 +9,8 @@
         <el-dropdown @command="handleNotice">
           <div class="header-right-message">
             <el-badge class="mark"
-                      :value="$store.getters['notification/unread']"
-                      :hidden="$store.getters['notification/unread'] == 0">
+                      v-bind:value="unread"
+                      v-bind:hidden="unread == 0">
               <img src="~@src/assets/images/layout/top_icon_message.png" />
             </el-badge>
             <span>消息</span>
@@ -19,10 +19,10 @@
           <el-dropdown-menu class="header-right-message-dropdown"
                             slot="dropdown">
             <div class="header-right-message-dropdown-content">
-              <h4 v-if="$store.getters['notification/messageList'].length == 0">暂无消息</h4>
+              <h4 v-if="messageList.length == 0">暂无消息</h4>
               <el-dropdown-item class="dropdown-item message"
                                 :command="item"
-                                v-for="(item, index) in $store.getters['notification/messageList']"
+                                v-for="(item, index) in messageList"
                                 :key="'item' + index">
                 <el-badge :is-dot="item.isRead == 0">
                   <div :class="'icon icon-' + item.tag"></div>
@@ -175,12 +175,11 @@ export default {
       return this.$store.state.user?.userInfo?.list?.docInfo?.workStatus === 1
     }
   },
+
   mounted() {
-    // this.getMsgList();
-    // this.getRoundMsg();store.dispatch('increment')
-    this.$store.dispatch('notification/getList')
+    this.getMsgList()
   },
-  beforeDestroy() {},
+
   methods: {
     getMsgList() {
       let p = 1
@@ -188,12 +187,14 @@ export default {
       let params = { p, size }
       this.get(params)
     },
+
     get(params) {
       Peace.service.personalCenter.getMsgList(params).then((res) => {
         this.messageList = res.data.list
         this.unread = res.data.unRead
       })
     },
+
     setWorkstatus(status) {
       Peace.service.personalCenter.updateWorkStatus({ workStatus: status }).then(() => {
         const userInfo = Util.user.getUserInfo()
@@ -205,14 +206,13 @@ export default {
         this.$store.commit('user/setUserInfo', userInfo)
       })
     },
+
     handleNotice(item) {
       let tag = item.tag
       let sysId = item.sysId
       let params = { tag, sysId }
       // this.interval && this.clearInterval();
       Peace.service.personalCenter.getDetail(params).then((res) => {
-        this.$store.dispatch('notification/getList')
-        // this.getRoundMsg();
         switch (item.tag) {
           case 'orgNotice':
             this.dialogOrg.visible = true

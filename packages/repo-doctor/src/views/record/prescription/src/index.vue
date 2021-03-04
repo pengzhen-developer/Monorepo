@@ -1,26 +1,32 @@
 <template>
   <div class="prescription">
-    <el-form v-bind:model="view.model"
+    <el-form inline
              space-none
-             inline>
-      <el-form-item label="患者姓名">
-        <el-input v-model="view.model.familyName"></el-input>
+             label-width="auto"
+             v-on:keyup.enter.native="get"
+             v-on:submit.native.prevent
+             v-bind:model="model">
+      <el-form-item label="患者姓名：">
+        <el-input v-model="model.familyName"></el-input>
       </el-form-item>
 
-      <el-form-item label="处方开具时间">
-        <peace-date-picker style="width: 130px"
-                           :picker-options="view.rules.pickerOptionsStart"
-                           placeholder
-                           v-model="view.model.s_Date"
-                           value-format="yyyy-MM-dd"></peace-date-picker>
-        <span class="character"></span>
-        <peace-date-picker style="width: 130px"
-                           :picker-options="view.rules.pickerOptionsEnd"
-                           placeholder
-                           v-model="view.model.e_Date"
-                           value-format="yyyy-MM-dd"></peace-date-picker>
+      <el-form-item label="开具时间：">
+        <PeaceDatePicker type="daterange"
+                         v-model="model.date"></PeaceDatePicker>
       </el-form-item>
-      <el-form-item label=" ">
+
+      <el-form-item label="处方状态：">
+        <el-select clearable
+                   placeholder="全部"
+                   v-model="model.prescriptionStatus">
+          <el-option v-for="item in source.prescriptionStatus"
+                     v-bind:key="item.value"
+                     v-bind:label="item.label"
+                     v-bind:value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="">
         <el-button @click="get"
                    type="primary">查询</el-button>
       </el-form-item>
@@ -55,16 +61,20 @@
                         label="操作"
                         width="120">
         <template slot-scope="scope">
-          <el-button @click="showDetail(scope.row)"
-                     type="text">查看详情</el-button>
+          <el-button type="text"
+                     v-if="scope.row.prescription_status === '质疑中'"
+                     v-on:click="change(scope.row)">修改处方</el-button>
+          <el-button type="text"
+                     v-else
+                     v-on:click="showDetail(scope.row)">查看详情</el-button>
         </template>
       </PeaceTableColumn>
     </PeaceTable>
 
-    <PeaceDialog :visible.sync="dialog.visible"
+    <PeaceDialog v-bind:visible.sync="dialog.visible"
                  append-to-body
                  title="处方详情">
-      <RecipeDetail :data="dialog.data"></RecipeDetail>
+      <RecipeDetail v-bind:data="dialog.data"></RecipeDetail>
     </PeaceDialog>
   </div>
 </template>
@@ -77,33 +87,42 @@ export default {
     RecipeDetail
   },
 
+  inject: ['provideGetTab', 'provideAddTab'],
+
   data() {
     return {
-      view: {
-        model: {
-          familyName: '',
-          s_Date: '',
-          e_Date: ''
+      loading: true,
+
+      model: {
+        familyName: '',
+        date: [],
+        prescriptionStatus: '',
+
+        s_Date: '',
+        e_Date: ''
+      },
+
+      source: {
+        prescriptionStatus: []
+      },
+
+      rules: {
+        pickerOptionsStart: {
+          disabledDate: (time) => {
+            if (this.model.e_Date) {
+              return time.getTime() > this.model.e_Date.toDate().getTime() || time.getTime() > Date.now()
+            } else {
+              return time.getTime() > Date.now()
+            }
+          }
         },
 
-        rules: {
-          pickerOptionsStart: {
-            disabledDate: (time) => {
-              if (this.view.model.e_Date) {
-                return time.getTime() > this.view.model.e_Date.toDate().getTime() || time.getTime() > Date.now()
-              } else {
-                return time.getTime() > Date.now()
-              }
-            }
-          },
-
-          pickerOptionsEnd: {
-            disabledDate: (time) => {
-              if (this.view.model.s_Date) {
-                return time.getTime() < this.view.model.s_Date.toDate().getTime() || time.getTime() > Date.now()
-              } else {
-                return time.getTime() > Date.now()
-              }
+        pickerOptionsEnd: {
+          disabledDate: (time) => {
+            if (this.model.s_Date) {
+              return time.getTime() < this.model.s_Date.toDate().getTime() || time.getTime() > Date.now()
+            } else {
+              return time.getTime() > Date.now()
             }
           }
         }
@@ -116,18 +135,43 @@ export default {
     }
   },
 
+  watch: {
+    'model.date'(value) {
+      if (Peace.util.isArray(value) && value.length === 2) {
+        this.model.s_Date = Peace.dayjs(value[0]).format('YYYY-MM-DD')
+        this.model.e_Date = Peace.dayjs(value[1]).format('YYYY-MM-DD')
+      } else {
+        this.model.s_Date = ''
+        this.model.e_Date = ''
+      }
+    }
+  },
+
   mounted() {
     this.$nextTick().then(() => {
+      this.getDictionary()
       this.get()
     })
   },
 
   methods: {
+    async getDictionary() {
+      this.source.prescriptionStatus = await Peace.identity.dictionary.getList('prescription_state')
+    },
+
     get() {
       const fetch = Peace.service.prescribePrescrip.prescripList
-      const params = this.view.model
+      const params = this.model
 
       this.$refs.table.loadData({ fetch, params })
+    },
+
+    change(row) {
+      const currentMenu = this.provideGetTab('PrescriptionDoubt')
+      currentMenu.menuRoute = '/record/prescription-doubt/' + row.id
+
+      // 跳转当前路由
+      this.provideAddTab(currentMenu)
     },
 
     showDetail(row) {

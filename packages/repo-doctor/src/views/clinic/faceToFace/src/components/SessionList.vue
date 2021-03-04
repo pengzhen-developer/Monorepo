@@ -153,8 +153,15 @@ export default {
   },
 
   created() {
+    const patientNo = this.$route.params.patientNo
+
     // 获取患者列表
-    this.getPatientList()
+    this.getPatientList().then(() => {
+      // 面诊处方被质疑，跳转面诊，根据 patientNo 选中患者
+      if (this.$route.params.patientNo) {
+        this.selectPatient({ patientNo })
+      }
+    })
 
     setTimeout(() => {
       window.sc = this?.$refs.scrollArea
@@ -201,7 +208,7 @@ export default {
 
     // 获取患者列表
     getPatientList() {
-      Service.getPatientList().then((res) => {
+      return Service.getPatientList().then((res) => {
         this.patientList = res.data.list
         if (this.patientList && this.patientList.length > 0) {
           // 刷新列表时，默认选中第一个患者

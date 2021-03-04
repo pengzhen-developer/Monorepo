@@ -83,6 +83,8 @@ export default {
               route.meta[key] = tab[key]
             }
           }
+
+          this.$store.commit('tabs/updateTab', route.meta)
         })
       }
     },

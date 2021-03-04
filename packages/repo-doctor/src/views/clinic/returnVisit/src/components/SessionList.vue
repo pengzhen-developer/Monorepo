@@ -76,6 +76,15 @@ export default {
     }
   },
 
+  created() {
+    // 复诊处方被质疑，跳转复诊，根据 patientId 选中患者
+    if (this.$route.params.patientId) {
+      const session = this.storeSessions.find((item) => item.id === `p2p-${this.$route.params.patientId}`)
+
+      this.selectSession(session)
+    }
+  },
+
   methods: {
     // 选中一条会话
     selectSession(session) {

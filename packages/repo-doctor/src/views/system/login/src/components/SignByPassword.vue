@@ -35,9 +35,9 @@
           <div slot="suffix"
                v-on:click="showPassword = !showPassword">
             <i v-if="this.showPassword"
-               class="icon icon_xianshimima q-mr-xs cursor-pointer"></i>
+               class="icon icon_xianshimima q-mr-sm cursor-pointer"></i>
             <i v-else
-               class="icon icon_yincangmima q-mr-xs cursor-pointer"></i>
+               class="icon icon_yincangmima q-mr-sm cursor-pointer"></i>
           </div>
         </el-input>
       </el-form-item>

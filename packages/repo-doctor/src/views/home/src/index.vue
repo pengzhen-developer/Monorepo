@@ -200,6 +200,26 @@
           </div>
         </div>
       </template>
+
+      <template>
+        <div class="col-3">
+          <div class="q-mb-sm">
+            <span class="text-subtitle2">质疑处方</span>
+          </div>
+
+          <div class="card card-orange row"
+               v-on:click="goPrescription()">
+            <div class="col-6 flex justify-center items-center">
+              <q-icon style="font-size: 48px"
+                      v-bind:name="`img:${ require('./assets/img/ic_doubt@2x.png') }`"></q-icon>
+            </div>
+            <div class="col-6 flex column justify-center items-center q-pr-xl">
+              <span class="text-h4 text-bold q-mb-sm">{{ queryPrescription.todoPrescriptionCount }}</span>
+              <span class="text-subtitle2">质疑中处方</span>
+            </div>
+          </div>
+        </div>
+      </template>
     </div>
 
   </div>
@@ -235,6 +255,10 @@ export default {
 
     consultation() {
       return this.data?.consultation ?? {}
+    },
+
+    queryPrescription() {
+      return this.data?.queryPrescription ?? {}
     }
   },
 
@@ -244,6 +268,14 @@ export default {
 
   created() {
     this.initialize()
+
+    this.intervalId = setInterval(() => {
+      this.initialize()
+    }, 1000 * 60 * 2)
+  },
+
+  destroyed() {
+    window.clearInterval(this.intervalId)
   },
 
   methods: {
@@ -286,6 +318,10 @@ export default {
 
     goConsultation(params) {
       this.$router.push({ name: 'Consultation', params })
+    },
+
+    goPrescription(params) {
+      this.$router.push({ name: 'Prescription', params })
     }
   }
 }
