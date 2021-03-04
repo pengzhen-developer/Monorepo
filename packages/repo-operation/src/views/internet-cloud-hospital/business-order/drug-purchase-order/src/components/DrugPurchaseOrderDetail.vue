@@ -65,11 +65,9 @@
                 <div class="drug-info-num">{{ drug.DrugSpecification }}</div>
               </div>
               <div class="drug-price">
-                <div class="trademark"
-                     style="visibility: hidden;">
-                  说明书
-                  <span class="reg"
-                        title="暂无说明">&reg;</span>
+                <div class="coldStorage"
+                     v-bind:style="{'visibility':drug.coldStorage==2?'visible': 'hidden'}">
+                  冷藏
                 </div>
                 <div>
                   <span class="red">¥{{ drug.DrugUnitPrice }}</span> X
@@ -79,9 +77,9 @@
             </div>
           </div>
           <div class="flex column total-info">
-            <template v-if="info.moneyRecord&&info.moneyRecord.length>0">
+            <template v-if="moneyRecord.length>0">
               <div class="flex row justify-between"
-                   v-for="(money,index) in info.moneyRecord"
+                   v-for="(money,index) in moneyRecord"
                    :key="index">
                 <div class="text-caption">{{money.name}}</div>
                 <div class="text-caption">{{money.value}}</div>
@@ -181,6 +179,10 @@ export default {
   },
 
   computed: {
+    moneyRecord() {
+      //过滤金额为空
+      return this.info.moneyRecord.filter((item) => item.value >= 0)
+    },
     cancelList() {
       let list = []
       list = this.info.cancelList
@@ -223,7 +225,7 @@ export default {
       if (this.info.payMode) {
         return this.$options.filters['getEnumLable'](this.info.payMode, Constant.PAY_MODE_STATUS)
       } else {
-        const paymentTypes = this.$options.filters['getEnumLable'](this.info.paymentType, Constant.PAYMENT_STATUS)
+        const paymentTypes = this.$options.filters['getPaymentStatus'](this.info.paymentType, Constant.PAYMENT_STATUS)
         let text = '在线支付'
         if (paymentTypes.indexOf('到店支付') != -1) {
           text = '到店支付'
@@ -237,6 +239,13 @@ export default {
   filters: {
     getEnumLable: (value, ENUM) => {
       return ENUM.find((item) => item.value == value)?.label
+    },
+    getPaymentStatus: (status, ENUM) => {
+      let list = status.split(',')
+      const result = list.map((value) => {
+        return ENUM.find((item) => item.value == value)?.label
+      })
+      return result.join(',')
     },
     toFixed2: (value) => {
       return Number(value).toFixed(2)
@@ -316,6 +325,10 @@ export default {
 $text: #23313f;
 $grey-text: #778899;
 $border-color: #eaeaea;
+.coldStorage {
+  color: #ea3930;
+  text-align: right;
+}
 .tips {
   width: 100%;
   height: 37px;
@@ -403,14 +416,14 @@ $border-color: #eaeaea;
       color: #fff;
       line-height: 1.75;
       padding: 0 24px;
-      background-color: var(--q-color-primary);
+      background-color: #2699fb;
       border-radius: 15px 0 0 15px;
       &.to-home {
-        background-color: var(--q-color-primary);
+        background-color: #2699fb;
       }
       &.store {
         top: 40px;
-        background-color: var(--q-color-warning);
+        background-color: #ee9b60;
       }
     }
   }
@@ -454,20 +467,21 @@ $border-color: #eaeaea;
       max-height: 260px;
       border-bottom: 1px dashed #f3f3f3;
       overflow-y: auto;
-      &-item {
+      .drug-item {
         padding: 10px;
         border-bottom: 1px dashed #f3f3f3;
         &:first-of-type {
           padding-top: 0;
+          border-bottom-color: transparent;
         }
       }
-      &-image,
-      &-info,
-      &-price {
+      .drug-image,
+      .drug-info,
+      .drug-price {
         display: inline-block;
         vertical-align: middle;
       }
-      &-image {
+      .drug-image {
         width: 60px;
         height: 60px;
         line-height: 60px;
@@ -480,20 +494,20 @@ $border-color: #eaeaea;
           display: block;
         }
       }
-      &-info {
+      .drug-info {
         padding-left: 12px;
         line-height: 24px;
-        &-num {
+        .drug-info-num {
           font-size: 12px;
           color: $grey-text;
         }
       }
-      &-price {
+      .drug-price {
         max-width: 100px;
         padding: 4px 0;
         float: right;
         line-height: 24px;
-        .trademark {
+        .red {
           font-size: 12px;
           color: $grey-text;
           display: flex;
@@ -535,21 +549,21 @@ $border-color: #eaeaea;
     > div + div {
       margin-top: 10px;
     }
-    &-label,
-    &-content {
+    .order-status-label,
+    .order-status-content {
       font-weight: bold;
     }
-    &-content {
+    .order-status-content {
       flex: 1;
     }
-    &-label {
+    .order-status-label {
       min-width: 5em;
       color: $grey-text;
       &:after {
         content: '：';
       }
     }
-    &-content {
+    .order-status-content {
       .el-timeline {
         margin-top: 10px;
       }
@@ -620,7 +634,7 @@ $border-color: #eaeaea;
   }
 }
 .red {
-  color: red;
+  color: #ea3930;
 }
 .gary {
   font-size: 12px;

@@ -203,7 +203,7 @@
           <div class="info-row-label">
             <span>医保抵扣</span>
           </div>
-          <div class="info-row-content"> -¥{{ info.medicalMoney }}</div>
+          <div class="info-row-content"> {{ medicalMoneyText }}</div>
         </div>
         <div class="info-row info-row-price"
              v-if="!(info.inquiryStatus === 7 || info.inquiryStatus === 8)">
@@ -238,6 +238,18 @@ export default {
     }
   },
   computed: {
+    medicalMoneyText() {
+      //accountPay 医保个人 insurePay 医保统筹
+
+      let text = `-¥${(this.info.medicalMoney - 0).toFxied(2)}`
+      if (this.info.accountPay > 0) {
+        text += `【个人账户：¥${this.info.accountPay}】`
+      }
+      if (this.info.insurePay > 0) {
+        text += `【统筹账户：¥${this.info.insurePay}】`
+      }
+      return text
+    },
     moneyText() {
       let str = ''
       if (this.info.orderStatus >= 3 || this.info.payTime != null) {
@@ -366,12 +378,12 @@ $border-color: #eee;
   .doctor {
     position: relative;
 
-    &-pic,
-    &-info {
+    .doctor-pic,
+    .doctor-info {
       display: inline-block;
       vertical-align: middle;
     }
-    &-pic {
+    .doctor-pic {
       margin-right: 10px;
       width: 62px;
       height: 62px;
@@ -383,7 +395,7 @@ $border-color: #eee;
         display: block;
       }
     }
-    &-info {
+    .doctor-info {
       & > span {
         line-height: 24px;
         &.title {
@@ -476,6 +488,7 @@ $border-color: #eee;
     background: var(--q-color-primary);
     margin-right: 8px;
     margin-bottom: -2px;
+    border-radius: 2px;
   }
 }
 .info-block-content {
@@ -522,6 +535,7 @@ $border-color: #eee;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      margin: 0;
     }
   }
 

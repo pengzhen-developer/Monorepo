@@ -144,7 +144,7 @@
         </div>
       </div>
     </div>
-    <div class="info-block pl34">
+    <div class="info-block">
       <div class="info-title">订单信息</div>
       <div class="info-row">
         <div class="info-row-label">
@@ -186,8 +186,6 @@
           <div class="info-row-content">{{ info.payTime }}</div>
         </div>
       </template>
-    </div>
-    <div class="info-block pl34">
       <div class="info-row">
         <div class="info-row-label">
           <span>{{moneyText}}</span>
@@ -278,9 +276,8 @@ export default {
 
 
 <style lang="scss" scoped>
-$text: #23313f;
-$grey-text: #778899;
-$border-color: #eee;
+$text: #333;
+$border-color: #f3f3f3;
 .info-row {
   font-size: 0;
   display: flex;
@@ -292,7 +289,7 @@ $border-color: #eee;
     vertical-align: middle;
   }
   .info-row-label {
-    color: #778899;
+    color: rgba(51, 51, 51, 0.6);
     white-space: nowrap;
     & > span {
       width: 4.3em;
@@ -340,17 +337,7 @@ $border-color: #eee;
 }
 .advisory-info {
   color: $text;
-  & > div {
-    padding-top: 10px;
-    &:last-of-type {
-      width: calc(100% + 32px);
-      margin: 0 -16px;
-      margin-top: -1px;
-      padding: 10px 20px;
-      background-color: #f1fdfc;
-      border-bottom: 0;
-    }
-  }
+
   .doctor {
     position: relative;
     .doctor-pic,
@@ -359,9 +346,9 @@ $border-color: #eee;
       vertical-align: middle;
     }
     .doctor-pic {
-      margin-right: 10px;
-      width: 62px;
-      height: 62px;
+      margin-right: 16px;
+      width: 60px;
+      height: 60px;
       border-radius: 100%;
       overflow: hidden;
       & > img {
@@ -406,12 +393,13 @@ $border-color: #eee;
     vertical-align: middle;
   }
 }
-.spec-row {
-  padding: 0 12px;
-  margin: 10px 0;
-  background-color: #f5f7fa;
-  font-size: 12px;
-  width: 100%;
+.info-row-content.spec-row {
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333333;
+  line-height: 22px;
+  margin-top: 8px;
 }
 .el-icon-picture {
   font-size: 48px;
@@ -434,18 +422,27 @@ $border-color: #eee;
 .info-block {
   display: flex;
   flex-wrap: wrap;
-  &.pl34 {
-    .info-row-content {
-      padding-left: 34px;
-    }
-  }
 }
 .info-title {
   color: $text;
   font-size: 16px;
   line-height: 25px;
-  border-bottom: 1px solid $border-color;
+  border-top: 1px solid $border-color;
+  padding-top: 12px;
+  margin-top: 16px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
   width: 100%;
+  &::before {
+    display: inline-block;
+    content: '';
+    width: 4px;
+    height: 16px;
+    background: var(--q-color-primary);
+    margin-right: 8px;
+    margin-bottom: -2px;
+    border-radius: 2px;
+  }
 }
 .info-row {
   width: 100%;
