@@ -7,22 +7,25 @@
              v-on:submit.native.prevent
              v-bind:model="model">
       <el-form-item label="患者姓名：">
-        <el-input v-model="view.model.familyName"></el-input>
+        <el-input v-model="model.familyName"></el-input>
       </el-form-item>
 
       <el-form-item label="开具时间：">
-        <peace-date-picker style="width: 130px"
-                           :picker-options="view.rules.pickerOptionsStart"
-                           placeholder
-                           v-model="view.model.s_Date"
-                           value-format="yyyy-MM-dd"></peace-date-picker>
-        <span class="character"></span>
-        <peace-date-picker style="width: 130px"
-                           :picker-options="view.rules.pickerOptionsEnd"
-                           placeholder
-                           v-model="view.model.e_Date"
-                           value-format="yyyy-MM-dd"></peace-date-picker>
+        <PeaceDatePicker type="daterange"
+                         v-model="model.date"></PeaceDatePicker>
       </el-form-item>
+
+      <el-form-item label="处方状态：">
+        <el-select clearable
+                   placeholder="全部"
+                   v-model="model.prescriptionStatus">
+          <el-option v-for="item in source.prescriptionStatus"
+                     v-bind:key="item.value"
+                     v-bind:label="item.label"
+                     v-bind:value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+
       <el-form-item label="">
         <el-button @click="get"
                    type="primary">查询</el-button>
