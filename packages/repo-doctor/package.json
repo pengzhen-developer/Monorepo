@@ -30,7 +30,8 @@
     "vue-echarts": "^4.0.3",
     "vue-fragment": "^1.5.1",
     "vue-router": "^3.0.6",
-    "vuex": "^3.1.1"
+    "vuex": "^3.1.1",
+    "websocket-as-promised": "^2.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.3.1",

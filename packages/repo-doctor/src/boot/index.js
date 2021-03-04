@@ -11,6 +11,7 @@ import CreateApp from './createApp'
 import boot_Library from './boot_library'
 import boot_Identity from './boot_identity'
 import boot_Redirect from './boot_redirect'
+import boot_IsConnect from './boot_isConnect'
 
 // Quasar is required
 // Some libraries depend on it
@@ -48,6 +49,9 @@ const install = async () => {
 
     // Redirect
     boot_Redirect,
+
+    // Is Connect
+    boot_IsConnect,
 
     // UI
     boot_UI,
