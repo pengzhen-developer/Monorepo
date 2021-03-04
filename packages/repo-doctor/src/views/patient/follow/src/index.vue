@@ -1,10 +1,13 @@
 <template>
   <div>
-    <el-form v-bind:model="viewModel"
+    <el-form inline
              space-none
-             inline>
-      <el-form-item label="随访状态">
-        <el-select placeholder="请选择"
+             label-width="auto"
+             v-on:keyup.enter.native="get"
+             v-on:submit.native.prevent
+             v-bind:model="viewModel">
+      <el-form-item label="随访状态：">
+        <el-select placeholder="全部"
                    v-model="viewModel.status">
           <el-option :key="item.key"
                      :label="item.status"
@@ -13,9 +16,9 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="标签">
+      <el-form-item label="标签：">
         <el-select multiple
-                   placeholder="请选择"
+                   placeholder="全部"
                    style="width: 400px;"
                    v-model="viewModel.tag">
           <el-option :key="item.tag"
@@ -25,7 +28,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label=" ">
+      <el-form-item label="">
         <el-button @click="get"
                    type="primary">查询</el-button>
       </el-form-item>
@@ -73,7 +76,7 @@
     </PeaceTable>
 
     <PeaceDialog :visible.sync="dialog.visible"
-                  title="病程管理">
+                 title="病程管理">
       <DiseaseCourse :id="dialog.id"></DiseaseCourse>
     </PeaceDialog>
   </div>

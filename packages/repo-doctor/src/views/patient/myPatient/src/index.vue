@@ -1,13 +1,16 @@
 <template>
   <div>
-    <el-form v-bind:model="view.model"
+    <el-form inline
              space-none
-             inline>
-      <el-form-item label="患者姓名">
+             label-width="auto"
+             v-on:keyup.enter.native="get"
+             v-on:submit.native.prevent
+             v-bind:model="view.model">
+      <el-form-item label="患者姓名：">
         <el-input placeholder
                   v-model="view.model.name"></el-input>
       </el-form-item>
-      <el-form-item label="患者来源">
+      <el-form-item label="患者来源：">
         <el-select clearable
                    placeholder="全部"
                    v-model="view.model.source">
@@ -17,7 +20,7 @@
                      v-for="item in source.group_name"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label=" ">
+      <el-form-item label="">
         <el-button @click="updateList"
                    type="primary">查询</el-button>
       </el-form-item>
@@ -173,62 +176,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.private-doctor {
-  height: 17px;
-  font-size: 12px;
-  font-weight: 400;
-  background: #3099a6;
-  color: #ffffff;
-  line-height: 17px;
-  padding: 0 4px;
-
-  margin: 0 10px 0 0;
-}
-
-.character {
-  display: inline-flex;
-
-  &:before {
-    content: '';
-    background: #e7e7e1;
-    width: 15px;
-    height: 1px;
-    position: relative;
-    top: -4px;
-    margin: 0 10px;
-  }
-}
-
-.el-form-item {
-  margin-right: 40px;
-
-  /deep/ .el-input {
-    width: 140px;
-    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.13);
-    border-radius: 3px;
-  }
-}
-
-.no-data {
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-flow: column;
-
-  img {
-    display: block;
-    width: 150px;
-    height: 150px;
-  }
-
-  span {
-    margin-top: 20px;
-    font-weight: 400;
-    color: rgba(155, 155, 155, 1);
-    line-height: 20px;
-  }
-}
 </style>

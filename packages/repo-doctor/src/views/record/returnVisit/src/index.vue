@@ -1,13 +1,16 @@
 <template>
   <div>
-    <el-form v-bind:model="model"
+    <el-form inline
              space-none
-             inline>
-      <el-form-item label="患者姓名">
+             label-width="auto"
+             v-on:keyup.enter.native="get"
+             v-on:submit.native.prevent
+             v-bind:model="model">
+      <el-form-item label="患者姓名：">
         <el-input v-model="model.name"></el-input>
       </el-form-item>
 
-      <el-form-item label="订单日期">
+      <el-form-item label="订单日期：">
         <peace-date-picker style="width: 130px"
                            value-format="yyyy-MM-dd"
                            v-bind:picker-options="rules.orderTimeBeginOptions"
@@ -19,7 +22,7 @@
                            v-model="model.orderTimeEnd"></peace-date-picker>
       </el-form-item>
 
-      <el-form-item label="复诊日期">
+      <el-form-item label="复诊日期：">
         <peace-date-picker style="width: 130px"
                            value-format="yyyy-MM-dd"
                            v-bind:picker-options="rules.returnVisitTimeBeginOptions"
@@ -31,9 +34,9 @@
                            v-model="model.returnVisitTimeEnd"></peace-date-picker>
       </el-form-item>
 
-      <el-form-item label=" ">
+      <el-form-item label="">
         <el-button type="primary"
-                   v-on:click="getTable">查询</el-button>
+                   v-on:click="get">查询</el-button>
       </el-form-item>
     </el-form>
 
@@ -159,12 +162,12 @@ export default {
 
   mounted() {
     this.$nextTick().then(() => {
-      this.getTable()
+      this.get()
     })
   },
 
   methods: {
-    getTable() {
+    get() {
       const fetch = Service.getReturnVisitList
       const params = this.model
 

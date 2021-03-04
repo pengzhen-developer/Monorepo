@@ -12,18 +12,21 @@
     <div class="content"
          key="out"
          v-if="view.model.referral_type === source.state['我转诊的']">
-      <el-form v-bind:model="view.model"
+      <el-form inline
                space-none
-               inline>
-        <el-form-item label="转入医生">
+               label-width="auto"
+               v-on:keyup.enter.native="get"
+               v-on:submit.native.prevent
+               v-bind:model="view.model">
+        <el-form-item label="转入医生：">
           <el-input placeholder
                     v-model="view.model.docName"></el-input>
         </el-form-item>
-        <el-form-item label="转入机构">
+        <el-form-item label="转入机构：">
           <el-input placeholder
                     v-model="view.model.hosName"></el-input>
         </el-form-item>
-        <el-form-item label="转诊状态">
+        <el-form-item label="转诊状态：">
           <el-select clearable
                      filterable
                      placeholder="全部"
@@ -34,7 +37,7 @@
                        v-for="item in source.transfer_status"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label=" ">
+        <el-form-item label="">
           <el-button @click="get"
                      type="primary">查询</el-button>
         </el-form-item>
@@ -86,14 +89,17 @@
     <div class="content"
          key="in"
          v-if="view.model.referral_type === source.state['转给我的']">
-      <el-form v-bind:model="view.model"
+      <el-form inline
                space-none
-               inline>
-        <el-form-item label="转出机构">
+               label-width="auto"
+               v-on:keyup.enter.native="get"
+               v-on:submit.native.prevent
+               v-bind:model="view.model">
+        <el-form-item label="转出机构：">
           <el-input placeholder
                     v-model="view.model.hosName"></el-input>
         </el-form-item>
-        <el-form-item label=" ">
+        <el-form-item label="">
           <el-button @click="get"
                      type="primary">查询</el-button>
         </el-form-item>

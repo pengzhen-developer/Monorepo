@@ -14,9 +14,12 @@
     <div class="body"
          key="待接单"
          v-if="view.model.type === source.state['待接单']">
-      <el-form :model="view.model"
-               inline>
-        <el-form-item label="购买日期">
+      <el-form inline
+               label-width="auto"
+               v-on:keyup.enter.native="get"
+               v-on:submit.native.prevent
+               v-bind:model="view.model">
+        <el-form-item label="购买日期：">
           <peace-date-picker style="width: 130px"
                              :picker-options="view.rules.pickerOptionsStartForReceive"
                              placeholder
@@ -29,7 +32,7 @@
                              v-model="view.modelForReceive.endTime"
                              value-format="yyyy-MM-dd"></peace-date-picker>
         </el-form-item>
-        <el-form-item label=" ">
+        <el-form-item label="">
           <el-button @click="get"
                      type="primary">查询</el-button>
         </el-form-item>
@@ -65,9 +68,12 @@
     <div class="body"
          key="服务中"
          v-if="view.model.type === source.state['服务中']">
-      <el-form :model="view.model"
-               inline>
-        <el-form-item label="购买日期">
+      <el-form inline
+               label-width="auto"
+               v-on:keyup.enter.native="get"
+               v-on:submit.native.prevent
+               v-bind:model="view.model">
+        <el-form-item label="购买日期：">
           <peace-date-picker style="width: 130px"
                              :picker-options="view.rules.pickerOptionsStartForService"
                              placeholder
@@ -80,7 +86,7 @@
                              v-model="view.modelForService.endTime"
                              value-format="yyyy-MM-dd"></peace-date-picker>
         </el-form-item>
-        <el-form-item label=" ">
+        <el-form-item label="">
           <el-button @click="get"
                      type="primary">查询</el-button>
         </el-form-item>
@@ -125,13 +131,16 @@
     <div class="body"
          key="接单记录"
          v-if="view.model.type === source.state['接单记录']">
-      <el-form :model="view.modelForRecord"
-               inline>
-        <el-form-item label="姓名">
+      <el-form inline
+               label-width="auto"
+               v-on:keyup.enter.native="get"
+               v-on:submit.native.prevent
+               v-bind:model="view.modelForRecord">
+        <el-form-item label="患者姓名：">
           <el-input placeholder
                     v-model="view.modelForRecord.patientName"></el-input>
         </el-form-item>
-        <el-form-item label="接单状态">
+        <el-form-item label="接单状态：">
           <el-select clearable
                      placeholder="请选择"
                      v-model="view.modelForRecord.orderStatus">

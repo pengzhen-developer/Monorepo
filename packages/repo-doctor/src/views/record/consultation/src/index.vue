@@ -13,18 +13,21 @@
     <div :key="source.action.OUT"
          class="content"
          v-if="view.action === source.action.OUT">
-      <el-form v-bind:model="view.outModel"
+      <el-form inline
                space-none
-               inline>
-        <el-form-item label="邀请医生">
+               label-width="auto"
+               v-on:keyup.enter.native="get"
+               v-on:submit.native.prevent
+               v-bind:model="view.outModel">
+        <el-form-item label="邀请医生：">
           <el-input placeholder
                     v-model="view.outModel.toDoctorName"></el-input>
         </el-form-item>
-        <el-form-item label="邀请机构">
+        <el-form-item label="邀请机构：">
           <el-input placeholder
                     v-model="view.outModel.toHospitalName"></el-input>
         </el-form-item>
-        <el-form-item label="会诊状态">
+        <el-form-item label="会诊状态：">
           <el-select clearable
                      placeholder
                      v-model="view.outModel.consultStatus">
@@ -34,7 +37,7 @@
                        v-for="item in source.consultStatus"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label=" ">
+        <el-form-item label="">
           <el-button @click="get"
                      type="primary">查询</el-button>
         </el-form-item>
@@ -91,18 +94,21 @@
     <div :key="source.action.IN"
          class="content"
          v-if="view.action === source.action.IN">
-      <el-form v-bind:model="view.inModel"
+      <el-form inline
                space-none
-               inline>
-        <el-form-item label="申请医生">
+               label-width="auto"
+               v-on:keyup.enter.native="get"
+               v-on:submit.native.prevent
+               v-bind:model="view.inModel">
+        <el-form-item label="申请医生：">
           <el-input placeholder
                     v-model="view.inModel.fromDoctorName"></el-input>
         </el-form-item>
-        <el-form-item label="申请机构">
+        <el-form-item label="申请机构：">
           <el-input placeholder
                     v-model="view.inModel.fromHospitalName"></el-input>
         </el-form-item>
-        <el-form-item label="会诊状态">
+        <el-form-item label="会诊状态：">
           <el-select clearable
                      placeholder
                      v-model="view.inModel.consultStatus">
@@ -112,7 +118,7 @@
                        v-for="item in source.consultStatus"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label=" ">
+        <el-form-item label="">
           <el-button @click="get"
                      type="primary">查询</el-button>
         </el-form-item>

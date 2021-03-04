@@ -1,13 +1,16 @@
 <template>
   <div>
-    <el-form v-bind:model="view.model"
+    <el-form inline
              space-none
-             inline>
-      <el-form-item label="患者姓名">
+             label-width="auto"
+             v-on:keyup.enter.native="get"
+             v-on:submit.native.prevent
+             v-bind:model="view.model">
+      <el-form-item label="患者姓名：">
         <el-input v-model="view.model.name"></el-input>
       </el-form-item>
 
-      <el-form-item label="订单日期">
+      <el-form-item label="订单日期：">
         <peace-date-picker :picker-options="view.rules.pickerOptionsStart"
                            style="width: 130px;"
                            v-model="view.model.time_start"
@@ -19,7 +22,7 @@
                            value-format="yyyy-MM-dd">
         </peace-date-picker>
       </el-form-item>
-      <el-form-item label="咨询类型">
+      <el-form-item label="咨询类型：">
         <el-select clearable
                    placeholder="全部"
                    v-model="view.model.inquiryType">
@@ -29,7 +32,7 @@
                      v-for="item in view.source.inquiryType"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label=" ">
+      <el-form-item label="">
         <el-button @click="get"
                    type="primary">查询</el-button>
       </el-form-item>
