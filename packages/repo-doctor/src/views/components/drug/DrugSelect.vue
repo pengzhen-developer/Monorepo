@@ -40,7 +40,7 @@
 
     <el-card class="q-mb-md"
              v-show="value && value.length > 0">
-      <PeaceTable class="editable element-ui-default"
+      <PeaceTable class="editable q-mb-sm element-ui-default"
                   v-bind:data="value">
         <PeaceTableColumn label="药品名称"
                           prop="drugName"
@@ -228,6 +228,11 @@
           </template>
         </PeaceTableColumn>
       </PeaceTable>
+
+      <el-alert v-if="isColdStorag"
+                type="warning"
+                show-icon=""
+                title="处方中有冷藏储存的药品，请提醒患者到店/院自提"></el-alert>
     </el-card>
 
     <el-autocomplete size="medium"
@@ -345,6 +350,8 @@ export default {
     return {
       queryDrugString: '',
 
+      isColdStorag: false,
+
       model: {
         prescriptionTag: 1
       },
@@ -366,6 +373,9 @@ export default {
 
   watch: {
     value(value) {
+      // 是否有冷藏药品
+      this.isColdStorag = this.value.filter((item) => item.coldStorage === 1).length > 0
+
       this.$emit('input', value)
     },
 
