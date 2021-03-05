@@ -241,7 +241,7 @@ export default {
     medicalMoneyText() {
       //accountPay 医保个人 insurePay 医保统筹
 
-      let text = `-¥${(this.info.medicalMoney - 0).toFxied(2)}`
+      let text = `-¥${(this.info.medicalMoney - 0).toFixed(2)}`
       if (this.info.accountPay > 0) {
         text += `【个人账户：¥${this.info.accountPay}】`
       }
