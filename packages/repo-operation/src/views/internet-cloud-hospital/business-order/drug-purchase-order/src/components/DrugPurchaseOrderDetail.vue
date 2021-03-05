@@ -66,7 +66,7 @@
               </div>
               <div class="drug-price">
                 <div class="coldStorage"
-                     v-bind:style="{'visibility':drug.coldStorage==2?'visible': 'hidden'}">
+                     v-bind:style="{'visibility':drug.coldStorage==1?'visible': 'hidden'}">
                   冷藏
                 </div>
                 <div>
