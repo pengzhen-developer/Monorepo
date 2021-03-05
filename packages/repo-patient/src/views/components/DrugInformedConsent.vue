@@ -126,6 +126,7 @@ export default {
     line-height: 24px;
     .message {
       white-space: pre-wrap;
+      word-break: break-all;
       margin-bottom: 9px;
     }
     .tip {
