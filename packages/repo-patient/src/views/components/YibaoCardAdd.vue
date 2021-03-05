@@ -94,9 +94,9 @@ export default {
       this.$emit('changeFlag', false)
     },
     async submit() {
-      if (!this.cardInfo.medCardNo) {
+      if (!this.medCardNo) {
         return peace.util.warning('请输入医保卡号')
-      } else if (!/^[0-9]*$/.test(this.cardInfo.medCardNo)) {
+      } else if (!/^[0-9]*$/.test(this.medCardNo)) {
         return peace.util.warning('医保卡号只能输入数字')
       }
       this.loading = true
