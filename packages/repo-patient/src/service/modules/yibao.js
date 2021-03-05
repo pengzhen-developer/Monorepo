@@ -24,6 +24,39 @@ export function UpdateMedicareCard(params) {
 
   return peace.http.post(UpdateMedicareCard, params)
 }
+
+/**
+ * 获取医保类型字典
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function GetMedicareCardType(params) {
+  const GetMedicareCardType = '/client/v1/MedicareCard/getMedicareCardType'
+
+  return peace.http.post(GetMedicareCardType, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
+/**
+ * 修改医保卡类型
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function UpdateMedicareCardType(params) {
+  const UpdateMedicareCardType = '/client/v1/MedicareCard/updateMedicareCardType'
+
+  return peace.http.post(UpdateMedicareCardType, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
 /**
  * 删除医保卡
  *
@@ -98,6 +131,10 @@ export default {
   AddMedicareCard,
   /**修改医保卡 */
   UpdateMedicareCard,
+  /**获取医保类型字典 */
+  GetMedicareCardType,
+  /**修改医保卡类型 */
+  UpdateMedicareCardType,
   /**删除医保卡 */
   DelMedicareCard,
   /**新增医保卡 */

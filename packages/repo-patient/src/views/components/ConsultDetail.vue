@@ -246,9 +246,9 @@
 
       <!-- 订单收费明细 -->
       <div class="module message"
-           v-if="internalData.orderInfo.moneyRecord&&internalData.orderInfo.moneyRecord.length>0">
+           v-if="moneyRecord.length>0">
         <div class="message-item"
-             v-for="(item,index) in internalData.orderInfo.moneyRecord"
+             v-for="(item,index) in moneyRecord"
              :key="index">
           <div class="message-item-left">{{item.name}}</div>
           <div class="message-item-right">{{item.value}}</div>
@@ -569,6 +569,15 @@ export default {
     }
   },
   computed: {
+    moneyRecord() {
+      const list = this.internalData?.orderInfo?.moneyRecord || []
+      if (list.length > 0 && this.internalData.orderInfo.medicalTreatmentType) {
+        let txt = `${this.internalData.orderInfo.medicalTreatmentTypeTxt}`
+        txt += this.internalData.orderInfo.diseases ? `-${this.internalData.orderInfo.diseases}` : ``
+        list.splice(1, 0, { name: '医保类型', value: txt })
+      }
+      return list
+    },
     marginBottom() {
       return this.canShowPayBottom ? '115px' : this.canShowBottom ? '64px' : this.canShowCancelBottom ? '64px' : '0'
     },
@@ -1240,6 +1249,7 @@ export default {
 .page {
   min-height: 100%;
   background-color: #f5f5f5;
+  padding-bottom: 0.1px;
 }
 .consult-detatil {
   background-color: #f5f5f5;
@@ -1328,11 +1338,11 @@ export default {
         font-size: 13px;
         height: 26px;
         .message-item-left {
-          width: 30%;
+          // width: 30%;
           color: #999;
         }
         .message-item-right {
-          width: 70%;
+          max-width: 70%;
           text-align: right;
           color: #333;
           overflow: hidden;

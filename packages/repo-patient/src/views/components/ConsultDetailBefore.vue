@@ -195,21 +195,25 @@
              v-if="canShowYibao">
           <div class="brief-left">使用医保卡:</div>
           <div class="brief-right"
-               :class="{'checked':yibaoChecked}"
+               :class="{'checked':yibaoText}"
                @click="chooseYibao">{{yibaoText||'请选择'}}
           </div>
         </div>
+        <div class="brief"
+             v-if="yibaoText">
+          <div class="brief-left">医保类型:</div>
+          <div class="brief-right"
+               :class="{'checked':yibaoTypeText}"
+               @click="chooseYibaoType">{{yibaoTypeText||'请选择'}}
+          </div>
+        </div>
+
         <div class="brief"
              v-if="canShowShangbao">
           <div class="brief-left">商保权益抵扣:</div>
           <div class="brief-right">请选择
           </div>
         </div>
-        <!-- <div class="brief pay-omney">
-          <div class="brief-left">应付金额:</div>
-          <div class="brief-right money">{{ "¥" + params.price.toString().toFixed(2)||'0.00' }}
-          </div>
-        </div> -->
 
       </div>
       <!-- 预售订单 - 非当日-->
@@ -219,13 +223,12 @@
 
     </div>
 
-    <div class="footer ">
-      <peace-button round
-                    @click="apply"
-                    type="primary"
-                    throttle
-                    :throttleTime="3000"
-                    size="large">提交订单</peace-button>
+    <div class="footer">
+      <van-button round
+                  @click="apply"
+                  type="primary"
+                  :disabled="sending"
+                  size="large">提交订单</van-button>
     </div>
 
     <van-image-preview v-model="imagePreview.visible"
@@ -243,6 +246,11 @@
     <YibaoCaedSelect v-model="showCard"
                      :info="info"
                      @onSuccess="onSuccess"></YibaoCaedSelect>
+    <!-- 医保类型-->
+    <SelectYiBaoType v-model="yibaoTypeDialog.visible"
+                     :medCardId="yibaoTypeDialog.medCardId"
+                     @onSuccess="selectYibaoTypeCallback"
+                     @onCancel="seleecYibaoCancel"></SelectYiBaoType>
 
     <!-- 确认支付弹框 -->
     <ExpenseDetail v-model="dialog.visible"
@@ -252,6 +260,7 @@
 
 <script>
 import YibaoCaedSelect from '@src/views/components/YibaoCardSelect'
+import SelectYiBaoType from '@src/views/components/YibaoTypeSelect'
 import ExpenseDetail from '@src/views/components//ExpenseDetail'
 import InquiryStageMark from '@src/views/components/InquiryStageMark'
 import peace from '@src/library'
@@ -293,7 +302,8 @@ export default {
     [Dialog.Component.name]: Dialog.Component,
     YibaoCaedSelect,
     ExpenseDetail,
-    InquiryStageMark
+    InquiryStageMark,
+    SelectYiBaoType
   },
 
   props: {
@@ -324,11 +334,15 @@ export default {
       showCard: false,
       hasFirstVisitInfo: false,
       yibaoText: '',
-      yibaoChecked: false,
+      yibaoTypeText: '',
       yibaoInfo: {},
       dialog: {
         visible: false,
         data: {}
+      },
+      yibaoTypeDialog: {
+        visible: false,
+        medCardId: ''
       }
     }
   },
@@ -438,12 +452,31 @@ export default {
       this.$router.push(`/appoint/doctor/appointDoctorSelect/${json}`)
     },
     onSuccess(result) {
-      this.yibaoChecked = result.checked
-      this.yibaoText = result.yibaoInfo.medCardNo
-      this.yibaoInfo = result.yibaoInfo
+      if (result.checked == true) {
+        this.yibaoTypeDialog.visible = true
+
+        if (this.yibaoInfo.medCardNo != result.yibaoInfo) {
+          this.yibaoTypeText = ''
+        }
+
+        this.yibaoInfo = result.yibaoInfo
+        this.yibaoTypeDialog.medCardId = this.yibaoInfo.id
+        this.yibaoText = this.yibaoInfo.medCardNo
+      }
+    },
+    selectYibaoTypeCallback(result) {
+      this.yibaoInfo = Object.assign(this.yibaoInfo, result.yibaoInfo)
+      this.yibaoTypeText = this.yibaoInfo.yibaoTypeText
+    },
+    seleecYibaoCancel() {
+      // this.yibaoTypeText = ''
     },
     chooseYibao() {
       this.showCard = true
+    },
+    chooseYibaoType() {
+      this.yibaoTypeDialog.visible = true
+      this.yibaoTypeDialog.medCardId = this.yibaoInfo.id
     },
     gotoCaseDetail(dataNo) {
       const token = $peace.cache.get($peace.type.USER.INFO).loginInfo.accessToken
@@ -461,6 +494,9 @@ export default {
       this.$router.push(`/components/FirstVisitList/${json}`)
     },
     apply() {
+      if (this.yibaoText && !this.yibaoTypeText) {
+        return peace.util.alert('请选择医保类型')
+      }
       this.sending = true
       const params = peace.util.deepClone(this.params)
       params.medCardNo = this.yibaoInfo.medCardNo || ''

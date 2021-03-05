@@ -106,6 +106,8 @@
                @click="changeShowPopup">{{payName}} - {{page.tabIndex == '0' ? '到店自提': '配送到家'}}</div>
         </div>
       </div>
+      <div class="coldStorageTip"
+           v-if="canShowColdStorageTip">处方中有需要冷藏储存的药品，仅支持到店自提</div>
       <div class="module str">
         <div class="dl-packet">
           <div class="dt">药品金额 ：</div>
@@ -133,6 +135,11 @@
                  :class="{'money':yibaoChecked||order.MedicalCardNo}"
                  @click="chooseYibao">{{ order.MedicalCardNo || yibaoText }}</div>
           </div>
+          <div class="line"></div>
+          <div class="dl-packet">
+            <div class="dt">医保类型 ：</div>
+            <div class="dd money">{{  yibaoTypeText }}</div>
+          </div>
         </template>
         <template v-if="canShowShangbao">
           <div class="line"></div>
@@ -146,10 +153,9 @@
         {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
       </div>
       <div class="bottom">
-        <peace-button v-on:click="submitOrder('wxpay')"
+        <peace-button v-on:click="openInformedConsentModel"
                       size="large"
-                      throttle
-                      :throttleTime="3000"
+                      round
                       type="primary">提交订单</peace-button>
       </div>
 
@@ -173,7 +179,10 @@
                @click="changeTab(item)">
             {{item.Label}}
           </div>
+
         </div>
+        <div class="pop-tip"
+             v-if="coldStorageError">* 处方中有需要冷藏储存的药品，仅支持到店自提</div>
       </div>
       <div class="pop-box">
         <div class="pop-subtitle">支付方式</div>
@@ -194,6 +203,11 @@
                   @click="changeShowPopup"
                   size="large">确认</van-button>
     </van-popup>
+    <!-- 取药知情同意书 -->
+    <DrugInformedConsent v-model="informedConsentDialog.visible"
+                         :informedConsent="informedConsentDialog.informedConsent"
+                         @onCancel="onCancelCallback"
+                         @onSubmit="onSubmitCallback"></DrugInformedConsent>
     <!-- 医保 -->
     <template v-if="order!=null">
       <YibaoCaedSelect v-model="showCard"
@@ -210,12 +224,13 @@
 
 <script>
 import YibaoCaedSelect from '@src/views/components/YibaoCardSelect'
+import DrugInformedConsent from '@src/views/components/DrugInformedConsent'
 import ExpenseDetail from '@src/views/components//ExpenseDetail'
 import peace from '@src/library'
 
 export default {
   name: 'DrugOrderBefore',
-  components: { YibaoCaedSelect, ExpenseDetail },
+  components: { YibaoCaedSelect, ExpenseDetail, DrugInformedConsent },
   data() {
     return {
       payList: [],
@@ -223,10 +238,9 @@ export default {
       payName: '',
       showPopup: false,
       colseIcon: require('@src/assets/images/ic_close@2x.png'),
-      hasSubmitOrder: false,
 
       orderId: '',
-      showBtn: true,
+      hasSubmitOrder: true,
       hasClick: false,
       consigneeInfo: {
         consignee: '',
@@ -254,7 +268,12 @@ export default {
       dialog: {
         visible: false,
         data: {}
-      }
+      },
+      informedConsentDialog: {
+        visible: false,
+        informedConsent: ''
+      },
+      coldStorageError: false
     }
   },
 
@@ -275,6 +294,12 @@ export default {
     this.initData(this.$route.params.json)
   },
   computed: {
+    canShowColdStorageTip() {
+      return this.page.json.ColdStorage == 1
+    },
+    yibaoTypeText() {
+      return this.order.diseases ? `${this.order.medicalTreatmentTxt}-${this.order.diseases}` : `${this.order.medicalTreatmentTxt}`
+    },
     info() {
       return {
         familyName: this.page?.json?.familyName,
@@ -305,6 +330,29 @@ export default {
     }
   },
   methods: {
+    openInformedConsentModel() {
+      if (!peace.validate.pattern.mobile.test(this.consigneeInfo.mobile)) {
+        return peace.util.alert('请输入正确的手机号')
+      }
+      //若未选择支付方式，不能提交订单
+      if (this.page.payIndex < 1) {
+        peace.util.alert('请选择支付方式')
+        return
+      }
+
+      let canSubmit = this.page.tabIndex == 0 ? true : this.userAddr && this.userAddr.detailAddress ? true : false
+      if (!canSubmit) {
+        peace.util.alert('请添加收货地址')
+        return
+      }
+
+      this.informedConsentDialog.visible = true
+      this.informedConsentDialog.informedConsent = this.order.OperationInfo.InformedConsent
+    },
+    onCancelCallback() {},
+    onSubmitCallback() {
+      this.submitOrder()
+    },
     changePhone() {
       this.hasClick = true
       setTimeout(() => {
@@ -352,13 +400,20 @@ export default {
       const params = peace.util.decode(json)
       /** 0 到店取药 1 配送到家 2到店取药+配送到家 */
       /**如果是2的话默认展示 配送到家；否则展示 到店取药or配送到家 */
-      this.page.tabIndex = params.ShippingMethod == '0' ? '0' : '1'
+      //todo 处方内含有【冷藏】储存的药品 配送方式默认为其选中【到店自提】
+      params.ColdStorage = 1
+      if (params.ColdStorage == 1) {
+        this.page.tabIndex = params.ShippingMethod = '0'
+      } else {
+        this.page.tabIndex = params.ShippingMethod == '0' ? '0' : '1'
+      }
+
       this.page.json = params
       this.CustomerType = params.CustomerType
       this.Detailed = params.Detailed
     },
     goDrugPhaHomePage() {
-      if (!this.showBtn) {
+      if (!this.hasSubmitOrder) {
         return
       }
 
@@ -381,7 +436,7 @@ export default {
       this.page.tabIndex = 1
     },
     goUserAddrPage() {
-      if (!this.showBtn) {
+      if (!this.hasSubmitOrder) {
         return
       }
       let json = peace.util.decode(this.$route.params.json)
@@ -391,17 +446,10 @@ export default {
     },
 
     submitOrder() {
-      if (!peace.validate.pattern.mobile.test(this.consigneeInfo.mobile)) {
-        return peace.util.alert('请输入正确的手机号')
-      }
       if (this.canShowYibao) {
         this.yibaoInfo.medCardNo = this.order.MedicalCardNo
       }
-      //若未选择支付方式，不能提交订单
-      if (this.page.payIndex < 1) {
-        peace.util.alert('请选择支付方式')
-        return
-      }
+
       let paymentType = ''
       //支付方式：wxpay（微信） shangbao（商保支付） yibaopay（医保支付）deliverypay（货到付款） shoppay（到店支付）
       //payMode 1 在线支付  2 到店支付  3 货到付款
@@ -425,18 +473,12 @@ export default {
       const yibao = this.yibaoChecked ? ',yibaopay' : ''
       paymentType = paymentType + shangbao + yibao
 
-      this.hasSubmitOrder = true
-      let canSubmit = this.page.tabIndex == 0 ? true : this.userAddr && this.userAddr.detailAddress ? true : false
-      if (!canSubmit) {
-        peace.util.alert('请添加收货地址')
-        return
-      }
-      if (!this.showBtn) {
+      if (!this.hasSubmitOrder) {
         peace.util.alert('请勿重复提交')
         return
       }
 
-      this.showBtn = false
+      this.hasSubmitOrder = false
       let params = {
         paymentType,
         jztClaimNo: this.order.jztClaimNo,
@@ -471,7 +513,7 @@ export default {
           }
         })
         .finally(() => {
-          this.showBtn = true
+          this.hasSubmitOrder = true
         })
     },
     payCallback() {
@@ -503,12 +545,19 @@ export default {
       if (item.Value == this.json.tabIndex) {
         return
       }
+      //订单关联处方含有【冷藏】标识  选择【配送到家】时，红字提示患者不可选择配送到家，不可选中
+      if (this.canShowColdStorageTip && item.Value == 1) {
+        this.coldStorageError = true
+        return
+      } else {
+        this.coldStorageError = false
+      }
       this.json.tabIndex = item.Value
       this.payList = [].concat(item.PayModel)
       this.json.payIndex = this.payList.find((pay) => pay.Visible)?.Value
     },
     changeShowPopup() {
-      if (!this.showBtn) {
+      if (!this.hasSubmitOrder) {
         return
       }
       this.showPopup = !this.showPopup
@@ -534,6 +583,7 @@ export default {
         jztClaimNo: json.JztClaimNo,
         drugStoreId: json.DrugStoreId
       }
+
       peace.service.patient.getOrderBefore(params).then((res) => {
         this.order = res.data
         //货到付款 暂无业务 不可选
@@ -555,7 +605,7 @@ export default {
     },
 
     goInterDrugPage(item) {
-      if (!this.showBtn) {
+      if (!this.hasSubmitOrder) {
         return
       }
       const params = peace.util.encode({ name: item.DrugName })
@@ -566,6 +616,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.coldStorageTip {
+  margin-top: 10px;
+  padding-right: 16px;
+  text-align: right;
+  color: #00c6ae;
+  font-size: 12px;
+}
 .van-popup {
   padding: 23px 15px 15px 15px;
   /deep/.van-popup__close-icon--top-right {
@@ -584,6 +641,14 @@ export default {
       font-weight: 500;
       color: rgba(51, 51, 51, 1);
       line-height: 16px;
+    }
+    .pop-tip {
+      font-size: 12px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #ff3a30;
+      line-height: 20px;
+      margin-top: 8px;
     }
     .pop-list {
       margin-top: 15px;

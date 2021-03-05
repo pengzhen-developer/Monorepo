@@ -7,9 +7,9 @@
     <div class=""
          v-if="phaList.length">
       <div class="card cards"
-           v-for="(item,index) in phaList"
+           v-for="item in phaList"
            :key="item.DrugStoreName"
-           @click="goDrugOrderBeforePage(index)">
+           @click="goDrugOrderBeforePage(item)">
         <div class="card-avatar">
           <van-image :src="item.DrugStoreLogo">
 
@@ -90,6 +90,7 @@
 <script>
 import peace from '@src/library'
 import config from '@src/config'
+import { Dialog } from 'vant'
 export default {
   name: 'DrugListPharmacy',
   data() {
@@ -252,13 +253,23 @@ export default {
     },
 
     //跳转预售订单页面
-    goDrugOrderBeforePage(index) {
-      let item = this.phaList[index]
+    goDrugOrderBeforePage(item) {
+      //冷藏药 需到店自提
+      //ColdStorage  0：非冷藏 1：冷藏
+      if (item.ColdStorage == 1 && item.ShippingMethod == 1) {
+        return Dialog.confirm({
+          title: '温馨提示',
+          message: '处方处方中有需要冷藏储存的药品，需到店自提药品\n本店暂不支持到店自提',
+          confirmButtonText: '知道了',
+          showCancelButton: false
+        })
+      }
       const params = peace.util.decode(this.$route.params.json)
       let jztClaimNo = params.claimNo || params.jztClaimNo
       let familyId = params.familyId
       let familyName = params.familyName
       let json = {
+        ColdStorage: item.ColdStorage,
         JztClaimNo: jztClaimNo,
         DrugStoreId: item.DrugStoreId,
         AccessCode: item.AccessCode,

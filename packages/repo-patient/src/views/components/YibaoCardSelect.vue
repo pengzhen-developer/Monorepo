@@ -180,7 +180,8 @@ export default {
         return
       }
       this.yibaoInfo = {
-        medCardNo: this.cardInfo.medCardNo
+        medCardNo: this.cardInfo.medCardNo,
+        id: this.cardInfo.id
       }
       this.$emit('onSuccess', { checked: this.checked, yibaoInfo: this.yibaoInfo })
       this.changeFlag()

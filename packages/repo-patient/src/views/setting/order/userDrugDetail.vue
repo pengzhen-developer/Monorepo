@@ -14,12 +14,13 @@
            v-if="order.callOrderStatusTxt">
         <!--tab^content-->
 
-        <div class="order"
-             @click="goDrugLogiPage">
+        <div class="order">
           <div class="order-card">
             <div class="icon icon-status"
-                 :class="{ [`icon-status-${ order.callOrderStatus }`] : true }"></div>
-            <div class="text">{{order.callOrderStatusTxt + '  '}}</div>
+                 :class="{ [`icon-status-${ order.callOrderStatus }`] : true }"
+                 @click="goDrugLogiPage"></div>
+            <div class="text"
+                 @click="goDrugLogiPage">{{order.callOrderStatusTxt + '  '}}</div>
             <div class="cancel-tip"
                  v-if="order.callOrderStatus==ENUM.ORDER_STATUS.已取消 &&order.cancelReason">{{order.cancelReason}}</div>
             <div v-if="showQRCodeBtn"
@@ -37,7 +38,12 @@
         </div>
         <div class="divider"></div>
         <div class="tab-content">
-          <div class="addr-tit">{{order.shippingMethodTxt}}</div>
+          <div class="addr-tit">{{order.shippingMethodTxt}}
+            <div class="informedConsent"
+                 @click="showInformedConsent"><span>取货知情同意书</span>
+              <van-image :src="require('@src/assets/images/ic_wenhao.png')"></van-image>
+            </div>
+          </div>
           <div class="userAddr">
             <div class="addr-p">{{order.consigneeAddress}}</div>
             <div class="addr-user">
@@ -139,9 +145,9 @@
         </div>
       </div>
       <div class="module intro"
-           v-if="order.moneyRecord&&order.moneyRecord.length>1">
+           v-if="moneyRecord.length>1">
         <div class="dl-packet"
-             v-for="(item,index) in order.moneyRecord"
+             v-for="(item,index) in moneyRecord"
              :key="index">
           <div class="dt">{{item.name}}</div>
           <div class="dd">
@@ -269,6 +275,14 @@
         <ApplyForInvoice v-model="invoiceDialog.visible"
                          :message="invoiceDialog.data.message"></ApplyForInvoice>
       </template>
+
+      <!-- 取药知情同意书 -->
+      <template>
+
+        <DrugInformedConsent v-model="informedConsentDialog.visible"
+                             :informedConsent="informedConsentDialog.informedConsent"
+                             :canOperate="false"></DrugInformedConsent>
+      </template>
     </div>
   </div>
 
@@ -282,6 +296,7 @@ import InvoiceModel from '@src/views/components/InvoiceModel'
 import CallPhone from '@src/views/components/CallPhone'
 import PayCallback from '@src/views/components/PayCallback'
 import ApplyForInvoice from '@src/views/components/ApplyForInvoice'
+import DrugInformedConsent from '@src/views/components/DrugInformedConsent'
 
 import Vue from 'vue'
 import { CountDown } from 'vant'
@@ -362,7 +377,8 @@ export default {
     InvoiceModel,
     CallPhone,
     PayCallback,
-    ApplyForInvoice
+    ApplyForInvoice,
+    DrugInformedConsent
   },
 
   data() {
@@ -397,11 +413,28 @@ export default {
           money: ''
         }
       },
+      informedConsentDialog: {
+        visible: false,
+        informedConsent: ''
+      },
       refreshTimer: null
     }
   },
 
   computed: {
+    moneyRecord() {
+      let list = this.order.moneyRecord
+      if (list.length > 0 && this.order.medicalTreatmentType) {
+        let txt = `${this.order.medicalTreatmentTypeTxt}`
+        txt += this.order.diseases ? `-${this.order.diseases}` : ``
+        if (this.order.shippingMethod == 1) {
+          list.splice(2, 0, { name: '医保类型', value: txt })
+        } else {
+          list.splice(1, 0, { name: '医保类型', value: txt })
+        }
+      }
+      return list
+    },
     currentStatus() {
       return this.order?.callOrderStatus
     },
@@ -519,6 +552,10 @@ export default {
     }
   },
   methods: {
+    showInformedConsent() {
+      this.informedConsentDialog.visible = true
+      this.informedConsentDialog.informedConsent = this.order.informedConsent
+    },
     callPhone() {
       this.phoneDialog.visible = true
     },
@@ -828,6 +865,27 @@ export default {
   padding-left: 24px;
   color: #333;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.tab-content .addr-tit .informedConsent {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  span {
+    font-size: 12px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #999999;
+    line-height: 12px;
+  }
+  .van-image {
+    width: 12px;
+    height: 12px;
+    margin-left: 4px;
+  }
 }
 .tab-content .addr-tit::before {
   content: '';

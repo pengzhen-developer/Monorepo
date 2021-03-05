@@ -573,7 +573,7 @@ export default {
           color: #999;
           margin-right: 13px;
           // width: 65px;
-          width: 4.6em;
+          width: 4.4em;
           text-align: justify;
           text-align-last: justify;
           height: 20px;
