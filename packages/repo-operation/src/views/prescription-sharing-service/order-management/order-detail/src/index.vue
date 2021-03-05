@@ -156,6 +156,9 @@
           </el-table-column>
           <el-table-column label="单位"
                            prop="DrugQtyUnit">
+            <template slot-scope="scope">
+              {{ scope.row.DrugQtyUnit||'-'}}
+            </template>
           </el-table-column>
         </peace-table>
       </div>

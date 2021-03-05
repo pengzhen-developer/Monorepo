@@ -25,7 +25,7 @@
           <el-table-column prop="DrugName"
                            label="药品名称"></el-table-column>
           <el-table-column label="订单总数量/单位">
-            <template slot-scope="scope">{{`${scope.row.DrugNumber}/${scope.row.DrugQtyUnit}`}}</template>
+            <template slot-scope="scope">{{`${scope.row.DrugNumber}/${scope.row.DrugQtyUnit||'-'}`}}</template>
           </el-table-column>
           <el-table-column label="发货数量"
                            width="114px"
@@ -47,24 +47,6 @@ export default {
   data() {
     return {
       list: {}
-      // cangList: [
-      //   {
-      //     name: 'cang1',
-      //     drugsList: [
-      //       { total: 5, name: '药品一', id: 1, num: 2 },
-      //       { total: 5, name: '药品二', id: 2, num: 2 },
-      //       { total: 5, name: '药品三', id: 3, num: 2 }
-      //     ]
-      //   },
-      //   {
-      //     name: 'cang2',
-      //     drugsList: [
-      //       { total: 5, name: '药品一', id: 1, num: 2 },
-      //       { total: 5, name: '药品二', id: 2, num: 2 },
-      //       { total: 5, name: '药品三', id: 3, num: 2 }
-      //     ]
-      //   }
-      // ]
     }
   },
   mounted() {

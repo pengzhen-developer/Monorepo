@@ -57,7 +57,7 @@
                 <el-table-column prop="DrugName"
                                  label="药品名称"></el-table-column>
                 <el-table-column label="订单总数量/单位">
-                  <template slot-scope="scope">{{`${scope.row.DrugNumber}/${scope.row.DrugQtyUnit}`}}</template>
+                  <template slot-scope="scope">{{`${scope.row.DrugNumber}/${scope.row.DrugQtyUnit||'-'}`}}</template>
                 </el-table-column>
                 <el-table-column label="发货数量"
                                  width="114px">
