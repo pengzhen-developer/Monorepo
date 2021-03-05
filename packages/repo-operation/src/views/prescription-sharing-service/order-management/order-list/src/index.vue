@@ -112,7 +112,8 @@
                           width="180px">
           <template slot-scope="scope">
             <el-button type="text"
-                       v-on:click="showCancelDetail(scope.row)">{{ scope.row.OrderId }}</el-button>
+                       v-on:click="showCancelDetail(scope.row)"
+                       v-bind:class="{'split-icon':scope.row.IsSplitOrder==3}">{{ scope.row.OrderId }}</el-button>
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn prop="UserName"
@@ -135,7 +136,7 @@
                           width="120px">
 
           <template slot-scope="scope">
-            <span>{{ scope.row.ShippingMethod | filterDictionary(remoteSource.ShippingMethod, '-') }}</span>
+            <span>{{ scope.row.ShippingMethod| filterDictionary(remoteSource.ShippingMethod, '-') }}</span>
           </template>
         </PeaceTableColumn>
 
@@ -539,4 +540,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep .el-table .cell {
+  overflow: unset;
+}
+.split-icon {
+  position: relative;
+}
+.split-icon::after {
+  content: '';
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  right: -18px;
+  top: -7px;
+  background: url('./assets/img/split-icon.png') left center no-repeat;
+}
 </style>

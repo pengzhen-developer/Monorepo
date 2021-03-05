@@ -50,6 +50,12 @@
         </div>
 
         <div class="row">
+          <div class="col-4"
+               v-if="data.PrentOrderId ">
+            <span class="label-text">原平台订单编号</span>
+            <span class="label-text">：</span>
+            <span class="label-value">{{ data.PrentOrderId }}</span>
+          </div>
 
           <div class="col-4">
             <span class="label-text">处方类型</span>
@@ -63,15 +69,14 @@
             <span class="label-value">{{ data.ShippingMethod | formatDictionary(source.ShippingMethod) }}</span>
           </div>
 
+        </div>
+
+        <div class="row">
           <div class="col-4">
             <span class="label-text">同步时间</span>
             <span class="label-text">：</span>
             <span class="label-value">{{ data.CreateTime }}</span>
           </div>
-        </div>
-
-        <div class="row">
-
           <div class="col-4">
             <span class="label-text">订单来源系统</span>
             <span class="label-text">：</span>
@@ -148,6 +153,9 @@
             <template slot-scope="scope">
               ￥{{ scope.row.DrugPrice_Yuan }} / {{ scope.row.DrugNumber }}
             </template>
+          </el-table-column>
+          <el-table-column label="单位"
+                           prop="DrugQtyUnit">
           </el-table-column>
         </peace-table>
       </div>

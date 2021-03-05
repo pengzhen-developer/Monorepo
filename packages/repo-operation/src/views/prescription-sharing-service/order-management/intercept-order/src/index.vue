@@ -32,10 +32,22 @@
                              v-model="model.TimeRange"></peace-date-picker>
         </el-form-item>
 
+        <el-form-item label="取货方式">
+          <el-select clearable
+                     placeholder="全部"
+                     v-model="model.ShippingMethod">
+            <el-option v-for="item in remoteSource.ShippingMethod"
+                       v-bind:key="item.value"
+                       v-bind:label="item.label"
+                       v-bind:value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="订单状态">
           <el-select clearable
                      placeholder="全部"
-                     v-model="model.OrderStatus">
+                     v-model="model.OrderStatus"
+                     :disabled="orderTypeDisabled">
             <el-option v-for="item in remoteSource.OrderStatus"
                        v-bind:key="item.value"
                        v-bind:label="item.label"
@@ -63,6 +75,10 @@
     </div>
 
     <div class="card">
+      <div class="q-mb-md">
+        <el-button v-on:click="exportFile">导出</el-button>
+      </div>
+
       <peace-table pagination
                    ref="table">
         <PeaceTableColumn prop="OrderId"
@@ -70,7 +86,8 @@
                           min-width="180px">
           <template slot-scope="scope">
             <el-button type="text"
-                       v-on:click="showOrderDetail(scope.row)">{{ scope.row.OrderId }}</el-button>
+                       v-on:click="showOrderDetail(scope.row)"
+                       v-bind:class="{'split-icon':scope.row.IsSplitOrder==3}">{{ scope.row.OrderId }}</el-button>
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn prop="UserName"
@@ -84,11 +101,17 @@
         <PeaceTableColumn prop="DrugStoreName"
                           label="药房"
                           min-width="160px"></PeaceTableColumn>
-
+        <PeaceTableColumn prop="DrugStoreName"
+                          label="取货方式"
+                          min-width="160px">
+          <template slot-scope="scope">
+            <span>{{ scope.row.ShippingMethod | formatDictionary(remoteSource.ShippingMethod, '-') }}</span>
+          </template>
+        </PeaceTableColumn>
         <PeaceTableColumn label="订单状态"
                           min-width="120px">
           <template slot-scope="scope">
-            <span>{{ scope.row.OrderStatus | formatDictionary(remoteSource.OrderStatus, '-') }}</span>
+            <span>{{  getOrderStatus(scope.row.OrderStatus,scope.row.ShippingMethod, '-') }}</span>
           </template>
         </PeaceTableColumn>
 
@@ -103,14 +126,11 @@
                           label="订单来源"
                           min-width="120px"></PeaceTableColumn>
         <PeaceTableColumn label="操作"
-                          min-width="200px"
+                          min-width="180px"
                           fixed="right">
           <template slot-scope="scope">
-            <el-button type="text"
-                       v-on:click="showOrderRecord(scope.row)">订单流转日志</el-button>
-            <el-button v-if="scope.row.CirculationStatus == 2 && scope.row.OrderStatus !== 5"
-                       type="text"
-                       v-on:click="showSyncOrder(scope.row)">同步订单</el-button>
+            <DropdownButton v-bind:data="fifterButton(scope.row)"
+                            v-bind:max="2"></DropdownButton>
           </template>
         </PeaceTableColumn>
       </peace-table>
@@ -124,80 +144,51 @@
     </PeaceDialog>
 
     <PeaceDialog title="订单流转日志"
-                 width="800px"
+                 width="480px"
                  center
                  v-if="orderRecordDialog.visible"
                  v-bind:visible.sync="orderRecordDialog.visible">
-      <el-table :data="orderRecordDialog.list">
-
-        <PeaceTableColumn label="流转状态"
-                          width="120px">
-          <template slot-scope="scope">
-            <span>{{ scope.row.Status | formatDictionary(remoteSource.SendWarehouseStatus, '-') }}</span>
-          </template>
-        </PeaceTableColumn>
-
-        <PeaceTableColumn label="拦截方"
-                          width="120px">
-          <template slot-scope="scope">
-            {{scope.row.InterceptName || '——'}}
-
-          </template>
-        </PeaceTableColumn>
-
-        <PeaceTableColumn label="备注"
-                          width="360px">
-          <template slot-scope="scope">
-            <div v-if="scope.row.RemarkList === null || scope.row.RemarkList.length === 0">——</div>
-            <div v-else>
-              <div v-popover="'popover' + scope.row.ID"
-                   class="order-remark">{{scope.row.RemarkList.join('')}}</div>
-              <el-popover :ref="'popover'+ scope.row.ID"
-                          placement="bottom-start"
-                          title=""
-                          width="340"
-                          trigger="hover">
-                <div class="order-remark-list">
-                  <div class="order-remark-item"
-                       v-for="(item, index) in scope.row.RemarkList"
-                       :key="index">{{item}}</div>
-                </div>
-              </el-popover>
-            </div>
-          </template>
-        </PeaceTableColumn>
-
-        <PeaceTableColumn prop="CreateTime"
-                          label="拦截/流转时间"
-                          width="160px"></PeaceTableColumn>
-      </el-table>
+      <OrderFlowLog v-bind:orderId="orderRecordDialog.orderId"></OrderFlowLog>
     </PeaceDialog>
 
-    <PeaceDialog title="订单同步确认"
-                 width="500px"
+    <PeaceDialog title="同步订单"
+                 width="641px"
                  center
                  v-if="syncOrderDialog.visible"
                  v-bind:visible.sync="syncOrderDialog.visible">
-      <div>进行同步操作前，请先确认供应方库存充足，否则同步后若库存不足可能会被供应方拦截订单</div>
-      <div slot="footer">
-        <el-button type="primary"
-                   @click="syncOrder">确认同步</el-button>
-        <el-button @click="syncOrderDialog.visible = false">取消</el-button>
-      </div>
+      <SynchronousOrder v-bind:orderId="syncOrderDialog.orderId"
+                        v-bind:IsSplitOrder="syncOrderDialog.IsSplitOrder"
+                        v-on:refresh="fetch"
+                        v-on:close="syncOrderDialog.visible = false"></SynchronousOrder>
     </PeaceDialog>
 
+    <PeaceDialog title="分单日志"
+                 width="597px"
+                 center
+                 v-if="splitOrderLogDialog.visible"
+                 v-bind:visible.sync="splitOrderLogDialog.visible">
+      <SplitOrderLog v-bind:orderId="splitOrderLogDialog.orderId"></SplitOrderLog>
+    </PeaceDialog>
   </div>
 </template>
 
 <script>
 import Service from './service'
 import { date } from 'quasar'
+import DropdownButton from '@src/views/dropdown-button'
 
+import SynchronousOrder from './components/SynchronousOrder'
+import SplitOrderLog from './components/SplitOrderLog'
+import OrderFlowLog from './components/OrderFlowLog'
 import OrderDetail from './../../order-detail'
 export default {
   name: 'InterceptOrder',
 
   components: {
+    DropdownButton,
+    SynchronousOrder,
+    SplitOrderLog,
+    OrderFlowLog,
     OrderDetail
   },
 
@@ -209,7 +200,7 @@ export default {
         OrderSource: '',
         CreateOrderStarDate: '',
         CreateOrderEndDate: '',
-        OrderMethod: '',
+        ShippingMethod: '',
         OrderStatus: '',
         CirculationStatus: '',
         TimeRange: []
@@ -222,10 +213,16 @@ export default {
 
       orderRecordDialog: {
         visible: false,
-        list: []
+        orderId: ''
       },
 
       syncOrderDialog: {
+        visible: false,
+        orderId: '',
+        IsSplitOrder: 1
+      },
+
+      splitOrderLogDialog: {
         visible: false,
         orderId: ''
       },
@@ -234,15 +231,17 @@ export default {
         //订单状态；
         OrderStatus: [],
         // 流转状态
-        SendWarehouseStatus: []
+        SendWarehouseStatus: [],
+        //取货方式
+        ShippingMethod: []
       }
     }
   },
-
   async mounted() {
-    this.remoteSource.OrderStatus = await peace.identity.dictionary.getList('DistributionOrderStatus')
     this.remoteSource.SendWarehouseStatus = await Peace.identity.dictionary.getList('SendWarehouseStatus')
-
+    this.remoteSource.ShippingMethod = await peace.identity.dictionary.getList('ShippingMethod')
+    this.remoteSource.SelfOrderStatus = await peace.identity.dictionary.getList('SelfOrderStatus')
+    this.remoteSource.DistributionOrderStatus = await peace.identity.dictionary.getList('DistributionOrderStatus')
     this.$nextTick().then(() => {
       this.fetch()
     })
@@ -252,9 +251,24 @@ export default {
     'model.TimeRange'(value) {
       this.model.CreateOrderStarDate = value?.[0] ?? ''
       this.model.CreateOrderEndDate = value?.[1] ?? ''
+    },
+    /**
+     * 当配送方式更改时，需要切换对应的订单状态
+     */
+    'model.ShippingMethod': {
+      async handler() {
+        // DistributionOrderStatus  配送订单状态    1
+        // SelfOrderStatus  自提订单状态  0
+        this.model.OrderStatus = ''
+        this.remoteSource.OrderStatus = this.model.ShippingMethod == 0 ? this.remoteSource.SelfOrderStatus : this.remoteSource.DistributionOrderStatus
+      }
     }
   },
-
+  computed: {
+    orderTypeDisabled() {
+      return this.model.ShippingMethod === ''
+    }
+  },
   filters: {
     formatDictionary(value, source, format = '') {
       if (!Peace.validate.isEmpty(value)) {
@@ -285,31 +299,102 @@ export default {
     },
 
     showOrderRecord(row) {
-      this.orderRecordDialog.list = []
-      Service.getInterceptOrderDetails({ orderId: row.OrderId }).then((res) => {
-        this.orderRecordDialog.list = res.data?.list || []
-        this.orderRecordDialog.visible = true
-      })
+      this.orderRecordDialog.visible = true
+      this.orderRecordDialog.orderId = row.OrderId
     },
-
+    //显示分单日志弹窗
+    showSplitOrderLog(row) {
+      this.splitOrderLogDialog.visible = true
+      this.splitOrderLogDialog.orderId = row.OrderId
+    },
     // 显示同步订单弹窗
     showSyncOrder(row) {
       this.syncOrderDialog.orderId = row.OrderId
+      this.syncOrderDialog.IsSplitOrder = row.IsSplitOrder
       this.syncOrderDialog.visible = true
     },
-    // 同步订单
-    syncOrder() {
-      Service.syncOrderSend({ orderId: this.syncOrderDialog.orderId }).then((res) => {
-        Peace.util.success(res.msg)
-        this.fetch()
-        this.syncOrderDialog.visible = false
+    //放弃流转
+    abandonCirculation(row) {
+      this.$confirm('放弃流转后，该订单将作废，不能再同步给下游，确认放弃？', '放弃流转确认', {
+        closeOnClickModal: false,
+        closeOnPressEscape: false
+      }).then(() => {
+        Service.cancelCirculation({ orderId: row.OrderId }).then((res) => {
+          Peace.util.success(res.msg)
+          this.fetch()
+        })
       })
+    },
+    getOrderStatus(value, type, format = '') {
+      const source = type == 0 ? this.remoteSource.SelfOrderStatus : this.remoteSource.DistributionOrderStatus
+      return source.find((item) => Number(item.value) === Number(value))?.label ?? format
+    },
+    exportFile() {
+      Service.exportFile(this.model)
+    },
+    fifterButton(row) {
+      const controllList = [
+        {
+          component: (
+            <el-button type="text" onclick={() => this.showOrderRecord(row)}>
+              流转日志
+            </el-button>
+          ),
+          filter: this.condition1
+        },
+        {
+          component: (
+            <el-button type="text" onclick={() => this.showSyncOrder(row)}>
+              同步订单
+            </el-button>
+          ),
+          filter: this.condition2
+        },
+        {
+          component: (
+            <el-button type="text" onclick={() => this.showSplitOrderLog(row)}>
+              分单日志
+            </el-button>
+          ),
+          filter: this.condition3
+        },
+        {
+          component: (
+            <el-button type="text" onclick={() => this.abandonCirculation(row)}>
+              放弃流转
+            </el-button>
+          ),
+          filter: this.condition4
+        }
+      ]
+      return controllList.filter((item) => item.filter(row) == true)
+    },
+    condition1() {
+      return true
+    },
+    condition2(row) {
+      if (row.CirculationStatus == 2 && row.OrderStatus !== 5) {
+        return true
+      }
+    },
+    condition3(row) {
+      if (row.IsSplitOrder == 2) {
+        return true
+      }
+    },
+    condition4(row) {
+      if (row.CirculationStatus == 2) {
+        return true
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+::v-deep .el-table .cell {
+  overflow: unset;
+}
 .order-remark {
   width: 320px;
   text-overflow: ellipsis;
@@ -327,5 +412,17 @@ export default {
 }
 ::v-deep .el-table__fixed-right::before {
   height: 0px;
+}
+.split-icon {
+  position: relative;
+}
+.split-icon::after {
+  content: '';
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  right: -18px;
+  top: -7px;
+  background: url('./assets/img/split-icon.png') left center no-repeat;
 }
 </style>
