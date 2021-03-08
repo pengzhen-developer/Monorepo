@@ -12,6 +12,7 @@
 
     <PeaceDialog absolute-center
                  width="400px"
+                 title="再次提交"
                  v-if="visible"
                  v-bind:show-close="false"
                  v-bind:visible="visible">
