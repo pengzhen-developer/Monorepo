@@ -111,7 +111,8 @@
                  element-loading-background="rgba(0, 0, 0, 0.4)">
       <RecipeAudit v-bind:data="auditDialog.data"></RecipeAudit>
 
-      <div class="q-my-md flex justify-center">
+      <div slot="footer"
+           class="flex justify-center">
         <el-button v-on:click="sendConfirm">继续发送</el-button>
         <el-button type="primary"
                    v-on:click="auditDialog.visible = false">返回修改</el-button>

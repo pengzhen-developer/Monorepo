@@ -15,11 +15,9 @@
          v-for="checkItem in data.checkInfo"
          v-bind:key="checkItem.productCode">
       <div class="flex row items-center text-weight-bold q-py-md q-px-lg bg-grey-2">
-        <div class="absolute">
-          <div v-bind:class="getBackgroudThemeClass()"
-               class="relative-position"
-               style="width: 4px; height: 16px; left: -24px"></div>
-        </div>
+        <div v-bind:class="getBackgroudThemeClass()"
+             class="relative-position"
+             style="width: 4px; height: 16px; left: -24px"></div>
 
         <span class="col-4 text-subtitle2 text-weight-bolder">{{ checkItem.drugName }}</span>
         <span v-bind:class="getBackgroudThemeClass()"

@@ -239,6 +239,7 @@
     <!-- 前置审方详情 -->
     <PeaceDialog title="智能审方结果"
                  v-bind:visible.sync="visible"
+                 absolute-center
                  append-to-body>
       <RecipeAudit v-bind:data="audit"></RecipeAudit>
     </PeaceDialog>
