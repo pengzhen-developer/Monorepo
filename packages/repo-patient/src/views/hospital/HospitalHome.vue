@@ -35,37 +35,16 @@
              v-if="hospitalInfo.nethospitalInfo.phoneNumber"
              class="tel"><img src="../../assets/images/newIndex/ic_phone.png" /></a>
         </div>
-
         <div class="notice">
           <i class="alarm"></i>
-          <template v-if="hospitalInfo.notices.length > 0">
-            <div class="message-box"
-                 @click="goHospitalNoticeDetail()">
-              <van-notice-bar style="height: 100%; padding: 0;"
-                              color="#999999"
-                              background="transparent">
-                {{
-                hospitalInfo.notices.length > 0 &&
-                  "【" +
-                    hospitalInfo.notices[0].title +
-                    "】" +
-                    hospitalInfo.notices[0].content
-              }}
-              </van-notice-bar>
-            </div>
-            <i @click="goHospitalNoticeList()"
-               class="arrow"></i>
-          </template>
-
-          <template v-else>
-            <div class="message-box">
-              <van-notice-bar style="height: 100%; padding: 0;"
-                              color="#999999"
-                              background="transparent">
-                暂无新通知
-              </van-notice-bar>
-            </div>
-          </template>
+          <van-notice-bar class="message-box"
+                          color="#999999"
+                          background="transparent"
+                          v-bind:text="noticeBarText"
+                          @click="goHospitalNoticeDetail()" />
+          <i @click="goHospitalNoticeList()"
+             class="arrow"
+             v-if="noticeBarIsSet"></i>
         </div>
       </section>
       <section class="functions">
@@ -198,7 +177,18 @@ export default {
     this.getHospitalInfo()
     this.isRegisterData()
   },
-
+  computed: {
+    noticeBarText() {
+      if (this.hospitalInfo?.notices?.length > 0) {
+        return `【${this.hospitalInfo.notices[0].title} 】${this.hospitalInfo.notices[0].content}`
+      } else {
+        return `暂无新通知`
+      }
+    },
+    noticeBarIsSet() {
+      return this.hospitalInfo?.notices?.length > 0
+    }
+  },
   mounted() {
     this.colorArr.sort(() => Math.random() - 0.5)
   },
@@ -274,6 +264,9 @@ export default {
     },
 
     goHospitalNoticeDetail() {
+      if (!this.noticeBarIsSet) {
+        return
+      }
       const json = peace.util.encode({
         id: this.hospitalInfo.notices[0].id
       })
@@ -607,14 +600,15 @@ export default {
         font-size: 11px;
         color: rgba(153, 153, 153, 1);
         padding-left: 12px;
+        padding-right: 0;
         border-left: 1px solid #eeeeee;
         height: 18px;
         line-height: 18px;
         margin-left: 12px;
         margin-right: 10px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        // overflow: hidden;
+        // text-overflow: ellipsis;
+        // white-space: nowrap;
       }
       .arrow {
         @include arrow;
