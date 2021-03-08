@@ -147,6 +147,11 @@ export default {
     }
   },
 
+  created() {
+    // 其它页面带入的初始条件，合并为查询条件
+    this.model = Object.assign({}, this.model, this.$route.params)
+  },
+
   mounted() {
     this.$nextTick().then(() => {
       this.getDictionary()

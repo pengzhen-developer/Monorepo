@@ -208,7 +208,7 @@
           </div>
 
           <div class="card card-orange row"
-               v-on:click="goPrescription()">
+               v-on:click="goPrescription({ prescriptionStatus: '2' })">
             <div class="col-6 flex justify-center items-center">
               <q-icon style="font-size: 48px"
                       v-bind:name="`img:${ require('./assets/img/ic_doubt@2x.png') }`"></q-icon>
