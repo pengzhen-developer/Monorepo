@@ -119,7 +119,7 @@ export default {
      * 作废，重新开处方
      */
     accept() {
-      this.$confirm('重新开具处方后原处方将自动作废，确定是否重新开具？', '提示', {
+      this.$confirm('重新开具处方后原处方将自动作废，确定是否重新开具？', '重新开方', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
