@@ -38,7 +38,6 @@ export default {
   methods: {
     getOrderVoiceRemind() {
       return Service.getBaseConfig({ tag: 'orderVoiceRemind' }).then((res) => {
-        debugger
         this.orderVoiceRemind = res.data.switch
       })
     },
@@ -54,7 +53,6 @@ export default {
     },
 
     notify(notifyObject) {
-      debugger
       // 生成消息
       this.generateMessage(notifyObject)
 
