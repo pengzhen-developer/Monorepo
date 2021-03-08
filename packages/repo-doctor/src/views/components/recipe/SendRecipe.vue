@@ -286,9 +286,9 @@ export default {
           if (res.data.status === 2) {
             // 未建档，默认选择外延处方
             this.isBuilding = false
-            this.prescriptionTag = 2
+            this.model.prescriptionTag = 2
 
-            console.log('checkIsBuilding' + this.prescriptionTag)
+            console.log('checkIsBuilding' + this.model.prescriptionTag)
           }
         })
       }
