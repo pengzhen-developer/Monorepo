@@ -295,7 +295,7 @@ export default {
   },
   computed: {
     canShowColdStorageTip() {
-      return this.page.json.ColdStorage == 1
+      return this.order?.ColdStorage == 1
     },
     yibaoTypeText() {
       return this.order.diseases ? `${this.order.medicalTreatmentTxt}-${this.order.diseases}` : `${this.order.medicalTreatmentTxt}`
@@ -400,13 +400,8 @@ export default {
       const params = peace.util.decode(json)
       /** 0 到店取药 1 配送到家 2到店取药+配送到家 */
       /**如果是2的话默认展示 配送到家；否则展示 到店取药or配送到家 */
-      //todo 处方内含有【冷藏】储存的药品 配送方式默认为其选中【到店自提】
-      params.ColdStorage = 1
-      if (params.ColdStorage == 1) {
-        this.page.tabIndex = params.ShippingMethod = '0'
-      } else {
-        this.page.tabIndex = params.ShippingMethod == '0' ? '0' : '1'
-      }
+
+      this.page.tabIndex = params.ShippingMethod == '0' ? '0' : '1'
 
       this.page.json = params
       this.CustomerType = params.CustomerType
@@ -596,10 +591,18 @@ export default {
         })
 
         this.NewShippingMethod = peace.util.deepClone(res.data.NewShippingMethod)
-        this.payList = res.data.NewShippingMethod.find((item) => item.Visible)?.PayModel
+        //处方内含有【冷藏】储存的药品 配送方式默认为其选中【到店自提】 支付方式系统默认选中在线支付 未开启在线支付即顺序选中其它支付项
+        if (res.data.ColdStorage == 1) {
+          this.page.tabIndex = 0
+          this.payList = res.data.NewShippingMethod.find((item) => item.Value == this.page.tabIndex)?.PayModel
+        } else {
+          this.payList = res.data.NewShippingMethod.find((item) => item.Visible)?.PayModel
+        }
+
         this.page.payIndex = this.payList.find((item) => item.Visible)?.Value
         this.consigneeInfo.consignee = res.data.patientName
         this.consigneeInfo.mobile = res.data.tel
+
         this.getPayName()
       })
     },
