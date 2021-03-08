@@ -40,7 +40,7 @@
         <div class="tab-content">
           <div class="addr-tit">{{order.shippingMethodTxt}}
             <div class="informedConsent"
-                 @click="showInformedConsent"><span>取货知情同意书</span>
+                 @click="showInformedConsent"><span>取药知情同意书</span>
               <van-image :src="require('@src/assets/images/ic_wenhao.png')"></van-image>
             </div>
           </div>
@@ -98,10 +98,31 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
+
+      <div class="module intro"
+           v-if="moneyRecord.length>1">
+        <div class="dl-packet"
+             v-for="(item,index) in moneyRecord"
+             :key="index">
+          <div class="dt">{{item.name}}</div>
+          <div class="dd">
+            {{item.value}}
+          </div>
+        </div>
+      </div>
+      <div class="module intro"
+           v-else>
+        <div class="dl-packet">
+          <div class="dt">订单总额</div>
+          <div class="dd">
+            ¥{{order.totalMoney.toFixed(2)}}
+          </div>
+        </div>
+      </div>
+
       <div class="module box"
            v-if="order.orderNo">
         <div class="dl-packet">
@@ -142,26 +163,6 @@
           <div class="dt">退款时间：</div>
           <div class="dd">
             {{ order.refundTime }}</div>
-        </div>
-      </div>
-      <div class="module intro"
-           v-if="moneyRecord.length>1">
-        <div class="dl-packet"
-             v-for="(item,index) in moneyRecord"
-             :key="index">
-          <div class="dt">{{item.name}}</div>
-          <div class="dd">
-            {{item.value}}
-          </div>
-        </div>
-      </div>
-      <div class="module intro"
-           v-else>
-        <div class="dl-packet">
-          <div class="dt">订单总额</div>
-          <div class="dd">
-            ¥{{order.totalMoney.toFixed(2)}}
-          </div>
         </div>
       </div>
 
