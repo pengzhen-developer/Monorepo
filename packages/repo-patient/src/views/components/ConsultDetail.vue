@@ -957,11 +957,12 @@ export default {
   justify-content: space-between;
   margin-bottom: 12px;
   .strong {
-    font-weight: 600;
+    font-weight: bold;
     font-size: 18px;
-    line-height: 21px;
+    // line-height: 22px;
+    line-height: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
   }
   .cancelTip {
     display: flex;

@@ -104,6 +104,8 @@ export default {
           return '[图片]'
         case 'video':
           return '[视频]'
+        case 'audio':
+          return '[语音]'
         case 'custom':
           // 病历
           if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.病历) {

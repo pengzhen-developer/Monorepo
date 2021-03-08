@@ -29,6 +29,7 @@
 
       <div class="bottom">
         <van-button @click="setGardianInfo({})"
+                    round
                     type="primary">新增监护人</van-button>
       </div>
 
@@ -40,6 +41,7 @@
       </div>
       <div class="bottom">
         <van-button @click="setGardianInfo({})"
+                    round
                     type="primary">新增监护人</van-button>
       </div>
     </template>

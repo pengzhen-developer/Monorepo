@@ -1268,11 +1268,10 @@ export default {
   }
 }
 /deep/ .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {
-  color: #666;
   text-align: right;
-  &::placeholder {
-    color: #ccc;
-  }
+  // &::placeholder {
+  //   color: #ccc;
+  // }
 }
 /deep/.form-for-family .require .van-cell__title > span::after {
   content: '*';
@@ -1280,6 +1279,8 @@ export default {
   color: #f00;
   font-size: 14px;
   margin-left: 3px;
+  vertical-align: middle;
+  display: inline-block;
 }
 
 .popup-info {
@@ -1320,7 +1321,7 @@ export default {
     height: 24px;
     font-size: 18px;
     font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: 500;
+    font-weight: bold;
     color: #333333;
     line-height: 24px;
     text-align: center;

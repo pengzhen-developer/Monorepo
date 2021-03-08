@@ -57,7 +57,7 @@ export default {
   .overlay-header {
     font-size: 16px;
     font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: 500;
+    font-weight: bold;
     color: #333333;
     line-height: 21px;
     margin-bottom: 10px;
@@ -105,6 +105,7 @@ export default {
     padding-top: 10px;
     border-top: 1px solid rgba(51, 51, 51, 0.05);
     color: $primary;
+    font-size: 15px;
   }
 }
 </style>
