@@ -234,7 +234,8 @@
       <el-alert v-if="isColdStorag"
                 type="warning"
                 show-icon=""
-                title="处方中有冷藏储存的药品，请提醒患者到店/院自提"></el-alert>
+                title="处方中有冷藏储存的药品，请提醒患者到店/院自提"
+                v-bind:closable="false"></el-alert>
     </el-card>
 
     <el-autocomplete size="medium"
