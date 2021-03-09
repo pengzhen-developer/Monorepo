@@ -38,7 +38,14 @@
         <div style="margin: 0 0 10px 0;">
           <h4>{{ isSuccess ? '上传成功' : '上传失败' }}</h4>
         </div>
-        <div style="margin: 0 0 40px 0;">
+        <div v-if="!isSuccess && failInfo.code == 203"
+             style="margin: 0 0 40px 0;font-size: 12px;color: #999999;line-height:18px;text-align: left;">
+          <div>一共{{ failInfo.data.total }}条错误</div>
+          <div v-for="item in failInfo.data.list"
+               :key="item">{{ item }}</div>
+        </div>
+        <div v-else
+             style="margin: 0 0 40px 0;">
           <span style="color: #999999; font-size: 12px;">{{ tipText }}</span>
         </div>
         <div>
@@ -64,6 +71,10 @@ export default {
     return {
       done: false,
       isSuccess: false,
+      failInfo: {
+        code: '',
+        data: ''
+      },
       actions: `${process.env.VUE_APP_API_BASE}nethospital/hospital/v1/Drug/importDrug`,
       headers: {
         Authorization: ''
@@ -93,6 +104,8 @@ export default {
         this.tipText = `文件上传成功，成功导入有效数据 ${okCount} 条，忽略无效数据 ${notOkCount} 条`
       } else {
         this.isSuccess = false
+        this.failInfo.code = res.code
+        this.failInfo.data = res.data
         this.tipText = res.msg
       }
       this.clearFiles()

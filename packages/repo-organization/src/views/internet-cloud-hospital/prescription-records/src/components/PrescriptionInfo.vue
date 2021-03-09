@@ -116,6 +116,12 @@
         </div>
         <div class="info-row-content"></div>
       </div>
+      <div class="ft info-row">
+        <div class="info-row-label t-6">
+          <span>药师质疑原因</span>
+        </div>
+        <div class="info-row-content">{{presInfo.queryReason}}</div>
+      </div>
     </div>
     <!-- 原始处方 -->
     <template>

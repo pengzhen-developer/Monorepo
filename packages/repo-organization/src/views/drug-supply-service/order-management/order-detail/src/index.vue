@@ -211,7 +211,7 @@
 
     <!-- 物流信息 -->
     <div class="q-mb-lg"
-         v-if="data.LogisticsInfo || data.ExpressName || data.PickUpCode">
+         v-if="showLogisticsInfo(data)">
 
       <div class="title q-mb-md">
         <span class="before before-vertical-line text-subtitle1 text-weight-bold">物流信息</span>
@@ -434,6 +434,14 @@ export default {
     this.source.OrderType.map((item) => {
       item.value = parseInt(item.value)
     })
+  },
+  methods: {
+    showLogisticsInfo(data) {
+      // 配送订单展示物流详情
+      const isSelf = this.data.ShippingMethod.toString() === '1'
+
+      return isSelf && (data.LogisticsInfo || data.ExpressName || data.PickUpCode)
+    }
   }
 }
 </script>
