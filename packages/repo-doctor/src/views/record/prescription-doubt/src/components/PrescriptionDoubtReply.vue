@@ -25,7 +25,7 @@
           <el-form-item label="原因"
                         prop="refuseReason">
             <el-input v-model="model.refuseReason"
-                      maxlength="300"
+                      maxlength="120"
                       placeholder="请输入..."></el-input>
           </el-form-item>
         </el-form>
