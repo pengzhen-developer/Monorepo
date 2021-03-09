@@ -278,7 +278,6 @@ export default {
   },
 
   activated() {
-    this.getPhaOrder()
     //从地址页面返回
     if (this.$route.query.addr) {
       this.getAddr(this.$route.query.addr)
@@ -292,6 +291,8 @@ export default {
     $peace.$on('SelectAddress', this.selectAddressCallback)
 
     this.initData(this.$route.params.json)
+
+    this.getPhaOrder()
   },
   computed: {
     canShowColdStorageTip() {
