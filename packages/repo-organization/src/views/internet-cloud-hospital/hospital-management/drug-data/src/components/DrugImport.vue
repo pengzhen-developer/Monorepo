@@ -41,8 +41,9 @@
         <div v-if="!isSuccess && failInfo.code == 203"
              style="margin: 0 0 40px 0;font-size: 12px;color: #999999;line-height:18px;text-align: left;">
           <div>一共{{ failInfo.data.total }}条错误</div>
-          <div v-for="item in failInfo.data.list"
+          <div v-for="item in failList"
                :key="item">{{ item }}</div>
+          <div v-if="failInfo.data.list.length > 5">...</div>
         </div>
         <div v-else
              style="margin: 0 0 40px 0;">
@@ -80,6 +81,16 @@ export default {
         Authorization: ''
       },
       tipText: ''
+    }
+  },
+  computed: {
+    failList() {
+      let list = this.failInfo.data.list
+      if (list.length > 5) {
+        return list.slice(0, 5)
+      } else {
+        return list
+      }
     }
   },
   async mounted() {
