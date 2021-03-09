@@ -167,15 +167,18 @@ export function onDisConnect(disConnectObject) {
       peace.cache.remove(peace.type.USER.INFO)
       peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CODE)
 
+      //销毁IM实例
+      peace.service.IM.destroyNIMS()
+
       // 登录被 T 出，跳转错误页
-      $peace.$router.replace(peace.config.system.errorPage)
+      $peace.$router.replace(peace.config.system.loginPage)
       // window.location.reload()
       break
     case 'logout':
       //删除家人，主动断联IM
       break
     default:
-      $peace.NIM.connect()
+      // $peace.NIM.connect()
       break
   }
 }
