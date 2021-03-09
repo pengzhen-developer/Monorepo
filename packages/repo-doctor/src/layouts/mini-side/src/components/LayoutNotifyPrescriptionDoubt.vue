@@ -93,7 +93,7 @@ export default {
 
       message.messageContainer = (
         <div>
-          <div>{notifyObject.content.describe}</div>
+          <div>{notifyObject.content.detail}</div>
           <div class="q-mb-md">
             <div class="flex items-center">
               <input id="11" class="q-mr-xs" type="checkbox" checked={this.orderVoiceRemind} on-change={message.onChangeOrderVoiceRemind}></input>
