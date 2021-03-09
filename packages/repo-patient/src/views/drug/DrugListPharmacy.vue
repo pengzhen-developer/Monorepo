@@ -259,7 +259,7 @@ export default {
       if (item.ColdStorage == 1 && item.ShippingMethod == 1) {
         return Dialog.confirm({
           title: '温馨提示',
-          message: '处方处方中有需要冷藏储存的药品，需到店自提药品\n本店暂不支持到店自提',
+          message: '处方中有需要冷藏储存的药品，需到店自提药品\n本店暂不支持到店自提',
           confirmButtonText: '知道了',
           showCancelButton: false
         })
