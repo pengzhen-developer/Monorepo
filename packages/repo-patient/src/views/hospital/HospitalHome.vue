@@ -37,6 +37,18 @@
         </div>
         <div class="notice">
           <i class="alarm"></i>
+          <div class="hospital-notice-line"></div>
+          <div class="hospital-notice"
+               :style="{'--marqueeWidth--': noticLength, '--marqueeAnimat--': noticLen > 260 ? noticAnimat:0}"
+               @click="goHospitalNoticeDetail()">
+            <div class="notice-animation">{{noticeBarText}}</div>
+          </div>
+          <i @click="goHospitalNoticeList()"
+             class="arrow"
+             v-if="noticeBarIsSet"></i>
+        </div>
+        <!-- <div class="notice">
+          <i class="alarm"></i>
           <van-notice-bar class="message-box"
                           color="#999999"
                           background="transparent"
@@ -45,7 +57,7 @@
           <i @click="goHospitalNoticeList()"
              class="arrow"
              v-if="noticeBarIsSet"></i>
-        </div>
+        </div> -->
       </section>
       <section class="functions">
         <div class="item "
@@ -183,6 +195,30 @@ export default {
         return `【${this.hospitalInfo.notices[0].title} 】${this.hospitalInfo.notices[0].content}`
       } else {
         return `暂无新通知`
+      }
+    },
+    noticLen() {
+      if (this.hospitalInfo?.notices?.length > 0) {
+        let str = `【${this.hospitalInfo.notices[0].title} 】${this.hospitalInfo.notices[0].content}`
+        return (str.length * 11 + 40).toFixed(1)
+      } else {
+        return 0
+      }
+    },
+    noticAnimat() {
+      if (this.hospitalInfo?.notices?.length > 0) {
+        let str = `【${this.hospitalInfo.notices[0].title} 】${this.hospitalInfo.notices[0].content}`
+        return (str.length * 0.25).toFixed(2) + 's'
+      } else {
+        return '0s'
+      }
+    },
+    noticLength() {
+      if (this.hospitalInfo?.notices?.length > 0) {
+        let str = `【${this.hospitalInfo.notices[0].title} 】${this.hospitalInfo.notices[0].content}`
+        return -(str.length * 11 + 40).toFixed(1) + 'px'
+      } else {
+        return '0px'
       }
     },
     noticeBarIsSet() {
@@ -378,6 +414,53 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hospital-notice-line {
+  width: 1px;
+  height: 18px;
+  background-color: #eee;
+  margin-left: 12px;
+}
+
+.hospital-notice {
+  position: relative;
+  flex: 1;
+  font-size: 11px;
+  color: rgba(153, 153, 153, 1);
+  padding-left: 0;
+  padding-right: 0;
+  height: 18px;
+  line-height: 18px;
+  margin-left: 12px;
+  margin-right: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hospital-notice .notice-animation {
+  position: absolute;
+  display: inline;
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(153, 153, 153, 1);
+  line-height: 21px;
+  white-space: nowrap;
+  animation-name: around;
+  animation-duration: var(--marqueeAnimat--);
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes around {
+  from {
+    left: 100%;
+  }
+
+  to {
+    left: var(--marqueeWidth--);
+  }
+}
+
 .title-tag {
   margin: 0 0 5px 0;
   .doc-tags {
@@ -606,9 +689,9 @@ export default {
         line-height: 18px;
         margin-left: 12px;
         margin-right: 10px;
-        // overflow: hidden;
-        // text-overflow: ellipsis;
-        // white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .arrow {
         @include arrow;
