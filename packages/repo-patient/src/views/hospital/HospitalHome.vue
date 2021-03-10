@@ -39,7 +39,7 @@
           <i class="alarm"></i>
           <div class="hospital-notice-line"></div>
           <div class="hospital-notice"
-               :style="{'--marqueeWidth--': noticLength, '--marqueeAnimat--': noticLen > 260 ? noticAnimat:0}"
+               :style="{'--marqueeWidth--': noticLength, '--marqueeAnimat--': noticLen > 290 ? noticAnimat:0}"
                @click="goHospitalNoticeDetail()">
             <div class="notice-animation">{{noticeBarText}}</div>
           </div>
@@ -200,7 +200,7 @@ export default {
     noticLen() {
       if (this.hospitalInfo?.notices?.length > 0) {
         let str = `【${this.hospitalInfo.notices[0].title} 】${this.hospitalInfo.notices[0].content}`
-        return (str.length * 11).toFixed(1)
+        return (str.length * 12).toFixed(1)
       } else {
         return 0
       }
@@ -216,7 +216,7 @@ export default {
     noticLength() {
       if (this.hospitalInfo?.notices?.length > 0) {
         let str = `【${this.hospitalInfo.notices[0].title} 】${this.hospitalInfo.notices[0].content}`
-        return -(str.length * 11).toFixed(1) + 'px'
+        return -(str.length * 12).toFixed(1) + 'px'
       } else {
         return '0px'
       }
@@ -418,19 +418,19 @@ export default {
   width: 1px;
   height: 18px;
   background-color: #eee;
-  margin-left: 12px;
+  margin-left: 10px;
 }
 
 .hospital-notice {
   position: relative;
   flex: 1;
-  font-size: 11px;
+  font-size: 12px;
   color: rgba(153, 153, 153, 1);
   padding-left: 0;
   padding-right: 0;
   height: 18px;
   line-height: 18px;
-  margin-left: 12px;
+  margin-left: 8px;
   margin-right: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -440,7 +440,7 @@ export default {
 .hospital-notice .notice-animation {
   position: absolute;
   display: inline;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
   color: rgba(153, 153, 153, 1);
   line-height: 21px;
