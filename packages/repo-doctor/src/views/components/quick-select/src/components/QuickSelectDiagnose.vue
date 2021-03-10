@@ -9,11 +9,12 @@
              class="element-ui-default"
              value-key="code"
              v-model="checkValue"
+             v-on:visible-change="visibleChange"
              v-bind:loading='loading'
              v-bind:multiple="multiple"
              v-bind:remote-method="fetchDiagnose">
 
-    <template v-if="allowCreate && diagnoseList.length === 0">
+    <template v-if="allowCreate && diagnoseList.length === 0">123
       <el-option v-bind:key="queryStringOption.code"
                  v-bind:label="queryStringOption.name"
                  v-bind:value="queryStringOption">
@@ -124,6 +125,12 @@ export default {
             this.loading = false
           })
       } else {
+        this.diagnoseList = this.commomDiagnoseList
+      }
+    },
+
+    visibleChange(visible) {
+      if (visible === false) {
         this.diagnoseList = this.commomDiagnoseList
       }
     },

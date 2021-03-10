@@ -22,6 +22,7 @@
                  remote
                  class="full-width element-ui-default"
                  value-key="code"
+                 v-on:visible-change="visibleChange"
                  v-on:clear="reactive"
                  v-bind:loading='loading'
                  v-bind:remote-method="fetchDiagnose"
@@ -170,6 +171,12 @@ export default {
             this.loading = false
           })
       } else {
+        this.diagnoseList = this.commomDiagnoseList
+      }
+    },
+
+    visibleChange(visible) {
+      if (visible === false) {
         this.diagnoseList = this.commomDiagnoseList
       }
     },
