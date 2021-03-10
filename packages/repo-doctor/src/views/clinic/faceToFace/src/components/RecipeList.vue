@@ -1,5 +1,6 @@
 <template>
-  <div class="q-mx-20 column">
+  <div class="q-mx-20 column"
+       v-if="patientInfo.patientNo">
 
     <div class="q-mt-30 q-mb-12">
       <el-button type="primary"
