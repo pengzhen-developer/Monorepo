@@ -14,7 +14,7 @@
              v-bind:multiple="multiple"
              v-bind:remote-method="fetchDiagnose">
 
-    <template v-if="allowCreate && diagnoseList.length === 0">123
+    <template v-if="allowCreate && diagnoseList.length === 0">
       <el-option v-bind:key="queryStringOption.code"
                  v-bind:label="queryStringOption.name"
                  v-bind:value="queryStringOption">
