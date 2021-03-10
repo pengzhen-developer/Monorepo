@@ -116,7 +116,8 @@
         </div>
         <div class="info-row-content"></div>
       </div>
-      <div class="ft info-row">
+      <div class="ft info-row"
+           v-if="presInfo.queryReason">
         <div class="info-row-label t-6">
           <span>药师质疑原因</span>
         </div>
