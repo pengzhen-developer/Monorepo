@@ -135,11 +135,11 @@
                  :class="{'money':yibaoChecked||order.MedicalCardNo}"
                  @click="chooseYibao">{{ order.MedicalCardNo || yibaoText }}</div>
           </div>
-          <div class="line"></div>
+          <!-- <div class="line"></div>
           <div class="dl-packet">
             <div class="dt">医保类型 ：</div>
             <div class="dd money">{{  yibaoTypeText }}</div>
-          </div>
+          </div> -->
         </template>
         <template v-if="canShowShangbao">
           <div class="line"></div>

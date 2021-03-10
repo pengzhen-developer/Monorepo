@@ -31,7 +31,7 @@ export default {
       loading: false,
       finished: false,
       p: 0,
-      size: 5
+      size: 50
     }
   },
 

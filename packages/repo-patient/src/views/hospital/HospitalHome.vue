@@ -200,7 +200,7 @@ export default {
     noticLen() {
       if (this.hospitalInfo?.notices?.length > 0) {
         let str = `【${this.hospitalInfo.notices[0].title} 】${this.hospitalInfo.notices[0].content}`
-        return (str.length * 11 + 40).toFixed(1)
+        return (str.length * 11).toFixed(1)
       } else {
         return 0
       }
@@ -216,7 +216,7 @@ export default {
     noticLength() {
       if (this.hospitalInfo?.notices?.length > 0) {
         let str = `【${this.hospitalInfo.notices[0].title} 】${this.hospitalInfo.notices[0].content}`
-        return -(str.length * 11 + 40).toFixed(1) + 'px'
+        return -(str.length * 11).toFixed(1) + 'px'
       } else {
         return '0px'
       }

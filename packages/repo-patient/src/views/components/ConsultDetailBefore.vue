@@ -199,14 +199,14 @@
                @click="chooseYibao">{{yibaoText||'请选择'}}
           </div>
         </div>
-        <div class="brief"
+        <!-- <div class="brief"
              v-if="yibaoText">
           <div class="brief-left">医保类型:</div>
           <div class="brief-right"
                :class="{'checked':yibaoTypeText}"
                @click="chooseYibaoType">{{yibaoTypeText||'请选择'}}
           </div>
-        </div>
+        </div> -->
 
         <div class="brief"
              v-if="canShowShangbao">
@@ -453,14 +453,14 @@ export default {
     },
     onSuccess(result) {
       if (result.checked == true) {
-        this.yibaoTypeDialog.visible = true
+        // this.yibaoTypeDialog.visible = true
 
-        if (this.yibaoInfo.medCardNo != result.yibaoInfo) {
-          this.yibaoTypeText = ''
-        }
+        // if (this.yibaoInfo.medCardNo != result.yibaoInfo.medCardNo) {
+        //   this.yibaoTypeText = ''
+        // }
 
         this.yibaoInfo = result.yibaoInfo
-        this.yibaoTypeDialog.medCardId = this.yibaoInfo.id
+        // this.yibaoTypeDialog.medCardId = this.yibaoInfo.id
         this.yibaoText = this.yibaoInfo.medCardNo
       }
     },
@@ -494,9 +494,9 @@ export default {
       this.$router.push(`/components/FirstVisitList/${json}`)
     },
     apply() {
-      if (this.yibaoText && !this.yibaoTypeText) {
-        return peace.util.alert('请选择医保类型')
-      }
+      // if (this.yibaoText && !this.yibaoTypeText) {
+      //   return peace.util.alert('请选择医保类型')
+      // }
       this.sending = true
       const params = peace.util.deepClone(this.params)
       params.medCardNo = this.yibaoInfo.medCardNo || ''
