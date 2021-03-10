@@ -276,6 +276,23 @@ export function getStoresList(params) {
 }
 
 /**
+ * 检测药品属性
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function checkDrugAttr(params) {
+  const checkDrugAttr = 'client/v1/MedicineOrder/checkDrugAttr'
+
+  return peace.http.post(checkDrugAttr, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
+
+/**
  * 获取生成订单页面
  *
  * @export
@@ -511,6 +528,8 @@ export default {
   attention,
   /** 获取附近商店列表**/
   getStoresList,
+  /** 检测药品属性 */
+  checkDrugAttr,
   /** 获取提交订单页面**/
   getOrderBefore,
   /** 提交订单 **/

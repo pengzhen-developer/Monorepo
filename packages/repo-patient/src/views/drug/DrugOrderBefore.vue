@@ -347,8 +347,18 @@ export default {
         return
       }
 
-      this.informedConsentDialog.visible = true
-      this.informedConsentDialog.informedConsent = this.order.OperationInfo.InformedConsent
+      peace.service.patient
+        .checkDrugAttr({
+          jztClaimNo: this.order.jztClaimNo,
+          shippingMethod: this.page.tabIndex
+        })
+        .then(() => {
+          this.informedConsentDialog.visible = true
+          this.informedConsentDialog.informedConsent = this.order.OperationInfo.InformedConsent
+        })
+        .catch((res) => {
+          peace.util.alert(res.data.msg)
+        })
     },
     onCancelCallback() {},
     onSubmitCallback() {
