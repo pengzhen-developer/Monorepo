@@ -51,7 +51,7 @@
         <div class="drugs">
           <div class="drug">
             <div :key="drug.DrugCode"
-                 class="drug-item"
+                 class="drug-item flex justify-between"
                  v-for="drug in info.drugJson">
               <div class="drug-image">
                 <el-image :src="drug.DrugImage">
@@ -60,7 +60,7 @@
                   </template>
                 </el-image>
               </div>
-              <div class="drug-info">
+              <div class="drug-info-item">
                 <div class="drug-info-title">{{ drug.DrugName }}</div>
                 <div class="drug-info-num">{{ drug.DrugSpecification }}</div>
               </div>
@@ -69,9 +69,9 @@
                      v-bind:style="{'visibility':drug.coldStorage==1?'visible': 'hidden'}">
                   冷藏
                 </div>
-                <div>
-                  <span class="red">¥{{ drug.DrugUnitPrice }}</span> X
-                  <span>{{ drug.DrugQty }}</span>
+                <div class="flex">
+                  <span class="red">¥{{ drug.DrugUnitPrice }}</span>
+                  <span class="gary">X{{ drug.DrugQty }}</span>
                 </div>
               </div>
             </div>
@@ -322,8 +322,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-$text: #23313f;
-$grey-text: #778899;
+$text: #333333;
+$grey-text: rgba(51, 51, 51, 0.6);
 $border-color: #eaeaea;
 .coldStorage {
   color: #ea3930;
@@ -360,8 +360,9 @@ $border-color: #eaeaea;
 }
 ::v-deep .purchase-info {
   color: $text;
+  padding: 0 8px;
   & > div {
-    padding: 10px 24px;
+    padding: 10px 0px;
     border-bottom: 1px solid $border-color;
     &:last-of-type {
       border-bottom: 0;
@@ -375,9 +376,9 @@ $border-color: #eaeaea;
       vertical-align: middle;
     }
     &-pic {
-      width: 62px;
-      height: 62px;
-      line-height: 62px;
+      width: 48px;
+      height: 48px;
+      line-height: 48px;
       font-size: 36px;
       text-align: center;
       border: 1px solid $border-color;
@@ -412,7 +413,7 @@ $border-color: #eaeaea;
     .order-type {
       position: absolute;
       top: 10px;
-      right: -16px;
+      right: -24px;
       color: #fff;
       line-height: 1.75;
       padding: 0 24px;
@@ -457,6 +458,19 @@ $border-color: #eaeaea;
     padding: 16px 16px 0 16px;
     background: #fbfbfb;
     border-bottom-width: 0;
+    .drug-info-item {
+      padding-left: 8px;
+      flex: 1;
+      .drug-info-num {
+        font-size: 14px;
+        color: $grey-text;
+      }
+    }
+    .drug-info-title {
+      font-size: 16px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+    }
   }
   .drugs {
     // padding: 10px 10px 20px 10px;
@@ -468,7 +482,7 @@ $border-color: #eaeaea;
       border-bottom: 1px dashed #f3f3f3;
       overflow-y: auto;
       .drug-item {
-        padding: 10px;
+        padding: 0 0 10px 0;
         border-bottom: 1px dashed #f3f3f3;
         &:first-of-type {
           padding-top: 0;
@@ -481,6 +495,7 @@ $border-color: #eaeaea;
         display: inline-block;
         vertical-align: middle;
       }
+
       .drug-image {
         width: 60px;
         height: 60px;
@@ -497,19 +512,17 @@ $border-color: #eaeaea;
       .drug-info {
         padding-left: 12px;
         line-height: 24px;
-        .drug-info-num {
-          font-size: 12px;
-          color: $grey-text;
-        }
       }
+
       .drug-price {
         max-width: 100px;
         padding: 4px 0;
         float: right;
         line-height: 24px;
+
         .red {
-          font-size: 12px;
-          color: $grey-text;
+          font-size: 14px;
+          color: $text;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -518,6 +531,11 @@ $border-color: #eaeaea;
             font-size: 16px;
             line-height: normal;
           }
+        }
+        .gary {
+          font-size: 14px;
+          margin-left: 4px;
+          color: $grey-text;
         }
       }
     }
