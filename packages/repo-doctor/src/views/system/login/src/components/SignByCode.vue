@@ -6,26 +6,31 @@
       </div>
     </div>
 
-    <el-form v-bind:model="model"
+    <el-form space-none
+             v-bind:model="model"
              v-bind:rules="rules"
              class="form form-content"
              v-on:keyup.enter.native="login"
              size="mini"
              ref="form">
 
-      <el-form-item prop="tel">
+      <el-form-item prop="tel"
+                    space-md>
         <el-input v-model.trim="model.tel"
                   v-bind:class="{ 'active': usernameActive }"
                   v-on:focus="usernameFocus"
                   v-on:blur="usernameBlur"
                   placeholder="请输入手机号">
-          <div slot="prepend">
-            <i class="el-icon-mobile-phone"></i>
+          <div class="flex justify-center items-center"
+               slot="prepend">
+            <i class="icon_shouji"
+               style="font-size: 18px;"></i>
           </div>
         </el-input>
       </el-form-item>
 
-      <el-form-item prop="smsCode">
+      <el-form-item prop="smsCode"
+                    space-lg>
         <el-input ref="smsCode"
                   v-model.trim="model.smsCode"
                   v-bind:class="{ 'active': passwordActive }"
@@ -34,49 +39,57 @@
                   v-on:focus="passwordFocus"
                   v-on:blur="passwordBlur"
                   placeholder="请输入验证码">
-          <div slot="prepend">
-            <i class="el-icon-lock"></i>
+          <div class="flex justify-center items-center"
+               slot="prepend">
+            <i class="icon_yanzhengma"
+               style="font-size: 22px;"></i>
           </div>
 
           <template slot="suffix">
-            <template v-if="showCountdown">
+            <div class="flex items-center justify-center full-height"
+                 v-if="showCountdown">
               <el-divider direction="vertical"></el-divider>
 
-              <PeaceCountdown v-bind:time="countdownTime"
+              <PeaceCountdown class="q-mx-12"
+                              v-bind:time="countdownTime"
                               v-on:end="onCountdownEnd">
                 <template slot-scope="props">
                   已发送 ({{ parseInt(props.minutes * 60) + parseInt(props.seconds) }}s)
                 </template>
               </PeaceCountdown>
-            </template>
-            <template v-else>
+            </div>
+            <div class="flex items-center justify-center full-height"
+                 v-else>
               <el-divider direction="vertical"></el-divider>
 
-              <el-button type="text"
+              <el-button class="q-mx-12"
+                         type="text"
                          v-bind:disabled="!isVerifyPhone"
                          v-on:click="sendCode">{{ sendSmsCode ? '重新发送' : '发送验证码' }}</el-button>
-            </template>
+            </div>
           </template>
         </el-input>
       </el-form-item>
 
+      <el-form-item>
+        <PeaceButton class="full-width"
+                     style="height: 48px; font-size: 20px;"
+                     type="primary"
+                     v-bind:loading="isLoging"
+                     v-on:click="login">登录</PeaceButton>
+      </el-form-item>
+
+      <el-form-item>
+        <div class="flex justify-between">
+          <PeaceButton class="text-grey-5"
+                       type="text"
+                       v-on:click="changeSignByPassword">密码登录</PeaceButton>
+          <PeaceButton class="text-grey-5"
+                       type="text"
+                       v-on:click="tooltip">收不到验证码?</PeaceButton>
+        </div>
+      </el-form-item>
     </el-form>
-    <div class="control q-mb-xs">
-      <peace-button size="large"
-                    type="primary"
-                    v-bind:loading="isLoging"
-                    v-on:click="login">登录</peace-button>
-    </div>
-
-    <div class="flex justify-between">
-      <el-button class="text-grey-5"
-                 type="text"
-                 v-on:click="changeSignByPassword">密码登录</el-button>
-      <el-button class="text-grey-5"
-                 type="text"
-                 v-on:click="tooltip">收不到验证码？</el-button>
-    </div>
-
   </div>
 </template>
 
@@ -228,34 +241,24 @@ export default {
 }
 </script>
 
-
 <style lang="scss" scoped>
 .body {
-  padding: 20px 80px 40px;
-  border: 6px solid rgba(14, 136, 150, 0.3);
-
-  .el-form-item {
-    border-radius: 4px;
-    border: 1px solid rgba(217, 217, 217, 1);
-  }
-
-  .control {
-    .el-button {
-      width: 100%;
-    }
-  }
+  padding: 32px 48px;
+  border: 8px solid rgba(14, 136, 150, 0.3);
 
   .title {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 50px;
+
+    margin: 0 0 24px 0;
 
     .center {
       text-align: center;
       font-size: 24px;
-      font-weight: 600;
+      font-weight: 500;
       color: #309aa6;
+      line-height: 33px;
     }
     .right {
       display: flex;
@@ -267,107 +270,38 @@ export default {
       }
     }
   }
-
-  .form-content {
-    margin-top: 15px;
-  }
-
-  .bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 16px 0px;
-
-    .center {
-      text-align: center;
-
-      font-size: 24px;
-      font-weight: 600;
-      color: rgba(51, 51, 51, 1);
-    }
-    .bottom_item {
-      display: flex;
-      justify-content: flex-end;
-      color: #000;
-      font-size: 16px;
-      span {
-        font-size: 14px;
-      }
-    }
-  }
 }
 
-::v-deep .form .el-form-item {
-  border-bottom: 1px solid #e8e8e8;
-  margin: 0 0 25px 0;
-
-  &:focus-within {
-    border: 1px solid var(--q-color-primary);
-    box-shadow: 1px 5px 10px 0px rgba(52, 186, 204, 0.2);
-  }
-
-  .el-form-item__label {
-    padding: 0;
-    margin-bottom: 0;
-    font-weight: 400;
-    line-height: 40px !important;
-    color: rgba(0, 0, 0, 0.85);
-  }
-
+::v-deep .el-form {
   .el-input__inner {
-    border-radius: 0;
-    border: 0;
-    padding: 2px 16px;
-    line-height: 40px;
-    height: 40px;
-    border-radius: 0 4px 4px 0;
+    height: 48px;
+    line-height: 48px;
+
+    &:focus-within {
+      box-shadow: 1px 5px 10px 0px rgba(52, 186, 204, 0.2);
+    }
   }
 
   .el-input-group__prepend {
-    border: none;
-    padding: 0 15px;
-  }
-
-  .el-form-item__error {
-    margin: 5px 0 0 0;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    color: #dddddd;
   }
 
   .el-input__suffix {
-    border: none;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    right: 0;
   }
 
-  input {
-    outline: none;
-    border: none;
-    &::placeholder {
-      color: #c0c4cc;
-      font-size: 12px;
-    }
-  }
-
-  i {
-    color: #c0c4cc;
-  }
-
-  .el-input {
-    padding: 1px;
-    &.active {
-      .el-input-group__prepend {
-        background: var(--q-color-primary-light-2) !important;
-      }
-
-      i {
-        color: var(--q-color-primary) !important;
-      }
-    }
+  .el-form-item.is-error .el-input__inner,
+  .el-form-item.is-error .el-input__inner:focus,
+  .el-form-item.is-error .el-textarea__inner,
+  .el-form-item.is-error .el-textarea__inner:focus {
+    border-color: var(--q-color-primary);
   }
 }
-.eyes {
-  cursor: pointer;
+
+.el-divider--vertical {
+  margin: 0;
 }
 </style>

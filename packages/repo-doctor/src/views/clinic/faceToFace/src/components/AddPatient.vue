@@ -1,91 +1,92 @@
 <template>
   <div>
-    <el-form v-bind:model="ruleForm"
-             v-bind:rules="rules"
-             label-position="right"
-             label-width="110px"
-             ref="ruleForm">
-      <el-form-item label="姓名"
-                    prop="name">
-        <span slot="label">姓名：</span>
-        <el-input v-bind:disabled="isChaperonage"
-                  v-model="ruleForm.name"
-                  placeholder="请输入姓名"></el-input>
-      </el-form-item>
-      <el-form-item label="身份证"
-                    prop="idCard">
-        <span slot="label">身份证：</span>
-        <el-input v-bind:disabled="isChaperonage"
-                  v-model="ruleForm.idCard"
-                  placeholder="请输入身份证号"></el-input>
-      </el-form-item>
-      <el-form-item label="性别"
-                    prop="sex">
-        <span slot="label">性别：</span>
-        <el-input v-model="ruleForm.sex"
-                  v-bind:disabled="true"></el-input>
-      </el-form-item>
-
-      <el-form-item label="生日"
-                    prop="birthday">
-        <span slot="label">生日：</span>
-        <el-input suffix-icon="el-icon-date"
-                  v-model="ruleForm.birthday"
-                  v-bind:disabled="true"></el-input>
-      </el-form-item>
-
-      <el-form-item label="联系方式"
-                    prop="tel">
-        <span slot="label">手机号码：</span>
-        <el-input v-bind:disabled="isChaperonage"
-                  v-model.number.trim="ruleForm.tel"
-                  placeholder="请输入手机号码"></el-input>
-      </el-form-item>
-
-      <div v-if="isChaperonage">
-        <hr>
-
-        <div class="q-mb-md">
-          <el-alert type="warning"
-                    show-icon=""
-                    v-bind:closable="false"
-                    title="就诊人身份证信息未进入认证库，请填写陪同人信息"></el-alert>
-        </div>
-
-        <el-form-item label=""
-                      prop="chaperonageName">
-          <span slot="label">陪同人姓名：</span>
-          <el-input v-model.trim="ruleForm.chaperonageName"
+    <div class="el-dialog__body">
+      <el-form v-bind:model="ruleForm"
+               v-bind:rules="rules"
+               label-position="right"
+               label-width="auto"
+               ref="ruleForm">
+        <el-form-item label="姓名"
+                      prop="name">
+          <span slot="label">姓名：</span>
+          <el-input v-bind:disabled="isChaperonage"
+                    v-model="ruleForm.name"
                     placeholder="请输入姓名"></el-input>
         </el-form-item>
-
-        <el-form-item label=""
-                      prop="chaperonageIdCard">
+        <el-form-item label="身份证"
+                      prop="idCard">
           <span slot="label">身份证：</span>
-          <el-input v-model.trim="ruleForm.chaperonageIdCard"
+          <el-input v-bind:disabled="isChaperonage"
+                    v-model="ruleForm.idCard"
                     placeholder="请输入身份证号"></el-input>
         </el-form-item>
+        <el-form-item label="性别"
+                      prop="sex">
+          <span slot="label">性别：</span>
+          <el-input v-model="ruleForm.sex"
+                    v-bind:disabled="true"></el-input>
+        </el-form-item>
 
-      </div>
+        <el-form-item label="生日"
+                      prop="birthday">
+          <span slot="label">生日：</span>
+          <el-input suffix-icon="el-icon-date"
+                    v-model="ruleForm.birthday"
+                    v-bind:disabled="true"></el-input>
+        </el-form-item>
 
-      <el-form-item>
-        <el-button @click="closeMenu">取消</el-button>
-        <el-button @click="submitForm"
-                   type="primary">保存</el-button>
-      </el-form-item>
-    </el-form>
+        <el-form-item label="联系方式"
+                      prop="tel">
+          <span slot="label">手机号码：</span>
+          <el-input v-bind:disabled="isChaperonage"
+                    v-model.number.trim="ruleForm.tel"
+                    placeholder="请输入手机号码"></el-input>
+        </el-form-item>
 
-    <div class="q-pt-16"
-         v-if="tips.showTips">
-      <div class="tip-style row items-center justify-between">
-        <i class="el-icon-warning q-ml-16"
-           type="warning"> 该就诊人已是您的患者，无需重复添加！</i>
+        <hr v-if="isChaperonage">
+        <div v-if="isChaperonage">
 
-        <el-button type="text"
-                   v-on:click="goToRecipe"
-                   class="text-color">去开处方</el-button>
-      </div>
+          <div class="q-mb-md">
+            <el-alert type="warning"
+                      show-icon=""
+                      v-bind:closable="false"
+                      title="就诊人身份证信息未进入认证库，请填写陪同人信息"></el-alert>
+          </div>
+
+          <el-form-item label=""
+                        prop="chaperonageName">
+            <span slot="label">陪同人姓名：</span>
+            <el-input v-model.trim="ruleForm.chaperonageName"
+                      placeholder="请输入姓名"></el-input>
+          </el-form-item>
+
+          <el-form-item label=""
+                        prop="chaperonageIdCard">
+            <span slot="label">身份证：</span>
+            <el-input v-model.trim="ruleForm.chaperonageIdCard"
+                      placeholder="请输入身份证号"></el-input>
+          </el-form-item>
+
+        </div>
+      </el-form>
     </div>
+
+    <div class="el-dialog__footer">
+      <el-button @click="closeMenu">取消</el-button>
+      <el-button @click="submitForm"
+                 type="primary">保存</el-button>
+    </div>
+
+    <div v-if="tips.showTips"
+         class="tip-style row items-center justify-between q-pr-md">
+      <i class="el-icon-warning q-ml-16"
+         type="warning"> 该就诊人已是您的患者，无需重复添加！</i>
+
+      <el-button type="text"
+                 v-on:click="goToRecipe"
+                 class="text-color">去开处方</el-button>
+    </div>
+
   </div>
 </template>
 
@@ -270,11 +271,12 @@ export default {
 }
 
 .tip-style {
-  position: absolute;
+  position: relative;
   bottom: 0px;
   left: 0px;
   right: 0px;
   height: 32;
+  margin: 16px -16px -16px -16px;
   // margin: 16px 8px;
   background: #ffaa002d;
   border-radius: 2px;

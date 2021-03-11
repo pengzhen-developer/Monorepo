@@ -40,27 +40,27 @@
                         v-bind:maxlength="6"
                         v-bind:minlength="6">
                 <template slot="suffix">
-                  <template v-if="showCountdown">
+                  <div class="flex items-center justify-center full-height"
+                       v-if="showCountdown">
                     <el-divider direction="vertical"></el-divider>
 
-                    <div class="inline-block q-ml-xs q-mr-sm">
-                      <PeaceCountdown v-bind:time="countdownTime"
-                                      v-on:end="onCountdownEnd">
-                        <template slot-scope="props">
-                          已发送 ({{ parseInt(props.minutes * 60) + parseInt(props.seconds) }}s)
-                        </template>
-                      </PeaceCountdown>
-                    </div>
-                  </template>
-                  <template v-else>
+                    <PeaceCountdown class="q-mx-12"
+                                    v-bind:time="countdownTime"
+                                    v-on:end="onCountdownEnd">
+                      <template slot-scope="props">
+                        已发送 ({{ parseInt(props.minutes * 60) + parseInt(props.seconds) }}s)
+                      </template>
+                    </PeaceCountdown>
+                  </div>
+                  <div class="flex items-center justify-center full-height"
+                       v-else>
                     <el-divider direction="vertical"></el-divider>
 
-                    <div class="inline-block q-ml-xs q-mr-sm">
-                      <el-button type="text"
-                                 v-bind:disabled="!isVerifyPhone"
-                                 v-on:click="sendCode">{{ sendSmsCode ? '重新发送' : '发送验证码' }}</el-button>
-                    </div>
-                  </template>
+                    <el-button class="q-mx-12"
+                               type="text"
+                               v-bind:disabled="!isVerifyPhone"
+                               v-on:click="sendCode">{{ sendSmsCode ? '重新发送' : '发送验证码' }}</el-button>
+                  </div>
                 </template>
               </el-input>
 
@@ -78,7 +78,7 @@
             <el-button class="text-grey-5"
                        throttle
                        type="text"
-                       v-on:click="tooltip">收不到验证码？</el-button>
+                       v-on:click="tooltip">收不到验证码?</el-button>
           </div>
         </div>
       </div>
@@ -99,9 +99,6 @@
                         placeholder="6-20位字母和数字的组合"
                         v-bind:type="this.showPassword1 ? 'text' : 'password'"
                         v-model.trim="step2Model.newPass">
-                <div slot="prepend">
-                  <i class="el-icon-lock"></i>
-                </div>
                 <div class="flex items-center full-height"
                      slot="suffix"
                      v-on:click="showPassword1 = !showPassword1">
@@ -120,9 +117,6 @@
                         placeholder="请再次输入新密码"
                         v-bind:type="this.showPassword2 ? 'text' : 'password'"
                         v-model.trim="step2Model.confirmPass">
-                <div slot="prepend">
-                  <i class="el-icon-lock"></i>
-                </div>
                 <div class="flex items-center full-height"
                      slot="suffix"
                      v-on:click="showPassword2 = !showPassword2">
@@ -148,11 +142,11 @@
 
     <template v-if="stepActive === 3">
 
-      <div class="flex justify-center q-mt-md q-pb-xl">
+      <div class="flex justify-center q-mt-48 q-pb-xl">
         <div class="flex column justify-center items-center"
              style="width: 280px">
           <i style="font-size: 48px;"
-             class="el-icon-circle-check text-primary"></i>
+             class="icon_yiwancheng1 text-primary q-mb-md"></i>
 
           <div>
             <span>设置成功，</span>
@@ -302,5 +296,9 @@ export default {
 }
 </script>
 
-<style>
+
+<style lang="scss" scoped>
+.el-divider--vertical {
+  margin: 0;
+}
 </style>

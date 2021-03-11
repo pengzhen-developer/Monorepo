@@ -41,6 +41,7 @@
     <el-card class="q-mb-md"
              v-show="value && value.length > 0">
       <PeaceTable class="editable q-mb-sm element-ui-default"
+                  size="medium"
                   v-bind:data="value">
         <PeaceTableColumn label="药品名称"
                           prop="drugName"

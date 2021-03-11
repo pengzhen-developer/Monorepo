@@ -16,28 +16,30 @@
                  v-if="visible"
                  v-bind:show-close="false"
                  v-bind:visible="visible">
-      <div class="text-center q-px-xl q-pt-none q-pb-lg">
-        <div class="text-center q-mb-lg">确认坚持开具该处方？</div>
-        <el-form ref="form"
-                 label-width="auto"
-                 v-bind:model="model"
-                 v-bind:rules="rules">
-          <el-form-item label="原因"
-                        prop="refuseReason">
-            <el-input v-model="model.refuseReason"
-                      maxlength="120"
-                      placeholder="请输入..."></el-input>
-          </el-form-item>
-        </el-form>
-
-        <div class="text-center">
-          <el-button plain
-                     v-on:click="rejectCancel">取消</el-button>
-          <el-button type="primary"
-                     v-on:click="rejectConfirm">
-            确定
-          </el-button>
+      <div class="el-dialog__body">
+        <div class="text-center q-px-xl">
+          <div class="text-center q-mb-md">确认坚持开具该处方？</div>
+          <el-form ref="form"
+                   space-none
+                   label-width="auto"
+                   v-bind:model="model"
+                   v-bind:rules="rules">
+            <el-form-item label="原因："
+                          prop="refuseReason">
+              <el-input v-model="model.refuseReason"
+                        maxlength="120"
+                        placeholder="请输入..."></el-input>
+            </el-form-item>
+          </el-form>
         </div>
+      </div>
+      <div class="el-dialog__footer">
+        <el-button plain
+                   v-on:click="rejectCancel">取消</el-button>
+        <el-button type="primary"
+                   v-on:click="rejectConfirm">
+          确定
+        </el-button>
       </div>
     </PeaceDialog>
   </div>

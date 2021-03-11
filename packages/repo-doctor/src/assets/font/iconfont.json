@@ -1,23 +1,58 @@
 {
   "id": "2354522",
-  "name": "智药云 - 医生端",
+  "name": "智药云 - 医生端 - PC",
   "font_family": "iconfont",
   "css_prefix_text": "icon_",
   "description": "",
   "glyphs": [
     {
-      "icon_id": "16601274",
-      "name": "隐藏密码",
-      "font_class": "yincangmima",
-      "unicode": "e675",
-      "unicode_decimal": 58997
+      "icon_id": "20208992",
+      "name": "验证码",
+      "font_class": "yanzhengma",
+      "unicode": "e6a9",
+      "unicode_decimal": 59049
     },
     {
-      "icon_id": "16601275",
+      "icon_id": "20208993",
+      "name": "手机",
+      "font_class": "shouji",
+      "unicode": "e6ab",
+      "unicode_decimal": 59051
+    },
+    {
+      "icon_id": "20208994",
+      "name": "密码",
+      "font_class": "mima1",
+      "unicode": "e6ac",
+      "unicode_decimal": 59052
+    },
+    {
+      "icon_id": "20208981",
+      "name": "隐藏密码",
+      "font_class": "yincangmima1",
+      "unicode": "e6a6",
+      "unicode_decimal": 59046
+    },
+    {
+      "icon_id": "20208982",
       "name": "显示密码",
       "font_class": "xianshimima",
-      "unicode": "e676",
-      "unicode_decimal": 58998
+      "unicode": "e6a8",
+      "unicode_decimal": 59048
+    },
+    {
+      "icon_id": "20196977",
+      "name": "已完成",
+      "font_class": "yiwancheng1",
+      "unicode": "e6aa",
+      "unicode_decimal": 59050
+    },
+    {
+      "icon_id": "20196953",
+      "name": "步骤条_已完成",
+      "font_class": "buzhoutiao_yiwancheng",
+      "unicode": "e6a7",
+      "unicode_decimal": 59047
     },
     {
       "icon_id": "19700887",
