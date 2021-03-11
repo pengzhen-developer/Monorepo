@@ -71,7 +71,7 @@
                 </div>
                 <div class="flex">
                   <span class="red">¥{{ drug.DrugUnitPrice }}</span>
-                  <span class="gary">X{{ drug.DrugQty }}</span>
+                  <span class="gary">x{{ drug.DrugQty }}</span>
                 </div>
               </div>
             </div>
@@ -86,7 +86,7 @@
               </div>
             </template>
             <div class="flex row justify-between">
-              <div class="text-caption">{{ info.payStatus>=3||info.payTime?'实付金额':'应付金额' }}</div>
+              <div class="text-caption color-333">{{ info.payStatus>=3||info.payTime?'实付金额':'应付金额' }}</div>
               <div class="red text-body1">
                 ¥{{ info.orderMoney | toFixed2() }}
                 <span v-if="info.refundTime"
@@ -99,7 +99,7 @@
         <div class="order-status"
              v-bind:style="{'padding-bottom':cancelList.length>0?'0px':'16px'}">
           <div class="flex">
-            <div class="order-status-label">订单状态</div>
+            <div class="order-status-label color-333">订单状态</div>
             <div class="order-status-content">{{ getOrderStatusText(info) }}</div>
           </div>
           <!-- 取消记录 -->
@@ -181,7 +181,7 @@ export default {
   computed: {
     moneyRecord() {
       //过滤金额为空
-      return this.info.moneyRecord.filter((item) => item.value >= 0)
+      return this.info.moneyRecord.filter((item) => this.getNum(item.value) >= 0)
     },
     cancelList() {
       let list = []
@@ -262,6 +262,13 @@ export default {
     this.source.SelfOrderStatus = await Peace.identity.dictionary.getList('self_extraction_order_status')
   },
   methods: {
+    getNum(string) {
+      if (isNaN(parseInt(string))) {
+        return string.substring(1)
+      } else {
+        return string
+      }
+    },
     getOrderStatusText(row) {
       if (row.shippingMethod.toString() === '0') {
         return this.source.SelfOrderStatus.find((item) => item.value === row.callOrderStatus.toString())?.label
@@ -328,6 +335,9 @@ $border-color: #eaeaea;
 .coldStorage {
   color: #ea3930;
   text-align: right;
+}
+.color-333 {
+  color: #333 !important;
 }
 .tips {
   width: 100%;
@@ -455,7 +465,7 @@ $border-color: #eaeaea;
     }
   }
   .drug-info {
-    padding: 16px 16px 0 16px;
+    padding: 16px 0 0 0;
     background: #fbfbfb;
     border-bottom-width: 0;
     .drug-info-item {
@@ -482,7 +492,7 @@ $border-color: #eaeaea;
       border-bottom: 1px dashed #f3f3f3;
       overflow-y: auto;
       .drug-item {
-        padding: 0 0 10px 0;
+        padding: 0 16px 10px 16px;
         border-bottom: 1px dashed #f3f3f3;
         &:first-of-type {
           padding-top: 0;
@@ -543,7 +553,7 @@ $border-color: #eaeaea;
       margin-top: 15px;
       text-align: left;
       & > div {
-        padding-right: 10px;
+        padding-right: 16px;
         font-size: 12px;
         line-height: 1;
         &:last-of-type {
@@ -554,7 +564,7 @@ $border-color: #eaeaea;
           line-height: 24px;
           &:first-of-type {
             color: $grey-text;
-            padding-left: 10px;
+            padding-left: 16px;
             &:after {
               content: '：';
             }
@@ -576,7 +586,8 @@ $border-color: #eaeaea;
     }
     .order-status-label {
       min-width: 5em;
-      color: $grey-text;
+      color: $text;
+      padding-left: 16px;
       &:after {
         content: '：';
       }
@@ -636,7 +647,10 @@ $border-color: #eaeaea;
   .order-fullinfo {
     font-size: 12px;
     line-height: 1.5;
-    color: $text;
+    color: $grey-text;
+
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -644,7 +658,6 @@ $border-color: #eaeaea;
       width: 50%;
     }
     & > div > span:first-of-type {
-      color: $grey-text;
       &:after {
         content: '：';
       }
