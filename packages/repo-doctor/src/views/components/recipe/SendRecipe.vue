@@ -228,7 +228,7 @@ export default {
         return '自费'
       }
       if (this.inquiryInfo.paymentType === 2) {
-        return '普通城镇职工医保'
+        return '普通医保'
       }
       if (this.inquiryInfo.paymentType === 3) {
         return '商保'
