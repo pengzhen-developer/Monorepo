@@ -78,7 +78,7 @@ export const redirectToConsole = async () => {
 export const redirectToDoctorWorkbench = () => {
   const URL = process.env.VUE_APP_SITE_DOCTOR_WORKBENCH
 
-  redirectToPath(URL)
+  redirectToPath(URL, '_blank')
 }
 /**
  * 跳转药师工作台
@@ -87,7 +87,7 @@ export const redirectToDoctorWorkbench = () => {
 export const redirectToPharmacistWorkbench = () => {
   const URL = process.env.VUE_APP_SITE_PHARMACIST_WORKBENCH
 
-  redirectToPath(URL)
+  redirectToPath(URL, '_blank')
 }
 
 /**
