@@ -31,15 +31,11 @@ export default {
       loading: false,
       finished: false,
       p: 0,
-      size: 50
+      size: 10
     }
   },
 
   activated() {
-    this.onLoad()
-  },
-
-  created() {
     this.onLoad()
   },
 
