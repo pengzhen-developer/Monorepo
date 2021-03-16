@@ -50,17 +50,6 @@ export function getInfo() {
 
   return peace.http.get(getInfo)
 }
-/**
- * 获取IMkey
- *
- * @export
- * @returns
- */
-export function getImAppKey() {
-  const getImAppKey = 'index/config/getImAppKey'
-
-  return peace.http.get(getImAppKey)
-}
 
 export default {
   /** 发送验证码 */
@@ -70,7 +59,5 @@ export default {
   /** 获取openID 登录授权 */
   getOPenIdByCode,
   /** 获取系统信息 */
-  getInfo,
-  /** 获取IMkey */
-  getImAppKey
+  getInfo
 }

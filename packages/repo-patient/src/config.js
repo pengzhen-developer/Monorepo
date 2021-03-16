@@ -89,8 +89,7 @@ export const config = {
    * IM 配置项
    */
   NIM: {
-    // key: process.env.VUE_APP_IM_KEY
-    key: ''
+    key: process.env.VUE_APP_IM_KEY
   },
 
   /**

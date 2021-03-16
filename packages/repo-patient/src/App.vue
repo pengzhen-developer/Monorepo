@@ -173,7 +173,6 @@ export default {
       this.initNIM()
       this.initShareConfig()
       this.getSystemInfo()
-      this.getImAppKey()
     }, 1000)
   },
 
@@ -187,11 +186,7 @@ export default {
         }
       })
     },
-    getImAppKey() {
-      peace.service.login.getImAppKey().then((res) => {
-        peace.config.NIM.key = res.data.appKey
-      })
-    },
+
     initShareConfig() {
       let url = location.href.split('#')[0]
       peace.service.index.getWXSign({ url: url }).then((res) => {
