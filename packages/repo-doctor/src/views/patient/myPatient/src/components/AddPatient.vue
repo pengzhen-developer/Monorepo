@@ -1,67 +1,70 @@
 <template>
   <div>
-    <el-form :model="ruleForm"
-             :rules="rules"
-             label-position="right"
-             label-width="100px"
-             ref="ruleForm">
-      <el-form-item label="姓名"
-                    prop="name">
-        <span slot="label">姓名：</span>
-        <el-input v-model="ruleForm.name"
-                  placeholder="请输入姓名"></el-input>
-      </el-form-item>
-      <el-form-item label="身份证"
-                    prop="idCard">
-        <span slot="label">身份证：</span>
-        <el-input v-model.trim="ruleForm.idCard"
-                  placeholder="请输入身份证号"></el-input>
-      </el-form-item>
-      <el-form-item label="性别"
-                    prop="sexStr">
-        <span slot="label">性别：</span>
-        <el-input v-model="ruleForm.sexStr"
-                  :disabled="true"></el-input>
-      </el-form-item>
+    <div class="el-dialog__body">
+      <el-form :model="ruleForm"
+               :rules="rules"
+               class="q-pr-md"
+               label-position="right"
+               label-width="auto"
+               ref="ruleForm">
+        <el-form-item label="姓名"
+                      prop="name">
+          <span slot="label">姓名：</span>
+          <el-input v-model="ruleForm.name"
+                    placeholder="请输入姓名"></el-input>
+        </el-form-item>
+        <el-form-item label="身份证"
+                      prop="idCard">
+          <span slot="label">身份证：</span>
+          <el-input v-model.trim="ruleForm.idCard"
+                    placeholder="请输入身份证号"></el-input>
+        </el-form-item>
+        <el-form-item label="性别"
+                      prop="sexStr">
+          <span slot="label">性别：</span>
+          <el-input v-model="ruleForm.sexStr"
+                    :disabled="true"></el-input>
+        </el-form-item>
 
-      <el-form-item label="生日"
-                    prop="birthday">
-        <span slot="label">生日：</span>
-        <el-input suffix-icon="el-icon-date"
-                  v-model="ruleForm.birthday"
-                  :disabled="true"></el-input>
-      </el-form-item>
+        <el-form-item label="生日"
+                      prop="birthday">
+          <span slot="label">生日：</span>
+          <el-input suffix-icon="el-icon-date"
+                    v-model="ruleForm.birthday"
+                    :disabled="true"></el-input>
+        </el-form-item>
 
-      <el-form-item label="民族"
-                    prop="nation">
-        <span slot="label">民族：</span>
-        <el-select filterable
-                   label="民族"
-                   style="width: 100%;"
-                   placeholder="请选择"
-                   v-model="ruleForm.nation">
-          <el-option :key="item.code"
-                     :label="item.name"
-                     :value="item.name"
-                     v-for="item in nationals"></el-option>
-        </el-select>
-      </el-form-item>
+        <el-form-item label="民族"
+                      prop="nation">
+          <span slot="label">民族：</span>
+          <el-select filterable
+                     label="民族"
+                     style="width: 100%;"
+                     placeholder="请选择"
+                     v-model="ruleForm.nation">
+            <el-option :key="item.code"
+                       :label="item.name"
+                       :value="item.name"
+                       v-for="item in nationals"></el-option>
+          </el-select>
+        </el-form-item>
 
-      <el-form-item label="联系方式"
-                    prop="tel">
-        <span slot="label">手机号码：</span>
-        <el-input v-model.number.trim="ruleForm.tel"
-                  placeholder="请输入手机号码"></el-input>
-      </el-form-item>
+        <el-form-item label="联系方式"
+                      prop="tel">
+          <span slot="label">手机号：</span>
+          <el-input v-model.number.trim="ruleForm.tel"
+                    placeholder="请输入手机号码"></el-input>
+        </el-form-item>
+      </el-form>
+    </div>
 
-      <el-form-item>
-        <el-button @click="closeMenu">取消</el-button>
-        <el-button @click="submitForm"
-                   type="primary">保存</el-button>
-      </el-form-item>
-    </el-form>
+    <div class="el-dialog__footer">
+      <el-button @click="closeMenu">取消</el-button>
+      <el-button @click="submitForm"
+                 type="primary">保存</el-button>
+    </div>
   </div>
-</template>
+</template> 
 
 <script>
 import Service from './../service'

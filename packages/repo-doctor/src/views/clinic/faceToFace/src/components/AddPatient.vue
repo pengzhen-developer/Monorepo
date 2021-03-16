@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="el-dialog__body">
-      <el-form v-bind:model="ruleForm"
+      <el-form class="q-pr-md"
+               v-bind:model="ruleForm"
                v-bind:rules="rules"
                label-position="right"
                label-width="auto"
@@ -37,7 +38,7 @@
 
         <el-form-item label="联系方式"
                       prop="tel">
-          <span slot="label">手机号码：</span>
+          <span slot="label">手机号：</span>
           <el-input v-bind:disabled="isChaperonage"
                     v-model.number.trim="ruleForm.tel"
                     placeholder="请输入手机号码"></el-input>
