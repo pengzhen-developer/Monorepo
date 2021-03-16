@@ -95,14 +95,6 @@ export const config = {
         id: 32,
         pid: 3,
         closable: true,
-        name: '私人医生',
-        title: '私人医生',
-        path: '/patient/privateDoctor'
-      },
-      {
-        id: 33,
-        pid: 3,
-        closable: true,
         name: '患者随访',
         title: '患者随访',
         path: '/patient/follow'
@@ -170,14 +162,6 @@ export const config = {
         name: '信息管理',
         title: '信息管理',
         path: '/sys/myInfo'
-      },
-      {
-        id: 52,
-        pid: 5,
-        closable: true,
-        name: '我的介绍',
-        title: '我的介绍',
-        path: '/sys/myIntroduce'
       },
       {
         id: 53,

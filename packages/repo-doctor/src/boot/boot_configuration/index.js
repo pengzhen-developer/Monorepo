@@ -129,17 +129,6 @@ export default {
       {
         id: '32',
         closable: true,
-        menuName: '私人医生',
-        menuRoute: '/patient/privateDoctor',
-        menuPath: 'views/patient/privateDoctor',
-        parentId: '3',
-        enable: true,
-        menuAlias: 'PrivateDoctor',
-        virtual: 0
-      },
-      {
-        id: '33',
-        closable: true,
         menuName: '患者随访',
         menuRoute: '/patient/follow',
         menuPath: 'views/patient/follow',
@@ -257,17 +246,6 @@ export default {
         parentId: '5',
         enable: true,
         menuAlias: 'MyInfo',
-        virtual: 0
-      },
-      {
-        id: '52',
-        closable: true,
-        menuName: '我的介绍',
-        menuRoute: '/sys/myIntroduce',
-        menuPath: 'views/sys/myIntroduce',
-        parentId: '5',
-        enable: true,
-        menuAlias: 'MyIntroduce',
         virtual: 0
       },
       {

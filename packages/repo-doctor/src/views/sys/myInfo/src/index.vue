@@ -99,6 +99,11 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
+
+      <el-tab-pane name="2"
+                   label="我的介绍">
+        <Introduce></Introduce>
+      </el-tab-pane>
     </el-tabs>
 
     <PeaceDialog :visible.sync="dialog.visible"
@@ -129,11 +134,13 @@
 <script>
 import ChangePhoneNumber from './components/ChangePhoneNumber'
 import ChangePassword from '@src/views/system/login/src/components/ChangePassword'
+import Introduce from '@src/views/sys/myIntroduce'
 
 export default {
   components: {
     ChangePhoneNumber,
-    ChangePassword
+    ChangePassword,
+    Introduce
   },
 
   data() {

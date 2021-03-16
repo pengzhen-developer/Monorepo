@@ -111,91 +111,22 @@
     </div>
 
     <div class="row q-col-gutter-x-lg q-mb-lg">
-      <div class="col-6">
-        <div class="row q-col-gutter-x-lg">
-          <!-- 双向转诊卡片 -->
-          <template v-if="transfer.status === 1">
-            <div class="col-6">
-              <div class="q-mb-sm">
-                <span class="text-subtitle2">双向转诊</span>
-              </div>
-
-              <div class="card card-blue-half row"
-                   v-on:click="goTransfer({ referral_type: 'in' })">
-                <div class="col-6 flex justify-center items-center">
-                  <q-icon style="font-size: 48px"
-                          v-bind:name="`img:${ require('./assets/img/ic_change into@2x.png') }`"></q-icon>
-                </div>
-                <div class="col-6 flex column justify-center items-center q-pr-xl">
-                  <span class="text-h4 text-bold q-mb-sm">{{ transfer.todoTransferInCount }}</span>
-                  <span class="text-subtitle2">待转入患者</span>
-                </div>
-              </div>
-            </div>
-          </template>
-
-          <!-- 私人医生卡片 -->
-          <template v-if="priviteDoctor.status === 1">
-            <div class="col-6">
-              <div class="q-mb-sm">
-                <span class="text-subtitle2">私人医生</span>
-              </div>
-              <div class="card card-green row"
-                   v-on:click="goPrivateDoctor({ type: 1 })">
-                <div class="col-6 flex justify-center items-center">
-                  <q-icon style="font-size: 48px"
-                          v-bind:name="`img:${ require('./assets/img/ic_doctor@2x.png') }`"></q-icon>
-                </div>
-                <div class="col-6 flex column justify-center items-center q-pr-xl">
-                  <span class="text-h4 text-bold q-mb-sm">{{ priviteDoctor.todoOrderCount }}</span>
-                  <span class="text-subtitle2">待接单患者</span>
-                </div>
-              </div>
-            </div>
-          </template>
-        </div>
-      </div>
-
-      <!-- 远程会诊卡片 -->
-      <template v-if="consultation.status === 1 && false">
-        <div class="col-6">
+      <!-- 双向转诊卡片 -->
+      <template v-if="transfer.status === 1">
+        <div class="col-3">
           <div class="q-mb-sm">
-            <span class="text-subtitle2">远程会诊</span>
+            <span class="text-subtitle2">双向转诊</span>
           </div>
 
-          <div class="card card-blue row">
-            <div class="row col-6"
-                 v-on:click="goConsultation()">
-              <div class="col-6 flex justify-center items-center">
-                <q-icon style="font-size: 48px"
-                        v-bind:name="`img:${ require('./assets/img/ic_ing4@2x.png') }`"></q-icon>
-              </div>
-              <div class="col-6 flex column justify-center items-center q-pr-xl">
-                <span class="text-h4 text-bold q-mb-sm">{{ consultation.todoProcessCount }}</span>
-                <span class="text-subtitle2">待会诊患者</span>
-              </div>
+          <div class="card card-blue-half row"
+               v-on:click="goTransfer({ referral_type: 'in' })">
+            <div class="col-6 flex justify-center items-center">
+              <q-icon style="font-size: 48px"
+                      v-bind:name="`img:${ require('./assets/img/ic_change into@2x.png') }`"></q-icon>
             </div>
-            <div class="card-border-left col-6 flex column">
-              <div class="card-border-bottom col flex items-center justify-around q-px-lg"
-                   v-on:click="goConsultation({ type: 'out' })">
-                <div style="width: 60px">
-                  <q-icon style="font-size: 20px"
-                          v-bind:name="`img:${ require('./assets/img/ic_ing5@2x.png') }`"></q-icon>
-                </div>
-                <div class="text-subtitle2 text-left"
-                     style="width: 100px">我发起</div>
-                <div class="col text-h5 text-bold">{{ consultation.todoStarterCount }}</div>
-              </div>
-              <div class="col flex items-center justify-around q-px-lg"
-                   v-on:click="goConsultation({ type: 'in' })">
-                <div style="width: 60px">
-                  <q-icon style="font-size: 20px"
-                          v-bind:name="`img:${ require('./assets/img/ic_ing3@2x.png') }`"></q-icon>
-                </div>
-                <div class="text-subtitle2 text-left"
-                     style="width: 100px">邀请我</div>
-                <div class="col text-h5 text-bold">{{ consultation.todoReceiverCount }}</div>
-              </div>
+            <div class="col-6 flex column justify-center items-center q-pr-xl">
+              <span class="text-h4 text-bold q-mb-sm">{{ transfer.todoTransferInCount }}</span>
+              <span class="text-subtitle2">待转入患者</span>
             </div>
           </div>
         </div>
