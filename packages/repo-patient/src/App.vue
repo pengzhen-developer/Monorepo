@@ -173,6 +173,7 @@ export default {
       this.initNIM()
       this.initShareConfig()
       this.getSystemInfo()
+      this.getImAppKey()
     }, 1000)
   },
 
@@ -184,6 +185,11 @@ export default {
         } else {
           peace.config.system.timeDifference = 0
         }
+      })
+    },
+    getImAppKey() {
+      peace.service.login.getImAppKey().then((res) => {
+        peace.config.NIM.key = res.data.appKey
       })
     },
     initShareConfig() {
