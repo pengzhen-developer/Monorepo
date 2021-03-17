@@ -11,7 +11,8 @@
                     prop="SourceCustCode">
         <el-select clearable
                    filterable
-                   @change="getTagetData"
+                   v-if="model.Id === 0"
+                   @change="SourceCustChange"
                    v-model.trim="model.SourceCustCode"
                    placeholder="请选择">
           <el-option v-for="item in source.Code"
@@ -20,7 +21,7 @@
                      :value="item.CustCode">
           </el-option>
         </el-select>
-
+        <div v-else>{{ model.SourceCustName }}</div>
       </el-form-item>
 
       <el-form-item label="药品供应方："
@@ -67,6 +68,7 @@ export default {
           this.model.TargetCustCode = this.dataInfo.TargetCustCode
           this.model.TargetCustName = this.dataInfo.TargetCustName
           this.model.PriceAuthority = this.dataInfo?.PriceAuthority?.split(',') || []
+          this.getTagetData(this.model.SourceCustCode)
         }
       },
       immediate: true
@@ -155,8 +157,12 @@ export default {
       })
     },
 
-    getTagetData(value) {
+    SourceCustChange(value) {
       this.model.SourceCustName = this.source.Code.find((item) => item.CustCode == value)?.CustName
+      this.getTagetData(value)
+    },
+
+    getTagetData(value) {
       const params = { SourceCustCode: value }
       Service.GetTargetCustCodeByCustCode(params).then((res) => {
         this.model.TargetCustCode = res?.data?.TargetCustCode || ''
