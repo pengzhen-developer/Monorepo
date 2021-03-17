@@ -57,8 +57,31 @@
                             min-width="120px"></peace-table-column>
         <peace-table-column label="包装单位"
                             prop="PackUnit"></peace-table-column>
-        <peace-table-column label="库存数量"
-                            prop="Stock"></peace-table-column>
+
+        <peace-table-column label="批发价">
+          <template slot-scope="scope">
+            {{ scope.row.WholesalePrice || '--' }}
+          </template>
+        </peace-table-column>
+
+        <peace-table-column label="省中标价">
+          <template slot-scope="scope">
+            {{ scope.row.WiningPrice || '--' }}
+          </template>
+        </peace-table-column>
+
+        <peace-table-column label="零售价">
+          <template slot-scope="scope">
+            {{ scope.row.RetailPrice || '--' }}
+          </template>
+        </peace-table-column>
+
+        <peace-table-column label="成本价">
+          <template slot-scope="scope">
+            {{ scope.row.CostPrice || '--' }}
+          </template>
+        </peace-table-column>
+
         <peace-table-column label="更新时间"
                             prop="Get3PartStockInfoTime"
                             width="180px"></peace-table-column>
@@ -71,7 +94,7 @@
 <script>
 import Service from './service/index'
 export default {
-  name: 'GoodsStock',
+  name: 'GoodsPrices',
   data() {
     return {
       DateValue: '',
@@ -102,7 +125,7 @@ export default {
       if (!(params.Code && params.GoodName)) {
         return Peace.util.error('选择供应门店/仓和商品名称才能支持查询')
       }
-      const fetch = Service.GetStockByDrugStoreId
+      const fetch = Service.GetPriceByDrugStoreId
       this.$refs.table.reloadData({ fetch, params })
     },
     getAllDrugStore() {
