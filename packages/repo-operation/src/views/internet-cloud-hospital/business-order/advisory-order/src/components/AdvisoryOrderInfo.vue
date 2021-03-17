@@ -146,32 +146,37 @@
     </div>
     <div class="info-block">
       <div class="info-title">订单信息</div>
+
       <div class="info-row">
         <div class="info-row-label">
-          <span>订单号码</span>
+          <span>订单编号</span>
         </div>
         <div class="info-row-content">{{ info.order_no }}</div>
       </div>
+
       <div class="info-row">
         <div class="info-row-label">
-          <span>订单金额</span>
+          <span>下单时间</span>
+        </div>
+        <div class="info-row-content">{{ info.created_time }}</div>
+      </div>
+
+      <div class="info-row">
+        <div class="info-row-label">
+          <span>订单费用</span>
         </div>
         <div class="info-row-content"
              v-if="info.order_money">{{ info.order_money }}元</div>
       </div>
-      <!-- <div class="info-row">
-        <div class="info-row-label">
-          <span>优惠金额</span>
-        </div>
-        <div class="info-row-content"
-             v-if="info.discount_money">{{ info.discount_money }}元</div>
-      </div> -->
+
       <div class="info-row">
         <div class="info-row-label">
-          <span>订单时间</span>
+          <span>权益抵扣</span>
         </div>
-        <div class="info-row-content">{{ info.created_time }}</div>
+        <div class="info-row-content"
+             v-if="info.serviceEquities">{{ info.serviceEquities }}</div>
       </div>
+
       <template v-if="info.paymentType">
         <div class="info-row">
           <div class="info-row-label">
@@ -186,6 +191,7 @@
           <div class="info-row-content">{{ info.payTime }}</div>
         </div>
       </template>
+
       <div class="info-row">
         <div class="info-row-label">
           <span>{{moneyText}}</span>

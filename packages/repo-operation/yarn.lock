@@ -893,7 +893,7 @@
 
 "@jk998/identity@^0.2.5":
   version "0.2.5"
-  resolved "https://registry.yarnpkg.com/@jk998/identity/-/identity-0.2.5.tgz#d83ccb0172172f5aecc1b7ea8f8c4e2fc911a2b6"
+  resolved "https://registry.npmjs.org/@jk998/identity/-/identity-0.2.5.tgz#d83ccb0172172f5aecc1b7ea8f8c4e2fc911a2b6"
   integrity sha512-PNxspL344eYPWnizv0z/I3/x00wi6Fae71TvQSGBtGCV5CNhrTeJhHIdYhbTm82WKGrB9hNLFHNvKDdQAwmLRg==
   dependencies:
     "@jk998/library" "^0.1.20"
@@ -909,20 +909,20 @@
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/library@^0.1.27":
-  version "0.1.27"
-  resolved "https://registry.yarnpkg.com/@jk998/library/-/library-0.1.27.tgz#8ae0a8a584602b3975654146cd64118a966d2525"
-  integrity sha512-tHppAZzcKX6maP27QozOiR8tKVLo2e7/wHGlnq68pCNWjk6v6ecnM9i8aF4VY7VPtPZ+ApkaO3/GAAU6uXIkvQ==
+"@jk998/library@^0.1.30":
+  version "0.1.30"
+  resolved "https://registry.npmjs.org/@jk998/library/-/library-0.1.30.tgz#9a15dc54c6d4df1b16af797b922d711b8818435b"
+  integrity sha512-qtuv6CJDduPyuBIVjX7s94TSDSUFgfvuMLhiyhXCNUewi5qjouW6KOMOt9cb2wAsq+rJHoMx1Ix5gxG7tupanw==
   dependencies:
     axios "^0.20.0"
     dayjs "^1.8.35"
     js-base64 "^3.5.2"
     numeral "^2.0.6"
 
-"@jk998/peace-element-ui@^0.1.21":
-  version "0.1.21"
-  resolved "https://registry.yarnpkg.com/@jk998/peace-element-ui/-/peace-element-ui-0.1.21.tgz#7b382f87040135d4bff5a9828fca2d7067db4843"
-  integrity sha512-020fdM4K01lswu+kvZSkRozu3ZK1wWVRhBxUvJw7MWKd2k/cPUs0lMgr6EEmQVEq69vzNSXJimhdO5egl2lU8A==
+"@jk998/peace-element-ui@^0.1.24":
+  version "0.1.24"
+  resolved "https://registry.npmjs.org/@jk998/peace-element-ui/-/peace-element-ui-0.1.24.tgz#7f0269fecfa4dbad7d085bdb13f41771aa169f4e"
+  integrity sha512-f8zK+ORJF3c0EOkNf2bnlsJKOPHGRzTG/XGZjAV0l09FW3dBcLrDihJ3YgeuRBE07tGOA1QRlsyr+BLQ4OviJw==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
