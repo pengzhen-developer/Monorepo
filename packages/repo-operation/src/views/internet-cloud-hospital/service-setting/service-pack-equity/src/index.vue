@@ -10,12 +10,14 @@
                v-bind:model="model">
         <el-form-item label="权益名称">
           <el-input v-model="model.name"
+                    clearable
                     placeholder="请输入"></el-input>
         </el-form-item>
 
         <el-form-item label="权益类型">
 
           <el-select v-model="model.type"
+                     clearable
                      placeholder="全部">
             <el-option :key="item.value"
                        :label="item.label"
@@ -26,6 +28,7 @@
 
         <el-form-item label="状态">
           <el-select v-model="model.status"
+                     clearable
                      placeholder="全部">
 
             <el-option :key="item.value"
@@ -37,8 +40,6 @@
         <el-form-item>
           <el-button type="primary"
                      v-on:click="get">查询</el-button>
-
-          <el-button v-on:click="reset">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -105,7 +106,7 @@
     <PeaceDialog width="376px"
                  v-if="addDialog.visible"
                  v-bind:visible.sync="addDialog.visible"
-                 title="新增权益">
+                 v-bind:title="dialogTitle">
       <service-pack-model :info="addDialog.addModel"
                           v-on:close="addDialog.visible = false"
                           v-on:refresh="get"></service-pack-model>
@@ -156,7 +157,7 @@ export default {
 
       addDialog: {
         visible: false,
-
+        isEdit: false,
         addModel: {
           equitiesDictionaryId: undefined,
           name: '',
@@ -173,6 +174,12 @@ export default {
     })
   },
 
+  computed: {
+    dialogTitle() {
+      return this.addDialog.isEdit ? '编辑权益' : '新增权益'
+    }
+  },
+
   methods: {
     get() {
       const fetch = Service.getServiceList
@@ -181,6 +188,7 @@ export default {
     },
 
     edit(row) {
+      this.addDialog.isEdit = true
       this.addDialog.addModel = { equitiesDictionaryId: row.equitiesDictionaryId, name: row.equitiesName, type: row.equitiesType.toString() }
       this.addDialog.visible = true
     },
@@ -208,15 +216,8 @@ export default {
 
     add() {
       this.clearData()
+      this.addDialog.isEdit = false
       this.addDialog.visible = true
-    },
-
-    reset() {
-      this.model = {
-        name: '',
-        type: undefined,
-        status: undefined
-      }
     },
 
     close() {
