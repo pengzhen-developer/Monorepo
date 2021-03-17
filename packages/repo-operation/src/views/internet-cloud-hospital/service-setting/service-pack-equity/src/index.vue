@@ -106,44 +106,9 @@
                  v-if="addDialog.visible"
                  v-bind:visible.sync="addDialog.visible"
                  title="新增权益">
-      <el-form ref="form"
-               label-position="right"
-               label-width="95px"
-               label-suffix="："
-               v-bind:model="addModel"
-               v-bind:rules="rules">
-        <div class="info-list">
-          <el-form-item label="权益名称"
-                        prop="name">
-            <el-input v-model.trim="addModel.name"
-                      placeholder="请输入"
-                      clearable
-                      show-word-limit></el-input>
-          </el-form-item>
-
-          <el-form-item label="权益类型"
-                        prop="type">
-            <el-select clearable
-                       v-model="addModel.type"
-                       placeholder="请选择"
-                       style="width: 100%;">
-              <el-option v-for="item in remoteSource.interestsType"
-                         v-bind:key="item.value"
-                         v-bind:label="item.label"
-                         v-bind:value="item.value"></el-option>
-            </el-select>
-
-          </el-form-item>
-
-        </div>
-
-        <el-form-item align="right">
-          <el-button v-on:click="close">取消</el-button>
-          <el-button type="primary"
-                     v-bind:loading="isLoading"
-                     v-on:click="submit">确定</el-button>
-        </el-form-item>
-      </el-form>
+      <service-pack-model :info="addDialog.addModel"
+                          v-on:close="addDialog.visible = false"
+                          v-on:refresh="get"></service-pack-model>
     </PeaceDialog>
 
   </div>
@@ -152,7 +117,11 @@
 <script>
 import Service from './service'
 import Constant from './constant'
+import ServicePackModel from './components/ServicePackEquityModel'
 export default {
+  components: {
+    ServicePackModel
+  },
   data() {
     return {
       model: {
@@ -160,11 +129,7 @@ export default {
         type: undefined,
         status: undefined
       },
-      addModel: {
-        equitiesDictionaryId: undefined,
-        name: '',
-        type: undefined
-      },
+
       rules: {
         name: [
           {
@@ -188,11 +153,15 @@ export default {
         //权益类型
         interestsType: []
       },
-      isLoading: false,
+
       addDialog: {
         visible: false,
 
-        data: []
+        addModel: {
+          equitiesDictionaryId: undefined,
+          name: '',
+          type: undefined
+        }
       }
     }
   },
@@ -212,7 +181,7 @@ export default {
     },
 
     edit(row) {
-      this.addModel = { equitiesDictionaryId: row.equitiesDictionaryId, name: row.equitiesName, type: row.equitiesType.toString() }
+      this.addDialog.addModel = { equitiesDictionaryId: row.equitiesDictionaryId, name: row.equitiesName, type: row.equitiesType.toString() }
       this.addDialog.visible = true
     },
 
@@ -242,38 +211,6 @@ export default {
       this.addDialog.visible = true
     },
 
-    submit() {
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          this.submitData()
-        }
-      })
-    },
-
-    submitData() {
-      const params = { ...this.addModel }
-      this.isLoading = true
-      if (Peace.validate.isEmpty(params.equitiesDictionaryId)) {
-        Service.addServices(params)
-          .then(() => {
-            this.close()
-            this.get()
-          })
-          .finally(() => {
-            this.isLoading = false
-          })
-      } else {
-        Service.editServices(params)
-          .then(() => {
-            this.close()
-            this.get()
-          })
-          .finally(() => {
-            this.isLoading = false
-          })
-      }
-    },
-
     reset() {
       this.model = {
         name: '',
@@ -290,7 +227,7 @@ export default {
     },
 
     clearData() {
-      this.addModel = {
+      this.addDialog.addModel = {
         equitiesDictionaryId: undefined,
         name: '',
         type: undefined
