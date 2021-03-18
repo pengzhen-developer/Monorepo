@@ -53,6 +53,23 @@
                 <div class="order-item-order-info-item-val">{{item.serviceStartDate}} 至 {{item.serviceExpireDate}}</div>
               </div>
             </div>
+            <div class="order-item-order-bottom"
+                 v-if="item.orderStatus==1">
+              <div class="count-down">
+                <span>订单关闭倒计时：</span>
+                <van-count-down millisecond
+                                @finish="finishHander(item,index)"
+                                :ref="'countDown_servicePackage_' + index"
+                                :time="item.time"
+                                format="mm:ss" />
+              </div>
+              <peace-button class="label blue"
+                            @click.stop="goPay(item,index,'countDown_servicePackage_')"
+                            throttle
+                            :throttleTime="3000">
+                继续支付
+              </peace-button>
+            </div>
           </div>
           <!-- 咨询订单 -->
           <div class="order-item"
@@ -305,7 +322,7 @@
                           v-if="checkQRCodeBtn(item)">取药码</van-button>
               <peace-button class="label blue-full"
                             v-if="item.callOrderStatus == '0'"
-                            @click.stop="payOrder(item)"
+                            @click.stop="payOrder(item,index,'countDown_drug_')"
                             throttle
                             :throttleTime="3000">继续支付</peace-button>
               <van-button class="label blue"
@@ -516,9 +533,9 @@ export default {
         const countDown = this.$refs[type + index][0]
         countDown.pause()
       }
-      if (data.orderType == 'register') {
+      if (data.orderType == 'register' || data.orderType == 'servicePackage') {
         this.orderNo = data.orderNo
-      } else if (data.orderType == 'inquiry') {
+      } else if (data.orderType == 'inquiry' || data.orderType == 'returnVisit') {
         this.orderNo = data.orderInfo.orderNo
         this.inquiryId = data.inquiryInfo.inquiryId
       }
@@ -528,12 +545,18 @@ export default {
     payCallback() {
       if (this.orderType == 'register') {
         this.registerPayCallback()
-      } else if (this.orderType == 'inquiry') {
+      } else if (this.orderType == 'inquiry' || this.orderType == 'returnVisit') {
         this.inquiryPayCallback()
+      } else if (this.orderType == 'servicePackage') {
+        this.servicePackagePayCallback()
       }
     },
     registerPayCallback() {
       let json = peace.util.encode({ orderInfo: { orderNo: this.orderNo, orderType: this.orderType } })
+      this.$router.replace(`/setting/order/userOrderDetail/${json}`)
+    },
+    servicePackagePayCallback() {
+      let json = peace.util.encode({ orderNo: this.orderNo })
       this.$router.replace(`/setting/order/userOrderDetail/${json}`)
     },
     inquiryPayCallback() {
@@ -565,8 +588,8 @@ export default {
           res.data.list.map((item) => {
             item.close = true
             if (item.orderType == 'servicePackage') {
-              if (item.orderExpireTime > item.currentTime) {
-                item.time = (item.orderExpireTime - item.currentTime) * 1000
+              if (item.expireTime > item.currentTime) {
+                item.time = (item.expireTime - item.currentTime) * 1000
               }
               item.inquiryType = '服务包'
               item.inquiryTypeStyle = 'servicePackage'
@@ -770,7 +793,11 @@ export default {
         })
       })
     },
-    payOrder(item) {
+    payOrder(item, index, type) {
+      if (this.$refs[type + index] && this.$refs[type + index].length > 0) {
+        const countDown = this.$refs[type + index][0]
+        countDown.pause()
+      }
       let orderNo = item.orderNo
       this.currentOrderId = item.orderNo
       let params = { orderNo }
