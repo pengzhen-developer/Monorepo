@@ -58,6 +58,12 @@
         <peace-table-column label="包装单位"
                             prop="PackUnit"></peace-table-column>
 
+        <peace-table-column label="价格">
+          <template slot-scope="scope">
+            {{ scope.row.Price || '--' }}
+          </template>
+        </peace-table-column>
+
         <peace-table-column label="批发价">
           <template slot-scope="scope">
             {{ scope.row.WholesalePrice || '--' }}
