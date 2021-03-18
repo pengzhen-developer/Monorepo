@@ -182,7 +182,9 @@
       <div class="module info">
         <div class="brief order-money">
           <div class="brief-left">订单费用:</div>
-          <div class="brief-right money">{{ "¥" + params.price.toString().toFixed(2)||'0.00' }}
+          <div class="brief-right money">
+            <peace-price v-bind:price="params.price"
+                         v-bind:size="16"></peace-price>
           </div>
         </div>
         <div class="brief"
@@ -191,15 +193,55 @@
           <div class="brief-right">暂无可用
           </div>
         </div>
+
         <div class="brief"
-             v-if="canShowYibao">
-          <div class="brief-left">使用医保卡:</div>
-          <div class="brief-right"
-               :class="{'checked':yibaoText}"
-               @click="chooseYibao">{{yibaoText||'请选择'}}
+             v-if="servicesList.length>0">
+          <div class="brief-left">使用服务包:</div>
+          <div class="brief-right">
+            <van-switch v-model="hasSelectedServicePackage"
+                        size="20" />
           </div>
         </div>
-        <!-- <div class="brief"
+        <div class="brief"
+             v-if="servicesList.length>0&&hasSelectedServicePackage">
+          <div class="brief-left">服务包名称:</div>
+          <div class="brief-right"
+               :class="{'checked':servicePackageDialog.data.servicePackageId}"
+               @click="showServicePackageDialog">
+            {{servicePackageDialog.data.servicePackageName||'请选择'}}
+            <van-icon name="arrow"
+                      size="14"
+                      v-if="servicePackageDialog.data.servicePackageId"></van-icon>
+          </div>
+        </div>
+        <div class="brief"
+             v-if="servicesList.length>0&&hasSelectedServicePackage">
+          <div class="brief-left">权益名称:</div>
+          <div class="brief-right"
+               :class="{'checked':servicePackageDialog.data.patientEquitiesId}"
+               @click="showServicePackageDialog">
+            {{servicePackageDialog.data.patientEquitiesName||'请选择'}}
+          </div>
+        </div>
+        <div class="brief"
+             v-if="servicesList.length>0&&hasSelectedServicePackage">
+          <div class="brief-left">应付金额:</div>
+          <div class="brief-right red">
+            <peace-price v-bind:price="params.price"
+                         v-bind:size="16"></peace-price>
+          </div>
+        </div>
+        <template v-if="!hasSelectedServicePackage">
+
+          <div class="brief"
+               v-if="canShowYibao">
+            <div class="brief-left">使用医保卡:</div>
+            <div class="brief-right"
+                 :class="{'checked':yibaoText}"
+                 @click="chooseYibao">{{yibaoText||'请选择'}}
+            </div>
+          </div>
+          <!-- <div class="brief"
              v-if="yibaoText">
           <div class="brief-left">医保类型:</div>
           <div class="brief-right"
@@ -208,12 +250,14 @@
           </div>
         </div> -->
 
-        <div class="brief"
-             v-if="canShowShangbao">
-          <div class="brief-left">商保权益抵扣:</div>
-          <div class="brief-right">请选择
+          <div class="brief"
+               v-if="canShowShangbao">
+            <div class="brief-left">商保权益抵扣:</div>
+            <div class="brief-right">请选择
+            </div>
           </div>
-        </div>
+
+        </template>
 
       </div>
       <!-- 预售订单 - 非当日-->
@@ -255,6 +299,12 @@
     <!-- 确认支付弹框 -->
     <ExpenseDetail v-model="dialog.visible"
                    :info="dialog.data"></ExpenseDetail>
+
+    <!-- 选择服务包权益 -->
+    <SelectServicePackage v-model="servicePackageDialog.visible"
+                          :info="servicePackageDialog.data"
+                          :list="servicesList"
+                          onSuccess="SelectServicePackageCallback"></SelectServicePackage>
   </div>
 </template>
 
@@ -263,6 +313,8 @@ import YibaoCaedSelect from '@src/views/components/YibaoCardSelect'
 import SelectYiBaoType from '@src/views/components/YibaoTypeSelect'
 import ExpenseDetail from '@src/views/components//ExpenseDetail'
 import InquiryStageMark from '@src/views/components/InquiryStageMark'
+import SelectServicePackage from '@src/views/components/SelectServicePackage'
+
 import peace from '@src/library'
 
 import { Dialog } from 'vant'
@@ -303,7 +355,8 @@ export default {
     YibaoCaedSelect,
     ExpenseDetail,
     InquiryStageMark,
-    SelectYiBaoType
+    SelectYiBaoType,
+    SelectServicePackage
   },
 
   props: {
@@ -343,6 +396,17 @@ export default {
       yibaoTypeDialog: {
         visible: false,
         medCardId: ''
+      },
+      servicesList: [],
+      hasSelectedServicePackage: false,
+      servicePackageDialog: {
+        visible: false,
+        data: {
+          patientEquitiesId: '',
+          patientEquitiesName: '',
+          servicePackageId: '',
+          servicePackageName: ''
+        }
       }
     }
   },
@@ -417,9 +481,16 @@ export default {
 
   activated() {
     this.getFamilyDoctorInfo()
+    this.getServicePackageRecord()
   },
   created() {
     this.params = peace.util.decode(this.$route.params.json)
+    //初始化服务包信息
+    this.hasSelectedServicePackage = this.params.servicePackageId ? true : false
+    this.servicePackageDialog.data.servicePackageId = this.params.servicePackageId
+    this.servicePackageDialog.data.servicePackageName = this.params.servicePackageName
+    this.servicePackageDialog.data.patientEquitiesId = this.params.patientEquitiesId
+    this.servicePackageDialog.data.patientEquitiesName = this.params.patientEquitiesName
     this.onEmits()
   },
   destroyed() {
@@ -433,11 +504,20 @@ export default {
     offEmits() {
       $peace.$off('SelectSourceAgain')
     },
+    showServicePackageDialog() {
+      this.servicePackageDialog.visible = true
+    },
+    SelectServicePackageCallback(res) {
+      if (res) {
+        this.servicePackageDialog.data = Object.assign({}, this.servicePackageDialog.data, res)
+      }
+    },
     selectSourceCallback(res) {
       if (res) {
         this.params = Object.assign({}, this.params, res)
       }
     },
+
     //修改号源
     changeSource() {
       let json = peace.util.encode({
@@ -500,6 +580,7 @@ export default {
       this.sending = true
       const params = peace.util.deepClone(this.params)
       params.medCardNo = this.yibaoInfo.medCardNo || ''
+      params.patientEquitiesId = this.servicePackageDialog.data?.patientEquitiesId || ''
       peace.service.inquiry
         .apply(params)
         .then((res) => {
@@ -629,7 +710,18 @@ export default {
           this.loading = false
         })
     },
-
+    getServicePackageRecord() {
+      peace.service.servicePackage.getRecord().then((res) => {
+        this.servicesList = res.data || []
+        //若是直接从医生主页进行问诊且该用户有可用服务包
+        if (!this.params.servicePackageId && this.servicesList.length > 0) {
+          this.servicePackageDialog.data.servicePackageId = this.servicesList[0].servicePackageId
+          this.servicePackageDialog.data.servicePackageName = this.servicesList[0].servicePackageName
+          this.servicePackageDialog.data.patientEquitiesId = this.servicesList[0].equities[0].patientEquitiesId
+          this.servicePackageDialog.data.patientEquitiesName = this.servicesList[0].equities[0].equitiesName
+        }
+      })
+    },
     viewImage(file, fileIndex, files) {
       this.imagePreview.visible = true
       this.imagePreview.position = fileIndex
@@ -640,6 +732,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.red {
+  color: #ff3a30;
+}
 .case-card {
   display: flex;
 
@@ -794,6 +889,13 @@ export default {
 }
 .brief-right.checked {
   color: #333;
+  display: flex;
+  align-items: center;
+  width: 13em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  justify-content: flex-end;
 }
 .bb {
   height: 1px;
@@ -842,27 +944,28 @@ export default {
 
       .form-dt {
         color: #999;
-        min-width: 70px;
+        // min-width: 70px;
+        min-width: 20px;
         display: flex;
         padding-right: 10px;
         align-items: center;
         &.start {
           align-items: flex-start;
         }
-        span {
-          flex: 1;
-          text-align: justify;
-          text-align-last: justify;
-          padding-right: 3px;
-          height: 16px;
-          line-height: 16px;
-          &::after {
-            content: ' ';
-            display: inline-block;
-            width: 100%;
-            height: 0px;
-          }
-        }
+        // span {
+        //   flex: 1;
+        //   text-align: justify;
+        //   text-align-last: justify;
+        //   padding-right: 3px;
+        //   height: 16px;
+        //   line-height: 16px;
+        //   &::after {
+        //     content: ' ';
+        //     display: inline-block;
+        //     width: 100%;
+        //     height: 0px;
+        //   }
+        // }
       }
       .form-dd {
         color: #333;

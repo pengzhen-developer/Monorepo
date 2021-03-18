@@ -242,7 +242,11 @@ export function getUserDctList() {
 export function getOrderList(params) {
   const getOrderList = 'client/v1/order/getList'
 
-  return peace.http.post(getOrderList, params)
+  return peace.http.post(getOrderList, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
 }
 
 /**

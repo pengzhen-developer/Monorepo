@@ -1035,6 +1035,12 @@ export default {
       this.model.AMPM = params.AMPM || ''
       this.questionList = params.serviceType == 'returnVisit' ? FUZHEN_QUESTION_LIST : INQUIRY_QUESTION_LIST
       this.supplementaryFlag = params.serviceType == 'returnVisit' ? true : false
+
+      // 服务包信息
+      this.model.patientEquitiesId = params.patientEquitiesId
+      this.model.patientEquitiesName = params.patientEquitiesName
+      this.model.servicePackageId = params.servicePackageId
+      this.model.servicePackageName = params.servicePackageName
     },
     getFirstOptionList(familyId) {
       const params = {
@@ -1095,6 +1101,7 @@ export default {
         }
         this.model.price = serviceMoney
         serviceMoney = serviceMoney.toString().toFixed(2)
+
         doctor.doctorInfo = Object.assign({}, doctor.doctorInfo, { serviceName, serviceMoney })
         this.doctor = doctor
       })

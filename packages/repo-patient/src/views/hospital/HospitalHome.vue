@@ -484,7 +484,7 @@ export default {
       color: rgba(74, 131, 247, 1);
       background-color: rgba(74, 131, 247, 0.15);
     }
-    &.tag-service {
+    &.tag-servicePackage {
       color: rgba(179, 136, 255, 1);
       background-color: rgba(179, 136, 255, 0.15);
     }

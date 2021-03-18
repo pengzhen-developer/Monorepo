@@ -16,6 +16,14 @@
 
         <div class="order">
           <div class="order-card">
+            <div class="cancelTip"
+                 v-on:click="showRefundTip"
+                 v-if="canShowRefundTip">
+              <span>退费说明</span>
+              <van-icon name="warning-o"
+                        size="12"
+                        color="#999999" />
+            </div>
             <div class="icon icon-status"
                  :class="{ [`icon-status-${ order.callOrderStatus }`] : true }"
                  @click="goDrugLogiPage"></div>
@@ -93,7 +101,9 @@
                   <van-image :src="require('@src/assets/images/ic_wenhao.png')"></van-image>
                 </div>
                 <div class="other-price">
-                  <div class="price">¥{{item.DrugUnitPrice}}</div>
+                  <peace-price class="price"
+                               v-bind:price="item.DrugUnitPrice"
+                               v-bind:size="14"></peace-price>
                   x{{item.DrugQty}}
                 </div>
               </div>
@@ -109,7 +119,10 @@
              :key="index">
           <div class="dt">{{item.name}}</div>
           <div class="dd">
-            {{item.value}}
+            <span v-if="isNaN(item.value.substring(1))">{{item.value}}</span>
+            <peace-price v-bind:price="item.value.substring(1)"
+                         v-bind:size="13"
+                         v-else></peace-price>
           </div>
         </div>
       </div>
@@ -118,7 +131,8 @@
         <div class="dl-packet">
           <div class="dt">订单总额</div>
           <div class="dd">
-            ¥{{order.totalMoney.toFixed(2)}}
+            <peace-price v-bind:price="order.totalMoney"
+                         v-bind:size="13"></peace-price>
           </div>
         </div>
       </div>
@@ -174,7 +188,8 @@
           </div>
           <div class="dd">
             <div class="strong">
-              ¥{{canShowPayway ?order.payMoney.toString().toFixed(2) : curPayMoney}}
+              <peace-price v-bind:price="canShowPayway?order.payMoney:curPayMoney"
+                           v-bind:size="20"></peace-price>
               <span class="refunded"
                     v-if="order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&order.refundTime">(已退款)</span>
             </div>
@@ -220,7 +235,11 @@
         </template>
         <template v-else>
           <div class="left">
-            应付金额：<span class="money">¥{{ curPayMoney }}</span></div>
+            应付金额：
+            <peace-price class="money"
+                         v-bind:price="curPayMoney"
+                         v-bind:size="20"></peace-price>
+          </div>
           <div class="right">
             <div v-if="order.paymentType === ENUM.PAYMENT_TYPE.医保支付">
               待药店联系您进行医保支付
@@ -284,6 +303,12 @@
                              :informedConsent="informedConsentDialog.informedConsent"
                              :canOperate="false"></DrugInformedConsent>
       </template>
+
+      <!-- 退费说明弹窗 -->
+      <template>
+        <RefundTip v-model="refundTipDialog.visible"
+                   :divisionId="refundTipDialog.data.divisionId"></RefundTip>
+      </template>
     </div>
   </div>
 
@@ -298,7 +323,7 @@ import CallPhone from '@src/views/components/CallPhone'
 import PayCallback from '@src/views/components/PayCallback'
 import ApplyForInvoice from '@src/views/components/ApplyForInvoice'
 import DrugInformedConsent from '@src/views/components/DrugInformedConsent'
-
+import RefundTip from '@src/views/components/RefundTip'
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
@@ -337,7 +362,8 @@ const ENUM = {
     已备药_已发货: 3,
     已自提_已签收: 4,
     已取消: 5,
-    已完成: 6
+    已完成: 6,
+    已退货: 7
   },
 
   //订单支付状态
@@ -379,7 +405,8 @@ export default {
     CallPhone,
     PayCallback,
     ApplyForInvoice,
-    DrugInformedConsent
+    DrugInformedConsent,
+    RefundTip
   },
 
   data() {
@@ -418,7 +445,13 @@ export default {
         visible: false,
         informedConsent: ''
       },
-      refreshTimer: null
+      refreshTimer: null,
+      refundTipDialog: {
+        visible: false,
+        data: {
+          divisionId: ''
+        }
+      }
     }
   },
 
@@ -435,6 +468,11 @@ export default {
         }
       }
       return list
+    },
+    canShowRefundTip() {
+      return (this.order.payTime && this.order.callOrderStatus == ENUM.ORDER_STATUS.已取消) || this.order.callOrderStatus == ENUM.ORDER_STATUS.已退货
+        ? true
+        : false
     },
     currentStatus() {
       return this.order?.callOrderStatus
@@ -553,6 +591,10 @@ export default {
     }
   },
   methods: {
+    showRefundTip() {
+      this.refundTipDialog.data.divisionId = this.order.divisionId
+      this.refundTipDialog.visible = true
+    },
     showInformedConsent() {
       this.informedConsentDialog.visible = true
       this.informedConsentDialog.informedConsent = this.order.informedConsent
@@ -1211,6 +1253,27 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
+  position: relative;
+  .cancelTip {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    .van-icon,
+    .van-image {
+      width: 12px;
+      height: 12px;
+      margin-left: 3px;
+    }
+    span {
+      font-size: 12px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #999999;
+      line-height: 12px;
+    }
+  }
   .cancel-tip {
     font-size: 12px;
     font-family: PingFangSC-Regular, PingFang SC;

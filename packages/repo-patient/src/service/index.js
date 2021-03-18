@@ -21,7 +21,7 @@ import purchasedrug from './modules/purchasedrug'
 import group from './modules/group'
 import yibao from './modules/yibao'
 import remind from './modules/remind'
-
+import servicePackage from './modules/servicePackages'
 export default {
   IM,
   inquiry,
@@ -38,5 +38,6 @@ export default {
   purchasedrug,
   group,
   yibao,
-  remind
+  remind,
+  servicePackage
 }

@@ -240,7 +240,7 @@ export default {
             color: rgba(74, 131, 247, 1);
             background-color: rgba(74, 131, 247, 0.15);
           }
-          &.tag-service {
+          &.tag-servicePackage {
             color: rgba(179, 136, 255, 1);
             background-color: rgba(179, 136, 255, 0.15);
           }
@@ -277,6 +277,10 @@ export default {
           &.label-video {
             background: #888;
             border-color: #888;
+          }
+          &.label-register {
+            background: #74b0ff;
+            border-color: #74b0ff;
           }
           &.label-register {
             background: #74b0ff;

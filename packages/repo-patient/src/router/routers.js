@@ -927,6 +927,18 @@ const routers = [
     component: () => import('@src/views/appoint/order/appointOrderSubmit.vue')
   },
   {
+    path: '/setting/userServicePacks',
+    name: '/setting/userServicePacks',
+    meta: {
+      auth: true,
+      navbar: {
+        title: '服务权益',
+        back: true
+      }
+    },
+    component: () => import('@src/views/setting/UserServicePacks.vue')
+  },
+  {
     path: '/setting/userDoctorList',
     name: '/setting/userDoctorList',
     meta: {
@@ -987,7 +999,7 @@ const routers = [
     component: () => import('@src/views/setting/userAddressEdit.vue')
   },
   {
-    path: '/setting/order/userOrderList',
+    path: '/setting/order/userOrderList/:json',
     name: '/setting/order/userOrderList',
     meta: {
       auth: true,
@@ -1228,6 +1240,42 @@ const routers = [
       auth: false
     },
     component: () => import('@src/views/message/service-remind/detail.vue')
+  },
+  /** 医生-服务包列表 */
+  {
+    path: '/servicePackage/list/:json',
+    name: '/servicePackage/list',
+    meta: {
+      auth: false
+    },
+    component: () => import('@src/views/servicePackage/list.vue')
+  },
+  /** 医生-服务包详情 */
+  {
+    path: '/servicePackage/detail/:json',
+    name: '/servicePackage/detail',
+    meta: {
+      auth: false
+    },
+    component: () => import('@src/views/servicePackage/detail.vue')
+  },
+  /** 服务包订单-预售订单 */
+  {
+    path: '/servicePackage/userServicePackageDetailBefore/:json',
+    name: '/servicePackage/userServicePackageDetailBefore',
+    meta: {
+      auth: true
+    },
+    component: () => import('@src/views/servicePackage/userServicePackageDetailBefore.vue')
+  },
+  /** 服务包订单详情 */
+  {
+    path: '/setting/order/userServicePackageDetail/:json',
+    name: '/setting/order/userServicePackageDetail',
+    meta: {
+      auth: true
+    },
+    component: () => import('@src/views/servicePackage/userServicePackageDetail.vue')
   }
 ]
 

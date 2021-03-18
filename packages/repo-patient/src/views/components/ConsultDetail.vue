@@ -18,10 +18,10 @@
           <div class="cancelTip"
                v-on:click="showRefundTip"
                v-if="canShowRefundTip">
+            <span>退费说明</span>
             <van-icon name="warning-o"
                       size="12"
                       color="#999999" />
-            <span>退费说明</span>
           </div>
         </div>
 
@@ -222,7 +222,7 @@
           <div class="message-item-left">订单时间</div>
           <div class="message-item-right">{{ internalData.orderInfo.orderTime }}</div>
         </div>
-        <template v-if="internalData.orderInfo.paymentType">
+        <template v-if="internalData.orderInfo.paymentType||internalData.orderInfo.servicePackageName">
           <div class="message-item">
             <div class="message-item-left">支付方式</div>
             <div class="message-item-right">{{paymentTypeText}}</div>
@@ -251,14 +251,22 @@
              v-for="(item,index) in moneyRecord"
              :key="index">
           <div class="message-item-left">{{item.name}}</div>
-          <div class="message-item-right">{{item.value}}</div>
+          <div class="message-item-right">
+            <span v-if="isNaN(item.value.substring(1))">{{item.value}}</span>
+            <peace-price v-bind:price="item.value.substring(1)"
+                         v-bind:size="14"
+                         v-else></peace-price>
+          </div>
         </div>
       </div>
       <div class="module message"
            v-else>
         <div class="message-item">
           <div class="message-item-left">订单费用</div>
-          <div class="message-item-right">¥{{ internalData.orderInfo.totalMoney }}</div>
+          <div class="message-item-right">
+            <peace-price v-bind:price="internalData.orderInfo.totalMoney"
+                         v-bind:size="14"></peace-price>
+          </div>
         </div>
       </div>
       <div class="module"
@@ -273,12 +281,18 @@
             <template v-else>
               应付金额：
             </template>
-            <div class="money">{{ "¥" + internalData.orderInfo.orderMoney }}</div>
+            <div class="money">
+              <peace-price v-bind:price="internalData.orderInfo.orderMoney"
+                           v-bind:size="18"></peace-price>
+            </div>
           </div>
           <div class="brief right"
                v-else>
             实付金额：
-            <div class="money">{{ "¥" + internalData.orderInfo.payMoney }}<span v-if="internalData.orderInfo.refundTime ">（已退款）</span>
+            <div class="money">
+              <peace-price v-bind:price="internalData.orderInfo.payMoney"
+                           v-bind:size="18"></peace-price>
+              <span v-if="internalData.orderInfo.refundTime ">（已退款）</span>
             </div>
           </div>
         </template>
@@ -287,7 +301,8 @@
           <div class="brief right">
             实付金额：
             <div class="money">
-              {{ "¥" + internalData.orderInfo.payMoney }}
+              <peace-price v-bind:price="internalData.orderInfo.payMoney"
+                           v-bind:size="18"></peace-price>
               <span v-if="internalData.orderInfo.refundTime">（已退款）</span>
             </div>
           </div>
@@ -571,18 +586,28 @@ export default {
   computed: {
     moneyRecord() {
       const list = this.internalData?.orderInfo?.moneyRecord || []
+      //医保类型
       if (list.length > 0 && this.internalData.orderInfo.medicalTreatmentType) {
         let txt = `${this.internalData.orderInfo.medicalTreatmentTypeTxt}`
         txt += this.internalData.orderInfo.diseases ? `-${this.internalData.orderInfo.diseases}` : ``
         list.splice(1, 0, { name: '医保类型', value: txt })
       }
+      //服务包
+      if (list.length > 0 && this.internalData.orderInfo.servicePackageName) {
+        list.splice(list.length, 0, { name: this.internalData.orderInfo.servicePackageName, value: `￥${this.internalData.orderInfo.orderMoney}` })
+      }
+
       return list
     },
     marginBottom() {
       return this.canShowPayBottom ? '115px' : this.canShowBottom ? '64px' : this.canShowCancelBottom ? '64px' : '0'
     },
     paymentTypeText() {
-      return Object.keys(ENUM.PAYMENT_TYPE).find((key) => ENUM.PAYMENT_TYPE[key] === this.internalData.orderInfo.paymentType)
+      if (this.internalData.orderInfo.servicePackageName) {
+        return `-(${this.internalData.orderInfo.servicePackageName})`
+      } else {
+        return Object.keys(ENUM.PAYMENT_TYPE).find((key) => ENUM.PAYMENT_TYPE[key] === this.internalData.orderInfo.paymentType)
+      }
     },
     retrunVisitBlock() {
       return this.internalData?.inquiryInfo?.isAgain.toString() === '1'
@@ -971,7 +996,7 @@ export default {
     .van-image {
       width: 12px;
       height: 12px;
-      margin-right: 3px;
+      margin-left: 3px;
     }
     span {
       font-size: 12px;
@@ -1097,6 +1122,7 @@ export default {
     position: fixed;
     bottom: 0;
     left: 0;
+    z-index: 100;
     box-shadow: 0 -1px 0.5px rgba(51, 51, 51, 0.16);
   }
 }
@@ -1302,27 +1328,28 @@ export default {
 
       .form-dt {
         color: #999;
-        min-width: 70px;
+        // min-width: 70px;
+        min-width: 20px;
         display: flex;
         padding-right: 10px;
         align-items: center;
         &.start {
           align-items: flex-start;
         }
-        span {
-          flex: 1;
-          text-align: justify;
-          text-align-last: justify;
-          padding-right: 3px;
-          height: 16px;
-          line-height: 16px;
-          &::after {
-            content: ' ';
-            display: inline-block;
-            width: 100%;
-            height: 0px;
-          }
-        }
+        // span {
+        //   flex: 1;
+        //   text-align: justify;
+        //   text-align-last: justify;
+        //   padding-right: 3px;
+        //   height: 16px;
+        //   line-height: 16px;
+        //   &::after {
+        //     content: ' ';
+        //     display: inline-block;
+        //     width: 100%;
+        //     height: 0px;
+        //   }
+        // }
       }
       .form-dd {
         color: #333;

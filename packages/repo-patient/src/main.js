@@ -29,10 +29,6 @@ import 'vant/lib/index.less'
 Vue.use(Lazyload)
 Vue.use(Vant)
 
-//peaceButton
-import PeaceButton from '@src/views/components/PeaceButton'
-Vue.use(PeaceButton)
-
 // css
 import '@src/assets/css/index.scss'
 

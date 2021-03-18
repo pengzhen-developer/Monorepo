@@ -13,6 +13,8 @@ import './prototype/string'
 import Dialog from './components/dialog'
 import JztChat from './components/jzt-chat'
 import Ruler from './components/ruler'
+import PeaceButton from '@src/views/components/PeaceButton'
+import PeacePrice from './components/peace-price'
 
 // directive
 import drag from './directive/drag'
@@ -37,7 +39,7 @@ import type from '@src/type'
 // service
 import service from '@src/service'
 
-const install = function (Vue) {
+const install = function(Vue) {
   const peace = { http, util, cache, validate, file, config, type, service }
 
   // 暴露全局实例
@@ -49,14 +51,14 @@ const install = function (Vue) {
   Vue.prototype.$peace = peace
 
   // 注册 component
-  const components = [Dialog, Ruler, JztChat]
-  components.map(component => {
+  const components = [Dialog, Ruler, JztChat, PeaceButton, PeacePrice]
+  components.map((component) => {
     Vue.use(component)
   })
 
   // 注册 directive
   const directive = [drag, focus]
-  directive.map(directive => {
+  directive.map((directive) => {
     Vue.directive(directive.name, directive)
   })
 

@@ -15,12 +15,20 @@
                v-for="(item,index) in moneyRecord"
                v-bind:key="index">
             <div class="cost-platform-label">{{item.name}}</div>
-            <div class="cost-platform-content">{{item.value}}</div>
+            <div class="cost-platform-content">
+              <peace-price v-bind:price="item.value"
+                           v-bind:size="15"></peace-price>
+            </div>
+
           </div>
         </template>
         <div class="cost-platform selfpay">
           <div class="cost-platform-label">自费支付:</div>
-          <div class="cost-platform-content">￥{{selfPayMoney}}</div>
+          <div class="cost-platform-content">
+            <peace-price v-bind:price="selfPayMoney"
+                         v-bind:size="20"></peace-price>
+          </div>
+
         </div>
       </div>
       <div class="cost-footer">
@@ -142,9 +150,15 @@ export default {
         this.registerPayCallback()
       } else if (this.type == 'inquiry') {
         this.inquiryPayCallback()
+      } else if (this.type == 'servicePackage') {
+        this.servicePackagePayCallback()
       } else {
         this.drugPayCallback()
       }
+    },
+    servicePackagePayCallback() {
+      const json = peace.util.encode({ orderNo: this.orderNo })
+      this.$router.replace(`/setting/order/userServicePackageDetail/${json}`)
     },
     registerPayCallback() {
       let { orderType } = peace.util.decode(this.$route.params.json)
@@ -167,6 +181,8 @@ export default {
         this.cancelRegisterOrder()
       } else if (this.type == 'inquiry') {
         this.cancelInquiryOrder()
+      } else if (this.type == 'servicePackage') {
+        this.cancelServicePackageOrder()
       } else {
         this.cancelDrugOrder()
       }
@@ -190,6 +206,7 @@ export default {
         this.payCallback()
       })
     },
+    cancelServicePackageOrder() {},
     cancelDrugOrder() {
       let params = { OrderId: this.orderNo }
       peace.service.purchasedrug.CancelOrder(params).finally(() => {

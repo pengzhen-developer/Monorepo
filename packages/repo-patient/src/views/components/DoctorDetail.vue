@@ -59,8 +59,8 @@
 
           <div class="row">
             <div class="row flex">
-              <van-image width="30px"
-                         height="30px"
+              <van-image width="32px"
+                         height="32px"
                          :src="require('@src/assets/images/ic_be good at.png')" />
               <h4 class="body-card-title">专业擅长</h4>
             </div>
@@ -74,8 +74,8 @@
             <van-divider />
 
             <div class="row flex">
-              <van-image width="30px"
-                         height="30px"
+              <van-image width="32px"
+                         height="32px"
                          :src="require('@src/assets/images/ic_brief introduction.png')" />
               <h4 class="body-card-title">医生简介</h4>
             </div>
@@ -115,8 +115,8 @@
              v-if="returnVisitList.length>0">
           <div class="row flex column">
             <div class="row flex">
-              <van-image width="30px"
-                         height="30px"
+              <van-image width="32px"
+                         height="32px"
                          :src="require('@src/assets/images/ic_consultation.png')" />
               <h4 class="body-card-title">复诊续方</h4>
               <div class=" flex flex-1 end"
@@ -139,7 +139,8 @@
               <div class="fz-card-tag">{{item.sourceLevelType == 1 ? "普通门诊" : "专家门诊"}}</div>
               <div class="flex between"
                    style="width:100%;">
-                <div class="fz-card-price">￥{{Number(item.unitPrice).toFixed(2)}}</div>
+                <peace-price class="fz-card-price"
+                             v-bind:price="item.unitPrice"></peace-price>
                 <!-- @click.stop="showDialog(item,'returnVisit')" -->
                 <van-button round
                             @click="gotoAppointPage(item.timeSharing)"
@@ -150,12 +151,12 @@
           </div>
         </div>
 
-        <!-- 问诊服务 -->
+        <!-- 在线咨询 -->
         <div class="body-card">
           <div class="row flex column">
             <div class="row flex">
-              <van-image width="30px"
-                         height="30px"
+              <van-image width="32px"
+                         height="32px"
                          :src="require('@src/assets/images/ic_interrogation.png')" />
               <h4 class="body-card-title">在线咨询</h4>
             </div>
@@ -182,9 +183,11 @@
                 <div class="row flex column"
                      style="margin: 0;">
                   <span class="service-consult-content-name">图文咨询</span>
-                  <span v-if="serviceImageInfo.status=='1'">
+                  <span v-if="serviceImageInfo.status=='1'"
+                        class="row flex">
                     <span class="service-consult-content-fee">
-                      <span class="service-consult-content-fee-sub">￥</span>{{ serviceImageInfo.price }}
+                      <peace-price class="service-consult-content-fee-sub"
+                                   v-bind:price="serviceImageInfo.price"></peace-price>
                     </span>
                     <span class="service-consult-content-unit"> / 次</span>
                   </span>
@@ -218,9 +221,11 @@
                 <div class="row flex column"
                      style="margin: 0;">
                   <span class="service-consult-content-name">视频咨询</span>
-                  <span v-if="serviceVideoInfo.status=='1'">
+                  <span v-if="serviceVideoInfo.status=='1'"
+                        class="row flex">
                     <span class="service-consult-content-fee">
-                      <span class="service-consult-content-fee-sub">￥</span>{{ serviceVideoInfo.price }}
+                      <peace-price class="service-consult-content-fee-sub"
+                                   v-bind:price="serviceVideoInfo.price"></peace-price>
                     </span>
                     <span class="service-consult-content-unit"> / 次</span>
                   </span>
@@ -233,20 +238,66 @@
             </div>
           </div>
         </div>
+        <div class="body-card"
+             v-if="servicePackage.info">
+          <div class="row flex">
+            <div class="row flex">
+              <van-image width="32px"
+                         height="32px"
+                         :src="require('@src/assets/images/ic_service.png')" />
+              <h4 class="body-card-title">服务包</h4>
+              <div class=" flex flex-1 end"
+                   @click="gotoServicePageListPage"
+                   v-if="servicePackage.total>1">
+                <span class="see-more">查看更多</span>
+                <van-image width="13px"
+                           height="13px"
+                           :src="require('@src/assets/images/ic_more_right.png')" />
+              </div>
+            </div>
 
+            <div>
+            </div>
+          </div>
+
+          <div class="service row flex"
+               @click="gotoServicePackageDeatilPage(servicePackage.info.servicePackageId)">
+            <div class="service-consult-content full-width">
+              <div class="row flex between"
+                   style="margin: 0;">
+                <div class="service-consult-content-name ellipsis">{{servicePackage.info.servicePackageName}}</div>
+                <div class=" flex">
+                  <peace-price class="service-consult-content-fee"
+                               v-bind:price="servicePackage.info.price"></peace-price>
+                  <span class="service-consult-content-unit"
+                        style="margin:0 0 0 -7px;">/{{servicePackage.info.effectiveDays}}天</span>
+                </div>
+              </div>
+              <div style="marginTop:5px">
+                <div class="service-consult-content-description ellipsis">{{servicePackage.info.equityText}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- 挂号服务 -->
         <div class="body-card"
              v-if="doctor.registerData&&doctor.registerData.length > 0">
           <div class="row flex between">
             <div class="row flex">
-              <van-image width="30px"
-                         height="30px"
+              <van-image width="32px"
+                         height="32px"
                          :src="require('@src/assets/images/ic_register.png')" />
               <h4 class="body-card-title">挂号服务</h4>
+              <div class=" flex flex-1 end"
+                   @click="goRegisterList(doctor.registerData[0].timeSharing)">
+                <span class="see-more">查看更多</span>
+                <van-image width="13px"
+                           height="13px"
+                           :src="require('@src/assets/images/ic_more_right.png')" />
+              </div>
             </div>
             <div>
-              <van-icon name="arrow"
-                        @click="goRegisterList(doctor.registerData[0].timeSharing)" />
+
             </div>
           </div>
           <template v-for="(registerItem, index) in doctor.registerData">
@@ -268,17 +319,17 @@
                 </van-tag> -->
                 </div>
                 <div>
-                  <span>
+                  <div>
                     <span class="service-consult-content-description"
                           style="font-size: 13px; margin: 0 10px 0 0;">{{
-                    registerItem.sourceLevelType == 1 ? "普通门诊" : "专家号"
+                    registerItem.sourceLevelType == 1 ? "普通门诊" : "专家门诊"
                   }}</span>
-                    <span class="service-consult-content-fee"
-                          style="font-size: 13px;">￥{{Number(registerItem.unitPrice).toFixed(2)}}</span>
-                  </span>
+                    <peace-price class="service-consult-content-fee"
+                                 v-bind:size="13"
+                                 v-bind:price="registerItem.unitPrice"></peace-price>
+                  </div>
                 </div>
               </div>
-              <!-- @click="goRegisterDetail(registerItem)" -->
               <van-button round
                           @click="goRegisterList(registerItem.timeSharing)"
                           size="small"
@@ -287,57 +338,13 @@
           </template>
         </div>
 
-        <!-- 健康服务 -->
-        <!-- <div class="body-card"
-           v-if="servicePrivateInfo.consultingTypeId"
-           @click="goApply(servicePrivateInfo, 'private')">
-        <div class="row flex">
-          <div class="row flex">
-            <van-image width="30px"
-                       height="30px"
-                       :src="require('@src/assets/images/ic_service.png')" />
-            <h4 class="body-card-title">健康服务</h4>
-          </div>
-          <div>
-          </div>
-        </div>
-
-        <div class="service row flex">
-          <van-image round
-                     width="30px"
-                     height="30px"
-                     style="margin: 0 10px 0 0;"
-                     :src="require('@src/assets/images/file/ic_doctor.png')"></van-image>
-
-          <div class="service-consult-content">
-            <div class="row flex between"
-                 style="margin: 0;">
-              <span class="service-consult-content-name">私人医生</span>
-              <span>
-                <span class="service-consult-content-fee">
-                  <span>￥</span>
-                  {{ servicePrivateInfo.money }}
-                </span>
-                <span class="service-consult-content-unit">
-                  <span>/</span>
-                  {{ privateTimeType[servicePrivateInfo.type] }}
-                </span>
-              </span>
-            </div>
-            <div>
-              <span class="service-consult-content-description">购买一定服务期，期限内可免费提供问诊</span>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
         <!-- 医生排班 -->
         <div class="body-card"
              v-if="doctor.workOnLine || doctor.workUnderLine">
           <div class="row flex">
             <div class="row flex">
-              <van-image width="30px"
-                         height="30px"
+              <van-image width="32px"
+                         height="32px"
                          :src="require('@src/assets/images/ic_scheduling.png')" />
               <h4 class="body-card-title">医生排班</h4>
             </div>
@@ -448,8 +455,8 @@
              v-if="common&&common.count>0">
           <div class=" flex between">
             <div class=" flex">
-              <van-image width="30px"
-                         height="30px"
+              <van-image width="32px"
+                         height="32px"
                          :src="require('@src/assets/images/ic_evaluate.png')" />
               <h4 class="body-card-title">{{'患者评价('+common.count+')'}}</h4>
             </div>
@@ -568,6 +575,10 @@ export default {
       },
       returnVisitList: [],
       inquiryList: [],
+      servicePackage: {
+        total: 0,
+        info: null
+      },
       isLoading: true
     }
   },
@@ -735,6 +746,7 @@ export default {
           }
           this.doctor = res.data
           this.getCommentList()
+          this.getServiceList()
           let obj = {
             url: '',
             title: this.doctor.doctorInfo.name + ' ' + this.doctor.doctorInfo.doctorTitle,
@@ -842,7 +854,32 @@ export default {
 
       this.$router.push(`/appoint/order/appointOrderSubmit/${params}`)
     },
-
+    gotoServicePageListPage() {
+      const params = peace.util.encode({ doctorId: this.doctor.doctorInfo.doctorId })
+      this.$router.push(`/servicePackage/list/${params}`)
+    },
+    gotoServicePackageDeatilPage(servicePackageId) {
+      const params = peace.util.encode({ servicePackageId: servicePackageId })
+      this.$router.push(`/servicePackage/detail/${params}`)
+    },
+    getServiceList() {
+      const params = {
+        doctorId: this.doctor.doctorInfo.doctorId,
+        p: 1,
+        size: 1
+      }
+      peace.service.servicePackage.getServicePackageList(params).then((res) => {
+        res.data.list.map((item) => {
+          item.equityText = ''
+          item.equities.map((e, i) => {
+            item.equityText += `${e.equitiesName}${e.num}次`
+            item.equityText += i < item.equities.length - 1 ? '，' : ''
+          })
+        })
+        this.servicePackage.total = res.data.total
+        this.servicePackage.info = res.data.list[0]
+      })
+    },
     getCommentList() {
       // , p: 1, size: 3
       peace.service.group.commentLists({ doctorId: this.doctor.doctorInfo.doctorId }).then((res) => {
@@ -1178,7 +1215,7 @@ export default {
         }
         &.service {
           border-radius: 14px;
-          padding: 10px;
+          padding: 8px;
           background: #f9f9f9;
           margin: 0 0 10px 0;
         }
@@ -1202,6 +1239,12 @@ export default {
               margin: 6px 0 3px 0;
               font-size: 16px;
               line-height: 23px;
+              &.ellipsis {
+                width: 12em;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
             }
           }
         }
@@ -1292,17 +1335,28 @@ export default {
         &.auto {
           flex: none;
         }
+        &.full-width {
+          flex: none;
+          width: 100%;
+        }
         .service-consult-content-name {
           color: #333333;
-          font-size: 15px;
+          font-size: 16px;
           font-weight: bold;
+          &.ellipsis {
+            width: 12em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
         }
 
         .service-consult-content-fee {
           font-weight: bold;
           color: #f2223b;
           font-size: 16px;
-          line-height: 22px;
+          display: flex;
+          align-items: center;
           .service-consult-content-fee-sub {
             font-size: 12px;
             font-weight: normal;
@@ -1312,11 +1366,18 @@ export default {
         .service-consult-content-unit {
           font-size: 12px;
           color: #999;
+          margin-left: 6px;
         }
 
         .service-consult-content-description {
           color: #999999;
           font-size: 12px;
+          &.ellipsis {
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
         }
       }
 
