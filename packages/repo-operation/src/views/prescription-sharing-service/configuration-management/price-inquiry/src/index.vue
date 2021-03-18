@@ -98,13 +98,14 @@ export default {
   async created() {
     // 获取价格类型字典
     this.priceStrList = await Peace.identity.dictionary.getList('PriceInquriyType')
+    this.fetch()
   },
 
-  mounted() {
-    this.$nextTick(() => {
-      this.fetch()
-    })
-  },
+  // mounted() {
+  //   this.$nextTick(() => {
+  //     this.fetch()
+  //   })
+  // },
   methods: {
     fetch() {
       const params = Object.assign({}, this.model)
