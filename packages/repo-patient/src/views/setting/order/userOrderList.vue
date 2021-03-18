@@ -13,44 +13,45 @@
           <!-- 服务包 -->
           <div class="order-item"
                :key="index"
-               v-if="item.orderType=='servicePackage'"
-               @click="goServicePackageDateilPage(item,index,'countDown_servicePackage_')">
-            <div class="order-item-doctor-info">
-              <van-image v-bind:src='item.doctorInfo.avartor'
-                         class="order-item-doctor-info-avatar"></van-image>
-              <div class="order-item-doctor-info-body">
-                <div class="order-item-doctor-info-body-top">
-                  <div class="name">{{item.doctorInfo.name}}<span>{{item.doctorInfo.deptName}}</span></div>
-                  <div :class="['strip-eye','color-' + item.orderType + '-' +item.orderStatus]"
-                       v-if="item.orderStatus">
-                    {{item.orderStatusTxt}}
+               v-if="item.orderType=='servicePackage'">
+            <div @click="goServicePackageDateilPage(item,index,'countDown_servicePackage_')">
+              <div class="order-item-doctor-info">
+                <van-image v-bind:src='item.doctorInfo.avartor'
+                           class="order-item-doctor-info-avatar"></van-image>
+                <div class="order-item-doctor-info-body">
+                  <div class="order-item-doctor-info-body-top">
+                    <div class="name">{{item.doctorInfo.name}}<span>{{item.doctorInfo.deptName}}</span></div>
+                    <div :class="['strip-eye','color-' + item.orderType + '-' +item.orderStatus]"
+                         v-if="item.orderStatus">
+                      {{item.orderStatusTxt}}
+                    </div>
                   </div>
-                </div>
-                <div :class="['order-tag','color-'+item.inquiryTypeStyle]">{{item.inquiryType}}</div>
-              </div>
-            </div>
-            <div class="order-item-order-info">
-              <div class="order-item-order-info-item start">
-                <div class="order-item-order-info-item-key">服务包:</div>
-                <div class="order-item-order-info-item-val block">{{item.servicePackageName}}</div>
-              </div>
-              <div class="order-item-order-info-item">
-                <!-- 订单金额  totalMoney  应付金额 orderMoney  实付金额 payMoney -->
-                <div class="order-item-order-info-item-key">订单金额</div>
-                <div class="order-item-order-info-item-val">
-                  <peace-price class="refund"
-                               v-bind:price="item.totalMoney"></peace-price>
-                  <div v-if="item.payTime&&item.orderStatus==2">
-                    <span>(已退款</span>
-                    <peace-price v-bind:price="item.payMoney"></peace-price>
-                    <span>)</span>
-                  </div>
+                  <div :class="['order-tag','color-'+item.inquiryTypeStyle]">{{item.inquiryType}}</div>
                 </div>
               </div>
-              <div class="order-item-order-info-item"
-                   v-if="item.orderStatus ===3">
-                <div class="order-item-order-info-item-key">有效期:</div>
-                <div class="order-item-order-info-item-val">{{item.serviceStartDate}} 至 {{item.serviceExpireDate}}</div>
+              <div class="order-item-order-info">
+                <div class="order-item-order-info-item start">
+                  <div class="order-item-order-info-item-key">服务包:</div>
+                  <div class="order-item-order-info-item-val block">{{item.servicePackageName}}</div>
+                </div>
+                <div class="order-item-order-info-item">
+                  <!-- 订单金额  totalMoney  应付金额 orderMoney  实付金额 payMoney -->
+                  <div class="order-item-order-info-item-key">订单金额</div>
+                  <div class="order-item-order-info-item-val">
+                    <peace-price class="refund"
+                                 v-bind:price="item.totalMoney"></peace-price>
+                    <div v-if="item.payTime&&item.orderStatus==2">
+                      <span>(已退款</span>
+                      <peace-price v-bind:price="item.payMoney"></peace-price>
+                      <span>)</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="order-item-order-info-item"
+                     v-if="item.orderStatus ===3">
+                  <div class="order-item-order-info-item-key">有效期:</div>
+                  <div class="order-item-order-info-item-val">{{item.serviceStartDate}} 至 {{item.serviceExpireDate}}</div>
+                </div>
               </div>
             </div>
             <div class="order-item-order-bottom"
@@ -64,7 +65,7 @@
                                 format="mm:ss" />
               </div>
               <peace-button class="label blue"
-                            @click.stop="goPay(item,index,'countDown_servicePackage_')"
+                            @click="goPay(item,index,'countDown_servicePackage_')"
                             throttle
                             :throttleTime="3000">
                 继续支付
@@ -74,81 +75,82 @@
           <!-- 咨询订单 -->
           <div class="order-item"
                :key="index"
-               v-if="item.orderType=='inquiry'||item.orderType=='returnVisit'"
-               @click="goConsultDetailPage(item,index,'countDown_inquiry_')">
-            <div class="order-item-doctor-info">
-              <van-image v-bind:src='item.doctorInfo.avartor'
-                         class="order-item-doctor-info-avatar"></van-image>
-              <div class="order-item-doctor-info-body">
-                <div class="order-item-doctor-info-body-top">
-                  <div class="name">{{item.doctorInfo.name}}<span>{{item.doctorInfo.deptName}}</span></div>
-                  <div :class="['strip-eye','color-' + item.orderType + '-' +item.inquiryInfo.inquiryStatus]"
-                       :style="{'color':item.heightLight&&'#00c6ae'}"
-                       v-if="item.inquiryInfo&&item.inquiryInfo.inquiryStatus">
-                    {{item.inquiryInfo.statusTxt}}
-                  </div>
-                </div>
-                <div :class="['order-tag','color-'+item.inquiryTypeStyle]">{{item.inquiryType}}</div>
-              </div>
-            </div>
-            <div class="order-item-order-info">
-              <div class="order-item-order-info-item">
-                <div class="order-item-order-info-item-key">就诊人:</div>
-                <div class="order-item-order-info-item-val"
-                     v-if="item.familyInfo">{{item.familyInfo.familyName}}
-                  {{item.familyInfo.familySex}}
-                  {{item.familyInfo.familyAge}}</div>
-              </div>
-              <template v-if="item.orderInfo&&item.orderInfo.servicePackageName">
-                <div class="order-item-order-info-item start">
-                  <div class="order-item-order-info-item-key">服务包:</div>
-                  <div class="order-item-order-info-item-val block">
-                    <span>{{item.orderInfo.servicePackageName}} - {{item.orderInfo.equitiesName}}</span>
-                    <span v-if="!getServicePackageInquiryShowMoreText(item.inquiryInfo.inquiryStatus)">(已退回)</span>
-                  </div>
-                </div>
-                <div class="order-item-order-info-item">
-                  <div class="order-item-order-info-item-key">订单金额:</div>
-                  <div class="order-item-order-info-item-val">
-                    <!-- v-bind:style="{color:getServicePackageInquiryPriceColor(item.inquiryInfo.inquiryStatus)}" -->
-                    <peace-price v-bind:price="0.00"
-                                 class="refund"></peace-price>
-                    <span v-if="getServicePackageInquiryShowMoreText(item.inquiryInfo.inquiryStatus)"
-                          style="color:rgba(51,51,51,0.6);">(减去服务包费用)</span>
-                  </div>
-                </div>
-              </template>
-              <template v-else>
-                <div class="order-item-order-info-item">
-                  <div class="order-item-order-info-item-key">订单金额:</div>
-                  <div class="order-item-order-info-item-val"
-                       v-if="item.orderInfo">
-                    <span class="refund"
-                          v-if="item.orderInfo.totalMoney == 0||item.orderInfo.totalMoney == null">
-                      免费
-                    </span>
-                    <peace-price class="refund"
-                                 v-bind:price="item.orderInfo.totalMoney"
-                                 v-else></peace-price>
-
-                    <div v-if="item.orderInfo.refundTime">
-                      <span>(已退款</span>
-                      <peace-price v-bind:price="item.orderInfo.totalMoney"></peace-price>
-                      <span>)</span>
+               v-if="item.orderType=='inquiry'||item.orderType=='returnVisit'">
+            <div @click="goConsultDetailPage(item,index,'countDown_inquiry_')">
+              <div class="order-item-doctor-info">
+                <van-image v-bind:src='item.doctorInfo.avartor'
+                           class="order-item-doctor-info-avatar"></van-image>
+                <div class="order-item-doctor-info-body">
+                  <div class="order-item-doctor-info-body-top">
+                    <div class="name">{{item.doctorInfo.name}}<span>{{item.doctorInfo.deptName}}</span></div>
+                    <div :class="['strip-eye','color-' + item.orderType + '-' +item.inquiryInfo.inquiryStatus]"
+                         :style="{'color':item.heightLight&&'#00c6ae'}"
+                         v-if="item.inquiryInfo&&item.inquiryInfo.inquiryStatus">
+                      {{item.inquiryInfo.statusTxt}}
                     </div>
                   </div>
+                  <div :class="['order-tag','color-'+item.inquiryTypeStyle]">{{item.inquiryType}}</div>
                 </div>
-                <div class="order-item-order-info-item"
-                     v-if="item.inquiryInfo.serviceType=='returnVisit'">
-                  <div class="order-item-order-info-item-key">复诊时间:</div>
-                  <div class="order-item-order-info-item-val">{{item.inquiryInfo.appointmentTime.replace(/\//g,'-')}}</div>
+              </div>
+              <div class="order-item-order-info">
+                <div class="order-item-order-info-item">
+                  <div class="order-item-order-info-item-key">就诊人:</div>
+                  <div class="order-item-order-info-item-val"
+                       v-if="item.familyInfo">{{item.familyInfo.familyName}}
+                    {{item.familyInfo.familySex}}
+                    {{item.familyInfo.familyAge}}</div>
                 </div>
-                <div class="order-item-order-info-item"
-                     v-else>
-                  <div class="order-item-order-info-item-key">下单时间:</div>
-                  <div class="order-item-order-info-item-val">{{item.orderInfo.orderTime.replace(/\//g,'-')}}</div>
-                </div>
-              </template>
+                <template v-if="item.orderInfo&&item.orderInfo.servicePackageName">
+                  <div class="order-item-order-info-item start">
+                    <div class="order-item-order-info-item-key">服务包:</div>
+                    <div class="order-item-order-info-item-val block">
+                      <span>{{item.orderInfo.servicePackageName}} - {{item.orderInfo.equitiesName}}</span>
+                      <span v-if="!getServicePackageInquiryShowMoreText(item.inquiryInfo.inquiryStatus)">(已退回)</span>
+                    </div>
+                  </div>
+                  <div class="order-item-order-info-item">
+                    <div class="order-item-order-info-item-key">订单金额:</div>
+                    <div class="order-item-order-info-item-val">
+                      <!-- v-bind:style="{color:getServicePackageInquiryPriceColor(item.inquiryInfo.inquiryStatus)}" -->
+                      <peace-price v-bind:price="0.00"
+                                   class="refund"></peace-price>
+                      <span v-if="getServicePackageInquiryShowMoreText(item.inquiryInfo.inquiryStatus)"
+                            style="color:rgba(51,51,51,0.6);">(减去服务包费用)</span>
+                    </div>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="order-item-order-info-item">
+                    <div class="order-item-order-info-item-key">订单金额:</div>
+                    <div class="order-item-order-info-item-val"
+                         v-if="item.orderInfo">
+                      <span class="refund"
+                            v-if="item.orderInfo.totalMoney == 0||item.orderInfo.totalMoney == null">
+                        免费
+                      </span>
+                      <peace-price class="refund"
+                                   v-bind:price="item.orderInfo.totalMoney"
+                                   v-else></peace-price>
+
+                      <div v-if="item.orderInfo.refundTime">
+                        <span>(已退款</span>
+                        <peace-price v-bind:price="item.orderInfo.totalMoney"></peace-price>
+                        <span>)</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="order-item-order-info-item"
+                       v-if="item.inquiryInfo.serviceType=='returnVisit'">
+                    <div class="order-item-order-info-item-key">复诊时间:</div>
+                    <div class="order-item-order-info-item-val">{{item.inquiryInfo.appointmentTime.replace(/\//g,'-')}}</div>
+                  </div>
+                  <div class="order-item-order-info-item"
+                       v-else>
+                    <div class="order-item-order-info-item-key">下单时间:</div>
+                    <div class="order-item-order-info-item-val">{{item.orderInfo.orderTime.replace(/\//g,'-')}}</div>
+                  </div>
+                </template>
+              </div>
             </div>
             <div class="order-item-order-bottom"
                  v-if="canShowPanelBottomInquiry(item)">
@@ -171,13 +173,13 @@
               </div>
               <peace-button class="label blue"
                             v-if="canShowPaybutton(item)"
-                            @click.stop="goPay(item,index,'countDown_inquiry_')"
+                            @click="goPay(item,index,'countDown_inquiry_')"
                             throttle
                             :throttleTime="3000">
                 继续支付
               </peace-button>
               <van-button class="label blue"
-                          @click.stop="changeInvoiceModel(item)"
+                          @click="changeInvoiceModel(item)"
                           v-if="cnaShowApplyBtn(item)">
                 申请发票
               </van-button>
@@ -187,49 +189,50 @@
           <!-- 预约挂号 -->
           <div class="order-item"
                :key="index"
-               v-if="item.orderType=='register'"
-               @click="goOrderDetailPage(item,index,'countDown_register_')">
-            <div class="order-item-doctor-info">
-              <van-image v-bind:src='item.doctorInfo.avartor'
-                         class="order-item-doctor-info-avatar"></van-image>
-              <div class="order-item-doctor-info-body">
-                <div class="order-item-doctor-info-body-top">
-                  <div class="name">{{item.doctorInfo.name}}<span>{{item.doctorInfo.deptName}}</span></div>
-                  <div :class="['strip-eye','color-' + item.orderType + '-' +item.orderStatus]">
-                    <!-- {{item.inquiryInfo.statusTxt}} -->
-                    {{page.orderTypeMap[item.orderType][item.orderStatus]}}
+               v-if="item.orderType=='register'">
+            <div @click="goOrderDetailPage(item,index,'countDown_register_')">
+              <div class="order-item-doctor-info">
+                <van-image v-bind:src='item.doctorInfo.avartor'
+                           class="order-item-doctor-info-avatar"></van-image>
+                <div class="order-item-doctor-info-body">
+                  <div class="order-item-doctor-info-body-top">
+                    <div class="name">{{item.doctorInfo.name}}<span>{{item.doctorInfo.deptName}}</span></div>
+                    <div :class="['strip-eye','color-' + item.orderType + '-' +item.orderStatus]">
+                      <!-- {{item.inquiryInfo.statusTxt}} -->
+                      {{page.orderTypeMap[item.orderType][item.orderStatus]}}
+                    </div>
                   </div>
+                  <div :class="['order-tag','color-'+item.inquiryTypeStyle]">{{item.inquiryType}}</div>
                 </div>
-                <div :class="['order-tag','color-'+item.inquiryTypeStyle]">{{item.inquiryType}}</div>
               </div>
-            </div>
-            <div class="order-item-order-info">
-              <div class="order-item-order-info-item">
-                <div class="order-item-order-info-item-key">就诊人:</div>
-                <div class="order-item-order-info-item-val"
-                     v-if="item.familyInfo">{{item.familyInfo.name||item.familyInfo.familyName}}
-                  {{item.familyInfo.sex||''}}
-                  {{item.familyInfo.age||''}}</div>
-              </div>
-              <div class="order-item-order-info-item">
-                <div class="order-item-order-info-item-key">预约就诊时间:</div>
-                <div class="order-item-order-info-item-val">{{item.bookDate.replace(/\//g,'-')}}</div>
-              </div>
-              <div class="order-item-order-info-item">
-                <div class="order-item-order-info-item-key">订单金额:</div>
-                <div class="order-item-order-info-item-val">
-                  <span class="refund"
-                        v-if="item.orderMoney == 0||item.orderMoney == null">
-                    免费
-                  </span>
-                  <peace-price class="refund"
-                               v-bind:price="item.orderMoney"
-                               v-else></peace-price>
+              <div class="order-item-order-info">
+                <div class="order-item-order-info-item">
+                  <div class="order-item-order-info-item-key">就诊人:</div>
+                  <div class="order-item-order-info-item-val"
+                       v-if="item.familyInfo">{{item.familyInfo.name||item.familyInfo.familyName}}
+                    {{item.familyInfo.sex||''}}
+                    {{item.familyInfo.age||''}}</div>
+                </div>
+                <div class="order-item-order-info-item">
+                  <div class="order-item-order-info-item-key">预约就诊时间:</div>
+                  <div class="order-item-order-info-item-val">{{item.bookDate.replace(/\//g,'-')}}</div>
+                </div>
+                <div class="order-item-order-info-item">
+                  <div class="order-item-order-info-item-key">订单金额:</div>
+                  <div class="order-item-order-info-item-val">
+                    <span class="refund"
+                          v-if="item.orderMoney == 0||item.orderMoney == null">
+                      免费
+                    </span>
+                    <peace-price class="refund"
+                                 v-bind:price="item.orderMoney"
+                                 v-else></peace-price>
 
-                  <div v-if="item.refundTime">
-                    <span>(已退款</span>
-                    <peace-price v-bind:price="item.orderMoney"></peace-price>
-                    <span>)</span>
+                    <div v-if="item.refundTime">
+                      <span>(已退款</span>
+                      <peace-price v-bind:price="item.orderMoney"></peace-price>
+                      <span>)</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -249,7 +252,7 @@
                    v-if="item.orderStatus == '3'"></div>
               <peace-button class="label blue"
                             v-if="item.orderStatus == '1'&&item.close"
-                            @click.stop="goPay(item,index,'countDown_register_')"
+                            @click="goPay(item,index,'countDown_register_')"
                             throttle
                             :throttleTime="3000">
                 继续支付
@@ -262,49 +265,51 @@
           <div class="order-item"
                :key="index"
                v-if="item.orderType=='drug'">
-            <div class="order-item-store-info">
-              <van-image v-bind:src='item.drugStoreLogo'
-                         class="order-item-store-info-avatar"></van-image>
-              <div class="order-item-store-info-body">
-                <div class="name">{{item.drugStoreName}}</div>
-                <div :class="['strip-eye','color-' + item.orderType + '-' +item.callOrderStatus]"
-                     v-if="item.callOrderStatus">
-                  {{item.callOrderStatusTxt}}
+            <div>
+              <div class="order-item-store-info">
+                <van-image v-bind:src='item.drugStoreLogo'
+                           class="order-item-store-info-avatar"></van-image>
+                <div class="order-item-store-info-body">
+                  <div class="name">{{item.drugStoreName}}</div>
+                  <div :class="['strip-eye','color-' + item.orderType + '-' +item.callOrderStatus]"
+                       v-if="item.callOrderStatus">
+                    {{item.callOrderStatusTxt}}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="order-item-drug-info"
-                 @click="goDrugOrderDateilPage(item,index,'countDown_drug_')">
-              <div class="drug-list"
-                   v-if="item.drugJson">
-                <van-image v-bind:src="drug.DrugImage"
-                           class="error--image"
-                           v-for="(drug,index) in item.drugJson"
-                           v-bind:key="index">
-                  <template v-slot:error>
-                    <img :src="require('@src/assets/images/icons/ic_none_drug.png')" />
-                  </template>
-                </van-image>
-              </div>
-              <div class="order-item-drug-info-item">
-                <div class="order-item-drug-info-item-time">{{item.createdTime}}</div>
-                <div class="order-item-drug-info-item-price"
-                     v-bind:class="{'refund':item.refundTime}">
-                  共{{item.totalNumber}}件药品 合计：
-                  <peace-price v-bind:price="item.orderMoney"
-                               v-bind:size="14"></peace-price>
+              <div class="order-item-drug-info"
+                   @click="goDrugOrderDateilPage(item,index,'countDown_drug_')">
+                <div class="drug-list"
+                     v-if="item.drugJson">
+                  <van-image v-bind:src="drug.DrugImage"
+                             class="error--image"
+                             v-for="(drug,index) in item.drugJson"
+                             v-bind:key="index">
+                    <template v-slot:error>
+                      <img :src="require('@src/assets/images/icons/ic_none_drug.png')" />
+                    </template>
+                  </van-image>
                 </div>
-              </div>
-              <div class="order-item-drug-info-item end"
-                   v-if="item.refundTime">
-                <div class="order-item-drug-info-item-price">
-                  <span>(已退款：</span>
-                  <peace-price v-bind:price="item.payMoney"
-                               v-bind:size="14"></peace-price>
-                  <span>)</span>
+                <div class="order-item-drug-info-item">
+                  <div class="order-item-drug-info-item-time">{{item.createdTime}}</div>
+                  <div class="order-item-drug-info-item-price"
+                       v-bind:class="{'refund':item.refundTime}">
+                    共{{item.totalNumber}}件药品 合计：
+                    <peace-price v-bind:price="item.orderMoney"
+                                 v-bind:size="14"></peace-price>
+                  </div>
                 </div>
-              </div>
+                <div class="order-item-drug-info-item end"
+                     v-if="item.refundTime">
+                  <div class="order-item-drug-info-item-price">
+                    <span>(已退款：</span>
+                    <peace-price v-bind:price="item.payMoney"
+                                 v-bind:size="14"></peace-price>
+                    <span>)</span>
+                  </div>
+                </div>
 
+              </div>
             </div>
             <div class="order-item-order-bottom drug"
                  v-if="item.callOrderStatus != 5">
@@ -318,29 +323,29 @@
                 </template>
               </div>
               <van-button class="label blue"
-                          @click.stop="onClickSeeQRCode(item)"
+                          @click="onClickSeeQRCode(item)"
                           v-if="checkQRCodeBtn(item)">取药码</van-button>
-              <peace-button class="label blue-full"
+              <peace-button class="label blue"
                             v-if="item.callOrderStatus == '0'"
-                            @click.stop="payOrder(item,index,'countDown_drug_')"
+                            @click="payOrder(item,index,'countDown_drug_')"
                             throttle
                             :throttleTime="3000">继续支付</peace-button>
               <van-button class="label blue"
                           v-if="canShowApplyBtn(item)"
-                          @click.stop="changeInvoiceModel(item)">
+                          @click="changeInvoiceModel(item)">
                 申请发票
               </van-button>
               <van-button class="label blue"
                           v-if="ifShowLogistics(item)"
-                          @click.stop="goDrugLogiPage(item)">查看物流
+                          @click="goDrugLogiPage(item)">查看物流
               </van-button>
               <van-button class="label blue"
                           v-if="item.callOrderStatus == '4' && item.shippingMethod != '0'"
-                          @click.stop="submitOrder(item)">确认收货
+                          @click="submitOrder(item)">确认收货
               </van-button>
               <van-button class="label blue"
                           v-if="item.callOrderStatus == '4' && item.shippingMethod == '0'"
-                          @click.stop="submitOrder(item)">确认取药
+                          @click="submitOrder(item)">确认取药
               </van-button>
             </div>
           </div>
@@ -356,6 +361,11 @@
     <!-- 发票弹窗 -->
     <InvoiceModel v-model="showInvoiceModel"
                   :receiptNumber="receiptNumber"></InvoiceModel>
+
+    <!--二维码弹窗-->
+    <QRCode :QRCodeURL="QRCodeURL"
+            v-model="showQRCode"
+            :PickUpCode="pickUpCode"></QRCode>
   </div>
 </template>
 
@@ -366,6 +376,7 @@ import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
 
+import QRCode from '@src/views/components/QRCode'
 import InvoiceModel from '@src/views/components/InvoiceModel'
 const ENUM = {
   SHIPPING_METHOD: {
@@ -385,7 +396,7 @@ const ENUM = {
 }
 export default {
   props: {},
-  components: { InvoiceModel },
+  components: { QRCode, InvoiceModel },
   data() {
     return {
       page: {
@@ -436,7 +447,11 @@ export default {
       inquiryId: '',
 
       showInvoiceModel: false,
-      receiptNumber: ''
+      receiptNumber: '',
+
+      showQRCode: false,
+      QRCodeURL: '',
+      pickUpCode: ''
     }
   },
   activated() {
@@ -1045,6 +1060,9 @@ export default {
       border: none;
       margin-top: 0;
       justify-content: flex-end;
+      .count-down {
+        flex: 1;
+      }
     }
     .label {
       // margin-left: 0;
@@ -1052,6 +1070,7 @@ export default {
     .count-down {
       display: flex;
       margin-right: 5%;
+
       .van-count-down {
         color: #ffa00c;
       }
