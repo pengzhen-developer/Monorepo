@@ -94,7 +94,10 @@ export default {
         /** 复诊-咨询订单详情 */
         visitOrderDetail: '/setting/userConsultDetail',
         /** 挂号订单详情 */
-        registerDetail: '/setting/order/userOrderDetail'
+        registerDetail: '/setting/order/userOrderDetail',
+
+        /** 服务包订单详情 */
+        servicePackageDetail: '/setting/order/userServicePackageDetail'
       }
     }
   },
@@ -235,6 +238,12 @@ export default {
           },
 
           tradeType
+        })
+
+        this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
+      } else if (redirectKey === 'servicePackageDetail') {
+        const json = peace.util.encode({
+          orderNo
         })
 
         this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
