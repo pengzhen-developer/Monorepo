@@ -268,6 +268,14 @@
                          v-bind:size="14"></peace-price>
           </div>
         </div>
+        <div class="message-item"
+             v-if="internalData.orderInfo.equitiesName">
+          <div class="message-item-left">{{internalData.orderInfo.equitiesName}}</div>
+          <div class="message-item-right">
+            -<peace-price v-bind:price="internalData.orderInfo.totalMoney"
+                         v-bind:size="14"></peace-price>
+          </div>
+        </div>
       </div>
       <div class="module"
            v-if="internalData.inquiryInfo.inquiryStatus != ENUM.INQUIRY_STATUS.待支付 &&internalData.inquiryInfo.appointmentStatus!=2">
@@ -592,10 +600,6 @@ export default {
         txt += this.internalData.orderInfo.diseases ? `-${this.internalData.orderInfo.diseases}` : ``
         list.splice(1, 0, { name: '医保类型', value: txt })
       }
-      //服务包
-      if (list.length > 0 && this.internalData.orderInfo.servicePackageName) {
-        list.splice(list.length, 0, { name: this.internalData.orderInfo.servicePackageName, value: `￥${this.internalData.orderInfo.orderMoney}` })
-      }
 
       return list
     },
@@ -637,8 +641,7 @@ export default {
     canShowRefundTip() {
       return (
         this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已退诊 ||
-        (this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已取消 &&
-          (this.internalData.orderInfo.payMoney != '0.00' || (this.internalData.orderInfo.payMoney == 0 && this.internalData.orderInfo.orderMoney == 0)))
+        (this.internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已取消 && this.internalData.orderInfo.payTime)
       )
     },
     canShowSupplementaryInfo() {

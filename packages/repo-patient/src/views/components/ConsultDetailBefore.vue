@@ -580,7 +580,10 @@ export default {
       this.sending = true
       const params = peace.util.deepClone(this.params)
       params.medCardNo = this.yibaoInfo.medCardNo || ''
-      params.patientEquitiesId = this.servicePackageDialog.data?.patientEquitiesId || ''
+
+      params.patientEquitiesId = this.hasSelectedServicePackage == false ? '' : this.servicePackageDialog.data.patientEquitiesId
+      //服务包 医保 互斥
+      params.medCardNo = params.patientEquitiesId ? '' : params.medCardNo
       peace.service.inquiry
         .apply(params)
         .then((res) => {

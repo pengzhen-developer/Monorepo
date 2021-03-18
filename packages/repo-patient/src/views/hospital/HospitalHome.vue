@@ -796,7 +796,8 @@ export default {
       // padding-bottom: 25px;
       .item-wrap {
         position: relative;
-        width: 130px;
+        // width: 130px;
+        width: 170px;
         height: 130px;
         margin-right: 10px;
         .avatar {
@@ -811,7 +812,8 @@ export default {
           z-index: 10;
         }
         .item {
-          width: 130px;
+          // width: 130px;
+          width: 170px;
           height: 95px;
           background: rgba(255, 255, 255, 1);
           box-shadow: 0px 1px 4px 0px rgba(221, 221, 221, 0.5);

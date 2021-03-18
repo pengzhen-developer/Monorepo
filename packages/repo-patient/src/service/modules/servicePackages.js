@@ -128,6 +128,22 @@ export function applyCancel(params) {
     }
   })
 }
+/**
+ * 未支付的订单数
+ *
+ * @export
+ * @param  params 参数列表
+ * @returns
+ */
+export function getWaitPayOrderNum(params) {
+  const waitPayOrderNum = 'client/v1/order/waitPayOrderNum'
+
+  return peace.http.post(waitPayOrderNum, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
 export default {
   /** 获取该医生的服务包列表 */
 
@@ -152,5 +168,8 @@ export default {
   doctorServiceManage,
   /** 申请取消服务包订单 */
 
-  applyCancel
+  applyCancel,
+  /** 未支付的订单数 */
+
+  getWaitPayOrderNum
 }

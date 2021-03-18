@@ -50,7 +50,10 @@
                     v-on:click="gotoApply(equity)">剩余{{equity.residueNum}}次</span>)</span> </div>
         </div>
       </div>
-      <div class="equity-tip">服务有效期：<span>{{info.effectiveDays}}天</span><span>（订单支付成功开始计算）</span></div>
+      <div class="equity-tip"
+           v-if="info.orderStatus==1||info.orderStatus==2">服务有效期：<span>{{info.effectiveDays}}天</span><span>（订单支付成功开始计算）</span></div>
+      <div class="equity-tip"
+           v-else>服务有效期：<span> {{info.serviceStartDate}} 至 {{info.serviceExpireDate}} </span></div>
 
       <div class="service-line"></div>
       <div class="phone"
@@ -72,9 +75,12 @@
       <!-- 订单金额  totalMoney  应付金额 orderMoney  实付金额 payMoney -->
       <div class="service-item-content between totalMoney">
         <div class="service-item-content-lable">{{!info.payTime?'应付金额：':'实付金额：'}}</div>
+        <!-- payStatus 支付状态（1未支付3已支付4退款中5已退款 6退款失败-->
         <div class="service-item-content-value">
           <peace-price v-bind:price="!info.payTime?info.orderMoney :info.payMoney"
                        v-bind:size="16"></peace-price>
+          <span v-if="info.payStatus==4">(退款中)</span>
+          <span v-if="info.payStatus==5">(已退款)</span>
         </div>
       </div>
     </div>
@@ -88,6 +94,21 @@
       <div class="service-item-content">
         <div class="service-item-content-lable">订单时间：</div>
         <div class="service-item-content-value">{{info.createdTime}}</div>
+      </div>
+      <div class="service-item-content"
+           v-if="info.payTime">
+        <div class="service-item-content-lable">支付方式：</div>
+        <div class="service-item-content-value">{{paymentTypeText}}</div>
+      </div>
+      <div class="service-item-content"
+           v-if="info.payTime">
+        <div class="service-item-content-lable">支付时间：</div>
+        <div class="service-item-content-value">{{info.payTime}}</div>
+      </div>
+      <div class="service-item-content"
+           v-if="info.cancelTime">
+        <div class="service-item-content-lable">取消时间：</div>
+        <div class="service-item-content-value">{{info.cancelTime}}</div>
       </div>
     </div>
 
@@ -135,6 +156,14 @@ import peace from '@src/library'
 import RefundTip from '@src/views/components/RefundTip'
 import CallPhone from '@src/views/components/CallPhone'
 import { Dialog } from 'vant'
+
+const CONSTANT = {
+  PAYMENT_TYPE: {
+    微信支付: 'wxpay',
+    支付宝支付: 'alipay',
+    医保卡支付: 'yibaopay'
+  }
+}
 export default {
   name: 'user-servicePackage-detail',
   components: { RefundTip, CallPhone, [Dialog.Component.name]: Dialog.Component },
@@ -163,6 +192,9 @@ export default {
     this.get()
   },
   computed: {
+    paymentTypeText() {
+      return Object.keys(CONSTANT.PAYMENT_TYPE).find((key) => CONSTANT.PAYMENT_TYPE[key] === this.info.paymentType)
+    },
     canApply() {
       return this.info?.orderStatus == 3
     },
@@ -176,7 +208,7 @@ export default {
       return this.phoneDialog?.data?.phone
     },
     canShowFooter() {
-      return this.info?.orderStatus == 1 || this.info?.orderStatus == 3 || !this.hasUsed
+      return this.info?.orderStatus == 1 || (this.info?.orderStatus == 3 && !this.hasUsed)
     }
   },
   methods: {
@@ -235,16 +267,9 @@ export default {
         res.data.time = (res.data.expireTime - res.data.currentTime) * 1000
         this.info = res.data
         this.phoneDialog.data.phone = this.info.phoneNumber
-        let sum = 0
-        let result = []
-        res.data.equities.map((item) => {
-          sum += item.residueNum
-          if (item.residueNum != item.totalNum) {
-            result.push(true)
-          }
-        })
-        this.hasUsedAll = sum == 0 ? true : false
-        this.hasUsed = result.length > 0 ? true : false
+
+        this.hasUsedAll = res.data.equities.find((item) => item.residueNum > 0) ? false : true
+        this.hasUsed = res.data.equities.find((item) => item.residueNum != item.totalNum) ? true : false
       })
     },
     cancel() {
@@ -486,6 +511,11 @@ export default {
         }
         .service-item-content-value {
           color: #ff3a30;
+          > span {
+            color: #333;
+            font-size: 14px;
+            font-weight: normal;
+          }
         }
       }
       .service-item-content-lable {

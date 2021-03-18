@@ -54,12 +54,10 @@
                      class="money"></peace-price>
       </div>
       <div class="footer-right">
-        <peace-button round
-                      type="primary"
-                      size="small"
-                      throttle
-                      :throttleTime="3000"
-                      v-on:click="submit">提交订单</peace-button>
+        <van-button round
+                    type="primary"
+                    size="small"
+                    v-on:click="submit">提交订单</van-button>
       </div>
     </div>
     <!-- 确认支付弹框 -->

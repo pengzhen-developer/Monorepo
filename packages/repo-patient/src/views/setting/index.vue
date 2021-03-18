@@ -23,7 +23,9 @@
            v-bind:key="index"
            v-on:click="goMenuPage(item)">
         <van-image v-bind:src="item.icon"
-                   v-if="item.icon"></van-image>
+                   v-if="item.icon">
+          <span v-if="canShowWaitPayOrderNum(index)">{{waitPayOrderNum}}</span>
+        </van-image>
         <span>{{item.txt}}</span>
       </div>
     </div>
@@ -64,6 +66,7 @@ import peace from '@src/library'
 export default {
   data() {
     return {
+      waitPayOrderNum: 0,
       orders: [
         { id: 0, type: 'order', txt: '全部订单', icon: require('@src/assets/images/setting/ic_order_all.png') },
         { id: 1, type: 'order', txt: '待支付', icon: require('@src/assets/images/setting/ic_order_waiting.png') },
@@ -101,9 +104,18 @@ export default {
     const userInfo = this.$store.state.user.userInfo
     this.username = userInfo.patientInfo.nickName || userInfo.patientInfo.realName
     this.usertel = userInfo.patientInfo.tel
+    this.getWaitPayOrderNum()
   },
 
   methods: {
+    canShowWaitPayOrderNum(index) {
+      return index == 1 && this.waitPayOrderNum > 0
+    },
+    getWaitPayOrderNum() {
+      peace.service.servicePackage.getWaitPayOrderNum({}).then((res) => {
+        this.waitPayOrderNum = res.data.waitPayOrderNum
+      })
+    },
     gotoUserInfomation() {
       this.$router.push(`/setting/UserInfomation`)
     },
@@ -237,6 +249,23 @@ export default {
     .van-image {
       width: 25px;
       height: 25px;
+      position: relative;
+      span {
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(50%, -50%);
+        min-width: 16px;
+        height: 16px;
+        color: #fff;
+        background: #ff3a30;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        padding: 0 4px;
+      }
     }
     span {
       margin-top: 4px;

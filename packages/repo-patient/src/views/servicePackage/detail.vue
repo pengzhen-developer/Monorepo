@@ -15,7 +15,28 @@
       <div class="service-item">
         <div class="title">在线咨询</div>
         <div class="brief"
+             :class="{ fold: fold, unfold: !fold }"
              v-html="info.brief"></div>
+
+        <div class="more"
+             @click="showMore"
+             v-if="fold">
+          <span>查看更多</span>
+          <van-image round
+                     width="13px"
+                     height="13px"
+                     :src="require('@src/assets/images/ic_more.png')"></van-image>
+        </div>
+        <div class="more"
+             @click="showMore"
+             v-if="!fold">
+          <span>收起</span>
+          <van-image round
+                     width="13px"
+                     height="13px"
+                     style="transform: rotate(180deg)"
+                     :src="require('@src/assets/images/ic_more.png')"></van-image>
+        </div>
       </div>
 
       <div class="service-item">
@@ -86,7 +107,7 @@ export default {
   data() {
     return {
       info: null,
-
+      fold: true,
       process: [
         { txt: '购买服务包', icon: require('@src/assets/images/service-process/ic_service_detail_bug.png') },
         { txt: 'icon', icon: require('@src/assets/images/service-process/ic_service_detail_next.png') },
@@ -110,6 +131,9 @@ export default {
     this.get()
   },
   methods: {
+    showMore() {
+      this.fold = !this.fold
+    },
     get() {
       const params = peace.util.decode(this.$route.params.json)
       peace.service.servicePackage.getServicePackageDetail(params).then((res) => {
@@ -202,7 +226,16 @@ export default {
         transform: translateY(-50%);
       }
     }
-
+    .more {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 16px;
+      color: rgba(51, 51, 51, 0.6);
+      span {
+        margin-right: 4px;
+      }
+    }
     .brief {
       margin-top: 8px;
       line-height: 24px;
@@ -213,6 +246,7 @@ export default {
       word-wrap: break-word;
       word-break: break-all;
       &.fold {
+        max-height: 72px;
         -webkit-line-clamp: 3;
       }
       &.unfold {

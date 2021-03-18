@@ -196,7 +196,7 @@
               </div>
               <div class="order-item-order-info-item">
                 <div class="order-item-order-info-item-key">预约就诊时间:</div>
-                <div class="order-item-order-info-item-val">{{item.bookDate}}</div>
+                <div class="order-item-order-info-item-val">{{item.bookDate.replace(/\//g,'-')}}</div>
               </div>
               <div class="order-item-order-info-item">
                 <div class="order-item-order-info-item-key">订单金额:</div>
@@ -795,6 +795,7 @@ export default {
 <style lang="scss" scoped>
 .userorderList {
   height: 100%;
+  padding: 16px;
 }
 
 .order-tag {
@@ -979,8 +980,10 @@ export default {
         &.block {
           display: block;
           span {
+            word-break: break-all;
             &:nth-child(2) {
               margin-left: 5px;
+              color: #ff3a30;
             }
           }
         }
@@ -1107,258 +1110,6 @@ export default {
   color: rgba(51, 51, 51, 0.6);
 }
 
-// **************分割线 下面的最后都要删********************
-.panel .panel-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  .label {
-    margin-left: 0;
-  }
-  .count-down {
-    display: flex;
-    margin-right: 5%;
-    .van-count-down {
-      color: #999;
-    }
-    span {
-      font-size: 13px;
-    }
-  }
-}
-.content {
-  box-sizing: border-box;
-  background-color: #fff;
-  &.min {
-    min-height: 100%;
-    padding: 16px;
-  }
-
-  .panel {
-    background: #fff;
-    box-sizing: border-box;
-    border-radius: 8px;
-    padding: 1px 15px;
-    border-bottom: 0;
-    margin-bottom: 15px;
-    box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.08);
-    &:last-child {
-      margin-bottom: 0;
-    }
-    .panel-body {
-      padding-top: 12px;
-    }
-    .card {
-      align-items: center;
-      margin-top: 0;
-      .card-name {
-        font-size: 15px;
-        span {
-          margin-right: 7px;
-        }
-      }
-    }
-    .card .card-avatar.avatar-circular,
-    .avatar-circular {
-      margin: 0;
-      margin-right: 13px;
-    }
-    .small {
-      flex-direction: column;
-      align-items: flex-start;
-      width: 100%;
-      .small-item {
-        display: flex;
-        align-items: center;
-        font-size: 13px;
-        padding: 2px 0;
-        .small-price {
-          text-align: left;
-          font-size: 13px;
-        }
-        .small-item-key {
-          color: #999;
-          margin-right: 13px;
-          height: 20px;
-          line-height: 20px;
-        }
-        .small-item-val {
-          height: 20px;
-          line-height: 20px;
-          flex: 1;
-          color: #333;
-          display: flex;
-          align-items: center;
-          &.price-free {
-            color: #00c6ae;
-          }
-          &.price {
-            color: #f2223b;
-          }
-          span {
-            color: #999;
-            font-size: 13px;
-            margin-left: 3px;
-          }
-        }
-      }
-    }
-    .panel-bottom {
-      border-top: 1px solid #e8e8e8;
-    }
-  }
-}
-
-.card-gary {
-  color: #999;
-  font-size: 11px;
-  font-weight: 400;
-}
-.card-avatar.card-img {
-  width: 28px;
-  height: 28px;
-  margin-right: 5px;
-}
-.card-flex {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  margin-left: 5px;
-}
-
-.userConsultList {
-  height: 100%;
-}
-
-.box {
-  margin: 0;
-  padding: (20px/2) (30px/2);
-}
-.box-tab {
-  display: flex;
-  justify-content: space-between;
-
-  background: #fff;
-  box-shadow: 0 0 (10px/2) rgba(204, 204, 204, 0.5);
-  padding: (30px/2) (20px/2);
-  box-sizing: border-box;
-  border-radius: (30px/2);
-}
-.box-tab .tab-item {
-  flex: 1;
-  text-align: center;
-  position: relative;
-  border-left: 1px solid $-color--line;
-}
-.box-tab .tab-item:first-child {
-  border-left: none;
-}
-.box-tab .tab-item .span {
-  text-align: center;
-  color: #333;
-  font-size: (30px/2);
-  padding-left: (50px/2);
-}
-.box-tab .tab-item .span.red::after {
-  content: '';
-  width: (15px/2);
-  height: (15px/2);
-  position: absolute;
-  background: #f2223b;
-  border-radius: 50%;
-  top: -(8px/2);
-  left: (0px/2);
-}
-.icon-referral::before {
-  content: '';
-  position: absolute;
-  width: (50px/2);
-  height: (50px/2);
-  background-size: cover;
-  display: block;
-  left: -(40px/2);
-  top: -(5px/2);
-  background-image: url('../../../assets/images/icon-referral.jpg');
-}
-.icon-consultGroup::before {
-  content: '';
-  position: absolute;
-  width: (50px/2);
-  height: (50px/2);
-  background-size: cover;
-  display: block;
-  left: -(40px/2);
-  top: -(5px/2);
-  background-image: url('../../../assets/images/icon-consultGroup.jpg');
-}
-.bottom {
-  color: #999;
-  text-align: center;
-  font-size: (26px/2);
-  box-sizing: border-box;
-  padding-bottom: (30px/2);
-}
-
-.content .panel:first-child {
-  margin-top: 0;
-}
-.panel .panel-head,
-.panel .panel-body,
-.panel .panel-bottom {
-  padding: (20px/2) 0;
-}
-.panel .panel-bottom {
-  display: flex;
-  align-items: center;
-}
-.panel .panel-bottom .time {
-  flex: 1 0 auto;
-  width: (280px/2);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/**/
-.code {
-  display: block;
-  font-size: (26px/2);
-  padding: (12px/2) (18px/2);
-  background-color: #fafafa;
-  border: (2px/2) solid #f3f3f3;
-  color: #000;
-}
-
-/**/
-.small {
-  display: flex;
-  padding-top: (20px/2);
-  color: #999;
-  font-size: (24px/2);
-  align-items: flex-end;
-}
-.small .small-time {
-  flex: 0 0 auto;
-  width: (250px/2);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.small .small-type {
-  flex: 0 0 auto;
-  width: (100px/2);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.small .small-price {
-  flex: 1;
-  width: (120px/2);
-  text-align: right;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 .label {
   font-size: 12px;
   line-height: normal;
@@ -1389,64 +1140,5 @@ export default {
   border-color: #504c4f;
   vertical-align: text-top;
   margin-top: (5px/2);
-}
-.panel .panel-head {
-  padding: 0 15px;
-}
-
-.small {
-  padding-top: 0;
-  font-size: (26px/2);
-}
-.small .small-time {
-  flex: 1;
-  font-size: (26px/2);
-}
-.small .small-price {
-  flex: 0 0 auto;
-  width: (200px/2);
-  font-size: (30px/2);
-}
-.panel-bottom .time {
-  font-size: (26px/2);
-}
-
-.label-jq {
-  position: relative;
-  background: #504c4f;
-  padding: 1px (8px/2);
-  color: #f7e9b3;
-  display: inline-block;
-  margin-left: -(30px/2);
-  height: (40px/2);
-  box-sizing: border-box;
-  z-index: 3;
-  padding-right: (13px/2);
-  font-size: (24px/2);
-}
-.label-jq::after {
-  content: '';
-  position: absolute;
-  right: -(20px/2);
-  top: (0px/2);
-  width: 0;
-  height: 0;
-  border-right: (20px/2) solid transparent;
-  border-left: (20px/2) solid transparent;
-  border-top: (20px/2) solid #504c4f;
-  border-bottom: (20px/2) solid #504c4f;
-  z-index: 0;
-}
-.label-jq.label-jq-register {
-  background: #4f82f5;
-  color: #fff;
-}
-.label-jq.label-jq-register::after {
-  content: '';
-  border-top-color: #4f82f5;
-  border-bottom-color: #4f82f5;
-}
-.card .card-avatar {
-  margin-left: 0;
 }
 </style>
