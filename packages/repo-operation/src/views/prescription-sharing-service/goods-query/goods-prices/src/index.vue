@@ -60,37 +60,40 @@
 
         <peace-table-column label="价格">
           <template slot-scope="scope">
-            {{ scope.row.Price || '--' }}
+            {{ scope.row.Price || '——' }}
           </template>
         </peace-table-column>
 
         <peace-table-column label="批发价">
           <template slot-scope="scope">
-            {{ scope.row.WholesalePrice || '--' }}
+            {{ scope.row.WholesalePrice || '——' }}
           </template>
         </peace-table-column>
 
         <peace-table-column label="省中标价">
           <template slot-scope="scope">
-            {{ scope.row.WiningPrice || '--' }}
+            {{ scope.row.WiningPrice || '——' }}
           </template>
         </peace-table-column>
 
         <peace-table-column label="零售价">
           <template slot-scope="scope">
-            {{ scope.row.RetailPrice || '--' }}
+            {{ scope.row.RetailPrice || '——' }}
           </template>
         </peace-table-column>
 
         <peace-table-column label="成本价">
           <template slot-scope="scope">
-            {{ scope.row.CostPrice || '--' }}
+            {{ scope.row.CostPrice || '——' }}
           </template>
         </peace-table-column>
 
-        <peace-table-column label="更新时间"
-                            prop="Get3PartStockInfoTime"
-                            width="180px"></peace-table-column>
+        <peace-table-column label="更新时间">
+          <template slot-scope="scope">
+            {{ scope.row.Get3PartStockInfoTime || '——' }}
+          </template>
+        </peace-table-column>
+
       </peace-table>
     </div>
 
