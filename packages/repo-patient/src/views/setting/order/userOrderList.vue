@@ -534,9 +534,14 @@ export default {
         this.cancelRegisterOrder(orderNo, index, type, 'auto')
         item.orderStatus = 2
       } else if (item.orderType == 'drug') {
-        //canceType   1手动取消2自动取消
-        const params = { orderNo: item.orderNo, canceType: 2 }
+        //cancelType   1手动取消2自动取消
+        const params = { orderNo: item.orderNo, cancelType: 2 }
         peace.service.purchasedrug.CancelOrder(params).finally(() => {
+          this.get('init')
+        })
+      } else if (item.orderType == 'servicePackage') {
+        const params = { orderNo: item.orderNo, cancelType: 2, reason: '' }
+        peace.service.servicePackage.applyCancel(params).finally(() => {
           this.get('init')
         })
       }

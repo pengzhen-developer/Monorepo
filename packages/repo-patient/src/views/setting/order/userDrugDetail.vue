@@ -624,9 +624,9 @@ export default {
       this.showQRCode = true
     },
     finishHander() {
-      //canceType   1手动取消2自动取消
+      //cancelType   1手动取消2自动取消
       const params = {
-        canceType: 2,
+        cancelType: 2,
         orderNo: this.order.orderNo
       }
       peace.service.purchasedrug.CancelOrder(params).finally(() => {
@@ -707,7 +707,7 @@ export default {
       //取消状态时间轴
       //1. cancelList.length==0 未发起申请
       //2. cancelList.length>0    cancelStatus  1取消申请2取消成功3取消失败
-      //canceType   1手动取消2自动取消
+      //cancelType   1手动取消2自动取消
       if (this.order.cancelList.length == 0) {
         this.$router.push(`/drug/drugCancelOrderBefore/${params}`)
       } else {
@@ -716,9 +716,9 @@ export default {
     },
     //申请取消订单-当前页面
     cancelOrderByCurrent() {
-      //canceType   1手动取消2自动取消
+      //cancelType   1手动取消2自动取消
       const params = {
-        canceType: 1,
+        cancelType: 1,
         orderNo: this.order.orderNo
       }
       let resTxt = ''

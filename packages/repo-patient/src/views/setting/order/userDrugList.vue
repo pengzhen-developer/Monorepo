@@ -200,8 +200,8 @@ export default {
 
   methods: {
     finishHander(item) {
-      //canceType   1手动取消2自动取消
-      const params = { orderNo: item.orderNo, canceType: 2 }
+      //cancelType   1手动取消2自动取消
+      const params = { orderNo: item.orderNo, cancelType: 2 }
       peace.service.purchasedrug.CancelOrder(params).finally(() => {
         this.get('init')
       })

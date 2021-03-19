@@ -116,7 +116,7 @@
          v-if="canShowFooter">
       <div class="footer-left">
         <div class="count-down"
-             v-if="info.orderStatus==1">
+             v-if="info.orderStatus==1&&info.time>0">
           <van-count-down millisecond
                           @finish="finish"
                           :time="info.time"
@@ -213,7 +213,7 @@ export default {
   },
   methods: {
     gotoApply(item) {
-      if (item.residueNum == 0 || this.info.orderStatus != 3) {
+      if (item.residueNum == 0 || this.info.servicePackageStatus == 4) {
         return
       }
       //1.7.0仅支持 在线咨询
@@ -229,8 +229,8 @@ export default {
             serviceType: 'inquiry',
             patientEquitiesId: item.patientEquitiesId,
             patientEquitiesName: item.equitiesName,
-            servicePackageId: item.servicePackageId,
-            servicePackageName: item.servicePackageName
+            servicePackageId: this.info.servicePackageId,
+            servicePackageName: this.info.servicePackageName
           })
           this.$router.push(`/components/doctorInquiryApply/${json}`)
         } else {
@@ -247,7 +247,7 @@ export default {
     getStatusText(status) {
       const dic = {
         1: '请在15分钟内完成支付，超时订单自动取消',
-        2: this.info.payTime ? '您取消了订单' : '超时未支付，系统自动取消订单',
+        2: this.info.cancelType == 1 ? '您取消了订单' : '超时未支付，系统自动取消订单',
         3: '服务包生效，您可以使用服务包啦！',
         4: this.hasUsedAll ? '您的服务包内容已用完' : '您的服务包已到期'
       }
@@ -259,7 +259,14 @@ export default {
       this.cancelOrder()
     },
     cancelOrder() {
-      console.log('取消')
+      const params = {
+        orderNo: this.info.orderNo,
+        cancelType: 2,
+        reason: ''
+      }
+      peace.service.servicePackage.applyCancel(params).then(() => {
+        this.get()
+      })
     },
     get() {
       const params = peace.util.decode(this.$route.params.json)
@@ -283,8 +290,10 @@ export default {
         message: '是否确定取消当前订单',
         confirmButtonText: '确定'
       }).then(() => {
+        //1手动取消 2自动去下
         const params = {
           orderNo: this.info.orderNo,
+          cancelType: 1,
           reason: '不要了'
         }
         peace.service.servicePackage.applyCancel(params).then((res) => {
@@ -540,6 +549,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    z-index: 666;
     .footer-left {
       .van-count-down {
         color: #ff3a30;
