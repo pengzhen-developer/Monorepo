@@ -223,14 +223,7 @@
             {{servicePackageDialog.data.patientEquitiesName||'请选择'}}
           </div>
         </div>
-        <div class="brief"
-             v-if="servicesList.length>0&&hasSelectedServicePackage">
-          <div class="brief-left">应付金额:</div>
-          <div class="brief-right red">
-            <peace-price v-bind:price="params.price"
-                         v-bind:size="16"></peace-price>
-          </div>
-        </div>
+
         <template v-if="!hasSelectedServicePackage">
 
           <div class="brief"
@@ -867,10 +860,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f5f5f5;
+  background-color: #fff;
+  box-shadow: 0px -1px 1px 0px rgba(51, 51, 51, 0.16);
   position: fixed;
   bottom: 0;
   left: 0;
+  z-index: 100;
 }
 
 .module-item {
@@ -912,7 +907,7 @@ export default {
   background-color: #f5f5f5;
   color: #333;
   min-height: 100%;
-  padding: 10px 10px 77px;
+  padding: 10px 0 77px;
   box-sizing: border-box;
   .module {
     border-radius: 3px;

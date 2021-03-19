@@ -280,11 +280,6 @@ export default {
       })
     },
     cancel() {
-      // if (this.info.orderStatus == 1) {
-      //   //未支付取消
-      // } else {
-      //   //服务中 未使用取消
-      // }
       Dialog.confirm({
         title: '温馨提示',
         message: '是否确定取消当前订单',
@@ -294,7 +289,7 @@ export default {
         const params = {
           orderNo: this.info.orderNo,
           cancelType: 1,
-          reason: '不要了'
+          reason: this.info.orderStatus == 1 ? '' : '不想要了'
         }
         peace.service.servicePackage.applyCancel(params).then((res) => {
           peace.util.alert(res.msg)

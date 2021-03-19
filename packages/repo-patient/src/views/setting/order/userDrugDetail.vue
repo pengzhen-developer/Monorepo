@@ -1184,6 +1184,7 @@ export default {
   left: 0;
   width: 100%;
   height: 60px;
+  z-index: 100;
   background: rgba(255, 255, 255, 1);
   border: 1px solid rgba(238, 238, 238, 1);
   display: flex;

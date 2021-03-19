@@ -138,61 +138,62 @@ export default {
   }
   .content {
     min-height: 299px;
-    .list {
-      .title {
-        font-size: 18px;
-        font-family: PingFangSC-Medium, PingFang SC;
-        font-weight: bold;
-        color: #333333;
-        line-height: 24px;
-        position: relative;
-        padding-left: 12px;
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        &::before {
-          content: '';
-          width: 4px;
-          height: 16px;
-          background: #00c6ae;
-          border-radius: 2px;
-          left: 0;
-          top: 0;
-          transform: translate(-50%);
-        }
+    padding-bottom: 16px;
+    .title {
+      font-size: 18px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: bold;
+      color: #333333;
+      line-height: 24px;
+      position: relative;
+      padding-left: 12px;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-top: 16px;
+      &::before {
+        content: '';
+        background: $primary;
+        width: 4px;
+        height: 16px;
+        border-radius: 4px;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
       }
-      .equities {
-        .equities-item {
+    }
+    .equities {
+      .equities-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 0;
+        font-size: 16px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: rgba(51, 51, 51, 0.6);
+        line-height: 24px;
+        border-bottom: 1px solid rgba(51, 51, 51, 0.05);
+        .van-image {
+          width: 16px;
+          height: 16px;
+          margin-right: 8px;
+        }
+        .equities-item-name {
+          flex: 1;
+          width: 0;
           display: flex;
-          align-items: center;
-          padding: 12px 0;
-          font-size: 16px;
-          font-family: PingFangSC-Regular, PingFang SC;
-          font-weight: 400;
-          color: rgba(51, 51, 51, 0.6);
-          line-height: 24px;
-          border-bottom: 1px solid rgba(51, 51, 51, 0.05);
-          .van-image {
-            width: 16px;
-            height: 16px;
-            margin-right: 8px;
-          }
-          .equities-item-name {
-            flex: 1;
-            width: 0;
-            display: flex;
-            flex-wrap: nowrap;
-            span {
-              white-space: nowrap;
-              &:first-child {
-                overflow: hidden;
-                text-overflow: ellipsis;
-              }
-              &:last-child {
-                color: rgba(51, 51, 51, 0.6);
-                margin-left: 5px;
-              }
+          flex-wrap: nowrap;
+          span {
+            white-space: nowrap;
+            &:first-child {
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+            &:last-child {
+              color: rgba(51, 51, 51, 0.6);
+              margin-left: 5px;
             }
           }
         }

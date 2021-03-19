@@ -212,37 +212,6 @@
           </div>
         </div>
       </div>
-      <!--订单操作时间轴-->
-      <div class="module message">
-        <div class="message-item">
-          <div class="message-item-left">订单编号</div>
-          <div class="message-item-right">{{ internalData.orderInfo.orderNo }}</div>
-        </div>
-        <div class="message-item ">
-          <div class="message-item-left">订单时间</div>
-          <div class="message-item-right">{{ internalData.orderInfo.orderTime }}</div>
-        </div>
-        <template v-if="internalData.orderInfo.paymentType||internalData.orderInfo.servicePackageName">
-          <div class="message-item start">
-            <div class="message-item-left">支付方式</div>
-            <div class="message-item-right">{{paymentTypeText}}</div>
-          </div>
-          <div class="message-item">
-            <div class="message-item-left">支付时间</div>
-            <div class="message-item-right">{{ internalData.orderInfo.payTime }}</div>
-          </div>
-        </template>
-        <div class="message-item"
-             v-if="internalData.inquiryInfo.inquiryStatus== ENUM.INQUIRY_STATUS.已取消">
-          <div class="message-item-left">{{internalData.inquiryInfo.appointmentStatus==2?'关闭时间':'取消时间'}}</div>
-          <div class="message-item-right">{{ internalData.inquiryInfo.cancelTime }}</div>
-        </div>
-        <div class="message-item"
-             v-if="internalData.orderInfo.refundTime">
-          <div class="message-item-left">退款时间</div>
-          <div class="message-item-right">{{ internalData.orderInfo.refundTime }}</div>
-        </div>
-      </div>
 
       <!-- 订单收费明细 -->
       <div class="module message"
@@ -317,6 +286,37 @@
             </div>
           </div>
         </template>
+      </div>
+      <!--订单操作时间轴-->
+      <div class="module message">
+        <div class="message-item">
+          <div class="message-item-left">订单编号</div>
+          <div class="message-item-right">{{ internalData.orderInfo.orderNo }}</div>
+        </div>
+        <div class="message-item ">
+          <div class="message-item-left">订单时间</div>
+          <div class="message-item-right">{{ internalData.orderInfo.orderTime }}</div>
+        </div>
+        <template v-if="internalData.orderInfo.paymentType||internalData.orderInfo.servicePackageName">
+          <div class="message-item start">
+            <div class="message-item-left">支付方式</div>
+            <div class="message-item-right">{{paymentTypeText}}</div>
+          </div>
+          <div class="message-item">
+            <div class="message-item-left">支付时间</div>
+            <div class="message-item-right">{{ internalData.orderInfo.payTime }}</div>
+          </div>
+        </template>
+        <div class="message-item"
+             v-if="internalData.inquiryInfo.inquiryStatus== ENUM.INQUIRY_STATUS.已取消">
+          <div class="message-item-left">{{internalData.inquiryInfo.appointmentStatus==2?'关闭时间':'取消时间'}}</div>
+          <div class="message-item-right">{{ internalData.inquiryInfo.cancelTime }}</div>
+        </div>
+        <div class="message-item"
+             v-if="internalData.orderInfo.refundTime">
+          <div class="message-item-left">退款时间</div>
+          <div class="message-item-right">{{ internalData.orderInfo.refundTime }}</div>
+        </div>
       </div>
       <div class="module phone"
            v-if="canShowPhoneBox"
@@ -1287,7 +1287,7 @@ export default {
   background-color: #f5f5f5;
   color: #333;
   min-height: 100%;
-  padding: 5px 10px;
+  padding: 0 0 5px;
   box-sizing: border-box;
   .module,
   .brief {
