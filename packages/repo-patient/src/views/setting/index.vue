@@ -263,6 +263,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        line-height: normal;
         font-size: 12px;
         padding: 0 4px;
       }

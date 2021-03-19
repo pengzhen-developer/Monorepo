@@ -178,7 +178,7 @@
                             :throttleTime="3000">
                 继续支付
               </peace-button>
-              <van-button class="label blue"
+              <van-button class="label"
                           @click="changeInvoiceModel(item)"
                           v-if="cnaShowApplyBtn(item)">
                 申请发票
@@ -322,7 +322,7 @@
                                   format="mm:ss" />
                 </template>
               </div>
-              <van-button class="label blue"
+              <van-button class="label"
                           @click="onClickSeeQRCode(item)"
                           v-if="checkQRCodeBtn(item)">取药码</van-button>
               <peace-button class="label blue"
@@ -330,12 +330,12 @@
                             @click="payOrder(item,index,'countDown_drug_')"
                             throttle
                             :throttleTime="3000">继续支付</peace-button>
-              <van-button class="label blue"
+              <van-button class="label"
                           v-if="canShowApplyBtn(item)"
                           @click="changeInvoiceModel(item)">
                 申请发票
               </van-button>
-              <van-button class="label blue"
+              <van-button class="label"
                           v-if="ifShowLogistics(item)"
                           @click="goDrugLogiPage(item)">查看物流
               </van-button>
@@ -1162,34 +1162,23 @@ export default {
 }
 
 .label {
-  font-size: 12px;
-  line-height: normal;
+  font-size: 14px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: bold;
+  color: rgba(51, 51, 51, 0.6);
+  line-height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 27px;
-  margin-left: 10px;
-  border-radius: 20px;
+  width: 88px;
+  height: 32px;
+  background: rgba(51, 51, 51, 0.05);
+  border-radius: 16px;
+  margin-left: 16px;
+  border: none;
 }
-.label.gary {
-  color: #999;
-  border-color: #ccc;
-  margin-left: 0;
-}
+
 .label.blue {
-  background: #00c6ae;
-  border-color: transparent;
-  color: #fff;
-}
-.label.label-private {
-  font-size: (16px/2);
-  padding: (2px/2) (4px/2);
-  border-radius: (5px/2);
-  color: #f7e9b3;
-  background: #504c4f;
-  border-color: #504c4f;
-  vertical-align: text-top;
-  margin-top: (5px/2);
+  color: $primary;
 }
 </style>
