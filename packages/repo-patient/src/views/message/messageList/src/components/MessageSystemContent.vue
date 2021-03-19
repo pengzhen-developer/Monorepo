@@ -48,12 +48,20 @@ export default {
         this.$router.push(`/components/CommentForDoctor/${json}`)
       }
       //去购药
-      if (this.type === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.审核处方通过) {
+      else if (this.type === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.审核处方通过) {
         const params = peace.util.encode({
           prescribeId: this.message.content.data.recipeInfo.recipeId
         })
 
         this.$router.push(`/components/theRecipe/${params}`)
+      }
+      //服务包提醒
+      else if (this.type === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务包提醒) {
+        const params = peace.util.encode({
+          doctorId: this.message.content.data.doctorInfo.doctorId
+        })
+
+        this.$router.push(`/servicePackage/list/${params}`)
       }
     }
   }

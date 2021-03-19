@@ -523,7 +523,8 @@ export default {
         Constant.INQUIRY_MESSAGE_TYPE.退诊,
         Constant.INQUIRY_MESSAGE_TYPE.取消问诊,
         Constant.INQUIRY_MESSAGE_TYPE.服务提醒,
-        Constant.INQUIRY_MESSAGE_TYPE.审核处方通过
+        Constant.INQUIRY_MESSAGE_TYPE.审核处方通过,
+        Constant.INQUIRY_MESSAGE_TYPE.服务包提醒
       ]
       if (message.type === 'custom') {
         if (message.content && message.content.code) {

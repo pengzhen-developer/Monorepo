@@ -166,6 +166,7 @@ export default {
         [Constant.INQUIRY_MESSAGE_TYPE.取消问诊]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.评价提示]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.服务提醒]: MessageSystemContent,
+        [Constant.INQUIRY_MESSAGE_TYPE.服务包提醒]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.审核处方通过]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.病历]: MessageCaseCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.处方]: MessageRecipeCardContent,
@@ -194,7 +195,8 @@ export default {
         Constant.INQUIRY_MESSAGE_TYPE.退诊,
         Constant.INQUIRY_MESSAGE_TYPE.取消问诊,
         Constant.INQUIRY_MESSAGE_TYPE.服务提醒,
-        Constant.INQUIRY_MESSAGE_TYPE.审核处方通过
+        Constant.INQUIRY_MESSAGE_TYPE.审核处方通过,
+        Constant.INQUIRY_MESSAGE_TYPE.服务包提醒
       ]
 
       if (this.message.type === 'custom') {
