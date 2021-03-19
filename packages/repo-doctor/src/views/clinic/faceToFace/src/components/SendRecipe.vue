@@ -32,11 +32,13 @@
               <span>{{ baseInfo.doctorInfo.deptName }}</span>
             </el-form-item>
           </div>
+        </div>
+
+        <div class="row">
           <div class="col">
             <el-form-item label="体重：">
               <div class="flex">
-                <el-input-number style="width: 100px;"
-                                 controls-position="right"
+                <el-input-number controls-position="right"
                                  v-bind:min="0"
                                  v-bind:max="200"
                                  v-model="model.weight"

@@ -158,8 +158,10 @@ export default {
     // 获取患者列表
     this.getPatientList().then(() => {
       // 面诊处方被质疑，跳转面诊，根据 patientNo 选中患者
-      if (this.$route.params.patientNo) {
-        this.selectPatient({ patientNo })
+      if (patientNo) {
+        const patient = this.patientList.find((item) => item.patientNo === patientNo)
+
+        this.selectPatient(patient)
       }
     })
 
