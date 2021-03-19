@@ -86,6 +86,7 @@
                      class="price"></peace-price>
         <span>/</span>
         <peace-price v-bind:price="info.referencePrice"
+                     v-bind:lineThrough="true"
                      v-bind:size="14"
                      class="referncePrice"></peace-price>
       </div>
@@ -238,8 +239,8 @@ export default {
     }
     .brief {
       margin-top: 8px;
-      line-height: 24px;
-      font-size: 16px;
+      // line-height: 24px;
+      // font-size: 16px;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       overflow: hidden;
@@ -250,7 +251,7 @@ export default {
         -webkit-line-clamp: 3;
       }
       &.unfold {
-        -webkit-line-clamp: 99;
+        -webkit-line-clamp: 9999;
       }
     }
 
@@ -385,7 +386,6 @@ export default {
     }
     .referncePrice {
       color: rgba(51, 51, 51, 0.6);
-      text-decoration: line-through;
     }
   }
   .footer-right {

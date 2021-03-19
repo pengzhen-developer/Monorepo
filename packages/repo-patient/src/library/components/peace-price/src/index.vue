@@ -3,7 +3,8 @@
 <template>
   <div class="peace-price">
     <span v-bind:style="`lineHeight:${size}px`">{{prefix}}{{originalPrice}}</span>
-    <div class="price-result">
+    <div class="price-result"
+         v-bind:class="{'line-through':lineThrough}">
       <div v-bind:style="`fontSize:${unitSize}px`">{{prefix}}</div>
       <div v-bind:style="`fontSize:${integerSize}px`">{{originalPrice | getPriceInteger}}</div>
       <div v-bind:style="`fontSize:${decimalSize}px`">
@@ -34,6 +35,12 @@ export default {
     //     return false
     //   }
     // },
+    lineThrough: {
+      type: Boolean,
+      default: () => {
+        return false
+      }
+    },
     prefix: {
       type: String,
       default: () => {
@@ -93,6 +100,9 @@ export default {
     transform-origin: left;
     display: flex;
     align-items: flex-end;
+    &.line-through {
+      text-decoration: line-through;
+    }
   }
 }
 </style>

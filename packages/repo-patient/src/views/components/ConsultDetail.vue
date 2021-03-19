@@ -218,12 +218,12 @@
           <div class="message-item-left">订单编号</div>
           <div class="message-item-right">{{ internalData.orderInfo.orderNo }}</div>
         </div>
-        <div class="message-item">
+        <div class="message-item ">
           <div class="message-item-left">订单时间</div>
           <div class="message-item-right">{{ internalData.orderInfo.orderTime }}</div>
         </div>
         <template v-if="internalData.orderInfo.paymentType||internalData.orderInfo.servicePackageName">
-          <div class="message-item">
+          <div class="message-item start">
             <div class="message-item-left">支付方式</div>
             <div class="message-item-right">{{paymentTypeText}}</div>
           </div>
@@ -268,12 +268,14 @@
                          v-bind:size="14"></peace-price>
           </div>
         </div>
-        <div class="message-item"
+        <div class="message-item "
              v-if="internalData.orderInfo.equitiesName">
           <div class="message-item-left">{{internalData.orderInfo.equitiesName}}</div>
-          <div class="message-item-right">
-            -<peace-price v-bind:price="internalData.orderInfo.totalMoney"
+          <div class="message-item-right ">
+            <span style="fontSize:12px;">-</span>
+            <peace-price v-bind:price="internalData.orderInfo.totalMoney"
                          v-bind:size="14"></peace-price>
+            <span v-if="(internalData.inquiryInfo.inquiryStatus==ENUM.INQUIRY_STATUS.已取消||internalData.inquiryInfo.inquiryStatus==ENUM.INQUIRY_STATUS.已退诊)">(已退回)</span>
           </div>
         </div>
       </div>
@@ -1367,7 +1369,13 @@ export default {
         align-items: center;
         justify-content: space-between;
         font-size: 13px;
-        height: 26px;
+        line-height: 26px;
+        &.start {
+          align-items: flex-start;
+          .message-item-right {
+            white-space: unset;
+          }
+        }
         .message-item-left {
           // width: 30%;
           color: #999;
@@ -1379,7 +1387,6 @@ export default {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          text-align: right;
         }
       }
     }
