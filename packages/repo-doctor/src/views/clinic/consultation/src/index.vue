@@ -1,20 +1,22 @@
 
 <template>
-  <div class="q-pa-md flex"
-       style="min-width: 1300px; max-width: 1440px; margin: 0 auto; ">
-    <div class="col consultation flex"
-         style="border: 1px solid #f4f4f4;">
-      <div class="consultation-left">
-        <ConsultationSessions></ConsultationSessions>
-      </div>
-      <div class="consultation-center"
-           v-if="$store.state.consultation.session && $store.state.consultation.session.id">
-        <ConsultationSession></ConsultationSession>
-      </div>
-      <div class="consultation-right"
-           v-if="$store.state.consultation.session && $store.state.consultation.session.id && 
+  <div class="flex column bg-white">
+    <div class="col flex q-pa-md"
+         style="min-width: 1300px; max-width: 1440px; margin: 0 auto; ">
+      <div class="col consultation flex bg-white"
+           style="border: 1px solid #f4f4f4;">
+        <div class="consultation-left">
+          <ConsultationSessions></ConsultationSessions>
+        </div>
+        <div class="consultation-center"
+             v-if="$store.state.consultation.session && $store.state.consultation.session.id">
+          <ConsultationSession></ConsultationSession>
+        </div>
+        <div class="consultation-right"
+             v-if="$store.state.consultation.session && $store.state.consultation.session.id && 
                $store.getters['consultation/consultInfo'].consultStatus !== Peace.type.CONSULTATION.CONSULTATION_STATUS.医生待审核">
-        <ConsultationPatient></ConsultationPatient>
+          <ConsultationPatient></ConsultationPatient>
+        </div>
       </div>
     </div>
   </div>

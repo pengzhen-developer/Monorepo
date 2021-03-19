@@ -1,12 +1,13 @@
 <template>
   <q-scroll-area v-bind:thumb-style="thumbStyle"
                  v-bind:style="scrollAreaStyle">
-    <div v-bind:style="routerViewStyle">
+    <div v-bind:style="routerViewStyle"
+         class="bg-grey-2">
       <transition appear
                   mode="out-in"
                   name="el-fade-in-linear">
         <keep-alive v-bind:include="keepAliveInclude">
-          <router-view class="router-view q-pa-md"
+          <router-view class="router-view"
                        v-bind:key="$route.fullPath"
                        v-bind:style="isIFrame ? routerViewIframeStyle : routerViewStyle"></router-view>
         </keep-alive>

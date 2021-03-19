@@ -1,27 +1,29 @@
 <template>
-  <div>
-    <div class="q-mb-lg">
-      <div class="flex items-baseline q-mb-lg">
-        <div class="tag text-subtitle1 text-weight-medium flex items-center">在线咨询</div>
-        <div class="text-grey-5 text-caption q-mr-lg">（开通在线咨询服务后，患者可向您进行健康咨询，咨询期间不可开具处方）</div>
+  <div class="layout-route">
+    <div class="card">
+      <div class="q-mb-lg">
+        <div class="flex items-baseline q-mb-lg">
+          <div class="tag text-subtitle1 text-weight-medium flex items-center">在线咨询</div>
+          <div class="text-grey-5 text-caption q-mr-lg">（开通在线咨询服务后，患者可向您进行健康咨询，咨询期间不可开具处方）</div>
+        </div>
+
+        <InquirySetting v-if="inquriyService"
+                        v-bind:data="inquriyService"
+                        v-on:success="get"></InquirySetting>
       </div>
 
-      <InquirySetting v-if="inquriyService"
-                      v-bind:data="inquriyService"
-                      v-on:success="get"></InquirySetting>
-    </div>
+      <div class="q-my-lg divider"></div>
 
-    <div class="q-my-lg divider"></div>
+      <div class="q-mb-lg">
+        <div class="flex items-baseline q-mb-lg">
+          <div class="tag text-subtitle1 text-weight-medium flex items-center">复诊续方</div>
+          <div class="text-grey-5 text-caption">（医院开通复诊续方服务并为您排班后，患者可预约向您复诊续方，您可为符合条件的患者开具处方）</div>
+        </div>
 
-    <div class="q-mb-lg">
-      <div class="flex items-baseline q-mb-lg">
-        <div class="tag text-subtitle1 text-weight-medium flex items-center">复诊续方</div>
-        <div class="text-grey-5 text-caption">（医院开通复诊续方服务并为您排班后，患者可预约向您复诊续方，您可为符合条件的患者开具处方）</div>
+        <InquiryAgainSetting v-if="inquriyAgainService"
+                             v-bind:data="inquriyAgainService"
+                             v-on:success="get"></InquiryAgainSetting>
       </div>
-
-      <InquiryAgainSetting v-if="inquriyAgainService"
-                           v-bind:data="inquriyAgainService"
-                           v-on:success="get"></InquiryAgainSetting>
     </div>
   </div>
 </template>

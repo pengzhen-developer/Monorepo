@@ -1,79 +1,82 @@
 <template>
-  <div>
-    <el-form inline
-             space-none
-             label-width="auto"
-             v-on:keyup.enter.native="get"
-             v-on:submit.native.prevent
-             v-bind:model="viewModel">
-      <el-form-item label="随访状态：">
-        <el-select placeholder="全部"
-                   v-model="viewModel.status">
-          <el-option :key="item.key"
-                     :label="item.status"
-                     :value="item.key"
-                     v-for="item in dataSource.status"></el-option>
-        </el-select>
-      </el-form-item>
+  <div class="layout-route">
 
-      <el-form-item label="标签：">
-        <el-select multiple
-                   placeholder="全部"
-                   style="width: 400px;"
-                   v-model="viewModel.tag">
-          <el-option :key="item.tag"
-                     :label="item.tag"
-                     :value="item.tag"
-                     v-for="item in dataSource.tag"></el-option>
-        </el-select>
-      </el-form-item>
+    <div class="card q-mb-md">
+      <el-form inline
+               space-none
+               label-width="auto"
+               v-on:keyup.enter.native="get"
+               v-on:submit.native.prevent
+               v-bind:model="viewModel">
+        <el-form-item label="随访状态：">
+          <el-select placeholder="全部"
+                     v-model="viewModel.status">
+            <el-option :key="item.key"
+                       :label="item.status"
+                       :value="item.key"
+                       v-for="item in dataSource.status"></el-option>
+          </el-select>
+        </el-form-item>
 
-      <el-form-item label="">
-        <el-button @click="get"
-                   type="primary">查询</el-button>
-      </el-form-item>
-    </el-form>
+        <el-form-item label="标签：">
+          <el-select multiple
+                     placeholder="全部"
+                     style="width: 400px;"
+                     v-model="viewModel.tag">
+            <el-option :key="item.tag"
+                       :label="item.tag"
+                       :value="item.tag"
+                       v-for="item in dataSource.tag"></el-option>
+          </el-select>
+        </el-form-item>
 
-    <hr />
+        <el-form-item label="">
+          <el-button @click="get"
+                     type="primary">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
 
-    <PeaceTable pagination
-                ref="table">
-      <PeaceTableColumn label="患者姓名"
-                        prop="familyName"
-                        width="100"></PeaceTableColumn>
-      <PeaceTableColumn label="性别"
-                        prop="sex"
-                        width="100"></PeaceTableColumn>
-      <PeaceTableColumn label="年龄"
-                        prop="age"
-                        width="100"></PeaceTableColumn>
-      <PeaceTableColumn :formatter="(r, c, v) => formatStatus(r, c, v)"
-                        label="随访状态"
-                        prop="followStatus"
-                        width="100"></PeaceTableColumn>
-      <PeaceTableColumn label="标签"
-                        prop="tag">
-        <template slot-scope="scope">
-          <el-tag :key="item"
-                  class="tag"
-                  type="info"
-                  v-for="item in scope.row.tag">{{ item }}</el-tag>
-        </template>
-      </PeaceTableColumn>
-      <PeaceTableColumn label="病程管理"
-                        prop="courseCount"
-                        width="100">
-        <template slot-scope="scope">
-          <template v-if="scope.row.courseCount">
-            <el-button @click="view(scope.row)"
-                       type="text">{{ scope.row.courseCount }}</el-button>
+    <div class="card q-mb-md">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn label="患者姓名"
+                          prop="familyName"
+                          width="100"></PeaceTableColumn>
+        <PeaceTableColumn label="性别"
+                          prop="sex"
+                          width="100"></PeaceTableColumn>
+        <PeaceTableColumn label="年龄"
+                          prop="age"
+                          width="100"></PeaceTableColumn>
+        <PeaceTableColumn :formatter="(r, c, v) => formatStatus(r, c, v)"
+                          label="随访状态"
+                          prop="followStatus"
+                          width="100"></PeaceTableColumn>
+        <PeaceTableColumn label="标签"
+                          prop="tag">
+          <template slot-scope="scope">
+            <el-tag :key="item"
+                    class="tag"
+                    type="info"
+                    v-for="item in scope.row.tag">{{ item }}</el-tag>
           </template>
-          <template v-else>
-            暂无
+        </PeaceTableColumn>
+        <PeaceTableColumn label="病程管理"
+                          prop="courseCount"
+                          width="100">
+          <template slot-scope="scope">
+            <template v-if="scope.row.courseCount">
+              <el-button @click="view(scope.row)"
+                         type="text">{{ scope.row.courseCount }}</el-button>
+            </template>
+            <template v-else>
+              暂无
+            </template>
           </template>
-        </template>
-      </PeaceTableColumn>
-    </PeaceTable>
+        </PeaceTableColumn>
+      </PeaceTable>
+    </div>
 
     <PeaceDialog :visible.sync="dialog.visible"
                  title="病程管理">

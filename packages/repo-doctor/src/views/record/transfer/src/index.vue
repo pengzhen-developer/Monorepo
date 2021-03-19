@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="header">
+  <div class="layout-route">
+    <div class="header q-mb-md">
       <el-button-group>
         <el-button :type="view.model.referral_type === source.state['我转诊的'] ? 'primary' : '' "
                    @click="changeActive('我转诊的')">我转诊的</el-button>
@@ -12,140 +12,145 @@
     <div class="content"
          key="out"
          v-if="view.model.referral_type === source.state['我转诊的']">
-      <el-form inline
-               space-none
-               label-width="auto"
-               v-on:keyup.enter.native="get"
-               v-on:submit.native.prevent
-               v-bind:model="view.model">
-        <el-form-item label="转入医生：">
-          <el-input placeholder
-                    v-model="view.model.docName"></el-input>
-        </el-form-item>
-        <el-form-item label="转入机构：">
-          <el-input placeholder
-                    v-model="view.model.hosName"></el-input>
-        </el-form-item>
-        <el-form-item label="转诊状态：">
-          <el-select clearable
-                     filterable
-                     placeholder="全部"
-                     v-model="view.model.transfer_status">
-            <el-option :key="item.key"
-                       :label="item.refferStatus"
-                       :value="item.key"
-                       v-for="item in source.transfer_status"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="">
-          <el-button @click="get"
-                     type="primary">查询</el-button>
-        </el-form-item>
-      </el-form>
 
-      <hr />
+      <div class="card q-mb-md">
+        <el-form inline
+                 space-none
+                 label-width="auto"
+                 v-on:keyup.enter.native="get"
+                 v-on:submit.native.prevent
+                 v-bind:model="view.model">
+          <el-form-item label="转入医生：">
+            <el-input placeholder
+                      v-model="view.model.docName"></el-input>
+          </el-form-item>
+          <el-form-item label="转入机构：">
+            <el-input placeholder
+                      v-model="view.model.hosName"></el-input>
+          </el-form-item>
+          <el-form-item label="转诊状态：">
+            <el-select clearable
+                       filterable
+                       placeholder="全部"
+                       v-model="view.model.transfer_status">
+              <el-option :key="item.key"
+                         :label="item.refferStatus"
+                         :value="item.key"
+                         v-for="item in source.transfer_status"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="">
+            <el-button @click="get"
+                       type="primary">查询</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
 
-      <PeaceTable pagination
-                  ref="table">
-        <PeaceTableColumn min-width="120"
-                          label="患者姓名"
-                          prop="family_name"></PeaceTableColumn>
-        <PeaceTableColumn min-width="120"
-                          label="年龄"
-                          prop="age"></PeaceTableColumn>
-        <PeaceTableColumn min-width="120"
-                          label="性别"
-                          prop="sex"></PeaceTableColumn>
-        <PeaceTableColumn min-width="200"
-                          label="疾病诊断"
-                          prop="diagnose"></PeaceTableColumn>
-        <PeaceTableColumn min-width="200"
-                          label="转入机构"
-                          prop="netHospital_name"></PeaceTableColumn>
-        <PeaceTableColumn min-width="120"
-                          label="转入医生"
-                          prop="name"></PeaceTableColumn>
-        <PeaceTableColumn min-width="160"
-                          label="期望转诊时间"
-                          prop="expect_time"></PeaceTableColumn>
-        <PeaceTableColumn min-width="160"
-                          label="申请时间"
-                          prop="created_time"></PeaceTableColumn>
-        <PeaceTableColumn v-bind:formatter="formatter"
-                          min-width="120"
-                          label="转诊状态"
-                          prop="transfer_status"></PeaceTableColumn>
-        <PeaceTableColumn fixed="right"
-                          width="120"
-                          label="操作">
-          <template slot-scope="scope">
-            <el-button @click="showDetail(scope.row)"
-                       type="text">查看详情</el-button>
-          </template>
-        </PeaceTableColumn>
-      </PeaceTable>
+      <div class="card q-mb-md">
+        <PeaceTable pagination
+                    ref="table">
+          <PeaceTableColumn min-width="120"
+                            label="患者姓名"
+                            prop="family_name"></PeaceTableColumn>
+          <PeaceTableColumn min-width="120"
+                            label="年龄"
+                            prop="age"></PeaceTableColumn>
+          <PeaceTableColumn min-width="120"
+                            label="性别"
+                            prop="sex"></PeaceTableColumn>
+          <PeaceTableColumn min-width="200"
+                            label="疾病诊断"
+                            prop="diagnose"></PeaceTableColumn>
+          <PeaceTableColumn min-width="200"
+                            label="转入机构"
+                            prop="netHospital_name"></PeaceTableColumn>
+          <PeaceTableColumn min-width="120"
+                            label="转入医生"
+                            prop="name"></PeaceTableColumn>
+          <PeaceTableColumn min-width="160"
+                            label="期望转诊时间"
+                            prop="expect_time"></PeaceTableColumn>
+          <PeaceTableColumn min-width="160"
+                            label="申请时间"
+                            prop="created_time"></PeaceTableColumn>
+          <PeaceTableColumn v-bind:formatter="formatter"
+                            min-width="120"
+                            label="转诊状态"
+                            prop="transfer_status"></PeaceTableColumn>
+          <PeaceTableColumn fixed="right"
+                            width="120"
+                            label="操作">
+            <template slot-scope="scope">
+              <el-button @click="showDetail(scope.row)"
+                         type="text">查看详情</el-button>
+            </template>
+          </PeaceTableColumn>
+        </PeaceTable>
+      </div>
     </div>
 
     <div class="content"
          key="in"
          v-if="view.model.referral_type === source.state['转给我的']">
-      <el-form inline
-               space-none
-               label-width="auto"
-               v-on:keyup.enter.native="get"
-               v-on:submit.native.prevent
-               v-bind:model="view.model">
-        <el-form-item label="转出机构：">
-          <el-input placeholder
-                    v-model="view.model.hosName"></el-input>
-        </el-form-item>
-        <el-form-item label="">
-          <el-button @click="get"
-                     type="primary">查询</el-button>
-        </el-form-item>
-      </el-form>
+      <div class="card q-mb-md">
+        <el-form inline
+                 space-none
+                 label-width="auto"
+                 v-on:keyup.enter.native="get"
+                 v-on:submit.native.prevent
+                 v-bind:model="view.model">
+          <el-form-item label="转出机构：">
+            <el-input placeholder
+                      v-model="view.model.hosName"></el-input>
+          </el-form-item>
+          <el-form-item label="">
+            <el-button @click="get"
+                       type="primary">查询</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
 
-      <hr />
-
-      <PeaceTable pagination
-                  ref="table">
-        <PeaceTableColumn min-width="120"
-                          label="患者姓名"
-                          prop="family_name"></PeaceTableColumn>
-        <PeaceTableColumn min-width="120"
-                          label="年龄"
-                          prop="age"></PeaceTableColumn>
-        <PeaceTableColumn min-width="120"
-                          label="性别"
-                          prop="sex"></PeaceTableColumn>
-        <PeaceTableColumn min-width="200"
-                          label="疾病诊断"
-                          prop="diagnose"></PeaceTableColumn>
-        <PeaceTableColumn min-width="200"
-                          label="转出机构"
-                          prop="netHospital_name"></PeaceTableColumn>
-        <PeaceTableColumn min-width="120"
-                          label="转出医生"
-                          prop="name"></PeaceTableColumn>
-        <PeaceTableColumn min-width="160"
-                          label="期望转诊时间"
-                          prop="expect_time"></PeaceTableColumn>
-        <PeaceTableColumn min-width="160"
-                          label="申请时间"
-                          prop="created_time"></PeaceTableColumn>
-        <PeaceTableColumn min-width="120"
-                          v-bind:formatter="formatter"
-                          label="转诊状态"
-                          prop="transfer_status"></PeaceTableColumn>
-        <PeaceTableColumn width="100"
-                          fixed="right"
-                          label="操作">
-          <template slot-scope="scope">
-            <el-button @click="showDetail(scope.row)"
-                       type="text">查看详情</el-button>
-          </template>
-        </PeaceTableColumn>
-      </PeaceTable>
+      <div class="card q-mb-md">
+        <PeaceTable pagination
+                    ref="table">
+          <PeaceTableColumn min-width="120"
+                            label="患者姓名"
+                            prop="family_name"></PeaceTableColumn>
+          <PeaceTableColumn min-width="120"
+                            label="年龄"
+                            prop="age"></PeaceTableColumn>
+          <PeaceTableColumn min-width="120"
+                            label="性别"
+                            prop="sex"></PeaceTableColumn>
+          <PeaceTableColumn min-width="200"
+                            label="疾病诊断"
+                            prop="diagnose"></PeaceTableColumn>
+          <PeaceTableColumn min-width="200"
+                            label="转出机构"
+                            prop="netHospital_name"></PeaceTableColumn>
+          <PeaceTableColumn min-width="120"
+                            label="转出医生"
+                            prop="name"></PeaceTableColumn>
+          <PeaceTableColumn min-width="160"
+                            label="期望转诊时间"
+                            prop="expect_time"></PeaceTableColumn>
+          <PeaceTableColumn min-width="160"
+                            label="申请时间"
+                            prop="created_time"></PeaceTableColumn>
+          <PeaceTableColumn min-width="120"
+                            v-bind:formatter="formatter"
+                            label="转诊状态"
+                            prop="transfer_status"></PeaceTableColumn>
+          <PeaceTableColumn width="100"
+                            fixed="right"
+                            label="操作">
+            <template slot-scope="scope">
+              <el-button @click="showDetail(scope.row)"
+                         type="text">查看详情</el-button>
+            </template>
+          </PeaceTableColumn>
+        </PeaceTable>
+      </div>
     </div>
 
     <PeaceDialog :visible.sync="dialog.visible"
@@ -266,12 +271,5 @@ export default {
 <style lang="scss" scoped>
 .header {
   text-align: center;
-  margin: -20px -20px 0;
-  background: #f9f9f9;
-  padding: 20px;
-}
-
-.content {
-  padding: 20px 0 0 0;
 }
 </style>

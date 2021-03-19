@@ -1,75 +1,78 @@
 <template>
-  <div class="prescription">
-    <el-form inline
-             space-none
-             label-width="auto"
-             v-on:keyup.enter.native="get"
-             v-on:submit.native.prevent
-             v-bind:model="model">
-      <el-form-item label="患者姓名：">
-        <el-input v-model="model.familyName"></el-input>
-      </el-form-item>
+  <div class="layout-route prescription">
 
-      <el-form-item label="开具时间：">
-        <PeaceDatePicker type="daterange"
-                         v-model="model.date"></PeaceDatePicker>
-      </el-form-item>
+    <div class="card q-mb-md">
+      <el-form inline
+               space-none
+               label-width="auto"
+               v-on:keyup.enter.native="get"
+               v-on:submit.native.prevent
+               v-bind:model="model">
+        <el-form-item label="患者姓名：">
+          <el-input v-model="model.familyName"></el-input>
+        </el-form-item>
 
-      <el-form-item label="处方状态：">
-        <el-select clearable
-                   placeholder="全部"
-                   v-model="model.prescriptionStatus">
-          <el-option v-for="item in source.prescriptionStatus"
-                     v-bind:key="item.value"
-                     v-bind:label="item.label"
-                     v-bind:value="item.value"></el-option>
-        </el-select>
-      </el-form-item>
+        <el-form-item label="开具时间：">
+          <PeaceDatePicker type="daterange"
+                           v-model="model.date"></PeaceDatePicker>
+        </el-form-item>
 
-      <el-form-item label="">
-        <el-button @click="get"
-                   type="primary">查询</el-button>
-      </el-form-item>
-    </el-form>
+        <el-form-item label="处方状态：">
+          <el-select clearable
+                     placeholder="全部"
+                     v-model="model.prescriptionStatus">
+            <el-option v-for="item in source.prescriptionStatus"
+                       v-bind:key="item.value"
+                       v-bind:label="item.label"
+                       v-bind:value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
 
-    <hr />
+        <el-form-item label="">
+          <el-button @click="get"
+                     type="primary">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
 
-    <PeaceTable pagination
-                ref="table">
-      <PeaceTableColumn label="处方编号"
-                        prop="prescriptionNo"
-                        min-width="180"></PeaceTableColumn>
-      <PeaceTableColumn label="患者姓名"
-                        prop="patient_name"
-                        min-width="120"></PeaceTableColumn>
-      <PeaceTableColumn label="性别"
-                        prop="patient_sex"
-                        min-width="120"></PeaceTableColumn>
-      <PeaceTableColumn label="年龄"
-                        prop="patient_age"
-                        min-width="120"></PeaceTableColumn>
-      <PeaceTableColumn label="身份证号"
-                        prop="idcard"
-                        min-width="140"></PeaceTableColumn>
-      <PeaceTableColumn label="处方状态"
-                        prop="prescription_status"
-                        min-width="120"></PeaceTableColumn>
-      <PeaceTableColumn label="开具时间"
-                        prop="created_time"
-                        min-width="160"></PeaceTableColumn>
-      <PeaceTableColumn fixed="right"
-                        label="操作"
-                        width="120">
-        <template slot-scope="scope">
-          <el-button type="text"
-                     v-if="scope.row.prescription_status === '质疑中'"
-                     v-on:click="change(scope.row)">修改处方</el-button>
-          <el-button type="text"
-                     v-else
-                     v-on:click="showDetail(scope.row)">查看详情</el-button>
-        </template>
-      </PeaceTableColumn>
-    </PeaceTable>
+    <div class="card q-mb-md">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn label="处方编号"
+                          prop="prescriptionNo"
+                          min-width="180"></PeaceTableColumn>
+        <PeaceTableColumn label="患者姓名"
+                          prop="patient_name"
+                          min-width="120"></PeaceTableColumn>
+        <PeaceTableColumn label="性别"
+                          prop="patient_sex"
+                          min-width="120"></PeaceTableColumn>
+        <PeaceTableColumn label="年龄"
+                          prop="patient_age"
+                          min-width="120"></PeaceTableColumn>
+        <PeaceTableColumn label="身份证号"
+                          prop="idcard"
+                          min-width="140"></PeaceTableColumn>
+        <PeaceTableColumn label="处方状态"
+                          prop="prescription_status"
+                          min-width="120"></PeaceTableColumn>
+        <PeaceTableColumn label="开具时间"
+                          prop="created_time"
+                          min-width="160"></PeaceTableColumn>
+        <PeaceTableColumn fixed="right"
+                          label="操作"
+                          width="120">
+          <template slot-scope="scope">
+            <el-button type="text"
+                       v-if="scope.row.prescription_status === '质疑中'"
+                       v-on:click="change(scope.row)">修改处方</el-button>
+            <el-button type="text"
+                       v-else
+                       v-on:click="showDetail(scope.row)">查看详情</el-button>
+          </template>
+        </PeaceTableColumn>
+      </PeaceTable>
+    </div>
 
     <PeaceDialog v-bind:visible.sync="dialog.visible"
                  append-to-body

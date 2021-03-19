@@ -1,9 +1,26 @@
 <template>
   <div class="fit relative-position">
+    <el-alert show-icon
+              type="warning"
+              class="q-mb-md"
+              style="height: 44px; position: absolute; z-index: 999;"
+              v-if="session.content.inquiryInfo.isUseServicePackage"
+              v-bind:closable="false">
+      <div slot="title"
+           class="absolute full-height full-width q-pr-xl">
+        <div class="relative-position full-height full-width">
+          <div class="flex items-center justify-between full-height">
+            <span>患者是服务包权益用户，可提供开处方服务</span>
+            <span v-on:click="gotoFaceToFace"
+                  class="text-warning cursor-pointer">去开方 <i class="el-icon-arrow-right"></i></span>
+          </div>
+        </div>
+      </div>
+    </el-alert>
     <!-- 消息组件 -->
     <!-- 消息组件位于其它组件的底部，当业务组件激活时，使用 'fixed-none' 样式使之不可见 -->
     <div class="fit flex column"
-         v-bind:class="{ 'fixed-none': componentInstance} ">
+         v-bind:class="{ 'fixed-none': componentInstance, 'q-pt-xl': session.content.inquiryInfo.isUseServicePackage } ">
       <q-scroll-area class="content"
                      ref="scrollArea"
                      v-bind:thumb-style="thumbStyle">
@@ -96,6 +113,10 @@ export default {
       const positionY = this.$refs.scrollArea.$el.children?.[0]?.children?.[0]?.clientHeight
 
       this.$refs.scrollArea.setScrollPosition(positionY, 100)
+    },
+
+    gotoFaceToFace() {
+      this.$router.push({ name: 'ClinicfaceToFace', params: { patientNo: this.session.content.patientInfo.patientNo } })
     },
 
     // 子组件通过 componentInstanceMap 控制组件显示与隐藏

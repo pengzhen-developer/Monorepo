@@ -152,6 +152,9 @@ export default {
         .then((res) => {
           Peace.util.success(res.msg)
         })
+        .catch(() => {
+          this.imageInquiryStatus = !this.imageInquiryStatus
+        })
         .finally(() => {
           this.$emit('success')
         })

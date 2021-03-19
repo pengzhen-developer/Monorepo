@@ -1,14 +1,16 @@
 <template>
-  <div class="flex q-pa-md"
-       style="min-width: 1300px; max-width: 1440px; margin: 0 auto; ">
-    <div class="col inquiry flex"
-         style="border: 1px solid #f4f4f4;">
+  <div class="flex column bg-white">
+    <div class="col flex q-pa-md"
+         style="min-width: 1300px; max-width: 1440px; margin: 0 auto; ">
+      <div class="col inquiry flex bg-white"
+           style="border: 1px solid #f4f4f4;">
 
-      <!-- 面诊患者列表 -->
-      <SessionList class="session-list"></SessionList>
+        <!-- 面诊患者列表 -->
+        <SessionList class="session-list"></SessionList>
 
-      <!-- 患者处方详情 -->
-      <SessionDetail class="session-detail"></SessionDetail>
+        <!-- 患者处方详情 -->
+        <SessionDetail class="session-detail"></SessionDetail>
+      </div>
     </div>
   </div>
 </template>

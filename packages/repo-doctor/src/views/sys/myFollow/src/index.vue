@@ -1,32 +1,33 @@
 <template>
-  <div>
-    <div>
-      <el-button @click="openDialog()"
-                 style="width: 120px;"
-                 type="primary">新增</el-button>
+  <div class="layout-route">
+    <div class="card">
+
+      <div class="q-mb-md">
+        <el-button @click="openDialog()"
+                   style="width: 120px;"
+                   type="primary">新增</el-button>
+      </div>
+
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn label="患教标题"
+                          prop="title"></PeaceTableColumn>
+        <PeaceTableColumn label="疾病"
+                          prop="diseaseTag"
+                          width="200"></PeaceTableColumn>
+        <PeaceTableColumn label="操作"
+                          width="200">
+          <template slot-scope="scope">
+            <el-button @click="showDetail(scope.row)"
+                       type="text">查看详情</el-button>
+            <el-button @click="openDialog(scope.row)"
+                       type="text">修改</el-button>
+            <el-button @click="remove(scope.row)"
+                       type="text">删除</el-button>
+          </template>
+        </PeaceTableColumn>
+      </PeaceTable>
     </div>
-
-    <hr />
-
-    <PeaceTable pagination
-                ref="table">
-      <PeaceTableColumn label="患教标题"
-                        prop="title"></PeaceTableColumn>
-      <PeaceTableColumn label="疾病"
-                        prop="diseaseTag"
-                        width="200"></PeaceTableColumn>
-      <PeaceTableColumn label="操作"
-                        width="200">
-        <template slot-scope="scope">
-          <el-button @click="showDetail(scope.row)"
-                     type="text">查看详情</el-button>
-          <el-button @click="openDialog(scope.row)"
-                     type="text">修改</el-button>
-          <el-button @click="remove(scope.row)"
-                     type="text">删除</el-button>
-        </template>
-      </PeaceTableColumn>
-    </PeaceTable>
 
     <PeaceDialog :title="dialog.title"
                  :visible.sync="dialog.visible"

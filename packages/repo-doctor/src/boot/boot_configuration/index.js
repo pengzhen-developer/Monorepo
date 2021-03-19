@@ -291,6 +291,17 @@ export default {
         enable: true,
         menuAlias: 'MyFollow',
         virtual: 0
+      },
+      {
+        id: '57',
+        closable: true,
+        menuName: '我的服务包',
+        menuRoute: '/sys/myServicePack',
+        menuPath: 'views/sys/myServicePack',
+        parentId: '5',
+        enable: true,
+        menuAlias: 'MyServicePack',
+        virtual: 0
       }
     ],
 

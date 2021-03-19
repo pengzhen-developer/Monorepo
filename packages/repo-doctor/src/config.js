@@ -194,6 +194,14 @@ export const config = {
         name: '我的随访',
         title: '我的随访',
         path: '/sys/myFollow'
+      },
+      {
+        id: 57,
+        pid: 5,
+        closable: true,
+        name: '我的服务包',
+        title: '我的服务包',
+        path: '/sys/myServicePack'
       }
     ]
   },

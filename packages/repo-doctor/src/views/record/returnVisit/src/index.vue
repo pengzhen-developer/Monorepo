@@ -1,84 +1,86 @@
 <template>
-  <div>
-    <el-form inline
-             space-none
-             label-width="auto"
-             v-on:keyup.enter.native="get"
-             v-on:submit.native.prevent
-             v-bind:model="model">
-      <el-form-item label="患者姓名：">
-        <el-input v-model="model.name"></el-input>
-      </el-form-item>
+  <div class="layout-route">
+    <div class="card q-mb-md">
+      <el-form inline
+               space-none
+               label-width="auto"
+               v-on:keyup.enter.native="get"
+               v-on:submit.native.prevent
+               v-bind:model="model">
+        <el-form-item label="患者姓名：">
+          <el-input v-model="model.name"></el-input>
+        </el-form-item>
 
-      <el-form-item label="订单日期：">
-        <peace-date-picker style="width: 130px"
-                           value-format="yyyy-MM-dd"
-                           v-bind:picker-options="rules.orderTimeBeginOptions"
-                           v-model="model.orderTimeBegin"></peace-date-picker>
-        <span class="q-mx-sm">-</span>
-        <peace-date-picker style="width: 130px"
-                           value-format="yyyy-MM-dd"
-                           v-bind:picker-options="rules.orderTimeEndOptions"
-                           v-model="model.orderTimeEnd"></peace-date-picker>
-      </el-form-item>
+        <el-form-item label="订单日期：">
+          <peace-date-picker style="width: 130px"
+                             value-format="yyyy-MM-dd"
+                             v-bind:picker-options="rules.orderTimeBeginOptions"
+                             v-model="model.orderTimeBegin"></peace-date-picker>
+          <span class="q-mx-sm">-</span>
+          <peace-date-picker style="width: 130px"
+                             value-format="yyyy-MM-dd"
+                             v-bind:picker-options="rules.orderTimeEndOptions"
+                             v-model="model.orderTimeEnd"></peace-date-picker>
+        </el-form-item>
 
-      <el-form-item label="复诊日期：">
-        <peace-date-picker style="width: 130px"
-                           value-format="yyyy-MM-dd"
-                           v-bind:picker-options="rules.returnVisitTimeBeginOptions"
-                           v-model="model.returnVisitTimeBegin"></peace-date-picker>
-        <span class="q-mx-sm">-</span>
-        <peace-date-picker style="width: 130px"
-                           value-format="yyyy-MM-dd"
-                           v-bind:picker-options="rules.returnVisitTimeEndOptions"
-                           v-model="model.returnVisitTimeEnd"></peace-date-picker>
-      </el-form-item>
+        <el-form-item label="复诊日期：">
+          <peace-date-picker style="width: 130px"
+                             value-format="yyyy-MM-dd"
+                             v-bind:picker-options="rules.returnVisitTimeBeginOptions"
+                             v-model="model.returnVisitTimeBegin"></peace-date-picker>
+          <span class="q-mx-sm">-</span>
+          <peace-date-picker style="width: 130px"
+                             value-format="yyyy-MM-dd"
+                             v-bind:picker-options="rules.returnVisitTimeEndOptions"
+                             v-model="model.returnVisitTimeEnd"></peace-date-picker>
+        </el-form-item>
 
-      <el-form-item label="">
-        <el-button type="primary"
-                   v-on:click="get">查询</el-button>
-      </el-form-item>
-    </el-form>
+        <el-form-item label="">
+          <el-button type="primary"
+                     v-on:click="get">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
 
-    <hr />
-
-    <PeaceTable ref="table"
-                pagination>
-      <PeaceTableColumn label="复诊单号"
-                        min-width="180"
-                        prop="inquiryNo"></PeaceTableColumn>
-      <PeaceTableColumn label="患者姓名"
-                        prop="name"
-                        min-width="120"></PeaceTableColumn>
-      <PeaceTableColumn label="性别"
-                        prop="genderText"
-                        min-width="120"></PeaceTableColumn>
-      <PeaceTableColumn label="年龄"
-                        prop="age"
-                        min-width="120"></PeaceTableColumn>
-      <PeaceTableColumn label="复诊时间"
-                        min-width="180"
-                        prop="returnVisitTime"></PeaceTableColumn>
-      <PeaceTableColumn label="订单金额"
-                        min-width="120"
-                        prop="orderAmount"></PeaceTableColumn>
-      <PeaceTableColumn label="订单时间"
-                        min-width="160"
-                        prop="createdTime"></PeaceTableColumn>
-      <PeaceTableColumn label="订单状态"
-                        prop="orderStatusText"
-                        min-width="120"></PeaceTableColumn>
-      <PeaceTableColumn fixed="right"
-                        label="操作"
-                        width="120">
-        <template slot-scope="scope">
-          <el-button type="text"
-                     v-bind:title="getControlTitleTip(scope.row)"
-                     v-bind:disabled="getDisabledState(scope.row)"
-                     v-on:click="showDetail(scope.row)">查看详情</el-button>
-        </template>
-      </PeaceTableColumn>
-    </PeaceTable>
+    <div class="card q-mb-md">
+      <PeaceTable ref="table"
+                  pagination>
+        <PeaceTableColumn label="复诊单号"
+                          min-width="180"
+                          prop="inquiryNo"></PeaceTableColumn>
+        <PeaceTableColumn label="患者姓名"
+                          prop="name"
+                          min-width="120"></PeaceTableColumn>
+        <PeaceTableColumn label="性别"
+                          prop="genderText"
+                          min-width="120"></PeaceTableColumn>
+        <PeaceTableColumn label="年龄"
+                          prop="age"
+                          min-width="120"></PeaceTableColumn>
+        <PeaceTableColumn label="复诊时间"
+                          min-width="180"
+                          prop="returnVisitTime"></PeaceTableColumn>
+        <PeaceTableColumn label="订单金额"
+                          min-width="120"
+                          prop="orderAmount"></PeaceTableColumn>
+        <PeaceTableColumn label="订单时间"
+                          min-width="160"
+                          prop="createdTime"></PeaceTableColumn>
+        <PeaceTableColumn label="订单状态"
+                          prop="orderStatusText"
+                          min-width="120"></PeaceTableColumn>
+        <PeaceTableColumn fixed="right"
+                          label="操作"
+                          width="120">
+          <template slot-scope="scope">
+            <el-button type="text"
+                       v-bind:title="getControlTitleTip(scope.row)"
+                       v-bind:disabled="getDisabledState(scope.row)"
+                       v-on:click="showDetail(scope.row)">查看详情</el-button>
+          </template>
+        </PeaceTableColumn>
+      </PeaceTable>
+    </div>
 
     <PeaceDialog title="复诊续方记录"
                  v-bind:visible.sync="dialog.visible"

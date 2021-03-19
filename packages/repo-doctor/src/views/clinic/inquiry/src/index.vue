@@ -1,20 +1,22 @@
 <template>
-  <div class="flex q-pa-md"
-       style="min-width: 1300px; max-width: 1440px; margin: 0 auto; ">
-    <div class="col inquiry flex"
-         style="border: 1px solid #f4f4f4;">
+  <div class="flex column bg-white">
+    <div class="col flex q-pa-md"
+         style="min-width: 1300px; max-width: 1440px; margin: 0 auto; ">
+      <div class="col inquiry flex bg-white"
+           style="border: 1px solid #f4f4f4;">
 
-      <!-- 在线咨询会话列表 -->
-      <SessionList class="session-list">
-      </SessionList>
+        <!-- 在线咨询会话列表 -->
+        <SessionList class="session-list">
+        </SessionList>
 
-      <!-- 在线咨询会话详情 -->
-      <SessionDetail v-if="canShowDetail"
-                     class="session-detail"></SessionDetail>
+        <!-- 在线咨询会话详情 -->
+        <SessionDetail v-if="canShowDetail"
+                       class="session-detail"></SessionDetail>
 
-      <!-- 在线咨询患者详情 -->
-      <SessionExtend v-if="canShowExtend"
-                     class="session-extend"></SessionExtend>
+        <!-- 在线咨询患者详情 -->
+        <SessionExtend v-if="canShowExtend"
+                       class="session-extend"></SessionExtend>
+      </div>
     </div>
   </div>
 </template>

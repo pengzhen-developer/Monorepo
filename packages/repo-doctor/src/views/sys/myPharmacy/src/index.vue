@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="text-center">
+  <div class="layout-route">
+    <div class="text-center q-mb-md">
       <el-button-group>
         <el-button v-on:click="changeActive('常用药品')"
                    v-bind:type="activeTheme('常用药品')">常用药品</el-button>
@@ -9,9 +9,8 @@
       </el-button-group>
     </div>
 
-    <hr>
-
-    <Component v-bind:is="componentInstance"></Component>
+    <Component class="card"
+               v-bind:is="componentInstance"></Component>
   </div>
 </template>
 

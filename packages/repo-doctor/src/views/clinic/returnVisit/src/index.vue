@@ -1,23 +1,25 @@
 <template>
-  <div class="flex q-pa-md"
-       style="min-width: 1300px; max-width: 1440px; margin: 0 auto; ">
-    <div class="col inquiry flex"
-         style="border: 1px solid #f4f4f4;">
+  <div class="flex column bg-white">
+    <div class="col flex q-pa-md"
+         style="min-width: 1300px; max-width: 1440px; margin: 0 auto; ">
+      <div class="col inquiry flex bg-white"
+           style="border: 1px solid #f4f4f4;">
 
-      <!-- 复诊续方会话列表 -->
-      <SessionList class="session-list">
-        <!-- 预约挂号 -->
-        <Reservation slot="reservation"></Reservation>
-      </SessionList>
+        <!-- 复诊续方会话列表 -->
+        <SessionList class="session-list">
+          <!-- 预约挂号 -->
+          <Reservation slot="reservation"></Reservation>
+        </SessionList>
 
-      <!-- 复诊续方会话详情 -->
-      <SessionDetail v-if="canShowDetail"
-                     class="session-detail"></SessionDetail>
+        <!-- 复诊续方会话详情 -->
+        <SessionDetail v-if="canShowDetail"
+                       class="session-detail"></SessionDetail>
 
-      <!-- 复诊续方患者详情 -->
-      <SessionExtend v-if="canShowExtend"
-                     class="session-extend"></SessionExtend>
+        <!-- 复诊续方患者详情 -->
+        <SessionExtend v-if="canShowExtend"
+                       class="session-extend"></SessionExtend>
 
+      </div>
     </div>
   </div>
 </template>

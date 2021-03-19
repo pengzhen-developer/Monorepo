@@ -1,109 +1,111 @@
 <template>
-  <div>
-    <!-- 复诊续方时间 -->
-    <div class="q-mb-lg">
-      <div class="q-mb-md">
-        <span class="text-subtitle1">复诊续方时间</span>
-        <span class="text-subtitle2 text-grey-5">（互联网医院出诊时间）</span>
-        <span class="text-amber-8">*医院统一排班，不可编辑</span>
+  <div class="layout-route">
+    <div class="card">
+      <!-- 复诊续方时间 -->
+      <div class="q-mb-lg">
+        <div class="q-mb-md">
+          <span class="text-subtitle1">复诊续方时间</span>
+          <span class="text-subtitle2 text-grey-5">（互联网医院出诊时间）</span>
+          <span class="text-amber-8">*医院统一排班，不可编辑</span>
+        </div>
+
+        <PeaceTable border
+                    v-bind:data="onlineSchedules">
+          <PeaceTableColumn label="">
+            <template slot-scope="scope">
+              <p>{{ scope.row.timeText }}</p>
+              <p>{{ scope.row.timeRange }}</p>
+            </template>
+          </PeaceTableColumn>
+          <PeaceTableColumn label="周一"
+                            prop="Monday"></PeaceTableColumn>
+          <PeaceTableColumn label="周二"
+                            prop="Tuesday"></PeaceTableColumn>
+          <PeaceTableColumn label="周三"
+                            prop="Wednesday"></PeaceTableColumn>
+          <PeaceTableColumn label="周四"
+                            prop="Thursday"></PeaceTableColumn>
+          <PeaceTableColumn label="周五"
+                            prop="Friday"></PeaceTableColumn>
+          <PeaceTableColumn label="周六"
+                            prop="Saturday"></PeaceTableColumn>
+          <PeaceTableColumn label="周日"
+                            prop="Sunday"></PeaceTableColumn>
+        </PeaceTable>
       </div>
 
-      <PeaceTable border
-                  v-bind:data="onlineSchedules">
-        <PeaceTableColumn label="">
-          <template slot-scope="scope">
-            <p>{{ scope.row.timeText }}</p>
-            <p>{{ scope.row.timeRange }}</p>
-          </template>
-        </PeaceTableColumn>
-        <PeaceTableColumn label="周一"
-                          prop="Monday"></PeaceTableColumn>
-        <PeaceTableColumn label="周二"
-                          prop="Tuesday"></PeaceTableColumn>
-        <PeaceTableColumn label="周三"
-                          prop="Wednesday"></PeaceTableColumn>
-        <PeaceTableColumn label="周四"
-                          prop="Thursday"></PeaceTableColumn>
-        <PeaceTableColumn label="周五"
-                          prop="Friday"></PeaceTableColumn>
-        <PeaceTableColumn label="周六"
-                          prop="Saturday"></PeaceTableColumn>
-        <PeaceTableColumn label="周日"
-                          prop="Sunday"></PeaceTableColumn>
-      </PeaceTable>
-    </div>
+      <!-- 线下咨询时间 -->
+      <div class="q-mb-lg">
+        <div class="q-mb-md">
+          <span class="text-subtitle1">线下咨询时间</span>
+          <span class="text-subtitle2 text-grey-5">（所在实体医疗机构出诊时间。若医院为医生排了班，医生不可编辑实体机构初诊排班信息。）</span>
+          <span class="text-amber-8">*医生自主排班,不支持线上挂号</span>
+        </div>
 
-    <!-- 线下咨询时间 -->
-    <div class="q-mb-lg">
-      <div class="q-mb-md">
-        <span class="text-subtitle1">线下咨询时间</span>
-        <span class="text-subtitle2 text-grey-5">（所在实体医疗机构出诊时间。若医院为医生排了班，医生不可编辑实体机构初诊排班信息。）</span>
-        <span class="text-amber-8">*医生自主排班,不支持线上挂号</span>
+        <p class="q-mb-sm">（温馨提示：点击鼠标勾选出诊时间）</p>
+
+        <PeaceTable class="q-mb-md"
+                    border
+                    v-bind:data="offlineSchedules">
+          <PeaceTableColumn label="">
+            <template slot-scope="scope">
+              <p>{{ scope.row.timeText }}</p>
+              <p>{{ scope.row.timeRange }}</p>
+            </template>
+          </PeaceTableColumn>
+          <PeaceTableColumn label="周一"
+                            prop="Monday">
+            <template slot-scope="scope">
+              <el-checkbox v-model="scope.row.Monday.checked"
+                           v-on:change="changeOfflineSchedules(scope)"></el-checkbox>
+            </template>
+          </PeaceTableColumn>
+          <PeaceTableColumn label="周二"
+                            prop="Tuesday">
+            <template slot-scope="scope">
+              <el-checkbox v-model="scope.row.Tuesday.checked"
+                           v-on:change="changeOfflineSchedules(scope)"></el-checkbox>
+            </template>
+          </PeaceTableColumn>
+          <PeaceTableColumn label="周三"
+                            prop="Wednesday">
+            <template slot-scope="scope">
+              <el-checkbox v-model="scope.row.Wednesday.checked"
+                           v-on:change="changeOfflineSchedules(scope)"></el-checkbox>
+            </template>
+          </PeaceTableColumn>
+          <PeaceTableColumn label="周四"
+                            prop="Thursday">
+            <template slot-scope="scope">
+              <el-checkbox v-model="scope.row.Thursday.checked"
+                           v-on:change="changeOfflineSchedules(scope)"></el-checkbox>
+            </template>
+          </PeaceTableColumn>
+          <PeaceTableColumn label="周五"
+                            prop="Friday">
+            <template slot-scope="scope">
+              <el-checkbox v-model="scope.row.Friday.checked"
+                           v-on:change="changeOfflineSchedules(scope)"></el-checkbox>
+            </template>
+          </PeaceTableColumn>
+          <PeaceTableColumn label="周六"
+                            prop="Saturday">
+            <template slot-scope="scope">
+              <el-checkbox v-model="scope.row.Saturday.checked"
+                           v-on:change="changeOfflineSchedules(scope)"></el-checkbox>
+            </template>
+          </PeaceTableColumn>
+          <PeaceTableColumn label="周日"
+                            prop="Sunday">
+            <template slot-scope="scope">
+              <el-checkbox v-model="scope.row.Sunday.checked"
+                           v-on:change="changeOfflineSchedules(scope)"></el-checkbox>
+            </template>
+          </PeaceTableColumn>
+        </PeaceTable>
+
+        <p class="text-caption text-grey-5 text-right">*患者端可以查看您的出诊时间</p>
       </div>
-
-      <p class="q-mb-sm">（温馨提示：点击鼠标勾选出诊时间）</p>
-
-      <PeaceTable class="q-mb-md"
-                  border
-                  v-bind:data="offlineSchedules">
-        <PeaceTableColumn label="">
-          <template slot-scope="scope">
-            <p>{{ scope.row.timeText }}</p>
-            <p>{{ scope.row.timeRange }}</p>
-          </template>
-        </PeaceTableColumn>
-        <PeaceTableColumn label="周一"
-                          prop="Monday">
-          <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.Monday.checked"
-                         v-on:change="changeOfflineSchedules(scope)"></el-checkbox>
-          </template>
-        </PeaceTableColumn>
-        <PeaceTableColumn label="周二"
-                          prop="Tuesday">
-          <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.Tuesday.checked"
-                         v-on:change="changeOfflineSchedules(scope)"></el-checkbox>
-          </template>
-        </PeaceTableColumn>
-        <PeaceTableColumn label="周三"
-                          prop="Wednesday">
-          <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.Wednesday.checked"
-                         v-on:change="changeOfflineSchedules(scope)"></el-checkbox>
-          </template>
-        </PeaceTableColumn>
-        <PeaceTableColumn label="周四"
-                          prop="Thursday">
-          <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.Thursday.checked"
-                         v-on:change="changeOfflineSchedules(scope)"></el-checkbox>
-          </template>
-        </PeaceTableColumn>
-        <PeaceTableColumn label="周五"
-                          prop="Friday">
-          <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.Friday.checked"
-                         v-on:change="changeOfflineSchedules(scope)"></el-checkbox>
-          </template>
-        </PeaceTableColumn>
-        <PeaceTableColumn label="周六"
-                          prop="Saturday">
-          <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.Saturday.checked"
-                         v-on:change="changeOfflineSchedules(scope)"></el-checkbox>
-          </template>
-        </PeaceTableColumn>
-        <PeaceTableColumn label="周日"
-                          prop="Sunday">
-          <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.Sunday.checked"
-                         v-on:change="changeOfflineSchedules(scope)"></el-checkbox>
-          </template>
-        </PeaceTableColumn>
-      </PeaceTable>
-
-      <p class="text-caption text-grey-5 text-right">*患者端可以查看您的出诊时间</p>
     </div>
   </div>
 </template>
