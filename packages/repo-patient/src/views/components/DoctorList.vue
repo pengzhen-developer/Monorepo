@@ -42,12 +42,16 @@
           </div>
           <div class="title-service">
             <div>
-              <span class="title-service-money"
-                    v-if="doctor.money"
-                    :class="isFree&&'free'">
+              <div class="title-service-money"
+                   v-if="doctor.money"
+                   :class="isFree&&'free'">
                 <template v-if='isFree'>免费 </template>
-                <template v-else>￥<span class="bold">{{doctor.money}}</span><span style="color:#999;font-size:12px;">起</span></template>
-              </span>
+                <template v-else>
+                  <peace-price class="bold"
+                               v-bind:price="doctor.money"
+                               v-bind:size="16"></peace-price><span style="color:#999;font-size:12px;">起</span>
+                </template>
+              </div>
             </div>
           </div>
         </div>

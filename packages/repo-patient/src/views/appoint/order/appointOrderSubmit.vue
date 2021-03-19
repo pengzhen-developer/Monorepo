@@ -48,7 +48,11 @@
       </div>
       <div class="dl-addr">
         <div class="dt nbsp">费用</div>
-        <div class="dd">￥{{ source.unitPrice }}(挂号费)</div>
+        <div class="dd">
+          <peace-price v-bind:price="source.unitPrice"
+                       v-bind:size="14"></peace-price>
+          (挂号费)
+        </div>
       </div>
     </div>
     <div class="order-check">
