@@ -1,10 +1,10 @@
 // 金额小数的字体大小比整数的字体小4px
 
 <template>
-  <div class="peace-price">
+  <div class="peace-price"
+       v-bind:class="{'line-through':lineThrough}">
     <span v-bind:style="`lineHeight:${size}px`">{{prefix}}{{originalPrice}}</span>
-    <div class="price-result"
-         v-bind:class="{'line-through':lineThrough}">
+    <div class="price-result">
       <div v-bind:style="`fontSize:${unitSize}px`">{{prefix}}</div>
       <div v-bind:style="`fontSize:${integerSize}px`">{{originalPrice | getPriceInteger}}</div>
       <div v-bind:style="`fontSize:${decimalSize}px`">
@@ -83,7 +83,9 @@ export default {
   display: inline-block;
   vertical-align: middle;
   line-height: 1 !important;
-
+  &.line-through {
+    text-decoration: line-through;
+  }
   // 小数点缩放后展示回有空白
   margin-right: -3px;
   //span 中的金额占位不显示
@@ -100,9 +102,6 @@ export default {
     transform-origin: left;
     display: flex;
     align-items: flex-end;
-    &.line-through {
-      text-decoration: line-through;
-    }
   }
 }
 </style>

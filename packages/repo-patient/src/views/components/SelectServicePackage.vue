@@ -71,7 +71,7 @@ export default {
     },
     info: {
       handler(val) {
-        if (val) {
+        if (val.patientEquitiesId) {
           this.model = Object.assign({}, val)
         }
       },
