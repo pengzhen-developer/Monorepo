@@ -9,7 +9,7 @@ export default async ({ Vue, configuration }) => {
       baseApi: process.env.VUE_APP_API_AUTH
     },
     socket: {
-      debug: true
+      debug: false
     }
   })
 

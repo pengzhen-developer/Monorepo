@@ -78,7 +78,7 @@
                           label="更新时间"
                           prop="updatedTime"></PeaceTableColumn>
 
-        <PeaceTableColumn width="120px"
+        <PeaceTableColumn min-width="120px"
                           label="使用状态">
           <template slot-scope="scope"
                     class="row items-center">
@@ -204,7 +204,7 @@ export default {
             })
           })
           .catch(() => {
-            row.equitiesStatus = row.equitiesStatus == '1' ? '2' : '1'
+            row.equitiesStatus = row.equitiesStatus === 1 ? 2 : 1
           })
       } else {
         Service.modifyServicesStatus(params).then((res) => {
