@@ -5,9 +5,11 @@
 
     <div v-if="showReply"
          class="text-center q-mb-lg">
-      <el-button v-on:click="reject">不接受，再次署名</el-button>
+      <el-button v-on:click="reject"
+                 v-bind:disabled="loading">不接受，再次署名</el-button>
       <el-button type="primary"
-                 v-on:click="accept">作废，重新开处方</el-button>
+                 v-on:click="accept"
+                 v-bind:disabled="loading">作废，重新开处方</el-button>
     </div>
 
     <PeaceDialog absolute-center
@@ -37,6 +39,7 @@
         <el-button plain
                    v-on:click="rejectCancel">取消</el-button>
         <el-button type="primary"
+                   v-bind:disabled="loading"
                    v-on:click="rejectConfirm">
           确定
         </el-button>
@@ -63,6 +66,8 @@ export default {
   data() {
     return {
       data: {},
+
+      loading: false,
 
       showReply: false,
 
@@ -108,12 +113,18 @@ export default {
     rejectConfirm() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          Service.usePrescription(this.model).then((res) => {
-            Peace.util.success(res.msg)
+          this.loading = true
 
-            this.rejectCancel()
-            this.fetch()
-          })
+          Service.usePrescription(this.model)
+            .then((res) => {
+              Peace.util.success(res.msg)
+
+              this.rejectCancel()
+              this.fetch()
+            })
+            .finally(() => {
+              this.loading = false
+            })
         }
       })
     },
@@ -129,13 +140,19 @@ export default {
         // 1，作废处方
         // 2，跳转开处方页面
 
-        this.voidPrescription().then((res) => {
-          Peace.util.success(res.msg)
+        this.loading = true
 
-          this.fetch()
+        this.voidPrescription()
+          .then((res) => {
+            Peace.util.success(res.msg)
 
-          this.redirectToOriginal()
-        })
+            this.fetch()
+
+            this.redirectToOriginal()
+          })
+          .finally(() => {
+            this.loading = false
+          })
       })
     },
 
