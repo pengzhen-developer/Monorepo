@@ -1,8 +1,8 @@
 <template>
-  <div class="flex column bg-white">
-    <div class="col flex q-pa-md"
+  <div class="bg-white overflow-auto">
+    <div class="q-pa-md full-height"
          style="min-width: 1300px; max-width: 1440px; margin: 0 auto; ">
-      <div class="col inquiry flex bg-white"
+      <div class="flex full-height inquiry bg-white"
            style="border: 1px solid #f4f4f4;">
 
         <!-- 面诊患者列表 -->
@@ -19,10 +19,22 @@
 import SessionList from './components/SessionList'
 import SessionDetail from './components/SessionDetail'
 
+import { dom } from 'quasar'
+
 export default {
   components: {
     SessionList,
     SessionDetail
+  },
+
+  mounted() {
+    this.$nextTick().then(() => {
+      // dom.offset 是 quasar 提供的工具类
+      // 自行了解相关 api 文档
+      const offset = dom.offset(this?.$el)
+
+      this.$el.style.height = `${document.body.clientHeight - offset?.top}px`
+    })
   }
 }
 </script>
