@@ -112,7 +112,7 @@
                     <div class="order-item-order-info-item-key">订单金额:</div>
                     <div class="order-item-order-info-item-val">
                       <!-- v-bind:style="{color:getServicePackageInquiryPriceColor(item.inquiryInfo.inquiryStatus)}" -->
-                      <peace-price v-bind:price="0.00"
+                      <peace-price v-bind:price="item.orderInfo.totalMoney"
                                    class="refund"></peace-price>
                       <span v-if="getServicePackageInquiryShowMoreText(item.inquiryInfo.inquiryStatus)"
                             style="color:rgba(51,51,51,0.6);">(减去服务包费用)</span>
