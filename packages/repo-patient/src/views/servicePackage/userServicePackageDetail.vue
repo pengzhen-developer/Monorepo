@@ -110,6 +110,11 @@
         <div class="service-item-content-lable">取消时间：</div>
         <div class="service-item-content-value">{{info.cancelTime}}</div>
       </div>
+      <div class="service-item-content"
+           v-if="info.completeTime">
+        <div class="service-item-content-lable">完成时间：</div>
+        <div class="service-item-content-value">{{info.completeTime}}</div>
+      </div>
     </div>
 
     <div class="footer"
