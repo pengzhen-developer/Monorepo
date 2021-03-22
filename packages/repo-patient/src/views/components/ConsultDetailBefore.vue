@@ -481,12 +481,6 @@ export default {
   },
   created() {
     this.params = peace.util.decode(this.$route.params.json)
-    //初始化服务包信息
-    this.hasSelectedServicePackage = this.params.servicePackageId ? true : false
-    this.servicePackageDialog.data.servicePackageId = this.params.servicePackageId
-    this.servicePackageDialog.data.servicePackageName = this.params.servicePackageName
-    this.servicePackageDialog.data.patientEquitiesId = this.params.patientEquitiesId
-    this.servicePackageDialog.data.patientEquitiesName = this.params.patientEquitiesName
     this.onEmits()
   },
   destroyed() {
@@ -712,12 +706,26 @@ export default {
     getServicePackageRecord() {
       peace.service.servicePackage.getRecord().then((res) => {
         this.servicesList = res.data || []
+        //初始化服务包信息
+        this.hasSelectedServicePackage = this.params.patientEquitiesId ? true : false
         //若是直接从医生主页进行问诊且该用户有可用服务包
-        if (!this.params.servicePackageId && this.servicesList.length > 0) {
+        if (!this.params.patientEquitiesId && this.servicesList.length > 0) {
           this.servicePackageDialog.data.servicePackageId = this.servicesList[0].servicePackageId
           this.servicePackageDialog.data.servicePackageName = this.servicesList[0].servicePackageName
           this.servicePackageDialog.data.patientEquitiesId = this.servicesList[0].equities[0].patientEquitiesId
           this.servicePackageDialog.data.patientEquitiesName = this.servicesList[0].equities[0].equitiesName
+          this.servicePackageDialog.data.patientEquitiesName = `${this.servicesList[0].equities[0].equitiesName}(剩余${this.servicesList[0].equities[0].residueNum}次)`
+        } else {
+          res.data.map((item) => {
+            item.equities.map((e) => {
+              if (e.patientEquitiesId == this.params.patientEquitiesId) {
+                this.servicePackageDialog.data.servicePackageId = this.servicesList[0].servicePackageId
+                this.servicePackageDialog.data.servicePackageName = this.servicesList[0].servicePackageName
+                this.servicePackageDialog.data.patientEquitiesId = e.patientEquitiesId
+                this.servicePackageDialog.data.patientEquitiesName = `${e.equitiesName}(剩余${e.residueNum}次)`
+              }
+            })
+          })
         }
       })
     },

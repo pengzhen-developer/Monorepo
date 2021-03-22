@@ -98,7 +98,7 @@ export default {
       this.model.servicePackageId = parent.servicePackageId
       this.model.servicePackageName = parent.servicePackageName
       this.model.patientEquitiesId = child.patientEquitiesId
-      this.model.patientEquitiesName = child.equitiesName
+      this.model.patientEquitiesName = `${child.equitiesName}(剩余${child.residueNum}次)`
     },
 
     cancel() {
