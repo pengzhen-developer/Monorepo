@@ -255,7 +255,7 @@ export default {
         1: '请在15分钟内完成支付，超时订单自动取消',
         2: this.info.cancelType == 1 ? '您取消了订单' : '超时未支付，系统自动取消订单',
         3: '服务包生效，您可以使用服务包啦！',
-        4: this.hasUsedAll ? '您的服务包内容已用完' : '您的服务包已到期'
+        4: this.info.servicePackageStatus == 4 ? '您的服务包已到期' : this.info.servicePackageStatus == 3 ? '您的服务包内容已用完' : ''
       }
       return dic[status]
     },
