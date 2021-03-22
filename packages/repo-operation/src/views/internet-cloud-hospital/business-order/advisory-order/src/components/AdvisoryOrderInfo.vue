@@ -177,14 +177,6 @@
         <div class="info-row-content">{{ info.serviceEquities }}</div>
       </div>
 
-      <div class="info-row"
-           v-if="info.backEquities">
-        <div class="info-row-label">
-          <span>权益回退</span>
-        </div>
-        <div class="info-row-content">{{ info.backEquities }}</div>
-      </div>
-
       <template v-if="info.paymentType">
         <div class="info-row">
           <div class="info-row-label">
@@ -211,6 +203,22 @@
                 style="font-size: 12px;">(已退款)</span>
         </div>
       </div>
+    </div>
+
+    <div class="info-row"
+         v-if="info.backTime">
+      <div class="info-row-label">
+        <span>退诊时间</span>
+      </div>
+      <div class="info-row-content">{{ info.backTime }}</div>
+    </div>
+
+    <div class="info-row"
+         v-if="info.backEquities">
+      <div class="info-row-label">
+        <span>权益回退</span>
+      </div>
+      <div class="info-row-content">{{ info.backEquities }}</div>
     </div>
 
   </div>
