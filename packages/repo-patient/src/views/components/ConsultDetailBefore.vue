@@ -474,7 +474,10 @@ export default {
 
   activated() {
     this.getFamilyDoctorInfo()
-    this.getServicePackageRecord()
+    //V1.7.0仅安排咨询订单支持服务包
+    if (this.inquriyStyle == 'inquiry') {
+      this.getServicePackageRecord()
+    }
   },
   created() {
     this.params = peace.util.decode(this.$route.params.json)
