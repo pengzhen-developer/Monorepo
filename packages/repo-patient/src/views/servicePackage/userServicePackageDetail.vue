@@ -280,23 +280,30 @@ export default {
       })
     },
     cancel() {
-      Dialog.confirm({
-        title: '温馨提示',
-        message: '是否确定取消当前订单',
-        confirmButtonText: '确定'
-      }).then(() => {
-        //1手动取消 2自动去下
-        const params = {
-          orderNo: this.info.orderNo,
-          cancelType: 1,
-          reason: this.info.orderStatus == 1 ? '' : '不想要了'
-        }
-        peace.service.servicePackage.applyCancel(params).then((res) => {
-          peace.util.alert(res.msg)
-          if (this.info.orderStatus == 1) {
-            this.get()
-          }
+      if (this.info.cancelType) {
+        this.applyCancel()
+      } else {
+        //第一次取消需要弹确认提示弹框
+
+        Dialog.confirm({
+          title: '温馨提示',
+          message: '是否确定取消当前订单',
+          confirmButtonText: '确定'
+        }).then(() => {
+          this.applyCancel()
         })
+      }
+    },
+    applyCancel() {
+      //1手动取消 2自动去下
+      const params = {
+        orderNo: this.info.orderNo,
+        cancelType: 1,
+        reason: this.info.orderStatus == 1 ? '' : '不想要了'
+      }
+      peace.service.servicePackage.applyCancel(params).then((res) => {
+        peace.util.alert(res.msg)
+        this.get()
       })
     },
     pay() {
