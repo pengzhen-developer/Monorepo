@@ -208,7 +208,7 @@
           <div class="brief-right"
                :class="{'checked':servicePackageDialog.data.servicePackageId}"
                @click="showServicePackageDialog">
-            {{servicePackageDialog.data.servicePackageName||'请选择'}}
+            <span>{{servicePackageDialog.data.servicePackageName||'请选择'}}</span>
             <van-icon name="arrow"
                       size="14"
                       v-if="servicePackageDialog.data.servicePackageId"></van-icon>
@@ -220,7 +220,7 @@
           <div class="brief-right"
                :class="{'checked':servicePackageDialog.data.patientEquitiesId}"
                @click="showServicePackageDialog">
-            {{servicePackageDialog.data.patientEquitiesName||'请选择'}}
+            <span>{{servicePackageDialog.data.patientEquitiesName||'请选择'}}</span>
           </div>
         </div>
 
@@ -889,11 +889,16 @@ export default {
   color: #333;
   display: flex;
   align-items: center;
-  width: 13em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   justify-content: flex-end;
+  width: 0;
+  flex: 1;
+  span {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: right;
+  }
 }
 .bb {
   height: 1px;
