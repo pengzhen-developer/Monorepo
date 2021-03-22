@@ -54,13 +54,14 @@
            v-if="info.orderStatus==1||info.orderStatus==2">服务有效期：<span>{{info.effectiveDays}}天</span><span>（订单支付成功开始计算）</span></div>
       <div class="equity-tip"
            v-else>服务有效期：<span> {{info.serviceStartDate}} 至 {{info.serviceExpireDate}} </span></div>
+      <template v-if="canShowPhoneBox">
+        <div class="service-line"></div>
+        <div class="phone"
+             @click="callPhone">
+          <van-image v-bind:src="require('@src/assets/images/ic_phone.png')"></van-image><span>联系客服</span>
+        </div>
+      </template>
 
-      <div class="service-line"></div>
-      <div class="phone"
-           v-if="canShowPhoneBox"
-           @click="callPhone">
-        <van-image v-bind:src="require('@src/assets/images/ic_phone.png')"></van-image><span>联系客服</span>
-      </div>
     </div>
 
     <!-- 费用明细 -->

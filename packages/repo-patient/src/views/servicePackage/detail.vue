@@ -82,12 +82,14 @@
     <div class="footer">
       <div class="footer-left">
         <peace-price v-bind:price="info.price"
-                     v-bind:size="16"
+                     v-bind:size="18"
                      class="price"></peace-price>
-        <span>/</span>
         <peace-price v-bind:price="info.referencePrice"
                      v-bind:lineThrough="true"
                      v-bind:size="14"
+                     v-bind:decSize="14"
+                     v-bind:prefixSize="14"
+                     prefix="/￥"
                      class="referncePrice"></peace-price>
       </div>
       <peace-button class="footer-right"
@@ -375,7 +377,7 @@ export default {
   padding: 8px 16px 16px;
   .footer-left {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     span {
       margin-left: 6px;
       font-size: 14px;
@@ -386,6 +388,7 @@ export default {
     }
     .referncePrice {
       color: rgba(51, 51, 51, 0.6);
+      margin-left: 9px;
     }
   }
   .footer-right {

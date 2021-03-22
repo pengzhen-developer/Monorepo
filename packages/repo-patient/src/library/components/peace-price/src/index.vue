@@ -5,7 +5,8 @@
        v-bind:class="{'line-through':lineThrough}">
     <span v-bind:style="`lineHeight:${size}px`">{{prefix}}{{originalPrice}}</span>
     <div class="price-result">
-      <div v-bind:style="`fontSize:${unitSize}px`">{{prefix}}</div>
+      <div v-bind:style="`fontSize:${unitSize}px`"
+           style="white-space:nowrap;">{{prefix}}</div>
       <div v-bind:style="`fontSize:${integerSize}px`">{{originalPrice | getPriceInteger}}</div>
       <div v-bind:style="`fontSize:${decimalSize}px`">
         {{originalPrice | getPriceDecimal}}
@@ -23,18 +24,43 @@ export default {
         return '0.00'
       }
     },
+    /**
+     * 默认size
+     */
     size: {
       type: [String, Number],
       default: () => {
         return '14'
       }
     },
-    // prefixSize:{
-    //   type:Boolean,
-    //   default: () => {
-    //     return false
-    //   }
-    // },
+    /**
+     * 金额单位size,可选
+     */
+    prefixSize: {
+      type: [String, Number],
+      default: () => {
+        return ''
+      }
+    },
+    /**
+     * 金额整数size,可选
+     */
+    intSize: {
+      type: [String, Number],
+      default: () => {
+        return ''
+      }
+    },
+    /**
+     * 金额小数size,可选
+     */
+    decSize: {
+      type: [String, Number],
+      default: () => {
+        return ''
+      }
+    },
+
     lineThrough: {
       type: Boolean,
       default: () => {
@@ -53,13 +79,13 @@ export default {
       return (this.price - 0).toFixed(2)
     },
     integerSize() {
-      return 2 * this.size
+      return 2 * (this.intSize || this.size)
     },
     decimalSize() {
-      return 2 * (this.size - 4)
+      return 2 * (this.decSize || this.size - 4)
     },
     unitSize() {
-      return 2 * (this.size - 2)
+      return 2 * (this.prefixSize || this.size - 2)
     }
   },
 
@@ -83,12 +109,16 @@ export default {
   display: inline-block;
   vertical-align: middle;
   line-height: 1 !important;
+
   &.line-through {
     text-decoration: line-through;
+
+    > span {
+      letter-spacing: 1px;
+    }
   }
-  // 小数点缩放后展示回有空白
-  margin-right: -3px;
   //span 中的金额占位不显示
+
   span {
     color: transparent;
   }

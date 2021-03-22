@@ -1120,6 +1120,7 @@ export default {
        }
     */
 .strip-eye.color-servicePackage-4,
+.strip-eye.color-inquiry-5,
 .strip-eye.color-drug-6 {
   color: #333333;
 }
@@ -1138,7 +1139,6 @@ export default {
 }
 
 .strip-eye.color-inquiry-3,
-.strip-eye.color-inquiry-5,
 .strip-eye.color-returnVisit-3,
 .strip-eye.color-returnVisit-5,
 .strip-eye.color-register-3,

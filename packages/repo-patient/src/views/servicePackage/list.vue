@@ -15,7 +15,7 @@
         <div class="price">
           <peace-price v-bind:size="18"
                        v-bind:price="item.price"></peace-price>
-          <span style="margin:0 0 0 13px;">/{{item.effectiveDays}}天</span>
+          <span style="margin:0 0 0 5px;">/{{item.effectiveDays}}天</span>
         </div>
       </div>
     </van-list>
@@ -117,10 +117,11 @@ export default {
   }
   .price {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: flex-end;
     > span {
       font-size: 14px;
+      line-height: 1;
     }
   }
 }

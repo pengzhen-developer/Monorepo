@@ -474,7 +474,7 @@ const INQUIRY_QUESTION_LIST = [
     no: 1,
     answerList: [],
     field: ANSWER_FIELD.ILLNESS_DESCRIBE,
-    question: '请描述您的病情，如发病时间、主要病症、治疗经过、目前状况等。',
+    question: '请问您要咨询什么问题？（您可输入病情描述，如发病时间、主要病症、治疗经过、目前状况等。）',
     mode: ANSWER_MODE.INPUT
   }
 ]
