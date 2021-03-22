@@ -137,8 +137,9 @@ export default {
     text-align: center;
   }
   .content {
-    min-height: 299px;
-    padding-bottom: 16px;
+    min-height: 180px;
+    max-height: 400px;
+    overflow: auto;
     .title {
       font-size: 18px;
       font-family: PingFangSC-Medium, PingFang SC;
@@ -201,6 +202,7 @@ export default {
     }
   }
   .footer {
+    padding-top: 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
