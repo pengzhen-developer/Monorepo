@@ -704,7 +704,10 @@ export default {
         })
     },
     getServicePackageRecord() {
-      peace.service.servicePackage.getRecord().then((res) => {
+      const params = {
+        doctorId: this.params.doctorId
+      }
+      peace.service.servicePackage.getRecord(params).then((res) => {
         this.servicesList = res.data || []
         //初始化服务包信息
         this.hasSelectedServicePackage = this.params.patientEquitiesId ? true : false
