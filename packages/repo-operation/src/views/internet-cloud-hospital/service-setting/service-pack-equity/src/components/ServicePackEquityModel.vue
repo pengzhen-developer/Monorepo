@@ -12,6 +12,7 @@
                         prop="name">
             <el-input v-model.trim="addModel.name"
                       placeholder="请输入"
+                      maxlength="10"
                       clearable
                       show-word-limit></el-input>
           </el-form-item>
@@ -21,6 +22,7 @@
             <el-select clearable
                        v-model="addModel.type"
                        placeholder="请选择"
+                       :disabled="selectDisabled"
                        style="width: 100%;">
               <el-option v-for="item in remoteSource.interestsType"
                          v-bind:key="item.value"
@@ -88,6 +90,12 @@ export default {
   async mounted() {
     this.remoteSource.interestsType = await peace.identity.dictionary.getList('equities_type')
     this.$nextTick().then(() => (this.addModel = { ...this.info }))
+  },
+
+  computed: {
+    selectDisabled() {
+      return !Peace.validate.isEmpty(this.addModel.equitiesDictionaryId)
+    }
   },
 
   methods: {
