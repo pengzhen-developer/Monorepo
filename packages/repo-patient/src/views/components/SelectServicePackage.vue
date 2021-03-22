@@ -69,10 +69,10 @@ export default {
       },
       immediate: true
     },
-    info: {
+    'info.patientEquitiesId': {
       handler(val) {
-        if (val.patientEquitiesId) {
-          this.model = Object.assign({}, val)
+        if (val) {
+          this.model = Object.assign({}, this.info)
         }
       },
       immediate: true

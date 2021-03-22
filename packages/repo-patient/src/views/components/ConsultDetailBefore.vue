@@ -297,7 +297,7 @@
     <SelectServicePackage v-model="servicePackageDialog.visible"
                           :info="servicePackageDialog.data"
                           :list="servicesList"
-                          onSuccess="SelectServicePackageCallback"></SelectServicePackage>
+                          @onSuccess="SelectServicePackageCallback"></SelectServicePackage>
   </div>
 </template>
 
