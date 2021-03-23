@@ -218,8 +218,7 @@
              v-if="servicesList.length>0&&hasSelectedServicePackage">
           <div class="brief-left">权益名称:</div>
           <div class="brief-right"
-               :class="{'checked':servicePackageDialog.data.patientEquitiesId}"
-               @click="showServicePackageDialog">
+               :class="{'checked':servicePackageDialog.data.patientEquitiesId}">
             <span>{{servicePackageDialog.data.patientEquitiesName||'请选择'}}</span>
           </div>
         </div>
