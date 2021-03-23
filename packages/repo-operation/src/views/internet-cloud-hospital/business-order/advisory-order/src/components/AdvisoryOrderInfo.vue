@@ -214,6 +214,14 @@
     </div>
 
     <div class="info-row"
+         v-if="info.cancelTime">
+      <div class="info-row-label">
+        <span>取消时间</span>
+      </div>
+      <div class="info-row-content">{{ info.cancelTime }}</div>
+    </div>
+
+    <div class="info-row"
          v-if="info.backEquities">
       <div class="info-row-label">
         <span>权益回退</span>
