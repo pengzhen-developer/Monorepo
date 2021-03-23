@@ -16,8 +16,10 @@
                v-bind:key="index">
             <div class="cost-platform-label">{{item.name}}</div>
             <div class="cost-platform-content">
-              <peace-price v-bind:price="item.value"
-                           v-bind:size="15"></peace-price>
+              <span v-if="isNaN(item.value.substring(1))">{{item.value}}</span>
+              <peace-price v-bind:price="item.value.substring(1)"
+                           v-bind:size="15"
+                           v-else></peace-price>
             </div>
 
           </div>
