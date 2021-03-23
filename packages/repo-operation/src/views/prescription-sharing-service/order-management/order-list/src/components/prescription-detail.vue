@@ -113,12 +113,7 @@
                 </div>
               </div>
               <div class="text-grey-6">
-                <span>
-                  用法用量: {{ drug.DrugRoute }}。
-                  每次{{ drug.OnceDose}}{{ drug.OnceUnit }}，
-                  {{ drug.MedicationFrequency }}
-                  {{ drug.MedicationDays ? "，" + drug.MedicationDays + "天" : "" }}
-                </span>
+                <span>{{ drug.drugUse }}</span>
               </div>
             </div>
 
