@@ -270,7 +270,7 @@ export default {
           }
         ],
         equitiesListNum: [
-          { required: true, message: '请输入有效期' },
+          { required: true, message: '请输入有效次数' },
           { type: 'number', pattern: Peace.validate.pattern.pInterger, message: '请输入大于 0 的整数' },
           { type: 'number', min: 0, max: 1000000, message: '请输入 1 - 100000 的数字' }
         ]
