@@ -60,31 +60,31 @@
 
         <peace-table-column label="价格">
           <template slot-scope="scope">
-            {{ scope.row.Price || '——' }}
+            {{ scope.row.Price != null ?  scope.row.Price : '——' }}
           </template>
         </peace-table-column>
 
         <peace-table-column label="批发价">
           <template slot-scope="scope">
-            {{ scope.row.WholesalePrice || '——' }}
+            {{ scope.row.WholesalePrice != null ?  scope.row.WholesalePrice : '——' }}
           </template>
         </peace-table-column>
 
-        <peace-table-column label="省中标价">
+        <peace-table-column label="中标价">
           <template slot-scope="scope">
-            {{ scope.row.WiningPrice || '——' }}
+            {{ scope.row.WiningPrice != null ?  scope.row.WiningPrice : '——' }}
           </template>
         </peace-table-column>
 
         <peace-table-column label="零售价">
           <template slot-scope="scope">
-            {{ scope.row.RetailPrice || '——' }}
+            {{ scope.row.RetailPrice != null ?  scope.row.RetailPrice : '——' }}
           </template>
         </peace-table-column>
 
         <peace-table-column label="成本价">
           <template slot-scope="scope">
-            {{ scope.row.CostPrice || '——' }}
+            {{ scope.row.CostPrice != null ?  scope.row.CostPrice : '——' }}
           </template>
         </peace-table-column>
 
