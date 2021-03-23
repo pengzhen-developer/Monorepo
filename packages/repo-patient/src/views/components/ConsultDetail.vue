@@ -964,6 +964,10 @@ export default {
               if (res.data.code == '202') {
                 this.invoiceDialog.visible = true
                 this.invoiceDialog.data.message = res.data.msg
+              } else {
+                setTimeout(() => {
+                  this.get()
+                }, 1500)
               }
             })
         })
