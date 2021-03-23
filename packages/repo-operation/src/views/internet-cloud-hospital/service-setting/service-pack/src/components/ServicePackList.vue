@@ -5,7 +5,7 @@
       <el-form inline
                label-width="auto"
                label-suffix="："
-               v-on:keyup.enter.native="get"
+               v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent
                v-bind:model="model">
         <el-form-item label="服务包名称">

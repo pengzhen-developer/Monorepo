@@ -26,7 +26,7 @@ import ServicePackDetail from './components/ServicePackDetail'
 import Observable from './observable'
 
 export default {
-  // name: 'ServicePack',
+  name: 'ServicePack',
 
   components: {
     ServicePackList,
@@ -59,6 +59,12 @@ export default {
     isDetailView() {
       return this.view === Observable.constants.view.DETAIL
     }
+  },
+
+  beforeRouteLeave(to, from, next) {
+    Observable.mutations.changeView(Observable.constants.view.LIST)
+
+    next()
   },
 
   methods: {
