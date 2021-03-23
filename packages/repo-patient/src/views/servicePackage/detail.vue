@@ -84,13 +84,15 @@
         <peace-price v-bind:price="info.price"
                      v-bind:size="18"
                      class="price"></peace-price>
-        <peace-price v-bind:price="info.referencePrice"
-                     v-bind:lineThrough="true"
-                     v-bind:size="14"
-                     v-bind:decSize="14"
-                     v-bind:prefixSize="14"
-                     prefix="/￥"
-                     class="referncePrice"></peace-price>
+        <template v-if="info.referencePrice>0">
+          <peace-price v-bind:price="info.referencePrice"
+                       v-bind:lineThrough="true"
+                       v-bind:size="14"
+                       v-bind:decSize="14"
+                       v-bind:prefixSize="14"
+                       prefix="/￥"
+                       class="referncePrice"></peace-price>
+        </template>
       </div>
       <peace-button class="footer-right"
                     round
