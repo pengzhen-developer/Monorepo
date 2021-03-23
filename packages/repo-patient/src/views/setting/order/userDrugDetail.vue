@@ -137,6 +137,23 @@
         </div>
       </div>
 
+      <div class="module str"
+           v-if="canShowPayMoney">
+        <div class="dl-packet">
+          <div class="dt">
+            {{canShowPayway?'实付金额:':'应付金额:'}}
+          </div>
+          <div class="dd">
+            <div class="strong">
+              <peace-price v-bind:price="canShowPayway?order.payMoney:curPayMoney"
+                           v-bind:size="20"></peace-price>
+              <span class="refunded"
+                    v-if="order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&order.refundTime">(已退款)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="module box"
            v-if="order.orderNo">
         <div class="dl-packet">
@@ -180,22 +197,6 @@
         </div>
       </div>
 
-      <div class="module str"
-           v-if="canShowPayMoney">
-        <div class="dl-packet">
-          <div class="dt">
-            {{canShowPayway?'实付金额:':'应付金额:'}}
-          </div>
-          <div class="dd">
-            <div class="strong">
-              <peace-price v-bind:price="canShowPayway?order.payMoney:curPayMoney"
-                           v-bind:size="20"></peace-price>
-              <span class="refunded"
-                    v-if="order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&order.refundTime">(已退款)</span>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="module phone"
            v-if="canShowPhoneBox"
            @click="callPhone">
