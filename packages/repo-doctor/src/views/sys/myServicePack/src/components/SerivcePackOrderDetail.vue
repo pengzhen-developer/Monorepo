@@ -62,7 +62,7 @@
         <el-form-item v-for="item in data.equitiesList"
                       v-bind:key="item.equitiesName"
                       v-bind:label="item.equitiesName">
-          <span>{{ `${item.equitiesNum}次（剩余${item.equitiesNum}次）` }}</span>
+          <span>{{ `${item.equitiesNum}次（剩余${item.residueNum}次）` }}</span>
         </el-form-item>
       </el-form>
     </div>
