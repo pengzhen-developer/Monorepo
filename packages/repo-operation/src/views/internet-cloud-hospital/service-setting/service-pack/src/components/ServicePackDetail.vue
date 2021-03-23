@@ -49,7 +49,7 @@
               </div>
               <div class="col">
                 <el-form-item label="参考价">
-                  <span>{{ `￥${model.referencePrice}` }}</span>
+                  <span v-if="model.referencePrice">{{ `￥${model.referencePrice}` }}</span>
                 </el-form-item>
               </div>
             </div>
