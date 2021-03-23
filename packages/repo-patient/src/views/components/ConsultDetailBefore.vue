@@ -722,8 +722,8 @@ export default {
           res.data.map((item) => {
             item.equities.map((e) => {
               if (e.patientEquitiesId == this.params.patientEquitiesId) {
-                this.servicePackageDialog.data.servicePackageId = this.servicesList[0].servicePackageId
-                this.servicePackageDialog.data.servicePackageName = this.servicesList[0].servicePackageName
+                this.servicePackageDialog.data.servicePackageId = item.servicePackageId
+                this.servicePackageDialog.data.servicePackageName = item.servicePackageName
                 this.servicePackageDialog.data.patientEquitiesId = e.patientEquitiesId
                 this.servicePackageDialog.data.patientEquitiesName = `${e.equitiesName}(剩余${e.residueNum}次)`
               }
