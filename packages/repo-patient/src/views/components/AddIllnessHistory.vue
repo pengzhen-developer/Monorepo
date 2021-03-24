@@ -273,6 +273,7 @@ export default {
       color: #999999;
       margin: 10px 16px;
       font-weight: normal;
+      line-height: 1;
     }
 
     .checked-list,

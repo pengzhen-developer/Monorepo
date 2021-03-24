@@ -676,6 +676,7 @@ export default {
 .text-gery {
   color: $gary;
   font-size: 12px;
+  line-height: normal;
 }
 .text-red {
   color: $red;
@@ -712,6 +713,7 @@ export default {
     position: relative;
     display: flex;
     align-items: center;
+
     &.active {
       &::before {
         background: $primary;

@@ -79,7 +79,7 @@
                      @click="viewImage(file, fileIndex)">
               </div>
               <span v-if="canShowChange(index) && fileIndex === item.answer.length - 1"
-                    style="color:#00c6ae;font-size:14px;margin: 4px 0 0 0;"
+                    style="color:#00c6ae;font-size:12px;line-height:normal;margin: 4px 0 0 0;"
                     @click="backQuestion">点击修改</span>
             </div>
           </template>
@@ -96,7 +96,7 @@
                        v-bind:show="true"
                        v-bind:data="item.answer"></component>
             <span v-if="canShowChange(index)"
-                  style="color:#00c6ae;font-size:14px;margin: 4px 0 0 0;"
+                  style="color:#00c6ae;font-size:12px;line-height:normal;margin: 4px 0 0 0;"
                   @click="backQuestion">点击修改</span>
           </div>
           <template v-else>
@@ -106,7 +106,7 @@
                    v-html="item.answer">
               </div>
               <span v-if="canShowChange(index)"
-                    style="color:#00c6ae;font-size:14px;margin: 4px 0 0 0;"
+                    style="color:#00c6ae;font-size:12px;line-height:normal;margin: 4px 0 0 0;"
                     @click="backQuestion">点击修改</span>
             </div>
           </template>
@@ -140,24 +140,26 @@
                      :class="isFixed&&'nmp'">
               <van-row type="flex"
                        justify="space-between">
-                <div style="margin:0 10px 0 0;">
+                <div style="margin:0 10px 0 0;"
+                     v-if="!isFixed">
                   <van-image width="50"
                              height="50"
                              round
-                             :src="doctor.doctorInfo.avartor"
-                             v-if="!isFixed" />
+                             :src="doctor.doctorInfo.avartor" />
+                </div>
+                <div style="margin:0 10px 0 0;display:flex;align-items:center;"
+                     v-else>
                   <van-image width="38"
                              height="38"
                              round
-                             :src="doctor.doctorInfo.avartor"
-                             v-else />
+                             :src="doctor.doctorInfo.avartor" />
                 </div>
                 <van-row type="flex"
                          justify="center"
                          style="flex-direction: column;"
                          v-if="!isFixed">
                   <div>
-                    <span style="color: #333333; font-size: 18px; font-weight: bold; margin: 0 8px 0 0;">
+                    <span style="color: #333333; font-size: 18px; font-weight: bold;line-height: 1;margin: 0 8px 0 0;">
                       {{ doctor.doctorInfo.name }}
                     </span>
                     <span style="color: #333333; font-size: 14px; ">
@@ -171,12 +173,10 @@
                     <span style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 12px 0 5px;">
                       {{ doctor.doctorInfo.serviceName }}
                     </span>
-                    <span style=" font-size: 11px; color: #F2223B;">
-                      {{ getSerivceUnit() }}
-                    </span>
-                    <span style=" font-size: 16px; color: #F2223B;">
-                      {{ doctor.doctorInfo.serviceMoney }}
-                    </span>
+                    <peace-price :price="doctor.doctorInfo.serviceMoney"
+                                 :prefix="getSerivceUnit()"
+                                 :size="16"
+                                 style="color: #F2223B;"></peace-price>
                   </div>
                 </van-row>
                 <van-row type="flex"
@@ -184,23 +184,21 @@
                          style="flex-direction: column;"
                          v-else>
                   <div>
-                    <span style="color: #333333; font-size: 16px; font-weight: bold; margin: 0 8px 0 0;">
+                    <span style="color: #333333; font-size: 16px; font-weight: bold;line-height: 1; margin: 0 8px 0 0;">
                       {{ doctor.doctorInfo.name }}
                     </span>
                     <span style="color: #666666; font-size: 14px; ">
                       {{ doctor.doctorInfo.doctorTitle }}
                     </span>
                   </div>
-                  <div style="display:flex;align-items:center;">
+                  <div style="display:flex;align-items:center;line-height: 1;">
                     <span style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 4px 0 0;">
                       {{ doctor.doctorInfo.serviceName }}
                     </span>
-                    <span style=" font-size: 11px; color: #F2223B;">
-                      {{ getSerivceUnit() }}
-                    </span>
-                    <span style=" font-size: 16px; color: #F2223B;">
-                      {{ doctor.doctorInfo.serviceMoney }}
-                    </span>
+                    <peace-price :price="doctor.doctorInfo.serviceMoney"
+                                 :prefix="getSerivceUnit()"
+                                 :size="16"
+                                 style="color: #F2223B;"></peace-price>
                   </div>
                 </van-row>
               </van-row>

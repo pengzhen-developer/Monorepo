@@ -13,7 +13,7 @@
       <div class="service-name">{{info.servicePackageName}}</div>
 
       <div class="service-item">
-        <div class="title">在线咨询</div>
+        <div class="title">服务包介绍</div>
         <div class="brief"
              :class="{ fold: fold, unfold: !fold }"
              v-html="info.brief"></div>

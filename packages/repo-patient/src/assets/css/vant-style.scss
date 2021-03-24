@@ -72,14 +72,18 @@
 
 .van-cell::after {
   border-bottom-color: $-color--line;
-  left: 0;
-  right: 0;
+  left: 16px;
+  right: 16px;
   transform: none;
 }
 
 .van-cell:last-child::after,
 .van-cell--borderless::after {
   display: block;
+}
+
+.van-search .van-cell:last-child::after {
+  display: none;
 }
 
 //.van-button--large   large width: 100%; magin:0 16px;

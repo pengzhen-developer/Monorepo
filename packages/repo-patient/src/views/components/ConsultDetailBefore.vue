@@ -6,40 +6,29 @@
     <div class="consult-detatil"
          v-if="!loading">
       <!--医生名片-->
-      <div class="module card">
-        <div class="card-avatar avatar-circular">
-          <img :src="doctorInfo.avartor"
-               style="height:100%;" />
+      <div class="module card doctor">
+        <div class="doctor-logo">
+          <van-image round
+                     v-bind:src="doctorInfo.avartor"></van-image>
         </div>
-        <div class="card-body">
-          <div class="card-name">
-            {{ doctorInfo.name }}
-            <div class="card-small">
-              {{ doctorInfo.doctorTitle }}
-              {{ doctorInfo.deptName }}
-              <div class="label label-private"
-                   v-if="doctorInfo.isPrivateDoctor">
-                私人医生
-              </div>
-              <van-image width=13
-                         v-if="params.consultingType=='image'|| params.isAgain.toString() === '1'"
-                         :src="require('@src/assets/images/ic_tuwen_open.png')"></van-image>
-              <van-image width=13
-                         v-if="params.consultingType=='video'"
-                         :src="require('@src/assets/images/ic_video_open.png')"></van-image>
-            </div>
+        <div class="doctor-body">
+          <div class="doctor-name">
+            {{doctorInfo.name}}
+            <span class="doctor-small">{{doctorInfo.doctorTitle}}</span>
+            <span class="doctor-small">{{doctorInfo.deptName}}</span>
+            <span class="inquriyStyle"
+                  :class="inquriyStyle">{{inquiryText}}</span>
+
           </div>
-          <div class="card-small">{{ doctorInfo.hospitalName }}</div>
+          <div class="doctor-hospitalName">{{ doctorInfo.hospitalName }}</div>
         </div>
-        <!-- 咨询类别 -->
-        <div class="inquriyStyle"
-             :class="inquriyStyle">{{inquiryText}}</div>
       </div>
+
       <!--订单内容-->
       <div class="module order">
         <div class="module-item"
              v-if="retrunVisitBlock">
-          <div class="b">复诊时间</div>
+          <div class="title">复诊时间</div>
           <div class="span"
                @click="changeSource">
             {{appointmentTime}}
@@ -47,24 +36,24 @@
           </div>
         </div>
         <div class="module-item">
-          <div class="b">个人信息</div>
-          <div class="form-dl">
-            <div class="form-dt"><span>姓名</span> :</div>
-            <div class="form-dd">{{familyInfo.name}}</div>
+          <div class="title">个人信息</div>
+          <div class="module-item-content">
+            <div class="module-item-label">姓名：</div>
+            <div class="module-item-value">{{familyInfo.name}}</div>
           </div>
-          <div class="form-dl">
-            <div class="form-dt"><span>年龄</span> :</div>
-            <div class="form-dd">{{familyInfo.age}}</div>
+          <div class="module-item-content">
+            <div class="module-item-label">年龄：</div>
+            <div class="module-item-value">{{familyInfo.age}}</div>
           </div>
-          <div class="form-dl">
-            <div class="form-dt"><span>性别</span> :</div>
-            <div class="form-dd">{{familyInfo.sex}}
+          <div class="module-item-content">
+            <div class="module-item-label">性别：</div>
+            <div class="module-item-value">{{familyInfo.sex}}
             </div>
           </div>
-          <div class="form-dl"
+          <div class="module-item-content"
                v-if="familyInfo.guardianName">
-            <div class="form-dt"><span>监 护 人</span> :</div>
-            <div class="form-dd">{{familyInfo.guardianName}} |
+            <div class="module-item-label">监护人：</div>
+            <div class="module-item-value">{{familyInfo.guardianName}} |
               {{familyInfo.guardianSex}} |
               {{familyInfo.guardianAge}}
             </div>
@@ -72,17 +61,17 @@
         </div>
         <!--病情描述-->
         <div class="module-item">
-          <div class="b">病情描述</div>
+          <div class="title">病情描述</div>
           <div class="span">{{ params.illnessDescribe }}</div>
         </div>
         <div class="module-item"
              v-if="hasReturnVisitInfo">
           <div>
-            <div class="b">复诊信息</div>
-            <div class="form-dl img"
+            <div class="title">复诊信息</div>
+            <div class="module-item-content img"
                  v-if="params.attachment.length>0">
-              <div class="form-dt ">复诊凭证 :</div>
-              <div class="form-img">
+              <div class="module-item-label ">复诊凭证 :</div>
+              <div class="module-item-value img">
                 <div class="img"
                      v-for="(item,index) in params.attachment"
                      :key="index">
@@ -91,15 +80,15 @@
                 </div>
               </div>
             </div>
-            <div class="form-dl"
+            <div class="module-item-content"
                  v-else>
-              <div class="form-dt">复诊凭证 :</div>
-              <div class="form-dd">确认遗失
+              <div class="module-item-label">复诊凭证 :</div>
+              <div class="module-item-value">确认遗失
               </div>
             </div>
-            <div class="form-dl">
-              <div class="form-dt start">初诊诊断 :</div>
-              <div class="form-dd">{{params.confirmIllness}}
+            <div class="module-item-content">
+              <div class="module-item-label start">初诊诊断 :</div>
+              <div class="module-item-value">{{params.confirmIllness}}
               </div>
             </div>
           </div>
@@ -108,7 +97,7 @@
         <div class="module-item"
              v-if="caseInfo">
           <div class="module-item-title">
-            <div class="b">诊疗记录</div>
+            <div class="title">诊疗记录</div>
           </div>
           <template>
             <div class="case-card"
@@ -150,11 +139,11 @@
         <div class="module-item"
              v-if="canShowSupplementaryInfo">
           <div>
-            <div class="b">补充信息</div>
-            <div class="form-dl img"
+            <div class="title">补充信息</div>
+            <div class="module-item-content img"
                  v-if="params.affectedImages.length>0">
-              <div class="form-dt ">患处图片 :</div>
-              <div class="form-img">
+              <div class="module-item-label">患处图片 :</div>
+              <div class="module-item-value img">
                 <div class="img"
                      v-for="(item,index) in params.affectedImages"
                      :key="index">
@@ -163,16 +152,16 @@
                 </div>
               </div>
             </div>
-            <div class="form-dl"
+            <div class="module-item-content"
                  v-if="pregnancyText">
-              <div class="form-dt">特殊时期 :</div>
-              <div class="form-dd">{{pregnancyText}}</div>
+              <div class="module-item-label">特殊时期：</div>
+              <div class="module-item-value">{{pregnancyText}}</div>
             </div>
-            <div class="form-dl"
+            <div class="module-item-content"
                  v-if="params.allergicHistory">
-              <div class="form-dt"
-                   style="height:fit-content;"><span>过敏史</span> :</div>
-              <div class="form-dd">{{params.allergicHistory}}
+              <div class="module-item-label"
+                   style="height:fit-content;"><span>过敏史</span>：</div>
+              <div class="module-item-value">{{params.allergicHistory}}
               </div>
             </div>
           </div>
@@ -180,9 +169,9 @@
       </div>
 
       <div class="module info">
-        <div class="brief order-money">
-          <div class="brief-left">订单费用:</div>
-          <div class="brief-right money">
+        <div class="brief">
+          <div class="brief-left">订单金额</div>
+          <div class="brief-right">
             <peace-price v-bind:price="params.price"
                          v-bind:size="16"></peace-price>
           </div>
@@ -196,7 +185,7 @@
 
         <div class="brief"
              v-if="servicesList.length>0">
-          <div class="brief-left">使用服务包:</div>
+          <div class="brief-left">使用服务包</div>
           <div class="brief-right">
             <van-switch v-model="hasSelectedServicePackage"
                         size="20" />
@@ -204,9 +193,9 @@
         </div>
         <div class="brief"
              v-if="servicesList.length>0&&hasSelectedServicePackage">
-          <div class="brief-left">服务包名称:</div>
+          <div class="brief-left">服务包名称</div>
           <div class="brief-right"
-               :class="{'checked':servicePackageDialog.data.servicePackageId}"
+               :class="{'checked':servicePackageDialog.data.servicePackageId,'unchecked':!servicePackageDialog.data.servicePackageId}"
                @click="showServicePackageDialog">
             <span>{{servicePackageDialog.data.servicePackageName||'请选择'}}</span>
             <van-icon name="arrow"
@@ -216,9 +205,9 @@
         </div>
         <div class="brief"
              v-if="servicesList.length>0&&hasSelectedServicePackage">
-          <div class="brief-left">权益名称:</div>
+          <div class="brief-left">权益名称</div>
           <div class="brief-right"
-               :class="{'checked':servicePackageDialog.data.patientEquitiesId}">
+               :class="{'checked':servicePackageDialog.data.patientEquitiesId,'unchecked':!servicePackageDialog.data.patientEquitiesId}">
             <span>{{servicePackageDialog.data.patientEquitiesName||'请选择'}}</span>
           </div>
         </div>
@@ -227,9 +216,9 @@
 
           <div class="brief"
                v-if="canShowYibao">
-            <div class="brief-left">使用医保卡:</div>
+            <div class="brief-left">使用医保卡</div>
             <div class="brief-right"
-                 :class="{'checked':yibaoText}"
+                 :class="{'checked':yibaoText,'unchecked':!yibaoText}"
                  @click="chooseYibao">{{yibaoText||'请选择'}}
             </div>
           </div>
@@ -237,7 +226,7 @@
              v-if="yibaoText">
           <div class="brief-left">医保类型:</div>
           <div class="brief-right"
-               :class="{'checked':yibaoTypeText}"
+               :class="{'checked':yibaoTypeText,'unchecked':!yibaoTypeText}"
                @click="chooseYibaoType">{{yibaoTypeText||'请选择'}}
           </div>
         </div> -->
@@ -245,7 +234,7 @@
           <div class="brief"
                v-if="canShowShangbao">
             <div class="brief-left">商保权益抵扣:</div>
-            <div class="brief-right">请选择
+            <div class="brief-right unchecked">请选择
             </div>
           </div>
 
@@ -817,26 +806,7 @@ export default {
     }
   }
 }
-.inquriyStyle {
-  position: absolute;
-  top: 12px;
-  right: 0;
-  border-radius: 20px 20px 0px 20px;
-  color: #fff;
-  font-size: 12px;
-  line-height: normal;
-  height: 21px;
-  display: flex;
-  align-items: center;
-  padding: 2px 9px;
-  justify-content: center;
-  &.returnVisit {
-    background: #fa8c16;
-  }
-  &.inquiry {
-    background: $primary;
-  }
-}
+
 /deep/ .van-image-preview__index {
   top: 24px;
 }
@@ -868,11 +838,10 @@ export default {
 
 .footer {
   width: 100%;
-  padding: 15px 15px;
-  height: 77px;
+  padding: 8px 16px 24px;
+  height: 80px;
   display: flex;
   align-items: center;
-  justify-content: center;
   background-color: #fff;
   box-shadow: 0px -1px 1px 0px rgba(51, 51, 51, 0.16);
   position: fixed;
@@ -882,7 +851,10 @@ export default {
 }
 
 .module-item {
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid #f5f5f5;
+  &:not(:last-child) {
+    padding-bottom: 16px;
+  }
   .module-item-title {
     display: flex;
     align-items: center;
@@ -898,24 +870,76 @@ export default {
     border-bottom: 0;
   }
 }
-.brief-right.checked {
-  color: #333;
+
+.module-item-content {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  width: 0;
-  flex: 1;
-  span {
-    max-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: right;
+  font-size: 16px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  line-height: 24px;
+  justify-content: flex-start;
+  &.message {
+    justify-content: space-between;
   }
-}
-.bb {
-  height: 1px;
-  background: #e8e8e8;
+  &.start {
+    align-items: flex-start;
+  }
+  &.img {
+    display: block;
+  }
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+  &:last-child {
+    border-bottom: 0;
+  }
+  .module-item-label {
+    color: rgba(51, 51, 51, 0.6);
+    margin-right: 5px;
+  }
+  .module-item-value {
+    color: #333333;
+    &.img {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 5px 0;
+      .img {
+        width: 60px;
+        height: 60px;
+        margin: 5px 8px 5px 0;
+        &:nth-child(5n) {
+          margin-right: 0 !important;
+        }
+        img {
+          width: 60px;
+          height: 60px;
+          display: block;
+          border-radius: 2px;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+
+  .module-item {
+    border-bottom: 1px solid #f5f5f5;
+    &:not(:last-child) {
+      margin-bottom: 16px;
+    }
+  }
+  .module-item-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    .module-item-more {
+      color: #999;
+      font-weight: normal;
+      padding-top: 10px;
+    }
+  }
 }
 .page {
   min-height: 100%;
@@ -925,93 +949,92 @@ export default {
   background-color: #f5f5f5;
   color: #333;
   min-height: 100%;
-  padding: 10px 0 77px;
+  padding: 10px 0 81px;
   box-sizing: border-box;
-  .module {
-    border-radius: 3px;
-  }
+
   .module {
     background: #fff;
     margin-top: 0;
     margin-bottom: 10px;
-    padding: 10px;
-    &:last-child {
-      margin-bottom: 5px;
-    }
+    padding: 16px;
+    margin-bottom: 8px;
     &.info {
-      padding: 0;
+      padding-top: 0;
+      padding-bottom: 0;
     }
-    &.top {
-      padding-top: 12px;
-      padding-bottom: 12px;
-    }
-    &.order {
-      padding: 5px 16px;
-      .b {
-        padding-left: 0 !important;
-      }
-      .form-dl {
-        padding: 4px 0;
-        border-bottom: 0;
-        &:last-child {
-          padding-bottom: 10px;
+    &.doctor {
+      position: relative;
+      .doctor-logo {
+        .van-image {
+          width: 60px;
+          height: 60px;
+          border: 1px solid #eee;
+          margin-right: 16px;
         }
       }
+      .doctor-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .doctor-name {
+          line-height: 24px;
+          font-size: 18px;
+          font-family: PingFangSC-Medium, PingFang SC;
+          font-weight: bold;
+          color: #333333;
+          .doctor-small {
+            line-height: 24px;
+            font-size: 16px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: normal;
+            color: #333333;
+            margin-left: 4px;
+          }
+          .van-image {
+            width: 12px;
+            height: 12px;
+            margin-left: 4px;
+          }
+          .inquriyStyle {
+            border-radius: 8px 8px 8px 0px;
+            color: #fff;
+            font-size: 12px;
+            line-height: normal;
+            font-family: PingFangSC-Regular, PingFang SC;
+            height: 24px;
+            padding: 4px 6px;
+            display: inline-block;
+            line-height: 16px;
+            text-align: center;
+            margin-left: 4px;
+            &.returnVisit {
+              background: #fa8c16;
+            }
+            &.inquiry {
+              background: #00ccb3;
+            }
+          }
+        }
+        .doctor-hospitalName {
+          line-height: 32px;
+          font-size: 16px;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: normal;
+          color: #333333;
+        }
+      }
+    }
 
-      .form-dt {
-        color: #999;
-        // min-width: 70px;
-        min-width: 20px;
-        display: flex;
-        padding-right: 10px;
-        align-items: center;
-        &.start {
-          align-items: flex-start;
-        }
-        // span {
-        //   flex: 1;
-        //   text-align: justify;
-        //   text-align-last: justify;
-        //   padding-right: 3px;
-        //   height: 16px;
-        //   line-height: 16px;
-        //   &::after {
-        //     content: ' ';
-        //     display: inline-block;
-        //     width: 100%;
-        //     height: 0px;
-        //   }
-        // }
-      }
-      .form-dd {
-        color: #333;
-        text-align: left;
-        padding-left: 2px;
-      }
-    }
-    &.message {
-      .message-item {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 13px;
-        height: 26px;
-        .message-item-left {
-          width: 30%;
-          color: #999;
-        }
-        .message-item-right {
-          width: 70%;
-          text-align: right;
-          color: #333;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          text-align: right;
+    &.order {
+      .module-item {
+        &:first-child {
+          .title {
+            margin-top: 0;
+          }
         }
       }
     }
+
     .cancelText {
       height: 45px;
       background: rgba(240, 252, 250, 1);
@@ -1091,76 +1114,43 @@ export default {
     font-size: 12px;
     font-weight: 400;
     margin-left: 5px;
-  }
-  .typeTag.zx {
-    background-color: #00c6ae;
-  }
-  .typeTag.fz {
-    background-color: #fa8c16;
-  }
-  .module .strong {
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 21px;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-  }
-
-  .module .small {
-    font-size: 15px;
-    padding: 10px 15px;
-  }
-
-  .module .module-body {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-  }
-  .module-body .label {
-    flex: 1;
-    text-align: center;
-    font-size: 13px;
-    padding: 4px 6px;
-    margin: 5px;
-    border-radius: 20px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .module-body .blue-full {
-    background: #00c6ae;
-    color: #fff;
-    border-color: transparent;
-  }
-
-  .card {
-    background: #fff;
-    padding: 10px 16px;
-    position: relative;
-  }
-  .b {
-    display: block;
-    font-weight: bold;
-    color: #000;
-
-    &::before {
-      display: inline-block;
-      content: '';
-      width: 4px;
-      height: 15px;
-      border-radius: 4px;
-      background: #00c6ae;
-      margin-right: 8px;
-      margin-bottom: -2px;
+    &.zx {
+      background-color: #00c6ae;
+    }
+    &.fz {
+      background-color: #fa8c16;
     }
   }
-  .b {
-    padding: 10px 15px 0 15px;
+
+  .title {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    color: #333333;
+    padding-left: 12px;
+    position: relative;
+    margin-bottom: 12px;
+    margin-top: 16px;
+    &::before {
+      position: absolute;
+      content: '';
+      width: 4px;
+      height: 16px;
+      border-radius: 2px;
+      background: $primary;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
+
   .span {
-    padding: 10px 0;
+    font-size: 16px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    line-height: 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1189,42 +1179,42 @@ export default {
       font-size: 12px;
     }
   }
-  .label.label-private {
-    font-size: 8px;
-    padding: 1px 2px;
-    border-radius: 2px;
-    color: #f7e9b3;
-    background: #504c4f;
-    border-color: #504c4f;
-    vertical-align: text-top;
-    margin-top: 2px;
-  }
 }
 .brief {
-  font-size: 13px;
-  color: #999;
+  font-size: 16px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333333;
+  line-height: 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12.5px 15px;
-  border-top: 1px solid #eee;
-  &.order-money {
-    border-top: 1px solid #fff;
-    color: #000;
-    padding: 12.5px 10px;
-    margin: 0;
-    .money {
-      font-size: 14px;
-      color: #000;
-    }
+  padding: 12px 0;
+
+  &:not(:first-child) {
+    border-top: 1px solid rgba(51, 51, 51, 0.05);
   }
-  &.pay-omney {
-    color: #000;
-    padding: 11px 0;
-    font-size: 14px;
-    .money {
-      font-size: 20px;
-      color: #ff344d;
+
+  .brief-right {
+    .peace-price {
+      margin-right: -12px;
+    }
+    &.unchecked {
+      color: rgba(51, 51, 51, 0.4);
+    }
+    &.checked {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      width: 0;
+      flex: 1;
+      span {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-align: right;
+      }
     }
   }
 }

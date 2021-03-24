@@ -44,58 +44,55 @@
         </div>
       </div>
       <!--医生名片-->
-      <div class="module card">
-        <div class="card-avatar avatar-circular">
-          <img :src="internalData.doctorInfo.avartor"
-               style="height:100%;" />
+      <div class="module card doctor">
+        <div class="doctor-logo">
+          <van-image round
+                     v-bind:src="internalData.doctorInfo.avartor"></van-image>
         </div>
-        <div class="card-body">
-          <div class="card-name">
+        <div class="doctor-body">
+          <div class="doctor-name">
             {{ internalData.doctorInfo.name }}
-            <div class="card-small">
+            <span class="doctor-small">
               {{ internalData.doctorInfo.doctorTitle }}
+            </span>
+            <span class="doctor-small">
               {{ internalData.doctorInfo.deptName }}
-              <div class="label label-private"
-                   v-if="internalData.doctorInfo.isPrivateDoctor">
-                私人医生
-              </div>
-              <van-image width=13
-                         v-if="internalData.orderInfo.inquiryType=='image'|| internalData.inquiryInfo.isAgain.toString() === '1'"
-                         :src="require('@src/assets/images/icons/icon_01_01_06.jpg')"></van-image>
-              <van-image width=13
-                         v-if="internalData.orderInfo.inquiryType=='video'"
-                         :src="require('@src/assets/images/icons/icon_01_01_07.jpg')"></van-image>
-            </div>
+            </span>
+            <van-image v-if="internalData.orderInfo.inquiryType=='image'|| internalData.inquiryInfo.isAgain.toString() === '1'"
+                       :src="require('@src/assets/images/icons/icon_01_01_06.jpg')"></van-image>
+            <van-image v-if="internalData.orderInfo.inquiryType=='video'"
+                       :src="require('@src/assets/images/icons/icon_01_01_07.jpg')"></van-image>
           </div>
-          <div class="card-small">{{ internalData.doctorInfo.hospitalName }}</div>
+
+          <div class="doctor-hospitalName">{{ internalData.doctorInfo.hospitalName }}</div>
         </div>
       </div>
       <!--订单内容-->
       <div class="module order">
         <div class="module-item"
              v-if="retrunVisitBlock">
-          <div class="b">复诊时间</div>
-          <div class="span">{{internalData.inquiryInfo.appointmentTime}}</div>
+          <div class="title">复诊时间</div>
+          <div class="brief">{{internalData.inquiryInfo.appointmentTime}}</div>
         </div>
         <div class="module-item">
-          <div class="b">个人信息</div>
-          <div class="form-dl">
-            <div class="form-dt"><span>姓名</span> :</div>
-            <div class="form-dd">{{internalData.familyInfo.familyName}}</div>
+          <div class="title">个人信息</div>
+          <div class="module-item-content">
+            <div class="module-item-label">姓名：</div>
+            <div class="module-item-value">{{internalData.familyInfo.familyName}}</div>
           </div>
-          <div class="form-dl">
-            <div class="form-dt"><span>年龄</span> :</div>
-            <div class="form-dd">{{internalData.familyInfo.familyAge }}</div>
+          <div class="module-item-content">
+            <div class="module-item-label">年龄：</div>
+            <div class="module-item-value">{{internalData.familyInfo.familyAge }}</div>
           </div>
-          <div class="form-dl">
-            <div class="form-dt"><span>性别</span> :</div>
-            <div class="form-dd">{{internalData.familyInfo.familySex}}
+          <div class="module-item-content">
+            <div class="module-item-label">性别：</div>
+            <div class="module-item-value">{{internalData.familyInfo.familySex}}
             </div>
           </div>
-          <div class="form-dl"
+          <div class="module-item-content"
                v-if="internalData.familyInfo.guardianName">
-            <div class="form-dt"><span>监 护 人</span> :</div>
-            <div class="form-dd">{{internalData.familyInfo.guardianName}} |
+            <div class="module-item-label">监护人：</div>
+            <div class="module-item-value">{{internalData.familyInfo.guardianName}} |
               {{internalData.familyInfo.guardianSex}} |
               {{internalData.familyInfo.guardianAge}}
             </div>
@@ -103,43 +100,43 @@
         </div>
         <!--病情描述-->
         <div class="module-item">
-          <div class="b">病情描述</div>
-          <div class="span">{{ internalData.inquiryInfo.inquiryDescribe }}</div>
+          <div class="title mt16">病情描述</div>
+          <div class="brief">{{ internalData.inquiryInfo.inquiryDescribe }}</div>
         </div>
         <div class="module-item"
              v-if="hasReturnVisitInfo">
-          <div>
-            <div class="b">复诊信息</div>
-            <div class="form-dl img"
-                 v-if="internalData.inquiryInfo.inquiryImages.length>0">
-              <div class="form-dt ">复诊凭证 :</div>
-              <div class="form-img">
-                <div class="img"
-                     v-for="(item,index) in internalData.inquiryInfo.inquiryImages"
-                     :key="index">
-                  <img :src="item.image_path"
-                       @click="viewImage(item, index,internalData.inquiryInfo.inquiryImages)" />
-                </div>
-              </div>
-            </div>
-            <div class="form-dl"
-                 v-else>
-              <div class="form-dt">复诊凭证 :</div>
-              <div class="form-dd">确认遗失
-              </div>
-            </div>
-            <div class="form-dl">
-              <div class="form-dt start">初诊诊断 :</div>
-              <div class="form-dd">{{internalData.illInfo.confirmIllness}}
+
+          <div class="title">复诊信息</div>
+          <div class="module-item-content img"
+               v-if="internalData.inquiryInfo.inquiryImages.length>0">
+            <div class="module-item-label ">复诊凭证：</div>
+            <div class="module-item-value img">
+              <div class="img"
+                   v-for="(item,index) in internalData.inquiryInfo.inquiryImages"
+                   :key="index">
+                <img :src="item.image_path"
+                     @click="viewImage(item, index,internalData.inquiryInfo.inquiryImages)" />
               </div>
             </div>
           </div>
+          <div class="module-item-content"
+               v-else>
+            <div class="module-item-label">复诊凭证 :</div>
+            <div class="module-item-value">确认遗失
+            </div>
+          </div>
+          <div class="module-item-content">
+            <div class="module-item-label start">初诊诊断 :</div>
+            <div class="module-item-value">{{internalData.illInfo.confirmIllness}}
+            </div>
+          </div>
+
         </div>
         <!-- 诊疗记录 -->
         <div class="module-item"
              v-if="hasFirstVisitInfo">
           <div class="module-item-title">
-            <div class="b">诊疗记录</div>
+            <div class="title">诊疗记录</div>
             <div class="module-item-more"
                  @click="seeMoreCase"
                  v-if="canSeeMoreCase">查看更多>></div>
@@ -181,14 +178,15 @@
           </template>
 
         </div>
+        <!-- 补充信息 -->
         <div class="module-item"
              v-if="canShowSupplementaryInfo">
           <div>
-            <div class="b">补充信息</div>
-            <div class="form-dl img"
+            <div class="title">补充信息</div>
+            <div class="module-item-content img"
                  v-if="internalData.supplementaryInfo.affectedImages.length>0">
-              <div class="form-dt ">患处图片 :</div>
-              <div class="form-img">
+              <div class="module-item-label">患处图片：</div>
+              <div class="module-item-value img">
                 <div class="img"
                      v-for="(item,index) in internalData.supplementaryInfo.affectedImages"
                      :key="index">
@@ -197,16 +195,16 @@
                 </div>
               </div>
             </div>
-            <div class="form-dl"
+            <div class="module-item-content"
                  v-if="internalData.supplementaryInfo.pregnancyText">
-              <div class="form-dt">特殊时期 :</div>
-              <div class="form-dd">{{internalData.supplementaryInfo.pregnancyText}}</div>
+              <div class="module-item-label">特殊时期：</div>
+              <div class="module-item-value">{{internalData.supplementaryInfo.pregnancyText}}</div>
             </div>
-            <div class="form-dl"
+            <div class="module-item-content"
                  v-if="internalData.supplementaryInfo.allergicHistory">
-              <div class="form-dt"
-                   style="height:fit-content;"><span>过敏史</span> :</div>
-              <div class="form-dd">{{internalData.supplementaryInfo.allergicHistory}}
+              <div class="module-item-label"
+                   style="height:fit-content;"><span>过敏史</span>：</div>
+              <div class="module-item-value">{{internalData.supplementaryInfo.allergicHistory}}
               </div>
             </div>
           </div>
@@ -216,11 +214,11 @@
       <!-- 订单收费明细 -->
       <div class="module message"
            v-if="moneyRecord.length>0">
-        <div class="message-item"
+        <div class="module-item-content message"
              v-for="(item,index) in moneyRecord"
              :key="index">
-          <div class="message-item-left">{{item.name}}</div>
-          <div class="message-item-right">
+          <div class="module-item-label">{{item.name}}</div>
+          <div class="module-item-value">
             <span v-if="isNaN(item.value.substring(1))">{{item.value}}</span>
             <peace-price v-bind:price="item.value.substring(1)"
                          v-bind:size="14"
@@ -230,24 +228,27 @@
       </div>
       <div class="module message"
            v-else>
-        <div class="message-item">
-          <div class="message-item-left">订单费用</div>
-          <div class="message-item-right">
+        <div class="module-item-content message">
+          <div class="module-item-label">订单费用</div>
+          <div class="module-item-value">
             <peace-price v-bind:price="internalData.orderInfo.totalMoney"
                          v-bind:size="14"></peace-price>
           </div>
         </div>
-        <div class="message-item "
+        <div class="module-item-content message "
              v-if="internalData.orderInfo.equitiesName">
-          <div class="message-item-left">{{internalData.orderInfo.equitiesName}}</div>
-          <div class="message-item-right ">
-            <span style="fontSize:12px;">-</span>
+          <div class="module-item-label">{{internalData.orderInfo.equitiesName}}</div>
+          <div class="module-item-value">
             <peace-price v-bind:price="internalData.orderInfo.totalMoney"
+                         v-bind:prefix="'-￥'"
                          v-bind:size="14"></peace-price>
-            <span v-if="(internalData.inquiryInfo.inquiryStatus==ENUM.INQUIRY_STATUS.已取消||internalData.inquiryInfo.inquiryStatus==ENUM.INQUIRY_STATUS.已退诊)">(已退回)</span>
+            <span style="margin-left: -10px;"
+                  v-if="(internalData.inquiryInfo.inquiryStatus==ENUM.INQUIRY_STATUS.已取消||internalData.inquiryInfo.inquiryStatus==ENUM.INQUIRY_STATUS.已退诊)">(已退回)</span>
           </div>
         </div>
       </div>
+
+      <!-- 应付/实付金额 -->
       <div class="module"
            v-if="internalData.inquiryInfo.inquiryStatus != ENUM.INQUIRY_STATUS.待支付 &&internalData.inquiryInfo.appointmentStatus!=2">
         <!-- 取消订单的状态 -->
@@ -287,37 +288,40 @@
           </div>
         </template>
       </div>
+
       <!--订单操作时间轴-->
       <div class="module message">
-        <div class="message-item">
-          <div class="message-item-left">订单编号</div>
-          <div class="message-item-right">{{ internalData.orderInfo.orderNo }}</div>
+        <div class="module-item-content message">
+          <div class="module-item-label">订单编号</div>
+          <div class="module-item-value">{{ internalData.orderInfo.orderNo }}</div>
         </div>
-        <div class="message-item ">
-          <div class="message-item-left">订单时间</div>
-          <div class="message-item-right">{{ internalData.orderInfo.orderTime }}</div>
+        <div class="module-item-content message">
+          <div class="module-item-label">订单时间</div>
+          <div class="module-item-value">{{ internalData.orderInfo.orderTime }}</div>
         </div>
         <template v-if="internalData.orderInfo.paymentType||internalData.orderInfo.servicePackageName">
-          <div class="message-item start">
-            <div class="message-item-left">支付方式</div>
-            <div class="message-item-right">{{paymentTypeText}}</div>
+          <div class="module-item-content message start">
+            <div class="module-item-label">支付方式</div>
+            <div class="module-item-value">{{paymentTypeText}}</div>
           </div>
-          <div class="message-item">
-            <div class="message-item-left">支付时间</div>
-            <div class="message-item-right">{{ internalData.orderInfo.payTime }}</div>
+          <div class="module-item-content message">
+            <div class="module-item-label">支付时间</div>
+            <div class="module-item-value">{{ internalData.orderInfo.payTime }}</div>
           </div>
         </template>
-        <div class="message-item"
+        <div class="module-item-content message"
              v-if="internalData.inquiryInfo.inquiryStatus== ENUM.INQUIRY_STATUS.已取消">
-          <div class="message-item-left">{{internalData.inquiryInfo.appointmentStatus==2?'关闭时间':'取消时间'}}</div>
-          <div class="message-item-right">{{ internalData.inquiryInfo.cancelTime }}</div>
+          <div class="module-item-label">{{internalData.inquiryInfo.appointmentStatus==2?'关闭时间':'取消时间'}}</div>
+          <div class="module-item-value">{{ internalData.inquiryInfo.cancelTime }}</div>
         </div>
-        <div class="message-item"
+        <div class="module-item-content message"
              v-if="internalData.orderInfo.refundTime">
-          <div class="message-item-left">退款时间</div>
-          <div class="message-item-right">{{ internalData.orderInfo.refundTime }}</div>
+          <div class="module-item-label">退款时间</div>
+          <div class="module-item-value">{{ internalData.orderInfo.refundTime }}</div>
         </div>
       </div>
+
+      <!-- 联系客服 -->
       <div class="module phone"
            v-if="canShowPhoneBox"
            @click="callPhone">
@@ -325,6 +329,7 @@
         <span>联系客服</span>
       </div>
     </div>
+    <!-- footer -->
     <template v-if="internalData&&
                internalData.inquiryInfo">
       <div class="footer fixedBottom"
@@ -606,7 +611,7 @@ export default {
       return list
     },
     marginBottom() {
-      return this.canShowPayBottom ? '115px' : this.canShowBottom ? '64px' : this.canShowCancelBottom ? '64px' : '0'
+      return this.canShowPayBottom ? '115px' : this.canShowBottom ? '80px' : this.canShowCancelBottom ? '80px' : '0'
     },
     paymentTypeText() {
       if (this.internalData.orderInfo.servicePackageName) {
@@ -985,40 +990,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.top-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  .strong {
-    font-weight: bold;
-    font-size: 18px;
-    // line-height: 22px;
-    line-height: 1;
-    display: flex;
-    align-items: flex-end;
-  }
-  .cancelTip {
-    display: flex;
-    align-items: center;
-    .van-icon,
-    .van-image {
-      width: 12px;
-      height: 12px;
-      margin-left: 3px;
-    }
-    span {
-      font-size: 12px;
-      font-family: PingFangSC-Regular, PingFang SC;
-      font-weight: 400;
-      color: #999999;
-      line-height: 12px;
-    }
-  }
-}
 .flex-1 {
   flex: 1;
 }
+// 诊疗记录
 .case-card {
   display: flex;
 
@@ -1092,6 +1067,7 @@ export default {
     }
   }
 }
+//大图预览
 /deep/ .van-image-preview__index {
   top: 24px;
 }
@@ -1120,6 +1096,8 @@ export default {
     }
   }
 }
+
+//footer
 .report,
 .footer,
 .pay {
@@ -1132,12 +1110,10 @@ export default {
     bottom: 0;
     left: 0;
     z-index: 100;
-    box-shadow: 0 -1px 0.5px rgba(51, 51, 51, 0.16);
+    box-shadow: 0px -1px 1px 0px rgba(51, 51, 51, 0.16);
   }
 }
-.h64 {
-  height: 64px;
-}
+
 .report {
   flex-wrap: wrap;
   padding: 14px 16px;
@@ -1173,20 +1149,23 @@ export default {
   }
 }
 .footer {
-  height: 64px;
+  height: 80px;
   display: flex;
   align-items: center;
-  justify-content: center;
   background-color: #fff;
-  padding: 0 16px;
+  padding: 8px 16px 24px;
   .footer-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    // width: 343px;
     flex: 1;
-    height: 45px;
     border-radius: 40px;
+    height: 48px;
+    padding: 12px 0;
+    font-size: 18px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    line-height: 24px;
     &.chat-btn {
       color: #fff;
       background: rgba(0, 202, 173, 1);
@@ -1204,9 +1183,7 @@ export default {
     }
   }
 }
-.h115 {
-  height: 115px;
-}
+
 .pay {
   height: 115px;
   padding: 10px 15px;
@@ -1260,8 +1237,64 @@ export default {
     }
   }
 }
-.module-item {
-  border-bottom: 1px solid #e8e8e8;
+.module-item-content {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  line-height: 24px;
+  justify-content: flex-start;
+  &.message {
+    justify-content: space-between;
+  }
+  &.start {
+    align-items: flex-start;
+  }
+  &.img {
+    display: block;
+  }
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+  &:last-child {
+    border-bottom: 0;
+  }
+  .module-item-label {
+    color: rgba(51, 51, 51, 0.6);
+    margin-right: 5px;
+  }
+  .module-item-value {
+    color: #333333;
+    &.img {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 5px 0;
+      .img {
+        width: 60px;
+        height: 60px;
+        margin: 5px 8px 5px 0;
+        &:nth-child(5n) {
+          margin-right: 0 !important;
+        }
+        img {
+          width: 60px;
+          height: 60px;
+          display: block;
+          border-radius: 2px;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+
+  .module-item {
+    border-bottom: 1px solid #f5f5f5;
+    &:not(:last-child) {
+      margin-bottom: 16px;
+    }
+  }
   .module-item-title {
     display: flex;
     align-items: center;
@@ -1273,15 +1306,8 @@ export default {
       padding-top: 10px;
     }
   }
-  &:last-child {
-    border-bottom: 0;
-  }
 }
 
-.bb {
-  height: 1px;
-  background: #e8e8e8;
-}
 .page {
   min-height: 100%;
   background-color: #f5f5f5;
@@ -1291,109 +1317,113 @@ export default {
   background-color: #f5f5f5;
   color: #333;
   min-height: 100%;
-  padding: 0 0 5px;
-  box-sizing: border-box;
-  .module,
-  .brief {
-    border-radius: 3px;
-  }
+
   .module {
     background: #fff;
     margin-top: 0;
-    margin-bottom: 10px;
-    padding: 10px;
-    &:last-child {
-      margin-bottom: 5px;
+    padding: 16px;
+    margin-bottom: 8px;
+
+    &.top {
+      .top-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        .strong {
+          font-weight: bold;
+          font-size: 18px;
+          // line-height: 22px;
+          line-height: 1;
+          display: flex;
+          align-items: flex-end;
+        }
+        .cancelTip {
+          display: flex;
+          align-items: center;
+          .van-icon,
+          .van-image {
+            width: 12px;
+            height: 12px;
+            margin-left: 3px;
+          }
+          span {
+            font-size: 12px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #999999;
+            line-height: 12px;
+          }
+        }
+      }
+    }
+    &.doctor {
+      .doctor-logo {
+        .van-image {
+          width: 60px;
+          height: 60px;
+          border: 1px solid #eee;
+          margin-right: 16px;
+        }
+      }
+      .doctor-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .doctor-name {
+          line-height: 24px;
+          font-size: 18px;
+          font-family: PingFangSC-Medium, PingFang SC;
+          font-weight: bold;
+          color: #333333;
+          .doctor-small {
+            line-height: 24px;
+            font-size: 16px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: normal;
+            color: #333333;
+            margin-left: 4px;
+          }
+          .van-image {
+            width: 12px;
+            height: 12px;
+            margin-left: 4px;
+          }
+        }
+        .doctor-hospitalName {
+          line-height: 32px;
+          font-size: 16px;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: normal;
+          color: #333333;
+        }
+      }
+    }
+    &.order {
+      .module-item {
+        &:first-child {
+          .title {
+            margin-top: 0;
+          }
+        }
+      }
     }
     &.phone {
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #999;
-      font-size: 12px;
+      line-height: 20px;
+      color: rgba(51, 51, 51, 0.6);
+      font-size: 14px;
       .van-image {
         width: 14px;
         height: 14px;
-        margin-right: 4px;
+        margin-right: 8px;
         cursor: pointer;
       }
     }
-    &.top {
-      padding-top: 12px;
-      padding-bottom: 12px;
-    }
-    &.order {
-      padding: 5px 15px;
-      .b {
-        padding-left: 0 !important;
-      }
-      .form-dl {
-        padding: 4px 0;
-        border-bottom: 0;
-        &:last-child {
-          padding-bottom: 10px;
-        }
-      }
 
-      .form-dt {
-        color: #999;
-        // min-width: 70px;
-        min-width: 20px;
-        display: flex;
-        padding-right: 10px;
-        align-items: center;
-        &.start {
-          align-items: flex-start;
-        }
-        // span {
-        //   flex: 1;
-        //   text-align: justify;
-        //   text-align-last: justify;
-        //   padding-right: 3px;
-        //   height: 16px;
-        //   line-height: 16px;
-        //   &::after {
-        //     content: ' ';
-        //     display: inline-block;
-        //     width: 100%;
-        //     height: 0px;
-        //   }
-        // }
-      }
-      .form-dd {
-        color: #333;
-        text-align: left;
-        padding-left: 2px;
-      }
-    }
-    &.message {
-      .message-item {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 13px;
-        line-height: 26px;
-        &.start {
-          align-items: flex-start;
-          .message-item-right {
-            white-space: unset;
-          }
-        }
-        .message-item-left {
-          // width: 30%;
-          color: #999;
-        }
-        .message-item-right {
-          max-width: 70%;
-          text-align: right;
-          color: #333;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-      }
-    }
     .cancelText {
       height: 45px;
       background: rgba(240, 252, 250, 1);
@@ -1432,35 +1462,7 @@ export default {
       }
     }
   }
-  .form-dl {
-    font-size: 14px;
-  }
-  .form-dl.img {
-    display: block;
-    .form-dt {
-      padding-top: 5px;
-      padding-bottom: 5px;
-    }
-    .form-img {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      .img {
-        width: 57px;
-        height: 57px;
-        background: #ccc;
-        margin: 5px 10px 5px 0;
-        &:nth-child(5n) {
-          margin-right: 0 !important;
-        }
-        img {
-          width: 57px;
-          height: 57px;
-          display: block;
-        }
-      }
-    }
-  }
+
   .typeTag {
     width: 36px;
     height: 22px;
@@ -1473,72 +1475,48 @@ export default {
     font-size: 12px;
     font-weight: 400;
     margin-left: 5px;
-  }
-  .typeTag.zx {
-    background-color: #00c6ae;
-  }
-  .typeTag.fz {
-    background-color: #fa8c16;
+    &.zx {
+      background-color: #00c6ae;
+      &.fz {
+        background-color: #fa8c16;
+      }
+    }
   }
 
-  .module .brief {
-    font-size: 13px;
+  .brief {
+    font-size: 16px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    line-height: 24px;
   }
-  .module .small {
+  .small {
     font-size: 15px;
     padding: 10px 15px;
   }
 
-  .module .module-body {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-  }
-  .module-body .label {
-    flex: 1;
-    text-align: center;
-    font-size: 13px;
-    padding: 4px 6px;
-    margin: 5px;
-    border-radius: 20px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .module-body .blue-full {
-    background: #00c6ae;
-    color: #fff;
-    border-color: transparent;
-  }
-
-  .card {
-    background: #fff;
-    padding: 10px 15px;
-  }
-  .b {
-    display: block;
+  .title {
     font-weight: bold;
-    color: #000;
-
+    font-size: 16px;
+    line-height: 24px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    color: #333333;
+    padding-left: 12px;
+    position: relative;
+    margin-bottom: 12px;
+    margin-top: 16px;
     &::before {
-      display: inline-block;
+      position: absolute;
       content: '';
       width: 4px;
-      height: 15px;
-      background: #00c6ae;
-      margin-right: 8px;
-      margin-bottom: -2px;
+      height: 16px;
       border-radius: 2px;
+      background: $primary;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
     }
   }
-  .b {
-    padding: 10px 15px 0 15px;
-  }
-  .span {
-    padding: 10px 15px 10px 0;
-  }
-
   .right {
     // text-align: right;
     display: flex;
@@ -1557,16 +1535,6 @@ export default {
       color: #999;
       font-size: 12px;
     }
-  }
-  .label.label-private {
-    font-size: 8px;
-    padding: 1px 2px;
-    border-radius: 2px;
-    color: #f7e9b3;
-    background: #504c4f;
-    border-color: #504c4f;
-    vertical-align: text-top;
-    margin-top: 2px;
   }
 }
 </style>

@@ -246,7 +246,7 @@ export default {
     color: #333;
   }
   .textarea {
-    border: 1px solid rgba(209, 209, 209, 1);
+    border: 1px solid #f5f5f5;
     min-height: 150px;
     width: 100%;
     padding: 5px 10px;
@@ -264,7 +264,7 @@ export default {
   .label {
     height: 33px;
     border-radius: 33px;
-    border: 0.5px solid rgba(200, 200, 200, 1);
+    border: 0.5px solid #ccc;
     color: #666;
     font-size: 13px;
     width: 30%;

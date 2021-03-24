@@ -141,6 +141,7 @@ export default {
           })
           .catch((error) => {
             peace.util.alert('图片上传失败，请稍后再试')
+            this.loading = false
             reject(error)
           })
       })

@@ -76,13 +76,11 @@ export default {
   justify-content: space-between;
   background: #fff;
   width: 100%;
-
   &.isFixed {
     position: fixed;
     left: 0;
     top: 0;
     z-index: 99;
-    box-sizing: border-box;
   }
 
   span {
@@ -91,6 +89,14 @@ export default {
     line-height: 1;
     &.active {
       color: $primary;
+    }
+  }
+  .van-icon {
+    width: 14px;
+    height: 14px;
+    img {
+      width: 100%;
+      height: 100%;
     }
   }
 }
