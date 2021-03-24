@@ -27,8 +27,8 @@
           <span>{{ data.price }}</span>
         </el-form-item>
         <el-form-item label="参考价">
-          <span>￥</span>
-          <span>{{ data.referencePrice }}</span>
+          <span v-if="data.referencePrice">￥</span>
+          <span v-if="data.referencePrice">{{ data.referencePrice }}</span>
         </el-form-item>
         <el-form-item label="服务包介绍">
           <div v-html="data.brief"></div>
