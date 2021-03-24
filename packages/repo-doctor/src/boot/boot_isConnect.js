@@ -16,10 +16,7 @@ const checkConnect = () => {
     'weblink04.netease.im',
     'weblink05.netease.im',
     'weblink06.netease.im',
-    'weblink07.netease.im',
-    'weblink08.netease.im',
-    'weblink09.netease.im',
-    'weblink10.netease.im'
+    'weblink07.netease.im'
   ]
 
   connectUrl.forEach((url) => {
