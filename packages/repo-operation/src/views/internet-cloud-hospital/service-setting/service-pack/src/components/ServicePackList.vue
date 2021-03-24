@@ -68,10 +68,9 @@
                           label="服务包名称"
                           prop="servicePackageName">
           <template slot-scope="scope">
-            <el-button type="text"
-                       v-on:click="gotoDetailView(scope.row)">{{ scope.row.servicePackageName }}</el-button>
+            <div v-on:click="gotoDetailView(scope.row)"
+                 class="text-primary cursor-pointer ">{{ scope.row.servicePackageName }}</div>
           </template>
-
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="签约医院"
