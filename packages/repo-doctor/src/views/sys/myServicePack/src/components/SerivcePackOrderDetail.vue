@@ -35,6 +35,10 @@
         <el-form-item label="支付金额">
           <span>{{ data.payMoney }}</span>
         </el-form-item>
+        <el-form-item label="售后状态"
+                      v-if="data.afterSaleText">
+          <span>{{ data.afterSaleText }}</span>
+        </el-form-item>
       </el-form>
     </div>
 
