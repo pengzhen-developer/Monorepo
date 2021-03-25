@@ -404,6 +404,8 @@ export default {
           item.id = equity ? equity.id : undefined
         })
 
+        res.data.referencePrice = res.data.referencePrice ?? undefined
+
         delete res.data.mainParts
         delete res.data.equitiesList
 
