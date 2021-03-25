@@ -81,6 +81,10 @@
 .van-cell--borderless::after {
   display: block;
 }
+.van-cell.noborder:last-child::after,
+.van-cell--borderless.noborder::after {
+  display: none;
+}
 
 .van-search .van-cell:last-child::after {
   display: none;

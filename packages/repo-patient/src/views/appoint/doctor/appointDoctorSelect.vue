@@ -487,6 +487,8 @@ export default {
 }
 .inline.red {
   color: #f2223b;
+  display: flex;
+  align-items: center;
 }
 .label.label-blue {
   background: #effffc;

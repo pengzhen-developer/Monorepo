@@ -18,6 +18,7 @@
             <div class="cost-platform-content">
               <span v-if="isNaN(item.value.substring(1))">{{item.value}}</span>
               <peace-price v-bind:price="item.value.substring(1)"
+                           v-bind:transformOrigin="'right'"
                            v-bind:size="15"
                            v-else></peace-price>
             </div>

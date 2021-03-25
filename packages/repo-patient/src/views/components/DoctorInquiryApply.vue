@@ -259,7 +259,7 @@
           <template v-if="current.field === ANSWER_FIELD.ILLNESS_DESCRIBE">
             <van-field ref="input"
                        v-model.trim="illnessDescribe"
-                       class="inp"
+                       class="inp noborder"
                        placeholder="请输入您的详细症状，至少5个字">
               <peace-button round
                             slot="button"

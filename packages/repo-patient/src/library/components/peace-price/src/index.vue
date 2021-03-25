@@ -4,8 +4,9 @@
   <div class="peace-price"
        v-bind:class="{'line-through':lineThrough}">
     <span v-bind:style="`lineHeight:${size}px`">{{prefix}}{{originalPrice}}</span>
-    <div class="price-result">
-      <div v-bind:style="`fontSize:${unitSize}px`"
+    <div class="price-result"
+         v-bind:style="`transformOrigin:${transformOrigin};${transformOrigin}:0;`">
+      <div v-bind:style="`fontSize:${unitSize}px;`"
            style="white-space:nowrap;">{{prefix}}</div>
       <div v-bind:style="`fontSize:${integerSize}px`">{{originalPrice | getPriceInteger}}</div>
       <div v-bind:style="`fontSize:${decimalSize}px`">
@@ -18,6 +19,12 @@
 export default {
   name: 'peace-price',
   props: {
+    transformOrigin: {
+      type: String,
+      default: () => {
+        return 'left'
+      }
+    },
     price: {
       type: [String, Number],
       default: () => {
@@ -125,11 +132,11 @@ export default {
   //转换后的金额
   .price-result {
     position: absolute;
-    left: 0;
+    // right: 0;
     top: -50%;
     z-index: 6;
     transform: scale(0.5);
-    transform-origin: left;
+    // transform-origin: right;
     display: flex;
     align-items: flex-end;
   }

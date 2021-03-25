@@ -133,7 +133,7 @@
 
         </div>
         <!-- 诊疗记录 -->
-        <div class="module-item"
+        <div class="module-item record"
              v-if="hasFirstVisitInfo">
           <div class="module-item-title">
             <div class="title">诊疗记录</div>
@@ -161,10 +161,10 @@
                                  :src="require('@src/assets/images/file/ic_medical record.png')" />
                     </div>
                     <div class="case-right">
-                      <p class="title">
+                      <p class="case-right-title">
                         {{item.title}}
                       </p>
-                      <p class="name">
+                      <p class="case-right-name">
                         {{ item.hospitalName }} | {{ item.deptName }}
                       </p>
                     </div>
@@ -221,6 +221,7 @@
           <div class="module-item-value">
             <span v-if="isNaN(item.value.substring(1))">{{item.value}}</span>
             <peace-price v-bind:price="item.value.substring(1)"
+                         v-bind:transformOrigin="'right'"
                          v-bind:size="14"
                          v-else></peace-price>
           </div>
@@ -232,6 +233,7 @@
           <div class="module-item-label">订单费用</div>
           <div class="module-item-value">
             <peace-price v-bind:price="internalData.orderInfo.totalMoney"
+                         v-bind:transformOrigin="'right'"
                          v-bind:size="14"></peace-price>
           </div>
         </div>
@@ -241,9 +243,9 @@
           <div class="module-item-value">
             <peace-price v-bind:price="internalData.orderInfo.totalMoney"
                          v-bind:prefix="'-￥'"
+                         v-bind:transformOrigin="'right'"
                          v-bind:size="14"></peace-price>
-            <span style="margin-left: -10px;"
-                  v-if="(internalData.inquiryInfo.inquiryStatus==ENUM.INQUIRY_STATUS.已取消||internalData.inquiryInfo.inquiryStatus==ENUM.INQUIRY_STATUS.已退诊)">(已退回)</span>
+            <span v-if="(internalData.inquiryInfo.inquiryStatus==ENUM.INQUIRY_STATUS.已取消||internalData.inquiryInfo.inquiryStatus==ENUM.INQUIRY_STATUS.已退诊)">(已退回)</span>
           </div>
         </div>
       </div>
@@ -263,6 +265,7 @@
             </template>
             <div class="money">
               <peace-price v-bind:price="internalData.orderInfo.orderMoney"
+                           v-bind:transformOrigin="'right'"
                            v-bind:size="18"></peace-price>
             </div>
           </div>
@@ -271,6 +274,7 @@
             实付金额：
             <div class="money">
               <peace-price v-bind:price="internalData.orderInfo.payMoney"
+                           v-bind:transformOrigin="'right'"
                            v-bind:size="18"></peace-price>
               <span v-if="internalData.orderInfo.refundTime ">（已退款）</span>
             </div>
@@ -282,6 +286,7 @@
             实付金额：
             <div class="money">
               <peace-price v-bind:price="internalData.orderInfo.payMoney"
+                           v-bind:transformOrigin="'right'"
                            v-bind:size="18"></peace-price>
               <span v-if="internalData.orderInfo.refundTime">（已退款）</span>
             </div>
@@ -1023,7 +1028,10 @@ export default {
     background: rgba(255, 255, 255, 1);
     box-shadow: 0px 1px 5px 0px rgba(221, 221, 221, 0.5);
     border-radius: 4px;
-    margin: 0 0 15px 0;
+    &:not(:last-child) {
+      margin: 0 0 15px 0;
+    }
+
     .case-card-note-content {
       display: flex;
       align-items: center;
@@ -1041,11 +1049,11 @@ export default {
       justify-content: center;
       flex: 1;
       width: 0;
-      .title {
+      .case-right-title {
         color: #333;
         font-size: 14px;
       }
-      .name {
+      .case-right-name {
         font-size: 13px;
         color: #999;
         overflow: hidden;
@@ -1288,26 +1296,31 @@ export default {
       }
     }
   }
-
-  .module-item {
-    border-bottom: 1px solid #f5f5f5;
-    &:not(:last-child) {
-      margin-bottom: 16px;
+}
+.module-item {
+  &.record {
+    .title {
+      margin: 0;
     }
   }
-  .module-item-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    .module-item-more {
-      color: #999;
-      font-weight: normal;
-      padding-top: 10px;
-    }
+  &:not(:last-child) {
+    border-bottom: 1px solid #f5f5f5;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
   }
 }
+.module-item-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
 
+  .module-item-more {
+    color: #999;
+    font-weight: normal;
+    padding-top: 10px;
+  }
+}
 .page {
   min-height: 100%;
   background-color: #f5f5f5;

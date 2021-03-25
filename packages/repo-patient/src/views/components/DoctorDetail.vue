@@ -268,9 +268,9 @@
                 <div class="service-consult-content-name ellipsis">{{servicePackage.info.servicePackageName}}</div>
                 <div class=" flex">
                   <peace-price class="service-consult-content-fee"
+                               v-bind:transformOrigin="'right'"
                                v-bind:price="servicePackage.info.price"></peace-price>
-                  <span class="service-consult-content-unit"
-                        style="margin:0 0 0 -7px;">/{{servicePackage.info.effectiveDays}}天</span>
+                  <span class="service-consult-content-unit"> /{{servicePackage.info.effectiveDays}}天</span>
                 </div>
               </div>
               <div style="marginTop:5px">
@@ -1366,7 +1366,6 @@ export default {
         .service-consult-content-unit {
           font-size: 12px;
           color: #999;
-          margin-left: 6px;
         }
 
         .service-consult-content-description {

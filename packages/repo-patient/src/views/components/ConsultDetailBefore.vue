@@ -119,10 +119,10 @@
                                  :src="require('@src/assets/images/file/ic_medical record.png')" />
                     </div>
                     <div class="case-right">
-                      <p class="title">
+                      <p class="case-right-title">
                         {{item.title}}
                       </p>
-                      <p class="name">
+                      <p class="case-right-name">
                         {{ item.hospitalName }} | {{ item.deptName }}
                       </p>
                     </div>
@@ -762,7 +762,9 @@ export default {
     background: rgba(255, 255, 255, 1);
     box-shadow: 0px 1px 5px 0px rgba(221, 221, 221, 0.5);
     border-radius: 4px;
-    margin: 0 0 15px 0;
+    &:not(:last-child) {
+      margin: 0 0 15px 0;
+    }
     .case-card-note-content {
       display: flex;
       align-items: center;
@@ -780,11 +782,11 @@ export default {
       justify-content: center;
       flex: 1;
       width: 0;
-      .title {
+      .case-right-title {
         color: #333;
         font-size: 14px;
       }
-      .name {
+      .case-right-name {
         font-size: 13px;
         color: #999;
         overflow: hidden;
@@ -859,7 +861,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
+    margin-top: 16px;
+    .title {
+      margin: 0;
+    }
     .module-item-more {
       color: #999;
       font-weight: normal;
