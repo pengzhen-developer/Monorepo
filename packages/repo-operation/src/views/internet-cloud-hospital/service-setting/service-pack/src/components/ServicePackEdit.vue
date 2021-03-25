@@ -330,6 +330,8 @@ export default {
           item.id = equity ? equity.id : undefined
         })
 
+        res.data.referencePrice = res.data.referencePrice ?? undefined
+
         delete res.data.equitiesList
 
         this.model = Object.assign({}, this.model, res.data)
