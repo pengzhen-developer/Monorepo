@@ -45,7 +45,7 @@
         <el-form-item label="现病史："
                       prop="presentHistoryList">
           <QuickSelectDiagnose allow-create
-                               style="width: 400px;"
+                               class="full-width"
                                v-model="model.presentHistoryList"></QuickSelectDiagnose>
         </el-form-item>
       </el-row>
@@ -53,7 +53,7 @@
         <el-form-item label="过敏史："
                       prop="allergyHistoryList">
           <QuickSelectAllergyHistory allow-create
-                                     style="width: 400px;"
+                                     class="full-width"
                                      v-model="model.allergyHistoryList"></QuickSelectAllergyHistory>
         </el-form-item>
       </el-row>
@@ -61,7 +61,7 @@
         <el-form-item label="既往史："
                       prop="pastHistoryList">
           <QuickSelectDiagnoseHistory allow-create
-                                      style="width: 400px;"
+                                      class="full-width"
                                       v-model="model.pastHistoryList"></QuickSelectDiagnoseHistory>
         </el-form-item>
       </el-row>
@@ -111,7 +111,7 @@
                       prop="diagnoseList"
                       v-bind:show-message="false"
                       v-bind:rules="[ { type: 'array' }]">
-          <QuickSelectDiagnose style="width: 400px;"
+          <QuickSelectDiagnose class="full-width"
                                v-model="model.diagnoseList"></QuickSelectDiagnose>
         </el-form-item>
       </el-row>
@@ -394,7 +394,7 @@ export default {
     }
 
     & :last-child {
-      color: rgba(153, 153, 153, 1);
+      color: rgba(51, 51, 51, 1);
     }
   }
 }

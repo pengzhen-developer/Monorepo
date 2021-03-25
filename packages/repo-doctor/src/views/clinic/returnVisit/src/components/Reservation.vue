@@ -5,7 +5,7 @@
 <template>
   <div class="text-center q-mt-lg">
     <el-button size="large"
-               type="primary"
+               type="text"
                v-on:click="getReservationList">查看预约记录</el-button>
 
     <PeaceDialog title="复诊预约记录"

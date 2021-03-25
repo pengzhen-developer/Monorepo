@@ -22,8 +22,8 @@
           <el-button type="text"
                      v-if="showAddButton(item)"
                      v-on:click="addPatient">
-            <img class="add_button_style"
-                 src="~@src/assets/images/add_button.png">
+            <i style="font-size: 20px;"
+               class="el-icon-circle-plus"></i>
           </el-button>
 
         </div>
