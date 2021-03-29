@@ -2,153 +2,156 @@
 
   <div class="the-recipe"
        v-if="internalData">
-    <InquiryStageMark :type="'returnVisit'"
-                      :current="'prescribeMedicine'"
-                      :position="true"></InquiryStageMark>
-    <div :class="{ [`icon-status-${ internalData && internalData.prescriptionStatus && internalData.prescriptionStatus.key }`] : canShowPrescriptionStatus }"
-         class="prescript icon-status">
-      <div class="prescript-no">
-        <span class="prescript-btn"
-              @click="seeOriginalPrescription"
-              v-if="dialog.data.pngUrl">原始处方</span>
-        No.{{internalData.prescriptionNo}}
-      </div>
-      <div class="prescript-head">{{internalData.medicalInstitutionName}}</div>
-      <div class="prescript-h4">处方笺</div>
-      <div class="prescript-line">
-        <div class="span"
-             style="width: 50%; text-align: left;">
-          <span>病历号：</span>
-          <span>{{internalData.caseNo}}</span>
+    <template v-if="!prescriptionHasVoided">
+      <InquiryStageMark :type="'returnVisit'"
+                        :current="'prescribeMedicine'"
+                        :position="true"></InquiryStageMark>
+      <div :class="{ [`icon-status-${ internalData && internalData.prescriptionStatus && internalData.prescriptionStatus.key }`] : canShowPrescriptionStatus }"
+           class="prescript icon-status">
+        <div class="prescript-no">
+          <span class="prescript-btn"
+                @click="seeOriginalPrescription"
+                v-if="dialog.data.pngUrl">原始处方</span>
+          No.{{internalData.prescriptionNo}}
         </div>
-        <div class="span"
-             style="width: 50%; text-align: right;">
-          <span>开具时间：</span>
-          <span>{{internalData.prescriptionTime}} </span>
+        <div class="prescript-head">{{internalData.medicalInstitutionName}}</div>
+        <div class="prescript-h4">处方笺</div>
+        <div class="prescript-line">
+          <div class="span"
+               style="width: 50%; text-align: left;">
+            <span>病历号：</span>
+            <span>{{internalData.caseNo}}</span>
+          </div>
+          <div class="span"
+               style="width: 50%; text-align: right;">
+            <span>开具时间：</span>
+            <span>{{internalData.prescriptionTime}} </span>
+          </div>
         </div>
-      </div>
-      <div class="prescript-table dotted-line-before">
-        <div class="th">
-          姓名
-          <div class="td">{{internalData.patientName}}</div>
-        </div>
-        <div class="th">
-          性别
-          <div class="td">{{internalData.patientGender}}</div>
-        </div>
-        <div class="th">
-          年龄
-          <div class="td">{{internalData.age}}</div>
-        </div>
-        <div class="th">
-          科别
-          <div class="td">{{internalData.medicalDepartmentName}}</div>
-        </div>
-      </div>
-    </div>
-    <!--体重-->
-    <div class="outline"
-         v-if="internalData.weight">
-      <div class="outline-header">
-        <div class="outline-tit outline-weight">体重 <span>{{internalData.weight}}kg</span></div>
-      </div>
-    </div>
-    <!--临床诊断-->
-    <div class="outline">
-      <div class="outline-header">
-        <div class="outline-tit">临床诊断</div>
-      </div>
-      <div class="outline-body">
-        <div :key="index"
-             class="inline color-000"
-             v-for="(item,index) in internalData.diagnosisInfos">
-          {{item.DiagnosisName ? item.DiagnosisName: internalData.diagnosisInfos.length ? '' : '暂无'}}
-        </div>
-      </div>
-    </div>
-    <!--过敏史-->
-    <div class="outline">
-      <div class="outline-header">
-        <div class="outline-tit">过敏史</div>
-      </div>
-      <div class="outline-body">
-        <div class="inline">
-          {{internalData.allergicHistory || '暂无'}}
-        </div>
-      </div>
-    </div>
-    <!--RP-->
-    <div class="outline ">
-      <div class="outline-header">
-        <div class="outline-tit">Rp</div>
-      </div>
-      <div class="outline-body drug">
-        <div :key="index"
-             class="column-2 dotted-line-after"
-             v-for="(item, index) in internalData.drugCode">
-          <div class="column-left">
-            <div class="inline">
-              <div class="inline-flex">
-                <span>{{item.drugName}}</span>
-                {{item.drugSpecifications}}
-              </div>
-              <div class="inline unit">x{{item.drugQty}}</div>
-            </div>
-            <div class="small"
-                 v-if="item.drugUse">{{item.drugUse}}</div>
+        <div class="prescript-table dotted-line-before">
+          <div class="th">
+            姓名
+            <div class="td">{{internalData.patientName}}</div>
+          </div>
+          <div class="th">
+            性别
+            <div class="td">{{internalData.patientGender}}</div>
+          </div>
+          <div class="th">
+            年龄
+            <div class="td">{{internalData.age}}</div>
+          </div>
+          <div class="th">
+            科别
+            <div class="td">{{internalData.medicalDepartmentName}}</div>
           </div>
         </div>
       </div>
-    </div>
-    <!--处方审核-->
-    <div class="outline">
-      <div class="outline-header">
-        <div class="outline-tit">处方审核</div>
-      </div>
-      <div class="outline-body"><span class="inline">{{ internalData.prescriptionExamMemo }}</span>
-      </div>
-    </div>
-    <!--医生签名-->
-    <div class="outline module">
-      <div class="namelist-dl npd">
-        <div class="dt justify"><span>医师</span> ：</div>
-        <div class="dd">
-          <!-- <img :src="internalData.doctorSignImage"
-               v-if="internalData.doctorSignImage" /> -->
-          {{internalData.doctorName}}
+      <!--体重-->
+      <div class="outline"
+           v-if="internalData.weight">
+        <div class="outline-header">
+          <div class="outline-tit outline-weight">体重 <span>{{internalData.weight}}kg</span></div>
         </div>
       </div>
-      <div class="namelist-dl npd">
-        <div class="dt">审核药师：</div>
-        <div class="dd">
-          <!-- <img :src="internalData.prescriptionSign"
-               v-if="internalData.prescriptionSign" /> -->
-          {{internalData.prescriptionPharmacistName}}
+      <!--临床诊断-->
+      <div class="outline">
+        <div class="outline-header">
+          <div class="outline-tit">临床诊断</div>
+        </div>
+        <div class="outline-body">
+          <div :key="index"
+               class="inline color-000"
+               v-for="(item,index) in internalData.diagnosisInfos">
+            {{item.DiagnosisName ? item.DiagnosisName: internalData.diagnosisInfos.length ? '' : '暂无'}}
+          </div>
         </div>
       </div>
-      <div class="namelist-dl">
-        <div class="dt">调配药师：</div>
-        <div class="dd"></div>
+      <!--过敏史-->
+      <div class="outline">
+        <div class="outline-header">
+          <div class="outline-tit">过敏史</div>
+        </div>
+        <div class="outline-body">
+          <div class="inline">
+            {{internalData.allergicHistory || '暂无'}}
+          </div>
+        </div>
       </div>
-      <div class="namelist-dl">
-        <div class="dt">发药药师：</div>
-        <div class="dd"></div>
+      <!--RP-->
+      <div class="outline ">
+        <div class="outline-header">
+          <div class="outline-tit">Rp</div>
+        </div>
+        <div class="outline-body drug">
+          <div :key="index"
+               class="column-2 dotted-line-after"
+               v-for="(item, index) in internalData.drugCode">
+            <div class="column-left">
+              <div class="inline">
+                <div class="inline-flex">
+                  <span>{{item.drugName}}</span>
+                  {{item.drugSpecifications}}
+                </div>
+                <div class="inline unit">x{{item.drugQty}}</div>
+              </div>
+              <div class="small"
+                   v-if="item.drugUse">{{item.drugUse}}</div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="bt">注意：本处方24小时有效，处方失效后不可作为购药凭证购药。仅限通过平台认证的药店配送，自行下载处方或截屏购药不具有效力。</div>
-    <!-- <div class="bottom"
-         v-if="internalData.prescriptionStatus && ($peace.$route.params.json && $peace.util.decode($peace.$route.params.json).showDetailButton !== false)">
-      <div :class="internalData.prescriptionStatus.key == '2' || internalData.prescriptionStatus.key == '5' || internalData.prescriptionStatus.key == '6' ? 'btn-blue' : 'btn-default'"
-           @click="goMenuPage(internalData)"
-           class="btn btn-blue block">{{ internalData.prescriptionStatus.msg }}</div>
-    </div> -->
-    <div class="bottom"
-         v-if="canShowBottomBlock">
-      <div :class="BottomBlockBackClass"
-           @click="goMenuPage(internalData)"
-           class="btn btn-blue block">{{ OrderDrugStatusText[internalData.orderDrugStatus] }}</div>
-    </div>
+      <!--处方审核-->
+      <div class="outline">
+        <div class="outline-header">
+          <div class="outline-tit">处方审核</div>
+        </div>
+        <div class="outline-body"><span class="inline">{{ internalData.prescriptionExamMemo }}</span>
+        </div>
+      </div>
+      <!--医生签名-->
+      <div class="outline module">
+        <div class="namelist-dl npd">
+          <div class="dt justify"><span>医师</span> ：</div>
+          <div class="dd">
+            {{internalData.doctorName}}
+          </div>
+        </div>
+        <div class="namelist-dl npd">
+          <div class="dt">审核药师：</div>
+          <div class="dd">
+            {{internalData.prescriptionPharmacistName}}
+          </div>
+        </div>
+        <div class="namelist-dl">
+          <div class="dt">调配药师：</div>
+          <div class="dd"></div>
+        </div>
+        <div class="namelist-dl">
+          <div class="dt">发药药师：</div>
+          <div class="dd"></div>
+        </div>
+      </div>
+      <div class="bt">注意：本处方24小时有效，处方失效后不可作为购药凭证购药。仅限通过平台认证的药店配送，自行下载处方或截屏购药不具有效力。</div>
 
+      <div class="bottom"
+           v-if="canShowBottomBlock">
+        <div :class="BottomBlockBackClass"
+             @click="goMenuPage(internalData)"
+             class="btn btn-blue block">{{ OrderDrugStatusText[internalData.orderDrugStatus] }}</div>
+      </div>
+    </template>
+    <!-- 处方已拒绝 -->
+    <template v-else>
+      <div class="voided">
+        <div class="message">
+          <div class="message-title">温馨提示</div>
+          <div class="message-content">该处方已作废被回收，请查看其他处方</div>
+        </div>
+      </div>
+    </template>
+
+    <!-- 原始处方 -->
     <div class="shadow"
          v-show="dialog.visible"
          @click="dialog.visible = false">
@@ -219,6 +222,13 @@ export default {
     }
   },
   computed: {
+    //如果状态为已作废，提示‘该处方已作废被回收，请查看其他处方’
+    prescriptionHasVoided() {
+      return this.internalData?.prescriptionStatus?.key == this.PrescriptionStatus.已作废 ||
+        this.internalData?.prescriptionStatus?.key == this.PrescriptionStatus.未通过
+        ? true
+        : false
+    },
     canShowPrescriptionStatus() {
       return $peace.$route.params.json && $peace.util.decode($peace.$route.params.json).showDetailButton !== false && this.internalData?.prescriptionStatus?.key
     },
@@ -265,11 +275,11 @@ export default {
       this.getPrescriptionImage()
     },
     getPrescripInfo() {
-      const params = peace.util.decode(this.$route.params.json)
+      // const params = peace.util.decode(this.$route.params.json)
 
       //h5.prescribeId  h5支付-购药订单返回
-      const prescribeId = params.tradeType ? peace.cache.get('h5.prescribeId') : params.prescribeId
-
+      // const prescribeId = params.tradeType ? peace.cache.get('h5.prescribeId') : params.prescribeId
+      const prescribeId = 'yjqgmnwgcdojfyvkgsbl'
       peace.service.patient
         .getPrescripInfo({ prescribeId: prescribeId })
         .then((res) => {
@@ -437,7 +447,28 @@ export default {
   position: relative;
   overflow: auto;
   height: 100%;
-
+  .voided {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    .message {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 50%;
+      .message-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 16px;
+      }
+      .message-content {
+        font-size: 16px;
+        color: rgba(51, 51, 51, 0.6);
+      }
+    }
+  }
   .prescript {
     width: 100%;
     position: relative;
