@@ -2,7 +2,7 @@ export default {
   // 药品来源
   ENUM_DRUG_SOURCE: [
     { value: 1, label: '院内目录' },
-    { value: 2, label: '外流目录' }
+    { value: 2, label: '外延目录' }
   ],
   // 药品状态
   ENUM_DRUG_STATUS: [

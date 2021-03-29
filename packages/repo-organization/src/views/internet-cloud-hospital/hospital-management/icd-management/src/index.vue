@@ -6,22 +6,12 @@
                label-suffix="："
                label-position="left">
         <el-form-item label="ICD名称">
-          <el-input placeholder="请输入ICD名称"
+          <el-input placeholder="请输入"
                     v-model="model.name"></el-input>
         </el-form-item>
         <el-form-item label="ICD编码">
-          <el-input placeholder="请输入ICD编码"
+          <el-input placeholder="请输入"
                     v-model="model.code"></el-input>
-        </el-form-item>
-        <el-form-item label="是否常见诊断">
-          <el-select v-model="model.isCommon"
-                     clearable
-                     placeholder="全部">
-            <el-option label="是"
-                       :value="1"></el-option>
-            <el-option label="否"
-                       :value="100"></el-option>
-          </el-select>
         </el-form-item>
 
         <el-form-item class="search-btn">
@@ -48,12 +38,6 @@
                           prop="code"></PeaceTableColumn>
         <PeaceTableColumn label="ICD名称"
                           prop="name"></PeaceTableColumn>
-        <PeaceTableColumn label="是否常见诊断"
-                          prop="isCommon">
-          <template slot-scope="scope">
-            {{scope.row.isCommon == 1 ? '是':'否'}}
-          </template>
-        </PeaceTableColumn>
         <PeaceTableColumn label="更新时间"
                           prop="createdTime">
         </PeaceTableColumn>
@@ -80,8 +64,7 @@ export default {
     return {
       model: {
         name: '',
-        code: '',
-        isCommon: ''
+        code: ''
       },
       list: [],
       importDialog: {

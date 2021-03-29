@@ -86,18 +86,23 @@
 
       <div class="top-menu">
         <el-button @click="openAddDialog({},'create')"
-                   type="primary"
-                   icon="el-icon-plus">新 增</el-button>
+                   type="primary">新 增</el-button>
         <el-button @click="openImportDialog"
                    type="default">批量导入</el-button>
         <el-button @click="download"
                    type="default">模板下载</el-button>
+        <el-button @click="batchEdit"
+                   type="default">批量编辑</el-button>
 
       </div>
 
       <PeaceTable ref="table"
                   style="width: 100%"
-                  pagination>
+                  pagination
+                  @selection-change="handleSelectionChange">
+        <el-table-column type="selection"
+                         width="55">
+        </el-table-column>
         <PeaceTableColumn label="药品编号"
                           width="150"
                           prop="drug_number"></PeaceTableColumn>
@@ -114,7 +119,7 @@
                           min-width="100"
                           prop="drug_form"></PeaceTableColumn>
         <PeaceTableColumn label="药品单价（元）"
-                          width="125"
+                          width="110"
                           prop="drug_unitPrice">
           <template slot-scope="scope">
             <div> {{scope.row.drug_unitPrice || '--'}} </div>
@@ -123,12 +128,19 @@
         <PeaceTableColumn label="批准文号"
                           min-width="180"
                           prop="license_number"></PeaceTableColumn>
+        <PeaceTableColumn label="药品来源"
+                          width="125"
+                          prop="source">
+          <template slot-scope="scope">
+            <div> {{scope.row.source | getEnumLabel(source.ENUM_DRUG_SOURCE)}} </div>
+          </template>
+        </PeaceTableColumn>
         <PeaceTableColumn label="使用状态"
                           width="110"
                           prop="status">
           <template slot-scope="scope">
             <div class="oprate">
-              <span>{{scope.row.status | getEnumLabel(source.ENUM_DRUG_STATUS)}}</span>
+              <span>{{scope.row.status | getEnumLabel(source.ENUM_DRUG_STATUS)}} </span>
               <el-switch v-model="scope.row.status"
                          :active-value='1'
                          :inactive-value='2'
@@ -194,6 +206,18 @@
       <DrugImport :id="id"
                   @close="closeImportDialog" />
     </PeaceDialog>
+    <!-- 批量编辑 -->
+    <PeaceDialog :visible.sync="batchDialogVisible"
+                 v-if="batchDialogVisible"
+                 width="376px">
+      <div class="el-dialog__title"
+           slot="title">
+        <span>批量编辑</span>
+        <span style="font-size: 14px;color: #858585;">（已选中{{multipleSelection.length}}数据）</span>
+      </div>
+      <drug-batch :selection="multipleSelection"
+                  @close="closeBatchDialog"></drug-batch>
+    </PeaceDialog>
 
   </div>
 </template>
@@ -204,10 +228,11 @@ import Service from './service'
 import DrugImport from './components/DrugImport'
 import DrugModel from './components/DrugModel'
 import DrugInfo from './components/DrugInfo'
+import DrugBatch from './components/DrugBatch'
 
 export default {
   name: 'DrugData',
-  components: { DrugImport, DrugModel, DrugInfo },
+  components: { DrugImport, DrugModel, DrugInfo, DrugBatch },
   data() {
     return {
       source: {
@@ -227,7 +252,10 @@ export default {
       currentDrug: {},
       dialogVisible: false,
       addDialogVisible: false,
-      importDialogVisible: false
+      importDialogVisible: false,
+
+      batchDialogVisible: false,
+      multipleSelection: []
     }
   },
   filters: {
@@ -338,6 +366,21 @@ export default {
           duration: 10000
         })
       })
+    },
+    // 批量编辑
+    batchEdit() {
+      if (this.multipleSelection.length > 0) {
+        this.batchDialogVisible = true
+      } else {
+        Peace.util.warning('请选择数据')
+      }
+    },
+    closeBatchDialog() {
+      this.batchDialogVisible = false
+    },
+    // 多选
+    handleSelectionChange(val) {
+      this.multipleSelection = val
     }
   }
 }
