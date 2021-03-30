@@ -92,6 +92,20 @@
       </div>
     </div>
 
+    <div class="line"></div>
+
+    <div class="content-item">
+      <div class="item-title">
+        <div class="title-left"></div>
+        <p class="title">取药知情同意书</p>
+      </div>
+      <div class="q-mt-md"
+           style="white-space:pre;"
+           v-html="operateData.InformedConsent">
+
+      </div>
+    </div>
+
   </div>
 </template>
 

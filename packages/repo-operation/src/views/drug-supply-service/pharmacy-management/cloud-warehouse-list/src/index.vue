@@ -14,41 +14,57 @@
             <span>返回上一页</span>
           </div>
         </el-button>
-        <div class="item-content">
-          <div class="item-title">
-            <div class="title-left"></div>
-            <p class="title">云仓信息</p>
-          </div>
-          <div class="item-child">
-            <p class="child-key">云仓名称</p>
-            <p>：</p>
-            <p class="child-value">{{warehouseInfo.Name}}</p>
-          </div>
-          <div class="item-child">
-            <p class="child-key">系统名称</p>
-            <p>：</p>
-            <p class="child-value">{{currentSystemForm.Name}}</p>
-          </div>
-          <div class="item-child"
-               v-for="item in currentSystemForm.item"
-               :key="item.Label">
-            <p class="child-key">{{item.Label}}</p>
-            <p>：</p>
-            <p class="child-value">{{warehouseInfo[item.Name]}}</p>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="item-content">
-          <div class="item-title">
-            <div class="title-left"></div>
-            <p class="title">机构开户信息</p>
-          </div>
-          <p class="noInfo"
-             v-if="warehouseInfo.PrentCustList && warehouseInfo.PrentCustList.length === 0">暂无机构开户信息</p>
-          <OrgList v-bind:prentCustList="warehouseInfo.PrentCustList"
-                   v-bind:orgDict="orgDict"
-                   v-bind:systemCode="warehouseInfo.SystemCode"></OrgList>
-        </div>
+        <el-tabs v-model="activeName">
+          <el-tab-pane label="基础信息"
+                       name="base"
+                       class="q-px-32 q-py-10">
+            <div class="item-content">
+              <div class="item-title">
+                <div class="title-left"></div>
+                <p class="title">云仓信息</p>
+              </div>
+              <div class="item-child">
+                <p class="child-key">云仓名称</p>
+                <p>：</p>
+                <p class="child-value">{{warehouseInfo.Name}}</p>
+              </div>
+              <div class="item-child">
+                <p class="child-key">系统名称</p>
+                <p>：</p>
+                <p class="child-value">{{currentSystemForm.Name}}</p>
+              </div>
+              <div class="item-child"
+                   v-for="item in currentSystemForm.item"
+                   :key="item.Label">
+                <p class="child-key">{{item.Label}}</p>
+                <p>：</p>
+                <p class="child-value">{{warehouseInfo[item.Name]}}</p>
+              </div>
+            </div>
+            <div class="line"></div>
+            <div class="item-content">
+              <div class="item-title">
+                <div class="title-left"></div>
+                <p class="title">机构开户信息</p>
+              </div>
+              <p class="noInfo"
+                 v-if="warehouseInfo.PrentCustList && warehouseInfo.PrentCustList.length === 0">暂无机构开户信息</p>
+              <OrgList v-bind:prentCustList="warehouseInfo.PrentCustList"
+                       v-bind:orgDict="orgDict"
+                       v-bind:systemCode="warehouseInfo.SystemCode"></OrgList>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="运营信息"
+                       name="operate"
+                       class="q-px-32 q-py-10">
+            <div class="item-title">
+              <div class="title-left"></div>
+              <p class="title">取药知情同意书</p>
+            </div>
+            <div style="white-space:pre;"
+                 v-html="operationInfo.InformedConsent"></div>
+          </el-tab-pane>
+        </el-tabs>
       </div>
 
       <template v-else>
@@ -74,6 +90,7 @@ export default {
 
   data() {
     return {
+      activeName: 'base',
       visible: false,
       // 云仓详情
       warehouseInfo: {
@@ -84,6 +101,9 @@ export default {
         CodeIn3PartPlatform: '', // 物流中心ID  / branchid
         IDIn3PartPlatform: '', // 运营方ID
         PrentCustList: [] // 机构数据信息
+      },
+      operationInfo: {
+        InformedConsent: '' //取药知情同意书
       },
       // 云仓-系统 字典 （返回表单配置）
       systemDict: [],
@@ -109,7 +129,7 @@ export default {
         this.orgDict = res.data.CustomerStructure
         if (res.data.GetCustIn3PartRes !== null) {
           this.warehouseInfo = res.data.GetCustIn3PartRes
-
+          this.operationInfo = res.data.OperationInfo
           // 根据当前系统取对应配置
           this.currentSystemForm = this.systemDict.find((item) => item.SystemCode === this.warehouseInfo.SystemCode)
         }
