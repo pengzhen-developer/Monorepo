@@ -20,6 +20,16 @@
           <el-input v-model="model.organizationName"
                     placeholder="请输入"></el-input>
         </el-form-item>
+        <el-form-item label="订单类型">
+          <el-select v-model="model.orderType"
+                     clearable
+                     placeholder="全部">
+            <el-option v-bind:key="'order'+item.value"
+                       v-bind:label="item.label"
+                       v-bind:value="item.value"
+                       v-for="item in source.orderType"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="收款商户名称">
           <el-input v-model="model.mchName"
                     placeholder="请输入"></el-input>
@@ -132,6 +142,17 @@
                          v-on:viewPres="viewPres"></PurchaseOrderInfo>
     </PeaceDialog>
 
+    <!-- 服务包订单详情 -->
+    <PeaceDialog v-if="servicePackageDialogVisible"
+                 v-bind:visible.sync="servicePackageDialogVisible"
+                 v-bind:close-on-click-modal="false"
+                 v-bind:close-on-press-escape="false"
+                 title="服务包订单详情"
+                 width="636px"
+                 append-to-body>
+      <ServicePackageOrderInfo v-bind:data="currentServicePackage"></ServicePackageOrderInfo>
+    </PeaceDialog>
+
     <!-- 处方详情 -->
     <PeaceDialog v-if="presDialogVisible"
                  v-bind:visible.sync="presDialogVisible"
@@ -153,13 +174,15 @@ import AdvisoryOrderInfo from './components/AdvisoryOrderInfo'
 import ReturnVisitOrderInfo from './components/ReturnVisitOrderInfo'
 import PresInfo from './components/PresInfo'
 import PurchaseOrderInfo from './components/PurchaseOrderInfo'
+import ServicePackageOrderInfo from './components/ServicePackageOrderInfo'
 
 export default {
   components: {
     AdvisoryOrderInfo,
     ReturnVisitOrderInfo,
     PresInfo,
-    PurchaseOrderInfo
+    PurchaseOrderInfo,
+    ServicePackageOrderInfo
   },
 
   data() {
@@ -170,7 +193,12 @@ export default {
         endTime: '',
         orderNo: '',
         organizationName: '',
-        mchName: ''
+        mchName: '',
+        orderType: ''
+      },
+
+      source: {
+        orderType: []
       },
 
       tableData: {},
@@ -178,6 +206,7 @@ export default {
       infoDialogInquiryVisible: false,
       infoDialogReturnVisitVisible: false,
       purchaseDialogVisible: false,
+      servicePackageDialogVisible: false,
       presDialogVisible: false,
 
       pickerOptions: {
@@ -262,7 +291,8 @@ export default {
     this.model.time = [s, e]
   },
 
-  mounted() {
+  async mounted() {
+    this.source.orderType = await Peace.identity.dictionary.getList('service_package_order_type')
     this.$nextTick().then(() => {
       this.fetch()
     })
@@ -294,6 +324,8 @@ export default {
       // 购药订单
       else if (row.orderType === 'drug') {
         this.getPurchaseOrder(row.orderNo)
+      } else if (row.orderType === 'servicePackage') {
+        this.getServicePackageOrder(row.orderNo)
       }
     },
 
@@ -322,6 +354,12 @@ export default {
         this.purchaseDialogVisible = true
         this.currentPurchase = res.data
       })
+    },
+
+    // 服务包订单
+    getServicePackageOrder(orderNo) {
+      this.servicePackageDialogVisible = true
+      this.currentServicePackage = orderNo
     },
 
     // 用药建议（处方）
