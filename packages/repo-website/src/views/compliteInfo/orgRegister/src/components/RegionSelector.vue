@@ -299,7 +299,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.regionSelector {
+.el-form.regionSelector {
   > .el-form-item {
     margin-right: 10px;
     margin-bottom: 0;

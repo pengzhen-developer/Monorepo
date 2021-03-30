@@ -5,7 +5,7 @@
       <el-form :model="modal"
                :rules="rules"
                ref="modal"
-               label-width="210px">
+               :label-width="role ==1 ? '210px':'150px'">
         <el-form-item label="机构类型："
                       prop="roleName">
           <el-input v-model="roleName"
@@ -29,6 +29,7 @@
                     placeholder="请输入医疗机构统一社会信用代码"></el-input>
         </el-form-item>
         <el-form-item label="医疗机构职业许可证登记号："
+                      v-if="role==1"
                       prop="licenseNumber">
           <el-input v-model.trim="modal.licenseNumber"
                     :minlength="1"
@@ -150,12 +151,13 @@
                   style="margin-top:10px;">支持jpg 、jpeg 、bmp 、gif 、png格式图片，大小不超过2M</el-row>
         </el-form-item>
         <el-form-item label="">
-          <el-row class="form-botton">
-            <el-button size="small"
-                       @click="back">上一步</el-button>
+          <el-row class="form-button">
             <el-button :disabled="isSend"
+                       type="primary"
                        size="small"
                        @click="submit">提交</el-button>
+            <el-button size="small"
+                       @click="back">上一步</el-button>
           </el-row>
         </el-form-item>
       </el-form>
@@ -468,7 +470,7 @@ export default {
     .el-form-item {
       &.sec-item {
         flex: 1;
-        margin-right: 20px;
+        margin-right: 8px;
         margin-bottom: 0;
         &:last-child {
           margin-right: 0;
@@ -477,7 +479,7 @@ export default {
       &.area {
         .el-form-item {
           &:first-child {
-            margin-bottom: 16px;
+            margin-bottom: 24px;
           }
           &:last-child {
             margin-bottom: 0;
@@ -488,14 +490,7 @@ export default {
     .el-select {
       width: 100%;
     }
-    ::v-deep .el-input__inner {
-      line-height: 32px;
-      height: 32px;
-    }
     ::v-deep .el-form-item__label {
-      color: #000;
-      font-size: 14px;
-      text-align: right;
       margin-bottom: 0;
     }
     .sec {
@@ -506,7 +501,6 @@ export default {
 
     .flex {
       display: flex;
-      padding-top: 5px;
       .el-form-item {
         margin-bottom: 0;
         width: 50%;
@@ -532,35 +526,11 @@ export default {
       }
     }
   }
-  .form-botton {
+  .form-button {
     display: flex;
     align-items: center;
     margin-top: 40px;
-    .el-button {
-      width: 120px;
-      font-size: 14px;
-      font-family: PingFangSC-Regular, PingFang SC;
-      color: #fff;
-      background-color: var(--q-color-primary);
-      border-radius: 4px;
-      height: 32px;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      &:first-child {
-        background: #fff;
-        color: #999;
-        border: 1px solid rgba(204, 204, 204, 1);
-        margin-right: 40px;
-      }
-    }
   }
-}
-.el-col {
-  display: flex;
-  flex-direction: column;
-  width: 160px;
 }
 .upload-name {
   color: #999;

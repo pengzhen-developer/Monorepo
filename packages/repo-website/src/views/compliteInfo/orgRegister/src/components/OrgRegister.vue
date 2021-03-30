@@ -137,7 +137,7 @@ export default {
     width: 956px;
   }
   .form-info {
-    width: 500px;
+    width: 540px;
   }
 }
 </style>
