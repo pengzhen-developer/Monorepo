@@ -72,6 +72,7 @@
                           prop="mchNo"
                           min-width="120px"></PeaceTableColumn>
         <PeaceTableColumn label="订单类型"
+                          min-width="100px"
                           prop="orderTypeTxt"></PeaceTableColumn>
         <PeaceTableColumn label="订单状态"
                           prop="orderStatusTxt"></PeaceTableColumn>
@@ -292,7 +293,7 @@ export default {
   },
 
   async mounted() {
-    this.source.orderType = await Peace.identity.dictionary.getList('service_package_order_type')
+    this.source.orderType = await Peace.identity.dictionary.getList('order_service_type')
     this.$nextTick().then(() => {
       this.fetch()
     })
