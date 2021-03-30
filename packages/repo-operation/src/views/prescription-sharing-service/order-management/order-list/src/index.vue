@@ -156,12 +156,20 @@
 
         <PeaceTableColumn prop="Source"
                           label="订单来源"
-                          width="120px"></PeaceTableColumn>
+                          min-width="120px"></PeaceTableColumn>
 
         <PeaceTableColumn label="处方类型"
                           width="120px">
           <template slot-scope="scope">
             <span>{{ scope.row.OrderTypeDisplay }}</span>
+          </template>
+        </PeaceTableColumn>
+
+        <PeaceTableColumn prop="MedicalInstitutionName"
+                          label="处方来源医院"
+                          width="120px">
+          <template slot-scope="scope">
+            <span>{{ scope.row.MedicalInstitutionName || '-' }}</span>
           </template>
         </PeaceTableColumn>
 
