@@ -2,7 +2,7 @@
   <div>
     <el-form ref="form"
              label-position="right"
-             label-width="110px"
+             label-width="150px"
              label-suffix="："
              v-bind:model="model"
              v-bind:rules="rules">
@@ -12,7 +12,7 @@
           <el-input placeholder="请输入"
                     v-model.trim="model.Name"></el-input>
         </el-form-item>
-        <el-form-item label="系统名称"
+        <el-form-item label="云仓系统"
                       prop="SystemCode">
           <el-select v-model="model.SystemCode"
                      @change="selectSystem"
@@ -36,16 +36,13 @@
     ]">
           <el-input placeholder="请输入"
                     v-model.trim="model[item.Name]"
-                    maxlength="20"></el-input>
+                    maxlength="30"></el-input>
         </el-form-item>
 
       </div>
-      <div class="text-center">
-
-        <el-button class="large hasmargin"
-                   v-on:click="cancelDialog">取 消</el-button>
+      <div class="text-right">
+        <el-button v-on:click="cancelDialog">取 消</el-button>
         <el-button type="primary"
-                   class="large"
                    v-bind:disabled="saveing"
                    v-on:click="save">提 交</el-button>
       </div>
@@ -210,13 +207,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.large {
-  width: 120px;
-  height: 34px;
-}
-.hasmargin {
-  margin-right: 40px;
-}
 .info-content {
   padding: 15px 18px 32px 18px;
 }

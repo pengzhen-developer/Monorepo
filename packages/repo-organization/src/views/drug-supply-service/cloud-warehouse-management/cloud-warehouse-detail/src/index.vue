@@ -20,25 +20,29 @@
                            v-on:click="wareVisible = true">新增云仓</el-button>
                 <p class="noInfo">您还未创建云仓，赶紧新建一个吧~</p>
               </div>
-              <div v-else>
-                <div class="item-child">
-                  <p class="child-key">云仓名称</p>
-                  <p>：</p>
-                  <p class="child-value">{{warehouseInfo.Name}}</p>
-                  <el-image :src="require('./assets/img/zyy-icon-xiugai.png')"
-                            v-on:click="wareVisible = true"></el-image>
+              <div v-else
+                   class="item-wrap">
+                <div class="item-child item-block"
+                     style="align-items: center;">
+                  <div class="child-key">云仓名称：</div>
+                  <div class="child-value">
+                    {{warehouseInfo.Name}}
+                    <el-button type="text"
+                               size="mini"
+                               icon="el-icon-edit"
+                               style="margin-left: 24px;"
+                               v-on:click="wareVisible = true">修改</el-button>
+                  </div>
                 </div>
-                <div class="item-child">
-                  <p class="child-key">系统名称</p>
-                  <p>：</p>
-                  <p class="child-value">{{currentSystemForm.Name}}</p>
+                <div class="item-child item-inline">
+                  <div class="child-key">云仓系统：</div>
+                  <div class="child-value">{{currentSystemForm.Name}}</div>
                 </div>
-                <div class="item-child"
+                <div class="item-child item-inline"
                      v-for="item in currentSystemForm.item"
                      :key="item.Label">
-                  <p class="child-key">{{item.Label}}</p>
-                  <p>：</p>
-                  <p class="child-value">{{warehouseInfo[item.Name]}}</p>
+                  <div class="child-key">{{item.Label}}：</div>
+                  <div class="child-value">{{warehouseInfo[item.Name]}}</div>
                 </div>
               </div>
             </div>
@@ -96,7 +100,7 @@
     </div>
 
     <PeaceDialog v-if="wareVisible"
-                 width="400px"
+                 width="450px"
                  v-bind:visible.sync="wareVisible"
                  :title="isHasWare?'修改云仓信息':'新建云仓'">
       <AddWarehouse v-on:onCloseWare="oncloseWare"
@@ -104,9 +108,9 @@
                     v-bind:config="systemDict"></AddWarehouse>
     </PeaceDialog>
     <PeaceDialog v-if="orgVisible"
-                 width="516px"
+                 width="450px"
                  v-bind:visible.sync="orgVisible"
-                 title="新增机构">
+                 title="新建开户机构">
       <AddOrgan v-on:onCloseOrgan="oncloseOrgan"
                 v-bind:data="currentOrg"
                 v-bind:systemCode="warehouseInfo.systemCode"
@@ -257,12 +261,8 @@ export default {
 
 <style lang="scss" scoped>
 p {
-  margin: 0;
   padding: 0;
-}
-.el-button--mini,
-.el-button--mini.is-round {
-  padding: 9px 16px !important;
+  margin: 0;
 }
 .item-title {
   display: flex;
@@ -278,7 +278,7 @@ p {
 }
 .title {
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.85);
+  color: #333333;
   line-height: 24px;
   margin-left: 10px;
   height: 24px;
@@ -298,14 +298,33 @@ p {
   height: 1px;
   background: #e9e9e9;
 }
-.item-child {
-  margin-bottom: 20px;
+
+.item-wrap {
   display: flex;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 600px;
+}
+
+.item-child {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding-right: 16px;
+  margin-bottom: 16px;
+  color: rgba(0, 0, 0, 0.85);
   .el-image {
     width: 30px;
     height: 30px;
     margin-left: 20px;
+  }
+  &.item-block {
+    width: 100%;
+  }
+  &.item-inline {
+    width: 50%;
   }
 }
 
@@ -313,14 +332,18 @@ p {
   margin-bottom: 0;
 }
 .child-key {
+  flex: none;
+  width: auto;
+  margin-right: 8px;
   font-size: 14px;
-  color: var(--q-color-grey-333);
-  text-align: justify;
-  text-align-last: justify;
+  color: rgba(0, 0, 0, 0.85);
 }
 .child-value {
+  flex: 1;
   font-size: 14px;
-  color: var(--q-color-grey-666);
+  color: rgba(0, 0, 0, 0.65);
+  word-break: break-all;
+  word-wrap: break-word;
 }
 
 ::v-deep .el-textarea:not(.element-ui-default).el-input--mini .el-textarea__inner {

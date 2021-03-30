@@ -1,6 +1,6 @@
 <template>
   <div class="item-content row q-col-gutter-lg">
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
          v-for="item in prentCustList"
          v-bind:key="item.Id">
       <div class="child-wrap">
@@ -25,19 +25,21 @@
         <div class="child-tips">开户详情</div>
         <div class="child-operate">
           <el-button type="text"
+                     size="mini"
                      icon="el-icon-edit"
                      v-on:click="updateOrg(item)">修改</el-button>
           <span class="split-line">|</span>
           <el-button type="text"
+                     size="mini"
                      icon="el-icon-delete"
                      v-on:click="deleteOrg(item)">删除</el-button>
         </div>
       </div>
     </div>
     <PeaceDialog v-if="orgVisible"
-                 width="516px"
+                 width="450px"
                  v-bind:visible.sync="orgVisible"
-                 title="修改机构">
+                 title="修改开户机构">
       <AddOrgan v-on:onCloseOrgan="onCloseOrgan"
                 v-bind:data="orgItem"
                 v-bind:config="currentOrgForm"></AddOrgan>
@@ -132,23 +134,26 @@ p {
   box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.01);
   border-radius: 4px;
   border: 0px solid rgba(245, 245, 245, 1);
-  padding: 62px 16px 4px 16px;
+  padding: 62px 24px 16px 24px;
 }
 .title-wrap {
   display: flex;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 .title-key {
-  width: 114px;
+  width: 120px;
+  padding-right: 8px;
   font-size: 14px;
-  color: var(--q-color-grey-666);
+  color: #666666;
+  text-align: right;
   word-break: break-all;
 }
 .title-value {
-  font-size: 14px;
-  color: var(--q-color-grey-333);
   flex: 1;
-  min-width: 0;
+  font-size: 14px;
+  color: #333333;
+  word-break: break-all;
+  word-wrap: break-word;
 }
 .child-tips {
   position: absolute;
@@ -173,12 +178,5 @@ p {
     color: var(--q-color-primary);
     text-align: center;
   }
-}
-
-::v-deep .el-icon-edit {
-  font-size: 14px;
-}
-::v-deep .el-icon-delete {
-  font-size: 14px;
 }
 </style>
