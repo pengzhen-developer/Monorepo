@@ -49,9 +49,15 @@
             <p class="child-value">{{ hosInfo.hospitalName }}</p>
           </div>
           <div class="item-child">
-            <p class="child-key-other">统一社会信用代码</p>
+            <p class="child-key">统一社会信用代码</p>
             <p>：</p>
             <p class="child-value">{{ hosInfo.socialCreditCode }}</p>
+          </div>
+          <div class="item-child"
+               v-if="hosInfo.licenseNumber">
+            <p class="child-key">医疗机构职业许可证登记号</p>
+            <p>：</p>
+            <p class="child-value">{{ hosInfo.licenseNumber }}</p>
           </div>
           <div class="item-child"
                v-if="hosInfo.hospitalAttribute">
@@ -180,7 +186,6 @@ p {
   display: flex;
 }
 .child-key {
-  width: 4em;
   font-size: 14px;
   color: var(--q-color-grey-333);
   text-align: justify;
@@ -189,13 +194,6 @@ p {
 .child-value {
   font-size: 14px;
   color: var(--q-color-grey-666);
-}
-.child-key-other {
-  width: 8em;
-  font-size: 14px;
-  color: var(--q-color-grey-333);
-  text-align: justify;
-  text-align-last: justify;
 }
 .line {
   width: 100%;
