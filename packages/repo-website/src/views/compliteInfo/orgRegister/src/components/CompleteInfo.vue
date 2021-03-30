@@ -5,8 +5,7 @@
       <el-form :model="modal"
                :rules="rules"
                ref="modal"
-               label-width="150px"
-               class="ruleForm">
+               label-width="210px">
         <el-form-item label="机构类型："
                       prop="roleName">
           <el-input v-model="roleName"
@@ -28,6 +27,13 @@
                     :minlength="18"
                     :maxlength="18"
                     placeholder="请输入医疗机构统一社会信用代码"></el-input>
+        </el-form-item>
+        <el-form-item label="医疗机构职业许可证登记号："
+                      prop="licenseNumber">
+          <el-input v-model.trim="modal.licenseNumber"
+                    :minlength="1"
+                    :maxlength="30"
+                    placeholder="请输入登记号"></el-input>
         </el-form-item>
         <el-form-item label="地址："
                       v-if="role!==1"
@@ -176,6 +182,7 @@ import TMap from './Map'
 const DEFAULT_MODAL = {
   hospitalName: '',
   socialCreditCode: '',
+  licenseNumber: '',
   medicalStructureLicense: '',
   businessLicense: '',
   internetHospitalLicense: '',
@@ -218,6 +225,7 @@ export default {
       modal: {
         hospitalName: '',
         socialCreditCode: '',
+        licenseNumber: '',
         medicalStructureLicense: '',
         businessLicense: '',
         internetHospitalLicense: '',
@@ -272,6 +280,19 @@ export default {
 
               cb()
             },
+            trigger: 'blur'
+          }
+        ],
+        licenseNumber: [
+          {
+            required: true,
+            message: '请输入医疗机构职业许可证登记号',
+            trigger: 'blur'
+          },
+          {
+            min: 1,
+            max: 30,
+            message: '医疗机构职业许可证登记号最大输入30个字符',
             trigger: 'blur'
           }
         ],
@@ -444,11 +465,6 @@ export default {
   align-items: center;
   .content {
     width: 100%;
-    .ruleForm {
-      > .el-form-item {
-        margin-bottom: 16px;
-      }
-    }
     .el-form-item {
       &.sec-item {
         flex: 1;
@@ -480,6 +496,7 @@ export default {
       color: #000;
       font-size: 14px;
       text-align: right;
+      margin-bottom: 0;
     }
     .sec {
       ::v-deep .el-form-item__content {
