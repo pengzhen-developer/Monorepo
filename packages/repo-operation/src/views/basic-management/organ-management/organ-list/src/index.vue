@@ -101,7 +101,7 @@
       </div>
 
       <!-- 机构基本信息 -->
-      <PeaceDialog width="520px"
+      <PeaceDialog width="660px"
                    v-bind:visible.sync="detailDialog.visible"
                    title="基本信息">
         <OrganizationDetail v-if="detailDialog.visible"
@@ -121,7 +121,7 @@
       </PeaceDialog>
 
       <!-- 新增机构 -->
-      <PeaceDialog width="520px"
+      <PeaceDialog width="660px"
                    v-bind:visible.sync="addDialog.visible"
                    title="新增机构">
         <OrganizationModel v-if="addDialog.visible"

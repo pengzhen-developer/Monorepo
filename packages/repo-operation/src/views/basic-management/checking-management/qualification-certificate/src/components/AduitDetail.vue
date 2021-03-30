@@ -7,7 +7,8 @@
                label-width="90px"
                label-suffix
                v-bind:model="model"
-               v-bind:rules="rules">
+               v-bind:rules="rules"
+               v-loading="getLoading">
         <!-- 待审核 -->
         <template v-if="data.checkStatus === 2">
           <div class="info-list">
@@ -35,6 +36,11 @@
                 <el-form-item label="统一社会信用代码"
                               label-width="150px">
                   <span>{{ detail.hosInfo.socialCreditCode }}</span>
+                </el-form-item>
+                <el-form-item v-if="detail.hosInfo.licenseNumber"
+                              label="医疗机构职业许可证登记号"
+                              label-width="210px">
+                  <span>{{ detail.hosInfo.licenseNumber }}</span>
                 </el-form-item>
                 <el-form-item label="详细地址">
                   <span>{{ detail.hosInfo.hospitalAddres }}</span>
@@ -136,7 +142,8 @@
         </template>
       </el-form>
       <el-form label-width="90px"
-               label-suffix>
+               label-suffix
+               v-loading="getLoading">
         <template v-if="data.checkStatus !== 2">
           <div class="info-list">
             <div class="info-item">
@@ -163,6 +170,11 @@
                 <el-form-item label="统一社会信用代码"
                               label-width="150px">
                   <span>{{ detail.hosInfo.socialCreditCode }}</span>
+                </el-form-item>
+                <el-form-item v-if="detail.hosInfo.licenseNumber"
+                              label="医疗机构职业许可证登记号"
+                              label-width="210px">
+                  <span>{{ detail.hosInfo.licenseNumber }}</span>
                 </el-form-item>
                 <el-form-item label="详细地址">
                   <span>{{ detail.hosInfo.hospitalAddres }}</span>
@@ -279,7 +291,7 @@ export default {
   },
 
   filters: {
-    getEnumLabel: function (value, ENUM) {
+    getEnumLabel: function(value, ENUM) {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },
@@ -304,6 +316,8 @@ export default {
     }
     return {
       CONSTANT,
+
+      getLoading: true,
 
       isLoading: false,
       visible: this.value,
@@ -370,6 +384,7 @@ export default {
       this.$emit('input', value)
 
       if (value) {
+        this.getLoading = true
         this.getCertificationDetail()
       }
 
@@ -389,7 +404,9 @@ export default {
         .then((res) => {
           this.detail = res.data
         })
-        .finally(() => {})
+        .finally(() => {
+          this.getLoading = false
+        })
     },
     doCheck() {
       this.validateForm().then(() => {

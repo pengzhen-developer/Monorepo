@@ -21,6 +21,11 @@
                           label-width="150px">
               <span>{{ data.socialCreditCode }}</span>
             </el-form-item>
+            <el-form-item v-if="data.role == CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构"
+                          label="医疗机构职业许可证登记号"
+                          label-width="210px">
+              <span>{{ data.licenseNumber }}</span>
+            </el-form-item>
             <el-form-item v-if="data.hospitalLabel || data.hospitalTypeLabel"
                           label="医院属性">
               <span>{{ data.hospitalLabel | getEnumLabel(CONSTANT.ENUM_HOSPITAL_LABEL) }} {{ data.hospitalTypeLabel | getEnumLabel(CONSTANT.ENUM_HOSPITAL_TYPE_LABEL) }}</span>
@@ -117,7 +122,7 @@ export default {
   },
 
   filters: {
-    getEnumLabel: function (value, ENUM) {
+    getEnumLabel: function(value, ENUM) {
       return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },

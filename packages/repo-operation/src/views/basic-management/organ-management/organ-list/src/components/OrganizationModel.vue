@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div v-loading="getLoading">
     <el-form class="element-ui-default"
              ref="form"
              label-position="right"
-             label-width="150px"
+             label-width="210px"
              label-suffix="："
              v-bind:model="model"
              v-bind:rules="rules">
@@ -37,6 +37,14 @@
               <el-input v-model.trim="model.socialCreditCode"
                         placeholder="请输入"
                         maxlength="18"
+                        show-word-limit></el-input>
+            </el-form-item>
+            <el-form-item label="医疗机构职业许可证登记号"
+                          prop="licenseNumber"
+                          v-if="model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构 || model.role === ''">
+              <el-input v-model.trim="model.licenseNumber"
+                        placeholder="请输入登记号"
+                        maxlength="30"
                         show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="医院属性"
@@ -205,7 +213,8 @@
           </div>
         </div>
 
-        <div class="info-item">
+        <div class="info-item"
+             style="border-bottom: none;">
           <div class="info-title">账号信息</div>
           <div class="info-content">
             <el-form-item label="联系人"
@@ -224,13 +233,15 @@
               <el-input v-model.trim="model.email"
                         placeholder="请输入"></el-input>
             </el-form-item>
-            <div class="info-btn">
-              <el-button type="primary"
-                         v-bind:loading="isLoading"
-                         v-on:click="submit">保 存</el-button>
-              <el-button v-on:click="close">取 消</el-button>
-            </div>
+
           </div>
+        </div>
+
+        <div class="info-btn">
+          <el-button v-on:click="close">取 消</el-button>
+          <el-button type="primary"
+                     v-bind:loading="isLoading"
+                     v-on:click="submit">保 存</el-button>
         </div>
       </div>
     </el-form>
@@ -296,6 +307,8 @@ export default {
     return {
       CONSTANT,
 
+      getLoading: true,
+
       isLoading: false,
 
       mapDialogVisible: false,
@@ -307,6 +320,7 @@ export default {
         role: '', // 机构类型
         hospitalName: '', // 机构名称
         socialCreditCode: '', // 统一社会信用代码
+        licenseNumber: '', // 医疗机构职业许可证登记号
         hospitalLabel: '', // 医院属性
         hospitalTypeLabel: '', // 医院类型
         province: '', //  省
@@ -355,6 +369,19 @@ export default {
             min: 18,
             max: 18,
             message: '统一社会信用代码长度为18位',
+            trigger: 'blur'
+          }
+        ],
+        licenseNumber: [
+          {
+            required: true,
+            message: '请输入医疗机构职业许可证登记号',
+            trigger: 'blur'
+          },
+          {
+            min: 1,
+            max: 30,
+            message: '医疗机构职业许可证登记号最大输入30个字符',
             trigger: 'blur'
           }
         ],
@@ -474,40 +501,47 @@ export default {
         this.model.managementLicense = '' // 经营许可证
 
         if (this.model.accountId) {
-          Service.getOrganizationInfo({ accountId: this.model.accountId }).then((res) => {
-            this.model.role = res.data.role
-            this.model.hospitalName = res.data.hospitalName
-            this.model.socialCreditCode = res.data.socialCreditCode
-            this.model.hospitalLabel = res.data.hospitalLabel
-            this.model.hospitalTypeLabel = res.data.hospitalTypeLabel
-            this.model.province = res.data.provinceId
-            this.model.city = res.data.cityId
-            this.model.district = res.data.areaId
-            this.model.address = res.data.address
-            this.model.latitude = res.data.latitude
-            this.model.longitude = res.data.longitude
-            this.model.hospitalLevel = res.data.hospitalLevel
-            this.model.medicalStructureLicense = res.data.medicalStructureLicense || ''
-            this.model.internetHospitalLicense = res.data.internetHospitalLicense || ''
-            this.model.businessLicense = res.data.businessLicense || ''
-            this.model.managementLicense = res.data.managementLicense || ''
-            this.model.linkman = res.data.linkman
-            this.model.tel = res.data.tel
-            this.model.email = res.data.email
+          Service.getOrganizationInfo({ accountId: this.model.accountId })
+            .then((res) => {
+              this.model.role = res.data.role
+              this.model.hospitalName = res.data.hospitalName
+              this.model.socialCreditCode = res.data.socialCreditCode
+              this.model.licenseNumber = res.data.licenseNumber
+              this.model.hospitalLabel = res.data.hospitalLabel
+              this.model.hospitalTypeLabel = res.data.hospitalTypeLabel
+              this.model.province = res.data.provinceId
+              this.model.city = res.data.cityId
+              this.model.district = res.data.areaId
+              this.model.address = res.data.address
+              this.model.latitude = res.data.latitude
+              this.model.longitude = res.data.longitude
+              this.model.hospitalLevel = res.data.hospitalLevel
+              this.model.medicalStructureLicense = res.data.medicalStructureLicense || ''
+              this.model.internetHospitalLicense = res.data.internetHospitalLicense || ''
+              this.model.businessLicense = res.data.businessLicense || ''
+              this.model.managementLicense = res.data.managementLicense || ''
+              this.model.linkman = res.data.linkman
+              this.model.tel = res.data.tel
+              this.model.email = res.data.email
 
-            // 编辑医疗机构信息时默认不能直接修改省市区
-            if (this.model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构) {
-              this.lock = true
-              this.defaultDetail = {
-                province: this.model.province,
-                city: this.model.city,
-                area: this.model.district,
-                address: this.model.address,
-                latitude: this.model.latitude,
-                longitude: this.model.longitude
+              // 编辑医疗机构信息时默认不能直接修改省市区
+              if (this.model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构) {
+                this.lock = true
+                this.defaultDetail = {
+                  province: this.model.province,
+                  city: this.model.city,
+                  area: this.model.district,
+                  address: this.model.address,
+                  latitude: this.model.latitude,
+                  longitude: this.model.longitude
+                }
               }
-            }
-          })
+            })
+            .finally(() => {
+              this.getLoading = false
+            })
+        } else {
+          this.getLoading = false
         }
       })
     },
@@ -702,7 +736,6 @@ export default {
 
 .el-form-item {
   margin-bottom: 16px;
-
   &.is-error {
     margin-bottom: 24px;
   }
@@ -712,9 +745,7 @@ export default {
   &-item {
     border-bottom: 1px solid #e9e9e9;
     margin-bottom: 24px;
-    &:last-child {
-      border-bottom: none;
-    }
+    padding-right: 100px;
   }
   &-title {
     position: relative;
@@ -811,13 +842,7 @@ export default {
 }
 
 .info-btn {
-  padding-top: 30px;
-  text-align: center;
-  .el-button {
-    width: 120px;
-    & + .el-button {
-      margin-left: 40px;
-    }
-  }
+  padding-top: 20px;
+  text-align: right;
 }
 </style>
