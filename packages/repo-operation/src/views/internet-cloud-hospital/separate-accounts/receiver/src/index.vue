@@ -45,14 +45,7 @@
             {{scope.row.orderTypeArr.map(item=>item.orderTypeTxt).join(',')}}
           </template>
         </peace-table-column>
-        <peace-table-column prop="subMchName"
-                            min-width="160"
-                            label="商户号机构名称">
-        </peace-table-column>
-        <peace-table-column prop="subMchId"
-                            width="160"
-                            label="商户号">
-        </peace-table-column>
+
         <peace-table-column prop="accountingRate"
                             width="160"
                             label="微信结算费率">
