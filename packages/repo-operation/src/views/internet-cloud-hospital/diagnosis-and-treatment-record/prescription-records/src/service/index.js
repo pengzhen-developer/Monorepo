@@ -53,5 +53,23 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
+  },
+  /**
+   *  导出处方记录列表
+   *
+   * @param {*} params
+   */
+  exportFile(params) {
+    const isMock = false
+
+    const apiPath = 'nethospital/operate/order/exportPrescrib'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.download(requestApi, params, 'post').then((res) => {
+      return res
+    })
   }
 }

@@ -50,6 +50,16 @@
           <el-input v-model.trim="model.patientName"
                     placeholder="请输入"></el-input>
         </el-form-item>
+        <el-form-item label="开方场景">
+          <el-select v-model="model.prescriptionScene"
+                     clearable
+                     placeholder="请选择">
+            <el-option :key="item.label"
+                       :label="item.label"
+                       :value="item.value"
+                       v-for="item in source.ENUM_ORDERSCENET_STATUS"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item class="search-btn">
           <el-button type="primary"
                      @click="get()">查询</el-button>
@@ -58,6 +68,9 @@
     </div>
 
     <div class="card">
+      <div class="q-mb-md">
+        <el-button v-on:click="exportFile">导出</el-button>
+      </div>
       <peace-table ref="table"
                    pagination>
 
@@ -80,17 +93,22 @@
                             label="就诊人">
         </peace-table-column>
 
+        <peace-table-column prop="prescriptionSceneText"
+                            label="开方场景">
+        </peace-table-column>
+
         <peace-table-column prop="prescripStatus"
                             label="处方状态">
         </peace-table-column>
 
         <peace-table-column prop="orderStatus"
-                            min-width="90"
+                            min-width="110"
                             label="处方购药状态">
         </peace-table-column>
 
         <peace-table-column prop="createdTime"
-                            label="开具时间">
+                            label="开具时间"
+                            width="160">
         </peace-table-column>
         <peace-table-column fixed="right"
                             label="操作">
@@ -129,7 +147,8 @@ export default {
     return {
       source: {
         ENUM_PRESCRIPTION_STATUS: CONSTANT.ENUM_PRESCRIPTION_STATUS,
-        ENUM_ORDERDRUG_STATUS: CONSTANT.ENUM_ORDERDRUG_STATUS
+        ENUM_ORDERDRUG_STATUS: CONSTANT.ENUM_ORDERDRUG_STATUS,
+        ENUM_ORDERSCENET_STATUS: []
       },
       model: {
         hosName: '',
@@ -140,7 +159,8 @@ export default {
         endDate: '',
         prescripNo: '',
         doctorName: '',
-        patientName: ''
+        patientName: '',
+        prescriptionScene: ''
       },
       pickerOptions: {
         disabledDate: (time) => {
@@ -157,12 +177,18 @@ export default {
       this.model.endDate = this.model.time ? this.model.time[1] : ''
     }
   },
-  mounted() {
+
+  async mounted() {
+    this.source.ENUM_ORDERSCENET_STATUS = await Peace.identity.dictionary.getList('prescription_scene_type')
     this.$nextTick().then(() => {
       this.get()
     })
   },
   methods: {
+    exportFile() {
+      const params = Peace.util.deepClone(this.model)
+      Service.exportFile(params)
+    },
     get() {
       const fetch = Service.getPrescribeList
       const params = this.model
