@@ -227,6 +227,7 @@
 <script>
 import PharmacyOrderControl from './../../order-control'
 
+import Util from '@src/util'
 import Service from './service'
 
 export default {
@@ -394,9 +395,13 @@ export default {
     },
 
     gotoPrescriptionDetail(row) {
-      const name = '处方详情'
-      const query = { OrderId: row.OrderId }
-      this.$router.push({ name, query })
+      if (row.FileType === 0) {
+        Util.location.redirectToPath(row.PrescriptionImageUrl, '_blank')
+      } else {
+        const name = '处方详情'
+        const query = { OrderId: row.OrderId }
+        this.$router.push({ name, query })
+      }
     }
   }
 }

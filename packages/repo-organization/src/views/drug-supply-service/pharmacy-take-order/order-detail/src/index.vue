@@ -243,6 +243,7 @@ import { date } from 'quasar'
 
 import PharmacyOrderControl from './../../order-control'
 
+import Util from '@src/util'
 import Service from './service'
 
 export default {
@@ -470,10 +471,14 @@ export default {
     },
 
     gotoPrescriptionDetail() {
-      // TODO
-      const name = '处方详情'
-      const query = { OrderId: this.model.OrderId }
-      this.$router.push({ name, query })
+      if (this.model.FileType === 0) {
+        Util.location.redirectToPath(this.model.PrescriptionImageUrl, '_blank')
+      } else {
+        // TODO
+        const name = '处方详情'
+        const query = { OrderId: this.model.OrderId }
+        this.$router.push({ name, query })
+      }
     }
   }
 }

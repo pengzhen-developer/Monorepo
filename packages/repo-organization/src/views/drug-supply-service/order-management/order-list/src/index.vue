@@ -166,6 +166,7 @@
 </template>
 
 <script>
+import Util from '@src/util'
 import Service from './service'
 import { date } from 'quasar'
 
@@ -291,8 +292,12 @@ export default {
     },
 
     showCancelRecord(row) {
-      this.dialog.data.prescriptionImageUrl = row.PrescriptionImageUrl
-      this.dialog.visible = true
+      if (row.FileType === 0) {
+        Util.location.redirectToPath(row.PrescriptionImageUrl, '_blank')
+      } else {
+        this.dialog.data.prescriptionImageUrl = row.PrescriptionImageUrl
+        this.dialog.visible = true
+      }
     },
 
     onLoad() {
