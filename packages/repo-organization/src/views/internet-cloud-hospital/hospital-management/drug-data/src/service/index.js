@@ -81,7 +81,7 @@ export default {
    */
   batchDrug(params) {
     const isMock = false
-    const apiPath = 'nethospital/hospital/v1/Drug/batchDrug'
+    const apiPath = 'nethospital/hospital/v1/Drug/editSource'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = isMock ? mockPath : serverPath

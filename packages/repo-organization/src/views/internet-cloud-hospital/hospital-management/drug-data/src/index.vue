@@ -372,11 +372,12 @@ export default {
       if (this.multipleSelection.length > 0) {
         this.batchDialogVisible = true
       } else {
-        Peace.util.warning('请选择数据')
+        Peace.util.warning('请选择药品')
       }
     },
     closeBatchDialog() {
       this.batchDialogVisible = false
+      this.getList()
     },
     // 多选
     handleSelectionChange(val) {

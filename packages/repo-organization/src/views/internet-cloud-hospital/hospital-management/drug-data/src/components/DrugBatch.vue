@@ -82,5 +82,7 @@ export default {
 .bottom {
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 0 !important;
+  padding-top: 24px;
 }
 </style>
