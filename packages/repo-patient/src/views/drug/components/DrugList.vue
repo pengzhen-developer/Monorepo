@@ -26,6 +26,7 @@
           <div class="drug-content-bottom">
             <div class="drug-content-bottom-left text-333-60">规格：{{drug.DrugSpecification}}</div>
             <div class="drug-content-bottom-right">
+
               <span>￥{{drug.DrugUnitPrice | getPriceInteger}}</span>
               <span class="fs10px"
                     v-if="hasPriceDecimal(drug.DrugUnitPrice)">
@@ -40,13 +41,6 @@
       </div>
     </template>
 
-    <!-- 实付金额 -->
-    <div class="moeny"
-         v-if="canShowMoney">
-      <div>实付金额</div>
-      <div>￥{{totalMoney.toFixed(2)}}</div>
-    </div>
-
     <!-- 收起/展开 -->
     <div class="operateModel"
          :class="{'show':isOpen}"
@@ -55,6 +49,32 @@
       <div>{{!isOpen?'点击展开':'收起'}}</div>
       <van-image :src="!isOpen?require('@src/assets/images/ic_arrow_down.png'):require('@src/assets/images/ic_arrow_up.png')"></van-image>
     </div>
+    <div v-if="!showMore"
+         style="height:8px;background:#f5f5f5;width:calc(100% + 32px);margin-left:-16px;"></div>
+    <div class="moeny"
+         v-for="(item,index) in info.moneyRecord"
+         v-bind:key="index">
+      <div>{{item.name}}</div>
+      <div>
+        <span>{{item.value}}</span>
+        <!-- <span v-if="isNaN(item.value.substring(1))">{{item.value}}</span>
+        <peace-price v-bind:price="item.value.substring(1)"
+                     v-bind:transformOrigin="'right'"
+                     v-bind:size="16"
+                     v-else></peace-price> -->
+      </div>
+    </div>
+    <!-- 实付金额 -->
+    <div class="moeny"
+         v-if="canShowMoney">
+      <div>实付金额</div>
+      <div>
+        <peace-price v-bind:price="totalMoney"
+                     v-bind:size="16"
+                     transformOrigin="right"></peace-price>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -248,6 +268,9 @@ export default {
     align-items: center;
     justify-content: space-between;
     padding: 12px 0;
+    &:not(:last-child) {
+      border-bottom: 1px solid #f5f5f5;
+    }
   }
   .operateModel {
     color: $primary;

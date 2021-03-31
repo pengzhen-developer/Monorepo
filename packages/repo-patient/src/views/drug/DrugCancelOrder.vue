@@ -8,8 +8,15 @@
           <div class="cancel-reason">{{cancelReasonText}}</div>
         </div>
         <div class="cancel-money">
-          <div class="cancel-money-label">退款金额</div>
-          <div class="cancel-money-value">￥{{payMoney}}</div>
+          <div class="cancel-money-label"
+               @click="showMessage">退款金额 <van-image v-bind:src="require('@src/assets/images/ic_wenhao.png')"></van-image>
+          </div>
+          <div class="cancel-money-value">
+            <!-- ￥{{payMoney}} -->
+            <peace-price v-bind:price="payMoney"
+                         v-bind:size="16"
+                         v-bind:transformOrigin="'right'"></peace-price>
+          </div>
         </div>
         <!-- 取消订单时间轴 -->
         <div class="van-steps van-steps--horizontal">
@@ -41,7 +48,7 @@
             </div>
           </div>
         </div>
-        <div class="cancel-tip">商家同意取消订单后，系统将为您返还实付金额，医保/商保支付金额原路返还。</div>
+        <!-- <div class="cancel-tip">商家同意取消订单后，系统将为您返还实付金额，医保/商保支付金额原路返还。</div> -->
       </div>
       <div class="drug-model">
         <!-- 药店信息 -->
@@ -67,9 +74,14 @@
 import peace from '@src/library'
 
 import DrugList from './components/DrugList'
+
+import { Dialog } from 'vant'
 export default {
   name: 'drugCancelOrder',
-  components: { DrugList },
+  components: {
+    DrugList,
+    [Dialog.Component.name]: Dialog.Component
+  },
   data() {
     return {
       info: null
@@ -123,6 +135,15 @@ export default {
     this.getDrugOrderDetail()
   },
   methods: {
+    showMessage() {
+      Dialog.confirm({
+        title: '退款金额说明',
+        message: '商家同意取消订单后，系统将为您退回实付金额，医保/商保支付金额原路返还。',
+        showCancelButton: false,
+        confirmButtonText: '我知道了',
+        className: 'money-dialog'
+      })
+    },
     formatMoney(n) {
       return n ? (n - 0).toFixed(2) : '0.00'
     },
@@ -135,7 +156,30 @@ export default {
   }
 }
 </script>
-
+<style lang="scss">
+.money-dialog {
+  /deep/.van-dialog__header {
+    font-size: 20px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: bold;
+    color: #333333;
+    line-height: 28px;
+  }
+  /deep/.van-dialog__message {
+    font-size: 16px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 24px;
+  }
+  /deep/.van-button__text {
+    font-size: 18px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    line-height: 25px;
+  }
+}
+</style>
 <style lang="scss" scoped>
 .cancel-order {
   background: #fff;
@@ -177,6 +221,15 @@ export default {
       width: calc(100% - 32px);
       border-bottom: 1px solid rgba(51, 51, 51, 0.05);
       padding: 12px 0 11px 0;
+      .cancel-money-label {
+        display: flex;
+        align-items: center;
+        .van-image {
+          width: 12px;
+          height: 12px;
+          margin-left: 4px;
+        }
+      }
       .cancel-money-value {
         color: #ff3a30;
       }
@@ -223,7 +276,7 @@ export default {
   }
 }
 .van-steps--horizontal {
-  padding: 20px 10px 0;
+  padding: 20px 10px 16px;
 }
 .van-steps--horizontal .van-steps__items {
   padding-bottom: 0;

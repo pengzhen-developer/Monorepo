@@ -32,9 +32,18 @@
                      show-word-limit
                      placeholder="请输入补充说明">
           </van-field>
-          <van-cell title="退款金额"
-                    v-bind:value="payMoney"></van-cell>
-          <div class="tip">商家同意取消订单后，系统将为您返还实付金额，医保/商保支付金额原路返还。</div>
+          <van-cell class="money"
+                    v-bind:value="payMoney">
+            <template #title>
+              <div @click="showMessage"
+                   class="cancel-money-label">
+
+                <span class="custom-title">退款金额</span>
+                <van-image v-bind:src="require('@src/assets/images/ic_wenhao.png')"></van-image>
+              </div>
+            </template>
+          </van-cell>
+          <!-- <div class="tip">商家同意取消订单后，系统将为您返还实付金额，医保/商保支付金额原路返还。</div> -->
         </van-cell-group>
       </div>
     </div>
@@ -77,9 +86,11 @@
 import peace from '@src/library'
 
 import DrugList from './components/DrugList'
+
+import { Dialog } from 'vant'
 export default {
   name: 'drugCancelOrderBefore',
-  components: { DrugList },
+  components: { DrugList, [Dialog.Component.name]: Dialog.Component },
   data() {
     return {
       selectMsg: '',
@@ -184,11 +195,43 @@ export default {
       peace.service.purchasedrug.SelectOrderDetApi(params).then((res) => {
         this.info = res.data
       })
+    },
+    showMessage() {
+      Dialog.confirm({
+        title: '退款金额说明',
+        message: '商家同意取消订单后，系统将为您退回实付金额，医保/商保支付金额原路返还。',
+        showCancelButton: false,
+        confirmButtonText: '我知道了',
+        className: 'money-dialog'
+      })
     }
   }
 }
 </script>
-
+<style lang="scss">
+.money-dialog {
+  /deep/.van-dialog__header {
+    font-size: 20px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: bold;
+    color: #333333;
+    line-height: 28px;
+  }
+  /deep/.van-dialog__message {
+    font-size: 16px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 24px;
+  }
+  /deep/.van-button__text {
+    font-size: 18px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    line-height: 25px;
+  }
+}
+</style>
 <style lang="scss" scoped>
 // 安卓手机 fixed定位会被软键盘顶起导致布局紊乱
 //2021-02-01
@@ -206,6 +249,15 @@ export default {
     > div {
       background: #fff;
     }
+  }
+}
+.cancel-money-label {
+  display: flex;
+  align-items: center;
+  .van-image {
+    width: 12px;
+    height: 12px;
+    margin-left: 4px;
   }
 }
 .drug-store {
@@ -231,6 +283,11 @@ export default {
 }
 .refund {
   border-top: 8px solid rgba(51, 51, 51, 0.05);
+  .money {
+    .van-cell__value {
+      color: #ff3a30;
+    }
+  }
   &::after {
     border-bottom: 0;
   }
