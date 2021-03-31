@@ -90,7 +90,8 @@
                             class="tow-col">
                 <el-select v-model="account.value"
                            filterable
-                           @change="selectAccount('profitsharingRule.'+index+'.accounts.'+acc_index+'.value')">
+                           @change="selectAccount('profitsharingRule.'+index+'.accounts.'+acc_index+'.value')"
+                           @focus="getReceiverList(rule)">
                   <el-option v-for="acc in accountsList"
                              :key="acc.receiver"
                              :label="acc.value"
@@ -221,12 +222,6 @@ export default {
     }
   },
   watch: {
-    'model.custCode'(val) {
-      if (val) {
-        this.getReceiverList()
-      }
-    },
-
     isChangeSerivceType(val) {
       if (val == true) {
         this.rules.custCode = [].concat([{ required: true, message: '请选择', trigger: 'blur' }])
@@ -358,8 +353,8 @@ export default {
       this.$emit('onCancel')
     },
 
-    getReceiverList() {
-      const params = { custCode: this.model.custCode }
+    getReceiverList(info) {
+      const params = { custCode: this.model.custCode, orderType: info.orderType }
       Service.getReceiverList(params).then((res) => {
         this.accountsList = res?.data?.list
         this.accountsList.map((item) => {

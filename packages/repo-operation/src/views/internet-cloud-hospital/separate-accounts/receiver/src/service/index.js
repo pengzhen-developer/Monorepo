@@ -22,7 +22,7 @@ export default {
   },
 
   /**
-   * 添加子商户号信息
+   * 批量添加子商户号信息
    * @param {*} params
    */
   addSubMch(params) {
@@ -31,7 +31,16 @@ export default {
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)
   },
-
+  /**
+   * 批量更新子商户号信息
+   * @param {*} params
+   */
+  updateSubMch(params) {
+    const apiPath = 'nethospital/operate/WechatAccount/updateSubMch'
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+    const requestApi = serverPath
+    return Peace.http.post(requestApi, params)
+  },
   /**
    * 删除子商户号信息
    */
@@ -46,8 +55,8 @@ export default {
    * 分账人列表
    * @param {*} params
    */
-  receiverList(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/receiverList'
+  receiverManage(params) {
+    const apiPath = 'nethospital/operate/WechatAccount/receiverManage'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)
@@ -68,6 +77,16 @@ export default {
    */
   delReceiver(params) {
     const apiPath = 'nethospital/operate/WechatAccount/delReceiver'
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+    const requestApi = serverPath
+    return Peace.http.post(requestApi, params)
+  },
+  /**
+   * 查询机构下的特约商户
+   * @param {*} params
+   */
+  getMchByCustCode(params) {
+    const apiPath = 'nethospital/operate/WechatAccount/getMchByCustCode'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)

@@ -95,7 +95,7 @@
                   append-to-body
                   :title="addItemDialog.type=='add'?'新增机构特约商户':'查看详情'">
       <ReceiverDetail :organizationList="organizationList"
-                      :currentOrganization="currentOrganization"
+                      :organizationInfo="currentOrganization"
                       :type="addItemDialog.type"
                       v-on:onSucess="addReceiverSuccess"
                       v-on:onCancel="addItemDialog.visible = false" />
@@ -168,12 +168,15 @@ export default {
       })
     },
     showItem(item) {
-      this.currentOrganization = {
-        organizationName: item.organizationName,
-        custCode: item.custCode
-      }
-      this.addItemDialog.visible = true
-      this.addItemDialog.type = 'detail'
+      return Service.getOrganizationList().then((res) => {
+        this.currentOrganization = {
+          organizationName: item.organizationName,
+          custCode: item.custCode
+        }
+        this.organizationList = res.data
+        this.addItemDialog.visible = true
+        this.addItemDialog.type = 'detail'
+      })
     },
     addReceiverSuccess() {
       this.addItemDialog.visible = false

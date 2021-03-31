@@ -4,118 +4,155 @@
              :model="model"
              :rules="rules"
              label-width="auto"
-             label-suffix="：">
+             label-suffix="："
+             :class="{'detail':canShowInfo}">
       <el-form-item label="机构名称"
-                    :prop="canEdit?'organizationName':''">
-        <template v-if="canEdit">
-          <el-select v-model.trim="model.organizationObject"
-                     value-key="custCode"
-                     clearable=""
-                     placeholder="请选择">
-            <el-option v-bind:key="index"
-                       v-bind:label="item.organizationName"
-                       v-bind:value="item"
-                       v-for="(item, index) in organizationList">
-            </el-option>
-          </el-select>
-        </template>
-        <template v-else>
-          <div class="flex justify-between">
+                    :prop="canEditInfo?'organizationName':''"
+                    class="organizationName">
+
+        <div class="flex justify-between full-width">
+          <template v-if="canShowInfo">
             <span>{{model.organizationName}}</span>
-
-            <el-button type="text"
-                       icon="zyy-icon zyy-xiugai2">修改</el-button>
-          </div>
-        </template>
-      </el-form-item>
-
-      <el-form-item v-for="(subMch,index) in model.subMch"
-                    v-bind:key="index"
-                    class="order-type-item q-pt-24 q-pl-16"
-                    label="">
-        <el-button class="del-btn"
-                   type="text"
-                   icon="zyy-icon zyy-shanchu1"
-                   v-on:click="deleteOrderType(index)"
-                   v-if="index>0">删除</el-button>
-        <div class="flex full-width row">
-          <el-form-item class="col-4 q-mr-24"
-                        label="订单类型"
-                        :prop="'subMch.'+index+'.orderType'"
-                        :rules="[{
-                            required: true, message: '请选择订单类型', trigger: 'change'
-                          }]">
-            <el-select v-model="subMch.orderType"
-                       multiple
+          </template>
+          <template v-if="canEditInfo">
+            <el-select v-model.trim="model.organizationObject"
+                       value-key="custCode"
+                       clearable=""
+                       :disabled="type==='detail'"
                        placeholder="请选择">
-              <el-option v-for="item in source.orderTypes"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
+              <el-option v-bind:key="index"
+                         v-bind:label="item.organizationName"
+                         v-bind:value="item"
+                         v-for="(item, index) in organizationList">
               </el-option>
             </el-select>
-          </el-form-item>
-          <el-form-item class="col-6"
-                        label="特约商户号机构"
-                        :prop="'subMch.'+index+'.subMchName'"
-                        :rules="[{
-                            required: true, message: '请选择商户号机构名称', trigger: 'change'
-                          }]">
-            <el-select v-model="subMch.subMchObject"
-                       v-on:change="selectSubMchObject(subMch,index)"
-                       value-key="value"
-                       clearable=""
-                       placeholder="请选择">
-              <el-option v-for="item in source.subMchName"
-                         v-bind:key="item.value"
-                         v-bind:label="item.label"
-                         v-bind:value="item"></el-option>
-            </el-select>
-          </el-form-item>
+          </template>
+          <el-button v-if="canShowInfo"
+                     type="text"
+                     v-on:click="isEdit=true"
+                     icon="zyy-icon zyy-xiugai2">修改</el-button>
         </div>
-        <div class="flex full-width row">
-          <el-form-item class="col-4 q-mr-24"
-                        label="商户号"
-                        :prop="'subMch.'+index+'.subMchId'"
-                        :rules="[{
-                            required: true, message: '请选择商户号机构名称', trigger: 'change'
-                          }]">
-            <el-input v-model="subMch.subMchId"
-                      class="readonly disabled"></el-input>
-          </el-form-item>
-          <el-form-item class="col-6 flex items-center"
-                        label="微信结算费率"
-                        :prop="'subMch.'+index+'.accountingRate'"
-                        :rules="[{
-                            required: true, message: '请选择微信结算费率', trigger: 'change'
-                          }]">
-            <el-radio-group v-model.number="subMch.accountingRate">
-              <el-radio v-bind:label="0">0%</el-radio>
-              <el-radio v-bind:label="0.6">0.6%</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </div>
-        <div class="flex full-width row">
-          <el-form-item class="col-4 q-mr-24"
-                        label="允许最大分账比率"
-                        :prop="'subMch.'+index+'.maxShareRatio'"
-                        :rules="[{
-                            required: true, message: '请输入允许最大分账比率', trigger: 'blur'
-                          }]">
-            <el-input-number v-model="subMch.maxShareRatio"
-                             controls-position="right"
-                             v-bind:min="1"
-                             v-bind:max="99"
-                             v-bind:precision="0"
-                             v-force="'pInterger'"></el-input-number>
-          </el-form-item>
-          <el-form-item class="col-6"
-                        label="">
 
-          </el-form-item>
-        </div>
       </el-form-item>
+      <template v-if="isLoaded">
+        <el-form-item v-for="(subMch,index) in subMchList"
+                      v-bind:key="index"
+                      class="order-type-item q-pt-24 q-pl-16 "
+                      label="">
+          <el-button class="del-btn"
+                     type="text"
+                     icon="zyy-icon zyy-shanchu1"
+                     v-on:click="deleteOrderType(subMch,index)"
+                     v-if="index>0&&canEditInfo">删除</el-button>
+          <div class="flex full-width row">
+            <el-form-item class="col-4 q-mr-24 "
+                          label="订单类型"
+                          :prop="'subMch.'+index+'.orderType'"
+                          :rules="[{
+                            required: canEditInfo?true:false, message: '请选择订单类型', trigger: 'change'
+                          },{
+                            validator:checkOrderType, trigger: 'change'
+                          }]">
+              <template v-if="canShowInfo">
+                <span>{{subMch.orderTypeTxt}}</span>
+              </template>
+              <template v-if="canEditInfo">
+                <el-select v-model="subMch.orderType"
+                           :multiple="type==='add'?true:false"
+                           :disabled="!!subMch.id"
+                           placeholder="请选择"
+                           style="width:240px;">
+                  <el-option v-for="item in source.orderTypes"
+                             :key="item.value"
+                             :label="item.label"
+                             :value="item.value">
+                  </el-option>
+                </el-select>
+              </template>
+            </el-form-item>
+            <el-form-item class="col-6"
+                          label="特约商户号机构"
+                          :prop="'subMch.'+index+'.subMchName'"
+                          :rules="[{
+                            required: canEditInfo?true:false, message: '请选择商户号机构名称', trigger: 'change'
+                          }]">
+              <template v-if="canShowInfo">
+                <span>{{subMch.subMchName}}</span>
+              </template>
+              <template v-if="canEditInfo">
 
+                <el-select v-model="subMch.subMchObject"
+                           v-on:change="selectSubMchObject(subMch,index)"
+                           value-key="value"
+                           clearable=""
+                           placeholder="请选择"
+                           style="width:360px;">
+                  <el-option v-for="item in source.subMchName"
+                             v-bind:key="item.value"
+                             v-bind:label="item.label"
+                             v-bind:value="item"></el-option>
+                </el-select>
+              </template>
+            </el-form-item>
+          </div>
+          <div class="flex full-width row">
+            <el-form-item class="col-4 q-mr-24"
+                          label="商户号"
+                          :prop="'subMch.'+index+'.subMchId'"
+                          :rules="[{
+                            required: canEditInfo?true:false, message: '请选择商户号机构名称', trigger: 'change'
+                          }]">
+              <template v-if="canShowInfo">
+                <span>{{subMch.subMchId}}</span>
+              </template>
+              <template v-if="canEditInfo">
+                <el-input v-model="subMch.subMchId"
+                          disabled></el-input>
+              </template>
+            </el-form-item>
+            <el-form-item class="col-6 flex items-center"
+                          label="微信结算费率"
+                          :prop="'subMch.'+index+'.accountingRate'"
+                          :rules="[{
+                            required: canEditInfo?true:false, message: '请选择微信结算费率', trigger: 'change'
+                          }]">
+              <template v-if="canShowInfo">
+                <span>{{subMch.accountingRate}}%</span>
+              </template>
+              <template v-if="canEditInfo">
+                <el-radio-group v-model="subMch.accountingRate">
+                  <el-radio label="0.0">0%</el-radio>
+                  <el-radio label="0.6">0.6%</el-radio>
+                </el-radio-group>
+              </template>
+            </el-form-item>
+          </div>
+          <div class="flex full-width row">
+            <el-form-item class="col-4 q-mr-24"
+                          label="允许最大分账比率"
+                          :prop="'subMch.'+index+'.maxShareRatio'"
+                          :rules="[{
+                            required: canEditInfo?true:false, message: '请输入允许最大分账比率', trigger: 'blur'
+                          }]">
+              <template v-if="canShowInfo">
+                <span>{{subMch.maxShareRatio}}%</span>
+              </template>
+              <template v-if="canEditInfo">
+                <el-input-number v-model="subMch.maxShareRatio"
+                                 controls-position="right"
+                                 v-bind:min="1"
+                                 v-bind:max="99"
+                                 v-bind:precision="0"
+                                 v-force="'pInterger'"></el-input-number>
+              </template>
+            </el-form-item>
+            <el-form-item class="col-6"
+                          label="">
+
+            </el-form-item>
+          </div>
+        </el-form-item>
+      </template>
       <template v-if="canShowAddOrderTypeBtn">
         <el-button v-on:click="addOrderType"
                    icon="zyy-icon zyy-xinzeng"
@@ -124,9 +161,13 @@
       </template>
 
       <el-form-item label=""
-                    label-width="auto">
+                    label-width="auto"
+                    v-if="canShowFooter">
         <div class="flex  full-width row justify-end">
-          <el-button v-on:click="cancel">取消</el-button>
+          <el-button v-on:click="cancel"
+                     v-if="type==='add'">取消</el-button>
+          <el-button v-on:click="isEdit=false"
+                     v-if="isEdit">取消修改</el-button>
           <el-button v-on:click="submit"
                      type="primary">保存</el-button>
         </div>
@@ -142,6 +183,7 @@ export default {
   name: 'receiver-detail',
   props: {
     organizationList: Array,
+    organizationInfo: Object,
     type: String
   },
   data() {
@@ -150,9 +192,22 @@ export default {
         custCode: '',
         organizationName: '',
         organizationObject: {},
-        subMch: [{ custCode: '', organizationName: '', subMchId: '', subMchName: '', maxShareRatio: '', accountingRate: '', orderType: [] }]
+        subMch: [
+          {
+            custCode: '',
+            organizationName: '',
+            subMchId: '',
+            subMchName: '',
+            subMchObject: {},
+            maxShareRatio: '',
+            accountingRate: '',
+            orderType: [],
+            isDel: 0
+          }
+        ]
       },
       isEdit: false,
+      isLoaded: false,
       source: {
         subMchName: [],
         orderTypes: Constant.orderType
@@ -172,18 +227,53 @@ export default {
     }
   },
   computed: {
-    canEdit() {
+    subMchList() {
+      return this.model.subMch.filter((item) => !item.isDel)
+    },
+    canShowInfo() {
+      return this.type === 'detail' && !this.isEdit
+    },
+    canEditInfo() {
+      return this.type === 'add' || (this.type === 'detail' && this.isEdit)
+    },
+    canShowFooter() {
       return this.type === 'add' || (this.type === 'detail' && this.isEdit)
     },
     canShowAddOrderTypeBtn() {
-      return this.canEdit && this.model.subMch.length < this.source.orderTypes.length ? true : false
+      return ((this.type === 'detail' && this.isEdit) || this.type === 'add') && this.model.subMch.length < this.source.orderTypes.length ? true : false
     }
   },
   async created() {
     this.source.subMchName = await Peace.identity.dictionary.getList('wx_sbnc')
+
+    this.getMchByCustCode()
   },
 
   methods: {
+    checkOrderType(rule, value, callback) {
+      if (value && this.subMchList.filter((item) => item.orderType === value).length > 1) {
+        callback(new Error('订单类型不能重复'))
+      }
+      callback()
+    },
+    getMchByCustCode() {
+      if (this.type !== 'detail') {
+        this.isLoaded = true
+        return
+      }
+      const params = { custCode: this.organizationInfo.custCode }
+      Service.getMchByCustCode(params).then((res) => {
+        this.model.organizationObject = this.organizationInfo
+        res.data.list.map((item) => {
+          item.subMchObject = {
+            value: item.subMchId,
+            label: item.subMchName
+          }
+        })
+        this.model.subMch = res.data.list
+        this.isLoaded = true
+      })
+    },
     selectSubMchObject(data) {
       data.subMchId = data.subMchObject.value
       data.subMchName = data.subMchObject.label
@@ -194,15 +284,24 @@ export default {
         organizationName: '',
         subMchId: '',
         subMchName: '',
+        subMchObject: {},
         maxShareRatio: '',
         accountingRate: '',
-        orderType: ''
+        orderType: '',
+        isDel: 0
       }
 
       this.model.subMch.push(info)
     },
-    deleteOrderType(index) {
-      this.model.subMch.splice(index, 1)
+    deleteOrderType(subMch, index) {
+      if (subMch.id) {
+        //编辑-删除修改isDel 软删
+        subMch.isDel = 1
+        this.model.subMch.splice(index, 1, subMch)
+      } else {
+        //新增-删除 直接删除
+        this.model.subMch.splice(index, 1)
+      }
     },
     cancel() {
       this.$emit('onCancel')
@@ -212,12 +311,17 @@ export default {
         if (valid) {
           //将model.custCode model.organizationName 赋值给 model.subMch ，获取model.subMch,传给后端
           const params = Peace.util.deepClone(this.model.subMch)
+
           params.forEach((element) => {
             element.custCode = this.model.custCode
             element.organizationName = this.model.organizationName
-            element.orderType = element.orderType.join(',')
+            element.orderType = Array.isArray(element.orderType) ? element.orderType.join(',') : element.orderType
+            if (this.type === 'detail') {
+              element.id = element.id || ''
+            }
           })
-          Service.addSubMch(params).then((res) => {
+          const service = this.type === 'add' ? 'addSubMch' : 'updateSubMch'
+          Service[service](params).then((res) => {
             Peace.util.alert(res.msg)
             this.$emit('onSucess')
           })
@@ -229,8 +333,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-select {
-  width: 240px;
+.el-form.detail .el-form-item:not(.order-type-item) {
+  margin-bottom: 0;
+}
+.el-form.detail:not(.element-ui-default) .el-form-item.organizationName {
+  margin-bottom: 16px;
+}
+.el-form .el-form-item.organizationName {
+  margin-bottom: 16px;
+}
+.el-form.detail .el-form-item.order-type-item {
+  padding-bottom: 24px;
 }
 ::v-deep .el-button--text i {
   margin-right: 4px;
@@ -248,6 +361,7 @@ export default {
   background: #f5f5f5;
   border-radius: 2px;
   position: relative;
+  margin-bottom: 16px !important;
   > .el-form-item__content {
     flex-direction: column;
   }
