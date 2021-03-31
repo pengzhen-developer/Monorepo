@@ -169,23 +169,19 @@
       </div>
 
       <div class="module info">
-        <div class="brief">
-          <div class="brief-left">订单金额</div>
-          <div class="brief-right">
-            <peace-price v-bind:price="params.price"
-                         v-bind:size="16"></peace-price>
-          </div>
-        </div>
-        <div class="brief"
+
+        <!-- <div class="brief"
              v-if="canShowDiscount">
           <div class="brief-left">优惠金额:</div>
           <div class="brief-right">暂无可用
           </div>
-        </div>
-
+        </div> -->
+        <div class="info-title">支付方式</div>
         <div class="brief"
              v-if="servicesList.length>0">
-          <div class="brief-left">使用服务包</div>
+          <div class="brief-left">
+            <van-image :src="require('@src/assets/images/ic_pay_service.png')"></van-image><span>使用服务包</span>
+          </div>
           <div class="brief-right">
             <van-switch v-model="hasSelectedServicePackage"
                         size="20" />
@@ -198,9 +194,8 @@
                :class="{'checked':servicePackageDialog.data.servicePackageId,'unchecked':!servicePackageDialog.data.servicePackageId}"
                @click="showServicePackageDialog">
             <span>{{servicePackageDialog.data.servicePackageName||'请选择'}}</span>
-            <van-icon name="arrow"
-                      size="14"
-                      v-if="servicePackageDialog.data.servicePackageId"></van-icon>
+            <van-image :src="require('@src/assets/images/ic_right.png')"
+                       v-if="servicePackageDialog.data.servicePackageId"></van-image>
           </div>
         </div>
         <div class="brief"
@@ -213,13 +208,26 @@
         </div>
 
         <template v-if="!hasSelectedServicePackage">
-
+          <div class="brief">
+            <div class="brief-left">
+              <van-image :src="require('@src/assets/images/ic_pay_wechat_payment.png')"></van-image><span>微信支付</span>
+            </div>
+            <div class="brief-right">
+              <van-image style="width:24px;height:24px;"
+                         :src="require('@src/assets/images/ic_choose.png')"></van-image>
+            </div>
+          </div>
           <div class="brief"
                v-if="canShowYibao">
-            <div class="brief-left">使用医保卡</div>
+            <div class="brief-left">
+              <van-image :src="require('@src/assets/images/ic_pay_yiyao.png')"></van-image><span>使用医保卡</span>
+            </div>
             <div class="brief-right"
                  :class="{'checked':yibaoText,'unchecked':!yibaoText}"
-                 @click="chooseYibao">{{yibaoText||'请选择'}}
+                 @click="chooseYibao">
+              <span>{{yibaoText||'请选择'}}</span>
+              <van-image :src="require('@src/assets/images/ic_right.png')"
+                         v-if="!yibaoText"></van-image>
             </div>
           </div>
           <!-- <div class="brief"
@@ -233,8 +241,12 @@
 
           <div class="brief"
                v-if="canShowShangbao">
-            <div class="brief-left">商保权益抵扣:</div>
-            <div class="brief-right unchecked">请选择
+            <div class="brief-left">
+              <van-image :src="require('@src/assets/images/ic_pay_shangbao.png')"></van-image><span>商保权益抵扣:</span>
+            </div>
+            <div class="brief-right unchecked">
+              <span>请选择</span>
+              <van-image :src="require('@src/assets/images/ic_right.png')"></van-image>
             </div>
           </div>
 
@@ -249,11 +261,18 @@
     </div>
 
     <div class="footer">
+      <div class="brief">
+        <div class="brief-left">应付金额：</div>
+        <div class="brief-right red">
+          <peace-price v-bind:price="params.price"
+                       v-bind:size="16"></peace-price>
+        </div>
+      </div>
       <van-button round
                   @click="apply"
                   type="primary"
                   :disabled="sending"
-                  size="large">提交订单</van-button>
+                  style="width:160px ;">提交订单</van-button>
     </div>
 
     <van-image-preview v-model="imagePreview.visible"
@@ -730,6 +749,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.info-title {
+  font-size: 16px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(51, 51, 51, 0.6);
+  line-height: 18px;
+  padding-top: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f5f5f5;
+  width: calc(100% + 32px);
+  margin-left: -16px;
+  padding-left: 16px;
+}
+
 .red {
   color: #ff3a30;
 }
@@ -850,6 +883,7 @@ export default {
   bottom: 0;
   left: 0;
   z-index: 100;
+  justify-content: space-between;
 }
 
 .module-item {
@@ -1197,11 +1231,28 @@ export default {
   justify-content: space-between;
   padding: 12px 0;
 
-  &:not(:first-child) {
-    border-top: 1px solid rgba(51, 51, 51, 0.05);
+  &:not(:last-child) {
+    border-bottom: 1px solid rgba(51, 51, 51, 0.05);
+  }
+  .brief-left {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    .van-image {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
   }
 
   .brief-right {
+    display: flex;
+    align-items: center;
+    .van-image {
+      width: 16px;
+      height: 16px;
+      margin-left: 8px;
+    }
     .peace-price {
       margin-right: -12px;
     }
@@ -1228,5 +1279,6 @@ export default {
   color: #ff344d;
   padding-left: 10px;
   font-size: 12px;
+  padding-bottom: 4px;
 }
 </style>
