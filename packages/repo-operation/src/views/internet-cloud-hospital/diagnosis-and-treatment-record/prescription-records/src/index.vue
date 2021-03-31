@@ -187,7 +187,9 @@ export default {
   methods: {
     exportFile() {
       const params = Peace.util.deepClone(this.model)
-      Service.exportFile(params)
+      Service.isExistList(params).then(() => {
+        Service.exportFile(params)
+      })
     },
     get() {
       const fetch = Service.getPrescribeList
