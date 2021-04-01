@@ -115,11 +115,11 @@ export default {
         Service.checkOverInquiry(params).then((res) => {
           // 无效会话
           if (res.data.status === 1) {
-            const message = '您与患者未进行有效沟通，此时结束咨询将做退诊处理，费用将自动返回给患者！'
-            const confirmOption = { type: 'warning', confirmButtonText: '退诊' }
+            const message = '系统检测到您尚未与患者进行有效沟通，此时结束或将引起患者投诉，是否结束会话？'
+            const confirmOption = { type: 'warning', confirmButtonText: '结束会话' }
 
             Peace.util.confirm(message, undefined, confirmOption, () => {
-              Service.quitInquiry(params)
+              Service.overInquiry(params)
                 .then((res) => {
                   Peace.util.success(res.msg)
 
@@ -131,18 +131,8 @@ export default {
                 })
             })
           }
-          // 未填写病历
-          else if (res.data.caseStatus === 1) {
-            const message = '给用户发送病历后才能选择【已解决】，是否立即填写病历？'
-            const confirmOption = { type: 'warning', confirmButtonText: '去填写' }
-
-            Peace.util.confirm(message, undefined, confirmOption, () => {
-              this.cancel()
-              this.injectControl('发病历')
-            })
-          }
           // 正常问诊
-          else if (res.data.caseStatus === 2 && res.data.status === 2) {
+          else if (res.data.status === 2) {
             Service.overInquiry(params)
               .then((res) => {
                 Peace.util.success(res.msg)
