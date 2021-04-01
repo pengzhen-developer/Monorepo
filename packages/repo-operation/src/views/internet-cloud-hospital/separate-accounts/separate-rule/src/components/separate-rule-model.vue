@@ -284,12 +284,9 @@ export default {
           this.model.organizationName = this.organizationList.find((item) => item.custCode == this.model.custCode).organizationName
           this.model.profitsharingRule.forEach((rule) => {
             rule.accounts.forEach((account) => {
-              const currentAccount = this.accountsList.find((item) => item.value === account.value)
-
-              account.receiveName = rule.isProfitsharing == 1 ? currentAccount.receiverName : ''
-              account.receiveAccount = rule.isProfitsharing == 1 ? currentAccount.receiver : ''
+              account.receiveName = rule.isProfitsharing == 1 ? account.receiverName : ''
+              account.receiveAccount = rule.isProfitsharing == 1 ? account.receiver : ''
             })
-
             if (rule.isProfitsharing == 0) {
               rule.accounts = []
             }
