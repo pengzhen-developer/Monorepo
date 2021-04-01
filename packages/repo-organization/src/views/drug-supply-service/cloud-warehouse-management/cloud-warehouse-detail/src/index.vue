@@ -104,6 +104,7 @@
                  v-bind:visible.sync="wareVisible"
                  :title="isHasWare?'修改云仓信息':'新建云仓'">
       <AddWarehouse v-on:onCloseWare="oncloseWare"
+                    v-bind:edit="isHasWare"
                     v-bind:data="warehouseInfo"
                     v-bind:config="systemDict"></AddWarehouse>
     </PeaceDialog>

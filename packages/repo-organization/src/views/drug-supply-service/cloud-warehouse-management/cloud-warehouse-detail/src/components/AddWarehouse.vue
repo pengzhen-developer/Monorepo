@@ -16,6 +16,7 @@
                       prop="SystemCode">
           <el-select v-model="model.SystemCode"
                      @change="selectSystem"
+                     :disabled="edit"
                      clearable
                      placeholder="请选择"
                      style="width:100%;">
@@ -74,6 +75,9 @@ export default {
   name: 'add-ware-house',
   components: {},
   props: {
+    edit: {
+      type: Boolean
+    },
     data: {
       type: Object
     },
