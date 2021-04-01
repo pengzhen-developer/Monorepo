@@ -20,7 +20,7 @@
     </div>
 
     <div class="user-info">
-      <div class="address-type">{{!isToStore ? '收货信息:':'自提信息:'}} </div>
+      <div class="address-type">{{!isToStore ? '收货信息：':'自提信息：'}} </div>
       <div class="user-content">
         <div>
           <span class="q-mr-16">{{ info.consignee }}</span>
@@ -50,11 +50,12 @@
             </div>
             <div class="drug-info-item">
               <div class="drug-specification">{{ drug.DrugSpecification }}</div>
-              <div class="drug-price">
-                <span class="drug-price-num"> ¥ {{ drug.DrugUnitPrice }}</span>
-                <span class="drug-qty"> x {{ drug.DrugQty }}</span>
-              </div>
+
             </div>
+          </div>
+          <div class="drug-price">
+            <span class="drug-price-num"> ¥ {{ drug.DrugUnitPrice }}</span>
+            <span class="drug-qty"> x {{ drug.DrugQty }}</span>
           </div>
         </div>
       </div>
@@ -323,7 +324,7 @@ export default {
 
 .address-type {
   flex: none;
-  width: 70px;
+  width: 72px;
 }
 
 .user-content {
@@ -349,6 +350,8 @@ export default {
     flex: none;
     width: 64px;
     height: 64px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
     .el-image {
       display: block;
       width: 100%;
@@ -459,17 +462,17 @@ export default {
   line-height: 20px;
   .order-item {
     flex: none;
-    width: 62%;
+    width: 60%;
     margin-bottom: 8px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     &:nth-child(2n) {
-      width: 38%;
+      width: 40%;
     }
   }
   .order-label:after {
-    content: ' : ';
+    content: '：';
   }
 }
 </style>

@@ -90,7 +90,7 @@
         <el-table-column prop="CreateTime"
                          label="同步时间"
                          align="center"
-                         min-width="160px"></el-table-column>
+                         min-width="180px"></el-table-column>
 
         <el-table-column prop="DrugStoreName"
                          label="药房"

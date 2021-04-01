@@ -285,16 +285,14 @@ p {
   font-size: 16px;
 }
 .noInfo {
-  height: 22px;
   font-size: 14px;
   font-weight: 400;
   color: rgba(153, 153, 153, 1);
-  line-height: 22px;
-  margin-top: 10px;
+  padding: 10px 0 20px 0;
 }
 .line {
   width: 100%;
-  margin: 30px 0 20px 0;
+  margin: 4px 0 20px 0;
   height: 1px;
   background: #e9e9e9;
 }

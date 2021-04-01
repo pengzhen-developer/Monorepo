@@ -120,6 +120,6 @@ export default {
 <style lang="scss" scoped>
 .bottom {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-end;
 }
 </style>

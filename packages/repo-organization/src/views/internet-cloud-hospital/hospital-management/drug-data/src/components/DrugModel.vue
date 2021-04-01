@@ -8,7 +8,7 @@
     <el-form :model="drug"
              :rules="rules"
              inline
-             label-width="120px"
+             label-width="auto"
              ref="drugModel">
       <el-form-item label="药品编号："
                     prop="drug_number">
@@ -142,7 +142,7 @@
                      v-for="item in source.ENUM_DRUG_STORAGE"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item style="width: 100%;text-align: right;">
+      <el-form-item style="width: 100%;margin: 32px 0 16px 0;text-align: right;">
         <el-button @click="cancel"
                    type="default">取消</el-button>
         <el-button @click="saved"

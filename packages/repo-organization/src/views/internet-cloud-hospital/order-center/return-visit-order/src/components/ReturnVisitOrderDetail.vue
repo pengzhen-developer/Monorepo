@@ -375,7 +375,7 @@ export default {
         &:before {
           content: '';
           position: absolute;
-          top: 3px;
+          top: 4px;
           left: 0;
           width: 4px;
           height: 16px;
@@ -385,8 +385,8 @@ export default {
       }
     }
     .panel-body {
-      padding-top: 20px;
-      padding-bottom: 20px;
+      padding-top: 16px;
+      padding-bottom: 16px;
     }
     .panel-info {
       display: flex;

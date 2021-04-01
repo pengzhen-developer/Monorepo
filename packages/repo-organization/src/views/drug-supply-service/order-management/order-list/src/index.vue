@@ -86,7 +86,7 @@
         <el-table-column prop="Source"
                          label="订单来源"
                          align="center"
-                         width="120px"></el-table-column>
+                         min-width="150px"></el-table-column>
 
         <el-table-column prop="UserName"
                          label="客户姓名"
@@ -106,7 +106,7 @@
         <el-table-column prop="CreateTime"
                          label="同步时间"
                          align="center"
-                         min-width="160px"></el-table-column>
+                         min-width="180px"></el-table-column>
 
         <el-table-column label="取货方式"
                          align="center"

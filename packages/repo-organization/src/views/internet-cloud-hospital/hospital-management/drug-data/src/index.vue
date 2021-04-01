@@ -140,7 +140,7 @@
                           prop="status">
           <template slot-scope="scope">
             <div class="oprate">
-              <span>{{scope.row.status | getEnumLabel(source.ENUM_DRUG_STATUS)}} </span>
+              <span style="margin-right: 8px;">{{scope.row.status | getEnumLabel(source.ENUM_DRUG_STATUS)}}</span>
               <el-switch v-model="scope.row.status"
                          :active-value='1'
                          :inactive-value='2'
@@ -152,8 +152,8 @@
                           min-width="160"
                           prop="updated_time"></PeaceTableColumn>
         <PeaceTableColumn fixed="right"
-                          header-align="center"
-                          align="center"
+                          header-align="left"
+                          align="left"
                           label="操作"
                           width="150">
           <template slot-scope="scope">
@@ -183,7 +183,7 @@
                  title="药品"
                  v-if="addDialogVisible"
                  append-to-body
-                 width="720px">
+                 width="750px">
       <div class="el-dialog__title"
            slot="title">
         <span>{{currentDrug.drugType=='update'? '修改药品':'添加药品'}}</span>
