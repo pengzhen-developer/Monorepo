@@ -23,21 +23,11 @@
       </div>
       <div class="el-upload__tip"
            slot="tip">
-        <template v-if="!isErrorTip">
-          <div>
-            <p> {{ tipText }}</p>
-            <p class="download"
-               @click="download">模板下载</p>
-          </div>
-        </template>
-        <template v-else>
-          <div class="errorContent">
-            <el-divider>药品编号重复数据如下:</el-divider>
-            <div v-for="(item,index) in tipText"
-                 :key="index">{{item}}</div>
-            <el-divider>END</el-divider>
-          </div>
-        </template>
+        <div>
+          <p> {{ tipText }}</p>
+          <p class="download"
+             @click="download">模板下载</p>
+        </div>
       </div>
     </el-upload>
     <div class="footer q-mt-md">
@@ -55,7 +45,6 @@ export default {
   data() {
     return {
       tipText: '请按照模板格式上传 Excel 文件(.xls | .xlsx)',
-      isErrorTip: false,
       fullscreenLoading: false,
       canClick: false,
       hasExceed: false
@@ -99,29 +88,20 @@ export default {
           .then((res) => {
             this.onSuccess(res)
           })
-          .catch((res) => {
-            Peace.util.error(res.data.msg)
-            this.canClick = false
-            this.hasExceed = false
-          })
           .finally(() => {
             this.clearFiles()
+            this.canClick = false
+            this.hasExceed = false
             this.fullscreenLoading = false
           })
       }
     },
     // 批量导入成功回调
     onSuccess(res) {
-      this.isErrorTip = false
       if (res.code === 200 && res.success) {
-        const okCount = res.data.ok || 0
-        const notOkCount = res.data.not || 0
-        this.tipText = `文件上传成功，成功导入有效数据 ${okCount} 条，忽略无效数据 ${notOkCount} 条`
+        Peace.util.success(res.msg)
       } else {
         this.tipText = res.msg
-        if (res.code === 202) {
-          this.isErrorTip = true
-        }
       }
       setTimeout(() => {
         this.fullscreenLoading = false
