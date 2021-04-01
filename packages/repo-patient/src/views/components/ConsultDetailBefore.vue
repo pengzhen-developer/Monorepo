@@ -208,13 +208,19 @@
         </div>
 
         <template v-if="!hasSelectedServicePackage">
-          <div class="brief">
+          <div class="brief"
+               @click="selectWxpay">
             <div class="brief-left">
               <van-image :src="require('@src/assets/images/ic_pay_wechat_payment.png')"></van-image><span>微信支付</span>
             </div>
             <div class="brief-right">
               <van-image style="width:24px;height:24px;"
-                         :src="require('@src/assets/images/ic_choose.png')"></van-image>
+                         :src="require('@src/assets/images/ic_choose.png')"
+                         v-if="isWxPay"></van-image>
+              <van-image style="width:24px;height:24px;"
+                         :src="require('@src/assets/images/ic_choose_not.png')"
+                         v-else></van-image>
+
             </div>
           </div>
           <div class="brief"
@@ -372,6 +378,7 @@ export default {
     return {
       ENUM: ENUM,
       loading: true,
+      isWxPay: true,
       doctorInfo: {},
       familyInfo: {},
       insuranceConfig: {},
@@ -528,6 +535,11 @@ export default {
       })
       this.$router.push(`/appoint/doctor/appointDoctorSelect/${json}`)
     },
+    selectWxpay() {
+      this.isWxPay = true
+      this.yibaoInfo.medCardNo = ''
+      this.yibaoText = ''
+    },
     onSuccess(result) {
       if (result.checked == true) {
         // this.yibaoTypeDialog.visible = true
@@ -539,6 +551,7 @@ export default {
         this.yibaoInfo = result.yibaoInfo
         // this.yibaoTypeDialog.medCardId = this.yibaoInfo.id
         this.yibaoText = this.yibaoInfo.medCardNo
+        this.isWxPay = false
       }
     },
     selectYibaoTypeCallback(result) {

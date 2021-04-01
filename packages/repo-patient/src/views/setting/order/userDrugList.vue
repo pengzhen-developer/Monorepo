@@ -226,7 +226,7 @@ export default {
     },
 
     onClickSeeQRCode(order) {
-      this.pickUpCode = order.expressNo
+      this.pickUpCode = order.pickUpCode
       this.QRCodeURL = order.QRCodeURL
       this.showQRCode = true
     },

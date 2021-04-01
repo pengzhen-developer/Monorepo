@@ -180,6 +180,16 @@
           <div class="dd">
             {{ order.paymentTypeTxt }}</div>
         </div>
+        <template v-if="showTrackingNumber">
+          <div class="dl-packet"
+               v-for="(item,index) in order.expressNo"
+               :key="index">
+            <div class="dt">{{index==0?'运单编号：':''}}</div>
+            <div class="dd">
+              {{ item.expressNo }}</div>
+          </div>
+        </template>
+
         <template v-for="(stream,index) in order.purchaseDrugOrderStreams">
           <div class="dl-packet"
                :key="index"
@@ -270,7 +280,7 @@
       <template>
         <QRCode :QRCodeURL="QRCodeURL"
                 v-model="showQRCode"
-                :PickUpCode="PickUpCode"></QRCode>
+                :PickUpCode="pickUpCode"></QRCode>
       </template>
 
       <!-- 发票弹窗 -->
@@ -420,7 +430,7 @@ export default {
       order: null,
       showQRCode: false,
       QRCodeURL: null,
-      PickUpCode: null,
+      pickUpCode: null,
       showInvoiceModel: false,
       phaInfo: null,
       recipeDetail: {
@@ -578,7 +588,11 @@ export default {
       const callOrderStatus = this.order.callOrderStatus
       if (ShippingMethod === undefined || callOrderStatus === undefined) return false
       return (
-        ShippingMethod === ENUM.SHIPPING_METHOD.配送到家 && callOrderStatus >= ENUM.ORDER_STATUS.已备药_已发货 && callOrderStatus !== ENUM.ORDER_STATUS.已取消
+        ShippingMethod === ENUM.SHIPPING_METHOD.配送到家 &&
+        callOrderStatus >= ENUM.ORDER_STATUS.已备药_已发货 &&
+        callOrderStatus !== ENUM.ORDER_STATUS.已取消 &&
+        this.order.expressNo.length > 0 &&
+        this.order.purchaseDrugOrderStreams.length > 0
       )
     }
   },
@@ -665,20 +679,12 @@ export default {
       }
       peace.service.purchasedrug.SelectOrderDetApi(params).then((res) => {
         this.order = res.data
-        this.PickUpCode = res.data.expressNo
+        this.pickUpCode = res.data.pickUpCode
         this.QRCodeURL = res.data.QRCodeURL
         this.cbDialog.data.money = this.order.orderMoney.toFixed(2)
         this.phoneDialog.data.phone = res.data.tel
         if (this.order.expireTime > this.order.currentTime) {
           this.time = this.order.expireTime - this.order.currentTime
-        }
-        if (this.order.purchaseDrugOrderStreams.length > 0) {
-          this.order.purchaseDrugOrderStreams.map((item, index) => {
-            /**拼接 运单编号 */
-            if (item.status == 3 && this.showTrackingNumber) {
-              return this.order.purchaseDrugOrderStreams.splice(index, 1, item, { createdTime: this.order.expressNo, status: 9, timeStatusTxt: '运单编号' })
-            }
-          })
         }
 
         //H5支付返回- 缓存处方id 点击返回回到处方详情

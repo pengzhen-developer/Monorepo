@@ -24,8 +24,8 @@
             订单编号：{{info.orderNo}}
           </div>
           <div v-if="showTrackingNumber"
-               class="text">
-            运单编号：{{ info.expressNo }}
+               class="text flex">
+            <span>运单编号：{{ expressNum }}</span>
           </div>
         </div>
       </div>
@@ -38,76 +38,85 @@
     </div>
     <div class="module"
          v-if="loading">
-      <div class="time-line express"
-           v-if="info.shippingMethod == ENUM.SHIPPING_METHOD.HOME &&expressList.length>0">
-        <div class="item"
-             v-for="(item,index) in expressList"
-             :class="{ 'active' : index == 0 }"
-             :key="index">
-          <div class="time"
-               :class="!item.isChild&&'main'">
-            <div class="y">{{ item.Time.toDate().formatDate('MM-dd') }}</div>
-            <div class="s">{{ item.Time.toDate().formatDate('HH:mm') }}</div>
-          </div>
-          <div class="text express"
-               :class="!item.isChild&&'main'">
-            <template v-if="!item.isChild">
-              <div class="status">{{item.Status}}</div>
-              <div class="context"
-                   @click="startCall(item.tels)"
-                   v-html="item.Content"></div>
-            </template>
-            <template v-else>
-              <div class="status sub"
-                   @click="startCall(item.tels)"
-                   v-html="item.Content"></div>
-            </template>
+      <van-tabs v-model="active"
+                v-if="info.expressNo.length>1"
+                @click="changeExpressNum">
+        <van-tab :title="item.text"
+                 v-for="(item,index) in info.expressNo"
+                 :key="index"></van-tab>
+      </van-tabs>
+      <template v-if="loadingExpressList">
+        <div class="time-line express"
+             v-if="info.shippingMethod == ENUM.SHIPPING_METHOD.HOME &&expressList.length>0">
+          <div class="item"
+               v-for="(item,index) in expressList"
+               :class="{ 'active' : index == 0 }"
+               :key="index">
+            <div class="time"
+                 :class="!item.isChild&&'main'">
+              <div class="y">{{ item.Time.toDate().formatDate('MM-dd') }}</div>
+              <div class="s">{{ item.Time.toDate().formatDate('HH:mm') }}</div>
+            </div>
+            <div class="text express"
+                 :class="!item.isChild&&'main'">
+              <template v-if="!item.isChild">
+                <div class="status">{{item.Status}}</div>
+                <div class="context"
+                     @click="startCall(item.tels)"
+                     v-html="item.Content"></div>
+              </template>
+              <template v-else>
+                <div class="status sub"
+                     @click="startCall(item.tels)"
+                     v-html="item.Content"></div>
+              </template>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="time-line self">
-        <div class="item"
-             v-for="(item,index) in timeLine"
-             :class="{ 'active' : index == 0&&expressList.length==0 }"
-             :key="index">
-          <div class="time">
-            <div class="y">{{ item.createdTime.toDate().formatDate('MM-dd') }}</div>
-            <div class="s">{{ item.createdTime.toDate().formatDate('HH:mm') }}</div>
-          </div>
-          <div class="text">
-            <div class="status">{{item.remark}}</div>
-            <div class="note"
-                 v-if="item.status == '4'">
-              {{ info.shippingMethod == ENUM.SHIPPING_METHOD.SELF  ? '您在'+ info.drugStoreName +'已自提' : '' }}
+        <div class="time-line self">
+          <div class="item"
+               v-for="(item,index) in timeLine"
+               :class="{ 'active' : index == 0&&expressList.length==0 }"
+               :key="index">
+            <div class="time">
+              <div class="y">{{ item.createdTime.toDate().formatDate('MM-dd') }}</div>
+              <div class="s">{{ item.createdTime.toDate().formatDate('HH:mm') }}</div>
             </div>
+            <div class="text">
+              <div class="status">{{item.remark}}</div>
+              <div class="note"
+                   v-if="item.status == '4'">
+                {{ info.shippingMethod == ENUM.SHIPPING_METHOD.SELF  ? '您在'+ info.drugStoreName +'已自提' : '' }}
+              </div>
 
-            <div v-if="item.status == '2' && info.callOrderStatus != 5 && info.shippingMethod === ENUM.SHIPPING_METHOD.SELF"
-                 class="note">
-              <div class="qr-btn "
-                   :class="{ 'active' : index == 0 }"
-                   @click="onClickSeeQRCode">
-                查看取药码
+              <div v-if="item.status == '2' && info.callOrderStatus != 5 && info.shippingMethod === ENUM.SHIPPING_METHOD.SELF"
+                   class="note">
+                <div class="qr-btn "
+                     :class="{ 'active' : index == 0 }"
+                     @click="onClickSeeQRCode">
+                  查看取药码
+                </div>
               </div>
-            </div>
-            <div class="note"
-                 v-if="item.status == '5' &&info.cancelReason"><span>{{info.cancelReason}}</span></div>
-            <div v-if="item.status == '5' && info.cancelList.length>0"
-                 class="note">
-              <div class="qr-btn"
-                   :class="{ 'active' : index == 0 }"
-                   @click="onClickSeeCancelOrderDeatil">
-                查看详情
+              <div class="note"
+                   v-if="item.status == '5' &&info.cancelReason"><span>{{info.cancelReason}}</span></div>
+              <div v-if="item.status == '5' && info.cancelList.length>0"
+                   class="note">
+                <div class="qr-btn"
+                     :class="{ 'active' : index == 0 }"
+                     @click="onClickSeeCancelOrderDeatil">
+                  查看详情
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </template>
     </div>
 
     <!--二维码弹窗-->
     <QRCode :QRCodeURL="info.QRCodeURL"
             v-model="showQRCode"
-            :PickUpCode="info.expressNo"></QRCode>
+            :PickUpCode="info.pickUpCode"></QRCode>
 
     <!-- 电话列表弹框 -->
     <van-action-sheet v-model="action.visible"
@@ -149,12 +158,15 @@ const ENUM = {
 export default {
   data() {
     return {
+      expressNum: '',
+      active: 0,
       ENUM,
       showQRCode: false,
       info: {},
       //快递物流信息
       expressList: [],
       loading: false,
+      loadingExpressList: false,
       action: {
         visible: false,
         data: null
@@ -191,6 +203,16 @@ export default {
   },
 
   methods: {
+    beforeChange() {},
+    changeExpressNum() {
+      const num = this.info.expressNo[this.active].expressNo
+      if (num === this.expressNum) {
+        return false
+      } else {
+        this.expressNum = num
+      }
+      this.getExpressList()
+    },
     onClickSeeQRCode() {
       this.showQRCode = true
     },
@@ -204,22 +226,38 @@ export default {
       const data = await peace.service.purchasedrug.SelectOrderDetApi(params)
       this.info = data.data
       if (this.info.shippingMethod == ENUM.SHIPPING_METHOD.HOME) {
-        if (!this.info.expressNo) {
+        if (!this.info.expressNo || this.info.expressNo.length == 0) {
           this.loading = true
+          this.loadingExpressList = true
           return
         }
-        const expressNo = this.info.expressNo
+        const nums = ['一', '二', '三', '四', '五', '六', '七', '八', '九']
+        this.info.expressNo = this.info.expressNo.map((item, index) => {
+          return Object.assign({}, item, { text: `运单${nums[index]}` })
+        })
+
+        this.expressNum = this.info.expressNo[0].expressNo
+
         let expressData = null
         try {
-          expressData = await peace.service.purchasedrug.ExpressQuery({ expressNo: expressNo })
+          expressData = await peace.service.purchasedrug.ExpressQuery({ expressNo: this.expressNum })
           this.expressList = this.assembleList(expressData.data.Stream)
         } catch (res) {
           // peace.util.alert(res.data.data.message)
         }
         this.loading = true
+        this.loadingExpressList = true
       } else {
         this.loading = true
+        this.loadingExpressList = false
       }
+    },
+    getExpressList() {
+      this.loadingExpressList = false
+      peace.service.purchasedrug.ExpressQuery({ expressNo: this.expressNum }).then((res) => {
+        this.expressList = this.assembleList(res.data.Stream)
+        this.loadingExpressList = true
+      })
     },
     assembleList(list) {
       if (!Array.isArray(list)) {
@@ -263,6 +301,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.van-tabs {
+  margin-bottom: 15px;
+  height: 28px;
+  /deep/.van-tab {
+    width: 20%;
+    flex: none;
+    color: rgba(51, 51, 51, 0.4);
+    font-size: 16px;
+  }
+
+  /deep/.van-tabs__nav {
+    justify-content: center;
+    height: 28px;
+  }
+
+  /deep/.van-tab--active {
+    color: $primary;
+  }
+  /deep/ .van-tabs__line {
+    background: $primary;
+    border-radius: 1px;
+    height: 2px;
+    width: 68px;
+  }
+}
 .qr-btn {
   margin-top: 8px;
   border-radius: 16px;
@@ -344,13 +407,17 @@ export default {
     font-size: 14px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: rgba(51, 51, 51, 0.4);
+    color: rgba(51, 51, 51, 0.6);
     line-height: 20px;
+    &.flex {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 }
 .module {
   background: #fff;
-  padding: 30px 5px 10px;
+  padding: 10px 5px;
   margin: 0 0 10px 0;
 }
 .time-line {
