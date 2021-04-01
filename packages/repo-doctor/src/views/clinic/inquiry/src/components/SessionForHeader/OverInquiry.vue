@@ -115,11 +115,11 @@ export default {
         Service.checkOverInquiry(params).then((res) => {
           // 无效会话
           if (res.data.status === 1) {
-            const message = '系统检测到当前为无效会话，此时结束咨询将做退诊处理，确定退诊吗？'
+            const message = '系统检测到您尚未与患者进行有效沟通，此时结束或将引起患者投诉，是否结束会话？'
             const confirmOption = { type: 'warning', confirmButtonText: '结束会话' }
 
             Peace.util.confirm(message, undefined, confirmOption, () => {
-              Service.quitInquiry(params)
+              Service.overInquiry(params)
                 .then((res) => {
                   Peace.util.success(res.msg)
 
