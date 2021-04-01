@@ -40,12 +40,13 @@
         </div>
 
         <div class="row">
-          <div class="col">
+          <div class="col-3">
             <el-form-item label="体重：">
               <div class="flex">
-                <el-input-number style="width: 100px;"
+                <el-input-number ref="weightInput"
+                                 style="width: 100px;"
                                  controls-position="right"
-                                 v-bind:min="0"
+                                 v-bind:min="0.1"
                                  v-bind:max="200"
                                  v-model="model.weight"
                                  v-bind:precision="1">
@@ -53,6 +54,25 @@
                 <div class="flex items-center q-px-sm"
                      style="border-radius: 5px">
                   kg
+                </div>
+              </div>
+            </el-form-item>
+          </div>
+
+          <div class="col-3">
+            <el-form-item label="身高：">
+              <div class="flex">
+                <el-input-number ref="heightInput"
+                                 style="width: 100px;"
+                                 controls-position="right"
+                                 v-bind:min="0.1"
+                                 v-bind:max="999"
+                                 v-model="model.height"
+                                 v-bind:precision="1">
+                </el-input-number>
+                <div class="flex items-center q-px-sm"
+                     style="border-radius: 5px">
+                  cm
                 </div>
               </div>
             </el-form-item>
@@ -181,6 +201,8 @@ export default {
       model: {
         // 体重
         weight: undefined,
+        // 身高
+        height: undefined,
         // 诊断
         diagnoseList: [],
         // 处方类型：院内、外延
@@ -366,7 +388,8 @@ export default {
      */
     send() {
       if (this.valid()) {
-        Peace.util.confirm('确认发送处方给患者？', '提示', {}, () => {
+        // 发处方
+        const sendRecipe = () => {
           this.sending = true
 
           const params = Peace.util.deepClone(this.model)
@@ -401,7 +424,46 @@ export default {
             .finally(() => {
               this.sending = false
             })
-        })
+        }
+
+        // 发送前提示
+        // 1，未满 14 岁，未填写身高体重，提示
+        // 2，满足，固定提示
+        const date1 = Peace.dayjs()
+        const date2 = Peace.dayjs(this.caseInfo.birthday)
+
+        if (date1.diff(date2, 'year') < 14 && (Peace.validate.isEmpty(this.model.weight) || Peace.validate.isEmpty(this.model.height))) {
+          return Peace.util.confirm(
+            '当前患者未满14周岁，处方未填写身高体重信息，如不填写将会影响审方结果。是否直接发送处方？',
+            '提示',
+            {
+              cancelButtonText: '填写信息',
+              confirmButtonText: '继续发送'
+            },
+            () => {
+              sendRecipe()
+            },
+            () => {
+              if (Peace.validate.isEmpty(this.model.weight)) {
+                this.$refs.weightInput.focus()
+              } else if (Peace.validate.isEmpty(this.model.height)) {
+                this.$refs.heightInput.focus()
+              }
+            }
+          )
+        }
+
+        Peace.util.confirm(
+          '确认发送处方给患者？',
+          '提示',
+          {
+            cancelButtonText: '取消',
+            confirmButtonText: '发送'
+          },
+          () => {
+            sendRecipe()
+          }
+        )
       }
     },
 
