@@ -181,6 +181,7 @@
 </template>
 
 <script>
+import Util from '@src/util'
 export default {
   name: 'PrescriptionDetail',
   props: {
@@ -222,7 +223,11 @@ export default {
   },
   methods: {
     showImage() {
-      this.dialog.visible = true
+      if (this.data.FileType === 0) {
+        Util.location.redirectToPath(this.data.prescriptionImageUrl, '_blank')
+      } else {
+        this.dialog.visible = true
+      }
     },
     onLoad() {
       this.dialog.show = true
