@@ -1,6 +1,7 @@
 <template>
-  <div class="item-content row q-col-gutter-lg">
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"
+  <div v-if="prentCustList.length > 0"
+       class="item-content row q-col-gutter-lg">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
          v-for="item in prentCustList"
          v-bind:key="item.Id">
       <div class="child-wrap">
@@ -74,23 +75,26 @@ p {
   box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.01);
   border-radius: 4px;
   border: 0px solid rgba(245, 245, 245, 1);
-  padding: 62px 16px 4px 16px;
+  padding: 62px 24px 16px 24px;
 }
 .title-wrap {
   display: flex;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 .title-key {
-  width: 114px;
+  width: 120px;
+  padding-right: 8px;
   font-size: 14px;
-  color: var(--q-color-grey-666);
+  color: #666666;
+  text-align: right;
   word-break: break-all;
 }
 .title-value {
-  font-size: 14px;
-  color: var(--q-color-grey-333);
   flex: 1;
-  min-width: 0;
+  font-size: 14px;
+  color: #333333;
+  word-break: break-all;
+  word-wrap: break-word;
 }
 .child-tips {
   position: absolute;

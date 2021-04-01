@@ -3,7 +3,7 @@
     <div class="layout-route full-width">
       <!-- 云仓详情 -->
       <div v-if="visible"
-           class="bg-white full-height q-pa-lg">
+           class="bg-white full-height q-pa-32">
         <el-button type="primary"
                    plain
                    class="q-mb-lg"
@@ -23,22 +23,21 @@
                 <div class="title-left"></div>
                 <p class="title">云仓信息</p>
               </div>
-              <div class="item-child">
-                <p class="child-key">云仓名称</p>
-                <p>：</p>
-                <p class="child-value">{{warehouseInfo.Name}}</p>
-              </div>
-              <div class="item-child">
-                <p class="child-key">系统名称</p>
-                <p>：</p>
-                <p class="child-value">{{currentSystemForm.Name}}</p>
-              </div>
-              <div class="item-child"
-                   v-for="item in currentSystemForm.item"
-                   :key="item.Label">
-                <p class="child-key">{{item.Label}}</p>
-                <p>：</p>
-                <p class="child-value">{{warehouseInfo[item.Name]}}</p>
+              <div class="item-wrap">
+                <div class="item-child item-block">
+                  <div class="child-key">云仓名称：</div>
+                  <div class="child-value">{{warehouseInfo.Name}}</div>
+                </div>
+                <div class="item-child item-inline">
+                  <div class="child-key">云仓系统：</div>
+                  <div class="child-value">{{currentSystemForm.Name}}</div>
+                </div>
+                <div class="item-child item-inline"
+                     v-for="item in currentSystemForm.item"
+                     :key="item.Label">
+                  <div class="child-key">{{item.Label}}：</div>
+                  <div class="child-value">{{warehouseInfo[item.Name]}}</div>
+                </div>
               </div>
             </div>
             <div class="line"></div>
@@ -144,19 +143,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.q-pa-lg {
-  padding: 30px;
-}
 p {
-  margin: 0;
   padding: 0;
+  margin: 0;
 }
-
 .item-title {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 .title-left {
   width: 4px;
@@ -166,41 +161,64 @@ p {
 }
 .title {
   font-weight: 500;
-  color: var(--q-color-grey-333);
+  color: #333333;
   line-height: 24px;
   margin-left: 10px;
   height: 24px;
   font-size: 16px;
 }
 .noInfo {
-  height: 22px;
   font-size: 14px;
   font-weight: 400;
   color: rgba(153, 153, 153, 1);
-  line-height: 22px;
-  margin-top: 10px;
+  padding: 10px 0 20px 0;
 }
 .line {
   width: 100%;
-  margin: 30px 0 30px 0;
+  margin: 4px 0 20px 0;
   height: 1px;
   background: #e9e9e9;
 }
-.item-child {
-  margin-bottom: 20px;
+
+.item-wrap {
   display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 600px;
 }
+
+.item-child {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding-right: 16px;
+  margin-bottom: 16px;
+  color: rgba(0, 0, 0, 0.85);
+  &.item-block {
+    width: 100%;
+  }
+  &.item-inline {
+    width: 50%;
+  }
+}
+
 .item-child:last-child {
   margin-bottom: 0;
 }
 .child-key {
+  flex: none;
+  width: auto;
+  margin-right: 8px;
   font-size: 14px;
-  color: var(--q-color-grey-333);
-  text-align: justify;
-  text-align-last: justify;
+  color: rgba(0, 0, 0, 0.85);
 }
 .child-value {
+  flex: 1;
   font-size: 14px;
-  color: var(--q-color-grey-666);
+  color: rgba(0, 0, 0, 0.65);
+  word-break: break-all;
+  word-wrap: break-word;
 }
 </style>

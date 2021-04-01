@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="full-height">
     <div class="card card-search q-mb-md">
       <el-form inline
                label-width="auto"
