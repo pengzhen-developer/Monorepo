@@ -303,7 +303,7 @@ p {
   justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: wrap;
-  width: 600px;
+  width: 50%;
 }
 
 .item-child {
