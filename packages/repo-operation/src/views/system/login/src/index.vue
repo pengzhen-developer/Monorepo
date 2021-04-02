@@ -146,7 +146,7 @@ export default {
 
 .container {
   background: url('./assets/img/bg.png') no-repeat;
-  background-size: 100% 100%;
+  background-size: cover;
 
   .container-masker {
     background: var(--q-color-primary);

@@ -29,16 +29,11 @@ module.exports = {
   // https://cli.vuejs.org/zh/config/#configurewebpack
   configureWebpack: (config) => {
     // externals 请参考 https://webpack.docschina.org/configuration/externals/
-    // externals 配置后，import 将不会被 webpack 编译
-    // 相关资源可以通过 CDN 服务器从 index.html 引入, 避免 vendors 过大
     config.externals = {
-      // e.g.
-      // ['vue']: 'Vue',
-      // ['element-ui']: 'ELEMENT',
       ['vue']: 'Vue',
-      ['element-ui']: 'ELEMENT',
-      ['@public/static/IM/NIM_Web_NIM_v7.0.0']: 'NIM',
-      ['@public/static/IM/NIM_Web_WebRTC_v7.0.0']: 'WebRTC'
+      ['vuex']: 'Vuex',
+      ['vue-router']: 'VueRouter',
+      ['element-ui']: 'ELEMENT'
     }
   },
 

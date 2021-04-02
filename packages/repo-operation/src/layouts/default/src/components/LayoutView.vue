@@ -19,6 +19,8 @@
 <script>
 import { dom } from 'quasar'
 
+import obLayoutTabs from './../observable/ob-layout-tabs'
+
 export default {
   data() {
     return {
@@ -40,8 +42,8 @@ export default {
   computed: {
     keepAliveInclude() {
       // 基于 layout - tabs 实现标签页的缓存
-      // ** 请注意， component name 与 menuRouteName 必须保持一致
-      return this.$store.state.tabs.tabs.map((item) => item.menuAlias)
+      // ** 请注意， component name 与 menuAlias 必须保持一致
+      return obLayoutTabs.state.tabs.map((item) => item.menuAlias)
     }
   },
 

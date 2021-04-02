@@ -1,130 +1,56 @@
 <template>
   <div class="flex items-center full-width bg-white">
     <el-tabs class="layout-tabs element-ui-default"
-             v-model="active"
+             v-bind:value="tab.id"
              v-on:tab-click="tabClick"
              v-on:tab-remove="tabRemove">
       <el-tab-pane v-for="tab in tabs"
-                   v-bind:key="tab.id.toString()"
-                   v-bind:name="tab.id.toString()"
+                   v-bind:key="tab.id"
+                   v-bind:name="tab.id"
                    v-bind:label="tab.menuName"
-                   v-bind:closable="tabs.length > 1 && !!tab.closable">
-
+                   v-bind:closable="tabs.length > 1 && tab.closable">
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-/*eslint no-prototype-builtins: "off"*/
+import obLayoutTabs from './../observable/ob-layout-tabs'
 
 export default {
   data() {
-    return {
-      active: null
-    }
+    return {}
   },
 
   computed: {
-    tabs: {
-      get() {
-        return this.$store.state.tabs.tabs
-      },
-      set(value) {
-        this.$store.commit('tabs/setTabs', value)
-      }
-    },
-
-    activeTab() {
-      return this.$store.state.tabs.activeTab
-    }
-  },
-
-  watch: {
-    tabs() {
-      // tab 有改变，缓存
-      Peace.cache.sessionStorage.set('tabs', this.tabs)
-    },
-
-    activeTab() {
-      // 选中 tab
-      this.active = this.activeTab.id.toString()
-
-      // 更改 route
-      this.changeRoute(this.activeTab)
-    }
-  },
-
-  mounted() {
-    this.$nextTick().then(() => {
-      // 页面被刷新？ 恢复 tabs
-      this.tabs = Peace.cache.sessionStorage.get('tabs') ?? []
-    })
+    tabs: () => obLayoutTabs.state.tabs,
+    tab: () => obLayoutTabs.state.tab
   },
 
   methods: {
-    changeRoute(tab) {
-      const routePath = tab.menuRoute
-      const realPath = tab.menuPath
+    tabClick(tabComponent) {
+      const tab = this.tabs.find((item) => item.id === tabComponent.name)
 
-      if (this.$route.path !== routePath) {
-        this.$router.push(routePath).then((route) => {
-          /** 动态修改 route meta */
-          for (const key in route.meta) {
-            if (route.meta.hasOwnProperty(key)) {
-              route.meta[key] = tab[key]
-            }
-          }
-        })
-      }
-
-      // Fixed iFrame parameter lost
-      if (Peace.validate.isUrl(realPath)) {
-        this.$router.push({ path: routePath, query: { t: Date.now() } }).then((route) => {
-          /** 动态修改 route meta */
-          for (const key in route.meta) {
-            if (route.meta.hasOwnProperty(key)) {
-              route.meta[key] = tab[key]
-            }
-          }
-        })
-      }
+      obLayoutTabs.mutations.setTab(tab)
     },
 
-    tabClick(tab) {
-      if (tab.name.toString() === this.activeTab.id.toString()) {
-        // 重复点击
-        return
-      }
+    tabRemove(id) {
+      const tab = this.tabs.find((item) => item.id === id)
+      obLayoutTabs.mutations.removeTab(tab)
 
-      const tabs = this.$store.state.tabs.tabs
-      const currentTab = tabs.find((menu) => menu.id === tab.name)
-
-      this.$store.commit('tabs/selectTab', currentTab)
-    },
-
-    tabRemove(name) {
-      const tabs = this.$store.state.tabs.tabs
-      const currentTab = tabs.find((menu) => menu.id === name)
-
-      this.$store.commit('tabs/removeTab', currentTab)
-
-      // 选中最后 tab
-      if (this.tabs.length > 0) {
-        const lastTab = tabs.find((menu) => menu.id === this.tabs[this.tabs.length - 1].id)
-        this.$store.commit('tabs/selectTab', lastTab)
-      }
+      const lastTab = this.tabs[this.tabs.length - 1]
+      obLayoutTabs.mutations.setTab(lastTab)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.layout-tabs {
+::v-deep .layout-tabs {
   height: 40px;
   width: 100%;
 
-  ::v-deep .el-tabs__header {
+  .el-tabs__header {
     margin: 0;
 
     .el-tabs__item {

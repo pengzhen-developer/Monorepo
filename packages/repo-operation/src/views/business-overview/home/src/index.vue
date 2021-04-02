@@ -2,14 +2,14 @@
   <div class="layout-route full-width full-height">
     <div class="full-width full-height">
       <div class="row q-col-gutter-x-md">
-        <div class="col-4 col-lg-4 col-md-6 col-sm-12">
+        <div class="col-4 col-lg-4 col-md-6 col-sm-12 col-xs-12">
           <todo-list :data="todoList"
                      class="q-mb-md"></todo-list>
           <prescription-count-chart :data="preCountOfSevenDays"
                                     class="q-mb-md"></prescription-count-chart>
           <order-count-chart :data="orderNumOfSevenDays"></order-count-chart>
         </div>
-        <div class="col-8 col-lg-8 col-md-6 col-sm-12 ">
+        <div class="col-8 col-lg-8 col-md-6 col-sm-12 col-xs-12">
           <data-overview :data="overViewData"
                          class="q-mb-md"></data-overview>
           <ware-house-map :count="overViewData"

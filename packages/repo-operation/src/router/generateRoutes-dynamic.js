@@ -21,7 +21,7 @@ const getDynamicRoutes = (accountMenu) => {
         {
           path: '/layout',
           name: 'Layout',
-          component: () => import(`@src/layouts/${window.configuration.layout.type}`),
+          component: () => import(`@src/layouts/${window.configuration.layout.type}/index.js`),
           children: []
         },
         //数据大屏

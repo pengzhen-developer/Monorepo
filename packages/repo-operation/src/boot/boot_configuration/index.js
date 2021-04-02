@@ -19,10 +19,19 @@ export default {
   /**
    * 布局设定
    *
-   * 可选： side / top-side
    */
   layout: {
-    type: 'default'
+    // 布局类型
+    // default: 侧边栏导航布局、顶部导航布局
+    type: 'default',
+
+    // type: 'side' 时生效
+    side: {
+      // 是否联动顶部导航
+      // true: 顶部与侧边联动导航
+      // false: 纯侧边栏布局
+      showTopNav: true
+    }
   },
 
   /**
