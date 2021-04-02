@@ -86,7 +86,7 @@
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn width="100px">
+        <PeaceTableColumn width="120px">
           <template slot-scope="scope">
             <div class="column items-end q-pa-none justify-space-between">
               <span class="text-grey-333 text-weight-bold">x{{ scope.row.drugNum }}{{ scope.row.drugQuantityUnit }}</span>

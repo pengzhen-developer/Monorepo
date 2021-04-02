@@ -10,9 +10,19 @@
         <el-form-item label="姓名"
                       prop="name">
           <span slot="label">姓名：</span>
-          <el-input v-bind:disabled="isChaperonage"
-                    v-model="ruleForm.name"
-                    placeholder="请输入姓名"></el-input>
+          <el-autocomplete class="col full-width"
+                           remote
+                           filterable
+                           clearable
+                           placeholder="请输入患者名字"
+                           v-on:select="handleSelect"
+                           v-bind:disabled="isChaperonage"
+                           v-bind:fetch-suggestions="querySearchAsync"
+                           v-model="ruleForm.name">
+            <template slot-scope="{ item }">
+              <span>{{ `${ item.name } / ${ item.idCard }` }}</span>
+            </template>
+          </el-autocomplete>
         </el-form-item>
         <el-form-item label="身份证"
                       prop="idCard">
@@ -22,14 +32,16 @@
                     placeholder="请输入身份证号"></el-input>
         </el-form-item>
         <el-form-item label="性别"
-                      prop="sex">
+                      prop="sex"
+                      v-if="ruleForm.sex">
           <span slot="label">性别：</span>
           <el-input v-model="ruleForm.sex"
                     v-bind:disabled="true"></el-input>
         </el-form-item>
 
         <el-form-item label="生日"
-                      prop="birthday">
+                      prop="birthday"
+                      v-if="ruleForm.birthday">
           <span slot="label">生日：</span>
           <el-input suffix-icon="el-icon-date"
                     v-model="ruleForm.birthday"
@@ -75,7 +87,7 @@
     <div class="el-dialog__footer">
       <el-button @click="closeMenu">取消</el-button>
       <el-button @click="submitForm"
-                 type="primary">保存</el-button>
+                 type="primary">开处方</el-button>
     </div>
 
     <div v-if="tips.showTips"
@@ -138,6 +150,10 @@ export default {
         ]
       },
 
+      source: {
+        searchPatientList: []
+      },
+
       tips: {
         showTips: false,
         patientInfo: {}
@@ -159,11 +175,28 @@ export default {
           this.ruleForm.sex = this.ruleForm.sexKey ? '男' : '女'
           this.ruleForm.birthday = val.substr(6, 4) + '-' + val.substr(10, 2) + '-' + val.substr(12, 2)
         }
+      } else {
+        this.ruleForm.sex = ''
+        this.ruleForm.birthday = ''
       }
     }
   },
 
   methods: {
+    querySearchAsync(queryString, cb) {
+      this.ruleForm.name = queryString
+
+      Service.choicePatientList({ patientName: queryString }).then((res) => {
+        cb(res.data.list)
+      })
+    },
+
+    handleSelect(item) {
+      this.ruleForm.name = item.name
+      this.ruleForm.idCard = item.idCard
+      this.ruleForm.tel = item.tel
+    },
+
     submitForm() {
       // step 1 valid form
       // step 2 valid id idcard and name
@@ -219,8 +252,6 @@ export default {
           Peace.util.success(res.msg)
 
           this.isSave = true
-          this.closeMenu()
-          this.$emit('updateList')
         } else if (res.success && res.data.status === 2) {
           this.isSave = true
           this.tips.showTips = true
@@ -231,6 +262,8 @@ export default {
             tel: res.data.tel
           }
         }
+
+        this.goToRecipe()
       })
     },
 
