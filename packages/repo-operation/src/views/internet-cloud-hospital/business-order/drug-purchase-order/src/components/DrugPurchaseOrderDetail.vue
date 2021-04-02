@@ -125,15 +125,15 @@
           <span>{{ info.orderNo }}</span>
         </div>
         <div>
-          <span>创建时间</span>
-          <span>{{ info.purchaseDrugOrderStreams.length > 0 ? info.purchaseDrugOrderStreams[0].createdTime:info.createdTime}}</span>
-        </div>
-        <div>
           <span>支付方式</span>
           <span>{{ info.paymentTypeTxt }}</span>
         </div>
-        <template v-if="timeList&&timeList.length>0">
-          <div v-for="item in timeList"
+        <div v-if="info.purchaseDrugOrderStreams && info.purchaseDrugOrderStreams.length > 0 && info.shippingMethod === 1 && info.callOrderStatus >= 3 && info.callOrderStatus !== 5 && info.expressNo.length > 0">
+          <span>运单编号</span>
+          <span>{{ expressNoText }}</span>
+        </div>
+        <template v-if="info.purchaseDrugOrderStreams && info.purchaseDrugOrderStreams.length > 0">
+          <div v-for="item in info.purchaseDrugOrderStreams"
                :key="item.status">
             <span>{{ item.timeStatusTxt }}</span>
             <span>{{ item.createdTime }}</span>
@@ -143,10 +143,6 @@
           <div v-if="info.payStatus >= 3 || info.payTime">
             <span>支付时间</span>
             <span>{{ info.payTime || '--' }}</span>
-          </div>
-          <div v-if="info.expressNo">
-            <span>运单编号</span>
-            <span>{{ info.expressNo }}</span>
           </div>
         </template>
         <div v-if="info.refundTime">
@@ -205,22 +201,6 @@ export default {
       return !this.info.shippingMethod
     },
 
-    timeList() {
-      if (this.info.purchaseDrugOrderStreams.length > 0) {
-        this.info.purchaseDrugOrderStreams.forEach((item, index) => {
-          // 发货时间后面拼接运单编号（仅为还原UI稿）
-          if (item.status == 3 && this.info.shippingMethod === 1 && this.info.callOrderStatus >= 3 && this.info.callOrderStatus !== 5) {
-            return this.info.purchaseDrugOrderStreams.splice(index, 1, item, {
-              createdTime: this.info.expressNo,
-              timeStatusTxt: '运单编号',
-              status: 9
-            })
-          }
-        })
-      }
-      return Array.from(new Set(this.info.purchaseDrugOrderStreams.filter((item) => item.status > 0)))
-    },
-
     paymentTypesText() {
       if (this.info.payMode) {
         return this.$options.filters['getEnumLable'](this.info.payMode, Constant.PAY_MODE_STATUS)
@@ -234,6 +214,9 @@ export default {
         }
         return text
       }
+    },
+    expressNoText() {
+      return this.info.expressNo.map((item) => item.expressNo).join('，')
     }
   },
   filters: {
@@ -655,9 +638,20 @@ $border-color: #eaeaea;
     display: flex;
     flex-wrap: wrap;
     > div {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
       width: 50%;
     }
+    & > div > span {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     & > div > span:first-of-type {
+      flex: none;
+      width: auto;
       &:after {
         content: '：';
       }
