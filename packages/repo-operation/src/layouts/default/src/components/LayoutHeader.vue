@@ -1,5 +1,5 @@
 <template>
-  <q-toolbar class="flex justify-between items-center full-height">
+  <q-toolbar class="flex justify-between items-center full-height q-px-none">
     <div class="flex full-height col">
       <template v-if="showTopNav">
         <el-menu class="element-ui-default"
