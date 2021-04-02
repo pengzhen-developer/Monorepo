@@ -113,16 +113,17 @@
         <div>{{ info.orderNo }}</div>
       </div>
       <div class="order-item">
-        <div class="order-label">创建时间</div>
-        <div>{{ info.createdTime }}</div>
-      </div>
-      <div class="order-item">
         <div class="order-label">支付方式</div>
         <div>{{ info.paymentTypeTxt }}</div>
       </div>
-      <template v-if="timeList && timeList.length > 0">
+      <div class="order-item"
+           v-if="info.purchaseDrugOrderStreams && info.purchaseDrugOrderStreams.length > 0 && info.shippingMethod === 1 && info.callOrderStatus >= 3 && info.callOrderStatus !== 5 && info.expressNo.length > 0">
+        <div class="order-label">运单编号</div>
+        <div>{{ expressNoText }}</div>
+      </div>
+      <template v-if="info.purchaseDrugOrderStreams && info.purchaseDrugOrderStreams.length > 0">
         <div class="order-item"
-             v-for="item in timeList"
+             v-for="item in info.purchaseDrugOrderStreams"
              :key="item.status">
           <div class="order-label">{{ item.timeStatusTxt }}</div>
           <div>{{ item.createdTime }}</div>
@@ -193,14 +194,8 @@ export default {
         return text
       }
     },
-    timeList() {
-      this.info.purchaseDrugOrderStreams.map((item, index) => {
-        /**拼接 运单编号 */
-        if (item.status == 3 && this.info.shippingMethod == 1 && this.info.callOrderStatus >= 3 && this.info.callOrderStatus != 5) {
-          this.info.purchaseDrugOrderStreams.splice(index, 1, item, { createdTime: this.info.expressNo, status: 9, timeStatusTxt: '运单编号' })
-        }
-      })
-      return this.info.purchaseDrugOrderStreams.filter((item) => item.status > 0)
+    expressNoText() {
+      return this.info.expressNo.map((item) => item.expressNo).join('，')
     }
   },
   async created() {
@@ -462,17 +457,24 @@ export default {
   line-height: 20px;
   .order-item {
     flex: none;
-    width: 60%;
+    width: 50%;
     margin-bottom: 8px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    &:nth-child(2n) {
-      width: 40%;
+    div {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
-  }
-  .order-label:after {
-    content: '：';
+    .order-label {
+      flex: none;
+      width: auto;
+      &:after {
+        content: '：';
+      }
+    }
   }
 }
 </style>
