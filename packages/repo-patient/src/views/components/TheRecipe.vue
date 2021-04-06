@@ -275,11 +275,10 @@ export default {
       this.getPrescriptionImage()
     },
     getPrescripInfo() {
-      // const params = peace.util.decode(this.$route.params.json)
+      const params = peace.util.decode(this.$route.params.json)
 
       //h5.prescribeId  h5支付-购药订单返回
-      // const prescribeId = params.tradeType ? peace.cache.get('h5.prescribeId') : params.prescribeId
-      const prescribeId = 'yjqgmnwgcdojfyvkgsbl'
+      const prescribeId = params.tradeType ? peace.cache.get('h5.prescribeId') : params.prescribeId
       peace.service.patient
         .getPrescripInfo({ prescribeId: prescribeId })
         .then((res) => {
