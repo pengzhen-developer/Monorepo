@@ -45,21 +45,12 @@
             {{scope.row.orderTypeArr.map(item=>item.orderTypeTxt).join(',')}}
           </template>
         </peace-table-column>
-
-        <peace-table-column prop="accountingRate"
-                            width="160"
-                            label="微信结算费率">
-        </peace-table-column>
-        <peace-table-column prop="maxShareRatio"
-                            width="160"
-                            label="允许最大分账比率">
-        </peace-table-column>
         <peace-table-column prop="createdTime"
-                            width="160px"
+                            width="180px"
                             label="创建时间">
         </peace-table-column>
         <peace-table-column prop="updatedTime"
-                            width="160px"
+                            width="180px"
                             label="更新时间">
           <template slot-scope="scope">
             {{scope.row.updatedTime||'--'}}
