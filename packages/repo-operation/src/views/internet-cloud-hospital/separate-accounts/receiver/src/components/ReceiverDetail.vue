@@ -42,7 +42,7 @@
           <el-button class="del-btn"
                      type="text"
                      icon="zyy-icon zyy-shanchu1"
-                     v-on:click="deleteOrderType(subMch,index)"
+                     v-on:click="deleteOrderType(index)"
                      v-if="index>0&&canEditInfo">删除</el-button>
           <div class="flex full-width row">
             <el-form-item class="col-4 q-mr-24 "
@@ -291,15 +291,8 @@ export default {
 
       this.model.subMch.push(info)
     },
-    deleteOrderType(subMch, index) {
-      if (subMch.id) {
-        //编辑-删除修改isDel 软删
-        subMch.isDel = 1
-        this.model.subMch.splice(index, 1, subMch)
-      } else {
-        //新增-删除 直接删除
-        this.model.subMch.splice(index, 1)
-      }
+    deleteOrderType(index) {
+      this.model.subMch.splice(index, 1)
     },
     cancel() {
       this.$emit('onCancel')
@@ -307,12 +300,23 @@ export default {
     cancelEdit() {
       this.isEdit = false
       this.model.subMch = Peace.util.deepClone(this.subMch)
+      this.$refs.form.clearValidate()
     },
     submit() {
       this.$refs.form.validate((valid) => {
         if (valid) {
           //将model.custCode model.organizationName 赋值给 model.subMch ，获取model.subMch,传给后端
-          const params = Peace.util.deepClone(this.model.subMch)
+          let params = Peace.util.deepClone(this.model.subMch)
+          if (this.type == 'detail') {
+            // 处理被删除的项
+            this.subMch.forEach((before) => {
+              let result = this.model.subMch.find((after) => after.id === before.id)
+              if (!result) {
+                before.isDel = 1
+                params.push(before)
+              }
+            })
+          }
 
           //检验订单类型
           //修改 单选 orderType 字符串
@@ -343,6 +347,7 @@ export default {
               element.id = element.id || ''
             }
           })
+
           const service = this.type === 'add' ? 'addSubMch' : 'updateSubMch'
           Service[service](params).then((res) => {
             Peace.util.alert(res.msg)
