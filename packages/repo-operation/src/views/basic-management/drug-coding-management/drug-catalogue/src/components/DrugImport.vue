@@ -106,6 +106,7 @@ export default {
       setTimeout(() => {
         this.fullscreenLoading = false
         this.canClick = false
+        this.$emit('success')
       }, 300)
       this.clearFiles()
     },
