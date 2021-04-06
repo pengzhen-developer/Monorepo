@@ -50,8 +50,6 @@
                           :prop="'subMch.'+index+'.orderType'"
                           :rules="[{
                             required: canEditInfo?true:false, message: '请选择订单类型', trigger: 'change'
-                          },{
-                            validator:checkOrderType, trigger: 'change'
                           }]">
               <template v-if="canShowInfo">
                 <span>{{subMch.orderTypeTxt}}</span>
@@ -166,7 +164,7 @@
         <div class="flex  full-width row justify-end">
           <el-button v-on:click="cancel"
                      v-if="type==='add'">取消</el-button>
-          <el-button v-on:click="isEdit=false"
+          <el-button v-on:click="cancelEdit"
                      v-if="isEdit">取消修改</el-button>
           <el-button v-on:click="submit"
                      type="primary">保存</el-button>
@@ -208,6 +206,8 @@ export default {
       },
       isEdit: false,
       isLoaded: false,
+      //取消编辑，回退到初始化
+      subMch: [],
       source: {
         subMchName: [],
         orderTypes: Constant.orderType
@@ -250,12 +250,6 @@ export default {
   },
 
   methods: {
-    checkOrderType(rule, value, callback) {
-      if (value && this.subMchList.filter((item) => item.orderType === value).length > 1) {
-        callback(new Error('订单类型不能重复'))
-      }
-      callback()
-    },
     getMchByCustCode() {
       if (this.type !== 'detail') {
         this.isLoaded = true
@@ -270,13 +264,17 @@ export default {
             label: item.subMchName
           }
         })
-        this.model.subMch = res.data.list
+        this.model.subMch = Peace.util.deepClone(res.data.list)
+        this.subMch = Peace.util.deepClone(res.data.list)
         this.isLoaded = true
       })
     },
     selectSubMchObject(data) {
       data.subMchId = data.subMchObject.value
       data.subMchName = data.subMchObject.label
+    },
+    getIndex(subMch) {
+      return this.subMchList.findIndex((item) => item.orderType == subMch.orderType)
     },
     addOrderType() {
       const info = {
@@ -287,7 +285,7 @@ export default {
         subMchObject: {},
         maxShareRatio: '',
         accountingRate: '',
-        orderType: '',
+        orderType: this.type == 'add' ? [] : '',
         isDel: 0
       }
 
@@ -306,12 +304,37 @@ export default {
     cancel() {
       this.$emit('onCancel')
     },
+    cancelEdit() {
+      this.isEdit = false
+      this.model.subMch = Peace.util.deepClone(this.subMch)
+    },
     submit() {
       this.$refs.form.validate((valid) => {
         if (valid) {
           //将model.custCode model.organizationName 赋值给 model.subMch ，获取model.subMch,传给后端
           const params = Peace.util.deepClone(this.model.subMch)
 
+          //检验订单类型
+          //修改 单选 orderType 字符串
+          let orderTypeList = []
+          let result = []
+          let flag = false
+          if (this.type === 'detail') {
+            this.subMchList.map((item) => orderTypeList.push(item.orderType))
+            //新增 多选  orderType 数组
+          } else {
+            this.subMchList.map((item) => (orderTypeList = orderTypeList.concat(item.orderType)))
+          }
+          orderTypeList.map((item) => {
+            if (result.findIndex((temp) => temp == item) !== -1) {
+              flag = true
+            } else {
+              result.push(item)
+            }
+          })
+          if (flag) {
+            return Peace.util.warning('订单类型不能重复')
+          }
           params.forEach((element) => {
             element.custCode = this.model.custCode
             element.organizationName = this.model.organizationName
