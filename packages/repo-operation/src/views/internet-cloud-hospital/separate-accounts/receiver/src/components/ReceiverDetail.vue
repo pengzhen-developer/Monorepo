@@ -45,6 +45,7 @@
                      v-on:click="deleteOrderType(index)"
                      v-if="index>0&&canEditInfo">删除</el-button>
           <div class="flex full-width row">
+
             <el-form-item class="col-4 q-mr-24 "
                           label="订单类型"
                           :prop="'subMch.'+index+'.orderType'"
@@ -68,11 +69,12 @@
                 </el-select>
               </template>
             </el-form-item>
+
             <el-form-item class="col-6"
                           label="特约商户号机构"
                           :prop="'subMch.'+index+'.subMchName'"
                           :rules="[{
-                            required: canEditInfo?true:false, message: '请选择商户号机构名称', trigger: 'change'
+                            required: canEditInfo?true:false, message: '请选择特约商户号机构名称', trigger: 'change'
                           }]">
               <template v-if="canShowInfo">
                 <span>{{subMch.subMchName}}</span>
@@ -92,14 +94,14 @@
                 </el-select>
               </template>
             </el-form-item>
-          </div>
-          <div class="flex full-width row">
+
             <el-form-item class="col-4 q-mr-24"
                           label="商户号"
                           :prop="'subMch.'+index+'.subMchId'"
                           :rules="[{
-                            required: canEditInfo?true:false, message: '请选择商户号机构名称', trigger: 'change'
-                          }]">
+                            required: canEditInfo?true:false, message: '请选择特约商户号机构名称', trigger: 'change'
+                          }]"
+                          v-if="subMch.subMchId">
               <template v-if="canShowInfo">
                 <span>{{subMch.subMchId}}</span>
               </template>
@@ -108,7 +110,8 @@
                           disabled></el-input>
               </template>
             </el-form-item>
-            <el-form-item class="col-6 flex items-center"
+
+            <el-form-item class="col-4 flex items-center q-mr-24 "
                           label="微信结算费率"
                           :prop="'subMch.'+index+'.accountingRate'"
                           :rules="[{
@@ -124,8 +127,7 @@
                 </el-radio-group>
               </template>
             </el-form-item>
-          </div>
-          <div class="flex full-width row">
+
             <el-form-item class="col-4 q-mr-24"
                           label="允许最大分账比率"
                           :prop="'subMch.'+index+'.maxShareRatio'"
@@ -144,10 +146,7 @@
                                  v-force="'pInterger'"></el-input-number>
               </template>
             </el-form-item>
-            <el-form-item class="col-6"
-                          label="">
 
-            </el-form-item>
           </div>
         </el-form-item>
       </template>
