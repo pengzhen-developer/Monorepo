@@ -27,6 +27,14 @@
                class="text flex">
             <span>运单编号：{{ expressNum }}</span>
           </div>
+          <div v-if="showDeliveryInfo"
+               class="text flex">
+            <span>
+              配送信息：<span>{{info.deliveryPersonnel}}，</span>
+              <span style="color:#00c6ae;"
+                    @click="startCall([info.deliveryTel])">{{info.deliveryTel}}</span>
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -175,6 +183,9 @@ export default {
   },
   components: { QRCode },
   computed: {
+    showDeliveryInfo() {
+      return this.info.deliveryPersonnel && this.info.deliveryTel ? true : false
+    },
     showTrackingNumber() {
       const ShippingMethod = this.info.shippingMethod
       const OrderStatus = this.info.callOrderStatus
