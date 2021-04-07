@@ -36,9 +36,9 @@ module.exports = {
       // ['vue']: 'Vue',
       // ['element-ui']: 'ELEMENT',
       ['vue']: 'Vue',
-      ['element-ui']: 'ELEMENT',
-      ['@public/static/IM/NIM_Web_NIM_v7.0.0']: 'NIM',
-      ['@public/static/IM/NIM_Web_WebRTC_v7.0.0']: 'WebRTC'
+      ['vuex']: 'Vuex',
+      ['vue-router']: 'VueRouter',
+      ['element-ui']: 'ELEMENT'
     }
   },
 
