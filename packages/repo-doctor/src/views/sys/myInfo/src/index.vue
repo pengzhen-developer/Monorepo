@@ -2,14 +2,15 @@
   <div class="layout-route about">
     <div class="bg-white">
       <el-tabs v-model="active">
-        <el-tab-pane name="0"
+        <el-tab-pane lazy
+                     name="0"
                      label="个人资料">
 
-          <div class="q-pa-md">
+          <div class="q-pa-32">
             <el-form :model="view.model"
                      space-sm
                      label-suffix
-                     label-width="120px">
+                     label-width="auto">
               <el-form-item label="个人头像：">
                 <img :src="view.model.avartor"
                      class="avartor q-mr-md" />
@@ -75,13 +76,14 @@
           </div>
         </el-tab-pane>
 
-        <el-tab-pane name="1"
+        <el-tab-pane lazy
+                     name="1"
                      label="账号设置">
-          <div class="q-pa-md">
+          <div class="q-pa-32">
             <el-form :model="view.model"
                      space-sm
                      label-suffix
-                     label-width="120px">
+                     label-width="auto">
               <el-form-item label="手机号码：">
                 <div class="flex items-center">
                   <span class="inline-block"
@@ -105,9 +107,10 @@
           </div>
         </el-tab-pane>
 
-        <el-tab-pane name="2"
+        <el-tab-pane lazy
+                     name="2"
                      label="我的介绍">
-          <Introduce class="q-pa-md"></Introduce>
+          <Introduce class="q-pa-32"></Introduce>
         </el-tab-pane>
       </el-tabs>
     </div>

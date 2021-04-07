@@ -1,23 +1,28 @@
 <template>
   <div class="about">
     <el-form :model="view.model"
+             space-sm
              label-suffix
-             label-width="120px">
+             label-width="auto">
       <el-form-item label="我的简介：">
-        <el-input :rows="8"
-                  maxlength="500"
-                  placeholder
-                  type="textarea"
-                  v-model="view.model.summary"></el-input>
-        <label class="msg">最多可以输入500字，还可以输入 {{ summaryMaxLength }} 字</label>
+        <div class="flex column">
+          <el-input :rows="8"
+                    maxlength="500"
+                    placeholder
+                    type="textarea"
+                    v-model="view.model.summary"></el-input>
+          <label class="msg">最多可以输入500字，还可以输入 {{ summaryMaxLength }} 字</label>
+        </div>
       </el-form-item>
       <el-form-item label="我的擅长：">
-        <el-input :rows="8"
-                  maxlength="500"
-                  placeholder
-                  type="textarea"
-                  v-model="view.model.special_skill"></el-input>
-        <label class="msg">最多可以输入500字，还可以输入 {{ specialSkillMaxLength }}字</label>
+        <div class="flex column">
+          <el-input :rows="8"
+                    maxlength="500"
+                    placeholder
+                    type="textarea"
+                    v-model="view.model.special_skill"></el-input>
+          <label class="msg">最多可以输入500字，还可以输入 {{ specialSkillMaxLength }}字</label>
+        </div>
       </el-form-item>
       <el-form-item label=" ">
         <el-button @click="save"

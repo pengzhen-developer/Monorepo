@@ -40,7 +40,7 @@
         <PeaceTableColumn width="60"
                           label="序号"
                           prop="orderNumber"></PeaceTableColumn>
-        <PeaceTableColumn min-width="180"
+        <PeaceTableColumn min-width="280"
                           label="订单号"
                           prop="orderNo"></PeaceTableColumn>
         <PeaceTableColumn min-width="160"

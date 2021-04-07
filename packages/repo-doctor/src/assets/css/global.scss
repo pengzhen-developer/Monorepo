@@ -19,20 +19,18 @@ a {
   padding: 0;
 }
 
-
 .layout-route {
-  padding: 20px;
+  padding: 16px;
 
   .card {
     background: #fff;
-    padding: 24px 32px;
+    padding: 24px;
 
     &.card-search {
-      padding: 24px 32px 4px 32px;
+      padding: 24px 24px 4px 24px;
     }
   }
 }
-
 
 .el-loading-mask.is-fullscreen {
   cursor: wait;
