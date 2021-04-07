@@ -57,7 +57,11 @@
       </div>
       <PeaceTable ref="table"
                   size="mini"
-                  pagination>
+                  pagination
+                  :tableProps="{
+                            pageIndex: 'PageIndex',
+                            pageSize: 'PageSize'
+                          }">
         <PeaceTableColumn label="序号"
                           type="index"
                           width="80px">
@@ -92,10 +96,10 @@
         <PeaceTableColumn min-width="100px"
                           label="审核状态"
                           prop="MappingExamineStatus"></PeaceTableColumn>
-        <PeaceTableColumn width="160px"
+        <PeaceTableColumn width="180px"
                           label="配码更新时间"
                           prop="LastModifyTime"></PeaceTableColumn>
-        <PeaceTableColumn width="160px"
+        <PeaceTableColumn width="180px"
                           label="药品添加时间"
                           prop="CreateTime"></PeaceTableColumn>
 
@@ -129,9 +133,7 @@ export default {
         timeRange: [],
         StarUpdateDate: '',
         EndUpdateDate: '',
-        IsPaging: true,
-        PageIndex: 1,
-        PageSize: 10
+        IsPaging: true
       },
 
       source: {
