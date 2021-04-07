@@ -77,21 +77,21 @@
         <div class="module-item">
           <div class="title">个人信息</div>
           <div class="module-item-content">
-            <div class="module-item-label">姓名：</div>
+            <div class="module-item-label auto">姓名：</div>
             <div class="module-item-value">{{internalData.familyInfo.familyName}}</div>
           </div>
           <div class="module-item-content">
-            <div class="module-item-label">年龄：</div>
+            <div class="module-item-label auto">年龄：</div>
             <div class="module-item-value">{{internalData.familyInfo.familyAge }}</div>
           </div>
           <div class="module-item-content">
-            <div class="module-item-label">性别：</div>
+            <div class="module-item-label auto">性别：</div>
             <div class="module-item-value">{{internalData.familyInfo.familySex}}
             </div>
           </div>
           <div class="module-item-content"
                v-if="internalData.familyInfo.guardianName">
-            <div class="module-item-label">监护人：</div>
+            <div class="module-item-label auto">监护人：</div>
             <div class="module-item-value">{{internalData.familyInfo.guardianName}} |
               {{internalData.familyInfo.guardianSex}} |
               {{internalData.familyInfo.guardianAge}}
@@ -107,7 +107,7 @@
              v-if="hasReturnVisitInfo">
 
           <div class="title">复诊信息</div>
-          <div class="module-item-content img"
+          <div class="module-item-content img size-14"
                v-if="internalData.inquiryInfo.inquiryImages.length>0">
             <div class="module-item-label ">复诊凭证：</div>
             <div class="module-item-value img">
@@ -119,14 +119,14 @@
               </div>
             </div>
           </div>
-          <div class="module-item-content"
+          <div class="module-item-content size-14"
                v-else>
-            <div class="module-item-label">复诊凭证 :</div>
+            <div class="module-item-label">复诊凭证：</div>
             <div class="module-item-value">确认遗失
             </div>
           </div>
-          <div class="module-item-content">
-            <div class="module-item-label start">初诊诊断 :</div>
+          <div class="module-item-content size-14">
+            <div class="module-item-label start">初诊诊断：</div>
             <div class="module-item-value">{{internalData.illInfo.confirmIllness}}
             </div>
           </div>
@@ -183,7 +183,7 @@
              v-if="canShowSupplementaryInfo">
           <div>
             <div class="title">补充信息</div>
-            <div class="module-item-content img"
+            <div class="module-item-content img size-14"
                  v-if="internalData.supplementaryInfo.affectedImages.length>0">
               <div class="module-item-label">患处图片：</div>
               <div class="module-item-value img">
@@ -195,12 +195,12 @@
                 </div>
               </div>
             </div>
-            <div class="module-item-content"
+            <div class="module-item-content size-14"
                  v-if="internalData.supplementaryInfo.pregnancyText">
               <div class="module-item-label">特殊时期：</div>
               <div class="module-item-value">{{internalData.supplementaryInfo.pregnancyText}}</div>
             </div>
-            <div class="module-item-content"
+            <div class="module-item-content size-14"
                  v-if="internalData.supplementaryInfo.allergicHistory">
               <div class="module-item-label"
                    style="height:fit-content;"><span>过敏史</span>：</div>
@@ -209,15 +209,23 @@
             </div>
           </div>
         </div>
+
+        <!-- 联系客服 -->
+        <div class="module-item phone"
+             v-if="canShowPhoneBox"
+             @click="callPhone">
+          <van-image :src="require('@src/assets/images/ic_call_default.png')"></van-image>
+          <span>联系客服</span>
+        </div>
       </div>
 
       <!-- 订单收费明细 -->
       <div class="module message"
            v-if="moneyRecord.length>0">
-        <div class="module-item-content message"
+        <div class="module-item-content message size-14"
              v-for="(item,index) in moneyRecord"
              :key="index">
-          <div class="module-item-label">{{item.name}}</div>
+          <div class="module-item-label">{{item.name}}：</div>
           <div class="module-item-value">
             <span v-if="isNaN(item.value.substring(1))">{{item.value}}</span>
             <peace-price v-bind:price="item.value.substring(1)"
@@ -229,29 +237,31 @@
       </div>
       <div class="module message"
            v-else>
-        <div class="module-item-content message">
-          <div class="module-item-label">订单费用</div>
+        <div class="module-item-content message size-14">
+          <div class="module-item-label">订单费用：</div>
           <div class="module-item-value">
             <peace-price v-bind:price="internalData.orderInfo.totalMoney"
                          v-bind:transformOrigin="'right'"
                          v-bind:size="14"></peace-price>
           </div>
         </div>
-        <div class="module-item-content message "
+        <div class="module-item-content message size-14"
              v-if="internalData.orderInfo.equitiesName">
-          <div class="module-item-label">{{internalData.orderInfo.equitiesName}}</div>
+          <div class="module-item-label">{{internalData.orderInfo.equitiesName}}：</div>
           <div class="module-item-value">
+            <span v-if="(internalData.inquiryInfo.inquiryStatus==ENUM.INQUIRY_STATUS.已取消||internalData.inquiryInfo.inquiryStatus==ENUM.INQUIRY_STATUS.已退诊)"
+                  style="margin-right:-8px;">(已退回)</span>
             <peace-price v-bind:price="internalData.orderInfo.totalMoney"
                          v-bind:prefix="'-￥'"
                          v-bind:transformOrigin="'right'"
                          v-bind:size="14"></peace-price>
-            <span v-if="(internalData.inquiryInfo.inquiryStatus==ENUM.INQUIRY_STATUS.已取消||internalData.inquiryInfo.inquiryStatus==ENUM.INQUIRY_STATUS.已退诊)">(已退回)</span>
+
           </div>
         </div>
       </div>
 
       <!-- 应付/实付金额 -->
-      <div class="module"
+      <div class="module money"
            v-if="internalData.inquiryInfo.inquiryStatus != ENUM.INQUIRY_STATUS.待支付 &&internalData.inquiryInfo.appointmentStatus!=2">
         <!-- 取消订单的状态 -->
         <template v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已取消">
@@ -266,17 +276,18 @@
             <div class="money">
               <peace-price v-bind:price="internalData.orderInfo.orderMoney"
                            v-bind:transformOrigin="'right'"
-                           v-bind:size="18"></peace-price>
+                           v-bind:size="16"></peace-price>
             </div>
           </div>
           <div class="brief right"
                v-else>
             实付金额：
             <div class="money">
+              <span v-if="internalData.orderInfo.refundTime ">（已退款）</span>
               <peace-price v-bind:price="internalData.orderInfo.payMoney"
                            v-bind:transformOrigin="'right'"
-                           v-bind:size="18"></peace-price>
-              <span v-if="internalData.orderInfo.refundTime ">（已退款）</span>
+                           v-bind:size="16"></peace-price>
+
             </div>
           </div>
         </template>
@@ -285,53 +296,47 @@
           <div class="brief right">
             实付金额：
             <div class="money">
+              <span v-if="internalData.orderInfo.refundTime"
+                    style="margin-right:-14px;">（已退款）</span>
               <peace-price v-bind:price="internalData.orderInfo.payMoney"
                            v-bind:transformOrigin="'right'"
                            v-bind:size="18"></peace-price>
-              <span v-if="internalData.orderInfo.refundTime">（已退款）</span>
+
             </div>
           </div>
         </template>
       </div>
 
       <!--订单操作时间轴-->
-      <div class="module message">
-        <div class="module-item-content message">
-          <div class="module-item-label">订单编号</div>
+      <div class="module">
+        <div class="module-item-content size-14">
+          <div class="module-item-label">订单编号：</div>
           <div class="module-item-value">{{ internalData.orderInfo.orderNo }}</div>
         </div>
-        <div class="module-item-content message">
-          <div class="module-item-label">订单时间</div>
+        <div class="module-item-content size-14">
+          <div class="module-item-label">订单时间：</div>
           <div class="module-item-value">{{ internalData.orderInfo.orderTime }}</div>
         </div>
         <template v-if="internalData.orderInfo.paymentType||internalData.orderInfo.servicePackageName">
-          <div class="module-item-content message start">
-            <div class="module-item-label">支付方式</div>
+          <div class="module-item-content start size-14">
+            <div class="module-item-label">支付方式：</div>
             <div class="module-item-value">{{paymentTypeText}}</div>
           </div>
-          <div class="module-item-content message">
-            <div class="module-item-label">支付时间</div>
+          <div class="module-item-content size-14">
+            <div class="module-item-label">支付时间：</div>
             <div class="module-item-value">{{ internalData.orderInfo.payTime }}</div>
           </div>
         </template>
-        <div class="module-item-content message"
+        <div class="module-item-content size-14"
              v-if="internalData.inquiryInfo.inquiryStatus== ENUM.INQUIRY_STATUS.已取消">
-          <div class="module-item-label">{{internalData.inquiryInfo.appointmentStatus==2?'关闭时间':'取消时间'}}</div>
+          <div class="module-item-label">{{internalData.inquiryInfo.appointmentStatus==2?'关闭时间':'取消时间'}}：</div>
           <div class="module-item-value">{{ internalData.inquiryInfo.cancelTime }}</div>
         </div>
-        <div class="module-item-content message"
+        <div class="module-item-content size-14"
              v-if="internalData.orderInfo.refundTime">
-          <div class="module-item-label">退款时间</div>
+          <div class="module-item-label">退款时间：</div>
           <div class="module-item-value">{{ internalData.orderInfo.refundTime }}</div>
         </div>
-      </div>
-
-      <!-- 联系客服 -->
-      <div class="module phone"
-           v-if="canShowPhoneBox"
-           @click="callPhone">
-        <van-image :src="require('@src/assets/images/ic_call_default.png')"></van-image>
-        <span>联系客服</span>
       </div>
     </div>
     <!-- footer -->
@@ -1253,11 +1258,18 @@ export default {
   font-weight: 400;
   line-height: 24px;
   justify-content: flex-start;
+  &.size-14 {
+    font-size: 14px;
+    line-height: 20px;
+  }
   &.message {
     justify-content: space-between;
   }
   &.start {
     align-items: flex-start;
+    .module-item-value {
+      word-break: break-all;
+    }
   }
   &.img {
     display: block;
@@ -1270,7 +1282,10 @@ export default {
   }
   .module-item-label {
     color: rgba(51, 51, 51, 0.6);
-    margin-right: 5px;
+    min-width: 5.5em;
+    &.auto {
+      min-width: auto;
+    }
   }
   .module-item-value {
     color: #333333;
@@ -1301,6 +1316,20 @@ export default {
   &.record {
     .title {
       margin: 0;
+    }
+  }
+  &.phone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: normal;
+    color: rgba(51, 51, 51, 0.6);
+    font-size: 14px;
+    .van-image {
+      width: 14px;
+      height: 14px;
+      margin-right: 8px;
+      cursor: pointer;
     }
   }
   &:not(:last-child) {
@@ -1422,21 +1451,16 @@ export default {
         }
       }
     }
-    &.phone {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 20px;
-      color: rgba(51, 51, 51, 0.6);
-      font-size: 14px;
-      .van-image {
-        width: 14px;
-        height: 14px;
-        margin-right: 8px;
-        cursor: pointer;
+    &.money {
+      margin-top: -16px;
+      justify-content: space-between;
+      padding: 0 16px;
+      .right {
+        padding-top: 8px;
+        padding-bottom: 16px;
+        border-top: 1px dashed rgba(51, 51, 51, 0.1);
       }
     }
-
     .cancelText {
       height: 45px;
       background: rgba(240, 252, 250, 1);
@@ -1499,7 +1523,6 @@ export default {
   .brief {
     font-size: 16px;
     font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
     color: #333333;
     line-height: 24px;
   }
@@ -1535,6 +1558,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
   }
   .money {
     color: #f2223b;
