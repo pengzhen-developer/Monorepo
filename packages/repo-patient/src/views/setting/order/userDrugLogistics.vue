@@ -23,10 +23,6 @@
           <div class="text">
             订单编号：{{info.orderNo}}
           </div>
-          <div v-if="showTrackingNumber"
-               class="text flex">
-            <span>运单编号：{{ expressNum }}</span>
-          </div>
           <div v-if="showDeliveryInfo"
                class="text flex">
             <span>
@@ -47,12 +43,20 @@
     <div class="module"
          v-if="loading">
       <van-tabs v-model="active"
-                v-if="info.expressNo.length>1"
                 @click="changeExpressNum">
         <van-tab :title="item.text"
                  v-for="(item,index) in info.expressNo"
                  :key="index"></van-tab>
       </van-tabs>
+
+      <div v-if="expressNum"
+           class="express-info">
+        <div>
+          <span v-if="expressOrg">{{expressOrg}}：</span>
+          <span>{{expressNum}}</span>
+        </div>
+      </div>
+
       <template v-if="loadingExpressList">
         <div class="time-line express"
              v-if="info.shippingMethod == ENUM.SHIPPING_METHOD.HOME &&expressList.length>0">
@@ -167,6 +171,7 @@ export default {
   data() {
     return {
       expressNum: '',
+      expressOrg: '',
       active: 0,
       ENUM,
       showQRCode: false,
@@ -217,10 +222,12 @@ export default {
     beforeChange() {},
     changeExpressNum() {
       const num = this.info.expressNo[this.active].expressNo
+      const expressOrg = this.info.expressNo[this.active].expressOrg
       if (num === this.expressNum) {
         return false
       } else {
         this.expressNum = num
+        this.expressOrg = expressOrg
       }
       this.getExpressList()
     },
@@ -248,7 +255,7 @@ export default {
         })
 
         this.expressNum = this.info.expressNo[0].expressNo
-
+        this.expressOrg = this.info.expressNo[0].expressOrg
         let expressData = null
         try {
           expressData = await peace.service.purchasedrug.ExpressQuery({ expressNo: this.expressNum })
@@ -313,7 +320,7 @@ export default {
 
 <style lang="scss" scoped>
 .van-tabs {
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   height: 28px;
   /deep/.van-tab {
     width: 20%;
@@ -325,6 +332,8 @@ export default {
   /deep/.van-tabs__nav {
     justify-content: center;
     height: 28px;
+    padding-left: 11px;
+    padding-right: 11px;
   }
 
   /deep/.van-tab--active {
@@ -335,6 +344,21 @@ export default {
     border-radius: 1px;
     height: 2px;
     width: 68px;
+  }
+}
+.express-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 16px;
+  > div {
+    padding: 2px 26px;
+    background: rgba(0, 198, 174, 0.1);
+    border-radius: 12px;
+    height: 24px;
+    color: rgba(51, 51, 51, 0.6);
+    line-height: 20px;
   }
 }
 .qr-btn {
