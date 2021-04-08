@@ -125,7 +125,7 @@
                               min-width="140px"></PeaceTableColumn>
             <PeaceTableColumn label="创建时间"
                               prop="CreateTime"
-                              min-width="160px"></PeaceTableColumn>
+                              min-width="180px"></PeaceTableColumn>
             <PeaceTableColumn label="启用状态"
                               prop="EnableStatus"
                               min-width="140px">

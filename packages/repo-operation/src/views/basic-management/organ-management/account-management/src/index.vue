@@ -3,7 +3,6 @@
     <div class="card card-search q-mb-md">
       <el-form v-bind:model="model"
                inline="inline"
-               label-width="auto"
                label-suffix="："
                size="mini">
         <el-form-item label="联系人">
@@ -65,7 +64,7 @@
         <PeaceTableColumn min-width="180px"
                           label="邮箱"
                           prop="email"></PeaceTableColumn>
-        <PeaceTableColumn min-width="160px"
+        <PeaceTableColumn min-width="180px"
                           label="注册时间"
                           prop="createdTime"></PeaceTableColumn>
         <PeaceTableColumn min-width="100px"

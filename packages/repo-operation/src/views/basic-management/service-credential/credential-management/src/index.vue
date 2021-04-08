@@ -22,7 +22,8 @@
         <PeaceTableColumn label="凭证详情"
                           prop="configDetails"></PeaceTableColumn>
         <PeaceTableColumn label="创建时间"
-                          prop="createTime"></PeaceTableColumn>
+                          prop="createTime"
+                          width="180px"></PeaceTableColumn>
 
         <PeaceTableColumn fixed="right"
                           width="150px"

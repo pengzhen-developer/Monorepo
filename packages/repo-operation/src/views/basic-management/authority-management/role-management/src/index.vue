@@ -61,7 +61,8 @@
           </template>
         </el-table-column>
         <el-table-column prop="createTime"
-                         label="创建时间">
+                         label="创建时间"
+                         width="180px">
         </el-table-column>
         <el-table-column min-width="100px"
                          align="center"

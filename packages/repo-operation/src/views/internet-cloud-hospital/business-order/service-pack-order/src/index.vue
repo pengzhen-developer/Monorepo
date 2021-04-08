@@ -2,7 +2,6 @@
   <div class="layout-route">
     <div class="card card-search q-mb-md">
       <el-form :model="model"
-               label-width="auto"
                label-suffix="："
                inline>
         <el-form-item label="服务包名称">

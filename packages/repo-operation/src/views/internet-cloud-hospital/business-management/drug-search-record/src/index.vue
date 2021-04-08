@@ -49,7 +49,7 @@
         <PeaceTableColumn min-width="150px"
                           label="科别"
                           prop="deptName"></PeaceTableColumn>
-        <PeaceTableColumn min-width="150px"
+        <PeaceTableColumn min-width="180px"
                           label="查询时间"
                           prop="createdTime"></PeaceTableColumn>
 

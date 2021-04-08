@@ -5,7 +5,6 @@
       <div class="card card-search q-mb-md">
         <el-form v-bind:model="model"
                  inline="inline"
-                 label-width="auto"
                  label-suffix="："
                  size="mini">
           <el-form-item label="医院订单编号">

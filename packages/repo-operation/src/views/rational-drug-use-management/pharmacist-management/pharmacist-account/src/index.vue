@@ -3,7 +3,6 @@
     <div class="card card-search q-mb-md">
       <el-form v-bind:model="model"
                inline="inline"
-               label-width="auto"
                label-suffix="："
                size="mini">
         <el-form-item label="机构名称">
@@ -47,7 +46,7 @@
         </PeaceTableColumn>
         <PeaceTableColumn label="账号"
                           prop="UserName"
-                          min-width="100px">
+                          min-width="120px">
         </PeaceTableColumn>
         <PeaceTableColumn label="所在部门"
                           prop="DepartName"
@@ -57,7 +56,8 @@
                           min-width="160px">
         </PeaceTableColumn>
         <PeaceTableColumn label="账号状态"
-                          prop="EnableStatus"></PeaceTableColumn>
+                          prop="EnableStatus"
+                          min-width="120px"></PeaceTableColumn>
         <PeaceTableColumn label="备注"
                           prop="Note"
                           min-width="160px">
@@ -67,7 +67,7 @@
         </PeaceTableColumn>
         <PeaceTableColumn label="创建时间"
                           prop="CREATETIME"
-                          min-width="160px"></PeaceTableColumn>
+                          min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="操作"
                           width="100px"
                           fixed="right">

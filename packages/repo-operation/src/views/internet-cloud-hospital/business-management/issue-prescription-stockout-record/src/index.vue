@@ -3,7 +3,6 @@
 
     <div class="card card-search q-mb-md">
       <el-form inline
-               label-width="auto"
                label-suffix="："
                v-on:keyup.enter.native="get"
                v-on:submit.native.prevent
@@ -58,7 +57,7 @@
         <PeaceTableColumn min-width="80px"
                           label="商品件数"
                           prop="drugTypeNum"></PeaceTableColumn>
-        <PeaceTableColumn width="160px"
+        <PeaceTableColumn width="180px"
                           label="操作时间"
                           prop="createdTime"></PeaceTableColumn>
         <PeaceTableColumn width="120px"

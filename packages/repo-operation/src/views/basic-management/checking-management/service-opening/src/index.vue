@@ -65,7 +65,7 @@
         <PeaceTableColumn min-width="120px"
                           label="服务名称"
                           prop="serviceName"></PeaceTableColumn>
-        <PeaceTableColumn min-width="160px"
+        <PeaceTableColumn min-width="180px"
                           label="申请时间"
                           prop="applyTime"></PeaceTableColumn>
         <PeaceTableColumn min-width="110px"
@@ -77,7 +77,7 @@
             <span>{{ scope.row.checkStatus | getEnumLabel(source.ENUM_APPLY_STATUS) }}</span>
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn min-width="160px"
+        <PeaceTableColumn min-width="180px"
                           label="审核时间"
                           prop="checkTime"></PeaceTableColumn>
         <PeaceTableColumn min-width="80px"

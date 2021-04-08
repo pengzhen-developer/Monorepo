@@ -2,7 +2,6 @@
   <div class="layout-route">
     <div class="card card-search q-mb-md">
       <el-form :model="model"
-               label-width="auto"
                label-suffix="："
                inline>
         <el-form-item label="服务包名称">
@@ -64,7 +63,7 @@
         </PeaceTableColumn>
         <PeaceTableColumn label="核销时间"
                           prop="createdTime"
-                          min-width="160px">
+                          min-width="180px">
         </PeaceTableColumn>
         <PeaceTableColumn label="核销操作人">
           <template slot-scope="scope">

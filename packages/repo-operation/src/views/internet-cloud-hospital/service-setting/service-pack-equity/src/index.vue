@@ -3,7 +3,6 @@
 
     <div class="card card-search q-mb-md">
       <el-form inline
-               label-width="auto"
                label-suffix="："
                v-on:keyup.enter.native="get"
                v-on:submit.native.prevent

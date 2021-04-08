@@ -3,7 +3,6 @@
        full-width">
     <div class="card card-search q-mb-md">
       <el-form inline
-               label-width="auto"
                label-suffix="："
                v-bind:model="model"
                v-on:submit.native.prevent>

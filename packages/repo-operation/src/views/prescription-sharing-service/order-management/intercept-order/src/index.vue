@@ -2,7 +2,6 @@
   <div class="layout-route">
     <div class="card card-search q-mb-md">
       <el-form inline
-               label-width="auto"
                label-suffix="："
                v-bind:model="model"
                v-on:keyup.enter.native="fetch"
@@ -96,7 +95,7 @@
 
         <PeaceTableColumn prop="CreateOrderTime"
                           label="同步时间"
-                          min-width="160px"></PeaceTableColumn>
+                          min-width="180px"></PeaceTableColumn>
 
         <PeaceTableColumn prop="DrugStoreName"
                           label="药房"

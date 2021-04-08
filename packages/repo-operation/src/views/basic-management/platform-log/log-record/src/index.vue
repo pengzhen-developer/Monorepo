@@ -78,7 +78,7 @@
         <PeaceTableColumn min-width="160px"
                           label="操作人"
                           prop="createBy"></PeaceTableColumn>
-        <PeaceTableColumn width="160px"
+        <PeaceTableColumn width="180px"
                           label="操作时间"
                           prop="createTime"></PeaceTableColumn>
 

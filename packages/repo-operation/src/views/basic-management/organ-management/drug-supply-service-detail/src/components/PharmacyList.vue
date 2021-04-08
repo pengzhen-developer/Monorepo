@@ -32,7 +32,7 @@
         </el-table-column>
         <el-table-column label="创建时间"
                          prop="CreateTime"
-                         min-width="160px"></el-table-column>
+                         min-width="180px"></el-table-column>
         <el-table-column label="启用状态"
                          prop="EnableStatus"
                          min-width="100px">

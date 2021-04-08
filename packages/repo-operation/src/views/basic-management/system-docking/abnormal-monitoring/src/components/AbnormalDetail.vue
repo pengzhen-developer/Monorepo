@@ -35,7 +35,7 @@
       </el-table-column>
       <el-table-column label="同步时间"
                        prop="synTime"
-                       min-width="100px"></el-table-column>
+                       min-width="180px"></el-table-column>
     </peace-table>
   </div>
 </template>

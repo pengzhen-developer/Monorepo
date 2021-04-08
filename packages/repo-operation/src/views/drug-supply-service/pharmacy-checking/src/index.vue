@@ -93,7 +93,7 @@ sequence <template>
         </PeaceTableColumn>
         <PeaceTableColumn label="申请时间"
                           prop="CreateTime"
-                          min-width="160px"></PeaceTableColumn>
+                          min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="认证状态"
                           prop="ExamineStatus"
                           min-width="100px">
@@ -105,7 +105,7 @@ sequence <template>
         </PeaceTableColumn>
         <PeaceTableColumn label="审核时间"
                           prop="CommitExamineDateTime"
-                          min-width="160px"></PeaceTableColumn>
+                          min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="操作"
                           width="100px"
                           fixed="right">

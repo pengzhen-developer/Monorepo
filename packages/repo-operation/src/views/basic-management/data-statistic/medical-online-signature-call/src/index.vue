@@ -81,7 +81,7 @@
         <PeaceTableColumn min-width="150px"
                           label="处方编号"
                           prop="prescriptionNo"></PeaceTableColumn>
-        <PeaceTableColumn min-width="150px"
+        <PeaceTableColumn min-width="180px"
                           label="调用时间"
                           prop="callTime"></PeaceTableColumn>
 

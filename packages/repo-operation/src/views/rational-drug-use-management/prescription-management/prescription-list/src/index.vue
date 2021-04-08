@@ -4,7 +4,6 @@
       <div v-show="!dialog.visible">
         <div class="card card-search q-mb-md">
           <el-form inline
-                   label-width="auto"
                    label-suffix="："
                    v-bind:model="model">
             <el-form-item label="处方编号">
@@ -203,7 +202,7 @@
 
             <PeaceTableColumn label="处方创建时间"
                               prop="createTime"
-                              min-width="160px"></PeaceTableColumn>
+                              min-width="180px"></PeaceTableColumn>
 
             <PeaceTableColumn label="机构名称"
                               prop="organName"
@@ -249,7 +248,7 @@
 
             <PeaceTableColumn label="审方时间"
                               prop="pharmacistExamTime"
-                              min-width="160px"></PeaceTableColumn>
+                              min-width="180px"></PeaceTableColumn>
 
             <PeaceTableColumn label="操作"
                               fixed="right"

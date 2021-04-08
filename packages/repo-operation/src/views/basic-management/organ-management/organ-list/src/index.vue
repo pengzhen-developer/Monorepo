@@ -4,7 +4,6 @@
       <div class="card card-search q-mb-md">
         <el-form v-bind:model="model"
                  inline="inline"
-                 label-width="auto"
                  label-suffix="："
                  size="mini">
 
@@ -74,7 +73,7 @@
               <div v-html="formatServiceName(scope.row)"></div>
             </template>
           </PeaceTableColumn>
-          <PeaceTableColumn min-width="160px"
+          <PeaceTableColumn min-width="180px"
                             label="认证时间"
                             prop="checkTime">
             <template slot-scope="scope">

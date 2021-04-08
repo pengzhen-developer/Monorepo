@@ -3,7 +3,6 @@
     <div class="card card-search q-mb-md">
 
       <el-form v-bind:model="model"
-               label-width="auto"
                label-suffix="："
                inline>
         <el-form-item label="完单日期">
@@ -81,7 +80,7 @@
                           min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="完单时间"
                           prop="completionTime"
-                          width="160px"></PeaceTableColumn>
+                          width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="订单金额"
                           prop="orderMoney"
                           width="100px"></PeaceTableColumn>

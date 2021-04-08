@@ -2,7 +2,6 @@
   <div class="layout-route">
     <div class="card card-search q-mb-md">
       <el-form :model="search"
-               label-width="auto"
                label-suffix="："
                inline>
         <el-form-item label="申请医生">
@@ -76,7 +75,7 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="会诊时间"
-                          min-width="165"
+                          min-width="180"
                           prop="consultTime"></PeaceTableColumn>
         <PeaceTableColumn label="订单状态"
                           min-width="100">

@@ -2,7 +2,6 @@
   <div class="layout-route">
     <div class="card card-search q-mb-md">
       <el-form :model="model"
-               label-width="110px"
                label-suffix="："
                inline>
         <el-form-item label="机构名称">
@@ -108,7 +107,7 @@
 
         <peace-table-column prop="createdTime"
                             label="开具时间"
-                            width="160">
+                            width="180">
         </peace-table-column>
         <peace-table-column fixed="right"
                             label="操作">

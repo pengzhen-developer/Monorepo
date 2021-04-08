@@ -68,7 +68,7 @@
                           prop="inquiry_type">
         </PeaceTableColumn>
         <PeaceTableColumn label="转诊时间"
-                          min-width="165"
+                          min-width="180"
                           prop="created_time"></PeaceTableColumn>
         <PeaceTableColumn label="流转状态"
                           min-width="100">

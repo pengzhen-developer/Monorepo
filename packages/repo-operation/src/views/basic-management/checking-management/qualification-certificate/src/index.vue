@@ -71,10 +71,10 @@
             <span>{{ scope.row.checkStatus | getEnumLabel(source.ENUM_CHECK_STATUS) }}</span>
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn min-width="160px"
+        <PeaceTableColumn min-width="180px"
                           label="申请时间"
                           prop="applyTime"></PeaceTableColumn>
-        <PeaceTableColumn min-width="160px"
+        <PeaceTableColumn min-width="180px"
                           label="审核时间"
                           prop="checkTime"></PeaceTableColumn>
         <PeaceTableColumn min-width="80px"

@@ -2,7 +2,6 @@
   <div class=" layout-route">
     <div class="card card-search q-mb-md">
       <el-form inline=""
-               label-width="auto"
                label-suffix="：">
         <el-form-item label="账号">
           <el-input v-model="model.username"
@@ -68,7 +67,8 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn prop="createTime"
-                          label="创建时间">
+                          label="创建时间"
+                          width="180px">
         </PeaceTableColumn>
         <PeaceTableColumn min-width="100px"
                           fixed="right"
