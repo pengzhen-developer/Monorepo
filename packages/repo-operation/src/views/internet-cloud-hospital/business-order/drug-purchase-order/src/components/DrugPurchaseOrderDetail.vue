@@ -177,7 +177,11 @@ export default {
   computed: {
     moneyRecord() {
       //过滤金额为空
-      return this.info.moneyRecord.filter((item) => this.getNum(item.value) >= 0)
+      if (this.info.moneyRecord != null && this.info.moneyRecord.length > 0) {
+        return this.info.moneyRecord.filter((item) => this.getNum(item.value) >= 0)
+      } else {
+        return []
+      }
     },
     cancelList() {
       let list = []
