@@ -10,7 +10,8 @@
         <el-form-item label="云仓名称"
                       prop="Name">
           <el-input placeholder="请输入"
-                    v-model.trim="model.Name"></el-input>
+                    v-model.trim="model.Name"
+                    maxlength="30"></el-input>
         </el-form-item>
         <el-form-item label="云仓系统"
                       prop="SystemCode">
