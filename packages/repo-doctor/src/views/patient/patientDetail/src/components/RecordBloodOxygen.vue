@@ -102,7 +102,7 @@ export default {
 
     showReport() {
       if (this.data.noData) {
-        return Peace.util.info('暂无数据')
+        return Peace.util.alert('暂无数据')
       }
 
       const dataId = this.type == 1 ? this.data.dataNo : this.data.id

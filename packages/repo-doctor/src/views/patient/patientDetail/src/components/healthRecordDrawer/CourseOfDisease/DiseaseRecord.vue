@@ -407,7 +407,7 @@ export default {
       Peace.$emit('showDrawer', { index: Peace.type.HEALTH_RECORD.ACTION_TYPE.添加病程 })
     },
     sendMessage() {
-      Peace.util.info('暂未开通')
+      Peace.util.alert('暂未开通')
     },
     getDiseaseData() {
       const tmp = {

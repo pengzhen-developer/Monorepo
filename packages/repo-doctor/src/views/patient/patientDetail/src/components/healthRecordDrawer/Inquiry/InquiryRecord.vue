@@ -74,7 +74,7 @@ export default {
   },
   methods: {
     sendMessage() {
-      Peace.util.info('暂未开通')
+      Peace.util.alert('暂未开通')
     }
   }
 }
