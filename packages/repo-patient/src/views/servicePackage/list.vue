@@ -6,16 +6,18 @@
               :finished-text="list>0?'没有更多了':''"
               @load="get"
               class="list">
-      <div class="service-item"
+      <div class="service-item-box"
            v-for="(item,index) in list"
-           v-bind:key="index"
-           v-on:click="gotoServicePackageDeatilPage(item.servicePackageId)">
-        <div class="title">{{item.servicePackageName}}</div>
-        <div class="subtitle">{{item.equityText}}</div>
-        <div class="price">
-          <peace-price v-bind:size="18"
-                       v-bind:price="item.price"></peace-price>
-          <span style="margin:0 0 0 5px;">/{{item.effectiveDays}}天</span>
+           v-bind:key="index">
+        <div class="service-item"
+             v-on:click="gotoServicePackageDeatilPage(item.servicePackageId)">
+          <div class="title">{{item.servicePackageName}}</div>
+          <div class="subtitle">{{item.equityText}}</div>
+          <div class="price">
+            <peace-price v-bind:size="18"
+                         v-bind:price="item.price"></peace-price>
+            <span style="margin:0 0 1px 5px;">/{{item.effectiveDays}}天</span>
+          </div>
         </div>
       </div>
     </van-list>
@@ -81,7 +83,11 @@ export default {
 
 <style lang="scss" scoped>
 .list {
-  padding: 16px;
+  padding: 0 0 16px;
+}
+.service-item-box {
+  padding: 16px 16px 0;
+  overflow: hidden;
 }
 .service-item {
   padding: 16px;

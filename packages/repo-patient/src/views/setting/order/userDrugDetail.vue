@@ -72,8 +72,11 @@
             </div>
             <div class="head-tit"
                  @click="goDrugPhaHomePage">{{ order.drugStoreName }}</div>
-            <div class="head-ico-arrow"
-                 :class="{'icon-next':isCloudPharmacy==false}"></div>
+            <div class="head-ico-arrow">
+              <van-image v-if="isCloudPharmacy==false"
+                         :src="require('@src/assets/images/ic_right.png')"></van-image>
+            </div>
+
             <div class="head-Rp"
                  @click="goPrescripDetailPage">查看处方
             </div>
@@ -117,7 +120,7 @@
         <div class="dl-packet"
              v-for="(item,index) in moneyRecord"
              :key="index">
-          <div class="dt">{{item.name}}</div>
+          <div class="dt">{{item.name}}：</div>
           <div class="dd">
             <span v-if="isNaN(item.value.substring(1))">{{item.value}}</span>
             <peace-price v-bind:price="item.value.substring(1)"
@@ -130,7 +133,7 @@
       <div class="module intro"
            v-else>
         <div class="dl-packet">
-          <div class="dt">订单总额</div>
+          <div class="dt">订单总额：</div>
           <div class="dd">
             <peace-price v-bind:price="order.totalMoney"
                          v-bind:size="13"></peace-price>
@@ -146,10 +149,13 @@
           </div>
           <div class="dd">
             <div class="strong">
-              <peace-price v-bind:price="canShowPayway?order.payMoney:curPayMoney"
-                           v-bind:size="20"></peace-price>
               <span class="refunded"
-                    v-if="order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&order.refundTime">(已退款)</span>
+                    style="margin-right:-14px;"
+                    v-if="order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&order.refundTime">（已退款）</span>
+              <peace-price v-bind:price="canShowPayway?order.payMoney:curPayMoney"
+                           v-bind:transformOrigin="'right'"
+                           v-bind:size="20"></peace-price>
+
             </div>
           </div>
         </div>
@@ -1018,23 +1024,18 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 62%;
+  line-height: 1;
 }
 .head-ico-arrow {
-  position: relative;
   flex: 1;
-  min-width: 7px;
+  display: flex;
+  align-items: center;
+  height: 14px;
+  .van-image {
+    width: 14px;
+  }
 }
-.head-ico-arrow.icon-next::before {
-  content: '';
-  position: absolute;
-  width: 7px;
-  height: 12px;
-  display: block;
-  left: 5px;
-  top: 50%;
-  transform: translateY(-50%);
-  background-size: cover;
-}
+
 .head-Rp {
   color: #999;
   font-size: 12px;
@@ -1068,7 +1069,7 @@ export default {
   min-width: 30%;
 }
 .dl-packet .dt {
-  min-width: 70px;
+  min-width: 5em;
   font-size: 12px;
 }
 .dl-packet .dd {
@@ -1091,26 +1092,33 @@ export default {
   align-items: center;
 }
 .str {
-  padding: 3px 15px;
+  padding: 0px 16px;
+  margin-top: -10px;
+
+  .dl-packet {
+    border-top: 1px dashed rgba(51, 51, 51, 0.1);
+  }
+  .dt {
+    color: #333333;
+    font-size: 16px;
+    line-height: 2.8;
+    font-weight: bold;
+  }
+  .dd {
+    font-size: 12px;
+    color: #999;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .strong {
+    color: #ff344d;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: bold;
+  }
 }
-.str .dt {
-  color: #333333;
-  font-size: 14px;
-  line-height: 2.8;
-}
-.str .dd {
-  font-size: 12px;
-  color: #999;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-.str .strong {
-  color: #ff344d;
-  font-size: 20px;
-  line-height: 28px;
-  font-weight: bold;
-}
+
 .bottom .btn {
   margin: 5px 0;
 }
@@ -1250,8 +1258,12 @@ export default {
   border-radius: 3px;
   overflow: hidden;
 }
+.box .dl-packet .dt {
+  color: rgba(51, 51, 51, 0.6);
+  text-align: left;
+}
 .box .dl-packet .dd {
-  color: #999999;
+  color: #333;
   text-align: left;
 }
 .order {

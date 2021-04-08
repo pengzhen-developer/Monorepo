@@ -248,7 +248,6 @@ export default {
     }
     .van-image {
       width: 25px;
-      height: 25px;
       position: relative;
       span {
         position: absolute;
@@ -281,8 +280,8 @@ export default {
   margin-top: 24px;
   padding: 0 16px;
   .user-title {
-    height: 24px;
-    line-height: 24px;
+    height: 16px;
+    line-height: 16px;
     font-size: 16px;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: bold;
@@ -295,12 +294,12 @@ export default {
       height: 18px;
       position: absolute;
       left: 0;
-      top: 3px;
+      top: -1px;
       border-radius: 2px;
     }
   }
   .user-block-list {
-    padding: 19px 12px 0;
+    padding: 16px 12px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -312,12 +311,11 @@ export default {
       min-width: 56px;
       .van-image {
         width: 32px;
-        height: 32px;
       }
       span {
-        margin-top: 7px;
+        margin-top: 8px;
         font-family: PingFangSC-Regular, PingFang SC;
-        line-height: 20px;
+        line-height: 1;
       }
     }
   }

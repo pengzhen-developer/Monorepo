@@ -6,9 +6,6 @@
              v-model="show">
 
     <div class="cost">
-      <van-image class="close"
-                 @click="changeFlag('cancel')"
-                 :src="require('@src/assets/images/ic_close@2x.png')"></van-image>
       <div class="cost-content">
         <template v-if="moneyRecord&&moneyRecord.length>1">
           <div class="cost-platform"
@@ -35,12 +32,14 @@
         </div>
       </div>
       <div class="cost-footer">
+        <van-button round
+                    @click="changeFlag('cancel')">取消</van-button>
         <peace-button class="cost-submit"
                       round
                       type="primary"
                       throttle
                       :throttleTime="3000"
-                      @click="pay">确认支付</peace-button>
+                      @click="pay">确认</peace-button>
       </div>
     </div>
   </van-popup>
@@ -222,7 +221,7 @@ export default {
 
 <style lang="scss" scoped>
 .van-popup {
-  padding: 23px 15px 15px 15px;
+  padding: 23px 16px 15px 16px;
 }
 .header {
   display: flex;
@@ -254,7 +253,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 30px 15px 70px;
+    padding: 20px 0 64px;
     width: 100%;
     background-color: #fff;
     .cost-code {
@@ -285,7 +284,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     padding: 10px 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid rgba(51, 51, 51, 0.05);
     .cost-platform-label {
       color: #666;
       font-size: 16px;
@@ -296,7 +295,7 @@ export default {
     }
     &.selfpay {
       margin-top: 10px;
-      border-bottom: 0;
+      // border-bottom: 0;
       .cost-platform-label {
         color: #333;
       }
@@ -315,13 +314,28 @@ export default {
     // background-color: #f5f5f5;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 12px 15px 11px 15px;
-    .cost-submit {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    justify-content: space-between;
+    padding: 0px 16px 24px 16px;
+    .van-button {
+      width: 155px;
+      height: 48px;
+      background: rgba(51, 51, 51, 0.05);
+      border-radius: 26px;
+      border: none;
+      &:first-child {
+        font-size: 16px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #333333;
+        line-height: 24px;
+      }
+      &:last-child {
+        font-size: 18px;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        color: #00c6ae;
+        line-height: 24px;
+      }
     }
   }
 

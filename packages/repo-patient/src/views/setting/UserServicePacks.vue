@@ -151,7 +151,7 @@ export default {
       margin-top: -20px;
       margin-left: -10px;
 
-      padding: 45px 30px 0 22px;
+      padding: 45px 22px 0 22px;
       .packs-content-top {
         display: flex;
         align-items: center;

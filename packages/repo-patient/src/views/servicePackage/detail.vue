@@ -163,7 +163,7 @@ export default {
   background-image: url('~@/assets/images/ic_service_detail_header_bg.png');
   background-size: 100% 100%;
   width: 100%;
-  height: 116px;
+  height: 112px;
   padding: 24px 0 0 16px;
   display: flex;
   color: #fff;
@@ -204,7 +204,7 @@ export default {
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: bold;
     color: #333333;
-    line-height: 24px;
+    line-height: 1;
     padding-bottom: 16px;
     border-bottom: 1px dashed #d7d7d7;
   }
@@ -219,6 +219,7 @@ export default {
       padding-left: 12px;
       margin-top: 24px;
       margin-bottom: 8px;
+      height: 24px;
       &::before {
         content: '';
         background: $primary;
@@ -227,8 +228,7 @@ export default {
         border-radius: 4px;
         position: absolute;
         left: 0;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 5px;
       }
     }
     .more {

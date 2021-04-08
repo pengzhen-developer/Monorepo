@@ -6,9 +6,9 @@
       <template v-for="(stage,index) in stages">
         <span :key="index"
               :class="{'active':current==stage.key}">{{stage.value}}</span>
-        <van-icon :name="require('@src/assets/images/icons/icon-next.jpg')"
-                  :key="index"
-                  v-if="index!=stages.length-1"></van-icon>
+        <van-image :src="require('@src/assets/images/icons/icon-next.jpg')"
+                   :key="'image_'+index"
+                   v-if="index!=stages.length-1"></van-image>
       </template>
     </div>
     <div class="h50px"
@@ -86,18 +86,14 @@ export default {
   span {
     color: #999;
     font-size: 14px;
-    line-height: 1;
+    line-height: normal;
     &.active {
       color: $primary;
     }
   }
-  .van-icon {
-    width: 14px;
-    height: 14px;
-    img {
-      width: 100%;
-      height: 100%;
-    }
+  .van-image {
+    height: 12px;
+    width: 8px;
   }
 }
 </style>

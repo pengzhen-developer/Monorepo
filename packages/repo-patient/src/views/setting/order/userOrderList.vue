@@ -31,12 +31,12 @@
               </div>
               <div class="order-item-order-info">
                 <div class="order-item-order-info-item start">
-                  <div class="order-item-order-info-item-key">服务包:</div>
+                  <div class="order-item-order-info-item-key">服务包：</div>
                   <div class="order-item-order-info-item-val block">{{item.servicePackageName}}</div>
                 </div>
                 <div class="order-item-order-info-item">
                   <!-- 订单金额  totalMoney  应付金额 orderMoney  实付金额 payMoney -->
-                  <div class="order-item-order-info-item-key">订单金额</div>
+                  <div class="order-item-order-info-item-key">订单金额：</div>
                   <div class="order-item-order-info-item-val">
                     <peace-price class="refund"
                                  v-bind:price="item.totalMoney"></peace-price>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="order-item-order-info-item"
                      v-if="item.orderStatus ===3">
-                  <div class="order-item-order-info-item-key">有效期:</div>
+                  <div class="order-item-order-info-item-key">有效期：</div>
                   <div class="order-item-order-info-item-val">{{item.serviceStartDate}} 至 {{item.serviceExpireDate}}</div>
                 </div>
               </div>
@@ -94,7 +94,7 @@
               </div>
               <div class="order-item-order-info">
                 <div class="order-item-order-info-item">
-                  <div class="order-item-order-info-item-key">就诊人:</div>
+                  <div class="order-item-order-info-item-key">就诊人：</div>
                   <div class="order-item-order-info-item-val"
                        v-if="item.familyInfo">{{item.familyInfo.familyName}}
                     {{item.familyInfo.familySex}}
@@ -102,14 +102,14 @@
                 </div>
                 <template v-if="item.orderInfo&&item.orderInfo.servicePackageName">
                   <div class="order-item-order-info-item start">
-                    <div class="order-item-order-info-item-key">服务包:</div>
+                    <div class="order-item-order-info-item-key">服务包：</div>
                     <div class="order-item-order-info-item-val block">
                       <span>{{item.orderInfo.servicePackageName}} - {{item.orderInfo.equitiesName}}</span>
                       <span v-if="!getServicePackageInquiryShowMoreText(item.inquiryInfo.inquiryStatus)">(已退回)</span>
                     </div>
                   </div>
                   <div class="order-item-order-info-item">
-                    <div class="order-item-order-info-item-key">订单金额:</div>
+                    <div class="order-item-order-info-item-key">订单金额：</div>
                     <div class="order-item-order-info-item-val">
                       <!-- v-bind:style="{color:getServicePackageInquiryPriceColor(item.inquiryInfo.inquiryStatus)}" -->
                       <peace-price v-bind:price="item.orderInfo.totalMoney"
@@ -121,7 +121,7 @@
                 </template>
                 <template v-else>
                   <div class="order-item-order-info-item">
-                    <div class="order-item-order-info-item-key">订单金额:</div>
+                    <div class="order-item-order-info-item-key">订单金额：</div>
                     <div class="order-item-order-info-item-val"
                          v-if="item.orderInfo">
                       <span class="refund"
@@ -141,12 +141,12 @@
                   </div>
                   <div class="order-item-order-info-item"
                        v-if="item.inquiryInfo.serviceType=='returnVisit'">
-                    <div class="order-item-order-info-item-key">复诊时间:</div>
+                    <div class="order-item-order-info-item-key">复诊时间：</div>
                     <div class="order-item-order-info-item-val">{{item.inquiryInfo.appointmentTime.replace(/\//g,'-')}}</div>
                   </div>
                   <div class="order-item-order-info-item"
                        v-else>
-                    <div class="order-item-order-info-item-key">下单时间:</div>
+                    <div class="order-item-order-info-item-key">下单时间：</div>
                     <div class="order-item-order-info-item-val">{{item.orderInfo.orderTime.replace(/\//g,'-')}}</div>
                   </div>
                 </template>
@@ -207,18 +207,18 @@
               </div>
               <div class="order-item-order-info">
                 <div class="order-item-order-info-item">
-                  <div class="order-item-order-info-item-key">就诊人:</div>
+                  <div class="order-item-order-info-item-key">就诊人：</div>
                   <div class="order-item-order-info-item-val"
                        v-if="item.familyInfo">{{item.familyInfo.name||item.familyInfo.familyName}}
                     {{item.familyInfo.sex||''}}
                     {{item.familyInfo.age||''}}</div>
                 </div>
                 <div class="order-item-order-info-item">
-                  <div class="order-item-order-info-item-key">预约就诊时间:</div>
+                  <div class="order-item-order-info-item-key">预约就诊时间：</div>
                   <div class="order-item-order-info-item-val">{{item.bookDate.replace(/\//g,'-')}}</div>
                 </div>
                 <div class="order-item-order-info-item">
-                  <div class="order-item-order-info-item-key">订单金额:</div>
+                  <div class="order-item-order-info-item-key">订单金额：</div>
                   <div class="order-item-order-info-item-val">
                     <span class="refund"
                           v-if="item.orderMoney == 0||item.orderMoney == null">
@@ -903,6 +903,7 @@ export default {
         display: flex;
         justify-content: space-between;
         margin-bottom: 4px;
+        align-items: center;
         .name {
           font-size: 16px;
           font-family: PingFangSC-Medium, PingFang SC;
@@ -912,7 +913,6 @@ export default {
           span {
             font-weight: 400;
             color: rgba(51, 51, 51, 0.6);
-            line-height: 20px;
             font-size: 14px;
             margin-left: 8px;
           }
@@ -1014,7 +1014,7 @@ export default {
       }
       .order-item-order-info-item-key {
         color: rgba(51, 51, 51, 0.6);
-        padding-right: 10px;
+        padding-right: 6px;
         white-space: nowrap;
       }
       .order-item-order-info-item-val {
@@ -1060,6 +1060,7 @@ export default {
     justify-content: space-between;
     padding-top: 12px;
     margin-top: 8px;
+    margin-bottom: -4px;
     border-top: 1px solid rgba(51, 51, 51, 0.05);
     &.drug {
       border: none;
@@ -1089,7 +1090,6 @@ export default {
 .strip-eye {
   flex: 0 0 auto;
   color: #999;
-  line-height: 16px;
   text-align: right;
   font-size: 14px;
   font-weight: normal;

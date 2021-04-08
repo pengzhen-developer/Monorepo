@@ -477,10 +477,10 @@ export default {
       color: rgba(51, 51, 51, 0.6);
       line-height: 24px;
       span {
-        &:first-child {
+        &:nth-child(1) {
           color: #333333;
         }
-        &:last-child {
+        &:nth-child(2) {
           font-size: 14px;
           line-height: 20px;
         }
@@ -564,6 +564,10 @@ export default {
       }
     }
     .footer-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
       .btn {
         width: 88px;
         height: 32px;

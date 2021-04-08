@@ -95,12 +95,6 @@
   width: calc(100% - 32px);
   margin: 0 16px;
 }
-//修改光标颜色
-textarea,
-input {
-  color: #000; // 其实改color的时候，文字颜色和光标颜色都变了
-  caret-color: $primary; //只改光标颜色
-}
 
 //input  搜索icon
 .van-icon.van-icon-search {
@@ -114,4 +108,29 @@ input {
 //蒙层fixed 层级默认666
 .van-overlay {
   z-index: 666;
+}
+
+//.van-dialog
+.van-dialog__header {
+  font-weight: bold;
+}
+.van-dialog__message.van-dialog__message--has-title {
+  color: #333;
+  font-size: 16px;
+}
+.van-dialog__footer .van-dialog__cancel {
+  color: rgba(51, 51, 51, 0.4);
+  font-size: 16px;
+}
+
+//修改光标颜色
+textarea,
+input {
+  color: #000; // 其实改color的时候，文字颜色和光标颜色都变了
+  caret-color: $primary; //只改光标颜色
+}
+
+//IOS input框placeholder垂直位置偏上问题
+input::-webkit-input-placeholder {
+  line-height: 0.4rem;
 }

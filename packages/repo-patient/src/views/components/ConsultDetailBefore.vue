@@ -180,7 +180,7 @@
         <div class="brief"
              v-if="servicesList.length>0">
           <div class="brief-left">
-            <van-image :src="require('@src/assets/images/ic_pay_service.png')"></van-image><span>使用服务包</span>
+            <van-image :src="require('@src/assets/images/ic_pay_service.png')"></van-image><span>服务包</span>
           </div>
           <div class="brief-right">
             <van-switch v-model="hasSelectedServicePackage"
@@ -198,7 +198,7 @@
                        v-if="servicePackageDialog.data.servicePackageId"></van-image>
           </div>
         </div>
-        <div class="brief"
+        <div class="brief text-gery"
              v-if="servicesList.length>0&&hasSelectedServicePackage">
           <div class="brief-left">权益名称</div>
           <div class="brief-right"
@@ -226,7 +226,7 @@
           <div class="brief"
                v-if="canShowYibao">
             <div class="brief-left">
-              <van-image :src="require('@src/assets/images/ic_pay_yiyao.png')"></van-image><span>使用医保卡</span>
+              <van-image :src="require('@src/assets/images/ic_pay_yiyao.png')"></van-image><span>医保卡</span>
             </div>
             <div class="brief-right"
                  :class="{'checked':yibaoText,'unchecked':!yibaoText}"
@@ -245,7 +245,7 @@
           </div>
         </div> -->
 
-          <div class="brief"
+          <div class="brief "
                v-if="canShowShangbao">
             <div class="brief-left">
               <van-image :src="require('@src/assets/images/ic_pay_shangbao.png')"></van-image><span>商保权益抵扣:</span>
@@ -1002,7 +1002,7 @@ export default {
   background-color: #f5f5f5;
   color: #333;
   min-height: 100%;
-  padding: 10px 0 81px;
+  padding: 8px 0 81px;
   box-sizing: border-box;
 
   .module {
@@ -1035,6 +1035,10 @@ export default {
           font-family: PingFangSC-Medium, PingFang SC;
           font-weight: bold;
           color: #333333;
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          word-break: break-all;
           .doctor-small {
             line-height: 24px;
             font-size: 16px;
@@ -1055,10 +1059,12 @@ export default {
             line-height: normal;
             font-family: PingFangSC-Regular, PingFang SC;
             height: 24px;
-            padding: 4px 6px;
-            display: inline-block;
-            line-height: 16px;
-            text-align: center;
+            padding: 0px 6px;
+            // display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
             margin-left: 4px;
             &.returnVisit {
               background: #fa8c16;
@@ -1243,6 +1249,11 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 12px 0;
+  &.text-gery {
+    color: rgba(51, 51, 51, 0.6);
+    line-height: 20px;
+    font-size: 14px;
+  }
 
   &:not(:last-child) {
     border-bottom: 1px solid rgba(51, 51, 51, 0.05);
@@ -1250,7 +1261,10 @@ export default {
   .brief-left {
     display: flex;
     align-items: center;
-    font-size: 14px;
+    &.size-14 {
+      line-height: 18px;
+      font-size: 14px;
+    }
     .van-image {
       width: 24px;
       height: 24px;

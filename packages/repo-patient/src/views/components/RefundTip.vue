@@ -77,11 +77,11 @@ export default {
   .overlay-content {
     display: flex;
     flex-direction: column;
-    font-size: 13px;
-    line-height: 21px;
+    font-size: 16px;
+    line-height: 24px;
     word-break: break-all;
     div {
-      color: #999;
+      color: rgba(51, 51, 51, 1);
     }
     .code {
       padding: 8px;
@@ -106,7 +106,7 @@ export default {
     padding-top: 10px;
     border-top: 1px solid rgba(51, 51, 51, 0.05);
     color: $primary;
-    font-size: 15px;
+    font-size: 16px;
   }
 }
 </style>

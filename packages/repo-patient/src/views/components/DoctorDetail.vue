@@ -40,7 +40,7 @@
           <div class="row flex">
             <van-image width="30px"
                        height="30px"
-                       :src="require('@src/assets/images/file/ic_mechanism.png')" />
+                       :src="require('@src/assets/images/ic_mechanism.png')" />
             <h4 class="body-card-title">所属机构</h4>
           </div>
 

@@ -132,7 +132,7 @@ export default {
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: bold;
     color: #333333;
-    line-height: 24px;
+    line-height: 1;
     margin-bottom: 20px;
     text-align: center;
   }
@@ -146,6 +146,7 @@ export default {
       font-weight: bold;
       color: #333333;
       line-height: 24px;
+      height: 24px;
       position: relative;
       padding-left: 12px;
       width: 100%;
@@ -164,6 +165,9 @@ export default {
         top: 50%;
         transform: translateY(-50%);
       }
+      &:first-child {
+        margin-top: 0;
+      }
     }
     .equities {
       .equities-item {
@@ -178,7 +182,7 @@ export default {
         border-bottom: 1px solid rgba(51, 51, 51, 0.05);
         .van-image {
           width: 16px;
-          height: 16px;
+          // height: 16px;
           margin-right: 8px;
         }
         .equities-item-name {
@@ -191,6 +195,7 @@ export default {
             &:first-child {
               overflow: hidden;
               text-overflow: ellipsis;
+              color: #333;
             }
             &:last-child {
               color: rgba(51, 51, 51, 0.6);
@@ -211,6 +216,7 @@ export default {
       height: 48px;
       background: rgba(51, 51, 51, 0.05);
       border-radius: 26px;
+      border: none;
       &:first-child {
         font-size: 16px;
         font-family: PingFangSC-Regular, PingFang SC;

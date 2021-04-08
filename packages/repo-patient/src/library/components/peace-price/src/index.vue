@@ -6,10 +6,12 @@
     <span v-bind:style="`lineHeight:${size}px`">{{prefix}}{{originalPrice}}</span>
     <div class="price-result"
          v-bind:style="`transformOrigin:${transformOrigin};${transformOrigin}:0;`">
-      <div v-bind:style="`fontSize:${unitSize}px;`"
-           style="white-space:nowrap;">{{prefix}}</div>
+      <div v-bind:style="`fontSize:${unitSize}px`"
+           style="white-space:nowrap;"
+           class="mb1">{{prefix}}</div>
       <div v-bind:style="`fontSize:${integerSize}px`">{{originalPrice | getPriceInteger}}</div>
-      <div v-bind:style="`fontSize:${decimalSize}px`">
+      <div v-bind:style="`fontSize:${decimalSize}px`"
+           class="mb1">
         {{originalPrice | getPriceDecimal}}
       </div>
     </div>
@@ -139,6 +141,9 @@ export default {
     // transform-origin: right;
     display: flex;
     align-items: flex-end;
+    .mb1 {
+      margin-bottom: 0.5px;
+    }
   }
 }
 </style>

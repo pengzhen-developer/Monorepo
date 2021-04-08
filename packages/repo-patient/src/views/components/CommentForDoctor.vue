@@ -254,6 +254,9 @@ export default {
     &:placeholder-shown {
       color: #999;
     }
+    &:last-child::after {
+      display: none;
+    }
   }
 }
 .form-labels {
