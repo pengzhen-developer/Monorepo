@@ -49,7 +49,7 @@
                  :key="index"></van-tab>
       </van-tabs>
 
-      <div v-if="expressNum"
+      <div v-if="showTrackingNumber"
            class="express-info">
         <div>
           <span v-if="expressOrg">{{expressOrg}}：</span>
@@ -195,7 +195,7 @@ export default {
       const ShippingMethod = this.info.shippingMethod
       const OrderStatus = this.info.callOrderStatus
       if (ShippingMethod === undefined || OrderStatus === undefined) return false
-      return ShippingMethod === ENUM.SHIPPING_METHOD.HOME && OrderStatus >= ENUM.ORDER_STATUS.SEND && this.info.expressNo
+      return ShippingMethod === ENUM.SHIPPING_METHOD.HOME && OrderStatus >= ENUM.ORDER_STATUS.SEND && this.info.expressNo.length > 0
     },
     timeLine() {
       const ShippingMethod = this.info.shippingMethod
@@ -329,11 +329,13 @@ export default {
     font-size: 16px;
   }
 
+  /deep/.van-tabs__line {
+    bottom: 0;
+  }
   /deep/.van-tabs__nav {
     justify-content: center;
     height: 28px;
-    padding-left: 11px;
-    padding-right: 11px;
+    padding: 0 11px;
   }
 
   /deep/.van-tab--active {
