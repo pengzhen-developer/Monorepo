@@ -60,7 +60,7 @@
               <div class="title-left"></div>
               <p class="title">取药知情同意书</p>
             </div>
-            <div style="white-space:pre;"
+            <div style="white-space:pre-wrap;"
                  v-html="operationInfo.InformedConsent"></div>
           </el-tab-pane>
         </el-tabs>

@@ -100,7 +100,7 @@
         <p class="title">取药知情同意书</p>
       </div>
       <div class="q-mt-md"
-           style="white-space:pre;"
+           style="white-space:pre-wrap;"
            v-html="operateData.InformedConsent">
 
       </div>
