@@ -72,11 +72,23 @@ export default {}
   margin: -2px;
 }
 
-@media (min-width: 425px) and (max-width: 768px) {
+@media (min-width: 425px) and (max-width: 991px) {
   .about-lists .content-item:nth-child(2n-1) {
     padding-right: 40px;
   }
   .about-lists .content-item:nth-child(2n) {
+    padding-left: 40px;
+  }
+}
+@media (min-width: 992px) {
+  .about-lists .content-item:nth-child(3n-2) {
+    padding-right: 40px;
+  }
+  .about-lists .content-item:nth-child(3n-1) {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+  .about-lists .content-item:nth-child(3n) {
     padding-left: 40px;
   }
 }

@@ -178,7 +178,7 @@ button:active {
     padding: 12px;
   }
   .login {
-    width: 20%;
+    width: 21%;
   }
 }
 @media (max-width: 992px) {
