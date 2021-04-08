@@ -106,7 +106,7 @@
           </template>
         </peace-table-column>
         <peace-table-column label="订单时间"
-                            width="160"
+                            width="180"
                             prop="created_time"></peace-table-column>
         <peace-table-column label="订单金额（元）"
                             min-width="140"

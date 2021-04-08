@@ -110,7 +110,7 @@
         </el-table-column>
         <el-table-column label="更新时间"
                          prop="UpdateTime"
-                         min-width="160px">
+                         min-width="180px">
         </el-table-column>
       </peace-table>
     </div>

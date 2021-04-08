@@ -48,7 +48,8 @@
                           prop="PriceAuthorityStr">
         </PeaceTableColumn>
         <PeaceTableColumn label="更新时间"
-                          prop="LastModifyTime"></PeaceTableColumn>
+                          prop="LastModifyTime"
+                          width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="操作"
                           fixed="right">
           <template slot-scope="scope">

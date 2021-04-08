@@ -88,7 +88,8 @@
           </template>
         </peace-table-column>
 
-        <peace-table-column label="更新时间">
+        <peace-table-column label="更新时间"
+                            min-width="180px">
           <template slot-scope="scope">
             {{ scope.row.Get3PartStockInfoTime || '——' }}
           </template>

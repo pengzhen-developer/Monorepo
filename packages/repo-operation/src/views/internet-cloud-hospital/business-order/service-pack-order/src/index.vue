@@ -104,7 +104,7 @@
 
         <PeaceTableColumn prop="createdTime"
                           label="下单时间"
-                          min-width="160px"></PeaceTableColumn>
+                          min-width="180px"></PeaceTableColumn>
 
         <PeaceTableColumn prop="orderMoney"
                           label="订单金额"

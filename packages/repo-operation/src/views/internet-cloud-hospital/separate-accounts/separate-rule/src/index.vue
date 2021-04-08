@@ -45,10 +45,10 @@
         <peace-table-column min-width="180px"
                             label="已配置订单类型"
                             prop="orderTypeStr"></peace-table-column>
-        <peace-table-column min-width="160px"
+        <peace-table-column min-width="180px"
                             label="创建时间"
                             prop="createdTime"></peace-table-column>
-        <peace-table-column min-width="160px"
+        <peace-table-column min-width="180px"
                             label="更新时间"
                             prop="updatedTime">
           <template slot-scope="scope">

@@ -39,9 +39,11 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="机构认证时间"
-                          prop="CreateTime"></PeaceTableColumn>
+                          prop="CreateTime"
+                          width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="配置更新时间"
-                          prop="LastConfTime"></PeaceTableColumn>
+                          prop="LastConfTime"
+                          width="180px"></PeaceTableColumn>
         <peace-table-column label="操作"
                             prop="">
           <template slot-scope="scope">

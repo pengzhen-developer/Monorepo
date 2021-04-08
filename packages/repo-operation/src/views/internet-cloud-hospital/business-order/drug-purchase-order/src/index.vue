@@ -157,7 +157,7 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="下单时间"
-                          min-width="160"
+                          min-width="180"
                           prop="createdTime"></PeaceTableColumn>
         <PeaceTableColumn label="操作"
                           fixed="right"

@@ -74,7 +74,7 @@
                           label="创建者"
                           prop="createUser"></PeaceTableColumn>
 
-        <PeaceTableColumn min-width="160px"
+        <PeaceTableColumn min-width="180px"
                           label="更新时间"
                           prop="updatedTime"></PeaceTableColumn>
 
