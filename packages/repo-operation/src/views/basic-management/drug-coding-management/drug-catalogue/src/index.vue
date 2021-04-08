@@ -9,7 +9,7 @@
         <el-form-item label="机构名称">
           <el-select v-model.trim="model.CodeName"
                      value-key="custCode"
-                     clearable=""
+                     clearable
                      placeholder="请选择">
             <el-option v-bind:key="index"
                        v-bind:label="item.CodeName"
@@ -21,7 +21,8 @@
 
         <el-form-item label="药品名称">
           <el-input v-model="model.ProductName"
-                    placeholder="请输入"></el-input>
+                    placeholder="请输入"
+                    clearable></el-input>
         </el-form-item>
 
         <el-form-item label="配码状态">
@@ -39,6 +40,18 @@
           <peace-date-picker type="daterange"
                              value-format="yyyy-MM-dd"
                              v-model="model.timeRange"></peace-date-picker>
+        </el-form-item>
+
+        <el-form-item label="药品编码">
+          <el-input v-model.trim="model.CustDrugsCode"
+                    placeholder="请输入"
+                    clearable></el-input>
+        </el-form-item>
+
+        <el-form-item label="平台药品编码">
+          <el-input v-model.trim="model.DrugStandardCode"
+                    placeholder="请输入"
+                    clearable></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -132,6 +145,8 @@ export default {
         timeRange: [],
         StarUpdateDate: '',
         EndUpdateDate: '',
+        CustDrugsCode: '',
+        DrugStandardCode: '',
         IsPaging: true
       },
 
