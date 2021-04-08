@@ -123,14 +123,23 @@
   font-size: 16px;
 }
 
-//修改光标颜色
+/** 
+*css去除ios中input和textarea的阴影
+*/
+input {
+  -webkit-appearance: none; /*去除系统默认的样式*/
+}
+/**
+*修改光标颜色
+*/
 textarea,
 input {
-  color: #000; // 其实改color的时候，文字颜色和光标颜色都变了
-  caret-color: $primary; //只改光标颜色
+  color: #000; /*其实改color的时候，文字颜色和光标颜色都变了*/
+  caret-color: $primary; /*只改光标颜色*/
 }
 
-//IOS input框placeholder垂直位置偏上问题
-input::-webkit-input-placeholder {
-  line-height: 0.4rem;
+/*input输入框在手机中光标及字体不居中解决方法*/
+input {
+  line-height: 16px;
+  font-size: 16px;
 }

@@ -1024,7 +1024,7 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 62%;
-  line-height: 1;
+  line-height: normal;
 }
 .head-ico-arrow {
   flex: 1;
