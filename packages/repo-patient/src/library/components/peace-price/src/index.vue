@@ -142,7 +142,7 @@ export default {
     display: flex;
     align-items: flex-end;
     .mb1 {
-      margin-bottom: 0.5px;
+      margin-bottom: 1px;
     }
   }
 }
