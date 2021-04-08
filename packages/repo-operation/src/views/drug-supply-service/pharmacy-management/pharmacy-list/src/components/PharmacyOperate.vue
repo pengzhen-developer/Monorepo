@@ -224,10 +224,15 @@ p {
 }
 .item-tag {
   height: 32px;
-  margin-right: 10px;
-  padding: 0 32px;
+  width: 88px;
   font-size: 14px;
-  line-height: 31px;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:not(:last-child) {
+    margin-right: 16px;
+  }
 }
 
 .item-tag-primary {

@@ -12,7 +12,7 @@
           <span class="absolute inline-block bg-primary"
                 style="width: 4px; height: 16px; border-radius: 4px;"></span>
           <span class="q-ml-md text-grey-333"
-                style="font-size: 16px; font-weight: 500;">基本信息</span>
+                style="font-size: 16px; font-weight: 500;line-height:16px;">基本信息</span>
         </div>
 
         <div class="q-mb-xl">
@@ -67,7 +67,7 @@
           <span class="absolute inline-block bg-primary"
                 style="width: 4px; height: 16px; border-radius: 4px;"></span>
           <span class="q-ml-md text-grey-333"
-                style="font-size: 16px; font-weight: 500;">包含权益</span>
+                style="font-size: 16px; font-weight: 500;line-height:16px;">包含权益</span>
         </div>
 
         <div class="q-mb-xl">
@@ -90,7 +90,7 @@
           <span class="absolute inline-block bg-primary"
                 style="width: 4px; height: 16px; border-radius: 4px;"></span>
           <span class="q-ml-md text-grey-333"
-                style="font-size: 16px; font-weight: 500;">其它信息</span>
+                style="font-size: 16px; font-weight: 500;line-height:16px;">其它信息</span>
         </div>
 
         <div>

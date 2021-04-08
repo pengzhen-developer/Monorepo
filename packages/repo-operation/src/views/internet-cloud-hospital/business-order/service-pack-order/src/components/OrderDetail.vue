@@ -72,9 +72,9 @@
       <div class="row q-mb-8">
         <p>权益信息：</p>
         <div class="col">
-          <div class="color-style"
-               v-for="item in info.equitiesList"
-               v-bind:key="item.equitiesId">{{item.equitiesName+" "+item.totalNum+"次 "+"(剩余"+item.residueNum+"次)"}}</div>
+          <span class="color-style"
+                v-for="item in info.equitiesList"
+                v-bind:key="item.equitiesId">{{item.equitiesName+" "+item.totalNum+"次 "+"(剩余"+item.residueNum+"次)"}}</span>
         </div>
       </div>
     </div>
@@ -140,21 +140,21 @@ p {
 }
 span {
   color: rgba(51, 51, 51, 0.6);
-  margin-left: 8px;
+  margin-left: 12px;
   flex: 1;
 }
 .info-title {
   position: relative;
   padding-left: 14px;
-  margin-bottom: 25px;
+  margin-bottom: 24px;
   font-size: 16px;
   font-weight: 500;
   color: #333333;
-  line-height: 22px;
+  line-height: 16px;
   &::before {
     content: '';
     position: absolute;
-    top: 4px;
+    top: 0;
     left: 0;
     width: 4px;
     height: 16px;
@@ -165,5 +165,6 @@ span {
 .color-style {
   color: rgba(51, 51, 51, 0.6);
   margin-bottom: 8px;
+  display: block;
 }
 </style>

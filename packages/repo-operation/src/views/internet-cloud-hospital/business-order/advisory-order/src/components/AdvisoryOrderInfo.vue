@@ -144,7 +144,7 @@
         </div>
       </div>
     </div>
-    <div class="info-block">
+    <div class="info-block q-mb-16">
       <div class="info-title">订单信息</div>
 
       <div class="info-row">
@@ -322,24 +322,7 @@ $border-color: #f3f3f3;
     color: rgba(51, 51, 51, 0.6);
     white-space: nowrap;
     & > span {
-      width: 4.3em;
       text-align: right;
-      text-align-last: justify;
-      text-align: justify;
-      text-justify: distribute-all-lines;
-      display: inline-block;
-    }
-    &.t-6 > span {
-      width: 6em;
-    }
-    &.t-6 + .info-row-content {
-      width: calc(100% - 7em);
-    }
-    &.t-7 > span {
-      width: 7em;
-    }
-    &.t-7 + .info-row-content {
-      width: calc(100% - 8em);
     }
     &:after {
       content: '：';
@@ -357,9 +340,6 @@ $border-color: #f3f3f3;
     }
   }
   &.two-cols {
-    .info-row-label.t-6 + .info-row-content {
-      width: calc(50% - 7em);
-    }
     .info-row-content {
       width: calc(50% - 1em - 4.3em);
     }
@@ -446,7 +426,6 @@ $border-color: #f3f3f3;
   }
 }
 .red {
-  font-size: 16px;
   color: #f56c6c;
 }
 .info-block {

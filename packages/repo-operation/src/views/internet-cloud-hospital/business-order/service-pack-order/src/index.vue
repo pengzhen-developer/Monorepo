@@ -170,7 +170,7 @@
     </div>
 
     <PeaceDialog title="订单详情"
-                 width="636px"
+                 width="800px"
                  v-if="orderDetailDialog.visible"
                  v-bind:visible.sync="orderDetailDialog.visible">
       <OrderDetail v-bind:data="orderDetailDialog.data"></OrderDetail>

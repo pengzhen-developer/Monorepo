@@ -175,17 +175,17 @@
       <div class="content q-gutter-x-xl q-gutter-y-sm">
         <div class="row">
           <div class="col-4">
-            <span class="em-5-justify label-text">支付方式</span>
+            <span class="label-text">支付方式</span>
             <span class="label-text">：</span>
             <span class="label-value">{{ data.PayMode | formatDictionary(source.PayMode) }}</span>
           </div>
           <div class="col-4">
-            <span class="em-5-justify label-text">支付状态</span>
+            <span class="label-text">支付状态</span>
             <span class="label-text">：</span>
             <span class="label-value">{{ data.IsPay ? '已支付' : '未支付' }}</span>
           </div>
           <div class="col-4">
-            <span class="em-5-justify label-text">支付时间</span>
+            <span class="label-text">支付时间</span>
             <span class="label-text">：</span>
             <span class="label-value">{{ data.PayTime ? data.PayTime : '-'  }}</span>
           </div>
@@ -193,12 +193,12 @@
 
         <div class="row">
           <div class="col-4">
-            <span class="em-5-justify label-text">药品总金额</span>
+            <span class="label-text">药品总金额</span>
             <span class="label-text">：</span>
             <span class="label-value">￥{{ data.TotalAmoun_Yuan }}</span>
           </div>
           <div class="col-4">
-            <span class="em-5-justify label-text">订单总金额</span>
+            <span class="label-text">订单总金额</span>
             <span class="label-text">：</span>
             <span class="label-value">￥{{ data.OrderAmount }}</span>
           </div>
@@ -206,12 +206,12 @@
 
         <div class="row">
           <div class="col-4">
-            <span class="em-5-justify label-text">配送费</span>
+            <span class="label-text">配送费</span>
             <span class="label-text">：</span>
             <span class="label-value">￥{{ data.Freight_Yuan }}</span>
           </div>
           <div class="col-4">
-            <span class="em-5-justify label-text">满减优惠</span>
+            <span class="label-text">满减优惠</span>
             <span class="label-text">：</span>
             <span class="label-value">￥{{ data.PromotionsCut_Yuan }}</span>
           </div>
@@ -219,7 +219,7 @@
 
         <div class="row">
           <div class="col-12">
-            <span class="em-5-justify label-text">医保抵扣</span>
+            <span class="label-text">医保抵扣</span>
             <span class="label-text">：</span>
             <span class="label-value"
                   v-if="data.YbDetails">￥{{ data.YbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}</span>
@@ -232,7 +232,7 @@
 
         <div class="row">
           <div class="col-12">
-            <span class="em-5-justify label-text">商保抵扣</span>
+            <span class="label-text">商保抵扣</span>
             <span class="label-text">：</span>
             <span class="label-value"
                   v-if="data.SbDetails">￥{{ data.SbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}</span>
@@ -245,12 +245,12 @@
 
         <div class="row">
           <div class="col-4">
-            <span class="em-5-justify label-text">实付金额</span>
+            <span class="label-text">实付金额</span>
             <span class="label-text">：</span>
             <span class="label-value">￥{{ data.PayAmount }}</span>
           </div>
           <div class="col-8">
-            <span class="em-5-justify label-text">流水号</span>
+            <span class="label-text">流水号</span>
             <span class="label-text">：</span>
             <span class="label-value">{{ data.PaySerialNumber || '-' }}</span>
           </div>
