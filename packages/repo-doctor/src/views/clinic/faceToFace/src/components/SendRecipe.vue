@@ -43,7 +43,7 @@
                                  v-bind:min="0"
                                  v-bind:max="200"
                                  v-model="model.weight"
-                                 v-bind:precision="1">
+                                 v-bind:precision="2">
                 </el-input-number>
                 <div class="flex items-center q-px-sm"
                      style="border-radius: 5px">
