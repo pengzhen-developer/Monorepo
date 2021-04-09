@@ -40,10 +40,12 @@
         <van-loading></van-loading>
       </div>
     </div>
-    <div class="module"
+    <div class="module "
+         :class="{'pt16':info.expressNo.length==0}"
          v-if="loading">
       <van-tabs v-model="active"
-                @click="changeExpressNum">
+                @click="changeExpressNum"
+                v-if="info.expressNo.length>0">
         <van-tab :title="item.text"
                  v-for="(item,index) in info.expressNo"
                  :key="index"></van-tab>
@@ -456,6 +458,9 @@ export default {
   background: #fff;
   padding: 10px 5px;
   margin: 0 0 10px 0;
+  &.pt16 {
+    padding-top: 16px;
+  }
 }
 .time-line {
   padding-right: 5px;
