@@ -140,6 +140,15 @@ export default {
       immediate: true
     },
 
+    $route() {
+      // 路由变化，同步更新 tabs
+      if (this.$route.meta) {
+        obLayoutMenu.mutations.setSelectedNavMenu(this.$route.meta)
+        obLayoutTabs.mutations.addTab(this.$route.meta)
+        obLayoutTabs.mutations.setTab(this.$route.meta)
+      }
+    },
+
     tab(value) {
       if (value.id) {
         // 缓存中存在 tab
