@@ -40,7 +40,7 @@
         </div>
 
         <div class="row">
-          <div class="col-3">
+          <div class="col-6">
             <el-form-item label="体重：">
               <div class="flex">
                 <el-input-number ref="weightInput"
@@ -59,7 +59,7 @@
             </el-form-item>
           </div>
 
-          <div class="col-3">
+          <div class="col-6">
             <el-form-item label="身高：">
               <div class="flex">
                 <el-input-number ref="heightInput"
