@@ -12,6 +12,7 @@
           <el-select clearable
                      filterable
                      v-model="model.Code"
+                     :disabled="!!model.Id"
                      placeholder="请输入机构名称查询"
                      style="width: 100%;"
                      class="org-type"
