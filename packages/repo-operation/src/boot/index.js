@@ -22,6 +22,8 @@ import boot_UI from './boot_ui'
 // global style
 import boot_styles from './boot_styles'
 
+// global components
+import boot_components from './boot_components'
 /**
  * Boot install
  *
@@ -44,7 +46,10 @@ const install = async () => {
     boot_UI,
 
     //global style
-    boot_styles
+    boot_styles,
+
+    // global components
+    boot_components
   ]
 
   for (const boot of boots) {
