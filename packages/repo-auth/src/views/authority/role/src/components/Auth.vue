@@ -135,7 +135,7 @@ export default {
 
 <style lang="scss" scoped>
 .select-menu {
-  width: 320px;
+  width: 100%;
   margin-bottom: 20px;
   border-radius: 4px;
   border: 1px solid #dcdfe6;

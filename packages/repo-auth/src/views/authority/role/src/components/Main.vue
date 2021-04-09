@@ -54,7 +54,7 @@
     </div>
 
     <!-- 角色 -->
-    <el-dialog width="360px"
+    <el-dialog width="720px"
                v-bind:visible.sync="modelDialog.visible"
                :title="modelDialog.title">
       <Model v-if="modelDialog.visible"
@@ -64,7 +64,7 @@
     </el-dialog>
 
     <!-- 权限 -->
-    <el-dialog width="360px"
+    <el-dialog width="720px"
                v-bind:visible.sync="authDialog.visible"
                title="分配权限">
       <Auth v-if="authDialog.visible"
