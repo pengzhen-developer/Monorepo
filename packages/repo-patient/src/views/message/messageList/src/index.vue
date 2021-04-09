@@ -56,7 +56,7 @@
 
       <div class="input"
            v-if="canShowInput">
-        <van-field :autosize="{ maxHeight: 78, minHeight: 38 }"
+        <van-field :autosize="{ maxHeight: 78, minHeight: 35 }"
                    @focus="hideTools"
                    ref="chatroom"
                    rows="1"
@@ -676,7 +676,6 @@ export default {
 .text-gery {
   color: $gary;
   font-size: 12px;
-  line-height: normal;
 }
 .text-red {
   color: $red;

@@ -126,6 +126,7 @@
 /** 
 *css去除ios中input和textarea的阴影
 */
+textarea,
 input {
   -webkit-appearance: none; /*去除系统默认的样式*/
 }
@@ -136,10 +137,4 @@ textarea,
 input {
   color: #000; /*其实改color的时候，文字颜色和光标颜色都变了*/
   caret-color: $primary; /*只改光标颜色*/
-}
-
-/*input输入框在手机中光标及字体不居中解决方法*/
-input {
-  line-height: 16px;
-  font-size: 16px;
 }
