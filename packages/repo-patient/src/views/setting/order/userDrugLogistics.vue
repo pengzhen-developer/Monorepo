@@ -87,44 +87,45 @@
             </div>
           </div>
         </div>
-        <div class="time-line self">
-          <div class="item"
-               v-for="(item,index) in timeLine"
-               :class="{ 'active' : index == 0&&expressList.length==0 }"
-               :key="index">
-            <div class="time">
-              <div class="y">{{ item.createdTime.toDate().formatDate('MM-dd') }}</div>
-              <div class="s">{{ item.createdTime.toDate().formatDate('HH:mm') }}</div>
+      </template>
+      <div class="time-line self">
+        <div class="item"
+             v-for="(item,index) in timeLine"
+             :class="{ 'active' : index == 0&&expressList.length==0 }"
+             :key="index">
+          <div class="time">
+            <div class="y">{{ item.createdTime.toDate().formatDate('MM-dd') }}</div>
+            <div class="s">{{ item.createdTime.toDate().formatDate('HH:mm') }}</div>
+          </div>
+          <div class="text">
+            <div class="status">{{item.remark}}</div>
+            <div class="note"
+                 v-if="item.status == '4'">
+              {{ info.shippingMethod == ENUM.SHIPPING_METHOD.SELF  ? '您在'+ info.drugStoreName +'已自提' : '' }}
             </div>
-            <div class="text">
-              <div class="status">{{item.remark}}</div>
-              <div class="note"
-                   v-if="item.status == '4'">
-                {{ info.shippingMethod == ENUM.SHIPPING_METHOD.SELF  ? '您在'+ info.drugStoreName +'已自提' : '' }}
-              </div>
 
-              <div v-if="item.status == '2' && info.callOrderStatus != 5 && info.shippingMethod === ENUM.SHIPPING_METHOD.SELF"
-                   class="note">
-                <div class="qr-btn "
-                     :class="{ 'active' : index == 0 }"
-                     @click="onClickSeeQRCode">
-                  查看取药码
-                </div>
+            <div v-if="item.status == '2' && info.callOrderStatus != 5 && info.shippingMethod === ENUM.SHIPPING_METHOD.SELF"
+                 class="note">
+              <div class="qr-btn "
+                   :class="{ 'active' : index == 0 }"
+                   @click="onClickSeeQRCode">
+                查看取药码
               </div>
-              <div class="note"
-                   v-if="item.status == '5' &&info.cancelReason"><span>{{info.cancelReason}}</span></div>
-              <div v-if="item.status == '5' && info.cancelList.length>0"
-                   class="note">
-                <div class="qr-btn"
-                     :class="{ 'active' : index == 0 }"
-                     @click="onClickSeeCancelOrderDeatil">
-                  查看详情
-                </div>
+            </div>
+            <div class="note"
+                 v-if="item.status == '5' &&info.cancelReason"><span>{{info.cancelReason}}</span></div>
+            <div v-if="item.status == '5' && info.cancelList.length>0"
+                 class="note">
+              <div class="qr-btn"
+                   :class="{ 'active' : index == 0 }"
+                   @click="onClickSeeCancelOrderDeatil">
+                查看详情
               </div>
             </div>
           </div>
         </div>
-      </template>
+      </div>
+
     </div>
 
     <!--二维码弹窗-->
