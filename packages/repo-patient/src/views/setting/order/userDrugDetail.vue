@@ -192,7 +192,7 @@
                :key="index">
             <div class="dt">{{index==0?'运单编号：':''}}</div>
             <div class="dd">
-              {{ item.expressNo }}</div>
+              {{item.expressOrg}} {{ item.expressNo }}</div>
           </div>
         </template>
 
@@ -1069,7 +1069,7 @@ export default {
   min-width: 30%;
 }
 .dl-packet .dt {
-  min-width: 5em;
+  min-width: 6em;
   font-size: 12px;
 }
 .dl-packet .dd {
