@@ -58,7 +58,8 @@
         <el-form-item label="订单号">
           <el-input placeholder="请输入"
                     v-model="model.orderNo"
-                    clearable></el-input>
+                    clearable
+                    style="width:260px;"></el-input>
         </el-form-item>
         <el-form-item label="交易医院">
           <el-select v-model="model.hosId"

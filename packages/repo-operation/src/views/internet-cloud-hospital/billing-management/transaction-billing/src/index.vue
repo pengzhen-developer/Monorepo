@@ -13,7 +13,8 @@
         </el-form-item>
         <el-form-item label="订单编号">
           <el-input v-model="model.orderNo"
-                    placeholder="请输入"></el-input>
+                    placeholder="请输入"
+                    style="width:260px;"></el-input>
         </el-form-item>
         <el-form-item label="机构名称">
           <el-input v-model="model.organizationName"

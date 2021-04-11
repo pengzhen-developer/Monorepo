@@ -18,7 +18,8 @@
         <el-form-item label="订单编号">
           <el-input placeholder="输入订单编号"
                     v-model="search.orderNo"
-                    clearable></el-input>
+                    clearable
+                    style="width:260px;"></el-input>
         </el-form-item>
         <el-form-item label="支付状态">
           <el-select v-model="search.orderStatus">

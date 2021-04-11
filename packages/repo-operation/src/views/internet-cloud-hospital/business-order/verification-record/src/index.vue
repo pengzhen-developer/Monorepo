@@ -17,7 +17,8 @@
         <el-form-item label="流水号">
           <el-input placeholder="请输入"
                     v-model="model.waterNo"
-                    clearable></el-input>
+                    clearable
+                    style="width:260px;"></el-input>
         </el-form-item>
         <el-form-item label="核销时间">
           <peace-date-picker type="daterange"
