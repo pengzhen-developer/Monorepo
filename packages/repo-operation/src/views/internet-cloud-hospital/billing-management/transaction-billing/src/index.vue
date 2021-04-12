@@ -286,8 +286,8 @@ export default {
   created() {
     const s = Peace.dayjs()
       .startOf('month')
-      .format('YYYY-MM-DD HH:mm:ss')
-    const e = Peace.dayjs().format('YYYY-MM-DD HH:mm:ss')
+      .format('YYYY-MM-DD')
+    const e = Peace.dayjs().format('YYYY-MM-DD')
 
     this.model.time = [s, e]
   },
