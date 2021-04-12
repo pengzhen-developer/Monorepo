@@ -197,6 +197,17 @@ export default {
       })
     }
   },
+  async activated() {
+    let checkRegisterOpen = await Service.checkRegisterOpen()
+    let register = checkRegisterOpen.data.isOpenRegister
+    this.registerIsOpen = register == 2 ? true : false
+
+    if (this.registerIsOpen) {
+      this.$nextTick().then(() => {
+        this.getList()
+      })
+    }
+  },
   methods: {
     getList() {
       const fetch = Service.getRegisterOrderList

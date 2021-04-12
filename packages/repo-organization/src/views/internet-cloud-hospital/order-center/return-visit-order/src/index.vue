@@ -297,6 +297,17 @@ export default {
       })
     }
   },
+  async activated() {
+    let checkReturnVisitOpen = await Service.checkReturnVisitOpen()
+    let returnVisitList = checkReturnVisitOpen.data.list
+    this.returnVisitIsOpen = returnVisitList.isOpen == 1 ? true : false
+
+    if (this.returnVisitIsOpen) {
+      this.$nextTick().then(() => {
+        this.getList()
+      })
+    }
+  },
   methods: {
     getList() {
       const fetch = Service.getReturnVisitOrderList
