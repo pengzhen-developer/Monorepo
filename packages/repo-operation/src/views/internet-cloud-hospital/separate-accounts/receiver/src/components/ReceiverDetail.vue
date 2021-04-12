@@ -144,6 +144,7 @@
                                  v-bind:max="99"
                                  v-bind:precision="0"
                                  v-force="'pInterger'"></el-input-number>
+                <span class="q-ml-sm">%</span>
               </template>
             </el-form-item>
 
