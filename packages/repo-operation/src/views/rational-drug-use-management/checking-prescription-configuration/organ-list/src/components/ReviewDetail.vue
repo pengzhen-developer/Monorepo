@@ -15,6 +15,8 @@
 
     <p class="num">已选择：<span>{{this.checkedList.length}}</span></p>
 
+    <p class="tip q-mb-md">取消审方团队将会解除对应机构已设置规则的药师签名，请谨慎操作</p>
+
     <div class="text-center">
       <el-button type="primary"
                  class="large hasmargin "
@@ -139,7 +141,9 @@ export default {
 .el-checkbox {
   margin: 0;
 }
-
+.tip {
+  color: #ff3a30;
+}
 .num {
   line-height: 20px;
   font-size: 14px;
