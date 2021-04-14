@@ -56,7 +56,10 @@
             <div class="row q-col-gutter-x-md">
               <div class="col">
                 <el-form-item label="服务包介绍">
-                  <div v-html="model.brief"></div>
+                  <div class="ql-snow">
+                    <div class="ql-editor"
+                         v-html="model.brief"></div>
+                  </div>
                 </el-form-item>
               </div>
             </div>
@@ -121,6 +124,10 @@
 </template>
 
 <script>
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
 import Observable from '../observable'
 import Service from '../service'
 

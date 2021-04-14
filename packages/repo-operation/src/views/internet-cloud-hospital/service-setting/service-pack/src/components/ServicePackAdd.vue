@@ -242,7 +242,9 @@
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-import { quillEditor } from 'vue-quill-editor'
+import { quillEditor, Quill } from 'vue-quill-editor'
+import { ImageExtend, QuillWatch } from 'quill-image-extend-module'
+Quill.register('modules/ImageExtend', ImageExtend)
 
 import ServicePackEquityModel from '@src/views/internet-cloud-hospital/service-setting/service-pack-equity/src/components/ServicePackEquityModel'
 
@@ -257,13 +259,32 @@ export default {
 
   data() {
     return {
+      Authorization: '',
       quillEditorOption: {
         placeholder: '请输入',
         modules: {
-          toolbar: [
-            ['image', 'link'],
-            ['bold', 'italic', 'underline', 'strike']
-          ]
+          toolbar: {
+            container: [
+              ['image', 'link'],
+              ['bold', 'italic', 'underline', 'strike']
+            ],
+            handlers: {
+              image: function() {
+                QuillWatch.emit(this.quill.id)
+              }
+            }
+          },
+          ImageExtend: {
+            loading: false,
+            name: 'file',
+            action: `${process.env.VUE_APP_API_BASE}nethospital/operate/Hospital/uploadCover`,
+            headers: (xhr) => {
+              xhr.setRequestHeader('Authorization', this.Authorization)
+            },
+            response: (res) => {
+              return res.data
+            }
+          }
         }
       },
 
@@ -347,7 +368,10 @@ export default {
     }
   },
 
-  created() {
+  async created() {
+    const token = (await Peace.identity.auth.getAuth()).access_token
+    this.Authorization = 'Bearer ' + token
+
     this.getEquitiesDictionaryList()
     this.getHosList()
   },
