@@ -135,11 +135,6 @@
           <div class="order-label">支付时间</div>
           <div>{{ info.payTime || '--' }}</div>
         </div>
-        <div class="order-item"
-             v-if="info.expressNo">
-          <div class="order-label">运单编号</div>
-          <div>{{ info.expressNo }}</div>
-        </div>
       </template>
       <div class="order-item"
            v-if="info.refundTime">
