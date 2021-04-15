@@ -6,11 +6,25 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "20682216",
-      "name": "登录用户头像",
-      "font_class": "bianzu",
-      "unicode": "e619",
-      "unicode_decimal": 58905
+      "icon_id": "20697047",
+      "name": "删除",
+      "font_class": "shanchu1",
+      "unicode": "e69b",
+      "unicode_decimal": 59035
+    },
+    {
+      "icon_id": "20697048",
+      "name": "修改",
+      "font_class": "xiugai2",
+      "unicode": "e69c",
+      "unicode_decimal": 59036
+    },
+    {
+      "icon_id": "20697049",
+      "name": "新增",
+      "font_class": "xinzeng",
+      "unicode": "e69d",
+      "unicode_decimal": 59037
     },
     {
       "icon_id": "20338659",
