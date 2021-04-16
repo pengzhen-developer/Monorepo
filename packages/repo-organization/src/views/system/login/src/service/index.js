@@ -25,9 +25,9 @@ export default {
   getHospitalInfo() {
     const isMock = false
 
-    const apiPath = 'external/hospital/authorize'
+    const apiPath = 'nethospital/external/hospital/authorize'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-    const serverPath = process.env.VUE_APP_API_HOSPITAL + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 

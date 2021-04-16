@@ -247,7 +247,7 @@ export default {
         type: 'info',
         closeOnClickModal: false
       }).then(() => {
-        const url = `${process.env.VUE_APP_API_HOSPITAL}excel/doctor.xls`
+        const url = `${process.env.VUE_APP_API_BASE}nethospital/excel/doctor.xls`
         window.open(url, '_blank')
         this.$notify({
           title: '医生批量导入模板获取成功！',

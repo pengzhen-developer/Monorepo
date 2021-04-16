@@ -358,7 +358,7 @@ export default {
         type: 'info',
         closeOnClickModal: false
       }).then(() => {
-        const url = `${process.env.VUE_APP_API_HOSPITAL}excel/drug.xls`
+        const url = `${process.env.VUE_APP_API_BASE}nethospital/excel/drug.xls`
         window.open(url, '_blank')
         this.$notify({
           title: '药品批量导入模板获取成功！',

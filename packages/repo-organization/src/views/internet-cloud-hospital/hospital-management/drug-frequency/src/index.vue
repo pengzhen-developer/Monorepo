@@ -180,7 +180,7 @@ export default {
         dangerouslyUseHTMLString: ' true',
         closeOnClickModal: false
       }).then(() => {
-        const url = `${process.env.VUE_APP_API_HOSPITAL}/excel/用药频次.xlsx`
+        const url = `${process.env.VUE_APP_API_BASE}nethospital/excel/用药频次.xlsx`
         window.open(url, '_blank')
         this.$notify({
           title: '用药频次数据导入模板获取成功！',

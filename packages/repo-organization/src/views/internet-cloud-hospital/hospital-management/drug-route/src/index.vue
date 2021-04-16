@@ -162,7 +162,7 @@ export default {
         dangerouslyUseHTMLString: ' true',
         closeOnClickModal: false
       }).then(() => {
-        const url = `${process.env.VUE_APP_API_HOSPITAL}/excel/给药途径.xlsx`
+        const url = `${process.env.VUE_APP_API_BASE}nethospital/excel/给药途径.xlsx`
         window.open(url, '_blank')
         this.$notify({
           title: '给药途径数据导入模板获取成功！',
