@@ -387,22 +387,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.layout-route {
-  padding: 20px;
-
-  .card {
-    background: #fff;
-    padding: 24px 32px;
-    border-radius: 2px;
-
-    &.card-search {
-      padding: 24px 32px 4px 32px;
-      border-top-right-radius: 0;
-      border-top-left-radius: 0;
-    }
-  }
-}
-
 ::v-deep .el-date-editor .el-range-input {
   -webkit-appearance: none;
   -moz-appearance: none;
