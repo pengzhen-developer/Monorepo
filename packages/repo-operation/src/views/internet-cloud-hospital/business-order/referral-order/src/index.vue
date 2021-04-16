@@ -51,7 +51,7 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="订单渠道"
-                          min-width="100">
+                          min-width="150">
           <template slot-scope="scope">
             <span>{{ scope.row.source }}</span>
           </template>
@@ -65,13 +65,14 @@
                           min-width="150"
                           prop="in_Hospital_name"></PeaceTableColumn>
         <PeaceTableColumn label="订单类型"
+                          min-width="150"
                           prop="inquiry_type">
         </PeaceTableColumn>
         <PeaceTableColumn label="转诊时间"
                           min-width="180"
                           prop="created_time"></PeaceTableColumn>
         <PeaceTableColumn label="流转状态"
-                          min-width="100">
+                          min-width="150">
           <template slot-scope="scope">
             <span>{{ scope.row.transfer_status | getEnumLable(source.referralStatus) }}</span>
           </template>

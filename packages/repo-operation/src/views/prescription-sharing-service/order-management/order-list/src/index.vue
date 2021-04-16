@@ -282,11 +282,11 @@
         </PeaceTableColumn>
         <PeaceTableColumn prop="ValidityDate"
                           label="有效期"
-                          width="160px"></PeaceTableColumn>
+                          width="180px"></PeaceTableColumn>
 
         <PeaceTableColumn prop="ManufactureDate"
                           label="生产日期"
-                          width="160px"></PeaceTableColumn>
+                          width="180px"></PeaceTableColumn>
       </PeaceTable>
     </PeaceDialog>
 
