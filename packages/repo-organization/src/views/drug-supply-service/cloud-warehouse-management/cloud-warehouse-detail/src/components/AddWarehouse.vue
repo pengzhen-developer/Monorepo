@@ -2,7 +2,7 @@
   <div>
     <el-form ref="form"
              label-position="right"
-             label-width="150px"
+             label-width="138px"
              label-suffix="："
              v-bind:model="model"
              v-bind:rules="rules">
@@ -38,7 +38,7 @@
     ]">
           <el-input placeholder="请输入"
                     v-model.trim="model[item.Name]"
-                    maxlength="30"></el-input>
+                    maxlength="70"></el-input>
         </el-form-item>
 
       </div>
