@@ -432,6 +432,7 @@ export default {
   },
   async mounted() {
     this.source.OrderType = await Peace.identity.dictionary.getList('OrderType')
+    this.source.PayMode = await Peace.identity.dictionary.getList('PayMode')
     this.source.OrderType.map((item) => {
       item.value = parseInt(item.value)
     })
@@ -460,11 +461,7 @@ export default {
         OrderStatus: [],
         // 流转状态 => 见 created 获取字典
         SendWarehouseStatus: [],
-        PayMode: [
-          { label: '在线支付', value: 1 },
-          { label: '到店支付', value: 2 },
-          { label: '货到付款', value: 3 }
-        ],
+        PayMode: [],
 
         OrderType: []
       }
@@ -507,7 +504,7 @@ export default {
   methods: {
     showLogisticsInfo(data) {
       // 配送订单展示物流详情
-      const isSelf = this.data.ShippingMethod.toString() === '1'
+      const isSelf = this.data?.ShippingMethod?.toString() === '1'
 
       return isSelf && (data.LogisticsInfo || data.ExpressName || data.PickUpCode)
     }
