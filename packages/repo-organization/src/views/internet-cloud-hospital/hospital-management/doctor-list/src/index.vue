@@ -35,6 +35,18 @@
                     placeholder="请输入"></el-input>
         </el-form-item>
 
+        <el-form-item label="二级科室：">
+          <el-select v-model="model.depNameId"
+                     clearable
+                     filterable
+                     placeholder="请选择">
+            <el-option :key="item.id"
+                       :label="item.netdept_name"
+                       :value="item.id"
+                       v-for="item in secondDeptList"></el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="申请入驻时间：">
           <peace-date-picker type="daterange"
                              v-model="timeRange"
@@ -84,6 +96,13 @@
                           prop="created_time">
           <template slot-scope="scope">
             <div>{{ scope.row.created_time || '——' }}</div>
+          </template>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="二级科室"
+                          min-width="100"
+                          prop="created_time">
+          <template slot-scope="scope">
+            <div>{{ scope.row.netdept_child || '——' }}</div>
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="医生来源"
@@ -140,8 +159,9 @@
                  :visible.sync="doctorsImportDialogVisible"
                  title="批量导入医生"
                  v-if="doctorsImportDialogVisible"
-                 width="500px">
-      <DoctorsImport @close="closeDoctorsImportDialog" />
+                 width="720px">
+      <DoctorsImport @close="closeDoctorsImportDialog"
+                     @success="upSuccess" />
     </PeaceDialog>
     <!-- 医生详情-注册 -->
     <PeaceDialog :before-close="close"
@@ -180,6 +200,7 @@ export default {
       },
       list: [],
       timeRange: [],
+      secondDeptList: [],
       model: {
         name: '',
         tel: '',
@@ -189,7 +210,8 @@ export default {
         hospital: '',
         nethospital: '',
         timeStart: '',
-        timeEnd: ''
+        timeEnd: '',
+        depNameId: ''
       },
       currentDoctorInfo: '',
       currentDoctorEntryInfo: '',
@@ -217,6 +239,7 @@ export default {
   },
   mounted() {
     this.$nextTick().then(() => {
+      this.getSecondDept()
       this.getList()
     })
   },
@@ -226,6 +249,15 @@ export default {
       const params = Peace.util.deepClone(this.model)
       this.$refs.table.reloadData({ fetch, params })
     },
+
+    //获取二级科室列表接口
+    getSecondDept() {
+      const params = {}
+      Service.getSecondDept(params).then((res) => {
+        this.secondDeptList = res.data
+      })
+    },
+
     close(done) {
       this.getList()
       done()
@@ -238,6 +270,10 @@ export default {
     // 关闭 Dialog
     closeDoctorsImportDialog() {
       this.doctorsImportDialogVisible = false
+    },
+    //导入成功
+    upSuccess() {
+      this.doctorsImportDialogVisible = false
       this.getList()
     },
     /* 下载导入模板 */
@@ -249,10 +285,8 @@ export default {
       }).then(() => {
         const url = `${process.env.VUE_APP_API_BASE}nethospital/excel/doctor.xls`
         window.open(url, '_blank')
-        this.$notify({
-          title: '医生批量导入模板获取成功！',
-          message: `若无法正常下载,请复制链接至其他浏览器重试${url}`,
-          duration: 10000
+        this.$alert('', '医生批量导入模板获取成功！', {
+          message: <div class="alert-text">若无法正常下载,请复制链接至其他浏览器重试{url}</div>
         })
       })
     },
@@ -342,5 +376,9 @@ export default {
   color: #333;
   line-height: 32px;
   text-align: left;
+}
+
+.alert-text {
+  word-break: break-all;
 }
 </style>
