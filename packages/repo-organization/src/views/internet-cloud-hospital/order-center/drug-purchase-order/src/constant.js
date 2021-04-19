@@ -14,11 +14,5 @@ export default {
     { value: 3, label: '已付款' },
     { value: 4, label: '退款中' },
     { value: 5, label: '已退款' }
-  ],
-  // 支付模式
-  ENUM_PAYMODE: [
-    { value: 1, label: '在线支付' },
-    { value: 2, label: '到店支付' },
-    { value: 3, label: '货到付款' }
   ]
 }

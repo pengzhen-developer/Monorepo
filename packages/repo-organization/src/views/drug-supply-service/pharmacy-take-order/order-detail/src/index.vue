@@ -299,11 +299,7 @@ export default {
         ],
         // 订单状态 => 见 watch 'model.ShippingMethod'
         OrderStatus: [],
-        PayMode: [
-          { label: '在线支付', value: 1 },
-          { label: '到店支付', value: 2 },
-          { label: '货到付款', value: 3 }
-        ]
+        PayMode: []
       }
     }
   },
@@ -337,7 +333,8 @@ export default {
     }
   },
 
-  created() {
+  async created() {
+    this.source.PayMode = await Peace.identity.dictionary.getList('PayMode')
     this.fetch()
   },
 

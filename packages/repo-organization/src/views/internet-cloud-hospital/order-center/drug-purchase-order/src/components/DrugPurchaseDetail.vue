@@ -157,7 +157,7 @@ export default {
     return {
       source: {
         ENUM_PAYMENT: CONSTANT.ENUM_PAYMENT,
-        ENUM_PAYMODE: CONSTANT.ENUM_PAYMODE,
+        PayMode: [],
         ShippingMethod: [],
         DistributionOrderStatus: [],
         SelfOrderStatus: []
@@ -177,7 +177,7 @@ export default {
     },
     paymentTypesText() {
       if (this.info.payMode) {
-        return this.source.ENUM_PAYMODE.find((item) => item.value == this.info.payMode)?.label
+        return this.source.PayMode.find((item) => item.value == this.info.payMode)?.label
       } else {
         const paymentTypes = this.getPaymentStatus(this.info.paymentType)
         let text = '在线支付'
@@ -196,6 +196,8 @@ export default {
   async created() {
     // 配送方式
     this.source.ShippingMethod = await Peace.identity.dictionary.getList('ShippingMethod')
+
+    this.source.PayMode = await Peace.identity.dictionary.getList('PayMode')
 
     // 订单状态
     this.source.DistributionOrderStatus = await Peace.identity.dictionary.getList('distribution_order_status')

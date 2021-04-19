@@ -402,11 +402,7 @@ export default {
         ],
         // 订单状态 => 见 watch 'data.ShippingMethod'
         OrderStatus: [],
-        PayMode: [
-          { label: '在线支付', value: 1 },
-          { label: '到店支付', value: 2 },
-          { label: '货到付款', value: 3 }
-        ],
+        PayMode: [],
         OrderType: []
       }
     }
@@ -429,6 +425,8 @@ export default {
     this.source.OrderType.map((item) => {
       item.value = parseInt(item.value)
     })
+
+    this.source.PayMode = await Peace.identity.dictionary.getList('PayMode')
   },
 
   methods: {

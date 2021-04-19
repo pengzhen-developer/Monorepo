@@ -238,7 +238,9 @@ export default {
 
   filters: {
     formatDictionary(value, source) {
-      return source.find((item) => item.value === value)?.label
+      if (!Peace.validate.isEmpty(value)) {
+        return source.find((item) => item.value.toString() === value.toString())?.label
+      }
     },
 
     formatCurrency(value) {
@@ -278,11 +280,7 @@ export default {
         ],
         // 订单状态 => 见 watch 'model.ShippingMethod'
         OrderStatus: [],
-        PayMode: [
-          { label: '在线支付', value: 1 },
-          { label: '到店支付', value: 2 },
-          { label: '货到付款', value: 3 }
-        ]
+        PayMode: []
       }
     }
   },
@@ -325,7 +323,8 @@ export default {
     this.reFetch()
   },
 
-  mounted() {
+  async mounted() {
+    this.source.PayMode = await Peace.identity.dictionary.getList('PayMode')
     this.$nextTick().then(this.fetch)
   },
 

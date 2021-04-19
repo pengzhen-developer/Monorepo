@@ -208,12 +208,7 @@ export default {
           { label: '配送订单', value: 1, unprocessCount: 0 }
         ],
         // 订单状态 => 见 watch 'model.ShippingMethod'
-        OrderStatus: [],
-        PayMode: [
-          { label: '在线支付', value: 1 },
-          { label: '到店支付', value: 2 },
-          { label: '货到付款', value: 3 }
-        ]
+        OrderStatus: []
       }
     }
   },

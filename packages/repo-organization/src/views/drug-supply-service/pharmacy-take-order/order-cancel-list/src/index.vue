@@ -75,6 +75,7 @@
         <PeaceTableColumn prop="OrderAmount"
                           header-align="right"
                           align="right"
+                          min-width="120"
                           label="订单总额">
         </PeaceTableColumn>
 
@@ -84,10 +85,12 @@
         </PeaceTableColumn>
 
         <PeaceTableColumn label="订单状态"
+                          min-width="120"
                           prop="OrderStatusStr">
         </PeaceTableColumn>
 
-        <PeaceTableColumn label="取消状态">
+        <PeaceTableColumn label="取消状态"
+                          min-width="120">
           <template slot-scope="scope">
             <div :class="{operatingColor : isPending(scope.row.Result)}">
               {{ (scope.row.Result).toString() | filterDictionary(source.OrderChangeResult, '--') }}
