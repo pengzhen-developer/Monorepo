@@ -4,9 +4,9 @@
       <time-line-item v-for="(activity, index) in activities"
                       :key="index"
                       type="primary"
-                      :timestamp="activity.timestamp"
-                      :timestampSpan="activity.timestampSpan"
-                      placement="left">
+                      placement="left"
+                      v-bind:timestamp="activity.timestamp"
+                      v-bind:timestampSpan="activity.timestampSpan">
         <div style="font-weight: 500">{{ activity.refundStatusTxt }}</div>
         <div class="text-grey-999 q-mt-4"
              style="font-size: 12px">{{activity.remark}}</div>

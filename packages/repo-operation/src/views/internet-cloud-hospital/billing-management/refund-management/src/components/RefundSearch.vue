@@ -38,6 +38,8 @@
 
         <el-form-item label="提交日期">
           <PeaceDatePicker type="daterange"
+                           start-placeholder="开始日期"
+                           end-placeholder="结束日期"
                            value-format="yyyy-MM-dd"
                            v-model="model.time"></PeaceDatePicker>
         </el-form-item>
@@ -210,7 +212,6 @@ import AdvisoryOrderInfo from './AdvisoryOrderInfo'
 import ReturnVisitOrderInfo from './ReturnVisitOrderInfo'
 import PurchaseOrderInfo from './PurchaseOrderInfo'
 import ServicePackageOrderInfo from './ServicePackageOrderInfo'
-import RegisterOrderInfo from './RegisterOrderInfo'
 
 export default {
   name: 'RefundSearch',
@@ -219,8 +220,7 @@ export default {
     AdvisoryOrderInfo,
     ReturnVisitOrderInfo,
     PurchaseOrderInfo,
-    ServicePackageOrderInfo,
-    RegisterOrderInfo
+    ServicePackageOrderInfo
   },
   data() {
     return {
@@ -245,23 +245,23 @@ export default {
       infoDialogInquiryVisible: false,
       infoDialogReturnVisitVisible: false,
       purchaseDialogVisible: false,
-      servicePackageDialogVisible: false,
-      registerOrderDialogVisible: false
+      servicePackageDialogVisible: false
     }
   },
+
   mounted() {
-    // this.source.orderType = await Peace.identity.dictionary.getList('order_service_type')
     this.$nextTick().then(() => {
       this.fetch()
     })
   },
+
   watch: {
-    ['model.time']() {
-      const [startTime, endTime] = this.model.time
-      this.model.startTime = startTime || ''
-      this.model.endTime = endTime || ''
+    'model.time'(timeRange) {
+      this.model.startTime = timeRange?.[0] ?? ''
+      this.model.endTime = timeRange?.[1] ?? ''
     }
   },
+
   methods: {
     fetch() {
       const fetch = Service.refundList
@@ -269,21 +269,20 @@ export default {
       this.$refs.table.reloadData({ fetch, params }).then((res) => (this.tableData = res.data))
     },
 
+    // 退款详情
     showDetail(item) {
       this.dialog.orderNo = item.orderNo
       this.dialog.visible = true
     },
 
     showOrder(row) {
-      // 1咨询 2复诊 3购药 4挂号 5服务包
+      // 1咨询 2复诊 3购药 5服务包
       if (row.orderType === 1) {
         this.getInquiryOrderInfo(row.orderNo)
       } else if (row.orderType === 2) {
         this.getReturnVisitOrderInfo(row.orderNo)
       } else if (row.orderType === 3) {
         this.getPurchaseOrder(row.orderNo)
-      } else if (row.orderType === 4) {
-        this.getServicePackageOrder(row.orderNo)
       } else if (row.orderType === 5) {
         this.getServicePackageOrder(row.orderNo)
       }
@@ -316,21 +315,13 @@ export default {
       })
     },
 
-    // 挂号药订单
-    getRegisterOrder(orderNo) {
-      const params = { orderNo }
-      Service.getPurchases(params).then((res) => {
-        this.registerOrderDialogVisible = true
-        this.currentPurchase = res.data
-      })
-    },
-
     // 服务包订单
     getServicePackageOrder(orderNo) {
       this.servicePackageDialogVisible = true
       this.currentServicePackage = orderNo
     },
 
+    // 再次退款
     againRefund(item) {
       this.$confirm('退款前请确认导致退款不成功的问题已解决，否则将再次导致退款失败', '再次退款', {
         confirmButtonText: '确定退款',
@@ -338,19 +329,18 @@ export default {
       })
         .then(() => {
           const params = { orderNo: item.orderNo, again: 1 }
-          Service.againRefund(params).then((res) => {
-            console.log(res)
+          Service.applyRefund(params).then(() => {
+            this.fetch()
           })
         })
         .catch(() => {})
     },
 
+    // 是否显示再次退款按钮
     showAgainRefund(status) {
       // 2 退款异常,  4 退款关闭
       return [2, 4].includes(status)
-    },
-
-    handleClick() {}
+    }
   }
 }
 </script>
@@ -373,7 +363,7 @@ export default {
 
 ::v-deep .el-table__expand-column .cell {
   .el-table__expand-icon--expanded {
-    // 这是点击后的旋转角度
+    // 修改旋转过后的箭头位置
     transform: translateX(12px) rotate(90deg);
   }
 
@@ -381,6 +371,7 @@ export default {
     font-size: 20px;
     margin-top: -8px;
     .el-icon-arrow-right:before {
+      // 设置箭头样式
       content: '\e791';
       height: 26px;
       color: rgba(#333333, 0.4);

@@ -2,8 +2,8 @@
   <div class="apply-refund-style">
     <el-form inline
              ref="searchForm"
-             :rules="searchRules"
              label-suffix="："
+             :rules="searchRules"
              v-bind:model="searchModel">
 
       <el-form-item label="订单编号"
@@ -63,18 +63,18 @@
         <el-form v-if="canApplyRefund"
                  ref="applyForm"
                  class="q-mt-24"
-                 label-width="80px"
+                 label-width="90px"
                  v-bind:rules="applyRules"
                  v-bind:model="applyModel">
 
           <el-form-item label="退款备注："
                         prop="remark">
             <el-input v-model="applyModel.remark"
+                      show-word-limit
+                      type="textarea"
                       maxlength="200"
                       placeholder="请输入"
-                      show-word-limit
                       style="width:320px;"
-                      type="textarea"
                       v-bind:rows="3"></el-input>
           </el-form-item>
 
@@ -87,15 +87,17 @@
         </el-form>
 
         <!--  不能申请退款Tips      -->
-        <div v-else
+        <!-- <div v-else
              class="tips-style text-orange">
-          <i class="el-icon-warning q-mt-4"
-             type="warn"></i>
+
+          <i type="warn"
+             class="el-icon-warning q-mt-4"></i>
+
           <div class="q-ml-8 column">
             <span class="text-grey-666 q-mb-8">1、当月15号前，可支持 上个月/本月、完结状态（已完成/已拒签）、 已付款状态发起退款；</span>
             <span class="text-grey-666">2、当月15号后，可支持 本月、完结状态（已完成/已拒签）、已付款状态 发起退款；</span>
           </div>
-        </div>
+        </div> -->
 
       </div>
 
@@ -113,24 +115,29 @@ export default {
   data() {
     return {
       searchModel: {
-        orderNo: '',
+        orderNo: undefined,
         loading: false
       },
 
       applyModel: {
         orderNo: undefined,
         again: undefined,
-        remark: '',
+        remark: undefined,
         loading: false
       },
+
+      // 订单详情
       result: undefined,
+
       // 用来标记空态页展示状态
       hasSearch: false,
+
       searchRules: {
         orderNo: [{ required: true, message: '请输入订单编号', trigger: 'blur' }]
       },
+
       applyRules: {
-        orderNo: [{ required: true, message: '请输入订单编号', trigger: 'blur' }]
+        remark: [{ required: true, message: '请输入退款备注', trigger: 'blur' }]
       }
     }
   },
@@ -138,7 +145,16 @@ export default {
   computed: {
     // 可以申请退款
     canApplyRefund() {
-      return this.result && !Peace.validate.isEmpty(this.result.completionTime)
+      // refundOrderStatus: 1：退款中 2：退款异常 3已退款 4退款关闭 , (undefined | null) 未退过款
+      // 可退款的条件：
+      // 1. this.request != undefined
+      // 2. this.result.completionTime != undefined
+      // 3. refundOrderStatus 的值为以下 [undefined, 2退款异常, 4退款关闭]
+      return (
+        this.request &&
+        !Peace.validate.isEmpty(this.result.completionTime) &&
+        (Peace.validate.isEmpty(this.result.refundOrderStatus) || [2, 4].includes(this.result.refundOrderStatus))
+      )
     },
 
     showEmptyView() {
@@ -159,9 +175,9 @@ export default {
       this.hasSearch = false
       this.searchModel.loading = true
       const orderNo = String(this.searchModel.orderNo)
+
       Service.searchOrder(orderNo)
         .then((res) => {
-          debugger
           this.result = res.data
           this.searchModel.orderNo = res.data.orderNo
           this.searchModel.again = 2
@@ -172,6 +188,7 @@ export default {
         })
     },
 
+    // 点击申请退款
     apply() {
       this.$refs.applyForm.validate((valid) => {
         if (valid) {
@@ -180,7 +197,14 @@ export default {
       })
     },
 
+    // 申请退款
     applyFetch() {
+      this.applyModel.orderNo = this.result.orderNo
+      if (Peace.validate.isEmpty(this.result.refundOrderStatus)) {
+        this.applyModel.again = 0
+      } else {
+        this.applyModel.again = 1
+      }
       const params = Peace.util.deepClone(this.applyModel)
       Service.applyRefund(params).then(() => {
         this.fetch()
@@ -191,6 +215,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// 隐藏table boder
 ::v-deep .el-table--border:after,
 .el-table--group:after,
 .el-table:before {
@@ -211,12 +236,12 @@ export default {
   }
 }
 
-.tips-style {
-  margin-top: 24px;
-  display: flex;
-  padding: 8px 12px;
-  width: 481px;
-  background: #fffaf3;
-  border: 1px solid #ffd99e;
-}
+// .tips-style {
+//   margin-top: 24px;
+//   display: flex;
+//   padding: 8px 12px;
+//   width: 481px;
+//   background: #fffaf3;
+//   border: 1px solid #ffd99e;
+// }
 </style>
