@@ -287,46 +287,60 @@
       </div>
 
       <div class="content">
-        <div class="q-mb-32">
+        <!-- <div class="q-mb-32">
           <span class="text-grey-7">物流配送方式：</span>
           <span class="text-grey-7 q-mr-xl">快递公司配送</span>
           <span class="text-grey-7">物流公司名称：</span>
           <span class="text-grey-7 q-mr-xl">{{ data.LogisticsInfo && data.LogisticsInfo.Name || data.ExpressName }}</span>
           <span class="text-grey-7">物流单号：</span>
           <span class="text-grey-7">{{ data.LogisticsInfo && data.LogisticsInfo.Number || data.PickUpCode }}</span>
-        </div>
+        </div> -->
 
-        <ul class="el-timeline"
-            v-if="data.LogisticsInfo">
-          <li class="el-timeline-item"
-              v-for="(timeline, index) in data.LogisticsInfo.Stream"
-              v-bind:key="timeline.Time">
-            <div class="el-timeline-title">
-              <div class="text-subtitle2">{{ timeline.MonthVisible }}</div>
-              <div class="text-caption text-grey-5">{{ timeline.TimeVisible }}</div>
-            </div>
-            <div class="el-timeline-item__tail">
-            </div>
-            <div v-show="index !== 0"
-                 class="el-timeline-item__node el-timeline-item__node--large">
-            </div>
-            <div v-show="index === 0"
-                 class="el-timeline-item__node el-timeline-item__node--large el-timeline-item__node--primary">
-              <i v-if="data.LogisticsInfo.State === 3"
-                 class="el-timeline-item__icon el-icon-circle-check"></i>
-              <i v-else
-                 class="el-timeline-item__icon el-icon-more"></i>
-            </div>
-            <!---->
-            <div class="el-timeline-item__wrapper">
-              <!---->
-              <div class="el-timeline-item__content text-subtitle1"> {{ timeline.Status }} </div>
-              <div class="el-timeline-item__timestamp text-grey-6 text-caption is-bottom">
-                {{ timeline.Content }}
+        <template v-if="data.LogisticsInfo&&data.LogisticsInfo.length>0">
+          <div class="q-mb-8">
+            <el-button type="primary"
+                       class="q-mb-16"
+                       :plain="logInfo.active!==index"
+                       v-on:click="changeLog(log,index)"
+                       v-for="(log,index) in data.LogisticsInfo"
+                       v-bind:key="index">{{log.Name}} {{log.Number}}</el-button>
+          </div>
+
+          <ul class="el-timeline"
+              v-if="logInfo.data.State!=-1">
+            <li class="el-timeline-item"
+                v-for="(timeline, index) in logInfo.data.Stream"
+                v-bind:key="timeline.Time">
+              <div class="el-timeline-title">
+                <div class="text-subtitle2">{{ timeline.MonthVisible }}</div>
+                <div class="text-caption text-grey-5">{{ timeline.TimeVisible }}</div>
               </div>
-            </div>
-          </li>
-        </ul>
+              <div class="el-timeline-item__tail">
+              </div>
+              <div v-show="index !== 0"
+                   class="el-timeline-item__node el-timeline-item__node--large">
+              </div>
+              <div v-show="index === 0"
+                   class="el-timeline-item__node el-timeline-item__node--large el-timeline-item__node--primary">
+                <i v-if="data.LogisticsInfo.State === 3"
+                   class="el-timeline-item__icon el-icon-circle-check"></i>
+                <i v-else
+                   class="el-timeline-item__icon el-icon-more"></i>
+              </div>
+              <!---->
+              <div class="el-timeline-item__wrapper">
+                <!---->
+                <div class="el-timeline-item__content text-subtitle1"> {{ timeline.Status }} </div>
+                <div class="el-timeline-item__timestamp text-grey-6 text-caption is-bottom">
+                  {{ timeline.Content }}
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div v-else
+               class="text-grey-666">未查询到物流信息</div>
+        </template>
+
       </div>
     </div>
   </div>
@@ -345,13 +359,15 @@ export default {
           YbDetails: [],
           DiseaseOrderType: null,
           VarietiesOrderType: null,
-          LogisticsInfo: {
-            Name: '',
-            OrderId: '',
-            Number: '',
-            State: null,
-            Stream: []
-          },
+          LogisticsInfo: [
+            //    {
+            //   Name: '',
+            //   OrderId: '',
+            //   Number: '',
+            //   State: null,
+            //   Stream: []
+            // },
+          ],
           PatientIDNumber: '',
           PatientName: '',
           PatientSex: '',
@@ -440,6 +456,10 @@ export default {
   },
   data() {
     return {
+      logInfo: {
+        data: {},
+        active: ''
+      },
       source: {
         // 按病症
         DiseaseOrderType: [
@@ -474,10 +494,14 @@ export default {
         // SelfOrderStatus  自提订单状态  0
         const requestKey = this.data.ShippingMethod?.toString() === '0' ? 'SelfOrderStatus' : 'DistributionOrderStatus'
         this.source.OrderStatus = await peace.identity.dictionary.getList(requestKey)
+        //初始化物流信息--默认选中第一项
+        this.logInfo.data = this.data.LogisticsInfo?.length > 0 ? this.data.LogisticsInfo[0] : {}
+        this.logInfo.active = 0
       },
       immediate: true
     }
   },
+
   filters: {
     formatDictionary(value, source, format = '') {
       if (!Peace.validate.isEmpty(value)) {
@@ -502,6 +526,13 @@ export default {
     }
   },
   methods: {
+    changeLog(data, index) {
+      if (this.logInfo.active === index) {
+        return
+      }
+      this.logInfo.active = index
+      this.logInfo.data = data
+    },
     showLogisticsInfo(data) {
       // 配送订单展示物流详情
       const isSelf = this.data?.ShippingMethod?.toString() === '1'

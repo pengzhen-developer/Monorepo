@@ -288,12 +288,17 @@ export default {
       const params = { ID: row.ID }
       Service.getOrderInfo(params).then((res) => {
         // 处理 Stream timeline
-        res.data?.LogisticsInfo?.Stream?.forEach((item) => {
-          item.MonthVisible = date.formatDate(item.Time, 'MM-DD')
-          item.TimeVisible = date.formatDate(item.Time, 'HH:mm')
-        })
-        this.orderDetailDialog.visible = true
+        if (res.data?.LogisticsInfo?.length > 0) {
+          res.data.LogisticsInfo.forEach((log) => {
+            log.Stream?.forEach((item) => {
+              item.MonthVisible = date.formatDate(item.Time, 'MM-DD')
+              item.TimeVisible = date.formatDate(item.Time, 'HH:mm')
+            })
+          })
+        }
+
         this.orderDetailDialog.data = res.data
+        this.orderDetailDialog.visible = true
       })
     },
 

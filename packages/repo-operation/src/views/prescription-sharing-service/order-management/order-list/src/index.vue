@@ -470,18 +470,21 @@ export default {
     },
 
     showCancelDetail(row) {
-      this.dialog2.visible = true
-
       const params = { ID: row.ID }
 
       Service.getOrderInfo(params).then((res) => {
         // 处理 Stream timeline
-        res.data?.LogisticsInfo?.Stream?.forEach((item) => {
-          item.MonthVisible = date.formatDate(item.Time, 'MM-DD')
-          item.TimeVisible = date.formatDate(item.Time, 'HH:mm')
-        })
+        if (res.data?.LogisticsInfo?.length > 0) {
+          res.data.LogisticsInfo.forEach((log) => {
+            log.Stream?.forEach((item) => {
+              item.MonthVisible = date.formatDate(item.Time, 'MM-DD')
+              item.TimeVisible = date.formatDate(item.Time, 'HH:mm')
+            })
+          })
+        }
 
         this.dialog2.data = res.data
+        this.dialog2.visible = true
       })
     },
 
