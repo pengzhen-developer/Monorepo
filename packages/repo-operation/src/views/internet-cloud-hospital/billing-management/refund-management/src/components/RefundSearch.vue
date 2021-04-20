@@ -202,6 +202,17 @@
       <ServicePackageOrderInfo v-bind:data="currentServicePackage"></ServicePackageOrderInfo>
     </PeaceDialog>
 
+    <!-- 处方详情 -->
+    <PeaceDialog v-if="presDialogVisible"
+                 v-bind:visible.sync="presDialogVisible"
+                 v-bind:close-on-click-modal="false"
+                 v-bind:close-on-press-escape="false"
+                 title="处方详情"
+                 width="580px"
+                 append-to-body>
+      <PresInfo v-bind:info="currentPres"></PresInfo>
+    </PeaceDialog>
+
   </div>
 </template>
 
@@ -209,6 +220,7 @@
 import Service from '../service'
 import CONSTANT from '../constant'
 import RefundDetail from './RefundDetail'
+import PresInfo from './PresInfo'
 import AdvisoryOrderInfo from './AdvisoryOrderInfo'
 import ReturnVisitOrderInfo from './ReturnVisitOrderInfo'
 import PurchaseOrderInfo from './PurchaseOrderInfo'
@@ -217,6 +229,7 @@ import ServicePackageOrderInfo from './ServicePackageOrderInfo'
 export default {
   name: 'RefundSearch',
   components: {
+    PresInfo,
     RefundDetail,
     AdvisoryOrderInfo,
     ReturnVisitOrderInfo,
@@ -243,6 +256,7 @@ export default {
         orderNo: undefined
       },
 
+      presDialogVisible: false,
       infoDialogInquiryVisible: false,
       infoDialogReturnVisitVisible: false,
       purchaseDialogVisible: false,
@@ -320,6 +334,26 @@ export default {
     getServicePackageOrder(orderNo) {
       this.servicePackageDialogVisible = true
       this.currentServicePackage = orderNo
+    },
+
+    // 用药建议（处方）
+    getPres(id) {
+      const params = { prescribeId: id }
+      Service.getPresInfo(params)
+        .then((res) => {
+          this.presDialogVisible = true
+          this.currentPres = res.data
+          this.currentPres.prescriptionId = id
+        })
+        .catch((res) => {
+          this.$message.error(res.msg)
+          this.presDialogVisible = false
+        })
+    },
+
+    // 查看处方（购药订单子组件触发）
+    viewPres(param) {
+      return this.getPres(param.ids, param.idx)
     },
 
     // 再次退款
