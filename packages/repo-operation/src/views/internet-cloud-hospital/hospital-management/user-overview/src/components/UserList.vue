@@ -14,7 +14,7 @@
                inline>
         <el-form-item label="用户名">
           <el-input placeholder="请输入姓名"
-                    v-model="model.patientName"
+                    v-model.trim="model.patientName"
                     clearable></el-input>
         </el-form-item>
         <el-form-item label="手机号">
@@ -23,15 +23,9 @@
                     clearable></el-input>
         </el-form-item>
         <el-form-item label="应用">
-          <el-select v-model="model.mainPart"
-                     placeholder="全部"
-                     clearable>
-            <el-option v-bind:key="'order'+item.value"
-                       v-bind:label="item.label"
-                       v-bind:value="item.value"
-                       v-for="item in source.hospitalList"></el-option>
-
-          </el-select>
+          <el-input placeholder="请输入"
+                    v-model.trim="model.mainPart"
+                    clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="fetch"
@@ -183,8 +177,7 @@ export default {
       return this.info?.hosId ?? ''
     }
   },
-  async mounted() {
-    this.source.hospitalList = await Peace.identity.dictionary.getList('main_part_type')
+  mounted() {
     this.model.hosId = this.hospitalId
 
     this.$nextTick().then(() => {
