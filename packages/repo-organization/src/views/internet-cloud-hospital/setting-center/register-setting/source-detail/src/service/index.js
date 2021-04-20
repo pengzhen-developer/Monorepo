@@ -43,5 +43,20 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
+  },
+  /**
+   * 批量更新号源
+   *
+   * @param {*} params
+   */
+  batchModifySource(params) {
+    const isMock = false
+    const apiPath = 'nethospital/hospital/v1/Register/batchModifyBookingState'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+    const requestApi = isMock ? mockPath : serverPath
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
   }
 }

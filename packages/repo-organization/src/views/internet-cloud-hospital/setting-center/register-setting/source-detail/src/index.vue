@@ -3,14 +3,21 @@
     <div class="layout-route full-width">
       <template v-if="registerIsOpen === true">
         <div class="card">
-          <div class="hd">
-            <span class="title">{{ info.doctorName }}</span>
-            <span class="dept">{{ info.departmentName }}</span>
-            <span class="time">{{ info.timeSharing }} {{ info.bookingStart }} -
-              {{ info.bookingEnd }}</span>
+          <div class="hd flex justify-between">
+            <div><span class="title">{{ info.doctorName }}</span>
+              <span class="dept">{{ info.departmentName }}</span>
+              <span class="time">{{ info.timeSharing }} {{ info.bookingStart }} -
+                {{ info.bookingEnd }}</span>
+            </div>
+            <div>
+              <el-button @click="batchModifySource('close')"
+                         type="default">停诊</el-button>
+              <el-button @click="batchModifySource('open')"
+                         type="default">恢复预约</el-button>
+            </div>
           </div>
           <div class="items">
-            <div :class="[{'is-disabled': [2, 3].includes(item.bookingState) }, {'is-blue': item.bookingState === 1 }]"
+            <div :class="[{'is-disabled': item.bookingState === 2 }, {'is-blue': item.bookingState === 1 }]"
                  :key="item.sourceItemCode"
                  class="item"
                  v-for="item in list">
@@ -18,16 +25,16 @@
               <div class="time">{{ item.bookingStart.substr(0, 5) }} -
                 {{ item.bookingEnd.substr(0, 5) }}</div>
               <div class="status"
-                   v-if="item.bookingState">
-                <span>{{ item.bookingState | getEnumLabel(source.ENUM_SOURCE_STATUS) }}</span>
+                   v-if="[0, 3].includes(item.bookingState)">
+                <span>{{item.bookingState === 3 ? '不':''}}可约</span>
+                <el-switch :active-value="0"
+                           :inactive-value="3"
+                           v-model="item.bookingState"
+                           @change="modifySource(item)"></el-switch>
               </div>
               <div class="status"
                    v-else>
-                <span>可约：</span>
-                <el-switch :active-value="0"
-                           :inactive-value="1"
-                           :value="item.isLock || 0"
-                           @change="handleChange(item)"></el-switch>
+                <span>{{ item.bookingState | getEnumLabel(source.ENUM_SOURCE_STATUS) }}</span>
               </div>
             </div>
           </div>
@@ -104,20 +111,58 @@ export default {
         sourceDisType: this.sourceDisType
       }
       Service.getSourceInfo(params).then((res) => {
-        const data = res.data
-
-        this.list = data.list
+        this.list = res.data.list
       })
     },
-    handleChange(item) {
-      item.isLock = !item.isLock
-      let params = {
-        sourceItemCode: item.sourceItemCode,
-        bookingState: 3
+    // 更新号源
+    modifySource(item) {
+      let updateSource = () => {
+        let params = {
+          sourceItemCode: item.sourceItemCode,
+          bookingState: item.bookingState
+        }
+        Service.updateSourceStatus(params).then((res) => {
+          Peace.util.success(res.msg)
+          this.getInfo()
+        })
       }
-      Service.updateSourceStatus(params).then(() => {
-        this.getInfo()
-      })
+
+      // 0.未预约 1.已预约 2.已失效 3.已停止
+      if (item.bookingState === 0) {
+        updateSource()
+      } else {
+        this.$confirm(`此操作会停止当前号源，是否继续？`, '提示', { closeOnClickModal: false })
+          .then(() => {
+            updateSource()
+          })
+          .catch(() => {
+            item.bookingState = 0
+          })
+      }
+    },
+    // 批量更新号源
+    batchModifySource(type) {
+      let updateSource = () => {
+        const params = {
+          doctorCode: this.info.doctorCode,
+          sourceCode: this.info.sourceCode,
+          bookingState: type === 'open' ? 0 : 3, // 0.未预约 1.已预约 2.已失效 3.已停止
+          sourceDisType: 1 // 0线上1线下
+        }
+        Service.batchModifySource(params).then((res) => {
+          Peace.util.success(res.msg)
+          this.getInfo()
+        })
+      }
+      if (type === 'open') {
+        updateSource()
+      } else {
+        this.$confirm(`将对医生进行停诊，是否继续？`, '提示', { closeOnClickModal: false })
+          .then(() => {
+            updateSource()
+          })
+          .catch(() => {})
+      }
     }
   }
 }
@@ -125,7 +170,7 @@ export default {
 
 <style lang="scss" scoped>
 .hd {
-  padding-bottom: 24px;
+  padding-bottom: 18px;
   color: #333;
   .title {
     line-height: 28px;
@@ -142,40 +187,48 @@ export default {
   width: calc(100% + 12px);
 }
 .item {
-  margin: 0 6px;
-  margin-bottom: 12px;
-  width: 97px;
-  padding: 8px 0;
-  text-align: center;
-  border: 1px solid #f2f2f2;
-  border-radius: 4px;
-  background-color: #f9f9f9;
   display: inline-block;
-  &.is-disabled {
-    .number,
-    .time,
-    .status {
-      color: #d6d6d6;
-    }
-  }
-  &.is-blue {
-    background-color: #d8f6f3;
-    .number,
-    .time,
-    .status {
-      color: var(--q-color-primary);
-    }
-  }
+  width: 98px;
+  margin: 0 6px 16px 6px;
+  padding: 6px 0;
+  border: 1px solid #d6d6d6;
+  border-radius: 4px 4px 0 0;
+  background-color: #ffffff;
+  color: #333333;
+  text-align: center;
   .number {
+    margin-bottom: 2px;
     font-size: 30px;
     font-weight: 300;
     line-height: 42px;
-    color: #333;
   }
   .time,
   .status {
     margin-top: 6px;
-    font-size: 12px;
+    padding: 0 6px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &.is-disabled {
+    background-color: #f5f5f5;
+    border: 1px solid #eaeaea;
+    color: rgba(58, 58, 58, 0.2);
+    .status {
+      justify-content: center;
+    }
+  }
+  &.is-blue {
+    background-color: #f4fafb;
+    border: 1px solid var(--q-color-primary);
+    color: var(--q-color-primary);
+    .status {
+      justify-content: center;
+    }
   }
 }
 </style>

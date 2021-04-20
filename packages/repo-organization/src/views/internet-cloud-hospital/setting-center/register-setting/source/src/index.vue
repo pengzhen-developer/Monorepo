@@ -56,17 +56,14 @@
                               min-width="120"></PeaceTableColumn>
             <PeaceTableColumn label="医生"
                               prop="doctorName"
-                              min-width="100"></PeaceTableColumn>
+                              min-width="120"></PeaceTableColumn>
             <PeaceTableColumn label="科室"
                               prop="departmentName"
-                              min-width="150"></PeaceTableColumn>
-            <PeaceTableColumn label="价格"
-                              min-width="80">
+                              min-width="120"></PeaceTableColumn>
+            <PeaceTableColumn label="价格/¥"
+                              min-width="100">
               <template slot-scope="scope">
-                <span class="red"
-                      v-if="scope.row.unitPrice">¥{{ scope.row.unitPrice }}</span>
-                <span class="red"
-                      v-else>¥0</span>
+                <span>{{ (scope.row.unitPrice || 0) | formatCurrency }}</span>
               </template>
             </PeaceTableColumn>
             <PeaceTableColumn label="号源时段"
@@ -86,12 +83,15 @@
                               prop="bookingEnd"
                               min-width="120"></PeaceTableColumn>
             <PeaceTableColumn fixed="right"
-                              width="100"
+                              width="150"
                               label="操作">
               <template slot-scope="scope">
                 <div class="align-left">
                   <el-button @click="getInfo(scope.row)"
                              type="text">查看详情</el-button>
+                  <el-button v-if="scope.row.bookingCounting"
+                             @click="batchModifySource(scope.row)"
+                             type="text">停诊</el-button>
                 </div>
               </template>
             </PeaceTableColumn>
@@ -139,6 +139,19 @@ export default {
   filters: {
     getEnumLabel: function(value, ENUM) {
       return ENUM.find((item) => item.value == value)?.label
+    },
+    formatCurrency(value) {
+      /* eslint-disable no-useless-escape */
+      value = value.toString().replace(/\$|\,/g, '')
+      if (isNaN(value)) value = '0'
+      let sign = value == (value = Math.abs(value))
+      value = Math.floor(value * 100 + 0.50000000001)
+      let cents = value % 100
+      value = Math.floor(value / 100).toString()
+      if (cents < 10) cents = '0' + cents
+      for (var i = 0; i < Math.floor((value.length - (1 + i)) / 3); i++)
+        value = value.substring(0, value.length - (4 * i + 3)) + ',' + value.substring(value.length - (4 * i + 3))
+      return (sign ? '' : '-') + value + '.' + cents
     }
   },
   created() {
@@ -198,6 +211,23 @@ export default {
           ...row
         }
       })
+    },
+    // 批量更新号源
+    batchModifySource(row) {
+      this.$confirm('将对医生进行停诊，是否继续？', '提示', { closeOnClickModal: false })
+        .then(() => {
+          const params = {
+            doctorCode: row.doctorCode,
+            sourceCode: row.sourceCode,
+            bookingState: 3, // 0.未预约 1.已预约 2.已失效 3.已停止
+            sourceDisType: 1 // 0线上1线下
+          }
+          Service.batchModifySource(params).then((res) => {
+            Peace.util.success(res.msg)
+            this.getList()
+          })
+        })
+        .catch(() => {})
     }
   }
 }
