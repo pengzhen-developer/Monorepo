@@ -2,7 +2,7 @@
   <div>
     <q-scroll-area v-bind:thumb-style="thumbStyle"
                    v-bind:style="scrollAreaStyle"
-                   style="height: 400px;">
+                   style="height: 400px;background: #FBFBFB;">
       <el-checkbox-group v-model="checkedList"
                          class="review-team-list"
                          @change="handleCheckedCitiesChange">
@@ -13,17 +13,16 @@
       </el-checkbox-group>
     </q-scroll-area>
 
-    <p class="num">已选择：<span>{{this.checkedList.length}}</span></p>
+    <p class="num q-my-8">已选择：<span>{{this.checkedList.length}}</span></p>
 
     <p class="tip q-mb-md">取消审方团队将会解除对应机构已设置规则的药师签名，请谨慎操作</p>
 
-    <div class="text-center">
+    <div class="text-right">
+      <el-button v-on:click="cancelDialog">取消</el-button>
       <el-button type="primary"
-                 class="large hasmargin "
                  v-bind:disabled="saveing"
-                 v-on:click="save">保 存</el-button>
-      <el-button class="large"
-                 v-on:click="cancelDialog">取 消</el-button>
+                 v-on:click="save">保存</el-button>
+
     </div>
   </div>
 </template>
@@ -142,7 +141,14 @@ export default {
   margin: 0;
 }
 .tip {
-  color: #ff3a30;
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ea3930;
+  line-height: 20px;
+  background: #fff5f4;
+  border-radius: 2px;
+  padding: 6px 8px;
 }
 .num {
   line-height: 20px;
