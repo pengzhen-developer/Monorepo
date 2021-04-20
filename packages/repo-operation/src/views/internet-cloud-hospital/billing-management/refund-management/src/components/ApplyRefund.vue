@@ -147,11 +147,9 @@ export default {
     canApplyRefund() {
       // refundOrderStatus: 1：退款中 2：退款异常 3已退款 4退款关闭 , (undefined | null) 未退过款
       // 可退款的条件：
-      // 1. this.request != undefined
-      // 2. this.result.completionTime != undefined
-      // 3. refundOrderStatus 的值为以下 [undefined, 2退款异常, 4退款关闭]
+      // 1. this.result.completionTime != undefined
+      // 2. refundOrderStatus 的值为以下 [undefined, 2退款异常, 4退款关闭]
       return (
-        this.request &&
         !Peace.validate.isEmpty(this.result.completionTime) &&
         (Peace.validate.isEmpty(this.result.refundOrderStatus) || [2, 4].includes(this.result.refundOrderStatus))
       )
@@ -171,16 +169,24 @@ export default {
       })
     },
 
-    fetchData() {
+    clearApplyModel() {
       this.hasSearch = false
+      this.applyModel.orderNo = undefined
+      this.applyModel.again = undefined
+      this.applyModel.remark = undefined
+    },
+
+    fetchData() {
+      this.clearApplyModel()
       this.searchModel.loading = true
       const orderNo = String(this.searchModel.orderNo)
 
       Service.searchOrder(orderNo)
         .then((res) => {
           this.result = res.data
-          this.searchModel.orderNo = res.data.orderNo
-          this.searchModel.again = 2
+        })
+        .catch(() => {
+          this.result = undefined
         })
         .finally(() => {
           this.searchModel.loading = false
