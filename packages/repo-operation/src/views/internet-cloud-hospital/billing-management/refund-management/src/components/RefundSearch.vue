@@ -82,7 +82,7 @@
 
         <PeaceTableColumn label="订单编号"
                           prop="orderNo"
-                          width="250px"
+                          width="260px"
                           align="left">
           <template slot-scope="scope">
             <el-button type="text"
@@ -93,14 +93,14 @@
 
         <PeaceTableColumn label="订单类型"
                           prop="orderTypeTxt"
-                          min-width="180px"></PeaceTableColumn>
+                          min-width="120px"></PeaceTableColumn>
 
         <PeaceTableColumn label="退款金额"
                           prop="refundMoney"
-                          min-width="180px"></PeaceTableColumn>
+                          min-width="120px"></PeaceTableColumn>
 
         <PeaceTableColumn label="退款状态"
-                          min-width="180px">
+                          min-width="120px">
           <template slot-scope="scope">
             <span v-bind:class="{'agin-refund': showAgainRefund(scope.row.orderStatus)}">{{ scope.row.orderStatusTxt }}</span>
           </template>
@@ -108,10 +108,10 @@
 
         <PeaceTableColumn label="退款方式"
                           prop="refundSourceTxt"
-                          min-width="180px"></PeaceTableColumn>
+                          min-width="120px"></PeaceTableColumn>
 
         <PeaceTableColumn label="操作人"
-                          min-width="180px">
+                          min-width="120px">
           <template slot-scope="scope">
             <span>{{ scope.row.operator || "——"}}</span>
           </template>
@@ -119,10 +119,11 @@
 
         <PeaceTableColumn label="提交时间"
                           prop="createdTime"
-                          min-width="180px"></PeaceTableColumn>
+                          min-width="160px"></PeaceTableColumn>
 
         <PeaceTableColumn label="操作"
-                          min-width="180px">
+                          fixed="right"
+                          width="180px">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="showDetail(scope.row)">查看详情</el-button>

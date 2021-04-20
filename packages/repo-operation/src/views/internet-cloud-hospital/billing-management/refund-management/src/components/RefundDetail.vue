@@ -8,8 +8,7 @@
                       v-bind:timestamp="activity.timestamp"
                       v-bind:timestampSpan="activity.timestampSpan">
         <div style="font-weight: 500">{{ activity.refundStatusTxt }}</div>
-        <div class="text-grey-999 q-mt-4"
-             style="font-size: 12px">{{activity.remark}}</div>
+        <span class="remark_style">{{activity.remark}}</span>
       </time-line-item>
     </el-timeline>
   </div>
@@ -63,4 +62,11 @@ export default {
 </script>
 
 <style lang="scss">
+.remark_style {
+  width: 100px;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--q-color-grey-999);
+  word-break: break-all;
+}
 </style>

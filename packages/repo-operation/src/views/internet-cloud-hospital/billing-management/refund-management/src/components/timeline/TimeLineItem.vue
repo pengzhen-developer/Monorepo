@@ -85,8 +85,8 @@ export default {
 
 <style lang='scss' scoped>
 .leftstyle {
-  // padding-left: 101px;
   left: 54px;
+  width: calc(100% - 54px);
 }
 
 .el-timeline-item__node--normal {
