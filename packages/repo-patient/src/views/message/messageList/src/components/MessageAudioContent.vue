@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="triangle">
     <MessageAudio :text="text"
                   :audioUrl="audioUrl"
                   :audioType="audioType"

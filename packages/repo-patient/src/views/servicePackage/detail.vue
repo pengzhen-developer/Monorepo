@@ -16,7 +16,8 @@
         <div class="title">服务包介绍</div>
         <div class="brief"
              :class="{ fold: fold, unfold: !fold }"
-             v-html="info.brief"></div>
+             v-html="info.brief"
+             style="pointer-events: none;"></div>
 
         <div class="more"
              @click="showMore"

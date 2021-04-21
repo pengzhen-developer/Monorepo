@@ -20,6 +20,7 @@
 
         .triangle {
           position: relative;
+          margin-left: 4px;
           &::before {
             position: absolute;
             content: '';
@@ -39,7 +40,8 @@
         }
 
         .message-avatar {
-          margin: 0 10px 0 0;
+          // margin: 0 10px 0 0;
+          margin: 0 4px 0 0;
           align-self: flex-start;
           display: flex;
           align-items: center;
@@ -68,6 +70,7 @@
 
         .triangle {
           position: relative;
+          margin-right: 4px;
           &::before {
             position: absolute;
             content: '';
@@ -87,7 +90,8 @@
         }
 
         .message-avatar {
-          margin: 0 0 0 10px;
+          // margin: 0 0 0 10px;
+          margin: 0 0 0 4px;
           align-self: flex-start;
           display: flex;
           align-items: center;
