@@ -108,6 +108,8 @@
 
       <div class="q-mb-sm">
         <DrugSelect ref="drugSelect"
+                    v-bind:scene="`returnVisit`"
+                    v-bind:patientNo="patientInfo.patientNo"
                     v-model="model.drugList"
                     v-bind:isBuilding="isBuilding"
                     v-bind:prescriptionTag.sync="model.prescriptionTag"
@@ -231,6 +233,10 @@ export default {
   computed: {
     docInfo() {
       return Peace.$store.state.user?.userInfo?.list?.docInfo
+    },
+
+    patientInfo() {
+      return this.session?.content?.patientInfo
     },
 
     inquiryInfo() {

@@ -33,8 +33,13 @@
         </el-form-item>
       </el-form>
 
-      <el-button plain
-                 v-on:click="showCommonlyPrescription">引用处方</el-button>
+      <div>
+        <el-button plain
+                   v-on:click="showHistoryPrescription">历史处方</el-button>
+
+        <el-button plain
+                   v-on:click="showCommonlyPrescription">常用处方</el-button>
+      </div>
 
     </div>
 
@@ -271,6 +276,52 @@
       </template>
     </el-autocomplete>
 
+    <PeaceDialog v-if="historyPrescriptionDialog.visible"
+                 v-bind:visible.sync="historyPrescriptionDialog.visible"
+                 title="历史处方"
+                 width="800px">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn label="疾病诊断"
+                          min-width="160px"
+                          prop="diagnosis">
+          <template slot-scope="scope">{{ scope.row.diagnoseList.map(item => item.name).join(' | ') }}</template>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="处方药品"
+                          min-width="300px"
+                          prop="drugjson">
+          <template slot-scope="scope">
+            <div v-for="drug in scope.row.drugList"
+                 v-bind:key="drug.durgId"
+                 class="q-mb-sm">
+              <div>
+                <el-tag class="q-mr-sm"
+                        effect="dark"
+                        type="warning"
+                        v-if="drug.drugStatus === 'disable'">停用</el-tag>
+                <span class="text-weight-bold q-mr-md">{{ drug.drugName }}</span>
+                <span class="text-caption">{{ drug.specification }}</span>
+              </div>
+              <span>用法用量：</span>
+              <span>每次{{ drug.singleDose }}{{ drug.drugUnit }}</span>
+              <span>，{{ drug.drugFrequency }}</span>
+              <span>，{{ drug.drugRoute }}</span>
+              <span v-if="drug.useDrugDays">，{{ drug.useDrugDays }}天</span>
+            </div>
+          </template>
+        </PeaceTableColumn>
+        <PeaceTableColumn v-bind:show-overflow-tooltip="false"
+                          fixed="right"
+                          label="操作"
+                          width="80px">
+          <template slot-scope="scope">
+            <el-button type="text"
+                       v-on:click="checkHistoryPrescription(scope.row)">选择</el-button>
+          </template>
+        </PeaceTableColumn>
+      </PeaceTable>
+    </PeaceDialog>
+
     <PeaceDialog v-if="commonlyPrescriptionDialog.visible"
                  v-bind:visible.sync="commonlyPrescriptionDialog.visible"
                  title="常用处方"
@@ -347,7 +398,9 @@ export default {
       }
     },
 
-    type: String
+    type: String,
+    scene: String,
+    patientNo: String
   },
 
   data() {
@@ -370,6 +423,10 @@ export default {
       },
 
       commonlyPrescriptionDialog: {
+        visible: false
+      },
+
+      historyPrescriptionDialog: {
         visible: false
       }
     }
@@ -635,6 +692,7 @@ export default {
         this.value.splice(0, includeDrug.length, ...includeDrug)
 
         this.commonlyPrescriptionDialog.visible = false
+        this.historyPrescriptionDialog.visible = false
       }
 
       // 1， 提醒选择 - 将覆盖
@@ -643,6 +701,27 @@ export default {
       notifyAlreadySelect()
         .then(notifyDrguSource)
         .then(mergeDrug)
+    },
+
+    getHistoryPrescriptionList() {
+      const fetch = Service.getHistoryPrescriptionList
+      const params = this.model
+      params.scene = this.scene
+      params.patientNo = this.patientNo
+
+      this.$refs.table.loadData({ fetch, params })
+    },
+
+    showHistoryPrescription() {
+      this.historyPrescriptionDialog.visible = true
+
+      this.$nextTick().then(() => {
+        this.getHistoryPrescriptionList()
+      })
+    },
+
+    checkHistoryPrescription(row) {
+      this.checkCommonlyPrescription(row)
     }
   }
 }

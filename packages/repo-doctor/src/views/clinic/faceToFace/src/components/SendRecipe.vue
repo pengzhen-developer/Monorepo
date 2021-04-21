@@ -123,6 +123,8 @@
         <DrugSelect ref="drugSelect"
                     v-model="model.drugList"
                     v-bind:type="`faceToFace`"
+                    v-bind:scene="`face`"
+                    v-bind:patientNo="patientInfo.patientNo"
                     v-bind:prescriptionTag.sync="model.prescriptionTag"
                     v-bind:max-count="5"></DrugSelect>
       </div>

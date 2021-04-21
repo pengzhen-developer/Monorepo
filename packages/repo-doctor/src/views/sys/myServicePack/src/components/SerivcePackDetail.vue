@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex items-center q-mb-md">
-      <span class="absolute inline-block bg-primary"
+      <span class="relative-position inline-block bg-primary"
             style="width: 4px; height: 17px; border-radius: 4px;"></span>
       <span class="q-ml-md text-grey-333"
             style="font-size: 16px; font-weight: 500;">基本信息</span>
@@ -9,6 +9,7 @@
 
     <div class="q-mb-lg q-ml-md">
       <el-form space-none
+               label-width="auto"
                label-position="left"
                label-suffix="：">
         <el-form-item label="服务包名称">
@@ -37,7 +38,7 @@
     </div>
 
     <div class="title flex items-center q-mb-md">
-      <span class="absolute inline-block bg-primary"
+      <span class="relative-position inline-block bg-primary"
             style="width: 4px; height: 17px; border-radius: 4px;"></span>
       <span class="q-ml-md text-grey-333"
             style="font-size: 16px; font-weight: 500;">包含权益</span>
