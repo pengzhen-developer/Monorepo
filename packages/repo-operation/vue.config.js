@@ -10,7 +10,7 @@ module.exports = {
   assetsDir: 'static',
 
   // https://cli.vuejs.org/config/#productionSourceMap
-  productionSourceMap: true,
+  productionSourceMap: false,
 
   // https://cli.vuejs.org/config/#chainwebpack
   chainWebpack: (config) => {
