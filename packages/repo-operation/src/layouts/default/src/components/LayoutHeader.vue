@@ -20,30 +20,35 @@
       </template>
     </div>
 
-    <div class="flex">
+    <div class="flex items-center">
 
       <template v-if="showTopNav">
-        <q-btn v-if="$q.screen.lt.md"
-               round
-               dense
-               flat
-               color="text-grey-7"
-               icon="apps">
-          <q-tooltip>Apps</q-tooltip>
+        <template v-if="$q.screen.lt.md">
+          <q-btn round
+                 dense
+                 flat
+                 color="text-grey-7"
+                 icon="apps">
+            <q-tooltip>Apps</q-tooltip>
 
-          <q-menu auto-close>
-            <q-list dense
-                    style="min-width: 100px">
-              <q-item v-for="menu in accountMenuTree"
-                      v-bind:key="menu.id.toString()"
-                      v-on:click="menuSelect(menu.id)"
-                      clickable
-                      class="GL__menu-link">
-                <q-item-section>{{ menu.menuName }}</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
+            <q-menu auto-close>
+              <q-list dense
+                      style="min-width: 100px">
+                <q-item v-for="menu in accountMenuTree"
+                        v-bind:key="menu.id.toString()"
+                        v-on:click="menuSelect(menu.id)"
+                        clickable
+                        class="GL__menu-link">
+                  <q-item-section>{{ menu.menuName }}</q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
+        </template>
+
+        <template v-else>
+          <span class="q-mr-sm">{{ accountInfo.name }}</span>
+        </template>
       </template>
 
       <q-btn round
@@ -52,8 +57,6 @@
           <i class="zyy-icon zyy-zhanghaozhongxin text-white"
              style="font-size: 16px;"></i>
         </q-avatar>
-
-        <q-tooltip>{{ accountInfo.name }}</q-tooltip>
 
         <q-menu fit
                 auto-close>
