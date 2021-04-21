@@ -70,7 +70,7 @@
             <div class="title">复诊信息</div>
             <div class="module-item-content img"
                  v-if="params.attachment.length>0">
-              <div class="module-item-label ">复诊凭证 :</div>
+              <div class="module-item-label ">复诊凭证：</div>
               <div class="module-item-value img">
                 <div class="img"
                      v-for="(item,index) in params.attachment"
@@ -82,12 +82,12 @@
             </div>
             <div class="module-item-content"
                  v-else>
-              <div class="module-item-label">复诊凭证 :</div>
+              <div class="module-item-label">复诊凭证：</div>
               <div class="module-item-value">确认遗失
               </div>
             </div>
             <div class="module-item-content">
-              <div class="module-item-label start">初诊诊断 :</div>
+              <div class="module-item-label start">初诊诊断：</div>
               <div class="module-item-value">{{params.confirmIllness}}
               </div>
             </div>
@@ -142,7 +142,7 @@
             <div class="title">补充信息</div>
             <div class="module-item-content img"
                  v-if="params.affectedImages.length>0">
-              <div class="module-item-label">患处图片 :</div>
+              <div class="module-item-label">患处图片：</div>
               <div class="module-item-value img">
                 <div class="img"
                      v-for="(item,index) in params.affectedImages"
@@ -159,8 +159,7 @@
             </div>
             <div class="module-item-content"
                  v-if="params.allergicHistory">
-              <div class="module-item-label"
-                   style="height:fit-content;"><span>过敏史</span>：</div>
+              <div class="module-item-label">过敏史：</div>
               <div class="module-item-value">{{params.allergicHistory}}
               </div>
             </div>
@@ -169,26 +168,33 @@
       </div>
 
       <div class="module info">
-
-        <!-- <div class="brief"
-             v-if="canShowDiscount">
-          <div class="brief-left">优惠金额:</div>
-          <div class="brief-right">暂无可用
-          </div>
-        </div> -->
-        <div class="info-title">支付方式</div>
-        <div class="brief"
-             v-if="servicesList.length>0">
+        <!-- 订单金额 -->
+        <div class="brief">
           <div class="brief-left">
-            <van-image :src="require('@src/assets/images/ic_pay_service.png')"></van-image><span>服务包</span>
+            订单金额
           </div>
           <div class="brief-right">
-            <van-switch v-model="hasSelectedServicePackage"
-                        size="20" />
+            <peace-price :price="params.price"
+                         transformOrigin="right"
+                         size="16"
+                         prefixSize="16"></peace-price>
           </div>
         </div>
+        <!-- 支付方式 -->
+        <div class="brief">
+          <div class="brief-left">
+            支付方式
+          </div>
+          <div class="brief-right"
+               @click="choosePayment">
+            <van-image :src="paymentDialog.data.icon"></van-image>
+            <span>{{paymentDialog.data.label}}</span>
+            <van-image :src="require('@src/assets/images/ic_right.png')"></van-image>
+          </div>
+        </div>
+        <!-- 选中服务包 -->
         <div class="brief"
-             v-if="servicesList.length>0&&hasSelectedServicePackage">
+             v-if="servicesList.length>0&&hasSelectedServicePackage&&paymentDialog.data.value==='servicePackage'">
           <div class="brief-left">服务包名称</div>
           <div class="brief-right"
                :class="{'checked':servicePackageDialog.data.servicePackageId,'unchecked':!servicePackageDialog.data.servicePackageId}"
@@ -199,44 +205,27 @@
           </div>
         </div>
         <div class="brief text-gery"
-             v-if="servicesList.length>0&&hasSelectedServicePackage">
+             v-if="servicesList.length>0&&hasSelectedServicePackage&&paymentDialog.data.value==='servicePackage'">
           <div class="brief-left">权益名称</div>
           <div class="brief-right"
                :class="{'checked':servicePackageDialog.data.patientEquitiesId,'unchecked':!servicePackageDialog.data.patientEquitiesId}">
             <span>{{servicePackageDialog.data.patientEquitiesName||'请选择'}}</span>
           </div>
         </div>
-
-        <template v-if="!hasSelectedServicePackage">
-          <div class="brief"
-               @click="selectWxpay">
-            <div class="brief-left">
-              <van-image :src="require('@src/assets/images/ic_pay_wechat_payment.png')"></van-image><span>微信支付</span>
-            </div>
-            <div class="brief-right">
-              <van-image style="width:24px;height:24px;"
-                         :src="require('@src/assets/images/ic_choose.png')"
-                         v-if="isWxPay"></van-image>
-              <van-image style="width:24px;height:24px;"
-                         :src="require('@src/assets/images/ic_choose_not.png')"
-                         v-else></van-image>
-
-            </div>
+        <!-- 选中医保 -->
+        <div class="brief"
+             v-if="canShowYibao&&paymentDialog.data.value==='yibaopay'">
+          <div class="brief-left">
+            <span>医保卡号</span>
           </div>
-          <div class="brief"
-               v-if="canShowYibao">
-            <div class="brief-left">
-              <van-image :src="require('@src/assets/images/ic_pay_yiyao.png')"></van-image><span>医保卡</span>
-            </div>
-            <div class="brief-right"
-                 :class="{'checked':yibaoText,'unchecked':!yibaoText}"
-                 @click="chooseYibao">
-              <span>{{yibaoText||'请选择'}}</span>
-              <van-image :src="require('@src/assets/images/ic_right.png')"
-                         v-if="!yibaoText"></van-image>
-            </div>
+          <div class="brief-right"
+               :class="{'checked':yibaoText,'unchecked':!yibaoText}"
+               @click="chooseYibao">
+            <span>{{yibaoText||'请选择'}}</span>
+            <van-image :src="require('@src/assets/images/ic_right.png')"></van-image>
           </div>
-          <!-- <div class="brief"
+        </div>
+        <!-- <div class="brief"
              v-if="yibaoText">
           <div class="brief-left">医保类型:</div>
           <div class="brief-right"
@@ -244,41 +233,34 @@
                @click="chooseYibaoType">{{yibaoTypeText||'请选择'}}
           </div>
         </div> -->
+        <!-- 选中商保 -->
 
-          <div class="brief "
-               v-if="canShowShangbao">
-            <div class="brief-left">
-              <van-image :src="require('@src/assets/images/ic_pay_shangbao.png')"></van-image><span>商保权益抵扣:</span>
-            </div>
-            <div class="brief-right unchecked">
-              <span>请选择</span>
-              <van-image :src="require('@src/assets/images/ic_right.png')"></van-image>
-            </div>
+        <!-- 自费金额 -->
+        <div class="brief"
+             v-if="canShowPayMoney">
+          <div class="brief-left">
+            自费金额
           </div>
-
-        </template>
-
+          <div class="brief-right red">
+            <peace-price :price="payMoney"
+                         transformOrigin="right"
+                         size="16"
+                         prefixSize="16"></peace-price>
+          </div>
+        </div>
       </div>
-      <!-- 预售订单 - 非当日-->
 
+      <!-- 预售订单 - 非当日-->
       <div class="tipStyle"
            v-if="canShowTip">*请在复诊当天上线报到并支付费用</div>
-
     </div>
 
     <div class="footer">
-      <div class="brief">
-        <div class="brief-left">应付金额：</div>
-        <div class="brief-right red">
-          <peace-price v-bind:price="params.price"
-                       v-bind:size="16"></peace-price>
-        </div>
-      </div>
       <van-button round
                   @click="apply"
                   type="primary"
                   :disabled="sending"
-                  style="width:160px ;">提交订单</van-button>
+                  size="large">提交订单</van-button>
     </div>
 
     <van-image-preview v-model="imagePreview.visible"
@@ -302,6 +284,11 @@
                      @onSuccess="selectYibaoTypeCallback"
                      @onCancel="seleecYibaoCancel"></SelectYiBaoType>
 
+    <!-- 选择支付方式 -->
+    <PaymentModel v-model="paymentDialog.visible"
+                  :info="paymentDialog.data"
+                  :list="paymentList"
+                  @onSuccess="selectPaymentCallback"></PaymentModel>
     <!-- 确认支付弹框 -->
     <ExpenseDetail v-model="dialog.visible"
                    :info="dialog.data"></ExpenseDetail>
@@ -311,6 +298,7 @@
                           :info="servicePackageDialog.data"
                           :list="servicesList"
                           @onSuccess="SelectServicePackageCallback"></SelectServicePackage>
+
   </div>
 </template>
 
@@ -320,6 +308,7 @@ import SelectYiBaoType from '@src/views/components/YibaoTypeSelect'
 import ExpenseDetail from '@src/views/components//ExpenseDetail'
 import InquiryStageMark from '@src/views/components/InquiryStageMark'
 import SelectServicePackage from '@src/views/components/SelectServicePackage'
+import PaymentModel from '@src/views/components/PaymentModel'
 
 import peace from '@src/library'
 
@@ -334,6 +323,13 @@ const ENUM = {
     支付宝支付: 'alipay',
     医保支付: 'yibaopay'
   },
+  PAYMENT_LIST: [
+    { value: 'servicePackage', label: '服务包', icon: require('@src/assets/images/ic_pay_service.png') },
+    { value: 'wxpay', label: '微信支付', icon: require('@src/assets/images/ic_pay_wechat_payment.png') },
+    { value: 'yibaopay', label: '医保卡', icon: require('@src/assets/images/ic_pay_yiyao.png') },
+    { value: 'shangbaopay', label: '商保权益抵扣', icon: require('@src/assets/images/ic_pay_shangbao.png') }
+  ],
+
   /** 问诊状态 */
   INQUIRY_STATUS: {
     待支付: 1,
@@ -362,7 +358,8 @@ export default {
     ExpenseDetail,
     InquiryStageMark,
     SelectYiBaoType,
-    SelectServicePackage
+    SelectServicePackage,
+    PaymentModel
   },
 
   props: {
@@ -378,7 +375,6 @@ export default {
     return {
       ENUM: ENUM,
       loading: true,
-      isWxPay: true,
       doctorInfo: {},
       familyInfo: {},
       insuranceConfig: {},
@@ -404,7 +400,12 @@ export default {
         visible: false,
         medCardId: ''
       },
+      paymentDialog: {
+        visible: false,
+        data: {}
+      },
       servicesList: [],
+
       hasSelectedServicePackage: false,
       servicePackageDialog: {
         visible: false,
@@ -418,6 +419,19 @@ export default {
     }
   },
   computed: {
+    paymentList() {
+      let list = peace.util.deepClone(this.ENUM.PAYMENT_LIST)
+      if (!this.canShowYibao) {
+        list = list.filter((item) => item.value !== 'yibaopay')
+      }
+      if (!this.canShowShangbao) {
+        list = list.filter((item) => item.value !== 'shangbaopay')
+      }
+      if (this.servicesList.length == 0) {
+        list = list.filter((item) => item.value !== 'servicePackage')
+      }
+      return list
+    },
     pregnancyText() {
       return this.ENUM.WOMAN_TYPE_TEXT_MAP[this.params.isPregnancy]
     },
@@ -438,6 +452,12 @@ export default {
         sourceCode: this.params?.sourceCode,
         sourceItemCode: this.params?.sourceItemCode
       }
+    },
+    payMoney() {
+      return this.canShowPayMoney && this.paymentDialog.data.value === 'wxpay' ? this.params.price : '0.00'
+    },
+    canShowPayMoney() {
+      return this.paymentDialog.data.value === 'servicePackage' || this.paymentDialog.data.value === 'wxpay' ? true : false
     },
     canShowTip() {
       //报道  复诊且预约日期大于今日
@@ -494,6 +514,7 @@ export default {
     }
   },
   created() {
+    this.paymentDialog.data = this.paymentList.find((item) => item.value === 'wxpay')
     this.params = peace.util.decode(this.$route.params.json)
     this.onEmits()
   },
@@ -510,6 +531,11 @@ export default {
     },
     showServicePackageDialog() {
       this.servicePackageDialog.visible = true
+    },
+    selectPaymentCallback(res) {
+      if (res) {
+        this.paymentDialog.data = Object.assign({}, this.paymentDialog.data, res)
+      }
     },
     SelectServicePackageCallback(res) {
       if (res) {
@@ -529,17 +555,13 @@ export default {
         hospitalCode: this.doctorInfo.nethospitalId,
         time: this.params.appointmentDate.substring(5),
         date: new Date(),
-        from: true,
+        serviceType: 'returnVisit',
         isAgain: true,
         emit: 'SelectSourceAgain'
       })
       this.$router.push(`/appoint/doctor/appointDoctorSelect/${json}`)
     },
-    selectWxpay() {
-      this.isWxPay = true
-      this.yibaoInfo.medCardNo = ''
-      this.yibaoText = ''
-    },
+
     onSuccess(result) {
       if (result.checked == true) {
         // this.yibaoTypeDialog.visible = true
@@ -551,7 +573,6 @@ export default {
         this.yibaoInfo = result.yibaoInfo
         // this.yibaoTypeDialog.medCardId = this.yibaoInfo.id
         this.yibaoText = this.yibaoInfo.medCardNo
-        this.isWxPay = false
       }
     },
     selectYibaoTypeCallback(result) {
@@ -560,6 +581,9 @@ export default {
     },
     seleecYibaoCancel() {
       // this.yibaoTypeText = ''
+    },
+    choosePayment() {
+      this.paymentDialog.visible = true
     },
     chooseYibao() {
       this.showCard = true
@@ -583,17 +607,35 @@ export default {
       })
       this.$router.push(`/components/FirstVisitList/${json}`)
     },
+
     apply() {
       // if (this.yibaoText && !this.yibaoTypeText) {
       //   return peace.util.alert('请选择医保类型')
       // }
       this.sending = true
-      const params = peace.util.deepClone(this.params)
+      let params = peace.util.deepClone(this.params)
       params.medCardNo = this.yibaoInfo.medCardNo || ''
 
-      params.patientEquitiesId = this.hasSelectedServicePackage == false ? '' : this.servicePackageDialog.data.patientEquitiesId
-      //服务包 医保 互斥
-      params.medCardNo = params.patientEquitiesId ? '' : params.medCardNo
+      let message = ''
+      switch (this.paymentDialog.data.value) {
+        case 'yibaopay':
+          params.patientEquitiesId = ''
+          message = !params.medCardNo ? '请填写医保卡号' : ''
+          break
+        case 'servicePackage':
+          params.medCardNo = ''
+          message = !params.patientEquitiesId ? '请选择服务包' : ''
+          break
+        default:
+          params.patientEquitiesId = ''
+          params.medCardNo = ''
+          break
+      }
+      if (message) {
+        this.sending = false
+        return peace.util.alert(message)
+      }
+
       peace.service.inquiry
         .apply(params)
         .then((res) => {
@@ -729,8 +771,11 @@ export default {
       }
       peace.service.servicePackage.getRecord(params).then((res) => {
         this.servicesList = res.data || []
-        //初始化服务包信息
-        this.hasSelectedServicePackage = this.params.patientEquitiesId ? true : false
+        if (this.servicesList.length > 0) {
+          this.paymentDialog.data = this.paymentList.find((item) => item.value === 'servicePackage')
+          this.hasSelectedServicePackage = true
+        }
+
         //若是直接从医生主页进行问诊且该用户有可用服务包
         if (!this.params.patientEquitiesId && this.servicesList.length > 0) {
           this.servicePackageDialog.data.servicePackageId = this.servicesList[0].servicePackageId
@@ -1275,14 +1320,20 @@ export default {
   .brief-right {
     display: flex;
     align-items: center;
+    span {
+      line-height: 1;
+    }
     .van-image {
       width: 16px;
       height: 16px;
-      margin-left: 8px;
+      &:first-child {
+        margin-right: 8px;
+      }
+      &:last-child {
+        margin-left: 4px;
+      }
     }
-    .peace-price {
-      margin-right: -12px;
-    }
+
     &.unchecked {
       color: rgba(51, 51, 51, 0.4);
     }
