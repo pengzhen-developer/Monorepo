@@ -21,7 +21,7 @@
           </span>
           <el-select v-model="model.status"
                      clearable
-                     placeholder="请选择">
+                     placeholder="全部">
             <el-option :key="item.label"
                        :label="item.label"
                        :value="item.value"
