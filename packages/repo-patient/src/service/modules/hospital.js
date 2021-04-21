@@ -73,6 +73,22 @@ export function getRealDeptByRegister(params) {
 
   return peace.http.post(url, params)
 }
+/**
+ * 获取排班的科室
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getBookingDept(params) {
+  const url = 'client/v1/Doctor/getBookingDept'
+
+  return peace.http.post(url, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
 export default {
   getNethospitalList, // 医院列表 [取单业务]
 
@@ -83,5 +99,6 @@ export default {
   getDeptList, // 科室列表[咨询业务]
 
   getHospitalByRegister, // 医院列表[预约业务]
-  getRealDeptByRegister // 科室列表[预约业务]
+  getRealDeptByRegister, // 科室列表[预约业务]
+  getBookingDept //科室列表[有排班的科室]
 }

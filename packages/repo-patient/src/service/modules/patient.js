@@ -12,7 +12,22 @@ export function getDoctorList(params) {
 
   return peace.http.post(getDoctorList, params)
 }
+/**
+ * 获取复诊医生列表
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getBookingDoctor(params) {
+  const getBookingDoctor = 'client/v1/Doctor/getBookingDoctor'
 
+  return peace.http.post(getBookingDoctor, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
 /**
  * 获取所有医生（明星医生）列表
  *
@@ -490,6 +505,8 @@ export function editBaseInfo(params) {
 export default {
   /** 获取医生列表 */
   getDoctorList,
+  /** 获取复诊医生列表 */
+  getBookingDoctor,
   /** 获取所有医生（明星医生）列表 */
   getNetHospitalDoctorList,
   /** 获取我的医生列表 */

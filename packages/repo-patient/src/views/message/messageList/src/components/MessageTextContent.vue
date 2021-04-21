@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="triangle">
     <MessageText :text="text"></MessageText>
 
   </div>

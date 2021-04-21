@@ -889,6 +889,19 @@ const routers = [
     },
     component: () => import('@src/views/appoint/doctor/appointDoctorList.vue')
   },
+  // 复诊预约医生列表
+  {
+    path: '/appoint/doctor/returnVisitDoctorList/:json',
+    name: '/appoint/doctor/returnVisitDoctorList',
+    meta: {
+      auth: false,
+      navbar: {
+        title: '复诊续方',
+        back: true
+      }
+    },
+    component: () => import('@src/views/appoint/doctor/returnVisitDoctorList.vue')
+  },
   {
     path: '/hospital/depart/HospitalDepartList',
     meta: {

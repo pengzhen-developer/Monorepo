@@ -260,7 +260,7 @@
         </div>
       </div>
 
-      <!-- 应付/实付金额 -->
+      <!-- 应付/实付金额  -- 自费支付-->
       <div class="module money"
            v-if="internalData.inquiryInfo.inquiryStatus != ENUM.INQUIRY_STATUS.待支付 &&internalData.inquiryInfo.appointmentStatus!=2">
         <!-- 取消订单的状态 -->
@@ -268,10 +268,10 @@
           <div class="brief right"
                v-if="internalData.orderInfo.payMoney == 0">
             <template v-if="internalData.orderInfo.orderMoney == 0">
-              实付金额：
+              自费支付：
             </template>
             <template v-else>
-              应付金额：
+              自费支付：
             </template>
             <div class="money">
               <peace-price v-bind:price="internalData.orderInfo.orderMoney"
@@ -281,7 +281,7 @@
           </div>
           <div class="brief right"
                v-else>
-            实付金额：
+            自费支付：
             <div class="money">
               <span v-if="internalData.orderInfo.refundTime ">（已退款）</span>
               <peace-price v-bind:price="internalData.orderInfo.payMoney"
@@ -291,17 +291,15 @@
             </div>
           </div>
         </template>
-
         <template v-else>
           <div class="brief right">
-            实付金额：
+            自费支付：
             <div class="money">
               <span v-if="internalData.orderInfo.refundTime"
                     style="margin-right:-14px;">（已退款）</span>
               <peace-price v-bind:price="internalData.orderInfo.payMoney"
                            v-bind:transformOrigin="'right'"
                            v-bind:size="18"></peace-price>
-
             </div>
           </div>
         </template>
@@ -1176,7 +1174,7 @@ export default {
     height: 48px;
     padding: 12px 0;
     font-size: 18px;
-    font-family: PingFangSC-Medium, PingFang SC;
+    font-family: -apple-system, sans-serif;
     font-weight: 500;
     line-height: 24px;
     &.chat-btn {

@@ -1826,6 +1826,7 @@ export default {
           display: inline-flex;
           padding: 12px 16px;
           max-width: 80%;
+          font-family: -apple-system, sans-serif;
           &.select {
             max-width: 100%;
             display: block;

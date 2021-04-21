@@ -128,10 +128,11 @@ export default {
         doctorId: item.doctorInfo.doctorId,
         hospitalCode: item.doctorInfo.nethospitalId,
         time: this.activeIndex == 'all' ? '' : this.dateList[this.activeIndex].date,
-        date: new Date()
+        date: new Date(),
+        serviceType: 'appointment'
       })
 
-      this.$router.push(`../appointDoctorSelect/${json}`)
+      this.$router.push(`/appoint/doctor/appointDoctorSelect/${json}`)
     }
     // 预约订单提交页
     // goAppointOrderSubmitPage(item,source){

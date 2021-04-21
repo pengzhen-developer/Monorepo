@@ -366,12 +366,19 @@ export default {
           break
         // 复诊续方
         case '复诊续方':
+          //有挂号信息
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-            serviceType: 'returnVisit',
+            id: 'returnVisit',
             Date: new Date()
           })
-          this.$router.push(`/components/doctorList/${json}`)
+          this.$router.push(`/hospital/depart/hospitalDepartSelect/${json}`)
+          // json = peace.util.encode({
+          //   netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
+          //   serviceType: 'returnVisit',
+          //   Date: new Date()
+          // })
+          // this.$router.push(`/components/doctorList/${json}`)
           break
         //智能导诊
         case '智能导诊':

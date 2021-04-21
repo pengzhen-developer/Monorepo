@@ -144,7 +144,7 @@ export default {
         .choiceVisitingTime({
           doctorId: this.params.doctorId,
           hospitalCode: this.params.hospitalCode,
-          sourceDisType: this.params.from ? 0 : 1
+          sourceDisType: this.params.serviceType === 'returnVisit' ? 0 : 1
         })
         .then((res) => {
           this.dateList = res.data.weekDate || []
@@ -172,7 +172,7 @@ export default {
           hospitalCode: this.params.hospitalCode,
           doctorId: this.params.doctorId,
           timeSharing: item.year + '-' + item.date,
-          sourceDisType: this.params.from ? 0 : 1
+          sourceDisType: this.params.serviceType === 'returnVisit' ? 0 : 1
         })
         .then((res) => {
           this.AM = res.data.list.AM || []
@@ -207,7 +207,7 @@ export default {
         sourceCode: item.sourceCode,
         bookingStart: item.startTime,
         bookingEnd: item.endTime,
-        sourceDisType: this.params.from ? 0 : 1
+        sourceDisType: this.params.serviceType === 'returnVisit' ? 0 : 1
       }
       //校验号源是否可用
       try {
@@ -230,12 +230,12 @@ export default {
         }
       }
       /**复诊续方*/
-      if (this.params.from) {
+      if (this.params.serviceType === 'returnVisit') {
         const temp = {
           doctorId: this.doctorInfo.doctorId,
           consultingType: 'returnVisit',
           serviceType: 'returnVisit',
-          appointmentDate: this.dateList[this.activeIndex].year + '-' + this.dateList[this.activeIndex].date,
+          appointmentDate: item.timeSharing,
           appointmentStartTime: item.startTime,
           appointmentEndTime: item.endTime,
           sourceDisType: 0,

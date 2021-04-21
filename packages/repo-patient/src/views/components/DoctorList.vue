@@ -49,7 +49,7 @@
                 <template v-else>
                   <peace-price class="bold"
                                v-bind:price="doctor.money"
-                               v-bind:size="16"></peace-price><span style="color:#999;font-size:12px;">起</span>
+                               v-bind:size="16"></peace-price><span style="color:#999;font-size:12px;"></span>
                 </template>
               </div>
             </div>

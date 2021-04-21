@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="triangle">
     <MessageVideo :text="text"
                   :flow="flow"></MessageVideo>
 
