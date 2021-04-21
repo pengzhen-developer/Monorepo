@@ -1668,7 +1668,7 @@ export default {
         hospitalCode: this.doctor.doctorInfo.nethospitalid,
         time: this.model.appointmentDate.substring(5),
         date: new Date(),
-        from: true,
+        serviceType: 'returnVisit',
         isAgain: true
       }
       const model = peace.util.deepClone(this.model)
