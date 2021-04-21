@@ -584,12 +584,18 @@ export default {
   },
   activated() {
     //登录之后返回医生主页，从缓存取分享标识isEWm
-    if (peace.cache.get('isEwm')) {
-      this.isEwm = peace.cache.get('isEwm')
+    if (peace.cache.get('h5.isEwm')) {
+      this.isEwm = peace.cache.get('h5.isEwm')
     } else {
       //通过分享进入医生首页 获取分享标识isEwm字段并存在缓存中
       this.isEwm = peace.util.decode(this.$route.params.json).isEwm ? 1 : 0
-      peace.cache.set('isEwm', this.isEwm)
+      if (peace.util.decode(this.$route.params.json).isEwm) {
+        peace.cache.set('h5.isEwm', this.isEwm)
+        peace.cache.set('h5.ewmInfo', {
+          ewmScene: 'doctorQrcode',
+          doctorId: peace.util.decode(this.$route.params.json).doctorId
+        })
+      }
     }
     this.getDoctorInfo()
     if (!this.hasLogin() && this.isEwm) {
@@ -599,8 +605,9 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(() => {
-      if (peace.cache.get('isEwm') && from.fullPath.indexOf('login') != -1) {
-        peace.cache.remove('isEwm')
+      if (peace.cache.get('h5.isEwm') && from.path === '/login') {
+        peace.cache.remove('h5.isEwm')
+        peace.cache.remove('h5.ewmInfo')
       }
     })
   },
@@ -626,7 +633,7 @@ export default {
         hospitalCode: this.doctor.doctorInfo.nethospitalid,
         time: time.substring(5),
         date: new Date(),
-        from: true
+        serviceType: 'returnVisit'
       })
       this.$router.push(`/appoint/doctor/appointDoctorSelect/${json}`)
     },
@@ -816,7 +823,8 @@ export default {
       const params = peace.util.encode({
         doctorId: this.doctor.doctorInfo.doctorId,
         hospitalCode: this.doctor.doctorInfo.nethospitalid,
-        time: time.substring(5)
+        time: time.substring(5),
+        serviceType: 'appointment'
       })
 
       this.$router.push(`/appoint/doctor/appointDoctorSelect/${params}`)

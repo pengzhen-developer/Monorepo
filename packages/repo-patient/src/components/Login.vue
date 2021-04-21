@@ -83,7 +83,7 @@ export default {
   },
 
   activated() {
-    this.isEwm = peace.cache.get('isEwm') ? true : false
+    this.isEwm = peace.cache.get('h5.isEwm') ? true : false
   },
   mounted() {
     //处理安卓机键盘弹出使布局错乱
@@ -154,11 +154,15 @@ export default {
         return
       }
       this.hasLogin = true
-      const params = {
+      let params = {
         tel: this.model.tel,
         smsCode: this.model.smsCode
       }
+      const ewmInfo = peace.cache.get('h5.ewmInfo') || {}
 
+      params.doctorId = ewmInfo.doctorId || ''
+      params.ewmScene = ewmInfo.ewmScene || ''
+      params.hospitalId = peace.cache.get(peace.type.SYSTEM.NETHOSPITALID) || ''
       peace.service.login
         .login(params)
         .then((res) => {
