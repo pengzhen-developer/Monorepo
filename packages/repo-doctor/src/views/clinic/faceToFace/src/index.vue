@@ -9,7 +9,7 @@
         <SessionList class="session-list"></SessionList>
 
         <!-- 患者处方详情 -->
-        <SessionDetail class="session-detail"></SessionDetail>
+        <SessionDetail class="session-detail full-height overflow-auto"></SessionDetail>
       </div>
     </div>
   </div>

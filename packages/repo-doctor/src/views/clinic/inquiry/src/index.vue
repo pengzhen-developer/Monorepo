@@ -11,7 +11,7 @@
 
         <!-- 在线咨询会话详情 -->
         <SessionDetail v-if="canShowDetail"
-                       class="session-detail"></SessionDetail>
+                       class="session-detail full-height overflow-auto"></SessionDetail>
 
         <!-- 在线咨询患者详情 -->
         <SessionExtend v-if="canShowExtend"

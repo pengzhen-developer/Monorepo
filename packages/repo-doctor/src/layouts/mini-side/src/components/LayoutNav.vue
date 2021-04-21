@@ -62,6 +62,11 @@ export default {
       // 设定滚动区域样式
       this.setScrollAreaStyle()
     })
+
+    window.addEventListener('resize', () => {
+      // 设定滚动区域样式
+      this.setScrollAreaStyle()
+    })
   },
 
   methods: {

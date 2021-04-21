@@ -13,7 +13,7 @@
 
         <!-- 复诊续方会话详情 -->
         <SessionDetail v-if="canShowDetail"
-                       class="session-detail"></SessionDetail>
+                       class="session-detail full-height overflow-auto"></SessionDetail>
 
         <!-- 复诊续方患者详情 -->
         <SessionExtend v-if="canShowExtend"

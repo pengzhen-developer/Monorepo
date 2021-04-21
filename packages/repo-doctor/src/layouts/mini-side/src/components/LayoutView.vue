@@ -64,6 +64,13 @@ export default {
       // 设定路由区域样式
       this.setRouterViewStyle()
     })
+
+    window.addEventListener('resize', () => {
+      // 设定滚动区域样式
+      this.setScrollAreaStyle()
+      // 设定路由区域样式
+      this.setRouterViewStyle()
+    })
   },
 
   methods: {
