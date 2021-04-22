@@ -16,7 +16,7 @@
             </el-form-item>
             <el-form-item label="机构名称">
               <span>{{ data.hospitalName }}</span>
-              <span>{{'（机构编码：'+data.custCode+'）'}}</span>
+              <span v-if="data.custCode">{{'（机构编码：'+data.custCode+'）'}}</span>
             </el-form-item>
             <el-form-item label="统一社会信用代码"
                           label-width="150px">
