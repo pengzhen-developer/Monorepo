@@ -109,8 +109,7 @@ export default {
     },
     checkTime(obj) {
       const item = this.dateList[obj.index] || {}
-
-      if (item.disabled) {
+      if (item.disabled || obj.index === this.activeIndex) {
         return
       }
       this.activeIndex = obj.index

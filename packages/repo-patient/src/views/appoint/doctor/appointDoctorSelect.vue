@@ -182,7 +182,7 @@ export default {
     },
     checkTime(index) {
       let item = this.dateList[index]
-      if (item.disabled) {
+      if (item.disabled || index === this.activeIndex) {
         return
       }
       this.activeIndex = index
