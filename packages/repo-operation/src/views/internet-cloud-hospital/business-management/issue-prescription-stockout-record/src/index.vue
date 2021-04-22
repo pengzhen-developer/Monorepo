@@ -78,23 +78,18 @@
       <PeaceTable ref="detailTable"
                   v-bind:data="dialog.data">
         <PeaceTableColumn min-width="180px"
-                          align="center"
                           label="药品名称"
                           prop="drugName"></PeaceTableColumn>
         <PeaceTableColumn min-width="120px"
-                          align="center"
                           label="药品规格"
                           prop="drugSpec"></PeaceTableColumn>
         <PeaceTableColumn min-width="180px"
-                          align="center"
                           label="药品厂家"
                           prop="drugFactory"></PeaceTableColumn>
         <PeaceTableColumn width="120px"
-                          align="center"
                           label="剂型"
                           prop="drugForm"></PeaceTableColumn>
         <PeaceTableColumn width="120px"
-                          align="center"
                           label="开方药品数量"
                           prop="prescripNum"></PeaceTableColumn>
       </PeaceTable>
