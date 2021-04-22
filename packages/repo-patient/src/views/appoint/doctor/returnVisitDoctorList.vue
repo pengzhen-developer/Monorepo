@@ -168,7 +168,7 @@ export default {
       let json = peace.util.encode({
         doctorId: item.doctorCode,
         hospitalCode: this.params.hospitalCode,
-        time: '',
+        time: item.timeSharing.substring(5),
         date: new Date(),
         serviceType: 'returnVisit'
       })
@@ -249,10 +249,10 @@ export default {
   .doc-tags {
     border-radius: 2px;
     color: #fff;
-    padding: 2px 8px;
+    padding: 3px 8px;
     margin-right: 8px;
     font-size: 12px;
-    line-height: 14px;
+    line-height: normal;
     display: inline-block;
     font-family: PingFangSC-Regular, PingFang SC;
     &.tag-consult {
@@ -299,6 +299,9 @@ export default {
         &.active {
           color: #fff;
           background: $primary;
+        }
+        &.disabled {
+          color: #c4c4c4;
         }
         &:nth-child(2),
         &:first-child {
