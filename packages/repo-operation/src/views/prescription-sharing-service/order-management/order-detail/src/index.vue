@@ -287,20 +287,12 @@
       </div>
 
       <div class="content">
-        <!-- <div class="q-mb-32">
-          <span class="text-grey-7">物流配送方式：</span>
-          <span class="text-grey-7 q-mr-xl">快递公司配送</span>
-          <span class="text-grey-7">物流公司名称：</span>
-          <span class="text-grey-7 q-mr-xl">{{ data.LogisticsInfo && data.LogisticsInfo.Name || data.ExpressName }}</span>
-          <span class="text-grey-7">物流单号：</span>
-          <span class="text-grey-7">{{ data.LogisticsInfo && data.LogisticsInfo.Number || data.PickUpCode }}</span>
-        </div> -->
 
         <template v-if="data.LogisticsInfo&&data.LogisticsInfo.length>0">
           <div class="q-mb-8">
-            <el-button type="primary"
+            <el-button :type="logInfo.active===index?'primary':''"
                        class="q-mb-16"
-                       :plain="logInfo.active!==index"
+                       plain
                        v-on:click="changeLog(log,index)"
                        v-for="(log,index) in data.LogisticsInfo"
                        v-bind:key="index">{{log.Name}} {{log.Number}}</el-button>
