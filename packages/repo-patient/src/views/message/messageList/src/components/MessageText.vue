@@ -2,7 +2,7 @@
 
   <!-- 消息内容 -->
   <div class="message-body">
-    <div class="body-size"
+    <div class="body-size text-vc"
          v-html="text"></div>
   </div>
 </template>

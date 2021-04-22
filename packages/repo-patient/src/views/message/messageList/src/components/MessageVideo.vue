@@ -5,7 +5,7 @@
     <div class="ic_video">
       <img v-if="flow=='in'"
            src="../assets/images/ic_video_left.png" />
-      <span>{{ text }}</span>
+      <span class="text-vc">{{ text }}</span>
       <img v-if="flow=='out'"
            src="../assets/images/ic_video_right.png" />
     </div>

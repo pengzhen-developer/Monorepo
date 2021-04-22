@@ -1174,9 +1174,8 @@ export default {
     height: 48px;
     padding: 12px 0;
     font-size: 18px;
-    font-family: -apple-system, sans-serif;
     font-weight: 500;
-    line-height: 24px;
+    line-height: normal;
     &.chat-btn {
       color: #fff;
       background: rgba(0, 202, 173, 1);

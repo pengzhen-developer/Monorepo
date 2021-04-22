@@ -30,8 +30,9 @@
                        height="36px"
                        :src="require('@src/assets/images/ic_robot.png')"></van-image>
           </div>
-          <div class="message in"
-               v-html="item.message"></div>
+          <div class="message in">
+            <span v-html="item.message"></span>
+          </div>
         </div>
       </transition-group>
 
@@ -53,8 +54,9 @@
 
           <div class="message-layout left"
                v-if="item.question&&item.field !== ANSWER_FIELD.SELECT_CASE">
-            <div class="message in"
-                 v-html="item.question"></div>
+            <div class="message in">
+              <span v-html="item.question"></span>
+            </div>
           </div>
           <!-- 上传图片 -->
           <template v-if="(item.field === ANSWER_FIELD.ATTACHMENT ||item.field === ANSWER_FIELD.SELECT_CASE)&& Array.isArray(item.answer)">
@@ -73,7 +75,6 @@
                  v-for="(file, fileIndex) in item.answer"
                  :key="fileIndex">
               <div class="message out img">
-
                 <img style="max-width: 140px; max-height: 140px; width: auto; height: auto; border-radius: 8px;"
                      :src="file.path"
                      @click="viewImage(file, fileIndex)">
@@ -87,8 +88,8 @@
           <div class="message-layout right"
                v-else-if="item.answer&&item.field === ANSWER_FIELD.SELECT_CASE">
             <div class="message out"
-                 v-html="item.answer"
                  v-if="selectCase==false">
+              <span v-html="item.answer"></span>
             </div>
             <component class="message out"
                        v-if="selectCase==true"
@@ -102,8 +103,8 @@
           <template v-else>
             <div class="message-layout right"
                  v-if="item.answer">
-              <div class="message out"
-                   v-html="item.answer">
+              <div class="message out">
+                <span v-html="item.answer"></span>
               </div>
               <span v-if="canShowChange(index)"
                     style="color:#00c6ae;font-size:12px;line-height:normal;margin: 4px 0 0 0;"
@@ -122,7 +123,7 @@
                v-for="item in doneList"
                :key="item.message">
             <div class="message in">
-              {{ item.message }}
+              <span v-html="item.message"></span>
             </div>
           </div>
         </transition-group>
@@ -1826,7 +1827,6 @@ export default {
           display: inline-flex;
           padding: 12px 16px;
           max-width: 80%;
-          font-family: -apple-system, sans-serif;
           &.select {
             max-width: 100%;
             display: block;
@@ -1847,6 +1847,12 @@ export default {
             background: $_color__primary;
             color: #fff;
             border-radius: 20px 0px 20px 20px;
+          }
+          > span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: normal;
           }
         }
       }
@@ -1996,7 +2002,6 @@ export default {
     }
   }
 }
-
 @keyframes jzt-slide-left-enter {
   from {
     transform: translate3d(-100%, 0, 0);

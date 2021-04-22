@@ -18,7 +18,7 @@
         <div class="wifi-circle second"></div>
         <div class="wifi-circle third"></div>
       </div>
-      <span>{{ text }}</span>
+      <span class="text-vc">{{ text }}</span>
       <div class="wifi-symbol"
            :class="{'animation':playing,'out':flow=='out'}"
            v-if="flow=='out'">
