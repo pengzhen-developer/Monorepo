@@ -91,12 +91,14 @@ export default {
       if (!isImg) {
         this.loading = false
         Peace.util.warning('图片只能是 jpg、jpeg、png、gif 格式')
+        return false
       }
       if (!isLimitt5M) {
         this.loading = false
         Peace.util.warning('图片大小不能超过 5M ')
+        return false
       }
-      return isImg && isLimitt5M
+      return true
     },
     uploadSuccess(res) {
       if (res.code === 200 && res.data) {
