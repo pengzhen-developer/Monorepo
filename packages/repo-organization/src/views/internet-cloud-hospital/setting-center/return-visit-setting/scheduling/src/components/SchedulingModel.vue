@@ -354,7 +354,7 @@ export default {
 
       const params = {
         doctor,
-        scheduleJson: JSON.stringify(json)
+        scheduleJson: json
       }
 
       this.$emit('submit', params)
