@@ -28,32 +28,38 @@
 
         <!--  订单详情      -->
         <div class="result-table-style">
-          <div v-if="result.orderTypeTxt">
+
+          <div>
+            <span>订单编号：</span>
+            <span class="text-grey-999">{{result.orderNo || '——'}}</span>
+          </div>
+
+          <div>
             <span>订单类型：</span>
             <span class="text-grey-999">{{result.orderTypeTxt || '——'}}</span>
           </div>
 
-          <div v-if="result.orderMoney">
+          <div>
             <span>订单金额：</span>
             <span class="text-grey-999">{{result.orderMoney}}</span>
           </div>
 
-          <div v-if="result.createdTime">
+          <div>
             <span>下单时间：</span>
             <span class="text-grey-999">{{result.createdTime}}</span>
           </div>
 
-          <div v-if="result.orderStatusTxt">
+          <div>
             <span>订单状态：</span>
             <span class="text-grey-999">{{result.orderStatusTxt}}</span>
           </div>
 
-          <div v-if="result.payStatusTxt">
+          <div>
             <span>支付状态：</span>
             <span class="text-grey-999">{{result.payStatusTxt}}</span>
           </div>
 
-          <div v-if="result.completionTime">
+          <div>
             <span>完单时间：</span>
             <span class="text-grey-999">{{result.completionTime}}</span>
           </div>
