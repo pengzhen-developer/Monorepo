@@ -9,15 +9,15 @@
                v-bind:model="model">
         <el-form-item label="医院名称">
           <el-input v-model="model.hosName"
-                    placeholder=""></el-input>
+                    placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="开方医生">
           <el-input v-model="model.docName"
-                    placeholder=""></el-input>
+                    placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="科别">
           <el-input v-model="model.deptName"
-                    placeholder=""></el-input>
+                    placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary"
