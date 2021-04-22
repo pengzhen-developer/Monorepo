@@ -8,12 +8,17 @@
                      height="50px"
                      cover
                      :src="doctor.doctorInfo.avartor" />
-          <span class="name">{{ doctor.doctorInfo.name }}</span>
-          <span class="level">{{ doctor.doctorInfo.doctorTitle }}</span>
-          <div class="tag-work tag-online"
-               v-if="doctor.doctorInfo.workStatus==1">在线</div>
-          <div class="tag-work tag-outline"
-               v-else-if="doctor.doctorInfo.workStatus==2">离线</div>
+          <div style="margin-left:16px;">
+            <div style="margin-bottom:2px;">
+              <span class="name">{{ doctor.doctorInfo.name }}</span>
+              <span class="level">{{ doctor.doctorInfo.doctorTitle }}</span>
+            </div>
+            <div class="tag-work tag-online"
+                 v-if="doctor.doctorInfo.workStatus==1">在线</div>
+            <div class="tag-work tag-outline"
+                 v-else-if="doctor.doctorInfo.workStatus==2">离线</div>
+          </div>
+
         </div>
 
         <div class="header-right">
@@ -1131,34 +1136,32 @@ export default {
     .header-left {
       margin-top: -10px;
       display: flex;
-      align-items: center;
+
       color: #fff;
 
       .name {
         font-weight: bold;
         font-size: 18px;
-        margin: 0 8px 0 16px;
+        margin: 0 8px 0 0;
       }
       .level {
         font-size: 14px;
       }
     }
     .tag-work {
-      height: 15px;
+      height: 18px;
       width: 42px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 12px;
       line-height: normal;
-      box-sizing: content-box;
       border: 1px solid #fff;
-      border-radius: 3px;
-      margin-left: 10px;
+      border-radius: 4px;
       &.tag-online {
         color: $primary;
-        border-color: $primary;
-        background-color: #fff;
+        border-color: #d9f7f3;
+        background: #d9f7f3;
       }
       &.tag-outline {
         color: #fff;
@@ -1190,7 +1193,7 @@ export default {
   .body {
     flex: 1;
     background: #f5f5f5;
-    padding: 15px 12.5px;
+    padding: 15px 16px;
 
     .body-card {
       &:first-child {
@@ -1201,8 +1204,8 @@ export default {
       }
       background: #fff;
       min-height: 60px;
-      margin: 0 0 10px 0;
-      padding: 15px;
+      margin: 0 0 16px 0;
+      padding: 15px 16px;
       border-radius: 7px;
 
       .row {

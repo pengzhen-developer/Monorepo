@@ -246,15 +246,19 @@ export default {
 }
 .title-tag {
   margin: 0 0 4px 0;
+  display: flex;
+  align-items: center;
   .doc-tags {
     border-radius: 2px;
     color: #fff;
     padding: 0 8px;
     margin-right: 8px;
     font-size: 12px;
-    line-height: 20px;
+    line-height: normal;
     height: 20px;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: PingFangSC-Regular, PingFang SC;
     &.tag-consult {
       color: $primary;
