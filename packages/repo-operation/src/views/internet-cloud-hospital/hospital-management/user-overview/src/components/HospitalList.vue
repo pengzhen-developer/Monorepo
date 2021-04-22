@@ -13,8 +13,9 @@
           </div>
           <div class="flex justify-between items-end"
                style="line-height:1;">
-            <div style="font-size:16px;">用户总数：<span class="text-primary text-bold"
-                    style="font-size:36px;">{{item.patientCount}}</span></div>
+            <div style="font-size:16px;">用户总数：<span class="text-primary text-bold cursor-pointer"
+                    style="font-size:36px;"
+                    @click="onClick(item)">{{item.patientCount}}</span></div>
             <div class="text-primary flex items-center cursor-pointer"
                  style="font-size:12px;"
                  @click="onClick(item)">查看详情<i class="el-icon-arrow-right el-icon--right"></i> </div>
