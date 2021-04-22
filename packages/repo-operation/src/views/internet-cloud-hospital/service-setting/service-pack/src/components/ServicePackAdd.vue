@@ -133,10 +133,7 @@
               <div class="col">
                 <el-form-item label="服务包介绍"
                               prop="brief">
-                  <quillEditor ref="myQuillEditor"
-                               v-model="model.brief"
-                               v-bind:options="quillEditorOption"></quillEditor>
-
+                  <peace-editor v-model="model.brief"></peace-editor>
                 </el-form-item>
               </div>
             </div>
@@ -239,55 +236,20 @@
 </template>
 
 <script>
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-import { quillEditor, Quill } from 'vue-quill-editor'
-import { ImageExtend, QuillWatch } from 'quill-image-extend-module'
-Quill.register('modules/ImageExtend', ImageExtend)
-
 import ServicePackEquityModel from '@src/views/internet-cloud-hospital/service-setting/service-pack-equity/src/components/ServicePackEquityModel'
+import PeaceEditor from './PeaceEditor'
 
 import Observable from '../observable'
 import Service from '../service'
 
 export default {
   components: {
-    quillEditor,
-    ServicePackEquityModel
+    ServicePackEquityModel,
+    PeaceEditor
   },
 
   data() {
     return {
-      Authorization: '',
-      quillEditorOption: {
-        placeholder: '请输入',
-        modules: {
-          toolbar: {
-            container: [
-              ['image', 'link'],
-              ['bold', 'italic', 'underline', 'strike']
-            ],
-            handlers: {
-              image: function() {
-                QuillWatch.emit(this.quill.id)
-              }
-            }
-          },
-          ImageExtend: {
-            loading: false,
-            name: 'file',
-            action: `${process.env.VUE_APP_API_BASE}nethospital/operate/Hospital/uploadCover`,
-            headers: (xhr) => {
-              xhr.setRequestHeader('Authorization', this.Authorization)
-            },
-            response: (res) => {
-              return res.data
-            }
-          }
-        }
-      },
-
       model: {
         servicePackageName: '',
         effectiveDays: undefined,
@@ -368,10 +330,7 @@ export default {
     }
   },
 
-  async created() {
-    const token = (await Peace.identity.auth.getAuth()).access_token
-    this.Authorization = 'Bearer ' + token
-
+  created() {
     this.getEquitiesDictionaryList()
     this.getHosList()
   },
