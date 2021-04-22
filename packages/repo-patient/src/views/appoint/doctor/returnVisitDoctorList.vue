@@ -249,10 +249,11 @@ export default {
   .doc-tags {
     border-radius: 2px;
     color: #fff;
-    padding: 3px 8px;
+    padding: 0 8px;
     margin-right: 8px;
     font-size: 12px;
-    line-height: normal;
+    line-height: 20px;
+    height: 20px;
     display: inline-block;
     font-family: PingFangSC-Regular, PingFang SC;
     &.tag-consult {
