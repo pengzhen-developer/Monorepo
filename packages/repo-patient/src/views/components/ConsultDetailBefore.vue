@@ -615,7 +615,7 @@ export default {
       this.sending = true
       let params = peace.util.deepClone(this.params)
       params.medCardNo = this.yibaoInfo.medCardNo || ''
-
+      params.patientEquitiesId = this.hasSelectedServicePackage == false ? '' : this.servicePackageDialog.data.patientEquitiesId
       let message = ''
       switch (this.paymentDialog.data.value) {
         case 'yibaopay':
