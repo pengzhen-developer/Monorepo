@@ -35,7 +35,8 @@
                             min-width="120px">
             <template slot-scope="scope">
               <template v-if="scope.row.SpecificationsStatus === '0'">
-                <el-input v-model="scope.row.packaging_specifications"></el-input>
+                <el-input maxlength="20"
+                          v-model="scope.row.packaging_specifications"></el-input>
               </template>
               <template v-else>
                 <span>{{ scope.row.packaging_specifications }}</span>
@@ -233,7 +234,7 @@ export default {
     },
 
     save() {
-      const params = this.model
+      const params = Peace.util.deepClone(this.model)
       params.packaging_specifications = this.list.packaging_specifications
       params.DrugStandardCode = this.list.DrugStandardCode
       params.SpecificationsStatus = params.SpecificationsStatus === '20'
@@ -247,6 +248,10 @@ export default {
     },
 
     submit() {
+      if (Peace.validate.isEmpty(this.list.packaging_specifications)) {
+        return Peace.util.warning('请输入包装规格')
+      }
+
       if (this.$refs.form) {
         this.$refs.form.validate().then(() => {
           this.save()
