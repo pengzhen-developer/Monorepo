@@ -292,7 +292,7 @@ export default {
         flex: none;
         color: rgba(51, 51, 51, 0.6);
         line-height: 20px;
-        padding: 11px 12.5px;
+        padding: 11px 8px;
         font-weight: normal;
         background: #fff;
         &.position {
