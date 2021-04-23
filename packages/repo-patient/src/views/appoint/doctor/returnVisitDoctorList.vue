@@ -62,7 +62,7 @@
                  v-for="(source,index) in item.ampm"
                  :key="index">
               <div class="doctor-money-group-left">
-                <div class="left-span"><span>{{source.date}}</span><span>{{source.ampm==="AM" ? "上午" : "下午"}}</span><span>{{source.sourceLevelType==='1'?"普通门诊" : "专家门诊"}}</span></div>
+                <div class="left-span"><span>{{source.date}}</span><span>{{source.ampm==="AM" ? "上午" : "下午"}}</span><span>{{source.sourceLevelType===1?"普通门诊" : "专家门诊"}}</span></div>
                 <peace-price size="14"
                              prefixSize="14"
                              :price="source.unitPrice"
