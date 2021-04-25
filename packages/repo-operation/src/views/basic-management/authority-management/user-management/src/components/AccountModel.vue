@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form ref="form"
-             label-width="96px"
+             label-width="auto"
              v-bind:model="model"
              v-bind:rules="model.userId ? editRules : addRules">
       <el-form-item :prop="model.userId ? '' : 'username'">
@@ -49,14 +49,14 @@
           <el-radio label="1">禁用</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="">
-        <el-button type="primary"
-                   v-bind:loading="isLoading"
-                   v-on:click="submit">提 交</el-button>
-        <el-button v-on:click="close">取 消</el-button>
-      </el-form-item>
     </el-form>
 
+    <div style="text-align: right;">
+      <el-button v-on:click="close">取 消</el-button>
+      <el-button type="primary"
+                 v-bind:loading="isLoading"
+                 v-on:click="submit">提 交</el-button>
+    </div>
   </div>
 </template>
 
@@ -247,7 +247,7 @@ export default {
 .form-label {
   position: relative;
   display: inline-block;
-  width: 70px;
+  width: auto;
   padding-right: 12px;
   text-align: justify;
   text-align-last: justify;

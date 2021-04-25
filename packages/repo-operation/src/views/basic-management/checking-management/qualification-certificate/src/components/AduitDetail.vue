@@ -3,271 +3,271 @@
     <PeaceDialog width="700px"
                  v-bind:visible.sync="visible"
                  v-bind:title="title">
-      <el-form ref="form"
-               label-width="90px"
-               label-suffix
+      <el-form v-if="data.checkStatus === 2"
+               space-md
+               ref="form"
+               label-width="auto"
+               label-suffix="："
                v-bind:model="model"
                v-bind:rules="rules"
                v-loading="getLoading">
         <!-- 待审核 -->
-        <template v-if="data.checkStatus === 2">
-          <div class="info-list">
-            <div class="info-item">
-              <div class="info-title">机构信息</div>
-              <div class="info-content">
-                <el-form-item class="inline-half"
-                              label="机构名称">
-                  <span>{{ detail.hosInfo.hospitalName || '——' }}</span>
-                </el-form-item>
-                <el-form-item class="inline-half"
-                              label="机构类型">
-                  <span>{{ detail.hosInfo.role }}</span>
-                </el-form-item>
-                <el-form-item v-if="detail.hosInfo.hospitalAttribute"
-                              class="inline-half"
-                              label="医院属性">
-                  <span>{{ detail.hosInfo.hospitalAttribute }}</span>
-                </el-form-item>
-                <el-form-item v-if="detail.hosInfo.level"
-                              class="inline-half"
-                              label="医院等级">
-                  <span>{{ detail.hosInfo.level }}</span>
-                </el-form-item>
-                <el-form-item label="统一社会信用代码"
-                              label-width="150px">
-                  <span>{{ detail.hosInfo.socialCreditCode }}</span>
-                </el-form-item>
-                <el-form-item v-if="detail.hosInfo.licenseNumber"
-                              label="医疗机构职业许可证登记号"
-                              label-width="210px">
-                  <span>{{ detail.hosInfo.licenseNumber }}</span>
-                </el-form-item>
-                <el-form-item label="详细地址">
-                  <span>{{ detail.hosInfo.hospitalAddres }}</span>
-                </el-form-item>
-                <el-form-item label="资质证明"
-                              v-if="imgList.length > 0">
-                  <span>
-                    <el-image v-if="detail.hosInfo.license"
-                              class="info-img"
-                              fit="contain"
-                              :src="detail.hosInfo.license"
-                              :preview-src-list="imgList">
-                      <div slot="error"
-                           class="image-slot">
-                        <i class="el-icon-picture-outline"></i>
-                      </div>
-                    </el-image>
-                    <el-image v-if="detail.hosInfo.certificate"
-                              class="info-img"
-                              fit="contain"
-                              :src="detail.hosInfo.certificate"
-                              :preview-src-list="imgList">
-                      <div slot="error"
-                           class="image-slot">
-                        <i class="el-icon-picture-outline"></i>
-                      </div>
-                    </el-image>
-                    <el-image v-if="detail.hosInfo.structureLicense"
-                              class="info-img"
-                              fit="contain"
-                              :src="detail.hosInfo.structureLicense"
-                              :preview-src-list="imgList">
-                      <div slot="error"
-                           class="image-slot">
-                        <i class="el-icon-picture-outline"></i>
-                      </div>
-                    </el-image>
-                    <el-image v-if="detail.hosInfo.hospitalLicense"
-                              class="info-img"
-                              fit="contain"
-                              :src="detail.hosInfo.hospitalLicense"
-                              :preview-src-list="imgList">
-                      <div slot="error"
-                           class="image-slot">
-                        <i class="el-icon-picture-outline"></i>
-                      </div>
-                    </el-image>
-                  </span>
-                </el-form-item>
-              </div>
-            </div>
-
-            <div class="info-item">
-              <div class="info-title">账号信息</div>
-              <div class="info-content">
-                <el-form-item class="inline-half"
-                              label="手机号码">
-                  <span>{{ detail.accountInfo.tel }}</span>
-                </el-form-item>
-                <el-form-item class="inline-half"
-                              label="联系人">
-                  <span>{{ detail.accountInfo.linkman }}</span>
-                </el-form-item>
-                <el-form-item class="inline-half"
-                              label="邮箱">
-                  <span>{{ detail.accountInfo.email }}</span>
-                </el-form-item>
-              </div>
-            </div>
-
-            <div class="info-item">
-              <div class="info-title">审核信息</div>
-              <div class="info-content">
-                <el-form-item label="审核结果"
-                              prop="checkStatus">
-                  <el-radio-group v-model="model.checkStatus">
-                    <el-radio :label="3">通过</el-radio>
-                    <el-radio :label="4">驳回</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-                <el-form-item label="备注"
-                              prop="reasonsFailure"
-                              v-if="model.checkStatus === 4">
-                  <el-input type="textarea"
-                            v-bind:rows="4"
-                            v-model="model.reasonsFailure"
-                            maxlength="200"
-                            show-word-limit></el-input>
-                </el-form-item>
-                <div class="dialog-btn">
-                  <el-button v-on:click="visible = false">取 消</el-button>
-                  <el-button type="primary"
-                             v-bind:loading="isLoading"
-                             v-on:click="doCheck">确 定</el-button>
-                </div>
-              </div>
+        <div class="info-list">
+          <div class="info-item">
+            <div class="info-title">机构信息</div>
+            <div class="info-content">
+              <el-form-item class="inline-half"
+                            label="机构名称">
+                <span>{{ detail.hosInfo.hospitalName || '——' }}</span>
+              </el-form-item>
+              <el-form-item class="inline-half"
+                            label="机构类型">
+                <span>{{ detail.hosInfo.role }}</span>
+              </el-form-item>
+              <el-form-item v-if="detail.hosInfo.hospitalAttribute"
+                            class="inline-half"
+                            label="医院属性">
+                <span>{{ detail.hosInfo.hospitalAttribute }}</span>
+              </el-form-item>
+              <el-form-item v-if="detail.hosInfo.level"
+                            class="inline-half"
+                            label="医院等级">
+                <span>{{ detail.hosInfo.level }}</span>
+              </el-form-item>
+              <el-form-item label="统一社会信用代码">
+                <span>{{ detail.hosInfo.socialCreditCode }}</span>
+              </el-form-item>
+              <el-form-item v-if="detail.hosInfo.licenseNumber"
+                            label="医疗机构职业许可证登记号">
+                <span>{{ detail.hosInfo.licenseNumber }}</span>
+              </el-form-item>
+              <el-form-item label="详细地址">
+                <span>{{ detail.hosInfo.hospitalAddres }}</span>
+              </el-form-item>
+              <el-form-item label="资质证明"
+                            v-if="imgList.length > 0">
+                <span>
+                  <el-image v-if="detail.hosInfo.license"
+                            class="info-img"
+                            fit="contain"
+                            :src="detail.hosInfo.license"
+                            :preview-src-list="imgList">
+                    <div slot="error"
+                         class="image-slot">
+                      <i class="el-icon-picture-outline"></i>
+                    </div>
+                  </el-image>
+                  <el-image v-if="detail.hosInfo.certificate"
+                            class="info-img"
+                            fit="contain"
+                            :src="detail.hosInfo.certificate"
+                            :preview-src-list="imgList">
+                    <div slot="error"
+                         class="image-slot">
+                      <i class="el-icon-picture-outline"></i>
+                    </div>
+                  </el-image>
+                  <el-image v-if="detail.hosInfo.structureLicense"
+                            class="info-img"
+                            fit="contain"
+                            :src="detail.hosInfo.structureLicense"
+                            :preview-src-list="imgList">
+                    <div slot="error"
+                         class="image-slot">
+                      <i class="el-icon-picture-outline"></i>
+                    </div>
+                  </el-image>
+                  <el-image v-if="detail.hosInfo.hospitalLicense"
+                            class="info-img"
+                            fit="contain"
+                            :src="detail.hosInfo.hospitalLicense"
+                            :preview-src-list="imgList">
+                    <div slot="error"
+                         class="image-slot">
+                      <i class="el-icon-picture-outline"></i>
+                    </div>
+                  </el-image>
+                </span>
+              </el-form-item>
             </div>
           </div>
-        </template>
+
+          <div class="info-item">
+            <div class="info-title">账号信息</div>
+            <div class="info-content">
+              <el-form-item class="inline-half"
+                            label="手机号码">
+                <span>{{ detail.accountInfo.tel }}</span>
+              </el-form-item>
+              <el-form-item class="inline-half"
+                            label="联系人">
+                <span>{{ detail.accountInfo.linkman }}</span>
+              </el-form-item>
+              <el-form-item class="inline-half"
+                            label="邮箱">
+                <span>{{ detail.accountInfo.email }}</span>
+              </el-form-item>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-title">审核信息</div>
+            <div class="info-content">
+              <el-form-item label="审核结果"
+                            prop="checkStatus">
+                <el-radio-group v-model="model.checkStatus">
+                  <el-radio :label="3">通过</el-radio>
+                  <el-radio :label="4">驳回</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item label="备注"
+                            prop="reasonsFailure"
+                            v-if="model.checkStatus === 4">
+                <el-input type="textarea"
+                          v-bind:rows="4"
+                          v-model="model.reasonsFailure"
+                          maxlength="200"
+                          show-word-limit></el-input>
+              </el-form-item>
+
+            </div>
+          </div>
+        </div>
       </el-form>
-      <el-form label-width="90px"
-               label-suffix
+
+      <div v-if="data.checkStatus === 2"
+           slot="footer">
+        <el-button v-on:click="visible = false">取 消</el-button>
+        <el-button type="primary"
+                   v-bind:loading="isLoading"
+                   v-on:click="doCheck">确 定</el-button>
+      </div>
+
+      <el-form v-if="data.checkStatus !== 2"
+               space-md
+               label-width="auto"
+               label-suffix="："
                v-loading="getLoading">
-        <template v-if="data.checkStatus !== 2">
-          <div class="info-list">
-            <div class="info-item">
-              <div class="info-title">机构信息</div>
-              <div class="info-content">
-                <el-form-item class="inline-half"
-                              label="机构名称">
-                  <span>{{ detail.hosInfo.hospitalName }}</span>
-                </el-form-item>
-                <el-form-item class="inline-half"
-                              label="机构类型">
-                  <span>{{ detail.hosInfo.role }}</span>
-                </el-form-item>
-                <el-form-item v-if="detail.hosInfo.hospitalAttribute"
-                              class="inline-half"
-                              label="医院属性">
-                  <span>{{ detail.hosInfo.hospitalAttribute }}</span>
-                </el-form-item>
-                <el-form-item v-if="detail.hosInfo.level"
-                              class="inline-half"
-                              label="医院等级">
-                  <span>{{ detail.hosInfo.level }}</span>
-                </el-form-item>
-                <el-form-item label="统一社会信用代码"
-                              label-width="150px">
-                  <span>{{ detail.hosInfo.socialCreditCode }}</span>
-                </el-form-item>
-                <el-form-item v-if="detail.hosInfo.licenseNumber"
-                              label="医疗机构职业许可证登记号"
-                              label-width="210px">
-                  <span>{{ detail.hosInfo.licenseNumber }}</span>
-                </el-form-item>
-                <el-form-item label="详细地址">
-                  <span>{{ detail.hosInfo.hospitalAddres }}</span>
-                </el-form-item>
-                <el-form-item label="资质证明"
-                              v-if="imgList.length > 0">
-                  <span>
-                    <el-image v-if="detail.hosInfo.license"
-                              class="info-img"
-                              fit="contain"
-                              :src="detail.hosInfo.license"
-                              :preview-src-list="imgList">
-                      <div slot="error"
-                           class="image-slot">
-                        <i class="el-icon-picture-outline"></i>
-                      </div>
-                    </el-image>
-                    <el-image v-if="detail.hosInfo.certificate"
-                              class="info-img"
-                              fit="contain"
-                              :src="detail.hosInfo.certificate"
-                              :preview-src-list="imgList">
-                      <div slot="error"
-                           class="image-slot">
-                        <i class="el-icon-picture-outline"></i>
-                      </div>
-                    </el-image>
-                    <el-image v-if="detail.hosInfo.structureLicense"
-                              class="info-img"
-                              fit="contain"
-                              :src="detail.hosInfo.structureLicense"
-                              :preview-src-list="imgList">
-                      <div slot="error"
-                           class="image-slot">
-                        <i class="el-icon-picture-outline"></i>
-                      </div>
-                    </el-image>
-                    <el-image v-if="detail.hosInfo.hospitalLicense"
-                              class="info-img"
-                              fit="contain"
-                              :src="detail.hosInfo.hospitalLicense"
-                              :preview-src-list="imgList">
-                      <div slot="error"
-                           class="image-slot">
-                        <i class="el-icon-picture-outline"></i>
-                      </div>
-                    </el-image>
-                  </span>
-                </el-form-item>
-              </div>
-            </div>
-
-            <div class="info-item">
-              <div class="info-title">账号信息</div>
-              <div class="info-content">
-                <el-form-item class="inline-half"
-                              label="联系人">
-                  <span>{{ detail.accountInfo.linkman }}</span>
-                </el-form-item>
-                <el-form-item class="inline-half"
-                              label="手机号码">
-                  <span>{{ detail.accountInfo.tel }}</span>
-                </el-form-item>
-                <el-form-item class="inline-half"
-                              label="邮箱">
-                  <span>{{ detail.accountInfo.email }}</span>
-                </el-form-item>
-              </div>
-            </div>
-
-            <div class="info-item">
-              <div class="info-title">审核信息</div>
-              <div class="info-content">
-                <el-form-item class="inline-half"
-                              label="审核结果">
-                  <span>{{ detail.checkInfo.result }}</span>
-                </el-form-item>
-                <el-form-item class="inline-half"
-                              :label="detail.checkInfo.reasonsFailure ? '备注':''">
-                  <span>{{ detail.checkInfo.reasonsFailure }}</span>
-                </el-form-item>
-                <el-form-item class="inline-half"
-                              label="申请时间">
-                  <span>{{ detail.checkInfo.applyTime }}</span>
-                </el-form-item>
-                <el-form-item class="inline-half"
-                              label="审核时间">
-                  <span>{{ detail.checkInfo.checkTime }}</span>
-                </el-form-item>
-              </div>
+        <div class="info-list">
+          <div class="info-item">
+            <div class="info-title">机构信息</div>
+            <div class="info-content">
+              <el-form-item class="inline-half"
+                            label="机构名称">
+                <span>{{ detail.hosInfo.hospitalName }}</span>
+              </el-form-item>
+              <el-form-item class="inline-half"
+                            label="机构类型">
+                <span>{{ detail.hosInfo.role }}</span>
+              </el-form-item>
+              <el-form-item v-if="detail.hosInfo.hospitalAttribute"
+                            class="inline-half"
+                            label="医院属性">
+                <span>{{ detail.hosInfo.hospitalAttribute }}</span>
+              </el-form-item>
+              <el-form-item v-if="detail.hosInfo.level"
+                            class="inline-half"
+                            label="医院等级">
+                <span>{{ detail.hosInfo.level }}</span>
+              </el-form-item>
+              <el-form-item label="统一社会信用代码">
+                <span>{{ detail.hosInfo.socialCreditCode }}</span>
+              </el-form-item>
+              <el-form-item v-if="detail.hosInfo.licenseNumber"
+                            label="医疗机构职业许可证登记号">
+                <span>{{ detail.hosInfo.licenseNumber }}</span>
+              </el-form-item>
+              <el-form-item label="详细地址">
+                <span>{{ detail.hosInfo.hospitalAddres }}</span>
+              </el-form-item>
+              <el-form-item label="资质证明"
+                            v-if="imgList.length > 0">
+                <span>
+                  <el-image v-if="detail.hosInfo.license"
+                            class="info-img"
+                            fit="contain"
+                            :src="detail.hosInfo.license"
+                            :preview-src-list="imgList">
+                    <div slot="error"
+                         class="image-slot">
+                      <i class="el-icon-picture-outline"></i>
+                    </div>
+                  </el-image>
+                  <el-image v-if="detail.hosInfo.certificate"
+                            class="info-img"
+                            fit="contain"
+                            :src="detail.hosInfo.certificate"
+                            :preview-src-list="imgList">
+                    <div slot="error"
+                         class="image-slot">
+                      <i class="el-icon-picture-outline"></i>
+                    </div>
+                  </el-image>
+                  <el-image v-if="detail.hosInfo.structureLicense"
+                            class="info-img"
+                            fit="contain"
+                            :src="detail.hosInfo.structureLicense"
+                            :preview-src-list="imgList">
+                    <div slot="error"
+                         class="image-slot">
+                      <i class="el-icon-picture-outline"></i>
+                    </div>
+                  </el-image>
+                  <el-image v-if="detail.hosInfo.hospitalLicense"
+                            class="info-img"
+                            fit="contain"
+                            :src="detail.hosInfo.hospitalLicense"
+                            :preview-src-list="imgList">
+                    <div slot="error"
+                         class="image-slot">
+                      <i class="el-icon-picture-outline"></i>
+                    </div>
+                  </el-image>
+                </span>
+              </el-form-item>
             </div>
           </div>
-        </template>
+
+          <div class="info-item">
+            <div class="info-title">账号信息</div>
+            <div class="info-content">
+              <el-form-item class="inline-half"
+                            label="联系人">
+                <span>{{ detail.accountInfo.linkman }}</span>
+              </el-form-item>
+              <el-form-item class="inline-half"
+                            label="手机号码">
+                <span>{{ detail.accountInfo.tel }}</span>
+              </el-form-item>
+              <el-form-item class="inline-half"
+                            label="邮箱">
+                <span>{{ detail.accountInfo.email }}</span>
+              </el-form-item>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-title">审核信息</div>
+            <div class="info-content">
+              <el-form-item class="inline-half"
+                            label="审核结果">
+                <span>{{ detail.checkInfo.result }}</span>
+              </el-form-item>
+              <el-form-item class="inline-half"
+                            :label="detail.checkInfo.reasonsFailure ? '备注':''">
+                <span>{{ detail.checkInfo.reasonsFailure }}</span>
+              </el-form-item>
+              <el-form-item class="inline-half"
+                            label="申请时间">
+                <span>{{ detail.checkInfo.applyTime }}</span>
+              </el-form-item>
+              <el-form-item class="inline-half"
+                            label="审核时间">
+                <span>{{ detail.checkInfo.checkTime }}</span>
+              </el-form-item>
+            </div>
+          </div>
+        </div>
       </el-form>
     </PeaceDialog>
   </div>
@@ -442,38 +442,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-form-item__label {
-  position: relative;
-  padding-right: 30px;
-  text-align: justify;
-  text-align-last: justify;
-  &::after {
-    content: '：';
-    position: absolute;
-    top: 0;
-    right: 18px;
-  }
-}
-
-.el-form-item__content {
-  span {
-    color: #9da4af;
-  }
-}
-
-.el-form-item {
-  margin-bottom: 8px;
-  &.inline-half {
-    display: inline-block;
-    vertical-align: middle;
-    width: 50%;
-  }
-
-  &.is-error {
-    margin-bottom: 24px;
-  }
-}
-
 .info {
   &-item {
     border-bottom: 1px solid #e9e9e9;
@@ -490,6 +458,7 @@ export default {
     font-weight: 500;
     color: rgba(0, 0, 0, 0.85);
     line-height: 24px;
+    border-radius: 4px;
     &::before {
       content: '';
       position: absolute;

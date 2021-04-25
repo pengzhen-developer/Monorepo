@@ -1,11 +1,10 @@
 <template>
   <PeaceDialog title="服务设置"
                v-bind:visible.sync="visible"
-               width="480px"
-               center>
+               width="400px">
     <el-form ref="form"
              label-position="right"
-             label-width="150px"
+             label-width="auto"
              label-suffix="："
              v-bind:model="model"
              v-bind:rules="rules">
@@ -53,14 +52,11 @@
 
     </el-form>
 
-    <span slot="footer"
-          class="dialog-footer">
+    <div slot="footer">
+      <el-button v-on:click="visible = false">取 消</el-button>
       <el-button type="primary"
-                 style="width:120px; margin-right: 30px;"
                  v-on:click="submit">确 定</el-button>
-      <el-button v-on:click="visible = false"
-                 style="width:120px;">取 消</el-button>
-    </span>
+    </div>
   </PeaceDialog>
 </template>
 
