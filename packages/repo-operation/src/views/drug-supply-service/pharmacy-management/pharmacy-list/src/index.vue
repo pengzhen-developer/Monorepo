@@ -6,7 +6,7 @@
            class="bg-white full-height q-pa-lg">
         <el-button type="primary"
                    plain
-                   class="q-mb-24"
+                   class="q-mb-lg"
                    v-on:click="back">
           <div>
             <i class="el-icon-arrow-left"></i>

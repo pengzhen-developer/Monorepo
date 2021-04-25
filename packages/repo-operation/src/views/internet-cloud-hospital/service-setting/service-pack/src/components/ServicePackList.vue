@@ -51,7 +51,7 @@
     </div>
 
     <div class="card">
-      <div class="q-mb-md">
+      <div class="q-mb-lg">
         <el-button type="primary"
                    v-on:click="gotoAddView">新增</el-button>
       </div>

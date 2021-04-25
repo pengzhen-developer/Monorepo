@@ -28,7 +28,7 @@
     <div class="card">
       <el-button type="primary"
                  icon="el-icon-plus"
-                 style="margin-bottom: 20px;"
+                 class="q-mb-lg"
                  v-on:click="toAccount">新增</el-button>
       <PeaceTable ref="table"
                   style="width: 100%"

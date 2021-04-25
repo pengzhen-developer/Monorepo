@@ -44,7 +44,7 @@
     </div>
 
     <div class="card">
-      <div class="q-mb-md">
+      <div class="q-mb-lg">
         <el-button style="min-width: 88px"
                    type="primary"
                    v-on:click="add">新增</el-button>

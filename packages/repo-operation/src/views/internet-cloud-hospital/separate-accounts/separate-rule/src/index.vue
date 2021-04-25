@@ -19,13 +19,12 @@
 
     </div>
     <div class="card">
-      <div class="q-mb-16">
-
+      <div class="q-mb-lg">
         <el-button type="primary"
                    icon="el-icon-plus"
                    v-on:click="onOpen('add',{})">新增机构规则</el-button>
-
       </div>
+
       <peace-table ref="table"
                    size="mini"
                    pagination>

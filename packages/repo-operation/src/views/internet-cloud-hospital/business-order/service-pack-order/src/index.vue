@@ -81,7 +81,7 @@
       </el-form>
     </div>
     <div class="card">
-      <div class="q-mb-md">
+      <div class="q-mb-lg">
         <el-button v-on:click="exportFile"
                    type="primary">导出</el-button>
       </div>

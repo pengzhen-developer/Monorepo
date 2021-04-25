@@ -57,7 +57,7 @@
       </el-form>
     </div>
     <div class="card">
-      <div class="q-mb-md">
+      <div class="q-mb-lg">
         <el-button @click="exportExcel"
                    type="primary">导出</el-button>
       </div>

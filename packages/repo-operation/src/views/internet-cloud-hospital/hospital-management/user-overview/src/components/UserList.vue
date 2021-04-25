@@ -34,7 +34,7 @@
       </el-form>
     </div>
     <div class="card">
-      <div class="q-mb-md">
+      <div class="q-mb-lg">
         <el-button v-on:click="exportUserList">导出</el-button>
       </div>
       <PeaceTable ref="table"

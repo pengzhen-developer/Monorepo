@@ -52,7 +52,7 @@
       </el-form>
     </div>
     <div class="card">
-      <!-- <div class="q-mb-md">
+      <!-- <div class="q-mb-lg"
         <el-button v-on:click="openDoctorsImportDialog"
                    type="primary">批量导入</el-button>
         <el-button v-on:click="download"

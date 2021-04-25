@@ -27,7 +27,7 @@
     </div>
 
     <div class="card">
-      <div class="q-mb-md">
+      <div class="q-mb-lg">
         <el-button v-on:click="addItem">新增</el-button>
       </div>
       <PeaceTable ref="table"

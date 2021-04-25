@@ -20,7 +20,7 @@
 
     <div class="card">
 
-      <div class="top-menu q-mb-md">
+      <div class="q-mb-lg">
         <el-button type="primary"
                    @click="addItem()">新增机构特约商户</el-button>
 

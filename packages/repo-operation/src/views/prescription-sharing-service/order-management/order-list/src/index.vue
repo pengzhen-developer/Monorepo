@@ -97,7 +97,7 @@
     </div>
 
     <div class="card">
-      <div class="q-mb-md">
+      <div class="q-mb-lg">
         <el-button type="primary"
                    v-on:click="exportFile">导出</el-button>
         <el-button class="q-ml-md"

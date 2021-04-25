@@ -3,7 +3,7 @@
     <div class="full-height column">
       <div>
         <el-button plain
-                   class="q-mb-24"
+                   class="q-mb-lg"
                    v-on:click="back"
                    style="padding:1px 4px">
           <div class="q-px-md q-py-sm">

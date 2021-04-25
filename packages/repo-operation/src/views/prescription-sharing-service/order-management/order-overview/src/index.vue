@@ -25,7 +25,7 @@
     </div>
 
     <div class="card">
-      <div class="q-mb-md">
+      <div class="q-mb-lg">
         <el-button style="min-width: 80px;"
                    v-on:click="exportFile">导出</el-button>
       </div>

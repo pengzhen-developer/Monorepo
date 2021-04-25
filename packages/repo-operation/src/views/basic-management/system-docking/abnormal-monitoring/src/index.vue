@@ -3,7 +3,7 @@
     <div class="layout-route full-width">
       <div class="bg-white full-height q-pa-lg"
            v-show="Visible">
-        <el-button class="q-mb-24"
+        <el-button class="q-mb-lg"
                    v-on:click="back"
                    style="padding:1px 4px">
           <div class="q-px-md q-py-sm">

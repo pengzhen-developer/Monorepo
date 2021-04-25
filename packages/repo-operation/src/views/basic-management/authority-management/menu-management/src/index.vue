@@ -1,6 +1,6 @@
 <template>
   <div class="layout-route">
-    <div class="card q-mb-md">
+    <div class="card q-mb-24">
       <el-button type="primary"
                  v-on:click="fetch">刷新</el-button>
       <el-button type="primary"
