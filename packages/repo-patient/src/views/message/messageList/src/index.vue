@@ -72,6 +72,7 @@
                       round
                       size="small"
                       slot="button"
+                      class="send-btn"
                       type="primary">发送
           </van-button>
         </van-field>

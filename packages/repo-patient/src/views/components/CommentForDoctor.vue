@@ -267,9 +267,10 @@ export default {
   .label {
     height: 33px;
     border-radius: 33px;
-    border: 0.5px solid #ccc;
+    border: 1px solid #ccc;
     color: #666;
     font-size: 13px;
+    line-height: normal;
     width: 30%;
     margin-right: 5%;
     margin-bottom: 15px;

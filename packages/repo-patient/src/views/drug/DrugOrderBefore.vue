@@ -116,7 +116,7 @@
         </div>
         <div class="dl-packet"
              v-if="page.tabIndex == '1'">
-          <div class="dt money">配送费 ：</div>
+          <div class="dt money grey-666">配送费 ：</div>
           <div class="dd money">{{order.OperaShippingFee}}</div>
         </div>
         <template v-if="canShowDiscount">
@@ -851,7 +851,7 @@ export default {
   width: 7px;
   height: 12px;
   display: block;
-  right: 10px;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%);
   background-size: cover;
@@ -882,7 +882,6 @@ export default {
 }
 .intro .dl-packet .dt {
   font-size: 13px;
-  line-height: 1;
   padding: 2px 0;
 }
 .intro .dl-packet .dd {
@@ -911,6 +910,9 @@ export default {
   &.money {
     color: #333333;
     line-height: 2.8;
+  }
+  &.grey-666 {
+    color: rgba(51, 51, 51, 0.6);
   }
 }
 .str .dd {

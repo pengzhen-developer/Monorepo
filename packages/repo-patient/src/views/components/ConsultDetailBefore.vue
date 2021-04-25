@@ -1063,6 +1063,7 @@ export default {
     &.doctor {
       position: relative;
       .doctor-logo {
+        height: 60px;
         .van-image {
           width: 60px;
           height: 60px;

@@ -18,7 +18,7 @@
         <div class="wifi-circle second"></div>
         <div class="wifi-circle third"></div>
       </div>
-      <span class="text-vc">{{ text }}</span>
+      <span class="text-num"><span>{{ text }}</span></span>
       <div class="wifi-symbol"
            :class="{'animation':playing,'out':flow=='out'}"
            v-if="flow=='out'">
@@ -107,6 +107,13 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.text-num {
+  display: table;
+  span {
+    display: table-cell;
+    line-height: 1;
+  }
+}
 .ic_audio {
   display: flex;
   align-items: center;

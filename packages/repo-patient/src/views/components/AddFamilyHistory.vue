@@ -233,16 +233,20 @@ export default {
     .checked-list,
     .not-checked-list {
       padding: 0 16px;
-      margin: 0 0 20px 0;
-
+      margin: 0 0 30px 0;
+      font-size: 16px;
+      display: flex;
+      flex-wrap: wrap;
       .tag {
         background: #f5f5f5 !important;
-        margin: 2px 10px 2px 0;
+        margin: 7px 10px 0 0;
         padding: 10px;
-        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: normal;
         min-width: 45px;
         border: none;
-
         &::after {
           border: none;
         }
