@@ -218,9 +218,14 @@ export default {
         this.applyModel.again = 1
       }
       const params = Peace.util.deepClone(this.applyModel)
-      Service.applyRefund(params).then(() => {
-        this.fetch()
-      })
+      this.applyModel.loading = true
+      Service.applyRefund(params)
+        .then(() => {
+          this.fetch()
+        })
+        .finally(() => {
+          this.applyModel.loading = false
+        })
     }
   }
 }
