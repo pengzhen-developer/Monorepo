@@ -2,7 +2,6 @@
   <div class="layout-route full-width">
     <div class="card card-search q-mb-md">
       <el-button plain
-                 class="q-mb-lg"
                  v-on:click="back">
         <i class="el-icon-arrow-left"></i>
         返回上一页

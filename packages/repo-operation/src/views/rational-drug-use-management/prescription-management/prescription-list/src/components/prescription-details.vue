@@ -1,9 +1,8 @@
 <template>
-  <div class="q-pt-20 q-pr-28 q-pb-30 q-pl-16  bg-white full-height ">
+  <div class="q-pt-24 q-pr-28 q-pb-30 q-pl-16  bg-white full-height ">
     <div class="full-height column">
-      <div>
+      <div class="q-mb-lg">
         <el-button plain
-                   class="q-mb-lg"
                    v-on:click="back"
                    style="padding:1px 4px">
           <div class="q-px-md q-py-sm">

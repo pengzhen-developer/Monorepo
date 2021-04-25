@@ -4,11 +4,10 @@
     <div class="layout-route full-width">
 
       <div v-bind:class="classObject">
-        <div class="bg-white q-pl-lg q-pt-lg"
+        <div class="bg-white q-pl-lg q-pt-lg q-mb-lg"
              v-if="history.length > 1">
           <el-button type="primary"
                      plain
-                     class="q-mb-lg"
                      v-on:click="back">
             <div class="q-px-md q-py-sm">
               <i class="el-icon-arrow-left"></i>

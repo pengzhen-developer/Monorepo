@@ -4,15 +4,17 @@
 
       <div v-if="detailVisible || operateVisible"
            class="bg-white full-height q-pa-lg">
-        <el-button type="primary"
-                   plain
-                   class="q-mb-lg"
-                   v-on:click="back">
-          <div>
-            <i class="el-icon-arrow-left"></i>
-            <span>返回上一页</span>
-          </div>
-        </el-button>
+        <div class="q-mb-lg">
+          <el-button type="primary"
+                     plain
+                     v-on:click="back">
+            <div>
+              <i class="el-icon-arrow-left"></i>
+              <span>返回上一页</span>
+            </div>
+          </el-button>
+        </div>
+
         <!-- 药房详情 -->
         <PharmacyDetail v-if="detailVisible"
                         v-bind:data="id"></PharmacyDetail>

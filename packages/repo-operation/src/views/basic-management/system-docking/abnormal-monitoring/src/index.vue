@@ -3,14 +3,17 @@
     <div class="layout-route full-width">
       <div class="bg-white full-height q-pa-lg"
            v-show="Visible">
-        <el-button class="q-mb-lg"
-                   v-on:click="back"
-                   style="padding:1px 4px">
-          <div class="q-px-md q-py-sm">
-            <i class="el-icon-arrow-left"></i>
-            <span>返回上一页</span>
-          </div>
-        </el-button>
+        <div class="q-mb-lg">
+          <el-button class="q-mb-lg"
+                     v-on:click="back"
+                     style="padding:1px 4px">
+            <div class="q-px-md q-py-sm">
+              <i class="el-icon-arrow-left"></i>
+              <span>返回上一页</span>
+            </div>
+          </el-button>
+        </div>
+
         <!-- 查看详情 -->
         <AbnormalDetail v-bind:data="currentData"
                         v-bind:dictdata="source"></AbnormalDetail>
