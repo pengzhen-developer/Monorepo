@@ -3,6 +3,7 @@
     <div class="card card-search q-mb-md">
       <el-form :model="model"
                label-suffix="："
+               label-width="auto"
                inline>
         <el-form-item label="姓名">
           <el-input placeholder="请输入姓名"

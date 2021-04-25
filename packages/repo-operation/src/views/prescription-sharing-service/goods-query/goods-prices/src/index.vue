@@ -4,6 +4,7 @@
     <div class="card card-search q-mb-md">
       <el-form inline
                label-suffix="："
+               label-width="auto"
                v-bind:model="model"
                v-on:submit.native.prevent>
         <el-form-item label="供应门店/仓"

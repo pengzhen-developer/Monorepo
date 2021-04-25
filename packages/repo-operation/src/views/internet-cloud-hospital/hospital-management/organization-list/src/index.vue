@@ -3,6 +3,7 @@
     <div class="card card-search q-mb-md">
       <el-form :model="model"
                label-suffix="："
+               label-width="auto"
                inline>
         <region-selector :defaultArea="false"
                          :selected="false"

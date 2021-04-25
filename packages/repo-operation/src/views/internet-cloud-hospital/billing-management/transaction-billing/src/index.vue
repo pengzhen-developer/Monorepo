@@ -4,6 +4,7 @@
 
       <el-form v-bind:model="model"
                label-suffix="："
+               label-width="auto"
                inline>
         <el-form-item label="完单日期">
           <PeaceDatePicker type="daterange"

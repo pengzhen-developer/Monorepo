@@ -4,6 +4,7 @@
     <div class="card card-search q-mb-md">
       <el-form inline
                label-suffix="："
+               label-width="auto"
                v-on:keyup.enter.native="get"
                v-on:submit.native.prevent
                v-bind:model="model">
@@ -27,7 +28,7 @@
     </div>
 
     <div class="card">
-      <div class="q-mb-md">
+      <div class="q-mb-lg">
         <el-button style="min-width: 80px"
                    v-on:click="exportFile">导出</el-button>
       </div>

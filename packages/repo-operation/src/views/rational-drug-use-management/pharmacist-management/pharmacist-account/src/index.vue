@@ -4,6 +4,7 @@
       <el-form v-bind:model="model"
                inline="inline"
                label-suffix="："
+               label-width="auto"
                size="mini">
         <el-form-item label="机构名称">
           <el-input v-model.trim="model.CodeName"

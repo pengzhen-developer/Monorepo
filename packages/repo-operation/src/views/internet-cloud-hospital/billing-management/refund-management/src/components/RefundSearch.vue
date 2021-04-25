@@ -5,6 +5,7 @@
       <!-- 查询筛选Form -->
       <el-form v-bind:model="model"
                label-suffix="："
+               label-width="auto"
                inline>
 
         <el-form-item label="订单编号">

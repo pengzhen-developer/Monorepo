@@ -5,6 +5,7 @@
         <div class="card card-search q-mb-md">
           <el-form inline
                    label-suffix="："
+                   label-width="auto"
                    v-bind:model="model">
             <el-form-item label="处方编号">
               <el-input v-model="model.prescriptionNo"

@@ -3,6 +3,7 @@
     <div class="card card-search q-mb-md">
       <el-form :model="search"
                label-suffix="："
+               label-width="auto"
                inline>
         <el-form-item label="申请医生">
           <el-input placeholder="输入申请医生"

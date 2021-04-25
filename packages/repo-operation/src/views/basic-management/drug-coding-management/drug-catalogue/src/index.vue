@@ -3,6 +3,7 @@
     <div class="card card-search q-mb-md">
       <el-form v-bind:model="model"
                inline="inline"
+               label-width="auto"
                label-suffix="："
                size="mini">
 
@@ -63,7 +64,7 @@
     </div>
 
     <div class="card">
-      <div class="q-mb-md">
+      <div class="q-mb-lg">
         <el-button v-on:click="openImportDialog">导入</el-button>
         <el-button v-on:click="exportFile">导出</el-button>
       </div>

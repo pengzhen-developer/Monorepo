@@ -3,6 +3,7 @@
     <div class="card card-search q-mb-md">
       <el-form :model="search"
                label-suffix="："
+               label-width="auto"
                inline>
         <el-form-item label="机构名称">
           <el-select v-model="search.orgName">

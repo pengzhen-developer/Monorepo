@@ -2,6 +2,7 @@
   <div class=" layout-route">
     <div class="card card-search q-mb-md">
       <el-form inline=""
+               label-width="auto"
                label-suffix="：">
         <el-form-item label="账号">
           <el-input v-model="model.username"

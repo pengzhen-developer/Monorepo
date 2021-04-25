@@ -11,6 +11,7 @@
            style="font-size:24px;">{{hospitalName}}</div>
       <el-form :model="model"
                label-suffix="："
+               label-width="auto"
                inline>
         <el-form-item label="用户名">
           <el-input placeholder="请输入姓名"

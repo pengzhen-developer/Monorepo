@@ -5,6 +5,7 @@
       <el-form v-bind:model="model"
                inline="inline"
                label-suffix="："
+               label-width="auto"
                size="mini">
         <el-form-item label="处方来源机构">
           <el-input v-model.trim="model.sourceHospitalName"
