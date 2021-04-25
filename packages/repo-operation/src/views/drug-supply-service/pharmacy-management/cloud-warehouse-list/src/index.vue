@@ -3,21 +3,18 @@
     <div class="layout-route full-width">
       <!-- 云仓详情 -->
       <div v-if="visible"
-           class="bg-white full-height q-pa-32">
-        <el-button type="primary"
-                   plain
-                   class="q-mb-lg"
-                   v-on:click="back"
-                   style="margin-bottom:24px">
-          <div>
+           class="bg-white full-height  q-py-24">
+        <div class="q-mb-md q-px-32">
+          <el-button plain
+                     v-on:click="back">
             <i class="el-icon-arrow-left"></i>
-            <span>返回上一页</span>
-          </div>
-        </el-button>
+            返回上一页
+          </el-button>
+        </div>
         <el-tabs v-model="activeName">
           <el-tab-pane label="基础信息"
                        name="base"
-                       class="q-px-32 q-py-10">
+                       class="q-pa-32 q-py-10">
             <div class="item-content">
               <div class="item-title">
                 <div class="title-left"></div>
@@ -40,7 +37,10 @@
                 </div>
               </div>
             </div>
-            <div class="line"></div>
+            <div class="q-py-32">
+              <div class="line  "></div>
+            </div>
+
             <div class="item-content">
               <div class="item-title">
                 <div class="title-left"></div>
@@ -175,7 +175,6 @@ p {
 }
 .line {
   width: 100%;
-  margin: 4px 0 20px 0;
   height: 1px;
   background: #e9e9e9;
 }

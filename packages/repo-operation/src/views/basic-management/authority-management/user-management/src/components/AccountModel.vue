@@ -51,7 +51,8 @@
       </el-form-item>
     </el-form>
 
-    <div style="text-align: right;">
+    <div slot="footer"
+         class="text-right q-pt-32">
       <el-button v-on:click="close">取 消</el-button>
       <el-button type="primary"
                  v-bind:loading="isLoading"

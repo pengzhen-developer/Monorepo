@@ -804,7 +804,7 @@ export default {
     height: 130px;
     background: #ffffff;
     border-radius: 4px;
-    border: 1px solid #eeeeee;
+    border: 1px solid rgba(51, 51, 51, 0.2);
     cursor: pointer;
   }
 }

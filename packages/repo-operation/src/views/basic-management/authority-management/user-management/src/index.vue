@@ -27,10 +27,12 @@
     </div>
 
     <div class="card">
-      <el-button type="primary"
-                 icon="el-icon-plus"
-                 class="q-mb-lg"
-                 v-on:click="toAccount">新增</el-button>
+      <div class="q-mb-lg">
+        <el-button type="primary"
+                   icon="el-icon-plus"
+                   v-on:click="toAccount">新增</el-button>
+      </div>
+
       <PeaceTable ref="table"
                   style="width: 100%"
                   pagination
