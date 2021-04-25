@@ -65,10 +65,10 @@
         <PeaceTableColumn min-width="120"
                           label="邀请医生"
                           prop="toDoctorName"></PeaceTableColumn>
-        <PeaceTableColumn min-width="160"
+        <PeaceTableColumn min-width="180"
                           label="期望会诊时间"
                           prop="expectTime"></PeaceTableColumn>
-        <PeaceTableColumn min-width="160"
+        <PeaceTableColumn min-width="180"
                           label="申请时间"
                           prop="createdTime"></PeaceTableColumn>
         <PeaceTableColumn min-width="120"
@@ -144,10 +144,10 @@
                           prop="fromDoctorName"></PeaceTableColumn>
         <PeaceTableColumn label="期望会诊时间"
                           prop="expectTime"
-                          width="160px"></PeaceTableColumn>
+                          width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="申请时间"
                           prop="createdTime"
-                          width="160px"></PeaceTableColumn>
+                          width="180px"></PeaceTableColumn>
         <PeaceTableColumn :formatter="formatterConsultStatus"
                           label="会诊状态"
                           prop="consultStatus"

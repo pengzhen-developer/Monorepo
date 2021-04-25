@@ -1,8 +1,7 @@
 <template>
   <div class="layout-route">
-    <div class="card q-mb-md">
+    <div class="card card-search q-mb-md">
       <el-form inline
-               space-none
                label-width="auto"
                v-on:keyup.enter.native="get"
                v-on:submit.native.prevent
@@ -45,7 +44,7 @@
                   ref="table">
         <PeaceTableColumn label="咨询单号"
                           prop="inquiry_no"
-                          min-width="180"></PeaceTableColumn>
+                          min-width="200"></PeaceTableColumn>
         <PeaceTableColumn label="患者姓名"
                           prop="name"
                           min-width="120"></PeaceTableColumn>
@@ -66,11 +65,11 @@
         </PeaceTableColumn>
         <PeaceTableColumn label="订单金额"
                           prop="order_money"
-                          min-width="80">
+                          min-width="120">
         </PeaceTableColumn>
         <PeaceTableColumn label="订单时间"
                           prop="created_time"
-                          min-width="160"></PeaceTableColumn>
+                          min-width="180"></PeaceTableColumn>
         <PeaceTableColumn label="订单状态"
                           prop="status"
                           min-width="120"></PeaceTableColumn>

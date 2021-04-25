@@ -74,22 +74,30 @@
         </div>
 
         <div class="row">
-          <el-form-item required=""
-                        v-bind:show-message="false"
-                        label="诊断：">
-            <QuickSelectDiagnose style="width: 400px"
-                                 v-model="model.diagnoseList"></QuickSelectDiagnose>
-          </el-form-item>
+          <div class="col">
+            <el-form-item required=""
+                          v-bind:show-message="false"
+                          label="诊断：">
+              <div class="row">
+                <QuickSelectDiagnose class="col"
+                                     v-model="model.diagnoseList"></QuickSelectDiagnose>
+              </div>
+            </el-form-item>
+          </div>
         </div>
 
         <div class="row">
-          <el-form-item required=""
-                        v-bind:show-message="false"
-                        label="过敏史：">
-            <QuickSelectAllergyHistory allow-create
-                                       style="width: 400px"
-                                       v-model="model.allergyHistoryList"></QuickSelectAllergyHistory>
-          </el-form-item>
+          <div class="col">
+            <el-form-item required=""
+                          v-bind:show-message="false"
+                          label="过敏史：">
+              <div class="row">
+                <QuickSelectAllergyHistory allow-create
+                                           class="col"
+                                           v-model="model.allergyHistoryList"></QuickSelectAllergyHistory>
+              </div>
+            </el-form-item>
+          </div>
         </div>
 
         <div class="row">

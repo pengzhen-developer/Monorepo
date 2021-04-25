@@ -1,8 +1,7 @@
 <template>
   <div class="layout-route">
-    <div class="card q-mb-md">
+    <div class="card card-search q-mb-md">
       <el-form inline
-               space-none
                label-width="auto"
                v-on:keyup.enter.native="get"
                v-on:submit.native.prevent

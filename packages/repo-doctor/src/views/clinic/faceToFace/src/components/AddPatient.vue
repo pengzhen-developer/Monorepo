@@ -11,6 +11,7 @@
                       prop="name">
           <span slot="label">姓名：</span>
           <el-autocomplete class="col full-width"
+                           popper-class="add-patient-autocomplete"
                            remote
                            filterable
                            clearable
@@ -319,5 +320,11 @@ export default {
   .text-color {
     color: #ffaa00;
   }
+}
+</style>
+
+<style lang="scss">
+.add-patient-autocomplete .el-autocomplete-suggestion__wrap {
+  max-height: 160px;
 }
 </style>

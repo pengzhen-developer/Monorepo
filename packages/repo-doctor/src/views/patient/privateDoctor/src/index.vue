@@ -112,10 +112,10 @@
                           prop="validityTime"></PeaceTableColumn>
         <PeaceTableColumn label="购买时间"
                           prop="purchaseTime"
-                          width="160px"></PeaceTableColumn>
+                          width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="接单时间"
                           prop="acceptTime"
-                          width="160px"></PeaceTableColumn>
+                          width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="服务期间问诊次数"
                           prop="inquiryCount"
                           width="80"></PeaceTableColumn>
@@ -178,14 +178,14 @@
                           prop="type"></PeaceTableColumn>
         <PeaceTableColumn label="购买时间"
                           prop="purchaseTime"
-                          width="160px"></PeaceTableColumn>
+                          width="180px"></PeaceTableColumn>
         <PeaceTableColumn :formatter="(r, c, v) => source.orderStatus.find(item=> item.key === v).value"
                           label="接单状态"
                           prop="orderStatus"
                           width="100px"></PeaceTableColumn>
         <PeaceTableColumn label="操作时间"
                           prop="acceptTime"
-                          width="160px"></PeaceTableColumn>
+                          width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="操作">
           <template slot-scope="scope">
             <el-button @click="showReceiveDialog(scope.row)"

@@ -1,9 +1,8 @@
 <template>
   <div class="layout-route prescription">
 
-    <div class="card q-mb-md">
+    <div class="card card-search q-mb-md">
       <el-form inline
-               space-none
                label-width="auto"
                v-on:keyup.enter.native="get"
                v-on:submit.native.prevent
@@ -52,13 +51,13 @@
                           min-width="120"></PeaceTableColumn>
         <PeaceTableColumn label="身份证号"
                           prop="idcard"
-                          min-width="140"></PeaceTableColumn>
+                          min-width="180"></PeaceTableColumn>
         <PeaceTableColumn label="处方状态"
                           prop="prescription_status"
                           min-width="120"></PeaceTableColumn>
         <PeaceTableColumn label="开具时间"
                           prop="created_time"
-                          min-width="160"></PeaceTableColumn>
+                          min-width="180"></PeaceTableColumn>
         <PeaceTableColumn fixed="right"
                           label="操作"
                           width="120">

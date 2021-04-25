@@ -36,7 +36,7 @@
         <PeaceTableColumn min-width="160"
                           label="零售价/元"
                           prop="price"></PeaceTableColumn>
-        <PeaceTableColumn min-width="160"
+        <PeaceTableColumn min-width="180"
                           label="创建时间"
                           prop="createdTime"></PeaceTableColumn>
         <PeaceTableColumn min-width="160"

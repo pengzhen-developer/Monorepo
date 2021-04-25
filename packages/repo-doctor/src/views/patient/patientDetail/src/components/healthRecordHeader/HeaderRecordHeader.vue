@@ -144,10 +144,7 @@ export default {
     flex: 1;
 
     label {
-      width: 5em;
       display: inline-block;
-      text-align: justify;
-      text-align-last: justify;
       color: rgba(96, 98, 102, 1);
 
       &.label-7,
@@ -187,6 +184,7 @@ export default {
           height: 14px;
           margin: 0 15px 0 0;
           background: $--color-primary;
+          border-radius: 4px;
         }
       }
       .content {

@@ -1,9 +1,8 @@
 <template>
   <div class="layout-route">
 
-    <div class="card q-mb-md">
+    <div class="card card-search q-mb-md">
       <el-form inline
-               space-none
                label-width="auto"
                v-on:keyup.enter.native="get"
                v-on:submit.native.prevent
@@ -38,6 +37,13 @@
 
       <PeaceTable pagination
                   ref="table">
+        <PeaceTableColumn label="序号"
+                          type="index"
+                          width="80px">
+          <template slot-scope="{ $index, _self }">
+            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+          </template>
+        </PeaceTableColumn>
 
         <PeaceTableColumn label="患者姓名"
                           prop="name"
@@ -52,7 +58,7 @@
 
         <PeaceTableColumn label="手机号码"
                           prop="tel"
-                          width="120"></PeaceTableColumn>
+                          width="140"></PeaceTableColumn>
 
         <PeaceTableColumn label="疾病标签"
                           min-width="340"

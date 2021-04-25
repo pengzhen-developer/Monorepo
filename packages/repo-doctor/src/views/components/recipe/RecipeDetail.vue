@@ -31,38 +31,38 @@
           <div class="q-mb-xs row q-col-gutter-x-md">
             <el-form-item class="col">
               <div slot="label">
-                <span class="inline-block text-justify"
+                <span class="inline-block"
                       style="width: 4em;">姓名</span>
                 <span>：</span>
               </div>
-              <span class="col text-weight-bold">{{ data.PatientName }}</span>
+              <span class="col">{{ data.PatientName }}</span>
             </el-form-item>
             <el-form-item class="col">
               <div slot="label">
-                <span class="inline-block text-justify"
+                <span class="inline-block"
                       style="width: 4em;">性别</span>
                 <span>：</span>
               </div>
-              <span class="col text-weight-bold">{{ data.PatientGender }}</span>
+              <span class="col">{{ data.PatientGender }}</span>
             </el-form-item>
           </div>
 
           <div class="q-mb-xs row q-col-gutter-x-md">
             <el-form-item class="col">
               <div slot="label">
-                <span class="inline-block text-justify"
+                <span class="inline-block"
                       style="width: 4em;">年龄</span>
                 <span>：</span>
               </div>
-              <span class="col text-weight-bold">{{ data.Age }}</span>
+              <span class="col">{{ data.Age }}</span>
             </el-form-item>
             <el-form-item class="col">
               <div slot="label">
-                <span class="inline-block text-justify"
+                <span class="inline-block"
                       style="width: 4em;">科别</span>
                 <span>：</span>
               </div>
-              <span class="col text-weight-bold">{{ data.MedicalDepartmentName }}</span>
+              <span class="col">{{ data.MedicalDepartmentName }}</span>
             </el-form-item>
           </div>
 
@@ -70,30 +70,30 @@
                class="q-mb-xs row q-col-gutter-x-md">
             <el-form-item class="col">
               <div slot="label">
-                <span class="inline-block text-justify"
+                <span class="inline-block"
                       style="width: 4em;">体重</span>
                 <span>：</span>
               </div>
-              <span class="col text-weight-bold">{{ data.weight + 'kg' }}</span>
+              <span class="col">{{ data.weight + 'kg' }}</span>
             </el-form-item>
           </div>
 
           <div class="q-mb-xs row q-col-gutter-x-md">
             <el-form-item class="col">
               <div slot="label">
-                <span class="inline-block text-justify"
+                <span class="inline-block"
                       style="width: 4em;">开具时间</span>
                 <span>：</span>
               </div>
-              <span class="col text-weight-bold">{{ data.PrescriptionTime }}</span>
+              <span class="col">{{ data.PrescriptionTime }}</span>
             </el-form-item>
             <el-form-item class="col">
               <div slot="label">
-                <span class="inline-block text-justify"
+                <span class="inline-block"
                       style="width: 4em;">病历号</span>
                 <span>：</span>
               </div>
-              <span class="col text-weight-bold">{{ data.caseNo }}</span>
+              <span class="col">{{ data.caseNo }}</span>
             </el-form-item>
           </div>
 
@@ -104,7 +104,7 @@
                       style="width: 4em;">疾病诊断</span>
                 <span>：</span>
               </div>
-              <span class="text-weight-bold">
+              <span>
                 {{ data.diagnoseList && data.diagnoseList.map(item => item.name).join(' | ') }}
               </span>
             </el-form-item>
@@ -170,7 +170,7 @@
           <div class="q-mb-xs row q-col-gutter-x-md">
             <el-form-item class="col">
               <div slot="label">
-                <span class="inline-block text-justify"
+                <span class="inline-block"
                       style="width: 4em;">医师</span>
                 <span>：</span>
               </div>
@@ -178,7 +178,7 @@
             </el-form-item>
             <el-form-item class="col">
               <div slot="label">
-                <span class="inline-block text-justify"
+                <span class="inline-block"
                       style="width: 4em;">审方药师</span>
                 <span>：</span>
               </div>
@@ -189,7 +189,7 @@
           <div class="q-mb-xs row q-col-gutter-md">
             <el-form-item class="col">
               <div slot="label">
-                <span class="inline-block text-justify"
+                <span class="inline-block"
                       style="width: 4em;">调配药师</span>
                 <span>：</span>
               </div>
@@ -199,7 +199,7 @@
             </el-form-item>
             <el-form-item class="col">
               <div slot="label">
-                <span class="inline-block text-justify"
+                <span class="inline-block"
                       style="width: 4em;">核对发药</span>
                 <span>：</span>
               </div>

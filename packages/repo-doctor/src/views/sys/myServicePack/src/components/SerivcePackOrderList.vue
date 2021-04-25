@@ -49,7 +49,7 @@
         <PeaceTableColumn min-width="160"
                           label="用户手机号"
                           prop="tel"></PeaceTableColumn>
-        <PeaceTableColumn min-width="160"
+        <PeaceTableColumn min-width="180"
                           label="购买时间"
                           prop="payTime"></PeaceTableColumn>
         <PeaceTableColumn min-width="160"

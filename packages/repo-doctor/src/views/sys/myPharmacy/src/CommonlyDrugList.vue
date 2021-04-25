@@ -33,7 +33,7 @@
                         prop="companyName"></PeaceTableColumn>
       <PeaceTableColumn label="添加时间"
                         prop="createdTime"
-                        min-width="160"></PeaceTableColumn>
+                        min-width="180"></PeaceTableColumn>
       <PeaceTableColumn fixed="right"
                         label="操作"
                         width="150">

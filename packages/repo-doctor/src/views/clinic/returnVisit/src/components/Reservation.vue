@@ -22,7 +22,7 @@
                           width="60"
                           prop="familyAge"></PeaceTableColumn>
         <PeaceTableColumn label="复诊时间"
-                          width="160px"
+                          width="180px"
                           prop="returnVisitTime"></PeaceTableColumn>
         <PeaceTableColumn label="病情描述"
                           min-width="150px"

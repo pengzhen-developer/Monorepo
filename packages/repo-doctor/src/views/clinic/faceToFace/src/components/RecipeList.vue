@@ -35,7 +35,7 @@
 
       <PeaceTableColumn label="身份证号"
                         prop="idCard"
-                        min-width="160px"></PeaceTableColumn>
+                        min-width="180px"></PeaceTableColumn>
 
       <PeaceTableColumn label="处方状态"
                         prop="status"
@@ -43,7 +43,7 @@
 
       <PeaceTableColumn label="开具时间"
                         prop="createdTime"
-                        min-width="160px"></PeaceTableColumn>
+                        min-width="180px"></PeaceTableColumn>
     </PeaceTable>
 
     <PeaceDialog :visible.sync="dialog.visible"

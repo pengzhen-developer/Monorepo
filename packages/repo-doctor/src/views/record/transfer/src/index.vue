@@ -13,9 +13,8 @@
          key="out"
          v-if="view.model.referral_type === source.state['我转诊的']">
 
-      <div class="card q-mb-md">
+      <div class="card card-search q-mb-md">
         <el-form inline
-                 space-none
                  label-width="auto"
                  v-on:keyup.enter.native="get"
                  v-on:submit.native.prevent
@@ -67,10 +66,10 @@
           <PeaceTableColumn min-width="120"
                             label="转入医生"
                             prop="name"></PeaceTableColumn>
-          <PeaceTableColumn min-width="160"
+          <PeaceTableColumn min-width="180"
                             label="期望转诊时间"
                             prop="expect_time"></PeaceTableColumn>
-          <PeaceTableColumn min-width="160"
+          <PeaceTableColumn min-width="180"
                             label="申请时间"
                             prop="created_time"></PeaceTableColumn>
           <PeaceTableColumn v-bind:formatter="formatter"
@@ -92,9 +91,8 @@
     <div class="content"
          key="in"
          v-if="view.model.referral_type === source.state['转给我的']">
-      <div class="card q-mb-md">
+      <div class="card card-search q-mb-md">
         <el-form inline
-                 space-none
                  label-width="auto"
                  v-on:keyup.enter.native="get"
                  v-on:submit.native.prevent
@@ -131,10 +129,10 @@
           <PeaceTableColumn min-width="120"
                             label="转出医生"
                             prop="name"></PeaceTableColumn>
-          <PeaceTableColumn min-width="160"
+          <PeaceTableColumn min-width="180"
                             label="期望转诊时间"
                             prop="expect_time"></PeaceTableColumn>
-          <PeaceTableColumn min-width="160"
+          <PeaceTableColumn min-width="180"
                             label="申请时间"
                             prop="created_time"></PeaceTableColumn>
           <PeaceTableColumn min-width="120"

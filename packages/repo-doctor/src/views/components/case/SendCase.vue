@@ -374,6 +374,10 @@ export default {
   .item {
     margin: 0 5px 0 0;
 
+    /deep/ .el-input__inner:focus {
+      box-shadow: none;
+    }
+
     .el-input {
       width: 56px;
       padding: 0;

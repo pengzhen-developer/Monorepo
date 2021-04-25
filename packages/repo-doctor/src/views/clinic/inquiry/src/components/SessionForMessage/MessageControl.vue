@@ -369,8 +369,12 @@ export default {
     /deep/ .q-editor__content {
       flex: 1;
       width: 100%;
-      padding: 10px 0;
+      padding: 0 0 10px 0;
       word-break: break-all;
+
+      .el-textarea__inner:focus {
+        box-shadow: none;
+      }
     }
 
     /deep/ .el-upload-list__item {
