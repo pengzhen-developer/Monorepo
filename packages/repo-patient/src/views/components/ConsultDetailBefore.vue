@@ -1322,7 +1322,7 @@ export default {
     display: flex;
     align-items: center;
     span {
-      line-height: 1;
+      line-height: normal;
     }
     .van-image {
       width: 16px;
