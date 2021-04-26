@@ -393,13 +393,14 @@ export default {
     // 新增排班
     addedScheduling(params) {
       const id = this.currentDepartment.id
-      const { doctorId, doctorName } = params.doctor
+      const { doctorId, doctorName, doctorLevel } = params.doctor
       const { scheduleJson } = params
 
       let data = {
         twoLevelDeptId: id,
         doctorId: doctorId,
         doctorName: doctorName,
+        doctorLevel: doctorLevel,
         schedulingJson: scheduleJson,
         sourceDisType: this.sourceDisType
       }
