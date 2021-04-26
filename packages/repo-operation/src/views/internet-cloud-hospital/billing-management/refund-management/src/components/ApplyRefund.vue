@@ -41,27 +41,27 @@
 
           <div>
             <span>订单金额：</span>
-            <span class="text-grey-999">{{result.orderMoney}}</span>
+            <span class="text-grey-999">{{result.orderMoney || '——'}}</span>
           </div>
 
           <div>
             <span>下单时间：</span>
-            <span class="text-grey-999">{{result.createdTime}}</span>
+            <span class="text-grey-999">{{result.createdTime || '——'}}</span>
           </div>
 
           <div>
             <span>订单状态：</span>
-            <span class="text-grey-999">{{result.orderStatusTxt}}</span>
+            <span class="text-grey-999">{{result.orderStatusTxt || '——'}}</span>
           </div>
 
           <div>
             <span>支付状态：</span>
-            <span class="text-grey-999">{{result.payStatusTxt}}</span>
+            <span class="text-grey-999">{{result.payStatusTxt || '——'}}</span>
           </div>
 
           <div>
             <span>完单时间：</span>
-            <span class="text-grey-999">{{result.completionTime}}</span>
+            <span class="text-grey-999">{{result.completionTime || '——'}}</span>
           </div>
         </div>
 

@@ -12,7 +12,7 @@
           <el-input v-model="model.orderNo"
                     placeholder="请输入"
                     clearable
-                    style="width:260px;"></el-input>
+                    style="width:270px;"></el-input>
         </el-form-item>
 
         <el-form-item label="退款状态">
