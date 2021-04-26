@@ -40,8 +40,8 @@
                   <div class="order-item-order-info-item-val">
                     <peace-price class="refund"
                                  v-bind:price="item.totalMoney"></peace-price>
-                    <div v-if="item.payTime&&item.orderStatus==2">
-                      <span>(已退款</span>
+                    <div v-if="item.payStatus===5||item.payStatus===4">
+                      <span>({{item.payStatus===4?'退款中':'已退款'}}</span>
                       <peace-price v-bind:price="item.payMoney"></peace-price>
                       <span>)</span>
                     </div>
