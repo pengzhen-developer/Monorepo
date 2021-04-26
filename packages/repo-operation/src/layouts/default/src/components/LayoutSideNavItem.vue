@@ -68,7 +68,6 @@ export default {
 .layout-side-nav-item {
   .menu-name {
     font-size: 14px;
-    color: #000000;
   }
 
   .menu-icon {
@@ -80,7 +79,7 @@ export default {
     font-size: 24px;
     width: 24px;
 
-    margin: 0 15px 0 0;
+    margin: 0 16px 0 0;
   }
 }
 </style>

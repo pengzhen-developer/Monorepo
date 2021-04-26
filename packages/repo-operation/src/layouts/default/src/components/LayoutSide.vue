@@ -1,7 +1,7 @@
 <template>
   <q-scroll-area v-bind:thumb-style="thumbStyle"
                  v-bind:style="scrollAreaStyle">
-    <el-menu class="element-ui-default layout-side"
+    <el-menu class="layout-side"
              v-bind:default-active="selectedNavMenu.id"
              v-on:select="menuSelect">
       <!-- side-top -->
@@ -102,7 +102,11 @@ export default {
   }
 
   .el-menu-item.is-active {
-    background: #d6edf0 !important;
+    background: #f4fafb !important;
+  }
+
+  .el-submenu .el-menu-item {
+    padding: 0 40px !important;
   }
 }
 </style>
