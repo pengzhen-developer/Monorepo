@@ -78,10 +78,10 @@
         <div class="service-item-content-lable">{{!info.payTime?'应付金额：':'实付金额：'}}</div>
         <!-- payStatus 支付状态（1未支付3已支付4退款中5已退款 6退款失败-->
         <div class="service-item-content-value">
-          <peace-price v-bind:price="!info.payTime?info.orderMoney :info.payMoney"
-                       v-bind:size="16"></peace-price>
           <span v-if="info.payStatus==4">(退款中)</span>
           <span v-if="info.payStatus==5">(已退款)</span>
+          <peace-price v-bind:price="!info.payTime?info.orderMoney :info.payMoney"
+                       v-bind:size="16"></peace-price>
         </div>
       </div>
     </div>
