@@ -41,9 +41,9 @@
                     <peace-price class="refund"
                                  v-bind:price="item.totalMoney"></peace-price>
                     <div v-if="item.payStatus===5||item.payStatus===4">
-                      <span>({{item.payStatus===4?'退款中':'已退款'}}</span>
+                      <span style="margin-left:-4px;">({{item.payStatus===4?'退款中':'已退款'}}</span>
                       <peace-price v-bind:price="item.payMoney"></peace-price>
-                      <span>)</span>
+                      <span style="margin-left:-4px;">)</span>
                     </div>
                   </div>
                 </div>
@@ -115,7 +115,7 @@
                       <peace-price v-bind:price="item.orderInfo.totalMoney"
                                    class="refund"></peace-price>
                       <span v-if="getServicePackageInquiryShowMoreText(item.inquiryInfo.inquiryStatus)"
-                            style="color:rgba(51,51,51,0.6);">(减去服务包费用)</span>
+                            style="color:rgba(51,51,51,0.6);margin-left:-4px;">(减去服务包费用)</span>
                     </div>
                   </div>
                 </template>
@@ -133,9 +133,9 @@
                                    v-else></peace-price>
 
                       <div v-if="item.orderInfo.refundTime">
-                        <span>(已退款</span>
+                        <span style="margin-left:-4px;">(已退款</span>
                         <peace-price v-bind:price="item.orderInfo.totalMoney"></peace-price>
-                        <span>)</span>
+                        <span style="margin-left:-4px;">)</span>
                       </div>
                     </div>
                   </div>
@@ -229,9 +229,9 @@
                                  v-else></peace-price>
 
                     <div v-if="item.refundTime">
-                      <span>(已退款</span>
+                      <span style="margin-left:-4px;">(已退款</span>
                       <peace-price v-bind:price="item.orderMoney"></peace-price>
-                      <span>)</span>
+                      <span style="margin-left:-4px;">)</span>
                     </div>
                   </div>
                 </div>
@@ -302,10 +302,10 @@
                 <div class="order-item-drug-info-item end"
                      v-if="item.refundTime">
                   <div class="order-item-drug-info-item-price">
-                    <span>(已退款：</span>
+                    <span style="margin-right:-4px;">(已退款：</span>
                     <peace-price v-bind:price="item.payMoney"
                                  v-bind:size="14"></peace-price>
-                    <span>)</span>
+                    <span style="margin-left:-4px;">)</span>
                   </div>
                 </div>
 

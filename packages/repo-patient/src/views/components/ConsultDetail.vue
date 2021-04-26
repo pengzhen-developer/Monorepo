@@ -283,7 +283,8 @@
                v-else>
             自费支付：
             <div class="money">
-              <span v-if="internalData.orderInfo.refundTime ">（已退款）</span>
+              <span v-if="internalData.orderInfo.refundTime "
+                    style="margin-right:-20px;">（已退款）</span>
               <peace-price v-bind:price="internalData.orderInfo.payMoney"
                            v-bind:transformOrigin="'right'"
                            v-bind:size="16"></peace-price>
@@ -296,10 +297,10 @@
             自费支付：
             <div class="money">
               <span v-if="internalData.orderInfo.refundTime"
-                    style="margin-right:-14px;">（已退款）</span>
+                    style="margin-right:-20px;">（已退款）</span>
               <peace-price v-bind:price="internalData.orderInfo.payMoney"
                            v-bind:transformOrigin="'right'"
-                           v-bind:size="18"></peace-price>
+                           v-bind:size="16"></peace-price>
             </div>
           </div>
         </template>
