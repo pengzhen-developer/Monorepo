@@ -85,7 +85,7 @@
                           min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="账号"
                           prop="SubmitUserName"
-                          min-width="120px"></PeaceTableColumn>
+                          min-width="130px"></PeaceTableColumn>
         <PeaceTableColumn fixed="right"
                           label="操作"
                           width="90px;">

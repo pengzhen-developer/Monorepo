@@ -36,7 +36,7 @@
             <template slot-scope="scope">
               <template v-if="scope.row.SpecificationsStatus === '0'">
                 <el-input maxlength="20"
-                          v-model="scope.row.packaging_specifications"></el-input>
+                          v-model.trim="scope.row.packaging_specifications"></el-input>
               </template>
               <template v-else>
                 <span>{{ scope.row.packaging_specifications }}</span>
