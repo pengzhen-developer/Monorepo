@@ -211,8 +211,3 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.info-content {
-  padding: 15px 18px 32px 18px;
-}
-</style>

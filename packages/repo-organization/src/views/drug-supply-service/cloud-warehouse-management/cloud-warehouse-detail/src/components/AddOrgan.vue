@@ -210,7 +210,4 @@ export default {
 .hasmargin {
   margin-right: 40px;
 }
-.info-content {
-  padding: 5px 15px 22px 15px;
-}
 </style>
