@@ -9,13 +9,12 @@
                    type="default">新增一级科室</el-button>
 
       </div>
-      <el-collapse class="pl-table"
+      <el-collapse class="q-mt-24"
                    v-if="list && list.length"
                    v-model="activeName">
 
         <el-collapse-item :key="depart.id"
                           :name="depart.id"
-                          class="card"
                           :title="depart.netdept_name"
                           v-for="depart in list">
           <div class="title"
@@ -226,14 +225,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pl-table {
-  margin-top: 10px;
-}
 ::v-deep .el-collapse {
   border: 0;
   &-item {
-    margin-bottom: 10px;
+    margin-bottom: 24px;
     border: 1px solid #ebeef5;
+    background: #fff;
+    padding: 16px;
+    border-radius: 2px;
     &__wrap {
       border-bottom: 0;
     }

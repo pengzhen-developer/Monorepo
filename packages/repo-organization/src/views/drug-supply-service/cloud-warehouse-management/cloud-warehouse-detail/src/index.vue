@@ -269,13 +269,13 @@ p {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 .title-left {
   width: 4px;
   height: 16px;
   background: #3099a6;
-  border-radius: 2px 2px 0px 2px;
+  border-radius: 2px;
 }
 .title {
   font-weight: 500;
@@ -293,7 +293,7 @@ p {
 }
 .line {
   width: 100%;
-  margin: 4px 0 20px 0;
+  margin: 16px 0 32px 0;
   height: 1px;
   background: #e9e9e9;
 }
@@ -343,6 +343,10 @@ p {
   color: rgba(0, 0, 0, 0.65);
   word-break: break-all;
   word-wrap: break-word;
+}
+
+::v-deep .el-tabs:not(.element-ui-default) .el-tabs__nav-wrap {
+  padding: 0 32px;
 }
 
 ::v-deep .el-textarea:not(.element-ui-default).el-input--mini .el-textarea__inner {
