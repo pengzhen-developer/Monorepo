@@ -5,18 +5,18 @@
       <div class="box-scroll">
         <div class="scroll-items">
           <div :class="['item position', activeIndex === 'all' ? 'active' : '']"
-               @click="checkTime({index:'all'})">
+               @click="checkTime({date:'all'})">
             <div>不限</div>
             <div>日期</div>
           </div>
           <div :class="['item', activeIndex === 'all' ? 'active' : '']"
-               @click="checkTime({index:'all'})">
+               @click="checkTime({date:'all'})">
             <div>不限</div>
             <div>日期</div>
           </div>
-          <div :class="['item', activeIndex === index ? 'active' : '',item.disabled ? 'disabled' : '']"
+          <div :class="['item', activeIndex === item.date ? 'active' : '',item.disabled ? 'disabled' : '']"
                :key="index"
-               @click="checkTime({index})"
+               @click="checkTime(item)"
                v-for="(item,index) in dateList">
             <div>{{item.week}}</div>
             <div>{{item.date}}</div>
@@ -120,6 +120,9 @@ export default {
 
   created() {
     this.params = peace.util.decode(this.$route.params.json)
+    if (this.params.timeSharing) {
+      this.activeIndex = this.params.timeSharing.substring(5)
+    }
   },
 
   methods: {
@@ -138,7 +141,7 @@ export default {
         .getBookingDoctor({
           hospitalCode: this.params.hospitalCode,
           departmentCode: this.params.departmentCode,
-          timeSharing,
+          timeSharing: timeSharing || this.params.timeSharing,
           p: this.p,
           size: this.size
         })
@@ -154,13 +157,11 @@ export default {
           }
         })
     },
-    checkTime(obj) {
-      const item = this.dateList[obj.index] || {}
-
-      if (item.disabled || obj.index === this.activeIndex) {
+    checkTime(item) {
+      if (item.disabled || item.date === this.activeIndex) {
         return
       }
-      this.activeIndex = obj.index
+      this.activeIndex = item.date || 'all'
       this.getData(item.date ? item.year + '-' + item.date : '', 'start')
     },
     // 去选号源页面
@@ -178,14 +179,17 @@ export default {
       return peace.cache.get(peace.type.USER.INFO) == null ? false : true
     },
     //登录
-    goLogin() {
+    goLogin(source) {
       peace.util.alert('为保障您的数据安全，请登录后使用。')
-      this.$router.push({ path: '/login', query: { referrer: this.$route.fullPath } })
+      const params = peace.util.decode(this.$route.params.json)
+      params.timeSharing = source.timeSharing
+      const json = peace.util.encode(params)
+      this.$router.push({ path: '/login', query: { referrer: `/appoint/doctor/returnVisitDoctorList/${json}` } })
     },
 
     goAppointOrderSubmitPage(item, source) {
       if (!this.hasLogin()) {
-        this.goLogin()
+        this.goLogin(source)
         return
       }
       const temp = {
