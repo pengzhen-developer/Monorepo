@@ -19,8 +19,10 @@
           </div>
         </div>
         <!-- 取消订单时间轴 -->
-        <div class="van-steps van-steps--horizontal">
-          <div class="van-steps__items">
+        <div class="van-steps van-steps--horizontal"
+             v-if="info&&info.cancelList&&info.cancelList.length>0">
+          <div class="van-steps__items"
+               v-if="info.cancelList.length>2">
             <div class="van-hairline van-step van-step--horizontal"
                  style="visibility: hidden;">
             </div>
@@ -28,13 +30,13 @@
                  v-for="(step,index) in info.cancelList"
                  :key="index">
               <div class="van-step__circle-container"
-                   :class="{'left':index==0,'right':index==1}"><i class="van-step__circle"></i></div>
+                   :class="{'start':index==0,'end':index==info.cancelList.length-1}"><i class="van-step__circle"></i></div>
               <div class="van-step__line"
-                   :class="{'left':index==0,'right':index==1}"></div>
+                   :class="{'start':index==0,'end':index==info.cancelList.length-1}"></div>
               <div class="van-step__title"
-                   :class="{'left':index==0,'right':index==1,'van-step__title--error':step.cancelStatus==3}">{{step.cancelStatusText}}</div>
+                   :class="{'start':index==0,'end':index==info.cancelList.length-1,'van-step__title--error':step.cancelStatus==3}">{{step.cancelStatusText}}</div>
               <div class="van-step__time"
-                   :class="{'left':index==0,'right':index==1}">{{step.createdTime}}</div>
+                   :class="{'start':index==0,'end':index==info.cancelList.length-1}">{{step.createdTime}}</div>
             </div>
             <div class="van-hairline van-step van-step--horizontal van-step--finish"
                  v-if="cancelStatus==1">
@@ -45,6 +47,36 @@
             </div>
             <div class="van-hairline van-step van-step--horizontal"
                  style="visibility: hidden;">
+            </div>
+          </div>
+          <div class="steps-list"
+               v-else>
+            <div class="steps-item steps-item__start">
+              <div class="steps-item__circle"></div>
+              <div class="steps-item__line "></div>
+              <div class="steps-item__text ">{{info.cancelList[0].cancelStatusText}}</div>
+              <div class="steps-item__time ">{{info.cancelList[0].createdTime}}</div>
+            </div>
+            <div class="steps-item">
+              <div class="steps-item__circle"></div>
+              <div class="steps-item__line "></div>
+              <div class="steps-item__text "></div>
+              <div class="steps-item__time "></div>
+            </div>
+            <div class="steps-item steps-item__end before"
+                 v-if="cancelStatus==1">
+              <div class="steps-item__circle "></div>
+              <div class="steps-item__line "></div>
+              <div class="steps-item__text ">取消成功</div>
+              <div class="steps-item__time ">2020-04-27 15:58:33</div>
+            </div>
+            <div class="steps-item steps-item__end"
+                 :class="{'error':info.cancelList[info.cancelList.length-1].cancelStatus==3}"
+                 v-else>
+              <div class="steps-item__circle "></div>
+              <div class="steps-item__line "></div>
+              <div class="steps-item__text ">{{info.cancelList[info.cancelList.length-1].cancelStatusText}}</div>
+              <div class="steps-item__time ">{{info.cancelList[info.cancelList.length-1].createdTime}}</div>
             </div>
           </div>
         </div>
@@ -268,15 +300,15 @@ export default {
 
 .van-steps__items {
   .van-step {
-    flex: 7;
+    flex: 1;
     &:last-child,
     &:first-child {
-      flex: 2;
+      flex: 0;
     }
   }
 }
 .van-steps--horizontal {
-  padding: 20px 10px 16px;
+  padding: 20px 16px 10px;
 }
 .van-steps--horizontal .van-steps__items {
   padding-bottom: 0;
@@ -285,23 +317,19 @@ export default {
 .van-step--horizontal .van-step__circle-container {
   top: 0;
   padding: 0;
-  &.left {
-    left: 10%;
-  }
-  &.right {
-    left: 60%;
-  }
+  transform: translate(-50%, -50%);
+  left: 50%;
 }
 .van-step--finish .van-step__circle.van-step__circle--default {
   background-color: rgba(51, 51, 51, 0.1);
 }
 .van-step--horizontal .van-step__line {
   top: 0;
-  &.left {
-    left: 10%;
+  &.start {
+    left: 50%;
   }
-  &.right {
-    left: 10%;
+  &.end {
+    left: 0%;
     width: 50%;
   }
 }
@@ -312,18 +340,14 @@ export default {
 .van-step--horizontal .van-step__title {
   display: block;
   margin-top: 8px;
+  margin-left: 0;
   text-align: center;
+  transform: translateX(0%);
   &.van-step__title--error {
     color: #ff3a30;
   }
   &.before {
     color: rgba(51, 51, 51, 0.6);
-  }
-  &.left {
-    transform: translateX(-41%);
-  }
-  &.right {
-    transform: translateX(12%);
   }
 }
 
@@ -334,11 +358,89 @@ export default {
   line-height: 16px;
   margin-top: 2px;
   text-align: center;
-  &.left {
-    transform: translateX(-39%);
-  }
-  &.right {
-    transform: translateX(8%);
+  white-space: nowrap;
+}
+
+.steps-list {
+  display: flex;
+  .steps-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: nowrap;
+    .steps-item__circle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: transparent;
+      border-radius: 4px;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+    }
+    .steps-item__line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 2;
+      height: 1px;
+      background: #00c6ae;
+    }
+    .steps-item__text {
+      font-size: 14px;
+      color: #333333;
+      line-height: 20px;
+      margin-top: 12px;
+      margin-bottom: 2px;
+    }
+    .steps-item__time {
+      font-size: 12px;
+      color: rgba(51, 51, 51, 0.6);
+      line-height: 16px;
+      white-space: nowrap;
+    }
+    flex: 1;
+    &:last-child {
+      flex: none;
+      min-width: 60px;
+      &.before {
+        .steps-item__circle {
+          background: #eaeaea;
+        }
+        .steps-item__text {
+          color: rgba(51, 51, 51, 0.6);
+        }
+        .steps-item__time {
+          color: transparent;
+        }
+      }
+      &.error {
+        .steps-item__text {
+          color: #ff3a30;
+        }
+      }
+      .steps-item__circle {
+        background: #00c6ae;
+      }
+      .steps-item__line {
+        right: 50%;
+        width: 50%;
+      }
+    }
+    &:first-child {
+      flex: none;
+      min-width: 60px;
+      .steps-item__circle {
+        background: #00c6ae;
+      }
+      .steps-item__line {
+        left: 50%;
+        width: 50%;
+      }
+    }
   }
 }
 </style>

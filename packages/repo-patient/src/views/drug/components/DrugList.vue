@@ -3,7 +3,7 @@
     <template v-for="(drug,index) in info.drugJson">
       <div class="drug-item"
            v-show="showMoreInfo(index)"
-           v-bind:key="index">
+           v-bind:key="drug.DrugCode">
         <van-image :src="drug.DrugImage"
                    class="error--image drug-logo">
           <template v-slot:error>

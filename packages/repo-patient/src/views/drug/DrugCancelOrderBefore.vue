@@ -48,16 +48,15 @@
       </div>
     </div>
     <div class="footer">
-      <peace-button class="pay-btn btn-pay"
-                    v-bind:disabled="!hasSelected"
-                    @click="submit"
-                    round
-                    size="large"
-                    type="primary"
-                    throttle
-                    v-bind:throttleTime="3000">
+      <van-button class="pay-btn btn-pay"
+                  v-bind:disabled="!hasSelected"
+                  v-bind:loading="hasSend"
+                  @click="submit"
+                  round
+                  size="large"
+                  type="primary">
         提交
-      </peace-button>
+      </van-button>
     </div>
     <!-- 退款理由 -->
     <van-popup v-model="refundDialog.visible"
@@ -100,7 +99,8 @@ export default {
       },
       cancelReason: '',
       limitElement: null,
-      info: {}
+      info: {},
+      hasSend: false
     }
   },
   computed: {
@@ -162,6 +162,10 @@ export default {
       this.refundDialog.visible = false
     },
     submit() {
+      if (this.hasSend) {
+        return
+      }
+      this.hasSend = true
       if (!this.refundDialog.selectMsg) {
         return peace.util.alert('请输入或填写取消原因')
       }
@@ -180,7 +184,11 @@ export default {
         .then(() => {})
         .finally(() => {
           const json = peace.util.encode({ orderNo: this.info.orderNo })
-          this.$router.replace(`/drug/drugCancelOrder/${json}`)
+          this.$router.replace(`/drug/drugCancelOrder/${json}`).then(() => {
+            setTimeout(() => {
+              this.hasSend = false
+            }, 500)
+          })
         })
     },
     save() {
