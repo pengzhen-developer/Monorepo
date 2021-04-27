@@ -170,9 +170,8 @@ export function onDisConnect(disConnectObject) {
       //销毁IM实例
       peace.service.IM.destroyNIMS()
 
-      // 登录被 T 出，跳转错误页
-      $peace.$router.replace(peace.config.system.loginPage)
-      // window.location.reload()
+      // 登录被 T 出，跳转登录页
+      window.location.replace(peace.config.system.loginPage)
       break
     case 'logout':
       //删除家人，主动断联IM
