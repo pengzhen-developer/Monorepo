@@ -2,7 +2,8 @@
   <div class="shadow"
        v-show="show"
        @click="changeFlag">
-    <div class="dialog">
+    <div class="dialog"
+         @click.stop="">
       <img :src="require('@src/assets/images/ic_cha.png')"
            @click="changeFlag">
       <div class="dialog-title">{{internalData.title}}</div>

@@ -174,7 +174,20 @@ export default {
       })
       this.$router.push(`/appoint/doctor/appointDoctorSelect/${json}`)
     },
+    hasLogin() {
+      return peace.cache.get(peace.type.USER.INFO) == null ? false : true
+    },
+    //登录
+    goLogin() {
+      peace.util.alert('为保障您的数据安全，请登录后使用。')
+      this.$router.push({ path: '/login', query: { referrer: this.$route.fullPath } })
+    },
+
     goAppointOrderSubmitPage(item, source) {
+      if (!this.hasLogin()) {
+        this.goLogin()
+        return
+      }
       const temp = {
         doctorId: item.doctorCode,
         consultingType: 'returnVisit',
