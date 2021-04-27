@@ -171,7 +171,7 @@ export function onDisConnect(disConnectObject) {
       peace.service.IM.destroyNIMS()
 
       // 登录被 T 出，跳转登录页
-      window.location.replace(peace.config.system.loginPage)
+      window.location.replace(window.location.origin + process.env.VUE_APP_RELEASE_FLODER_PATH + peace.config.system.loginPage.substring(1))
       break
     case 'logout':
       //删除家人，主动断联IM
