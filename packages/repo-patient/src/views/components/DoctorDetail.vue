@@ -1251,7 +1251,7 @@ export default {
               font-size: 16px;
               line-height: 23px;
               &.ellipsis {
-                width: 12em;
+                flex-basis: 13em;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
@@ -1355,7 +1355,7 @@ export default {
           font-size: 16px;
           font-weight: bold;
           &.ellipsis {
-            width: 12em;
+            flex-basis: 13em;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -1377,6 +1377,7 @@ export default {
         .service-consult-content-unit {
           font-size: 12px;
           color: #999;
+          white-space: nowrap;
         }
 
         .service-consult-content-description {
