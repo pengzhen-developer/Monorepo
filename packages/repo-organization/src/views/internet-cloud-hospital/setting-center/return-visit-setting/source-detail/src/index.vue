@@ -202,10 +202,8 @@ export default {
     font-weight: 300;
     line-height: 42px;
   }
-  .time,
-  .status {
+  .time {
     margin-top: 6px;
-    padding: 0 6px;
     font-size: 14px;
     line-height: 20px;
   }
@@ -213,6 +211,10 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 6px;
+    padding: 0 6px;
+    font-size: 14px;
+    line-height: 20px;
   }
   &.is-disabled {
     background-color: #f5f5f5;
