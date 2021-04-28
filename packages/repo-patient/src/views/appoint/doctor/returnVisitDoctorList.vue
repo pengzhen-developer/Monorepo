@@ -162,7 +162,7 @@ export default {
         return
       }
       this.activeIndex = item.date || 'all'
-      this.getData(item.date ? item.year + '-' + item.date : '', 'start')
+      this.getData(item.year ? item.year + '-' + item.date : '', 'start')
     },
     // 去选号源页面
     gotoAppointPage(item) {
