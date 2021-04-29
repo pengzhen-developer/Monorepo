@@ -10,7 +10,7 @@
       <DrugAuditModel v-on:success="onSuccess"
                       v-bind:view="`audit`"
                       v-bind:title="`审核新增药品包装规格`"
-                      v-bind:width="`1200px`"
+                      v-bind:width="`1300px`"
                       v-bind:DrugStandardCode="drugAuditDialog.DrugStandardCode"
                       v-bind:visible.sync="drugAuditDialog.visible"></DrugAuditModel>
     </template>
@@ -19,7 +19,7 @@
     <template v-if="drugDetailDialog.visible">
       <DrugAuditModel v-bind:view="`detail`"
                       v-bind:title="`审核新增药品包装规格详情`"
-                      v-bind:width="`1200px`"
+                      v-bind:width="`1300px`"
                       v-bind:DrugStandardCode="drugDetailDialog.DrugStandardCode"
                       v-bind:visible.sync="drugDetailDialog.visible"></DrugAuditModel>
     </template>

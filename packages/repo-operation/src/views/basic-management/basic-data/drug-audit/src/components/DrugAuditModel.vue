@@ -6,7 +6,7 @@
         <div class="title q-mr-sm"></div>
 
         <span class="text-weight-medium text-grey-333"
-              style="font-size: 16px;">机构新增待审核药品</span>
+              style="font-size: 16px;">待审核平台药品</span>
       </div>
 
       <div class="q-mb-lg">
@@ -17,13 +17,13 @@
                             min-width="160px"></PeaceTableColumn>
           <PeaceTableColumn label="药品名称"
                             prop="ProductName"
-                            min-width="180px"></PeaceTableColumn>
+                            min-width="140px"></PeaceTableColumn>
           <PeaceTableColumn label="批准文号"
                             prop="ApprovalNo"
-                            min-width="180px"></PeaceTableColumn>
+                            min-width="170px"></PeaceTableColumn>
           <PeaceTableColumn label="规格"
                             prop="DrugSpecifications"
-                            min-width="120px"></PeaceTableColumn>
+                            min-width="100px"></PeaceTableColumn>
           <PeaceTableColumn label="剂型"
                             prop="DrugDosageForm"
                             min-width="120px"></PeaceTableColumn>
@@ -43,6 +43,30 @@
               </template>
             </template>
           </PeaceTableColumn>
+          <PeaceTableColumn label="包装数量"
+                            prop="Package_Num"
+                            min-width="120px">
+            <template slot-scope="scope">
+              <template v-if="scope.row.SpecificationsStatus === '0'">
+                <el-input v-model.trim.number="scope.row.Package_Num"></el-input>
+              </template>
+              <template v-else>
+                <span>{{ scope.row.Package_Num }}</span>
+              </template>
+            </template>
+          </PeaceTableColumn>
+          <PeaceTableColumn label="最小单位"
+                            prop="Min_Unit"
+                            min-width="120px">
+            <template slot-scope="scope">
+              <template v-if="scope.row.SpecificationsStatus === '0'">
+                <el-input v-model="scope.row.Min_Unit"></el-input>
+              </template>
+              <template v-else>
+                <span>{{ scope.row.Min_Unit }}</span>
+              </template>
+            </template>
+          </PeaceTableColumn>
         </PeaceTable>
       </div>
 
@@ -50,7 +74,7 @@
         <div class="title q-mr-sm"></div>
 
         <span class="text-weight-medium text-grey-333"
-              style="font-size: 16px;">平台药品信息（本位码相同）</span>
+              style="font-size: 16px;">平台已有药品包装规格信息（本位码相同）</span>
       </div>
 
       <div class="q-mb-lg">
@@ -61,13 +85,13 @@
                             min-width="160px"></PeaceTableColumn>
           <PeaceTableColumn label="药品名称"
                             prop="ProductName"
-                            min-width="180px"></PeaceTableColumn>
+                            min-width="140px"></PeaceTableColumn>
           <PeaceTableColumn label="批准文号"
                             prop="ApprovalNo"
-                            min-width="180px"></PeaceTableColumn>
+                            min-width="170px"></PeaceTableColumn>
           <PeaceTableColumn label="规格"
                             prop="DrugSpecifications"
-                            min-width="120px"></PeaceTableColumn>
+                            min-width="100px"></PeaceTableColumn>
           <PeaceTableColumn label="剂型"
                             prop="DrugDosageForm"
                             min-width="120px"></PeaceTableColumn>
@@ -76,6 +100,12 @@
                             min-width="180px"></PeaceTableColumn>
           <PeaceTableColumn label="包装规格"
                             prop="packaging_specifications"
+                            min-width="120px"></PeaceTableColumn>
+          <PeaceTableColumn label="包装数量"
+                            prop="Package_Num"
+                            min-width="120px"></PeaceTableColumn>
+          <PeaceTableColumn label="最小单位"
+                            prop="Min_Unit"
                             min-width="120px"></PeaceTableColumn>
         </PeaceTable>
       </div>
@@ -91,7 +121,7 @@
 
         <div class="q-mb-sm">
           <el-radio-group v-model="model.SpecificationsStatus">
-            <el-radio label="20">通过</el-radio>
+            <el-radio label="20">审核通过</el-radio>
             <el-radio label="10">驳回</el-radio>
           </el-radio-group>
         </div>
@@ -100,8 +130,8 @@
           <el-alert type="warning"
                     style="border: 0; padding: 6px 8px;"
                     v-bind:closable="false">
-            <span>通过后，机构将可正常与该药品建立匹配关系</span>
-            <span v-if="model.SpecificationsStatus === '2'">驳回后，机构药品与该药品的配码关系将自动解除</span>
+            <span>*审核通过，与该药品的配码关系可正常审核通过</span>
+            <span v-if="model.SpecificationsStatus === '2'">*审核驳回后，机构药品与该药品的配码关系将自动解除</span>
           </el-alert>
         </div>
 
@@ -110,7 +140,7 @@
             <el-alert type="warning"
                       style="border: 0; padding: 6px 8px;"
                       v-bind:closable="false">
-              <span>驳回后，机构药品与该药品的配码关系将自动解除</span>
+              <span>*审核驳回后，机构药品与该药品的配码关系将自动解除</span>
             </el-alert>
           </div>
 
@@ -180,7 +210,6 @@ export default {
       list: {},
       list1: [],
       list2: [],
-
       model: {
         SpecificationsStatus: '20'
       },
@@ -238,6 +267,8 @@ export default {
       params.packaging_specifications = this.list.packaging_specifications
       params.DrugStandardCode = this.list.DrugStandardCode
       params.SpecificationsStatus = params.SpecificationsStatus === '20'
+      params.PackageNum = this.list.Package_Num
+      params.MinUnit = this.list.Min_Unit
 
       Service.SaveJntDrugsInfo(params).then(() => {
         Peace.util.success('提交成功')
@@ -251,7 +282,15 @@ export default {
       if (Peace.validate.isEmpty(this.list.packaging_specifications)) {
         return Peace.util.warning('请输入包装规格')
       }
-
+      if (Peace.validate.isEmpty(this.list.Package_Num)) {
+        return Peace.util.warning('请输入包装数量')
+      }
+      if (!Peace.validate.isPInterger(this.list.Package_Num)) {
+        return Peace.util.warning('包装数量的类型为正数字')
+      }
+      if (Peace.validate.isEmpty(this.list.Min_Unit)) {
+        return Peace.util.warning('请输入最小单位')
+      }
       if (this.$refs.form) {
         this.$refs.form.validate().then(() => {
           this.save()
