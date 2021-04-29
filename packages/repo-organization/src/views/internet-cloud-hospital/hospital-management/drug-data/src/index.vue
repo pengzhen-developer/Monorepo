@@ -362,7 +362,7 @@ export default {
         window.open(url, '_blank')
         this.$notify({
           title: '药品批量导入模板获取成功！',
-          message: `若无法正常下载,请复制链接至其他浏览器重试${url}`,
+          message: <div class="alert-text">若无法正常下载,请复制链接至其他浏览器重试{url}</div>,
           duration: 10000
         })
       })
@@ -399,5 +399,8 @@ export default {
   color: #333;
   line-height: 32px;
   text-align: left;
+}
+.alert-text {
+  word-break: break-all;
 }
 </style>

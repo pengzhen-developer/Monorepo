@@ -1,19 +1,25 @@
 <template>
   <div class="layout-route">
     <div class="flex">
-      <el-tabs class=" full-width"
-               v-model="active"
+      <el-tabs class="full-width"
                type="card"
+               v-model="active"
                v-on:tab-click="handleClick">
-        <el-tab-pane v-for="(menu,index) in menuList"
-                     v-bind:key="index"
-                     v-bind:name="index.toString()"
+        <el-tab-pane v-for="menu in menuList"
+                     v-bind:key="menu.id"
+                     v-bind:name="menu.id"
                      v-bind:label="menu.title">
         </el-tab-pane>
       </el-tabs>
-      <iframeContainer class="bg-white q-pa-md"
+      <iframeContainer v-if="type === 'iframe'"
+                       class="bg-white q-pa-md"
                        ref="iframe"
                        v-bind:src="src"></iframeContainer>
+      <div v-if="type === 'component'"
+           class="full-width bg-white q-pa-md">
+        <component v-bind:is="src"></component>
+      </div>
+
     </div>
   </div>
 </template>
@@ -21,37 +27,33 @@
 <script>
 import CONSTANT from './constant'
 import iframeContainer from '@src/views/iframe'
+import DrugPackagingInformation from './components/drug-packaging-information'
 
 import { dom } from 'quasar'
 
 export default {
   name: 'RuleDictionary',
   components: {
-    iframeContainer
+    iframeContainer,
+    DrugPackagingInformation
   },
 
   data() {
     return {
       menuList: CONSTANT.menuList,
-      src: '',
       active: '',
-      tabPosition: '',
-      model: {
-        words: '',
-        status: '',
-        checkStatus: ''
-      }
-    }
-  },
-
-  watch: {
-    active() {
-      this.src = process.env.VUE_APP_SITE_PRESCRIPTION + this.menuList[this.active].url
+      type: '',
+      src: ''
     }
   },
   created() {
-    this.active = 0
-    this.src = process.env.VUE_APP_SITE_PRESCRIPTION + this.menuList[this.active].url
+    this.active = '0'
+    this.type = this.menuList[Number(this.active)].type
+    if (this.type === 'component') {
+      this.src = this.menuList[Number(this.active)].url
+    } else {
+      this.src = process.env.VUE_APP_SITE_PRESCRIPTION + this.menuList[Number(this.active)].url
+    }
   },
   mounted() {
     this.$nextTick(function() {
@@ -63,12 +65,13 @@ export default {
       this.$refs.iframe.$el.style.height = `${document.body.clientHeight - offset?.top - 20}px`
     })
   },
-
   methods: {
-    handleClick(menu) {
-      if (this.active != menu.index) {
-        this.loading = true
-        this.active = menu.index
+    handleClick() {
+      this.type = this.menuList[Number(this.active)].type
+      if (this.type === 'component') {
+        this.src = this.menuList[Number(this.active)].url
+      } else {
+        this.src = process.env.VUE_APP_SITE_PRESCRIPTION + this.menuList[Number(this.active)].url
       }
     }
   }
