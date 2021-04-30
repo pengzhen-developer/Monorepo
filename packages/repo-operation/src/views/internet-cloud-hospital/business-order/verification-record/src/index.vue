@@ -47,7 +47,8 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn prop="businessType"
-                          label="关联业务"></PeaceTableColumn>
+                          label="关联业务"
+                          min-width="120px"></PeaceTableColumn>
 
         <PeaceTableColumn prop="businessNo"
                           label="关联交易单号"
@@ -57,7 +58,8 @@
                           min-width="160px">
         </PeaceTableColumn>
         <PeaceTableColumn label="交易医院"
-                          prop="hospitalName">
+                          prop="hospitalName"
+                          min-width="180px">
         </PeaceTableColumn>
         <PeaceTableColumn label="核销权益"
                           min-width="100px"
@@ -67,7 +69,8 @@
                           prop="createdTime"
                           min-width="180px">
         </PeaceTableColumn>
-        <PeaceTableColumn label="核销操作人">
+        <PeaceTableColumn label="核销操作人"
+                          min-width="180px">
           <template slot-scope="scope">
             {{scope.row.operater||"——"}}
           </template>?

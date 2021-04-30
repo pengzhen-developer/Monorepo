@@ -59,7 +59,7 @@
         <PeaceTableColumn min-width="100px"
                           label="联系人"
                           prop="linkman"></PeaceTableColumn>
-        <PeaceTableColumn width="120px"
+        <PeaceTableColumn width="140px"
                           label="手机号码"
                           prop="tel"></PeaceTableColumn>
         <PeaceTableColumn min-width="110px"

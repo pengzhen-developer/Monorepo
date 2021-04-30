@@ -76,6 +76,7 @@
                           min-width="100px"
                           prop="orderTypeTxt"></PeaceTableColumn>
         <PeaceTableColumn label="订单状态"
+                          min-width="100px"
                           prop="orderStatusTxt"></PeaceTableColumn>
         <PeaceTableColumn label="业务主体"
                           prop="servicePrincipal"
@@ -97,7 +98,7 @@
                           width="100px"></PeaceTableColumn>
         <PeaceTableColumn label="分账手续费"
                           prop="serviceCharge"
-                          width="100px"></PeaceTableColumn>
+                          min-width="120px"></PeaceTableColumn>
         <PeaceTableColumn label="退款金额"
                           prop="refundMoney"
                           width="100px"></PeaceTableColumn>

@@ -58,7 +58,7 @@
                           min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="系统名称"
                           prop="sys_name"
-                          min-width="80px">
+                          min-width="180px">
           <template slot-scope="scope">
             {{ scope.row.sys_name || '——' }}
           </template>

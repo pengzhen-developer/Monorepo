@@ -48,41 +48,49 @@
                             prop="GoodName"
                             min-width="120px"></peace-table-column>
         <peace-table-column label="机构商品编码"
-                            prop="GoodCode"></peace-table-column>
+                            prop="GoodCode"
+                            min-width="160px"></peace-table-column>
         <peace-table-column label="规格"
-                            prop="DrugSpecifications">
+                            prop="DrugSpecifications"
+                            min-width="120px">
         </peace-table-column>
         <peace-table-column label="厂家"
                             prop="EnterpriseName"
                             min-width="120px"></peace-table-column>
         <peace-table-column label="包装单位"
-                            prop="PackUnit"></peace-table-column>
+                            prop="PackUnit"
+                            min-width="120px"></peace-table-column>
 
-        <peace-table-column label="价格">
+        <peace-table-column label="价格"
+                            min-width="120px">
           <template slot-scope="scope">
             {{ scope.row.Price != null ?  scope.row.Price : '——' }}
           </template>
         </peace-table-column>
 
-        <peace-table-column label="批发价">
+        <peace-table-column label="批发价"
+                            min-width="120px">
           <template slot-scope="scope">
             {{ scope.row.WholesalePrice != null ?  scope.row.WholesalePrice : '——' }}
           </template>
         </peace-table-column>
 
-        <peace-table-column label="中标价">
+        <peace-table-column label="中标价"
+                            min-width="120px">
           <template slot-scope="scope">
             {{ scope.row.WiningPrice != null ?  scope.row.WiningPrice : '——' }}
           </template>
         </peace-table-column>
 
-        <peace-table-column label="零售价">
+        <peace-table-column label="零售价"
+                            min-width="120px">
           <template slot-scope="scope">
             {{ scope.row.RetailPrice != null ?  scope.row.RetailPrice : '——' }}
           </template>
         </peace-table-column>
 
-        <peace-table-column label="成本价">
+        <peace-table-column label="成本价"
+                            min-width="120px">
           <template slot-scope="scope">
             {{ scope.row.CostPrice != null ?  scope.row.CostPrice : '——' }}
           </template>

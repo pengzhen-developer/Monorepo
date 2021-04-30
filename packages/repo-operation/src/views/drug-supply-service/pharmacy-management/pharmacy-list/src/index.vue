@@ -115,10 +115,10 @@
             </PeaceTableColumn>
             <PeaceTableColumn label="所属机构"
                               prop="CustName"
-                              min-width="140px"></PeaceTableColumn>
+                              min-width="180px"></PeaceTableColumn>
             <PeaceTableColumn label="对接系统"
                               prop="sys_name"
-                              min-width="100px"></PeaceTableColumn>
+                              min-width="180px"></PeaceTableColumn>
             <PeaceTableColumn label="系统属性"
                               prop="sys_attribute_name"
                               min-width="100px"></PeaceTableColumn>

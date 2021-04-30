@@ -84,7 +84,7 @@
                             min-width="100"
                             prop="doctor_name"></peace-table-column>
         <peace-table-column label="机构名称"
-                            min-width="120"
+                            min-width="180"
                             prop="netHospital_name"></peace-table-column>
         <peace-table-column label="咨询类型"
                             min-width="120">

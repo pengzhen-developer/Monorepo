@@ -76,17 +76,17 @@ sequence <template>
                           min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="药房类型"
                           prop="CustomerType"
-                          min-width="80px">
+                          min-width="120px">
           <template slot-scope="scope">
             {{ scope.row.CustomerType == 0 ? '院内药房' : '院外药房' }}
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="所属机构"
                           prop="CustName"
-                          min-width="80px"></PeaceTableColumn>
+                          min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="机构类型"
                           prop="CustomerType"
-                          min-width="80px">
+                          min-width="120px">
           <template slot-scope="scope">
             {{ scope.row.CustomerType == 0 ? '医疗机构' : '店配机构' }}
           </template>

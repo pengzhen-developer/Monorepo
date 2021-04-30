@@ -75,43 +75,51 @@
                    pagination>
 
         <peace-table-column prop="hosName"
-                            label="机构名称">
+                            label="机构名称"
+                            min-width="180">
         </peace-table-column>
         <peace-table-column prop="prescriptionNo"
-                            label="处方编号">
+                            label="处方编号"
+                            min-width="180">
         </peace-table-column>
 
         <peace-table-column prop="doctorName"
-                            label="开具医生">
+                            label="开具医生"
+                            min-width="120">
         </peace-table-column>
 
         <peace-table-column prop="netDeptChild"
-                            label="科室">
+                            label="科室"
+                            min-width="120">
         </peace-table-column>
 
         <peace-table-column prop="patientName"
-                            label="就诊人">
+                            label="就诊人"
+                            min-width="120">
         </peace-table-column>
 
         <peace-table-column prop="prescriptionSceneText"
-                            label="开方场景">
+                            label="开方场景"
+                            min-width="120">
         </peace-table-column>
 
         <peace-table-column prop="prescripStatus"
-                            label="处方状态">
+                            label="处方状态"
+                            min-width="120">
         </peace-table-column>
 
         <peace-table-column prop="orderStatus"
-                            min-width="110"
+                            min-width="160"
                             label="处方购药状态">
         </peace-table-column>
 
         <peace-table-column prop="createdTime"
                             label="开具时间"
-                            width="180">
+                            min-width="180">
         </peace-table-column>
         <peace-table-column fixed="right"
-                            label="操作">
+                            label="操作"
+                            min-width="120">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="viewRpInfo(scope.row)">处方详情</el-button>

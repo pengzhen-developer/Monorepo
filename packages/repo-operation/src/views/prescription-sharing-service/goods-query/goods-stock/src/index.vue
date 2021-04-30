@@ -48,20 +48,24 @@
                             prop="GoodName"
                             min-width="120px"></peace-table-column>
         <peace-table-column label="机构商品编码"
-                            prop="GoodCode"></peace-table-column>
+                            prop="GoodCode"
+                            min-width="160px"></peace-table-column>
         <peace-table-column label="规格"
-                            prop="DrugSpecifications">
+                            prop="DrugSpecifications"
+                            min-width="120px">
         </peace-table-column>
         <peace-table-column label="厂家"
                             prop="EnterpriseName"
                             min-width="120px"></peace-table-column>
         <peace-table-column label="包装单位"
-                            prop="PackUnit"></peace-table-column>
+                            prop="PackUnit"
+                            min-width="120px"></peace-table-column>
         <peace-table-column label="库存数量"
-                            prop="Stock"></peace-table-column>
+                            prop="Stock"
+                            min-width="120px"></peace-table-column>
         <peace-table-column label="更新时间"
                             prop="Get3PartStockInfoTime"
-                            width="180px"></peace-table-column>
+                            min-width="180px"></peace-table-column>
       </peace-table>
     </div>
 

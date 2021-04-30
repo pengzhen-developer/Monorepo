@@ -126,7 +126,7 @@
                           prop="source">
         </PeaceTableColumn>
         <PeaceTableColumn label="机构名称"
-                          min-width="120"
+                          min-width="180"
                           prop="hospitalName">
         </PeaceTableColumn>
         <PeaceTableColumn label="就诊人"

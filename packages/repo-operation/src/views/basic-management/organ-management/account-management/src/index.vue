@@ -56,13 +56,13 @@
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn min-width="100px"
+        <PeaceTableColumn min-width="140px"
                           label="联系人"
                           prop="linkman"></PeaceTableColumn>
-        <PeaceTableColumn min-width="120px"
+        <PeaceTableColumn min-width="140px"
                           label="手机号码"
                           prop="tel"></PeaceTableColumn>
-        <PeaceTableColumn min-width="180px"
+        <PeaceTableColumn min-width="200px"
                           label="邮箱"
                           prop="email"></PeaceTableColumn>
         <PeaceTableColumn min-width="180px"

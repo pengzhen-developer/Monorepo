@@ -120,7 +120,7 @@
 
         <PeaceTableColumn label="提交时间"
                           prop="createdTime"
-                          min-width="160px"></PeaceTableColumn>
+                          min-width="180px"></PeaceTableColumn>
 
         <PeaceTableColumn label="操作"
                           fixed="right"

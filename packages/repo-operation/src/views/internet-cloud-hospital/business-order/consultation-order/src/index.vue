@@ -45,13 +45,13 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="订单渠道"
-                          min-width="100">
+                          min-width="140">
           <template slot-scope="scope">
             <span>{{ scope.row.orderChannel }}</span>
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="就诊人"
-                          min-width="70"
+                          min-width="120"
                           prop="familyName"></PeaceTableColumn>
         <PeaceTableColumn label="邀请方"
                           min-width="150">
@@ -79,7 +79,7 @@
                           min-width="180"
                           prop="consultTime"></PeaceTableColumn>
         <PeaceTableColumn label="订单状态"
-                          min-width="100">
+                          min-width="120">
           <template slot-scope="scope">
             <span>{{ scope.row.consultStatus | getEnumLable(source.consultationStatus) }}</span>
           </template>

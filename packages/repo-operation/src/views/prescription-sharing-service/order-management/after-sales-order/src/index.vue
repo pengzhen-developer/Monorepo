@@ -81,7 +81,7 @@
                           min-width="120px"></PeaceTableColumn>
         <PeaceTableColumn prop="Source"
                           label="订单来源"
-                          min-width="120px"></PeaceTableColumn>
+                          min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn prop="DrugStoreName"
                           label="药房"
                           min-width="160px"></PeaceTableColumn>

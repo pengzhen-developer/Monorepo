@@ -49,13 +49,13 @@
                           min-width="100"
                           prop="doctorName"></PeaceTableColumn>
         <PeaceTableColumn label="医院"
-                          min-width="120"
+                          min-width="180"
                           prop="netHospitalName"></PeaceTableColumn>
         <PeaceTableColumn label="科室"
-                          min-width="80"
+                          min-width="140"
                           prop="realDeptName"></PeaceTableColumn>
         <PeaceTableColumn label="联系电话"
-                          min-width="120"
+                          min-width="140"
                           prop="tel"></PeaceTableColumn>
         <PeaceTableColumn label="预约就诊时间"
                           min-width="200"
