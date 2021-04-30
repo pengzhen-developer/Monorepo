@@ -150,7 +150,8 @@
                 <van-button round
                             @click="gotoAppointPage(item.timeSharing)"
                             size="small"
-                            type="primary">预约</van-button>
+                            :class="{'full':item.state==='full'}"
+                            :type="item.state!=='full'?'primary':''">{{item.state!=='full'?'预约':'约满'}}</van-button>
               </div>
             </div>
           </div>
@@ -910,6 +911,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.van-button {
+  &.full {
+    background: rgba(51, 51, 51, 0.05);
+    color: rgba(51, 51, 51, 0.4);
+    border: none;
+  }
+}
 ::v-deep.van-button--small {
   height: 26px;
   line-height: normal;
@@ -1280,8 +1288,8 @@ export default {
           width: 142px;
           // width: calc(50% - 5px);
           height: 103px;
-          background: rgba(249, 249, 249, 1);
-          border-radius: 7px;
+          background: rgba(51, 51, 51, 0.05);
+          border-radius: 8px;
           margin-right: 10px;
           margin-bottom: 0;
           padding: 10px 10px 16px;
