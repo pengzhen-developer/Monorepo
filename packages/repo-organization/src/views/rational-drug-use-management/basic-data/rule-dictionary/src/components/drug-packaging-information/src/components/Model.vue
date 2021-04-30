@@ -91,8 +91,9 @@ export default {
   },
   data() {
     let validateIsPNumerical = (rule, value, callback) => {
+      const reg = /^(0|[1-9][0-9]{0,})(\.\d{1,})?$/
       console.log(rule)
-      if ((value && !Peace.validate.isPNumerical(value)) || value === 0 || value === '0') {
+      if ((value && !reg.test(value)) || value === 0 || value === '0') {
         callback(new Error('请输入大于零的数字'))
       } else {
         callback()
