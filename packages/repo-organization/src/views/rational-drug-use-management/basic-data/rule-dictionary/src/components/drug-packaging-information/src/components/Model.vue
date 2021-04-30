@@ -92,15 +92,15 @@ export default {
   data() {
     let validateIsPNumerical = (rule, value, callback) => {
       console.log(rule)
-      if ((value && !Peace.validate.isPNumerical(value)) || value === 0) {
-        callback(new Error('请输入数字'))
+      if ((value && !Peace.validate.isPNumerical(value)) || value === 0 || value === '0') {
+        callback(new Error('请输入大于零的数字'))
       } else {
         callback()
       }
     }
     let validateIsPInterger = (rule, value, callback) => {
       console.log(rule)
-      if ((value && !Peace.validate.isPInterger(value)) || value === 0) {
+      if ((value && !Peace.validate.isPInterger(value)) || value === 0 || value === '0') {
         callback(new Error('请输入正整数'))
       } else {
         callback()

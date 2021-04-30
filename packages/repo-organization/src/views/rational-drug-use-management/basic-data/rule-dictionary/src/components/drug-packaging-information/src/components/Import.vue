@@ -161,7 +161,8 @@ export default {
     },
     //完成
     upSuccess() {
-      this.$emit('success')
+      this.$emit('close')
+      this.$emit('refresh')
     },
     //下载报告
     downloadPaper() {
