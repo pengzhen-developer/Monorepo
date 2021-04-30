@@ -8,7 +8,6 @@
 
       <PeaceTable ref="table"
                   size="mini"
-                  v-bind:page-size="5"
                   pagination>
         <PeaceTableColumn label="序号"
                           type="index"
