@@ -13,6 +13,8 @@ export const platformAPIMap = {
   [platformMap['Wechat']]: process.env.VUE_APP_BASE_API_WECHAT
 }
 
+export const ignorePlatFormRouteNameList = ['transferPage']
+
 export default {
   /**
    * 输入平台 Map
@@ -25,6 +27,12 @@ export default {
    *
    */
   platformAPIMap,
+
+  /**
+   * 忽略平台参数的Route Name 集合
+   *
+   */
+  ignorePlatFormRouteNameList,
 
   /**
    * hybrid

@@ -147,6 +147,13 @@ export default {
         menuRouteName: 'aboutUs',
         menuRoute: 'agreements/aboutUs/:platform',
         menuPath: 'views/hybrid/agreements/aboutUs'
+      },
+      // 关于我们
+      {
+        title: '宣传页',
+        menuRouteName: 'transferPage',
+        menuRoute: 'transferPage',
+        menuPath: 'views/hybrid/transferPage'
       }
     ]
   }

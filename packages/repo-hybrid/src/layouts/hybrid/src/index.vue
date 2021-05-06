@@ -26,9 +26,15 @@ export default {
   },
 
   created() {
-    // 验证平台来源
-    if (!Object.prototype.hasOwnProperty.call(Util.hybrid.platformMap, this.$route.params.platform)) {
-      this.errorMessage = '参数验证失败'
+    // 忽略不需要验证平台的验证
+
+    const routeName = this.$router.name ?? this.$router.history.current.name
+    console.log(routeName)
+    if (!Util.hybrid.ignorePlatFormRouteNameList.includes(routeName)) {
+      // 验证平台来源
+      if (!Object.prototype.hasOwnProperty.call(Util.hybrid.platformMap, this.$route.params.platform)) {
+        this.errorMessage = '参数验证失败'
+      }
     }
   }
 }
