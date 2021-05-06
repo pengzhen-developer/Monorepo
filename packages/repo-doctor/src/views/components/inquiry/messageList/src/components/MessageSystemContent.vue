@@ -9,6 +9,8 @@
 import MessageSystem from './MessageSystem'
 
 export default {
+  inject: ['provideGetTab', 'provideAddTab'],
+
   props: {
     message: {
       type: Object,
@@ -53,6 +55,14 @@ export default {
         })
 
         this.$router.push(`/components/theRecipe/${params}`)
+      }
+      //质疑处方
+      if (this.type === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.处方被质疑) {
+        const currentMenu = this.provideGetTab('PrescriptionDoubt')
+        currentMenu.menuRoute = '/record/prescription-doubt/' + this.message.content.data.recipeInfo.recipeId
+
+        // 跳转当前路由
+        this.provideAddTab(currentMenu)
       }
     }
   }

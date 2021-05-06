@@ -202,7 +202,8 @@ export default {
             this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.退诊 ||
             this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.取消问诊 ||
             this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.服务提醒 ||
-            this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.审核处方通过
+            this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.审核处方通过||
+            this.message.content.code === Constant.INQUIRY_MESSAGE_TYPE.处方被质疑
           ) {
             return 'system'
           }
