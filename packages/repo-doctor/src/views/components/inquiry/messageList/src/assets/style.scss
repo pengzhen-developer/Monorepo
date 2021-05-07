@@ -79,12 +79,13 @@
       }
 
       &.system {
-        font-size: 12px;
+        font-size: 14px;
         text-align: center;
         margin: 10px auto;
 
         .message-body {
           color: rgba(155, 155, 155, 1);
+          padding: 3px 20px;
           background: rgba(242, 242, 242, 1);
         }
       }

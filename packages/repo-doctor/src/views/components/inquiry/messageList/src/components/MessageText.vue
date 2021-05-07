@@ -1,9 +1,7 @@
 <template>
-
   <!-- 消息内容 -->
   <div class="message-body">
-    <div class="body-size"
-         v-html="text"></div>
+    <div class="body-size" v-html="text"></div>
   </div>
 </template>
 
@@ -20,4 +18,3 @@ export default {
   }
 }
 </script>
-
