@@ -46,6 +46,12 @@ export default async function() {
 
         return
       }
+
+      if (message.code === 'prescription_status') {
+        // Prescription 0 已预审 1 待审核 2 质疑中 3 未通过 4 已作废 5已通过
+        Peace.$store.commit('notification/setNotify', message)
+        return
+      }
     }
 
     // 监听重连

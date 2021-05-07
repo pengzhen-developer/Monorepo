@@ -8,24 +8,28 @@
     <q-layout class="layout"
               view="hHh lpR lFf">
 
-      <q-header class="layout-header">
-        <LayoutHeader class="layout-header-content"></LayoutHeader>
-      </q-header>
+      <LayoutNotify>
 
-      <q-drawer class="layout-drawer"
-                side="left"
-                show-if-above
-                v-bind:width="240"
-                v-bind:breakpoint="0">
-        <LayoutSide></LayoutSide>
-      </q-drawer>
+        <q-header class="layout-header">
+          <LayoutHeader class="layout-header-content"></LayoutHeader>
+        </q-header>
 
-      <q-page-container>
-        <q-page class="bg-grey-1">
-          <LayoutTab></LayoutTab>
-          <LayoutView></LayoutView>
-        </q-page>
-      </q-page-container>
+        <q-drawer class="layout-drawer"
+                  side="left"
+                  show-if-above
+                  v-bind:width="240"
+                  v-bind:breakpoint="0">
+          <LayoutSide></LayoutSide>
+        </q-drawer>
+
+        <q-page-container>
+          <q-page class="bg-grey-1">
+            <LayoutTab></LayoutTab>
+            <LayoutView></LayoutView>
+          </q-page>
+        </q-page-container>
+
+      </LayoutNotify>
     </q-layout>
   </div>
 </template>
@@ -38,12 +42,16 @@ import LayoutSide from './components/LayoutSide'
 import LayoutTab from './components/LayoutTab'
 import LayoutView from './components/LayoutView'
 
+import LayoutNotify from './components/LayoutNotify'
+
 export default {
   components: {
     LayoutHeader,
     LayoutSide,
     LayoutTab,
-    LayoutView
+    LayoutView,
+
+    LayoutNotify
   },
 
   created() {

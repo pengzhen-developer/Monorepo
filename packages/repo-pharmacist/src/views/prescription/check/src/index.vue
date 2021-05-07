@@ -1,5 +1,6 @@
 <template>
-  <PeaceIframe full
+  <PeaceIframe v-if="show"
+               full
                v-bind:src="src"></PeaceIframe>
 </template>
 
@@ -15,14 +16,22 @@ export default {
 
   data() {
     return {
+      show: false,
       src: ''
     }
   },
 
-  created() {
+  created() {},
+  activated() {
+    this.show = true
+    let JZTClaimNo = this.$route.query.JZTClaimNo || ''
     Peace.identity.auth.getAuth().then((res) => {
-      this.src = `${process.env.VUE_APP_SITE_PHARMACIST}PharmacistPrescription/startPrescription?token=${res.access_token}`
+      // 参数 Num 要写在首位，否则.net后端接收不到参数
+      this.src = `${process.env.VUE_APP_SITE_PHARMACIST}PharmacistPrescription/startPrescription?Num=${JZTClaimNo}&token=${res.access_token}`
     })
+  },
+  deactivated() {
+    this.show = false
   }
 }
 </script>

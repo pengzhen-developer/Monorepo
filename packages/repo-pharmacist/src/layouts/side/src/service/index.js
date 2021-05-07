@@ -55,5 +55,62 @@ export default {
     return Peace.http.put(requestApi, params).then((res) => {
       return res
     })
+  },
+  /**
+   * 锁定处方
+   *
+   * @param {*} params
+   * @returns {Object}
+   */
+  lockPrescription(params) {
+    const isMock = false
+
+    const apiPath = 'webapi/api/ApothecaryPrescription/LockPrescriptionReleaseOther'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 获取处方审核声音状态
+   *
+   * @param {*} params
+   * @returns {Object}
+   */
+  getVoiceRemind(params) {
+    const isMock = false
+
+    const apiPath = 'webapi/api/ApothecaryPrescription/LockPrescriptionReleaseOther'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 设置处方审核声音状态
+   *
+   * @param {*} params
+   * @returns {Object}
+   */
+  setVoiceRemind(params) {
+    const isMock = false
+
+    const apiPath = 'webapi/api/ApothecaryPrescription/LockPrescriptionReleaseOther'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
   }
 }
