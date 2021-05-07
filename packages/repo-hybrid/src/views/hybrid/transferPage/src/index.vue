@@ -29,24 +29,15 @@ export default {
     openApp() {
       if (navigator.userAgent.match(/(iPhone|iPod|iPad);?/i)) {
         // iOS
-        let loadDateTime = new Date()
-        window.location = 'zyycloud://' //schema链接或者universal link
-        window.setTimeout(function() {
-          //如果没有安装app,便会执行setTimeout跳转下载页
-          var timeOutDateTime = new Date()
-          if (timeOutDateTime - loadDateTime < 5000) {
-            window.location = 'https://apps.apple.com/cn/app/万家云医/id1537044476' //ios下载地址
-          } else {
-            window.close()
-          }
-        }, 500)
+        try {
+          window.location = 'zyycloud://' //schema链接或者universal link
+        } catch (e) {
+          console.log(e)
+        }
       } else if (navigator.userAgent.match(/android/i)) {
         // android
         try {
-          window.location = 'zyycloud://' //schema链接或者universal link
-          window.setTimeout(function() {
-            window.location = 'https://www.pgyer.com/216c89013d0d2c76c07f7ae56453edd1' //android下载地址
-          }, 500)
+          window.location = 'zyycloud://home' //schema链接或者universal link
         } catch (e) {
           console.log(e)
         }
@@ -57,13 +48,13 @@ export default {
     downloadApp() {
       if (navigator.userAgent.match(/(iPhone|iPod|iPad);?/i)) {
         try {
-          window.location = 'https://apps.apple.com/cn/app/万家云医/id1537044476' //ios下载地址
+          window.location = process.env.VUE_APP_DOWNLOAD_IOS //ios下载地址
         } catch (e) {
           console.log(e)
         }
       } else if (navigator.userAgent.match(/android/i)) {
         try {
-          window.location = 'https://www.pgyer.com/216c89013d0d2c76c07f7ae56453edd1' //android下载地址
+          window.location = process.env.VUE_APP_DOWNLOAD_ANDROID //android下载地址
         } catch (e) {
           console.log(e)
         }
