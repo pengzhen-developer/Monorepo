@@ -76,14 +76,20 @@
             <PeaceTableColumn label="号源总数"
                               prop="bookingTotal"
                               min-width="100"></PeaceTableColumn>
+            <PeaceTableColumn label="可约号源"
+                              prop="bookingCounting"
+                              min-width="100"></PeaceTableColumn>
             <PeaceTableColumn label="开始时间"
                               prop="bookingStart"
                               min-width="120"></PeaceTableColumn>
             <PeaceTableColumn label="结束时间"
                               prop="bookingEnd"
                               min-width="120"></PeaceTableColumn>
+            <PeaceTableColumn label="号源来源"
+                              prop="sourceTypeTxt"
+                              min-width="120"></PeaceTableColumn>
             <PeaceTableColumn fixed="right"
-                              width="150"
+                              width="230"
                               label="操作">
               <template slot-scope="scope">
                 <div class="align-left">
@@ -92,6 +98,8 @@
                   <el-button v-if="scope.row.bookingCounting"
                              @click="batchModifySource(scope.row)"
                              type="text">停诊</el-button>
+                  <el-button @click="changeSourceNum(scope.row)"
+                             type="text">加减号源</el-button>
                 </div>
               </template>
             </PeaceTableColumn>
@@ -109,16 +117,26 @@
         </div>
       </template>
     </div>
+    <PeaceDialog width="500px"
+                 append-to-body
+                 v-bind:visible.sync="changeSourceNumDialog.visible"
+                 title="加减号源">
+      <ChangeSourceNumDialog v-if="changeSourceNumDialog.visible"
+                             @close="closeDialog"
+                             :data="changeSourceNumDialog.data"
+                             @onSucess="addSuccess"></ChangeSourceNumDialog>
+    </PeaceDialog>
   </div>
 </template>
 
 <script>
 import Service from './service'
 import RegisterOpen from './components/RegisterOpen'
+import ChangeSourceNumDialog from './components/ChangeSourceNumDialog'
 
 export default {
   name: 'RegisterSource',
-  components: { RegisterOpen },
+  components: { RegisterOpen, ChangeSourceNumDialog },
   data() {
     return {
       registerIsOpen: null,
@@ -133,7 +151,11 @@ export default {
       timeOptions: [
         { value: 'AM', label: '上午' },
         { value: 'PM', label: '下午' }
-      ]
+      ],
+      changeSourceNumDialog: {
+        visible: false,
+        data: {}
+      }
     }
   },
   filters: {
@@ -228,6 +250,18 @@ export default {
           })
         })
         .catch(() => {})
+    },
+    //加减号源
+    changeSourceNum(row) {
+      this.changeSourceNumDialog.data = row
+      this.changeSourceNumDialog.visible = true
+    },
+    closeDialog() {
+      this.changeSourceNumDialog.visible = false
+    },
+    addSuccess() {
+      this.changeSourceNumDialog.visible = false
+      this.getList()
     }
   }
 }

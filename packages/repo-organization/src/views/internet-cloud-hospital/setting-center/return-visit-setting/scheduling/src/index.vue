@@ -82,19 +82,28 @@
                   <div :key="doctor.doctorName + _index"
                        @click="openDialog(index, doctor)"
                        class="list-item el-icon-arrow-right"
+                       :class="{'list-item-stop-status':doctor.isStopClass}"
                        v-for="(doctor, _index) in scheduleList[index + 1]">
-                    <p>{{ doctor.doctorName }}</p>
-                    <p>
+                    <p :class="{'stop-status':doctor.isStopClass}">{{ doctor.doctorName }}</p>
+                    <p :class="{'stop-status':doctor.isStopClass}">
                       <span>¥{{ doctor.unitPrice }}</span>
                       × {{ (parseInt(doctor.totalCountAM) || 0) + (parseInt(doctor.totalCountPM) || 0)}}
                     </p>
                     <span class="small-text"
+                          :class="{'stop-status':doctor.isStopClass}"
                           v-if="doctor.workStartAM && doctor.workEndAM">{{ doctor.workStartAM.substr(0, 5) }}
                       - {{ doctor.workEndAM.substr(0, 5) }}</span>
                     <span class="small-text"
+                          :class="{'stop-status':doctor.isStopClass}"
                           v-if="doctor.workStartPM && doctor.workEndPM">{{ doctor.workStartPM.substr(0, 5) }}
                       - {{ doctor.workEndPM.substr(0, 5) }}</span>
+                    <div class="list-item-switch">
+                      <span v-if="doctor.isStopClass"
+                            style="color:#858585; margin-right:4px">已停</span>
+                    </div>
+
                   </div>
+
                 </div>
               </div>
             </div>
@@ -531,6 +540,7 @@ export default {
       color: #aaa;
     }
   }
+
   &-item {
     position: relative;
     margin: 8px 5px;
@@ -553,9 +563,22 @@ export default {
       color: #d6d6d6;
       transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    .list-item-switch {
+      display: flex;
+      justify-content: flex-end;
+      height: 30px;
+    }
+
+    .stop-status {
+      color: rgba(51, 51, 51, 0.2);
+    }
     // &:hover:before {
     //   right: 5px;
     // }
+  }
+  &-item-stop-status {
+    border-left: 2px solid rgba(51, 51, 51, 0.4);
   }
 }
 .el-menu {

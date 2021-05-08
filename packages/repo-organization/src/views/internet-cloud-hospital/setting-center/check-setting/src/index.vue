@@ -35,8 +35,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="">
-            <el-button :disabled="isQuering"
-                       @click="getList()"
+            <el-button @click="getList()"
                        type="primary">查询</el-button>
           </el-form-item>
         </el-form>
