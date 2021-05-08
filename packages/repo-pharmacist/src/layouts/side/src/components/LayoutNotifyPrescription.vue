@@ -48,7 +48,7 @@ export default {
   methods: {
     getOrderVoiceRemind() {
       return Service.getVoiceRemind({ userId: this.userId }).then((res) => {
-        this.orderVoiceRemind = res.data.switch
+        this.orderVoiceRemind = res.data
       })
     },
 
@@ -80,7 +80,7 @@ export default {
           element.checked = e.target.checked
         })
 
-        Service.setVoiceRemind({ userId: this.userId, switch: e.target.checked })
+        Service.setVoiceRemind({ userId: this.userId, voice: e.target.checked ? 1 : 0 })
       }
 
       message.onAccept = () => {

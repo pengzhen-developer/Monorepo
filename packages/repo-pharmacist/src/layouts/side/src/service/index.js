@@ -84,7 +84,7 @@ export default {
   getVoiceRemind(params) {
     const isMock = false
 
-    const apiPath = 'webapi/api/ApothecaryPrescription/LockPrescriptionReleaseOther'
+    const apiPath = 'admin/voice/getVoiceStatus'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
@@ -103,7 +103,7 @@ export default {
   setVoiceRemind(params) {
     const isMock = false
 
-    const apiPath = 'webapi/api/ApothecaryPrescription/LockPrescriptionReleaseOther'
+    const apiPath = 'admin/voice/updateVoice'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
