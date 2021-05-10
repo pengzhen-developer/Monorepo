@@ -123,6 +123,10 @@
                        v-bind:value="item.value"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="开方应用：">
+          <el-input v-model.trim="model.preApplyName"
+                    placeholder="请输入"></el-input>
+        </el-form-item>
         <el-form-item label
                       label-width="0">
           <el-button type="primary"
@@ -155,6 +159,12 @@
                          label="处方编号">
           <template slot-scope="scope">
             {{scope.row.preNo ||  '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column min-width="90px"
+                         label="开方应用">
+          <template slot-scope="scope">
+            {{scope.row.preApplyName ||  '--' }}
           </template>
         </el-table-column>
         <el-table-column min-width="90px"
@@ -314,7 +324,8 @@ export default {
         phaCheckResult: '',
         patientName: '',
         phaCode: '',
-        preType: ''
+        preType: '',
+        preApplyName: ''
       }
     }
   },
