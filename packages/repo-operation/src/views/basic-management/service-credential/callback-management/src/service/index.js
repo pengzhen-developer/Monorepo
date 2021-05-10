@@ -1,5 +1,4 @@
 export default {
-
   /**
    * 机构列表
    */
@@ -30,7 +29,7 @@ export default {
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.post(requestApi, { params }).then((res) => {
+    return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
   },
@@ -71,7 +70,7 @@ export default {
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.post(requestApi,  params ).then((res) => {
+    return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
   },
@@ -88,7 +87,7 @@ export default {
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
-    return Peace.http.get(requestApi, {params} ).then((res) => {
+    return Peace.http.get(requestApi, { params }).then((res) => {
       return res
     })
   }

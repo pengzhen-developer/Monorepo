@@ -6,7 +6,8 @@
              label-suffix="："
              label-width="auto"
              space-md>
-      <el-form-item label="选择机构系统" prop="org">
+      <el-form-item label="选择机构系统"
+                    prop="org">
         <el-cascader v-model="model.org"
                      :disabled="type!=='add'"
                      :options="source.orgList"
@@ -16,8 +17,10 @@
                      style="width:100%;"
                      @change="handleChange"></el-cascader>
       </el-form-item>
-      <el-form-item label="接口回调配置" prop="selectRules">
-        <div v-for="(item, index) in source.list" v-bind:key="item.Code">
+      <el-form-item label="接口回调配置"
+                    prop="selectRules">
+        <div v-for="(item, index) in source.list"
+             v-bind:key="item.Code">
           <el-checkbox v-if="!item.Items || item.Items.length === 0"
                        v-model="selectedModel[`First_${item.Code}`]"
                        class="block q-mb-4"
@@ -66,16 +69,17 @@ export default {
   data() {
     return {
       rules: {
-        org: [{required: true, message: '选择机构系统', trigger: 'change'}],
+        org: [{ required: true, message: '选择机构系统', trigger: 'change' }],
         selectRules: {
           required: true,
           message: '请选择回调配置',
           validator: (rule, value, callback) => {
             let result = false
+
             for (let item of this.source.list) {
               if (item.Value === 1 || item.Value === '1') {
                 result = true
-                break;
+                break
               }
 
               if (item.Items && item.Items.length > 0) {
@@ -92,11 +96,7 @@ export default {
             } else {
               callback(new Error('请选择至少一个回调配置'))
             }
-
-
           }
-
-
         }
       },
       selectedModel: {},
@@ -114,16 +114,16 @@ export default {
       },
       source: {
         orgList: [],
-        list: [],
+        list: []
       }
     }
   },
   mounted() {
     this.$nextTick().then(() => {
       this.deptList()
-      if (this.info) {
+      if (this.info.CustCode && this.info.SysCode) {
         this.model.org = [this.info.CustCode, this.info.SysCode]
-        const params = {custCode: this.info.CustCode, sysCode: this.info.SysCode}
+        const params = { custCode: this.info.CustCode, sysCode: this.info.SysCode }
         this.init(params)
       } else {
         this.init({})
@@ -141,10 +141,10 @@ export default {
         let tmp = res.data.list
         tmp.forEach((item) => {
           if (item.Items && item.Items.length > 0) {
-            this.selectedModel[`checkAll_${item.Code}`] = item.Items.every((tmp) => (tmp.Value === "1" || tmp.Value === 1))
-            this.selectedModel[`Second_${item.Code}`] = item.Items.filter((tmp) => (tmp.Value === "1" || tmp.Value === 1)).map((tmp) => tmp.Code)
+            this.selectedModel[`checkAll_${item.Code}`] = item.Items.every((tmp) => tmp.Value === '1' || tmp.Value === 1)
+            this.selectedModel[`Second_${item.Code}`] = item.Items.filter((tmp) => tmp.Value === '1' || tmp.Value === 1).map((tmp) => tmp.Code)
           } else {
-            this.selectedModel[`First_${item.Code}`] = (item.Value === "1" || item.Value === 1)
+            this.selectedModel[`First_${item.Code}`] = item.Value === '1' || item.Value === 1
           }
         })
         this.selectedModel = Object.assign({}, this.selectedModel)
@@ -156,10 +156,10 @@ export default {
       /// 获取当前响应式的Value
       const tmp = this.selectedModel[`${item}`]
       /// 更新提交model数据
-      this.source.list[index].Value = tmp ? "1" : "0"
+      this.source.list[index].Value = tmp ? '1' : '0'
     },
     handleChange(item) {
-      this.init({custCode: item[0], sysCode: item[1]})
+      this.init({ custCode: item[0], sysCode: item[1] })
     },
     /// 二级全选事件
     handleCheckAllChange(val, codeName, index) {
@@ -167,12 +167,11 @@ export default {
       const value = this.selectedModel[`${val}`]
       if (value) {
         /// 全选处理
-        this.source.list[index].Items.forEach((tmp) => tmp.Value = "1")
+        this.source.list[index].Items.forEach((tmp) => (tmp.Value = '1'))
         this.selectedModel[`Second_${codeName}`] = this.source.list[index].Items.map((tmp) => tmp.Code)
-
       } else {
         /// 取消全选处理
-        this.source.list[index].Items.forEach((tmp) => tmp.Value = "0")
+        this.source.list[index].Items.forEach((tmp) => (tmp.Value = '0'))
         this.selectedModel[`Second_${codeName}`] = []
       }
     },
@@ -183,13 +182,13 @@ export default {
       /// 更新提交model数据
       this.source.list[index].Items.forEach((tmp) => {
         if (value.indexOf(tmp.Code) === -1) {
-          tmp.Value = "0"
+          tmp.Value = '0'
         } else {
-          tmp.Value = "1"
+          tmp.Value = '1'
         }
       })
       /// 修改全选状态
-      this.selectedModel[`checkAll_${codeName}`] = this.source.list[index].Items.every((tmp) => (tmp.Value === "1" || tmp.Value === 1))
+      this.selectedModel[`checkAll_${codeName}`] = this.source.list[index].Items.every((tmp) => tmp.Value === '1' || tmp.Value === 1)
     },
     cancel() {
       if (this.type === 'add') {
@@ -203,14 +202,12 @@ export default {
         if (valid) {
           this.saveData()
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     saveData() {
-
       if (this.model.org && this.model.org.length === 2) {
-
         let [CustCode, SysCode] = this.model.org
 
         this.deptModel.CustCode = CustCode
@@ -226,23 +223,21 @@ export default {
         const params = Peace.util.deepClone(this.deptModel)
 
         this.loading = true
-        Service.saveSyncStatus(params).then((res) => {
-          Peace.util.success(res.msg)
-          if (this.type === 'add') {
-            this.$emit('completeAdd')
-          } else {
-            this.$emit('completeEdit')
-          }
-        }).finally(() => {
-          this.loading = false
-        })
-
-
+        Service.saveSyncStatus(params)
+          .then((res) => {
+            Peace.util.success(res.msg)
+            if (this.type === 'add') {
+              this.$emit('completeAdd')
+            } else {
+              this.$emit('completeEdit')
+            }
+          })
+          .finally(() => {
+            this.loading = false
+          })
       } else {
-        Peace.util.message('')
+        throw new Error('数据有误')
       }
-
-
     }
   }
 }
