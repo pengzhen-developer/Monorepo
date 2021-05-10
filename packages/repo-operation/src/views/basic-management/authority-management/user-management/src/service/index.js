@@ -57,5 +57,12 @@ export default {
         return Peace.http.get(requestApi, { params })
       }
     }
+  },
+
+  getOrgList() {
+    let apiPath = `zyyoperate/operate/service/getOrgList`
+    const serverPath = process.env.VUE_APP_API_BASE
+    let requestApi = serverPath + apiPath
+    return Peace.http.post(requestApi)
   }
 }

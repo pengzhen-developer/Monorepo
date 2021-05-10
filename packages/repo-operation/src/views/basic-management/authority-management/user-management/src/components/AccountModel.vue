@@ -49,6 +49,19 @@
           <el-radio label="1">禁用</el-radio>
         </el-radio-group>
       </el-form-item>
+      <el-form-item prop="orgCodes">
+        <span slot="label"
+              class="form-label">机构权限</span>
+        <el-select v-model="model.orgCodes"
+                   multiple
+                   placeholder="请选择"
+                   style="width: 100%;">
+          <el-option v-for="item in orgList"
+                     v-bind:key="item.custCode"
+                     v-bind:label="item.hospitalName"
+                     v-bind:value="item.custCode"></el-option>
+        </el-select>
+      </el-form-item>
     </el-form>
 
     <div slot="footer"
@@ -104,7 +117,7 @@ export default {
       isLoading: false,
 
       roleList: [],
-
+      orgList: [],
       model: {
         clientId: process.env.VUE_APP_AUTH_CLIENT_ID,
         userId: '',
@@ -112,7 +125,8 @@ export default {
         password: '',
         name: '',
         role: [],
-        lockFlag: ''
+        lockFlag: '',
+        orgCodes: []
       },
 
       addRules: {
@@ -132,6 +146,7 @@ export default {
           { validator: validateChineseEnglish, message: '姓名仅支持中英文字符', trigger: 'blur' }
         ],
         role: [{ required: true, message: '请选择角色', trigger: 'change' }],
+        orgCodes: [{ required: true, message: '请选择机构权限', trigger: 'change' }],
         lockFlag: [{ required: true, message: '请选择账号状态', trigger: 'change' }]
       },
       editRules: {
@@ -145,7 +160,8 @@ export default {
           { min: 1, max: 10, message: '姓名长度为1 - 10位', trigger: 'blur' },
           { validator: validateChineseEnglish, message: '姓名仅支持中英文字符', trigger: 'blur' }
         ],
-        role: [{ required: true, message: '请选择角色', trigger: 'change' }]
+        role: [{ required: true, message: '请选择角色', trigger: 'change' }],
+        orgCodes: [{ required: true, message: '请选择机构权限', trigger: 'change' }]
       }
     }
   },
@@ -158,6 +174,7 @@ export default {
 
       this.$nextTick(() => {
         this.$refs.form.resetFields()
+        this.getOrgList()
         this.getRoleList().then(() => {
           if (this.model.userId) {
             Service.user()
@@ -169,6 +186,7 @@ export default {
                 this.model.name = res.data.name
                 this.model.role = res.data.roleList.map((item) => item.roleId)
                 this.model.lockFlag = res.data.lockFlag
+                this.model.orgCodes = res.data.orgCodes
               })
           }
         })
@@ -185,7 +203,11 @@ export default {
           this.roleList = res.data
         })
     },
-
+    getOrgList() {
+      Service.getOrgList().then((res) => {
+        this.orgList = res.data
+      })
+    },
     submit() {
       this.validateForm().then(() => {
         this.isLoading = true
