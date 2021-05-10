@@ -130,6 +130,17 @@
               </el-select>
             </el-form-item>
 
+            <el-form-item label="处方来源系统">
+              <el-select v-model="model.preApplyCode"
+                         clearable
+                         placeholder="全部">
+                <el-option v-for="value in remoteSource.SOURCES_PRESCRIPTION_SYSTEAM"
+                           v-bind:key="value.value"
+                           v-bind:label="value.label"
+                           v-bind:value="value.value"></el-option>
+              </el-select>
+            </el-form-item>
+
             <el-form-item>
               <el-button type="primary"
                          v-on:click="get">查询</el-button>
@@ -208,6 +219,14 @@
             <PeaceTableColumn label="机构名称"
                               prop="organName"
                               min-width="120px"></PeaceTableColumn>
+
+            <PeaceTableColumn label="处方来源系统"
+                              prop="preApplyName"
+                              min-width="120px">
+              <!-- <template slot-scope="scope">
+                {{ scope.row.sourceSystem | filterDictionary(remoteSource.SOURCES_PRESCRIPTION_SYSTEAM, '--')}}
+              </template> -->
+            </PeaceTableColumn>
 
             <PeaceTableColumn label="患者姓名"
                               prop="patientName"
@@ -303,7 +322,9 @@ export default {
         submitType: '',
         patientName: '',
         pharmacistCheckResult: 0,
-        prescriptionType: -1
+        prescriptionType: -1,
+        sourePrescriptionSystem: undefined,
+        preApplyCode: ''
       },
 
       localModel: {
@@ -330,7 +351,9 @@ export default {
       remoteSource: {
         organizationList: [],
         // departmentList: [],
-        pharmacistList: []
+        pharmacistList: [],
+        // 处方来源系统
+        SOURCES_PRESCRIPTION_SYSTEAM: []
       },
 
       dataOver: {},
@@ -349,6 +372,7 @@ export default {
     this.$nextTick().then(() => {
       this.remoteOrganizationList()
       this.remotePharmacist()
+      this.getDictionary()
       this.get()
     })
   },
@@ -385,6 +409,10 @@ export default {
   },
 
   methods: {
+    async getDictionary() {
+      this.remoteSource.SOURCES_PRESCRIPTION_SYSTEAM = await Peace.identity.dictionary.getList('sysdocking')
+    },
+
     //获取处方列表
     get() {
       const fetch = Service.getPrescriptionList
