@@ -3,7 +3,7 @@ import Util from '@src/util'
 export default async function() {
   if (Peace.identity.auth.isLogin()) {
     const auth = await Peace.identity.auth.getAuth()
-    const connectUrl = process.env.VUE_APP_API_WEBSOCKET + '?token=' + auth.access_token
+    const connectUrl = process.env.VUE_APP_API_WEBSOCKET + '?token=' + auth.access_token + '&clientId=' + process.env.VUE_APP_AUTH_CLIENT_ID
 
     // 连接
     Peace.identity.socket.connect(connectUrl)

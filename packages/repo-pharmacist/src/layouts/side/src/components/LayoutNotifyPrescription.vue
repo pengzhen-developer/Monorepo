@@ -48,7 +48,7 @@ export default {
   methods: {
     getOrderVoiceRemind() {
       return Service.getVoiceRemind({ userId: this.userId }).then((res) => {
-        this.orderVoiceRemind = res.data
+        this.orderVoiceRemind = Number(res.data)
       })
     },
 

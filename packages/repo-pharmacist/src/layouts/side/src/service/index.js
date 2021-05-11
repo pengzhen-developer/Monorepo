@@ -90,7 +90,7 @@ export default {
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.post(requestApi, params).then((res) => {
+    return Peace.http.get(requestApi, { params }).then((res) => {
       return res
     })
   },
@@ -109,7 +109,7 @@ export default {
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.post(requestApi, params).then((res) => {
+    return Peace.http.get(requestApi, { params }).then((res) => {
       return res
     })
   }
