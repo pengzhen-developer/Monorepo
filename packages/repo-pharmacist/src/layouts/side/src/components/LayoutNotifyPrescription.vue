@@ -86,24 +86,28 @@ export default {
       message.onAccept = () => {
         message.onReject()
 
-        const menu = this.menuList.find((item) => item.menuRoute === '/prescription/check')
+        Service.lockPrescription({ JZTClaimNo: notifyObject.data.JZTClaimNo })
+          .then((res) => {
+            if (res.code === 200) {
+              const menu = this.menuList.find((item) => item.menuRoute === '/prescription/check')
 
-        Observable_Layout.mutations.addTab(menu)
-        Observable_Layout.mutations.setTab(menu)
+              Observable_Layout.mutations.addTab(menu)
+              Observable_Layout.mutations.setTab(menu)
 
-        Service.lockPrescription({ JZTClaimNo: notifyObject.data.JZTClaimNo }).then((res) => {
-          if (res.code === 200) {
-            Peace.$router.push({
-              path: '/prescription/check',
-              query: {
-                JZTClaimNo: notifyObject.data.JZTClaimNo,
-                t: new Date().getTime() // 参数增加时间戳，防止路由重复push报错
-              }
-            })
-          } else {
-            Peace.util.error(res.msg)
-          }
-        })
+              Peace.$router.push({
+                path: '/prescription/check',
+                query: {
+                  JZTClaimNo: notifyObject.data.JZTClaimNo,
+                  t: new Date().getTime() // 参数增加时间戳，防止路由重复push报错
+                }
+              })
+            } else {
+              Peace.util.error(res.msg)
+            }
+          })
+          .catch((err) => {
+            Peace.util.error(err?.data?.msg || '操作失败')
+          })
       }
 
       message.onReject = () => {
