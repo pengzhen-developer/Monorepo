@@ -103,7 +103,11 @@
                             min-width="120px"></PeaceTableColumn>
           <PeaceTableColumn label="包装数量"
                             prop="Package_Num"
-                            min-width="120px"></PeaceTableColumn>
+                            min-width="120px">
+            <template slot-scope="scope">
+              {{ Peace.numeral(scope.row.Package_Num).value() }}
+            </template>
+          </PeaceTableColumn>
           <PeaceTableColumn label="最小单位"
                             prop="Min_Unit"
                             min-width="120px"></PeaceTableColumn>
