@@ -11,10 +11,11 @@
              @click="isEdit=true"></i>
         </div>
 
-
-        <div v-for="(item, index) in list" v-bind:key="item.Code">
-          <div  class="subtitle">{{ index + 1 }}.{{ item.Label }}</div>
-          <div v-if="showTxt(item)" class="txt">{{showResultText(item)}}</div>
+        <div v-for="(item, index) in list"
+             v-bind:key="item.Code">
+          <div class="subtitle">{{ index + 1 }}.{{ item.Label }}</div>
+          <div v-if="showTxt(item)"
+               class="txt">{{showResultText(item)}}</div>
         </div>
 
         <div class="q-mb-20"></div>
@@ -33,7 +34,7 @@
 
 <script>
 import CallbackSystemModel from './CallbackSystemModel'
-import Service from "@views/basic-management/service-credential/callback-management/src/service";
+import Service from '../service/index'
 export default {
   name: 'CallbackSystemDetail',
   components: { CallbackSystemModel },
@@ -54,14 +55,14 @@ export default {
   },
   methods: {
     getInfo() {
-      const params = {custCode: this.info.CustCode, sysCode: this.info.SysCode}
+      const params = { custCode: this.info.CustCode, sysCode: this.info.SysCode }
       Service.getSyncStatusDetailList(params).then((res) => {
         this.list = res.data.list.filter((item) => {
           if (item.Value && (item.Value === 1 || item.Value === '1')) {
             return true
           } else {
             let array = item.Items ?? []
-            return array.some((item) => (item.Value === 1 || item.Value === '1'))
+            return array.some((item) => item.Value === 1 || item.Value === '1')
           }
         })
       })
@@ -76,10 +77,12 @@ export default {
       this.getInfo()
     },
     showTxt(item) {
-      return item.Items && item.Items.length > 0 && item.Items.some((tmp) => (tmp.Value === "1" || tmp.Value === 1))
+      return item.Items && item.Items.length > 0 && item.Items.some((tmp) => tmp.Value === '1' || tmp.Value === 1)
     },
     showResultText(item) {
-      return item.Items.filter((tmp) => (tmp.Value === "1" || tmp.Value === 1)).map((tmp) => tmp.Label).join('、')
+      return item.Items.filter((tmp) => tmp.Value === '1' || tmp.Value === 1)
+        .map((tmp) => tmp.Label)
+        .join('、')
     }
   }
 }

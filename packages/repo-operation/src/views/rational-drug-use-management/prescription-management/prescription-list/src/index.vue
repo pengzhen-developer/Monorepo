@@ -221,11 +221,10 @@
                               min-width="120px"></PeaceTableColumn>
 
             <PeaceTableColumn label="处方来源系统"
-                              prop="preApplyName"
                               min-width="120px">
-              <!-- <template slot-scope="scope">
-                {{ scope.row.sourceSystem | filterDictionary(remoteSource.SOURCES_PRESCRIPTION_SYSTEAM, '--')}}
-              </template> -->
+              <template slot-scope="scope">
+                {{ scope.row.preApplyName || '--'}}
+              </template>
             </PeaceTableColumn>
 
             <PeaceTableColumn label="患者姓名"
@@ -233,12 +232,18 @@
                               min-width="100px"></PeaceTableColumn>
 
             <PeaceTableColumn label="开方医生"
-                              min-width="100px"
-                              prop="doctorName"></PeaceTableColumn>
+                              min-width="100px">
+              <template slot-scope="scope">
+                {{ scope.row.doctorName || '--'}}
+              </template>
+            </PeaceTableColumn>
 
             <PeaceTableColumn label="科室"
-                              prop="deptName"
-                              min-width="100px"></PeaceTableColumn>
+                              min-width="100px">
+              <template slot-scope="scope">
+                {{ scope.row.deptName || '--'}}
+              </template>
+            </PeaceTableColumn>
 
             <PeaceTableColumn label="处方类别"
                               prop="prescriptionType"
@@ -256,8 +261,11 @@
             </PeaceTableColumn>
 
             <PeaceTableColumn label="提交方式"
-                              prop="submitMode"
-                              min-width="100px"></PeaceTableColumn>
+                              min-width="100px">
+              <template slot-scope="scope">
+                {{ scope.row.submitMode || '--' }}
+              </template>
+            </PeaceTableColumn>
 
             <PeaceTableColumn label="审方药师"
                               min-width="100px">
@@ -267,8 +275,11 @@
             </PeaceTableColumn>
 
             <PeaceTableColumn label="审方时间"
-                              prop="pharmacistExamTime"
-                              min-width="180px"></PeaceTableColumn>
+                              min-width="180px">
+              <template slot-scope="scope">
+                {{ scope.row.pharmacistExamTime || '--'}}
+              </template>
+            </PeaceTableColumn>
 
             <PeaceTableColumn label="操作"
                               fixed="right"
