@@ -14,7 +14,7 @@
                     v-bind:data="list1">
           <PeaceTableColumn label="平台药品编码"
                             prop="DrugStandardCode"
-                            min-width="160px"></PeaceTableColumn>
+                            min-width="180px"></PeaceTableColumn>
           <PeaceTableColumn label="药品名称"
                             prop="ProductName"
                             min-width="140px"></PeaceTableColumn>
@@ -82,7 +82,7 @@
                     v-bind:data="list2">
           <PeaceTableColumn label="平台药品编码"
                             prop="DrugStandardCode"
-                            min-width="160px"></PeaceTableColumn>
+                            min-width="180px"></PeaceTableColumn>
           <PeaceTableColumn label="药品名称"
                             prop="ProductName"
                             min-width="140px"></PeaceTableColumn>
