@@ -29,7 +29,7 @@
                             min-width="120px"></PeaceTableColumn>
           <PeaceTableColumn label="生产厂家"
                             prop="EnterpriseChineseName"
-                            min-width="180px"></PeaceTableColumn>
+                            min-width="160px"></PeaceTableColumn>
           <PeaceTableColumn label="包装规格"
                             prop="packaging_specifications"
                             min-width="120px">
@@ -97,7 +97,7 @@
                             min-width="120px"></PeaceTableColumn>
           <PeaceTableColumn label="生产厂家"
                             prop="EnterpriseChineseName"
-                            min-width="180px"></PeaceTableColumn>
+                            min-width="160px"></PeaceTableColumn>
           <PeaceTableColumn label="包装规格"
                             prop="packaging_specifications"
                             min-width="120px"></PeaceTableColumn>
