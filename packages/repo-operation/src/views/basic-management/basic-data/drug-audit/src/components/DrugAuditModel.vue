@@ -20,7 +20,7 @@
                             min-width="140px"></PeaceTableColumn>
           <PeaceTableColumn label="批准文号"
                             prop="ApprovalNo"
-                            min-width="170px"></PeaceTableColumn>
+                            min-width="150px"></PeaceTableColumn>
           <PeaceTableColumn label="规格"
                             prop="DrugSpecifications"
                             min-width="100px"></PeaceTableColumn>
@@ -88,7 +88,7 @@
                             min-width="140px"></PeaceTableColumn>
           <PeaceTableColumn label="批准文号"
                             prop="ApprovalNo"
-                            min-width="170px"></PeaceTableColumn>
+                            min-width="150px"></PeaceTableColumn>
           <PeaceTableColumn label="规格"
                             prop="DrugSpecifications"
                             min-width="100px"></PeaceTableColumn>
