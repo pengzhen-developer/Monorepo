@@ -108,7 +108,10 @@ export default {
             departmentCode: this.data.departmentCode,
             doctorCode: this.data.doctorCode,
             modifyType: this.model.modifyType,
-            modifyNum: this.model.modifyNum
+            modifyNum: this.model.modifyNum,
+            timeSharing: this.data.timeSharing,
+            bookingStart: this.data.bookingStart,
+            bookingEnd: this.data.bookingEnd
           }
           Service.modifyBookingSourceNum(params)
             .then((res) => {
