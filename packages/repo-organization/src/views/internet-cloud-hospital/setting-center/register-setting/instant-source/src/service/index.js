@@ -51,7 +51,7 @@ export default {
    */
   getDoctorByDept(params) {
     const isMock = false
-    const apiPath = 'nethospital/hospital/v1/Register/getDoctorListByDept'
+    const apiPath = 'nethospital/hospital/v1/Register/getSignDoctor'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = isMock ? mockPath : serverPath

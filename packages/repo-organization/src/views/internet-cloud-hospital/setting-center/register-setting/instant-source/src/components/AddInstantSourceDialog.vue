@@ -331,7 +331,7 @@ export default {
       if (this.model.ampm == 'AM') {
         this.time.amStart = '08:00:00'
         this.time.amEnd = '12:00:00'
-        this.model.bookingStart = new Date(InitDate + '08:00:00').getTime()
+        this.model.bookingStart = new Date(InitDate + ' 08:00:00').getTime()
         this.model.bookingEnd = new Date(InitDate + ' 12:00:00').getTime()
       } else {
         this.time.amStart = '13:00:00'
