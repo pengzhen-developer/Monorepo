@@ -26,6 +26,7 @@
 
 import ElementUI from 'element-ui'
 import PeaceElementUI from '@jk998/peace-element-ui'
+import PeaceImport from '@src/views/components/peace-import'
 
 export default ({ Vue }) => {
   // 异步引入 ui css
@@ -33,6 +34,7 @@ export default ({ Vue }) => {
 
   Vue.use(ElementUI, { size: 'mini' })
   Vue.use(PeaceElementUI)
+  Vue.use(PeaceImport)
 
   console.log(
     `%c ${'ElementUI'} %c ${ElementUI.version} %c`,
