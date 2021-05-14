@@ -32,6 +32,8 @@
         <el-input-number v-model="model.modifyNum"
                          controls-position="right"
                          :min="1"
+                         :step="1"
+                         step-strictly
                          class="number-input"
                          :max="maxInputNum"></el-input-number>
         <span>剩余可预约{{ data.bookingTotal-data.bookingCounted }}个</span>

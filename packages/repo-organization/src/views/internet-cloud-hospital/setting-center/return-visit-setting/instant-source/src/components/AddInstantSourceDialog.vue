@@ -88,6 +88,8 @@
                          controls-position="right"
                          :min="1"
                          style="width:368px"
+                         :step="1"
+                         step-strictly
                          class="number-input"
                          :max="500"></el-input-number>
       </el-form-item>
