@@ -117,7 +117,9 @@ export default {
             this.onSuccess(res)
           })
           .catch((res) => {
-            Peace.util.error(res.data.msg)
+            if (res?.data?.code !== 201) {
+              Peace.util.error(res.data.msg)
+            }
             this.canClick = false
             this.hasExceed = false
           })
