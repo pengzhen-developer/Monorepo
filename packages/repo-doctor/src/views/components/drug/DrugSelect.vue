@@ -111,7 +111,9 @@
                                    v-bind:id="`row-${$index}-component`"
                                    v-bind:min="0.001"
                                    v-model="row.singleDose"></el-input-number>
-                  <span class="text-caption text-grey-7 q-mx-xs">{{ row.drugUnit }}</span>
+                  <span class="text-caption ellipsis text-grey-7 q-mx-xs"
+                        style="max-width: 50px;"
+                        v-bind:title="row.drugUnit ">{{ row.drugUnit }}</span>
                 </div>
               </el-form-item>
             </el-form>
@@ -221,7 +223,9 @@
                                    v-bind:min="1"
                                    v-bind:precision="0"
                                    v-model="row.drugNum"></el-input-number>
-                  <span class="text-caption text-grey-7 q-mx-xs">{{ row.drugQuantityUnit }}</span>
+                  <span class="text-caption ellipsis text-grey-7 q-mx-xs"
+                        style="max-width: 50px;"
+                        v-bind:title="row.drugQuantityUnit ">{{ row.drugQuantityUnit }}</span>
                 </div>
               </el-form-item>
             </el-form>
