@@ -609,13 +609,12 @@ export default {
     }
     this.dialog.visible = false
   },
-  beforeRouteEnter(to, from, next) {
-    next(() => {
-      if (peace.cache.get('h5.isEwm') && from.path === '/login') {
-        peace.cache.remove('h5.isEwm')
-        peace.cache.remove('h5.ewmInfo')
-      }
-    })
+
+  deactivated() {
+    if (this.isEwm && this.hasLogin()) {
+      peace.cache.remove('h5.isEwm')
+      peace.cache.remove('h5.ewmInfo')
+    }
   },
 
   methods: {
