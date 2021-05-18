@@ -261,6 +261,7 @@ export default {
       ) {
         peace.cache.remove(peace.type.USER.INFO)
         peace.cache.remove(peace.type.SYSTEM.WX_AUTH_CODE)
+        peace.cache.remove('h5.isEwm')
       }
 
       peace.cache.remove(peace.type.SYSTEM.NETHOSPITALID)

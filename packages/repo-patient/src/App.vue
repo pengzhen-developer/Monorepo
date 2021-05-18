@@ -212,6 +212,8 @@ export default {
       if (userInfo) {
         this.$store.commit('user/restoreUserInfo', userInfo)
       }
+      //初始化清除 清除缓存
+      peace.cache.remove('h5.isEwm')
     },
 
     initNIM() {
