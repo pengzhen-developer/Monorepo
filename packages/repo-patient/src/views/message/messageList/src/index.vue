@@ -85,7 +85,7 @@
                      span="6">
               <van-uploader :after-read="sendMessageImage">
                 <div class="flex-center">
-                  <van-button icon="photo"></van-button>
+                  <van-button :icon="require('./assets/images/ic_photo.png')"></van-button>
                   <p>图片</p>
                 </div>
               </van-uploader>
