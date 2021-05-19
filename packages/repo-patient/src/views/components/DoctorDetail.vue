@@ -590,14 +590,14 @@ export default {
   },
   activated() {
     //登录之后返回医生主页，从缓存取分享标识isEWm
-    if (peace.cache.get('h5.isEwm')) {
-      this.isEwm = peace.cache.get('h5.isEwm')
+    if (peace.cache.get(peace.type.SYSTEM.IS_EWM)) {
+      this.isEwm = peace.cache.get(peace.type.SYSTEM.IS_EWM)
     } else {
       //通过分享进入医生首页 获取分享标识isEwm字段并存在缓存中
       this.isEwm = peace.util.decode(this.$route.params.json).isEwm ? 1 : 0
       if (peace.util.decode(this.$route.params.json).isEwm) {
-        peace.cache.set('h5.isEwm', this.isEwm)
-        peace.cache.set('h5.ewmInfo', {
+        peace.cache.set(peace.type.SYSTEM.IS_EWM, this.isEwm)
+        peace.cache.set(peace.type.SYSTEM.EWM_INFO, {
           ewmScene: 'doctorQrcode',
           doctorId: peace.util.decode(this.$route.params.json).doctorId
         })
@@ -612,8 +612,8 @@ export default {
 
   deactivated() {
     if (this.isEwm && this.hasLogin()) {
-      peace.cache.remove('h5.isEwm')
-      peace.cache.remove('h5.ewmInfo')
+      peace.cache.remove(peace.type.SYSTEM.IS_EWM)
+      peace.cache.remove(peace.type.SYSTEM.EWM_INFO)
     }
   },
 

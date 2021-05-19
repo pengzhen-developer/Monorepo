@@ -32,7 +32,12 @@ export const SYSTEM = {
   // 当前登录用户机构来源
   NETHOSPITALID: 'NETHOSPITALID',
   // 当前登录用户渠道来源
-  CHANNELID: 'CHANNELID'
+  CHANNELID: 'CHANNELID',
+
+  // 是否扫码进入
+  IS_EWM: 'h5.isEwm',
+  //  医生分享信息
+  EWM_INFO: 'h5.ewmInfo'
 }
 
 /**

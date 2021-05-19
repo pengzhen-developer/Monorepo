@@ -213,7 +213,8 @@ export default {
         this.$store.commit('user/restoreUserInfo', userInfo)
       }
       //初始化清除 清除缓存
-      peace.cache.remove('h5.isEwm')
+      peace.cache.remove(peace.type.SYSTEM.IS_EWM)
+      peace.cache.remove(peace.type.SYSTEM.EWM_INFO)
     },
 
     initNIM() {
