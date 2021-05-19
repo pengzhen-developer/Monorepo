@@ -8,15 +8,15 @@
                      height="50px"
                      cover
                      :src="doctor.doctorInfo.avartor" />
-          <div style="margin-left:16px;">
-            <div style="margin-bottom:2px;">
+          <div style="margin-left:16px;display: flex;flex-direction:column;justify-content: center;">
+            <div>
               <span class="name">{{ doctor.doctorInfo.name }}</span>
               <span class="level">{{ doctor.doctorInfo.doctorTitle }}</span>
             </div>
-            <div class="tag-work tag-online"
+            <!-- <div class="tag-work tag-online"
                  v-if="doctor.doctorInfo.workStatus==1">在线</div>
             <div class="tag-work tag-outline"
-                 v-else-if="doctor.doctorInfo.workStatus==2">离线</div>
+                 v-else-if="doctor.doctorInfo.workStatus==2">离线</div> -->
           </div>
 
         </div>

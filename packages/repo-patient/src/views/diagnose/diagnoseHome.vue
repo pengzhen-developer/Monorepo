@@ -77,10 +77,10 @@
             <div class="card-small">
               {{doctor.doctorTitle}}
             </div>
-            <div class="tag-work online"
+            <!-- <div class="tag-work online"
                  v-if="doctor.workStatus==1">在线</div>
             <div class="tag-work outline"
-                 v-else-if="doctor.workStatus==2">离线</div>
+                 v-else-if="doctor.workStatus==2">离线</div> -->
           </div>
           <div class="card-small">
             {{doctor.netHospitalName}} {{doctor.deptName}}

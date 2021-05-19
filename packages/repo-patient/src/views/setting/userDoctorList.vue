@@ -27,10 +27,10 @@
               {{doctor.name}}
               <div class="card-small title">{{doctor.doctorTitle}} </div>
 
-              <div class="tag-work online"
+              <!-- <div class="tag-work online"
                    v-if="doctor.workStatus==1">在线</div>
               <div class="tag-work outline"
-                   v-else-if="doctor.workStatus==2">离线</div>
+                   v-else-if="doctor.workStatus==2">离线</div> -->
             </div>
             <div class="card-small">
               <span v-if="doctor.hospitalName">{{doctor.hospitalName}}</span>
