@@ -22,7 +22,7 @@
         <el-radio-group v-model="model.modifyType"
                         @change="chargeChange">
           <el-radio label="ADD">加号</el-radio>
-          <el-radio :disabled="data.bookingTotal-data.bookingCounted===0"
+          <el-radio :disabled="data.bookingCounting===0"
                     label="REDUCE">减号</el-radio>
         </el-radio-group>
       </el-form-item>
@@ -36,7 +36,7 @@
                          step-strictly
                          class="number-input"
                          :max="maxInputNum"></el-input-number>
-        <span>剩余可预约{{ data.bookingTotal-data.bookingCounted }}个</span>
+        <span>剩余可预约{{ data.bookingCounting }}个</span>
       </el-form-item>
 
     </el-form>
