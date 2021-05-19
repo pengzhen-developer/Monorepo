@@ -148,9 +148,9 @@ export default {
       }
       // 问诊中
       else if (this.inquiryInfo?.inquiryStatus === Type.INQUIRY.INQUIRY_STATUS.问诊中) {
-        const timerBegin = this.inquiryInfo?.acceptTime?.toDate()?.getTime()
+        const timerEnd = this.inquiryInfo?.expireTime?.toDate()?.getTime()
 
-        return this.formatDuration(timerBegin, new Date())
+        return this.formatDuration(new Date(), timerEnd)
       }
 
       return new Error('会话必须为【待接诊】/【问诊中】状态')
