@@ -1,10 +1,10 @@
 <template>
   <div>
     <!--        医生信息-->
-    <div class="card">
+    <div class="card"
+         @click="gotoDoctorDetail">
       <div class="card-avatar avatar-circular">
-        <img :src="doctorInfo.avartor"
-             class />
+        <img :src="doctorInfo.avartor" />
       </div>
       <div class="card-body">
         <div class="card-name">
@@ -139,6 +139,14 @@ export default {
   },
 
   methods: {
+    gotoDoctorDetail() {
+      if (this.params.serviceType === 'returnVisit') {
+        const json = peace.util.encode({
+          doctorId: this.params.doctorId
+        })
+        this.$router.push(`/components/doctorDetail/${json}`)
+      }
+    },
     getData() {
       peace.service.appoint
         .choiceVisitingTime({
