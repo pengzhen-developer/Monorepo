@@ -134,7 +134,7 @@
                             min-width="160"
                             fixed="right">
           <template slot-scope="scope">
-            <template v-if="[4, 5].includes(scope.row.inquiry_status)">
+            <template v-if="[3, 4, 5].includes(scope.row.inquiry_status)">
               <el-button @click="getInquiry(scope.row.inquiry_no)"
                          size="mini"
                          type="text">咨询记录</el-button>
