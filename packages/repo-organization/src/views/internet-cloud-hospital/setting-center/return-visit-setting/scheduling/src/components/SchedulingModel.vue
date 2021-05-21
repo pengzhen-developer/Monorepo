@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="tip"
-         @click="addClickCount"
          v-if="sourceDisType.toString()==='0'">
       不能对未设置数字签名的医生进行复诊排班
     </div>
@@ -37,9 +36,10 @@
           </div>
           <div class="numbers">
             <span>共</span>
-            <el-input type="number"
-                      min="0"
-                      v-model="amNumber"></el-input>
+            <el-input-number controls-position="right"
+                             v-bind:min="1"
+                             v-force="'pInterger'"
+                             v-model.trim="amNumber"></el-input-number>
             <span>个号</span>
           </div>
         </div>
@@ -64,9 +64,10 @@
           </div>
           <div class="numbers">
             <span>共</span>
-            <el-input type="number"
-                      min="0"
-                      v-model="pmNumber"></el-input>
+            <el-input-number controls-position="right"
+                             v-bind:min="1"
+                             v-force="'pInterger'"
+                             v-model.trim="pmNumber"></el-input-number>
             <span>个号</span>
           </div>
         </div>
@@ -110,61 +111,6 @@
                    type="primary">提交</el-button>
       </div>
     </div>
-    <PeaceDialog :visible.sync="canShow"
-                 append-to-body
-                 title="设置排班时间"
-                 v-if="canShow"
-                 width="580px">
-      <div class="info-row">
-        <el-radio-group v-model="radio">
-          <el-radio :label="1">仅设置下午结束时间</el-radio>
-          <el-radio :label="2">设置所有时间</el-radio>
-        </el-radio-group>
-      </div>
-      <div class="info-row">
-        <div class="info-row-label">
-          <span>上午</span>
-        </div>
-        <div class="info-row-content flex-between">
-          <div class="times">
-            <el-time-picker :clearable="false"
-                            value-format="HH:mm:ss"
-                            :disabled="radio=='1'"
-                            v-model="time.amStart"></el-time-picker>
-            <span class="separator">—</span>
-            <el-time-picker :clearable="false"
-                            value-format="HH:mm:ss"
-                            :disabled="radio=='1'"
-                            maxTime
-                            v-model="time.amEnd"></el-time-picker>
-          </div>
-        </div>
-      </div>
-      <div class="info-row">
-        <div class="info-row-label">
-          <span>下午</span>
-        </div>
-        <div class="info-row-content flex-between">
-          <div class="times">
-            <el-time-picker :clearable="false"
-                            :disabled="radio=='1'"
-                            value-format="HH:mm:ss"
-                            v-model="time.pmStart"></el-time-picker>
-            <span class="separator">—</span>
-            <el-time-picker :clearable="false"
-                            value-format="HH:mm:ss"
-                            min-time
-                            v-model="time.pmEnd"></el-time-picker>
-          </div>
-        </div>
-      </div>
-      <div class="q-mt-lg q-mb-xs"
-           style="text-align: center;">
-        <el-button @click="changeTime"
-                   type="primary">确定</el-button>
-      </div>
-
-    </PeaceDialog>
 
   </div>
 </template>
@@ -222,11 +168,7 @@ export default {
       type: 1,
       price: 10,
       isStop: 0,
-      doctorDisabled: false,
-      clickCount: 0,
-      nowClickTime: '',
-      lastClickTime: '',
-      canShow: false
+      doctorDisabled: false
     }
   },
   computed: {
@@ -242,7 +184,6 @@ export default {
 
   methods: {
     changeTime() {
-      this.canShow = false
       this.amStart = this.formatTime(this.time.amStart)
       this.amEnd = this.formatTime(this.time.amEnd)
       this.pmStart = this.formatTime(this.time.pmStart)
@@ -250,23 +191,6 @@ export default {
     },
     formatTime(time) {
       return new Date(InitDate + ' ' + time).getTime()
-    },
-    /** 连点十下 弹出时间配置弹框 */
-    addClickCount() {
-      this.nowClickTime = new Date().getTime()
-
-      if (this.nowClickTime - this.lastClickTime < 3000) {
-        this.clickCount++
-      } else {
-        this.clickCount = 0
-      }
-      this.lastClickTime = this.nowClickTime
-
-      if (this.clickCount >= 10) {
-        this.canShow = true
-
-        this.clickCount = 0
-      }
     },
     checkDoctorStatus(id) {
       const signStatus = this.doctors.find((item) => item.doctorId == id).signStatus
@@ -540,6 +464,13 @@ export default {
       justify-content: space-between;
     }
     .numbers {
+      .el-input-number {
+        margin: 0 5px;
+        width: 90px;
+        ::v-deep &__inner {
+          padding-right: 5px;
+        }
+      }
       .el-input {
         margin: 0 5px;
         width: 60px;

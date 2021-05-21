@@ -1,6 +1,6 @@
 {
   "name": "zycloud_console",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
