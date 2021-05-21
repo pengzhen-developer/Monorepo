@@ -11,23 +11,30 @@
           <div v-if="QRCodeURL"
                class="qr-code">
             <div class="title">取药码</div>
+            <van-image class="qr-code-img"
+                       :src="QRCodeURL">
+              <template v-slot:loading>
+                <van-loading type="spinner"
+                             size="20" />
+              </template>
+            </van-image>
           </div>
           <!--没有二维码-->
           <div v-if="!QRCodeURL"
                class="qr-code qr-code--empty">
             <div class="title">取药码</div>
-            <img class="img-qr-code-empty"
+            <img class="qr-code-img-empty"
                  :src="require('@src/assets/images/qrcode-empty.png')"
                  alt="" />
             <div class="context">暂无二维码</div>
             <div class="info">请使用取药码进行取药</div>
           </div>
         </div>
-        <img :src="require('@src/assets/images/message-line.png')"
-             alt=""
-             style="display: block; margin: -0.5px 0;">
+        <div class="q-code-line">
+          <img :src="require('@src/assets/images/message-line.png')">
+        </div>
         <div class="text-area">
-          取药码：{{ PickUpCode}}
+          取药码：<span>{{ PickUpCode}}</span>
         </div>
       </div>
     </div>
@@ -44,7 +51,9 @@ export default {
   props: {
     QRCodeURL: {
       type: String,
-      default: ''
+      default: () => {
+        return ''
+      }
     },
     PickUpCode: {
       type: String,
@@ -69,6 +78,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.van-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
 .wrapper {
   height: 100%;
 
@@ -101,6 +113,12 @@ export default {
 
         .title {
           margin: 0.42rem 0;
+          font-weight: bold;
+        }
+        .qr-code-img {
+          width: 150px;
+          height: 150px;
+          margin-bottom: 15px;
         }
       }
 
@@ -116,7 +134,7 @@ export default {
           margin: 0.42rem 0;
         }
 
-        .img-qr-code-empty {
+        .qr-code-img-empty {
           width: 118px;
           height: 100px;
           margin-bottom: 0.26rem;
@@ -130,19 +148,27 @@ export default {
         .info {
           margin-bottom: 0.42rem;
           font-size: 12px;
-          color: #ccc;
+          color: #999;
         }
       }
     }
-
+    .q-code-line {
+      img {
+        display: block;
+      }
+    }
     .text-area {
-      height: 50px;
+      padding: 10px 0 16px 0;
       width: 100%;
       background-color: #fff;
 
       display: flex;
       align-items: center;
       justify-content: center;
+      color: #666;
+      span {
+        color: #333;
+      }
     }
   }
 }

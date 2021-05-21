@@ -129,7 +129,7 @@
     </div>
 
     <!--二维码弹窗-->
-    <QRCode :QRCodeURL="info.QRCodeURL"
+    <QRCode :QRCodeURL="info.qrCode"
             v-model="showQRCode"
             :PickUpCode="info.pickUpCode"></QRCode>
 

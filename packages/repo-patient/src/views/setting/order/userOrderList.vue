@@ -15,7 +15,8 @@
                :key="index"
                v-if="item.orderType=='servicePackage'">
             <div @click="goServicePackageDateilPage(item,index,'countDown_servicePackage_')">
-              <div class="order-item-doctor-info">
+              <div class="order-item-doctor-info"
+                   v-if="item.doctorInfo">
                 <van-image v-bind:src='item.doctorInfo.avartor'
                            class="order-item-doctor-info-avatar"></van-image>
                 <div class="order-item-doctor-info-body">
@@ -77,7 +78,8 @@
                :key="index"
                v-if="item.orderType=='inquiry'||item.orderType=='returnVisit'">
             <div @click="goConsultDetailPage(item,index,'countDown_inquiry_')">
-              <div class="order-item-doctor-info">
+              <div class="order-item-doctor-info"
+                   v-if="item.doctorInfo">
                 <van-image v-bind:src='item.doctorInfo.avartor'
                            class="order-item-doctor-info-avatar"></van-image>
                 <div class="order-item-doctor-info-body">
@@ -191,7 +193,8 @@
                :key="index"
                v-if="item.orderType=='register'">
             <div @click="goOrderDetailPage(item,index,'countDown_register_')">
-              <div class="order-item-doctor-info">
+              <div class="order-item-doctor-info"
+                   v-if="item.doctorInfo">
                 <van-image v-bind:src='item.doctorInfo.avartor'
                            class="order-item-doctor-info-avatar"></van-image>
                 <div class="order-item-doctor-info-body">
@@ -781,12 +784,12 @@ export default {
       this.$router.push(`/setting/order/userOrderDetail/${json}`)
     },
     onClickSeeQRCode(order) {
-      this.pickUpCode = order.expressNo
-      this.QRCodeURL = order.QRCodeURL
+      this.pickUpCode = order.pickUpCode
+      this.QRCodeURL = order.qrCode
       this.showQRCode = true
     },
     ifShowLogistics(item) {
-      return item.shippingMethod === this.ENUM.SHIPPING_METHOD.HOME && item.expressNo
+      return item.shippingMethod === this.ENUM.SHIPPING_METHOD.HOME && item.expressNo.length > 0
     },
 
     checkQRCodeBtn(order) {

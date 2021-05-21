@@ -686,7 +686,7 @@ export default {
       peace.service.purchasedrug.SelectOrderDetApi(params).then((res) => {
         this.order = res.data
         this.pickUpCode = res.data.pickUpCode
-        this.QRCodeURL = res.data.QRCodeURL
+        this.QRCodeURL = res.data.qrCode
         this.cbDialog.data.money = this.order.orderMoney.toFixed(2)
         this.phoneDialog.data.phone = res.data.tel
         if (this.order.expireTime > this.order.currentTime) {
