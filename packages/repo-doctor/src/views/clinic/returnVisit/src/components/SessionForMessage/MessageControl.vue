@@ -208,13 +208,21 @@ export default {
           scene: this.$store.state.inquiry?.session?.scene,
           to: this.$store.state.inquiry?.session?.content?.patientInfo?.familyId,
           text: message,
-          done: (error, message) => {
-            console.warn('【 IM 】【 sendText 】', new Date(), message)
+          done: (error, IMMessage) => {
+            console.warn('【 IM 】【 sendText 】', new Date(), IMMessage)
 
             this.editorMessage = ''
 
             if (error) {
               throw new Error(error)
+            } else {
+              if (this.$store.state.inquiry?.session?.content?.inquiryInfo?.sourcePatient === 'wx') {
+                Service.sendSubscribeMsg({
+                  patientId: this.$store.state.inquiry?.session?.content?.patientInfo?.patientId,
+                  inquiryNo: this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryNo,
+                  content: message
+                })
+              }
             }
           }
         })
@@ -233,6 +241,14 @@ export default {
 
             if (error) {
               throw new Error(error)
+            } else {
+              if (this.$store.state.inquiry?.session?.content?.inquiryInfo?.sourcePatient === 'wx') {
+                Service.sendSubscribeMsg({
+                  patientId: this.$store.state.inquiry?.session?.content?.patientInfo?.patientId,
+                  inquiryNo: this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryNo,
+                  content: ''
+                })
+              }
             }
           }
         })

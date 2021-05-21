@@ -1,5 +1,24 @@
 export default {
   /**
+   * 发送消息提醒（小程序订阅消息）
+   *
+   * @param {*} params
+   */
+  sendSubscribeMsg(params) {
+    const isMock = false
+
+    const apiPath = 'client/v1/Notification/sendSubscribeMsg'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
    * 【个性化需求】获取天津北辰医保就医记录基础信息
    *
    * @param {*} params
