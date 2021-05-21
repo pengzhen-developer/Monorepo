@@ -23,6 +23,15 @@
       </div>
 
       <div class="row q-mb-xs">
+        <div class="row col-12">
+          <span class="text-justify"
+                style="width: 4em;">临床诊断</span>
+          <span class="q-mx-xs">：</span>
+          <span class="col text-weight-bold">{{ baseInfo.diagnosis }}</span>
+        </div>
+      </div>
+
+      <div class="row q-mb-xs">
         <div class="row col-6">
           <span class="text-justify"
                 style="width: 4em;">姓名</span>

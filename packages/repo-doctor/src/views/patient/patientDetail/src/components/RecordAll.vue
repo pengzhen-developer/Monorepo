@@ -151,7 +151,7 @@
                   </div>
                 </template>
 
-                <template v-if="healthItem.checkType === Peace.type.HEALTH.CHECK_TYPE.检验">
+                <template v-if="healthItem.checkType === Peace.type.HEALTH.CHECK_TYPE.影像">
                   <div class="time-line-content-card">
                     <RecordPACS :data="healthItem"
                                 :type="type"></RecordPACS>
