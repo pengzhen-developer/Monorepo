@@ -42,6 +42,12 @@
       <q-separator class="q-my-sm bg-grey-2"></q-separator>
 
       <q-item class="row flex justify-between items-center">
+        <div class="col-3">临床诊断</div>
+        <div class="text-justify text-grey-7 row-value">{{ data.diagnosis }}</div>
+      </q-item>
+      <q-separator class="q-my-sm bg-grey-2"></q-separator>
+
+      <q-item class="row flex justify-between items-center">
         <div class="col-3">申请科室</div>
         <div class="text-justify text-grey-7 row-value">{{ data.applyDept }}</div>
       </q-item>
