@@ -791,12 +791,12 @@ export default {
     ifShowLogistics(item) {
       return item.shippingMethod === this.ENUM.SHIPPING_METHOD.HOME && item.expressNo.length > 0
     },
-
+    //状态>=1 有取药码 配送方式为 自提
     checkQRCodeBtn(order) {
       const shippingMethod = order.shippingMethod
       const OrderStatus = order.callOrderStatus
       if (shippingMethod === undefined || OrderStatus === undefined) return false
-      return shippingMethod === ENUM.SHIPPING_METHOD.SELF && OrderStatus >= ENUM.ORDER_STATUS.ACCEPT && OrderStatus !== ENUM.ORDER_STATUS.CANCEL
+      return shippingMethod === ENUM.SHIPPING_METHOD.SELF && OrderStatus >= ENUM.ORDER_STATUS.PAID && order.pickUpCode
     },
     goDrugLogiPage(item) {
       const json = {}

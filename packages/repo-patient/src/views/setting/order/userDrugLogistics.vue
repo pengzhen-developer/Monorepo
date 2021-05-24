@@ -104,7 +104,7 @@
                 {{ info.shippingMethod == ENUM.SHIPPING_METHOD.SELF  ? '您在'+ info.drugStoreName +'已自提' : '' }}
               </div>
 
-              <div v-if="item.status == '2' && info.callOrderStatus != 5 && info.shippingMethod === ENUM.SHIPPING_METHOD.SELF"
+              <div v-if="item.status == '1' && info.pickUpCode  && info.shippingMethod === ENUM.SHIPPING_METHOD.SELF"
                    class="note">
                 <div class="qr-btn "
                      :class="{ 'active' : index == 0 }"
