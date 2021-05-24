@@ -23,36 +23,37 @@
         <div class="tab"
              v-if="!isFixed">
           <div @click="changeTab(0)"
-               :class="tabIndex == '0' ? 'tab-item active' : 'tab-item'">
+               :class="tabIndex === 0 ? 'tab-item active' : 'tab-item'">
             检验
           </div>
           <div @click="changeTab(1)"
-               :class="tabIndex == '1' ? 'tab-item active' : 'tab-item'">
+               :class="tabIndex === 1 ? 'tab-item active' : 'tab-item'">
             影像
           </div>
         </div>
         <div class="tab fixed"
              v-else>
           <div @click="changeTab(0)"
-               :class="tabIndex == '0' ? 'tab-item-fixed active' : 'tab-item-fixed'">
+               :class="tabIndex === 0 ? 'tab-item-fixed active' : 'tab-item-fixed'">
             检验
           </div>
           <div @click="changeTab(1)"
-               :class="tabIndex == '1' ? 'tab-item-fixed active' : 'tab-item-fixed'">
+               :class="tabIndex === 1 ? 'tab-item-fixed active' : 'tab-item-fixed'">
             影像
           </div>
         </div>
       </van-sticky>
-      <div class="content">
+      <div class="content"
+           v-if="tabIndex===0">
         <van-list v-model="isLoading"
                   :finished="finished"
-                  @load="get">
+                  @load="get(0)">
           <div class="record-item"
-               v-for="(item,index) in list"
+               v-for="(item,index) in inspection.list"
                @click="getoDetail(item.checkId,item.checkType)"
                :key="index">
             <img class="record-item-left"
-                 :src="require(tabIndex == '0'?'@src/assets/images/ic_jianyan.png':'@src/assets/images/ic_yinxiang.png')">
+                 :src="require(tabIndex === 0?'@src/assets/images/ic_jianyan.png':'@src/assets/images/ic_yinxiang.png')">
             <div class="record-item-content">
               <div class="record-item-content-title">{{item.itemName || item.checkName}}</div>
               <div class="record-item-content-time">{{item.checkDate}}</div>
@@ -61,23 +62,23 @@
                  :src="require('@src/assets/images/tit-more.jpg')">
           </div>
           <div class="none-page"
-               v-if="list.length==0&&loaded">
+               v-if="inspection.list.length==0&&loaded">
             <div class="icon icon_none_record"></div>
             <div class="none-text">暂无报告单</div>
           </div>
         </van-list>
       </div>
-      <!-- <div class="content"
-           v-show='tabIndex==1'>
+      <div class="content"
+           v-if='tabIndex===1'>
         <van-list v-model="isLoading"
                   :finished="finished"
-                  @load="get">
+                  @load="get(1)">
           <div class="record-item"
-               v-for="(item,index) in list"
+               v-for="(item,index) in pacs.list"
                @click="getoDetail(item.checkId,item.checkType)"
                :key="index">
             <img class="record-item-left"
-                 :src="require(tabIndex == '0'?'@src/assets/images/ic_jianyan.png':'@src/assets/images/ic_yinxiang.png')">
+                 :src="require(tabIndex === 0?'@src/assets/images/ic_jianyan.png':'@src/assets/images/ic_yinxiang.png')">
             <div class="record-item-content">
               <div class="record-item-content-title">{{item.itemName || item.checkName}}</div>
               <div class="record-item-content-time">{{item.checkDate}}</div>
@@ -86,12 +87,12 @@
                  :src="require('@src/assets/images/tit-more.jpg')">
           </div>
           <div class="none-page"
-               v-if="list.length==0&&loaded">
+               v-if="pacs.list.length==0&&loaded">
             <div class="icon icon_none_record"></div>
             <div class="none-text">暂无报告单</div>
           </div>
         </van-list>
-      </div> -->
+      </div>
     </div>
 
     <!-- 就诊人信息 -->
@@ -122,12 +123,19 @@ export default {
       familyInfo: {},
       familyId: '',
       recordFlag: false,
-      tabIndex: '0',
+      tabIndex: 0,
       isFixed: false,
       showFamily: false,
-      list: [],
-      p: 0,
-      size: 10,
+      inspection: {
+        list: [],
+        p: 0,
+        size: 10
+      },
+      pacs: {
+        list: [],
+        p: 0,
+        size: 10
+      },
       finished: false,
       isLoading: false,
       loaded: false,
@@ -137,9 +145,7 @@ export default {
   watch: {
     'formData.hsp.netHospitalId': {
       handler() {
-        this.p = 0
-        this.loaded = false
-        this.finished = false
+        this.reset()
         this.get()
       },
       immediate: true
@@ -153,14 +159,23 @@ export default {
     hasFixed(e) {
       this.isFixed = e.isFixed
     },
+    reset(index = 0) {
+      console.log('reset')
+      if (index === 0) {
+        this.inspection.list = []
+        this.inspection.p = 0
+      } else {
+        this.pacs.list = []
+        this.pacs.p = 0
+      }
+      this.loaded = false
+      this.finished = false
+    },
     changeTab(index) {
       if (this.tabIndex != index) {
         this.tabIndex = index
-        this.p = 0
-        this.loaded = false
-        this.finished = false
-        this.list = []
-        this.get()
+        this.reset(index)
+        this.get(index, 'change')
       }
     },
     changeFlag(params) {
@@ -169,10 +184,7 @@ export default {
         this.familyInfo = params.familyInfo
         if (this.formData?.hsp?.netHospitalId) {
           this.recordFlag = true
-          this.p = 0
-          this.loaded = false
-          this.finished = false
-          this.list = []
+          this.reset()
           this.get()
         } else {
           peace.util.alert('请选择医院')
@@ -204,33 +216,70 @@ export default {
       })
       this.$router.push(`/file/fileRecordDetail/${json}`)
     },
-    get() {
+    get(index = 0, type = 'srcoll') {
       if (!this.timer) {
         this.timer = setTimeout(() => {
-          this.getRecordList()
+          if (index === 0) {
+            this.getInspectionRecordList(type)
+          } else {
+            this.getPacsRecordList(type)
+          }
           this.timer = null
         }, 100)
       }
     },
-    getRecordList() {
+    getInspectionRecordList(type) {
       if (!this.familyInfo.familyId) {
         return
       }
 
-      this.p++
+      this.inspection.p++
       let param = {
         familyId: this.familyInfo.familyId,
         netHospitalId: this.formData.hsp.netHospitalId,
-        checkType: this.tabIndex == '0' ? 'inspection' : 'pacs',
-        p: this.p,
-        size: this.size
+        checkType: 'inspection',
+        p: this.inspection.p,
+        size: this.inspection.size
       }
-      peace.service.health.getRecordList(param).then(res => {
-        this.list = this.list.concat(res.data.list)
+      peace.service.health.getRecordList(param).then((res) => {
+        if (type === 'change') {
+          this.inspection.list = [].concat(res.data.list)
+        } else {
+          this.inspection.list = this.inspection.list.concat(res.data.list)
+        }
+
         this.isLoading = false
         this.loaded = true
         this.recordFlag = true
-        if (this.p * this.size >= res.data.total) {
+        if (this.inspection.p * this.inspection.size >= res.data.total) {
+          this.finished = true
+        }
+      })
+    },
+    getPacsRecordList(type) {
+      if (!this.familyInfo.familyId) {
+        return
+      }
+
+      this.pacs.p++
+      let param = {
+        familyId: this.familyInfo.familyId,
+        netHospitalId: this.formData.hsp.netHospitalId,
+        checkType: 'pacs',
+        p: this.pacs.p,
+        size: this.pacs.size
+      }
+      peace.service.health.getRecordList(param).then((res) => {
+        if (type === 'change') {
+          this.pacs.list = [].concat(res.data.list)
+        } else {
+          this.pacs.list = this.pacs.list.concat(res.data.list)
+        }
+
+        this.isLoading = false
+        this.loaded = true
+        this.recordFlag = true
+        if (this.pacs.p * this.pacs.size >= res.data.total) {
           this.finished = true
         }
       })
