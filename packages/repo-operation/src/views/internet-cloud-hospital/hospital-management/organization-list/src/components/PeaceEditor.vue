@@ -136,6 +136,7 @@ export default {
 }
 ::v-deep .ql-container {
   min-height: 100px;
+  white-space: pre-wrap;
 }
 ::v-deep .ql-tooltip {
   z-index: 20;
