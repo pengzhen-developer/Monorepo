@@ -27,10 +27,10 @@
                          v-if="item.isExistRedDot==1"></div>
                   </div>
                   <div class="case-right">
-                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                    <p style="font-size: 16px; color: #333333; line-height: 32px;width:13em;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
                       {{item.itemName}}
                     </p>
-                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                    <p style="font-size: 12px; color: #999999; line-height: 24px;width:17em;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
                       {{ item.netHospitalName }} | {{ item.netDeptName }}
                     </p>
                   </div>
@@ -48,10 +48,10 @@
                          v-if="item.isExistRedDot==1"></div>
                   </div>
                   <div class="case-right">
-                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                    <p style="font-size: 16px; color: #333333; line-height: 32px;width:13em;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
                       {{item.itemName}}
                     </p>
-                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                    <p style="font-size: 12px; color: #999999; line-height: 24px;width:17em;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
                       {{ item.netHospitalName }} | {{ item.netDeptName }}
                     </p>
                   </div>
@@ -120,18 +120,18 @@ export default {
         p: this.p,
         size: this.size
       }
-      peace.service.health.allHealthList(param).then(res => {
+      peace.service.health.allHealthList(param).then((res) => {
         const temp = {}
 
         // 遍历时间
-        const timeList = new Set(res.data.list.map(item => item.measureTime))
+        const timeList = new Set(res.data.list.map((item) => item.measureTime))
         //拼接familyId
-        res.data.list.map(item => {
+        res.data.list.map((item) => {
           item.familyId = item.familyId || this.familyId
         })
         if (timeList.size) {
-          timeList.forEach(time => {
-            temp[time] = res.data.list.filter(item => item.measureTime === time)
+          timeList.forEach((time) => {
+            temp[time] = res.data.list.filter((item) => item.measureTime === time)
           })
 
           if (typeof this.data == 'undefined') {
