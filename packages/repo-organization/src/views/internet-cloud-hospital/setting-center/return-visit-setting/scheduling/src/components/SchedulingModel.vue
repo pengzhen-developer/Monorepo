@@ -216,8 +216,8 @@ export default {
       const pmNumber = this.pmNumber
 
       if (amNumber < 0 || pmNumber < 0) {
-        if (amNumber < 0) this.amNumber = '0'
-        if (pmNumber < 0) this.pmNumber = '0'
+        if (amNumber < 0) this.amNumber = undefined
+        if (pmNumber < 0) this.pmNumber = undefined
 
         return Peace.util.warning('请输入合法的号源数量！')
       }
@@ -302,8 +302,8 @@ export default {
           this.pmEnd = new Date(`${InitDate} ${params.workEndPM}`)
         }
 
-        this.amNumber = params.totalCountAM || '0'
-        this.pmNumber = params.totalCountPM || '0'
+        this.amNumber = params.totalCountAM || undefined
+        this.pmNumber = params.totalCountPM || undefined
         this.price = params.unitPrice || '0'
         this.type = parseInt(params.sourceLevelType)
         this.isStop = params.isStopClass
