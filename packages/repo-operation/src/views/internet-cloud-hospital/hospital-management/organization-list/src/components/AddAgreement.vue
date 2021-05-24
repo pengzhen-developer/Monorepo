@@ -19,14 +19,14 @@
                     prop="version">
         <el-input v-model="model.version"
                   placeholder="请输入"
-                  maxlength="20"></el-input>
+                  maxlength="10"></el-input>
       </el-form-item>
     </el-form>
     <div class="flex justify-end full-width q-pt-32">
       <el-button v-on:click="cancel">取消</el-button>
       <el-button type="primary"
                  v-on:click="save"
-                 v-bind:loading="isLoading">保存</el-button>
+                 v-bind:loading="isLoading">提交</el-button>
     </div>
   </div>
 </template>

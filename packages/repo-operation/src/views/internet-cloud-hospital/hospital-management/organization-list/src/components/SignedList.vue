@@ -35,14 +35,6 @@
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
-        <PeaceTableColumn label="序号"
-                          type="index"
-                          align="center"
-                          width="80px">
-          <template slot-scope="{ $index, _self }">
-            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
-          </template>
-        </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="用户姓名"
                           prop="name"></PeaceTableColumn>

@@ -18,14 +18,6 @@
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
-        <PeaceTableColumn label="序号"
-                          type="index"
-                          align="center"
-                          width="80px">
-          <template slot-scope="{ $index, _self }">
-            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
-          </template>
-        </PeaceTableColumn>
         <PeaceTableColumn label="协议名称"
                           min-width="200"
                           prop="name"></PeaceTableColumn>
