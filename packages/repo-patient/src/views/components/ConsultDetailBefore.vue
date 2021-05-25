@@ -1294,7 +1294,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0;
+  // padding:12px 0 ;
+  padding-top: 12px;
+  padding-right: 0px;
+  padding-bottom: 12px;
+  padding-left: 0px;
+
   &.text-gery {
     color: rgba(51, 51, 51, 0.6);
     line-height: 20px;
