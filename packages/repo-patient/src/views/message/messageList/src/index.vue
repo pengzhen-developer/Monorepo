@@ -18,18 +18,14 @@
                             v-if="inquiryStatus==Constant.INQUIRY_STATUS.问诊中">
               <template #default="timeData">
                 <span class="text-gery"
-                      v-if="timeData.seconds>0">预计</span>
-                <span class="text-primary"
-                      v-if="timeData.days>=1">{{timeData.days}}天</span>
-                <span class="text-primary"
-                      v-else-if="timeData.hours<24&&timeData.hours>=1">{{timeData.hours}}小时</span>
-                <span class="text-primary"
-                      v-else-if="timeData.minutes>=1&&timeData.hours<1">{{timeData.minutes}}分钟</span>
-                <span class="text-primary"
-                      v-else-if="timeData.minutes<1&&timeData.seconds>0">{{timeData.seconds}}秒</span>
-                <span v-else></span>
+                      v-if="timeData.days>=1">预计<span class="text-primary">{{timeData.days}}天</span>后结束</span>
                 <span class="text-gery"
-                      v-if="timeData.seconds>0">后结束</span>
+                      v-else-if="timeData.hours<24&&timeData.hours>=1">预计<span class="text-primary">{{timeData.hours}}小时</span>后结束</span>
+                <span class="text-gery"
+                      v-else-if="timeData.minutes>=1&&timeData.hours<1">预计<span class="text-primary">{{timeData.minutes}}分钟</span>后结束</span>
+                <span class="text-gery"
+                      v-else-if="timeData.minutes<1&&timeData.seconds>0">预计 <span class="text-primary">{{timeData.seconds}}秒</span>后结束</span>
+                <span v-else></span>
               </template>
             </van-count-down>
           </div>
