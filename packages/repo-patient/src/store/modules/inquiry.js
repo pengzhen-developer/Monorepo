@@ -5,6 +5,7 @@ const state = {
   sessionsFamily: {},
   session: {},
   sessionMessages: [],
+  hasSetInfo: false,
   serviceRemind: {
     list: [],
     readNum: 0,
@@ -60,6 +61,7 @@ const mutations = {
   setInquirySessionsFamily(state, params) {
     state.sessionsFamily = null
     state.sessionsFamily = params
+    state.hasSetInfo = true
   },
   setInquirySessions(state, params) {
     state.sessions = state.sessions.concat(params)

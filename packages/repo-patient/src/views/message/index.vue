@@ -1,69 +1,80 @@
 <template>
   <div class="message">
-    <template v-if="serviceRemind.list.length > 0">
-      <div @click="goServiceRemind"
-           class="message-item">
-        <div class="message-item-avatar">
-          <img src="@src/assets/images/message/ic_service_message.png" />
-          <div class="message-item-unread"
-               v-if="serviceRemind.unreadNum !== 0">
-            <div class="van-info van-info-message">{{ serviceRemind.unreadNum }}</div>
-          </div>
-        </div>
-        <div class="message-item-detail">
-          <div class="message-item-detail-title">
-            <div class="message-item-detail-title-doctor">
-              <span>服务提醒{{ serviceRemind.list[0].doctorName }}</span>
-            </div>
-            <div class="message-item-detail-title-time">
-              <span>{{ serviceRemind.list[0].time.toDate().calcTimeHeader() }}</span>
+    <template v-if="loaded">
+      <template v-if="serviceRemind.list.length > 0">
+        <div @click="goServiceRemind"
+             class="message-item">
+          <div class="message-item-avatar">
+            <img src="@src/assets/images/message/ic_service_message.png" />
+            <div class="message-item-unread"
+                 v-if="serviceRemind.unreadNum !== 0">
+              <div class="van-info van-info-message">{{ serviceRemind.unreadNum }}</div>
             </div>
           </div>
-          <div class="message-item-detail-content">
-            <span v-html="serviceRemind.list[0].title"></span>
+          <div class="message-item-detail">
+            <div class="message-item-detail-title">
+              <div class="message-item-detail-title-doctor">
+                <span>服务提醒{{ serviceRemind.list[0].doctorName }}</span>
+              </div>
+              <div class="message-item-detail-title-time">
+                <span>{{ serviceRemind.list[0].time.toDate().calcTimeHeader() }}</span>
+              </div>
+            </div>
+            <div class="message-item-detail-content">
+              <span v-html="serviceRemind.list[0].title"></span>
+            </div>
           </div>
         </div>
-      </div>
+      </template>
+      <template v-if="sessionsList.length > 0">
+        <div :id="session.id +'-'+ session.updateTime"
+             :key="session.id +'-'+ session.updateTime"
+             @click="selectSession(session)"
+             class="message-item"
+             v-for="session in sessionsList">
+          <div class="message-item-avatar">
+            <img :src="session.content.doctorInfo.doctorAvatar" />
+            <div class="message-item-unread"
+                 v-if="session.unread !== 0">
+              <div class="van-info van-info-message">{{ session.unread }}</div>
+            </div>
+          </div>
+          <div class="message-item-detail">
+            <div class="message-item-detail-title">
+              <div class="message-item-detail-title-doctor">
+                <span>{{ session.content.doctorInfo.doctorName }}</span>
+                <span style="margin: 0 5px;">|</span>
+                <span>{{ session.content.doctorInfo.doctorTitle }}</span>
+              </div>
+              <div class="message-item-detail-title-time">
+                <span>{{ session.updateTime.toDate().calcTimeHeader() }}</span>
+              </div>
+            </div>
+            <div class="message-item-detail-content">
+              <span v-html="getLastMessage(session)"></span>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <template v-if="sessionsList.length == 0 && serviceRemind.list.length === 0">
+        <div class="no-data"
+             style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
+          <img src="@src/assets/images/ic_no consultation copy@2x.png"
+               style="width: 160px; height: 100px;" />
+          <p style="font-size: 15px; color: #999999;">暂无消息</p>
+        </div>
+      </template>
     </template>
-    <template v-if="sessionsList.length > 0">
-      <div :id="session.id +'-'+ session.updateTime"
-           :key="session.id +'-'+ session.updateTime"
-           @click="selectSession(session)"
-           class="message-item"
-           v-for="session in sessionsList">
-        <div class="message-item-avatar">
-          <img :src="session.content.doctorInfo.doctorAvatar" />
-          <div class="message-item-unread"
-               v-if="session.unread !== 0">
-            <div class="van-info van-info-message">{{ session.unread }}</div>
-          </div>
-        </div>
-        <div class="message-item-detail">
-          <div class="message-item-detail-title">
-            <div class="message-item-detail-title-doctor">
-              <span>{{ session.content.doctorInfo.doctorName }}</span>
-              <span style="margin: 0 5px;">|</span>
-              <span>{{ session.content.doctorInfo.doctorTitle }}</span>
-            </div>
-            <div class="message-item-detail-title-time">
-              <span>{{ session.updateTime.toDate().calcTimeHeader() }}</span>
-            </div>
-          </div>
-          <div class="message-item-detail-content">
-            <span v-html="getLastMessage(session)"></span>
-          </div>
-        </div>
-      </div>
+    <template v-else>
+      <van-row type="flex"
+               align="center"
+               justify="center"
+               style="height:100%">
+        <van-loading />
+      </van-row>
     </template>
 
-    <template v-if="sessionsList.length == 0 && serviceRemind.list.length === 0">
-      <div class="no-data"
-           style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
-        <img src="@src/assets/images/ic_no consultation copy@2x.png"
-             style="width: 160px; height: 100px;" />
-        <p style="font-size: 15px; color: #999999;">暂无消息</p>
-      </div>
-    </template>
   </div>
 </template>
 
@@ -86,6 +97,9 @@ export default {
   },
 
   computed: {
+    loaded() {
+      return this.$store.state.inquiry.hasSetInfo
+    },
     sessionsList() {
       return this.$store.getters['inquiry/sessionList']
     },
