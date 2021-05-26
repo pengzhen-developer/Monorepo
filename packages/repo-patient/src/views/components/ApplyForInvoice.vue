@@ -34,7 +34,7 @@ export default {
 .cancel-dialog {
   box-sizing: border-box;
   width: 270px;
-  height: 151px;
+  min-height: 151px;
   padding: 23px 23px 0 23px;
   background-color: #ffffff;
   border-radius: 2px;
