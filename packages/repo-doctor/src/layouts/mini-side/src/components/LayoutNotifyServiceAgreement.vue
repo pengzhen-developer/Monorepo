@@ -3,6 +3,11 @@
     <PeaceDialog v-bind:visible="visible"
                  v-bind:show-close="false"
                  v-bind:title="title">
+      <div class="q-mb-md">
+        <span>最近更新时间：</span>
+        <span>{{ updatedTime }}</span>
+      </div>
+
       <div class="q-mb-md service-agreement__virtual_box">
       </div>
 
@@ -26,7 +31,8 @@ export default {
 
       agreementId: '',
       title: '',
-      content: ''
+      content: '',
+      updatedTime: ''
     }
   },
 
@@ -45,6 +51,7 @@ export default {
             this.agreementId = res.data.agreementId
             this.title = res.data.title
             this.content = res.data.content
+            this.updatedTime = res.data.updatedTime
 
             // get your div tag as HTML string
             const HTMLToIsolate = res.data.content
@@ -66,6 +73,8 @@ export default {
               const iframeBody = this.contentDocument.querySelector('body')
               this.style.height = `${iframeBody.scrollHeight}px`
               iframeBody.style.overflow = 'hidden'
+              iframeBody.style.margin = '0'
+              iframeBody.style.padding = '0'
             })
           })
         }
