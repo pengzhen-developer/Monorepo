@@ -1,39 +1,72 @@
 <template>
   <!-- eslint-disable -->
-  <div :style="items.length!=0||data.length==0&& 'height:100%;'">
-    <van-skeleton :key="item.netHospitalId"
-                  :loading="loading"
-                  :name="item.hospitalName"
-                  :nethospitalid="item.netHospitalId"
-                  :row="3"
-                  avatar
-                  title
-                  type="organHome"
-                  v-for="(item,index) in data"
-                  v-if="index < showNum">
-      <div @click="goMenuPage(item)"
-           class="cards"
-           :class="{'isHome':isHome}">
-        <div class="card-avatar">
-          <img :src="item.icon"
-               class />
-        </div>
-        <div class="card-body">
-          <div class="card-name els">{{item.hospitalName}}</div>
-          <div class="mb8 els">
-            <div :key="tit"
-                 class="card-small"
-                 v-for="(tit,i) in item.brief">{{ (i == 0 ? '' : ' / ' ) + tit}}</div>
+  <div :style="items.length!=0||list.length==0&& 'height:100%;'">
+    <template v-if="items.length>0">
+      <van-skeleton :key="item.netHospitalId"
+                    :loading="loading"
+                    :name="item.hospitalName"
+                    :nethospitalid="item.netHospitalId"
+                    :row="3"
+                    avatar
+                    title
+                    type="organHome"
+                    v-for="(item,index) in items"
+                    v-if="index < showNum">
+        <div @click="goMenuPage(item)"
+             class="cards"
+             :class="{'isHome':isHome}">
+          <div class="card-avatar">
+            <img :src="item.icon"
+                 class />
           </div>
-          <div class=" els">
-            <van-tag :key="it"
-                     v-for="it in (item.tags || item.labels)">{{it}}</van-tag>
+          <div class="card-body">
+            <div class="card-name els">{{item.hospitalName}}</div>
+            <div class="mb8 els">
+              <div :key="tit"
+                   class="card-small"
+                   v-for="(tit,i) in item.brief">{{ (i == 0 ? '' : ' / ' ) + tit}}</div>
+            </div>
+            <div class=" els">
+              <van-tag :key="it"
+                       v-for="it in (item.tags || item.labels)">{{it}}</van-tag>
+            </div>
           </div>
         </div>
-      </div>
-    </van-skeleton>
+      </van-skeleton>
+    </template>
+
+    <template v-if="items.length==0">
+      <van-list :loading="loading"
+                v-model="loading"
+                :finished="finish"
+                @load="getHspList">
+        <div @click="goMenuPage(item)"
+             class="cards"
+             :class="{'isHome':isHome}"
+             v-for="(item,index) in list"
+             :key="index">
+          <div class="card-avatar">
+            <img :src="item.icon"
+                 class />
+          </div>
+          <div class="card-body">
+            <div class="card-name els">{{item.hospitalName}}</div>
+            <div class="mb8 els">
+              <div :key="tit"
+                   class="card-small"
+                   v-for="(tit,i) in item.brief">{{ (i == 0 ? '' : ' / ' ) + tit}}</div>
+            </div>
+            <div class=" els">
+              <van-tag :key="it"
+                       v-for="it in (item.tags || item.labels)">{{it}}</van-tag>
+            </div>
+          </div>
+        </div>
+      </van-list>
+    </template>
+
     <div class="none"
-         v-if="!loading&&data.length==0">
+         v-if="loaded&&list.length==0">
       <div class="none-page">
         <div class="icon icon_none_source"></div>
         <div class="none-text">暂无可预约号源</div>
@@ -68,8 +101,12 @@ export default {
   },
   data() {
     return {
-      loading: true,
-      data: [],
+      loaded: false,
+      finish: false,
+      loading: false,
+      p: 0,
+      size: 10,
+      list: [],
       showNum: 100,
       params: {},
       type: 'recommendHsp' // 默认值
@@ -80,17 +117,13 @@ export default {
     const params = peace.util.decode(this.$route.params.json)
     this.params = params || {}
     this.type = params.type || this.type
-    this.data = this.items || []
     this.showNum = this.max
-
-    if (!this.data.length) {
-      this.getHspList()
-    } else {
-      this.loading = false
-    }
   },
-  mounted() {
-    // this.loading = true
+  activated() {
+    this.p = 0
+    this.loaded = false
+    this.finish = false
+    this.list = []
   },
   methods: {
     goMenuPage(item) {
@@ -123,26 +156,37 @@ export default {
       // 推荐医院
       if (this.params.type == 'recommendHsp') {
         peace.service.index.getMenu().then((res) => {
-          this.data = res.data.recommendOrgan
+          this.list = res.data.recommendOrgan
           this.showNum = res.data.recommendOrgan.length
-          this.loading = false
+          this.loaded = true
+          this.finish = true
         })
       }
       // 报告单医院
       if (this.params.type == 'report') {
-        peace.service.hospital.getNethospitalList({ page: 1 }).then((res) => {
-          this.data = res.data.netHospitals || []
-          this.showNum = this.data.length
+        this.p++
+        peace.service.hospital.getNethospitalList({ p: this.p, size: this.size }).then((res) => {
+          this.list = this.list.concat(res.data.list)
+          this.showNum = res.data.total
           this.loading = false
+          this.loaded = true
+          if (this.p * this.size >= res.data.total) {
+            this.finish = true
+          }
         })
       }
 
       // 预约医院
       if (this.params.type == 'appoint') {
-        peace.service.hospital.getHospitalByRegister({ p: 1, size: 100 }).then((res) => {
-          this.data = res.data.list || []
-          this.showNum = this.data.length
+        this.p++
+        peace.service.hospital.getHospitalByRegister({ p: this.p, size: this.size }).then((res) => {
+          this.list = this.list.concat(res.data.list)
+          this.showNum = res.data.total
           this.loading = false
+          this.loaded = true
+          if (this.p * this.size >= res.data.total) {
+            this.finish = true
+          }
         })
       }
     }
