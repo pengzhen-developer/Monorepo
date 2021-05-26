@@ -4,7 +4,7 @@
                  v-bind:show-close="false"
                  v-bind:title="title">
       <div class="q-mb-md">
-        <span>最近更新时间：</span>
+        <span>最近更新日期：</span>
         <span>{{ updatedTime }}</span>
       </div>
 
