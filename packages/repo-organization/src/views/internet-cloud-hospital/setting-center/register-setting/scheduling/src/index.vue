@@ -82,11 +82,11 @@
                     </p>
                     <span class="small-text"
                           :class="{'stop-status':doctor.isStopClass}"
-                          v-if="doctor.workStartAM && doctor.workEndAM">{{ doctor.workStartAM.substr(0, 5) }}
+                          v-if="doctor.totalCountAM && doctor.workStartAM && doctor.workEndAM">{{ doctor.workStartAM.substr(0, 5) }}
                       - {{ doctor.workEndAM.substr(0, 5) }}</span>
                     <span class="small-text"
                           :class="{'stop-status':doctor.isStopClass}"
-                          v-if="doctor.workStartPM && doctor.workEndPM">{{ doctor.workStartPM.substr(0, 5) }}
+                          v-if="doctor.totalCountPM && doctor.workStartPM && doctor.workEndPM">{{ doctor.workStartPM.substr(0, 5) }}
                       - {{ doctor.workEndPM.substr(0, 5) }}</span>
                     <div class="list-item-switch">
                       <span v-if="doctor.isStopClass"

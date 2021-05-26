@@ -111,11 +111,10 @@ export default {
     .step-title {
       font-size: 16px;
       font-family: PingFangSC-Regular, PingFang SC;
-      font-weight: 400;
+      font-weight: 600;
       color: rgba(0, 0, 0, 0.85);
       &.active {
         color: #333;
-        font-weight: 500;
       }
       &.before {
         color: #999;

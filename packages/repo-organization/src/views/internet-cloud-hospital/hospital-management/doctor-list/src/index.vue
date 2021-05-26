@@ -2,7 +2,8 @@
   <div class="layout-route">
     <div class="card card-search q-mb-md">
       <el-form inline
-               label-position="left">
+               label-width="100px"
+               label-position="right">
 
         <el-form-item label="姓名：">
           <el-input v-model="model.name"

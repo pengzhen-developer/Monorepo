@@ -250,7 +250,7 @@ export default {
       // 上午
       const amJson = {
         ampm: 'AM',
-        totalCount: amNumber,
+        totalCount: amNumber ? amNumber : null,
         workStart: timeFormat(this.amStart),
         workEnd: timeFormat(this.amEnd),
         week,
@@ -262,7 +262,7 @@ export default {
       // 下午
       const pmJson = {
         ampm: 'PM',
-        totalCount: pmNumber,
+        totalCount: pmNumber ? pmNumber : null,
         workStart: timeFormat(this.pmStart),
         workEnd: timeFormat(this.pmEnd),
         week,
@@ -273,8 +273,8 @@ export default {
       }
       const json = []
 
-      if (amNumber >= 0) json.push(amJson)
-      if (pmNumber >= 0) json.push(pmJson)
+      json.push(amJson)
+      json.push(pmJson)
 
       const params = {
         doctor,

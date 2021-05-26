@@ -188,10 +188,23 @@ export default {
     width: 100%;
     &-dragger {
       width: 100%;
+      background-color: #f7f7f7;
+    }
+    &__text {
+      text-align: center;
+      color: #333333;
     }
     &__tip {
       text-align: center;
       color: #ff3a30;
+    }
+  }
+  ::v-deep .el-upload-list {
+    .el-icon-document {
+      color: #333333;
+    }
+    .el-upload-list__item-name {
+      color: #333333;
     }
   }
 }

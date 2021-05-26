@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-form label-width="auto">
+    <el-form label-width="90px"
+             label-suffix="：">
       <el-form-item label="科室名称"
                     class="is-required">
         <DeptSelector :parentDeptName="parentDeptName"

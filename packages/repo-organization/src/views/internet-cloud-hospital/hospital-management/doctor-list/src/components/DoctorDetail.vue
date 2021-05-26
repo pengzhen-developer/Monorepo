@@ -333,12 +333,12 @@ export default {
       &:before {
         content: '';
         position: absolute;
-        top: 3px;
+        top: 4px;
         left: 0;
         width: 4px;
         height: 16px;
         background-color: var(--q-color-primary);
-        border-radius: 2px 2px 0px 2px;
+        border-radius: 2px;
       }
     }
   }
@@ -374,7 +374,7 @@ export default {
       font-size: 14px;
       font-weight: 400;
       color: #000000;
-      line-height: 20px;
+      line-height: 32px;
       text-align: justify;
       text-align-last: justify;
       &::after {
@@ -391,7 +391,7 @@ export default {
       font-size: 14px;
       font-weight: 400;
       color: #000000;
-      line-height: 20px;
+      line-height: 32px;
       white-space: normal;
       word-wrap: normal;
       word-break: break-all;

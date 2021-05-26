@@ -91,11 +91,11 @@
                     </p>
                     <span class="small-text"
                           :class="{'stop-status':doctor.isStopClass}"
-                          v-if="doctor.workStartAM && doctor.workEndAM">{{ doctor.workStartAM.substr(0, 5) }}
+                          v-if="doctor.totalCountAM && doctor.workStartAM && doctor.workEndAM">{{ doctor.workStartAM.substr(0, 5) }}
                       - {{ doctor.workEndAM.substr(0, 5) }}</span>
                     <span class="small-text"
                           :class="{'stop-status':doctor.isStopClass}"
-                          v-if="doctor.workStartPM && doctor.workEndPM">{{ doctor.workStartPM.substr(0, 5) }}
+                          v-if="doctor.totalCountPM && doctor.workStartPM && doctor.workEndPM">{{ doctor.workStartPM.substr(0, 5) }}
                       - {{ doctor.workEndPM.substr(0, 5) }}</span>
                     <div class="list-item-switch">
                       <span v-if="doctor.isStopClass"
@@ -450,8 +450,8 @@ export default {
   padding: 4px 0;
 }
 
-::v-deep .scheduling-tips .el-icon-close {
-  top: 16px;
+::v-deep .scheduling-tips.el-alert .el-alert__closebtn.el-icon-close {
+  top: 18px;
   color: #f09815;
 }
 
@@ -526,6 +526,9 @@ export default {
     border-bottom: 1px dashed #eee;
   }
   &-added {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 12px auto;
     font-weight: bold;
     width: 40px;

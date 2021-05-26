@@ -101,9 +101,9 @@ export default {
     background: linear-gradient(#ffffff, #f9f9f9);
 
     .el-menu-item {
-      background: #f9f9f9;
+      background: #ffffff;
       &.sub-item {
-        background: #f1f1f1;
+        background: #f9f9f9;
       }
     }
   }
