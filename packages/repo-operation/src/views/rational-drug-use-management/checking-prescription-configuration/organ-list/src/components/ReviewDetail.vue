@@ -125,7 +125,7 @@ export default {
   .team-list {
     width: 100%;
     padding: 15px 24px;
-    color: #000;
+    color: #333;
     border-bottom: 1px solid #e8e8e8;
   }
 
@@ -134,6 +134,9 @@ export default {
   }
   ::v-deep .el-checkbox__label {
     padding-left: 34px !important;
+  }
+  ::v-deep .el-checkbox__input.is-checked + .el-checkbox__label {
+    color: #333;
   }
 }
 

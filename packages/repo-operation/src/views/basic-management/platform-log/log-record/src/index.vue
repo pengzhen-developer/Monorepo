@@ -74,7 +74,11 @@
         </PeaceTableColumn>
         <PeaceTableColumn min-width="200px"
                           label="备注"
-                          prop="remarks"></PeaceTableColumn>
+                          prop="remarks">
+          <template slot-scope="scope">
+            {{scope.row.remarks ||'--'}}
+          </template>
+        </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="操作人"
                           prop="createBy"></PeaceTableColumn>
