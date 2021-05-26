@@ -587,7 +587,11 @@ export default {
       const ShippingMethod = this.order.shippingMethod
       const callOrderStatus = this.order.callOrderStatus
       if (ShippingMethod === undefined || callOrderStatus === undefined) return false
-      return ShippingMethod === ENUM.SHIPPING_METHOD.到店取药 && callOrderStatus >= ENUM.ORDER_STATUS.已下单 && this.pickUpCode
+      return (
+        ShippingMethod === ENUM.SHIPPING_METHOD.到店取药 &&
+        callOrderStatus >= ENUM.ORDER_STATUS.已下单 && callOrderStatus != ENUM.ORDER_STATUS.已取消 &&
+        this.pickUpCode
+      )
     },
     showTrackingNumber() {
       const ShippingMethod = this.order.shippingMethod
