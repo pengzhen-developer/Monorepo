@@ -65,12 +65,10 @@
       </van-list>
     </template>
 
-    <div class="none"
+    <div class="none-page blank"
          v-if="loaded&&list.length==0">
-      <div class="none-page">
-        <div class="icon icon_none_source"></div>
-        <div class="none-text">暂无可预约号源</div>
-      </div>
+      <div class="icon icon_none_source"></div>
+      <div class="none-text">暂无可预约号源</div>
     </div>
   </div>
 </template>
