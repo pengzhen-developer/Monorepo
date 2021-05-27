@@ -45,7 +45,8 @@
 
     <el-card class="q-mb-md"
              v-show="value && value.length > 0">
-      <PeaceTable class="editable q-mb-sm element-ui-default"
+
+      <PeaceTable class="editable q-mb-sm"
                   size="medium"
                   v-bind:data="value">
         <PeaceTableColumn label="药品名称"
@@ -235,7 +236,7 @@
         <PeaceTableColumn label="操作"
                           width="50px">
           <template slot-scope="scope">
-            <el-button type="text text-black text-caption"
+            <el-button type="text text-grey-333"
                        v-on:click="deleteDrugList(scope.row)">删除</el-button>
           </template>
         </PeaceTableColumn>
@@ -743,6 +744,10 @@ export default {
   td,
   th {
     padding: 4px 0;
+  }
+
+  th {
+    background: initial;
   }
 
   thead {
