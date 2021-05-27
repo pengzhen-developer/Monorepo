@@ -122,6 +122,7 @@ export default {
     this.loaded = false
     this.finish = false
     this.list = []
+    this.getHspList()
   },
   methods: {
     goMenuPage(item) {
