@@ -69,13 +69,23 @@ export default {
             newIframe.contentWindow.document.close()
 
             // bonus to remove scroll bars by setting proper iframe's height
-            newIframe.addEventListener('load', function() {
-              const iframeBody = this.contentDocument.querySelector('body')
-              this.style.height = `${iframeBody.scrollHeight}px`
-              iframeBody.style.overflow = 'hidden'
-              iframeBody.style.margin = '0'
-              iframeBody.style.padding = '0'
-            })
+            if (newIframe.attachEvent) {
+              newIframe.attachEvent('onload', () => {
+                const iframeBody = newIframe.contentDocument.querySelector('body')
+                newIframe.style.height = `${iframeBody.scrollHeight}px`
+                iframeBody.style.overflow = 'hidden'
+                iframeBody.style.margin = '0'
+                iframeBody.style.padding = '0'
+              })
+            } else {
+              newIframe.onload = () => {
+                const iframeBody = newIframe.contentDocument.querySelector('body')
+                newIframe.style.height = `${iframeBody.scrollHeight}px`
+                iframeBody.style.overflow = 'hidden'
+                iframeBody.style.margin = '0'
+                iframeBody.style.padding = '0'
+              }
+            }
           })
         }
       })
