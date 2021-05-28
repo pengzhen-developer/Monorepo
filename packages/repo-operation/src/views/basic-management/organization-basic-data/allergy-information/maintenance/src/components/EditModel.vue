@@ -5,15 +5,12 @@
              :rules="rules"
              ref="ruleForm"
              label-suffix="："
-             label-position="right">
-      <el-form-item label="系统编码"
-                    required
-                    class="flex requiredColor">
+             label-width="auto">
+      <el-form-item label="系统编码">
         <div>dddddd</div>
       </el-form-item>
       <el-form-item label="主要编码"
-                    prop="mainCode"
-                    class="flex">
+                    prop="mainCode">
         <el-input v-model.trim="model.mainCode"
                   placeholder="请输入"></el-input>
       </el-form-item>
@@ -70,11 +67,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .requiredColor {
-  .el-form-item__label {
-    &::before {
-      color: transparent !important;
-    }
-  }
-}
 </style>
