@@ -8,7 +8,8 @@
         <span>{{ updatedTime }}</span>
       </div>
 
-      <div class="q-mb-md service-agreement__virtual_box">
+      <div class="q-mb-md service-agreement__virtual_box"
+           v-html="content">
       </div>
 
       <div class="flex justify-end">
@@ -52,40 +53,6 @@ export default {
             this.title = res.data.title
             this.content = res.data.content
             this.updatedTime = res.data.updatedTime
-
-            // get your div tag as HTML string
-            const HTMLToIsolate = res.data.content
-            // or something else
-            const parentContainerRef = document.querySelector('.service-agreement__virtual_box')
-            const newIframe = document.createElement('iframe')
-
-            // set height & width to 100% and remove borders for newIframe
-            parentContainerRef.appendChild(newIframe)
-            newIframe.style.width = '100%'
-            newIframe.style.height = '100%'
-            newIframe.style.border = 0
-            newIframe.contentWindow.document.open('text/html', 'replace')
-            newIframe.contentWindow.document.write(HTMLToIsolate)
-            newIframe.contentWindow.document.close()
-
-            // bonus to remove scroll bars by setting proper iframe's height
-            if (newIframe.attachEvent) {
-              newIframe.attachEvent('onload', () => {
-                const iframeBody = newIframe.contentDocument.querySelector('body')
-                newIframe.style.height = `${iframeBody.scrollHeight}px`
-                iframeBody.style.overflow = 'hidden'
-                iframeBody.style.margin = '0'
-                iframeBody.style.padding = '0'
-              })
-            } else {
-              newIframe.onload = () => {
-                const iframeBody = newIframe.contentDocument.querySelector('body')
-                newIframe.style.height = `${iframeBody.scrollHeight}px`
-                iframeBody.style.overflow = 'hidden'
-                iframeBody.style.margin = '0'
-                iframeBody.style.padding = '0'
-              }
-            }
           })
         }
       })
