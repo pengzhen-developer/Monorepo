@@ -162,7 +162,7 @@ export default {
         orgCode: '',
         name: '',
         platformName: '',
-        auditStatus: 'check'
+        auditStatus: ''
       },
       modelDialog: {
         visible: false,

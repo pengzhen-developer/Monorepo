@@ -191,7 +191,7 @@ export default {
         if (this.loading.save) return false
         this.loading.save = true
         let params = {
-          extCode: this.detail.code,
+          code: this.detail.code,
           operatingType: 'Save',
           orgCode: this.detail.orgCode,
           platformCode: this.checkedData.code,
@@ -215,7 +215,7 @@ export default {
       if (this.loading.reset) return false
       this.loading.reset = true
       let params = {
-        extCode: this.detail.code,
+        code: this.detail.code,
         operatingType: 'Reset',
         orgCode: this.detail.orgCode,
         platformCode: this.checkedData.code,
@@ -236,7 +236,7 @@ export default {
       if (this.loading.unabel) return false
       this.loading.unabel = true
       let params = {
-        extCode: this.detail.code,
+        code: this.detail.code,
         operatingType: 'Unable',
         orgCode: this.detail.orgCode,
         platformCode: this.checkedData.code,

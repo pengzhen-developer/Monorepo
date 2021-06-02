@@ -148,7 +148,7 @@ export default {
         orgCode: '',
         name: '',
         platformName: '',
-        mapperStatus: 'wait',
+        mapperStatus: '',
         auditStatus: ''
       },
       modelDialog: {
