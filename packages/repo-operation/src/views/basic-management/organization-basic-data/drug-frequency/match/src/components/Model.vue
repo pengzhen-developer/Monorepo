@@ -79,21 +79,21 @@
                             label="平台编码"
                             prop="code">
             <template slot-scope="scope">
-              {{scope.row.code || '-'}}
+              {{scope.row.code || '--'}}
             </template>
           </PeaceTableColumn>
           <PeaceTableColumn min-width="160px"
                             label="平台给药频次名称"
                             prop="name">
             <template slot-scope="scope">
-              {{scope.row.name || '-'}}
+              {{scope.row.name || '--'}}
             </template>
           </PeaceTableColumn>
           <PeaceTableColumn min-width="160px"
                             label="平台给药频次缩写名"
                             prop="abbreviation">
             <template slot-scope="scope">
-              {{scope.row.abbreviation || '-'}}
+              {{scope.row.abbreviation || '--'}}
             </template>
           </PeaceTableColumn>
         </PeaceTable>

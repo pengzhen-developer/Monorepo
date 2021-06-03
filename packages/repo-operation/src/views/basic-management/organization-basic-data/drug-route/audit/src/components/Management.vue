@@ -71,7 +71,7 @@
                           label="平台编码"
                           prop="platformCode">
           <template slot-scope="scope">
-            {{scope.row.platformCode || '-'}}
+            {{scope.row.platformCode || '--'}}
           </template>
         </PeaceTableColumn>
 
@@ -79,7 +79,7 @@
                           label="平台给药途径名称"
                           prop="platformName">
           <template slot-scope="scope">
-            {{scope.row.platformName || '-'}}
+            {{scope.row.platformName || '--'}}
           </template>
         </PeaceTableColumn>
 
@@ -87,14 +87,14 @@
                           label="配码状态"
                           prop="mapperStatus">
           <template slot-scope="scope">
-            {{scope.row.mapperStatus | filterDictionary(source.ENUM_MATCH_STATUS, '-')}}
+            {{scope.row.mapperStatus | filterDictionary(source.ENUM_MATCH_STATUS, '--')}}
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="审核状态"
                           prop="auditStatus">
           <template slot-scope="scope">
-            {{scope.row.auditStatus | filterDictionary(source.ENUM_AUDIT_STATUS, '-')}}
+            {{scope.row.auditStatus | filterDictionary(source.ENUM_AUDIT_STATUS, '--')}}
           </template>
         </PeaceTableColumn>
 
