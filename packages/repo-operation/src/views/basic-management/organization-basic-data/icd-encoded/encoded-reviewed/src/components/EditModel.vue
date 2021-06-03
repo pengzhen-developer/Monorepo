@@ -68,6 +68,10 @@
                           prop="remarks"
                           v-bind:rules="[{ required: true, message: '请输入原因', trigger: 'blur' }]">
               <el-input show-word-limit
+                        resize="none"
+                        v-bind:autosize="{
+                           minRows: 3, maxRows: 6
+                        }"
                         placeholder="请输入"
                         type="textarea"
                         maxlength="200"

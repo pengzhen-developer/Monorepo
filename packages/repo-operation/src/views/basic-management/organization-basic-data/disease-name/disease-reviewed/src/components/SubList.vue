@@ -7,7 +7,7 @@
       <div class="q-mb-md">
         <el-button icon="el-icon-arrow-left"
                    v-on:click="back">返回上一页</el-button>
-      </div>loading
+      </div>
       <div class="title q-mb-lg">审核管理-{{hospitalName}}</div>
       <el-form inline
                label-suffix="："
