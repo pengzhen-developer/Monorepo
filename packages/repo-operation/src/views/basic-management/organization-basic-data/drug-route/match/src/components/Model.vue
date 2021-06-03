@@ -63,7 +63,8 @@
       <div>
         <PeaceTable ref="table"
                     v-bind:pageSize="5"
-                    pagination>
+                    pagination
+                    v-loading="loading.list">
           <PeaceTableColumn width="60px"
                             label="">
             <template slot-scope="scope">
@@ -141,7 +142,8 @@ export default {
         save: false,
         unable: false,
         reset: false,
-        skip: false
+        skip: false,
+        list: false
       },
       detail: {},
       search: {
@@ -162,26 +164,32 @@ export default {
 
   methods: {
     fetch() {
+      this.loading.list = true
       const fetch = Service.getPlatFormList
       const params = this.search
 
-      this.$refs.table.reloadData({ fetch, params }).then((res) => {
-        if (this.detail.mapperStatus !== 'success') {
-          // 默认选择第一条
-          let list = res.data.records
-          if (list.length > 0) {
-            this.checkedId = list[0].id
-            this.checkedData = list[0]
+      this.$refs.table
+        .reloadData({ fetch, params })
+        .then((res) => {
+          if (this.detail.mapperStatus !== 'success') {
+            // 默认选择第一条
+            let list = res.data.records
+            if (list.length > 0) {
+              this.checkedId = list[0].id
+              this.checkedData = list[0]
+            }
+          } else {
+            this.checkedId = ''
+            this.checkedData = {
+              code: this.detail.platformCode,
+              name: this.detail.platformName,
+              abbreviation: this.detail.platformAbbreviation
+            }
           }
-        } else {
-          this.checkedId = ''
-          this.checkedData = {
-            code: this.detail.platformCode,
-            name: this.detail.platformName,
-            abbreviation: this.detail.platformAbbreviation
-          }
-        }
-      })
+        })
+        .finally(() => {
+          this.loading.list = false
+        })
     },
     selectData(data) {
       this.checkedData = data
@@ -201,7 +209,7 @@ export default {
           .then((res) => {
             Peace.util.success(res.message || '保存成功')
             this.$emit('refresh')
-            this.loading.save = false
+            this.$emit('clear')
             this.skip()
           })
           .finally(() => {
@@ -227,6 +235,7 @@ export default {
           this.checkedData = {}
           Peace.util.success(res.message || '保存成功')
           this.$emit('refresh')
+          this.$emit('clear')
         })
         .finally(() => {
           this.loading.reset = false
@@ -248,6 +257,7 @@ export default {
           this.checkedData = {}
           Peace.util.success(res.message || '保存成功')
           this.$emit('refresh')
+          this.$emit('clear')
         })
         .finally(() => {
           this.loading.unabel = false
@@ -258,11 +268,14 @@ export default {
       this.loading.skip = true
       let params = {
         functionOperation: 'MatchCode',
-        id: this.detail.id
+        id: this.detail.id,
+        orgCode: this.detail.orgCode
       }
       Service.nextData(params)
         .then((res) => {
           this.detail = res.data
+
+          this.$emit('clear')
 
           this.checkedId = ''
           this.checkedData = {}

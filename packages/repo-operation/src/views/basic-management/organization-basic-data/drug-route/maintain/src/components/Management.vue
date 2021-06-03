@@ -38,7 +38,8 @@
       </div>
       <PeaceTable ref="table"
                   size="mini"
-                  pagination>
+                  pagination
+                  v-loading="loading">
         <PeaceTableColumn min-width="200px"
                           label="给药途径编码"
                           prop="code">
@@ -107,6 +108,7 @@ export default {
 
   data() {
     return {
+      loading: true,
       CONSTANT,
       model: {
         orgCode: '',
@@ -152,7 +154,9 @@ export default {
       const fetch = Service.getManagementList
       const params = this.model
 
-      this.$refs.table.reloadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params }).finally(() => {
+        this.loading = false
+      })
     },
 
     changeStatus(row) {

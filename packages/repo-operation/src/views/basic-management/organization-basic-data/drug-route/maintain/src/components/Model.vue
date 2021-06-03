@@ -82,6 +82,7 @@ export default {
   methods: {
     submit() {
       this.validateForm().then(() => {
+        if (this.isLoading) return false
         const params = Peace.util.deepClone(this.model)
         this.isLoading = true
         Service[this.model.id ? 'edit' : 'add'](params)

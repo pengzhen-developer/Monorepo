@@ -56,7 +56,8 @@
       </div>
       <PeaceTable ref="table"
                   size="mini"
-                  pagination>
+                  pagination
+                  v-loading="loading">
         <PeaceTableColumn width="60px"
                           label="">
           <template slot-scope="scope">
@@ -117,7 +118,8 @@
       <Model v-if="modelDialog.visible"
              v-bind:data="modelDialog.data"
              v-on:close="modelDialog.visible = false"
-             v-on:refresh="fetch"></Model>
+             v-on:refresh="fetch"
+             v-on:clear="clear"></Model>
     </PeaceDialog>
 
   </div>
@@ -138,6 +140,7 @@ export default {
 
   data() {
     return {
+      loading: true,
       source: {
         ENUM_MATCH_STATUS: [],
         ENUM_AUDIT_STATUS: []
@@ -192,7 +195,9 @@ export default {
       const fetch = Service.getManagementList
       const params = this.model
 
-      this.$refs.table.reloadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params }).finally(() => {
+        this.loading = false
+      })
     },
 
     selectData(data) {
@@ -206,6 +211,11 @@ export default {
       } else {
         Peace.util.warning('请选择需要配码的数据')
       }
+    },
+
+    clear() {
+      this.checkedId = ''
+      this.checkedData = {}
     },
 
     back() {

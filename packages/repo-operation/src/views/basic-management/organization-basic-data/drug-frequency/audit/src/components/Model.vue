@@ -1,6 +1,6 @@
 
 <template>
-  <div v-loading="loading.get">
+  <div>
     <div class="flex justify-between">
       <div class="flex column items-center">
         <div class="subtitle text-center">机构字典</div>
@@ -109,7 +109,6 @@ export default {
   data() {
     return {
       loading: {
-        get: false,
         save: false,
         skip: false
       },
@@ -154,6 +153,7 @@ export default {
             .then((res) => {
               Peace.util.success(res.data.message || '保存成功')
               this.$emit('refresh')
+              this.$emit('clear')
               if (this.type === 'audit') {
                 this.skip()
               } else {
@@ -176,11 +176,14 @@ export default {
       this.loading.skip = true
       let params = {
         functionOperation: 'Review',
-        id: this.detail.id
+        id: this.detail.id,
+        orgCode: this.detail.orgCode
       }
       Service.nextData(params)
         .then((res) => {
           this.detail = res.data
+          this.$emit('clear')
+
           this.$refs['form'].clearValidate()
 
           this.model.code = this.detail.code

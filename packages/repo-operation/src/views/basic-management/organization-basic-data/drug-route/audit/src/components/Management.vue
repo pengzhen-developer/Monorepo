@@ -46,7 +46,8 @@
       </div>
       <PeaceTable ref="table"
                   size="mini"
-                  pagination>
+                  pagination
+                  v-loading="loading">
         <PeaceTableColumn width="60px"
                           label="">
           <template slot-scope="scope">
@@ -121,7 +122,8 @@
              v-bind:type="modelDialog.type"
              v-bind:data="modelDialog.data"
              v-on:close="modelDialog.visible = false"
-             v-on:refresh="fetch"></Model>
+             v-on:refresh="fetch"
+             v-on:clear="clear"></Model>
     </PeaceDialog>
 
     <PeaceDialog width="380px"
@@ -152,6 +154,7 @@ export default {
 
   data() {
     return {
+      loading: true,
       source: {
         ENUM_MATCH_STATUS: [],
         ENUM_AUDIT_STATUS: []
@@ -211,7 +214,9 @@ export default {
       const fetch = Service.getManagementList
       const params = this.model
 
-      this.$refs.table.reloadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params }).finally(() => {
+        this.loading = false
+      })
     },
 
     selectData(data) {
@@ -238,6 +243,11 @@ export default {
       this.modelDialog.type = 'edit'
       this.modelDialog.data = row
       this.modelDialog.visible = true
+    },
+
+    clear() {
+      this.checkedId = ''
+      this.checkedData = {}
     },
 
     record(row) {

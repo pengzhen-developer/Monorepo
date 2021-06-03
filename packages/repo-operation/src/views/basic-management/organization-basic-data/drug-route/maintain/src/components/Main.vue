@@ -22,7 +22,8 @@
 
       <PeaceTable ref="table"
                   size="mini"
-                  pagination>
+                  pagination
+                  v-loading="loading">
         <PeaceTableColumn min-width="160px"
                           label="序号">
           <template slot-scope="{ $index, _self }">
@@ -55,6 +56,7 @@ export default {
   name: 'Main',
   data() {
     return {
+      loading: true,
       model: {
         orgName: ''
       }
@@ -86,7 +88,9 @@ export default {
       const fetch = Service.getList
       const params = this.model
 
-      this.$refs.table.reloadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params }).finally(() => {
+        this.loading = false
+      })
     },
 
     gotoDetailView(row) {

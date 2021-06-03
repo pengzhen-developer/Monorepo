@@ -38,7 +38,8 @@
       </div>
       <PeaceTable ref="table"
                   size="mini"
-                  pagination>
+                  pagination
+                  v-loading="loading">
         <PeaceTableColumn min-width="200px"
                           label="给药频次编码"
                           prop="code">
@@ -55,14 +56,14 @@
           <template slot="header">
             <div class="table-heder-frequency">
               <div class="table-heder-frequency-text">系数</div>
-              <!-- <img v-popover:popover
+              <img v-popover:popover
                    src="../assets/images/ic_warning.png" />
               <el-popover ref="popover"
                           placement="bottom-start"
                           width="270"
                           trigger="hover"
                           content="系数：指每日平均用药次数。用于开处方时药品数量的计算公式。">
-              </el-popover> -->
+              </el-popover>
             </div>
           </template>
           <template slot-scope="scope">
@@ -125,6 +126,7 @@ export default {
 
   data() {
     return {
+      loading: true,
       CONSTANT,
       model: {
         orgCode: '',
@@ -170,7 +172,9 @@ export default {
       const fetch = Service.getManagementList
       const params = this.model
 
-      this.$refs.table.reloadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params }).finally(() => {
+        this.loading = false
+      })
     },
 
     changeStatus(row) {

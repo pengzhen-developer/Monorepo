@@ -27,7 +27,7 @@ export default {
 
   data() {
     return {
-      loading: false,
+      loading: true,
       record: []
     }
   },
@@ -48,10 +48,9 @@ export default {
 
   methods: {
     getRecord() {
-      this.loading = true
       let params = {
         operaModule: '40',
-        operatorId: this.data.code
+        parentId: this.data.code
       }
       Service.record(params)
         .then((res) => {

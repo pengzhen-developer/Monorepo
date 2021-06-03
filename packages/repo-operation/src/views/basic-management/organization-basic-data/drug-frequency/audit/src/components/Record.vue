@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <el-timeline>
       <time-line-item v-for="(activity, index) in activities"
                       :key="index"
@@ -27,6 +27,7 @@ export default {
 
   data() {
     return {
+      loading: true,
       record: []
     }
   },
@@ -49,11 +50,15 @@ export default {
     getRecord() {
       let params = {
         operaModule: '10',
-        operatorId: this.data.code
+        parentId: this.data.code
       }
-      Service.record(params).then((res) => {
-        this.record = res.data || []
-      })
+      Service.record(params)
+        .then((res) => {
+          this.record = res.data || []
+        })
+        .finally(() => {
+          this.loading = false
+        })
     }
   }
 }
