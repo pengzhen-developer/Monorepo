@@ -6,6 +6,62 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "22003242",
+      "name": "详情说明",
+      "font_class": "xingzhuangjiehe",
+      "unicode": "e6a4",
+      "unicode_decimal": 59044
+    },
+    {
+      "icon_id": "21973451",
+      "name": "财务对账",
+      "font_class": "bianzu2",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "21608187",
+      "name": "平台基础数据",
+      "font_class": "pingtaijichushuju",
+      "unicode": "e6a3",
+      "unicode_decimal": 59043
+    },
+    {
+      "icon_id": "21608144",
+      "name": "机构基础数据",
+      "font_class": "jigoujichushuju",
+      "unicode": "e6a2",
+      "unicode_decimal": 59042
+    },
+    {
+      "icon_id": "21607568",
+      "name": "对接统计",
+      "font_class": "duijietongji",
+      "unicode": "e69e",
+      "unicode_decimal": 59038
+    },
+    {
+      "icon_id": "21607569",
+      "name": "对接管理",
+      "font_class": "duijieguanli",
+      "unicode": "e69f",
+      "unicode_decimal": 59039
+    },
+    {
+      "icon_id": "21607570",
+      "name": "平台管理",
+      "font_class": "pingtaiguanli1",
+      "unicode": "e6a0",
+      "unicode_decimal": 59040
+    },
+    {
+      "icon_id": "21607571",
+      "name": "配码管理",
+      "font_class": "peimaguanli1",
+      "unicode": "e6a1",
+      "unicode_decimal": 59041
+    },
+    {
       "icon_id": "20697047",
       "name": "删除",
       "font_class": "shanchu1",
