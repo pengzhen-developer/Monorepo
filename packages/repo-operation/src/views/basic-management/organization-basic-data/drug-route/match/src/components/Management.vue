@@ -68,7 +68,7 @@
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="给药途径编码"
-                          prop="code">
+                          prop="extCode">
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="给药途径名称"

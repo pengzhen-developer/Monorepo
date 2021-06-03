@@ -68,7 +68,7 @@
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="给药频次编码"
-                          prop="code">
+                          prop="extCode">
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="给药频次名称"

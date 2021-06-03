@@ -15,7 +15,7 @@
                v-on:submit.native.prevent
                v-bind:model="model">
         <el-form-item label="给药途径编码">
-          <el-input v-model.trim="model.code"
+          <el-input v-model.trim="model.extCode"
                     placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="给药途径名称">
@@ -42,7 +42,7 @@
                   v-loading="loading">
         <PeaceTableColumn min-width="200px"
                           label="给药途径编码"
-                          prop="code">
+                          prop="extCode">
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="给药途径名称"
@@ -112,7 +112,7 @@ export default {
       CONSTANT,
       model: {
         orgCode: '',
-        code: '',
+        extCode: '',
         name: ''
       },
       modelDialog: {

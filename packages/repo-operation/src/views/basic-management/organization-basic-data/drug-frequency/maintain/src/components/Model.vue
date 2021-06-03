@@ -6,12 +6,12 @@
              v-bind:model="model"
              v-bind:rules="model.id ? editRules: addRules">
       <el-form-item label="给药频次编码"
-                    prop="code">
+                    prop="extCode">
         <template v-if="model.id">
-          <span>{{model.code}}</span>
+          <span>{{model.extCode}}</span>
         </template>
         <template v-else>
-          <el-input v-model.trim="model.code"
+          <el-input v-model.trim="model.extCode"
                     maxlength="100"
                     placeholder="请输入"></el-input>
         </template>
@@ -62,14 +62,15 @@ export default {
       model: {
         id: undefined,
         orgCode: '',
-        code: '',
+        orgName: '',
+        extCode: '',
         name: '',
         abbreviation: '',
         coefficient: ''
       },
 
       addRules: {
-        code: [{ required: true, message: '请输入给药频次编码', trigger: 'blur' }],
+        extCode: [{ required: true, message: '请输入给药频次编码', trigger: 'blur' }],
         name: [{ required: true, message: '请填写给药频次名称', trigger: 'blur' }]
       },
       editRules: {
@@ -83,6 +84,7 @@ export default {
       this.model = Peace.util.deepClone(this.data)
     } else {
       this.model.orgCode = this.org.orgCode
+      this.model.orgName = this.org.orgName
     }
   },
 

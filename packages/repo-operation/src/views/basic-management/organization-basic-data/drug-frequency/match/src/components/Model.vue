@@ -7,7 +7,7 @@
         <div class="info">
           <div class="info-item flex">
             <div class="info-item-label">给药频次编码</div>
-            <div class="info-item-value">{{detail.code}}</div>
+            <div class="info-item-value">{{detail.extCode}}</div>
           </div>
           <div class="info-item flex">
             <div class="info-item-label">给药频次名称</div>
@@ -107,7 +107,7 @@
                    v-bind:loading="loading.skip"
                    @click="skip">跳过</el-button>
         <span style="color:#EA3930;"
-              class="q-ml-8">点击进行下一条药品审核</span>
+              class="q-ml-8">点击进行下一条配码</span>
       </div>
       <div class="flex items-center">
         <template v-if="!(detail.mapperStatus === 'success' && detail.auditStatus === 'pass')">
@@ -203,7 +203,8 @@ export default {
           operatingType: 'Save',
           orgCode: this.detail.orgCode,
           platformCode: this.checkedData.code,
-          platformName: this.checkedData.name
+          platformName: this.checkedData.name,
+          platformAbbreviation: this.checkedData.abbreviation
         }
         Service.matchCode(params)
           .then((res) => {
@@ -228,7 +229,8 @@ export default {
         operatingType: 'Reset',
         orgCode: this.detail.orgCode,
         platformCode: this.checkedData.code,
-        platformName: this.checkedData.name
+        platformName: this.checkedData.name,
+        platformAbbreviation: this.checkedData.abbreviation
       }
       Service.matchCode(params)
         .then((res) => {
@@ -250,7 +252,8 @@ export default {
         operatingType: 'Unable',
         orgCode: this.detail.orgCode,
         platformCode: this.checkedData.code,
-        platformName: this.checkedData.name
+        platformName: this.checkedData.name,
+        platformAbbreviation: this.checkedData.abbreviation
       }
       Service.matchCode(params)
         .then((res) => {

@@ -9,7 +9,7 @@ export default {
 
     const apiPath = 'orgUseDrugFrequency/getPageMatchCodeByCondition'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-    const serverPath = process.env.VUE_APP_API_ICDC + apiPath
+    const serverPath = process.env.VUE_APP_API_IDIC + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -27,7 +27,7 @@ export default {
 
     const apiPath = 'orgUseDrugFrequency/page'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-    const serverPath = process.env.VUE_APP_API_ICDC + apiPath
+    const serverPath = process.env.VUE_APP_API_IDIC + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -46,7 +46,7 @@ export default {
 
     const apiPath = 'platformUseDrugFrequency/page'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-    const serverPath = process.env.VUE_APP_API_ICDC + apiPath
+    const serverPath = process.env.VUE_APP_API_IDIC + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -64,7 +64,7 @@ export default {
 
     const apiPath = 'orgUseDrugFrequency/matchCodeOperation'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-    const serverPath = process.env.VUE_APP_API_ICDC + apiPath
+    const serverPath = process.env.VUE_APP_API_IDIC + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -82,7 +82,7 @@ export default {
 
     const apiPath = 'orgUseDrugFrequency/nextData'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-    const serverPath = process.env.VUE_APP_API_ICDC + apiPath
+    const serverPath = process.env.VUE_APP_API_IDIC + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 

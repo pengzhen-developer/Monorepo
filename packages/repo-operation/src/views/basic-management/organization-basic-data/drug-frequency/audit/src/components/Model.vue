@@ -7,7 +7,7 @@
         <div class="info">
           <div class="info-item flex">
             <div class="info-item-label">给药频次编码</div>
-            <div class="info-item-value">{{detail.code}}</div>
+            <div class="info-item-value">{{detail.extCode}}</div>
           </div>
           <div class="info-item flex">
             <div class="info-item-label">给药频次名称</div>
@@ -61,7 +61,7 @@
               <span style="color:#EA3930;">驳回</span>
             </template>
           </el-form-item>
-          <el-form-item v-show="model.auditOperating === 'Reject'"
+          <el-form-item v-if="model.auditOperating === 'Reject'"
                         prop="remarks"
                         label="驳回原因">
             <el-input type="textarea"
@@ -81,7 +81,7 @@
                      v-bind:loading="loading.skip"
                      @click="skip">跳过</el-button>
           <span style="color:#EA3930;"
-                class="q-ml-8">点击进行下一条药品审核</span>
+                class="q-ml-8">点击进行下一条审核</span>
         </template>
       </div>
       <div class="flex items-center">
@@ -114,8 +114,8 @@ export default {
       },
       detail: {},
       model: {
+        id: '',
         code: '',
-        extCode: '',
         orgCode: '',
         auditOperating: 'Pass',
         remarks: ''
@@ -135,8 +135,8 @@ export default {
   mounted() {
     this.$nextTick().then(() => {
       this.detail = Peace.util.deepClone(this.data)
+      this.model.id = this.detail.id
       this.model.code = this.detail.code
-      this.model.extCode = this.detail.extCode
       this.model.orgCode = this.detail.orgCode
     })
   },
@@ -186,8 +186,8 @@ export default {
 
           this.$refs['form'].clearValidate()
 
+          this.model.id = this.detail.id
           this.model.code = this.detail.code
-          this.model.extCode = this.detail.extCode
           this.model.orgCode = this.detail.orgCode
           this.model.auditOperating = 'Pass'
           this.model.remarks = ''
