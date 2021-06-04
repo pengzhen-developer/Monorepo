@@ -58,14 +58,16 @@
       <div class="flex items-center">
         <el-button v-on:click="skip"
                    class="skip-btn"
-                   v-bind:disabled="saveing">跳过</el-button>
+                   v-bind:loading="loading.skip"
+                   v-bind:disabled="loading.save">跳过</el-button>
         <span style="color:#EA3930;"
               class="q-ml-8">点击进行下一条审核</span>
       </div>
       <div class="flex items-center">
         <el-button type="primary"
                    v-on:click="submit"
-                   v-bind:disabled="saveing">确定</el-button>
+                   v-bind:loading="loading.save"
+                   v-bind:disabled="loading.skip">确定</el-button>
       </div>
     </div>
 
@@ -88,7 +90,10 @@ export default {
       },
       radioId: '',
       organInfo: {},
-      saveing: false
+      loading: {
+        save: false,
+        skip: false
+      }
     }
   },
   mounted() {
@@ -108,7 +113,8 @@ export default {
       })
     },
     saveData() {
-      this.saveing = true
+      if (this.loading.save) return false
+      this.loading.save = true
       const params = Peace.util.deepClone(this.model)
       params.code = this.organInfo.code
       params.id = this.organInfo.id
@@ -120,19 +126,20 @@ export default {
           this.$emit('examineComplete')
         })
         .finally(() => {
-          this.saveing = false
+          this.loading.save = false
         })
     },
     //跳过
     skip() {
-      this.saveing = true
+      if (this.loading.skip) return false
+      this.loading.skip = true
       const params = { functionOperation: 'Review', id: this.organInfo.id, orgCode: this.organInfo.orgCode }
       Service.humanClassNextData(params)
         .then((res) => {
           this.organInfo = res.data
         })
         .finally(() => {
-          this.saveing = false
+          this.loading.skip = false
         })
     }
   }

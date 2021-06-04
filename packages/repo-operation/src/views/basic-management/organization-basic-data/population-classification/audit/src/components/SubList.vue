@@ -45,7 +45,8 @@
       </div>
 
       <PeaceTable ref="table"
-                  pagination>
+                  pagination
+                  v-loading="loading">
         <PeaceTableColumn label=""
                           width="60px">
           <template slot-scope="scope">
@@ -163,6 +164,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       radioId: '',
       model: {
         name: '',
@@ -200,7 +202,9 @@ export default {
       const params = Peace.util.deepClone(this.model)
       params.orgCode = this.info.orgCode
       const fetch = Service.getHumanClassList
-      this.$refs.table.reloadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params }).finally(() => {
+        this.loading = false
+      })
       this.radioId = ''
       this.examineModelDialog.data = {}
     },

@@ -47,7 +47,8 @@
       <div class="card">
         <PeaceTable ref="table"
                     pagination
-                    v-bind:pageSize='5'>
+                    v-bind:pageSize='5'
+                    v-loading="loading.list">
           <PeaceTableColumn label=""
                             width="60px">
             <template slot-scope="scope">
@@ -61,7 +62,7 @@
                             min-width="160px"></PeaceTableColumn>
           <PeaceTableColumn label="平台过敏信息"
                             prop="name"
-                            min-width="160px">></PeaceTableColumn>
+                            min-width="160px"></PeaceTableColumn>
         </PeaceTable>
 
       </div>
@@ -70,19 +71,22 @@
       <div class="flex items-center">
         <el-button v-on:click="skip"
                    class="skip-btn"
-                   v-bind:disabled="saveing">跳过</el-button>
+                   v-bind:loading="loading.skip">跳过</el-button>
         <span style="color:#EA3930;"
               class="q-ml-8">点击进行下一条配码</span>
       </div>
       <div class="flex items-center"
            v-if="!(organInfo.mapperStatus==='success'&&organInfo.auditStatus==='pass')">
         <el-button v-on:click="reset"
-                   v-bind:disabled="saveing">重置配码</el-button>
+                   v-bind:loading="loading.reset"
+                   v-bind:disabled="loading.save || loading.unable || loading.skip">重置配码</el-button>
         <el-button v-on:click="unabel"
-                   v-bind:disabled="saveing">无法配码</el-button>
+                   v-bind:loading="loading.unabel"
+                   v-bind:disabled="loading.save || loading.reset || loading.skip">无法配码</el-button>
         <el-button type="primary"
                    v-on:click="save"
-                   v-bind:disabled="saveing">保存配码</el-button>
+                   v-bind:loading="loading.save"
+                   v-bind:disabled="loading.reset || loading.unable || loading.skip">保存配码</el-button>
       </div>
     </div>
   </div>
@@ -104,7 +108,13 @@ export default {
       radioId: '',
       organInfo: {},
       platInfo: {},
-      saveing: false
+      loading: {
+        save: false,
+        unabel: false,
+        reset: false,
+        skip: false,
+        list: false
+      }
     }
   },
   mounted() {
@@ -119,23 +129,30 @@ export default {
   },
   methods: {
     fetch() {
+      this.loading.list = true
       const params = Peace.util.deepClone(this.model)
       const fetch = Service.matchPlatformAllergyInfo
-      this.$refs.table.reloadData({ fetch, params }).then((res) => {
-        if (this.organInfo.mapperStatus !== 'success') {
-          if (res.data.records.length > 0) {
-            this.radioId = res.data.records[0].code
-            this.selectItem(res.data.records[0])
+      this.$refs.table
+        .reloadData({ fetch, params })
+        .then((res) => {
+          if (this.organInfo.mapperStatus !== 'success') {
+            if (res.data.records.length > 0) {
+              this.radioId = res.data.records[0].code
+              this.selectItem(res.data.records[0])
+            }
           }
-        }
-      })
+        })
+        .finally(() => {
+          this.loading.list = false
+        })
     },
     selectItem(row) {
       this.platInfo = row
     },
     save() {
       if (this.platInfo.code) {
-        this.saveing = true
+        if (this.loading.save) return false
+        this.loading.save = true
         const params = {
           code: this.organInfo.code,
           operatingType: 'Save',
@@ -150,7 +167,7 @@ export default {
             this.skip()
           })
           .finally(() => {
-            this.saveing = false
+            this.loading.save = false
           })
       } else {
         Peace.util.warning('请选择需要配码的数据')
@@ -158,7 +175,8 @@ export default {
     },
     //重置配码
     reset() {
-      this.saveing = true
+      if (this.loading.reset) return false
+      this.loading.reset = true
       const params = {
         code: this.organInfo.code,
         operatingType: 'Reset',
@@ -174,12 +192,13 @@ export default {
           this.$emit('complete')
         })
         .finally(() => {
-          this.saveing = false
+          this.loading.reset = false
         })
     },
     //无法配码
     unabel() {
-      this.saveing = true
+      if (this.loading.unabel) return false
+      this.loading.unabel = true
       const params = {
         code: this.organInfo.code,
         operatingType: 'Unable',
@@ -195,12 +214,13 @@ export default {
           this.$emit('complete')
         })
         .finally(() => {
-          this.saveing = false
+          this.loading.unabel = false
         })
     },
     //跳过
     skip() {
-      this.saveing = true
+      if (this.loading.skip) return false
+      this.loading.skip = true
       const params = { functionOperation: 'MatchCode', id: this.organInfo.id, orgCode: this.organInfo.orgCode }
       Service.allergyInfoNextData(params)
         .then((res) => {
@@ -210,7 +230,7 @@ export default {
           this.fetch()
         })
         .finally(() => {
-          this.saveing = false
+          this.loading.skip = false
         })
     }
   }

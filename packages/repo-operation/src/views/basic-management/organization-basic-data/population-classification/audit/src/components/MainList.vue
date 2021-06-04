@@ -20,7 +20,8 @@
 
     <div class="card">
       <PeaceTable ref="table"
-                  pagination>
+                  pagination
+                  v-loading='loading'>
         <PeaceTableColumn type="index"
                           label="序号"
                           width="80px"></PeaceTableColumn>
@@ -57,7 +58,8 @@ export default {
     return {
       model: {
         orgName: ''
-      }
+      },
+      loading: true
     }
   },
   mounted() {
@@ -69,7 +71,9 @@ export default {
     fetch() {
       const params = Peace.util.deepClone(this.model)
       const fetch = Service.getHumanClassReviewByCondition
-      this.$refs.table.reloadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params }).finally(() => {
+        this.loading = false
+      })
     },
     onItemsClick(data) {
       this.$emit('onItemsClick', data)

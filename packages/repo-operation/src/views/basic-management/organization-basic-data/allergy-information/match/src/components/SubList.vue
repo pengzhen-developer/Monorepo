@@ -54,7 +54,8 @@
       </div>
 
       <PeaceTable ref="table"
-                  pagination>
+                  pagination
+                  v-loading="loading">
         <PeaceTableColumn label=""
                           width="60px">
           <template slot-scope="scope">
@@ -147,7 +148,8 @@ export default {
       source: {
         MapperStatus: [],
         MapperAuditStatus: []
-      }
+      },
+      loading: true
     }
   },
   async mounted() {
@@ -163,7 +165,9 @@ export default {
       const params = Peace.util.deepClone(this.model)
       params.orgCode = this.info.orgCode
       const fetch = Service.getAllergyInfoList
-      this.$refs.table.reloadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params }).finally(() => {
+        this.loading = false
+      })
       this.radioId = ''
       this.editModelDialog.data = {}
     },

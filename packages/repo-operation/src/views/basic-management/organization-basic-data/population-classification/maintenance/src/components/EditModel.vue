@@ -47,7 +47,13 @@ export default {
       saveing: false
     }
   },
-
+  mounted() {
+    this.$nextTick(() => {
+      if (this.type === 'edit') {
+        this.model.name = this.info.name
+      }
+    })
+  },
   methods: {
     submit() {
       this.$refs['ruleForm'].validate((valid) => {

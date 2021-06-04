@@ -52,7 +52,7 @@
       <el-button v-on:click="cancel">取消</el-button>
       <el-button type="primary"
                  v-on:click="submit"
-                 v-bind:disabled="saveing">保存</el-button>
+                 v-bind:loading="loading">保存</el-button>
     </div>
   </div>
 </template>
@@ -71,7 +71,7 @@ export default {
         auditOperating: 'Reject',
         remarks: ''
       },
-      saveing: false
+      loading: false
     }
   },
   methods: {
@@ -86,7 +86,7 @@ export default {
       })
     },
     saveData() {
-      this.saveing = true
+      this.loading = true
       const params = Peace.util.deepClone(this.model)
       params.code = this.info.code
       params.id = this.info.id
@@ -97,7 +97,7 @@ export default {
           this.$emit('complete')
         })
         .finally(() => {
-          this.saveing = false
+          this.loading = false
         })
     },
     cancel() {

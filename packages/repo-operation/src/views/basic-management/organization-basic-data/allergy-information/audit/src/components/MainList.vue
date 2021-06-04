@@ -19,15 +19,16 @@
 
     <div class="card">
       <PeaceTable ref="table"
-                  pagination>
+                  pagination
+                  v-loading="loading">
         <PeaceTableColumn type="index"
                           label="序号"
                           width="80px"></PeaceTableColumn>
         <PeaceTableColumn label="机构名称"
                           prop="orgName"
-                          min-width="160px">></PeaceTableColumn>
+                          min-width="160px"></PeaceTableColumn>
         <PeaceTableColumn label="待审核数量"
-                          min-width="160px">>
+                          min-width="160px">
           <template slot-scope="scope">
             <span class="q-mr-20">{{scope.row.checkNumber}}</span>
             <el-button class="q-px-none"
@@ -37,10 +38,10 @@
         </PeaceTableColumn>
         <PeaceTableColumn label="已通过数量"
                           prop="passNumber"
-                          min-width="160px">></PeaceTableColumn>
+                          min-width="160px"></PeaceTableColumn>
         <PeaceTableColumn label="已驳回数量"
                           prop="rejectNumber"
-                          min-width="160px">></PeaceTableColumn>
+                          min-width="160px"></PeaceTableColumn>
       </PeaceTable>
 
     </div>
@@ -56,7 +57,8 @@ export default {
     return {
       model: {
         orgName: ''
-      }
+      },
+      loading: true
     }
   },
   mounted() {
@@ -68,7 +70,9 @@ export default {
     fetch() {
       const params = Peace.util.deepClone(this.model)
       const fetch = Service.getAllergyInfoReviewByCondition
-      this.$refs.table.reloadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params }).finally(() => {
+        this.loading = false
+      })
     },
     onItemsClick(data) {
       this.$emit('onItemsClick', data)

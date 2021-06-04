@@ -34,7 +34,8 @@
       </div>
 
       <PeaceTable ref="table"
-                  pagination>
+                  pagination
+                  v-loading="loading">
         <PeaceTableColumn label="系统编码"
                           prop="code"
                           min-width="160px"></PeaceTableColumn>
@@ -97,7 +98,8 @@ export default {
         visible: false,
         data: {},
         type: ''
-      }
+      },
+      loading: true
     }
   },
   mounted() {
@@ -110,7 +112,9 @@ export default {
       const params = Peace.util.deepClone(this.model)
       params.orgCode = this.info.orgCode
       const fetch = Service.getHumanClassList
-      this.$refs.table.reloadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params }).finally(() => {
+        this.loading = false
+      })
     },
     openEditlDialog(data, type) {
       this.editModelDialog.visible = true

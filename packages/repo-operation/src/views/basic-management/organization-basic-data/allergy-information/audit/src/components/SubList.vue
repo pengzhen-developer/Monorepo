@@ -45,7 +45,8 @@
       </div>
 
       <PeaceTable ref="table"
-                  pagination>
+                  pagination
+                  v-loading="loading">
         <PeaceTableColumn label=""
                           width="60px">
           <template slot-scope="scope">
@@ -56,32 +57,32 @@
         </PeaceTableColumn>
         <PeaceTableColumn label="系统编码"
                           prop="code"
-                          min-width="160px">></PeaceTableColumn>
+                          min-width="160px"></PeaceTableColumn>
         <PeaceTableColumn label="过敏信息"
                           prop="name"
-                          min-width="160px">></PeaceTableColumn>
+                          min-width="160px"></PeaceTableColumn>
         <PeaceTableColumn label="平台系统编码"
-                          min-width="160px">>
+                          min-width="160px">
           <template slot-scope="scope">
             {{ scope.row.platformAllergyCode || '--' }}
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="平台过敏信息"
-                          min-width="160px">>
+                          min-width="160px">
           <template slot-scope="scope">
             {{ scope.row.platformAllergyName || '--' }}
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="配码状态"
                           prop="mapperStatus"
-                          min-width="100px">>
+                          min-width="100px">
           <template slot-scope="scope">
             {{scope.row.mapperStatus | filterDictionary(source.MapperStatus,'--')}}
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="审核状态"
                           prop="auditStatus"
-                          min-width="100px">>
+                          min-width="100px">
           <template slot-scope="scope">
             {{scope.row.auditStatus | filterDictionary(source.MapperAuditStatus,'--')}}
           </template>
@@ -161,6 +162,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       radioId: '',
       model: {
         name: '',
@@ -198,7 +200,9 @@ export default {
       const params = Peace.util.deepClone(this.model)
       params.orgCode = this.info.orgCode
       const fetch = Service.getAllergyInfoList
-      this.$refs.table.reloadData({ fetch, params })
+      this.$refs.table.reloadData({ fetch, params }).finally(() => {
+        this.loading = false
+      })
       this.radioId = ''
       this.examineModelDialog.data = {}
     },
