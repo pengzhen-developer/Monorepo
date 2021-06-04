@@ -42,13 +42,13 @@
          style="height: 10px; width: 100%;"></div>
 
     <q-item class="row flex justify-between items-center">
-      <div class="col-3">检查医生</div>
+      <div class="col-3">报告医生</div>
       <div class="text-justify text-grey-7 row-value">{{ data.reportDoctor }}</div>
     </q-item>
     <q-separator class="q-my-sm bg-grey-2"></q-separator>
 
     <q-item class="row flex justify-between items-center">
-      <div class="col-3">接收时间</div>
+      <div class="col-3">报告时间</div>
       <div class="text-justify text-grey-7 row-value">{{ data.reportDate }}</div>
     </q-item>
     <q-separator class="q-my-sm bg-grey-2"></q-separator>
