@@ -44,7 +44,7 @@ export default {
   getPlatFormList(params) {
     const isMock = false
 
-    const apiPath = 'platformUseDrugFrequency/page'
+    const apiPath = 'platformUseDrugFrequency/matchPlatformUseDrugFrequency'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_IDIC + apiPath
 

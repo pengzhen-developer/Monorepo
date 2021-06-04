@@ -16,7 +16,7 @@ import Management from './components/Management'
 import Observable from './observable'
 
 export default {
-  name: 'RouteMaintain',
+  name: 'FrequencyMaintain',
 
   components: {
     Main,
