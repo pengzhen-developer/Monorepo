@@ -5,44 +5,41 @@
     <div class="card card-search">
       <div class="q-mb-md">
         <el-button icon="el-icon-arrow-left"
-                   @click="back">返回上一页</el-button>
+                   v-on:click="back">返回上一页</el-button>
       </div>
-      <div class="title q-mb-lg">配码管理-{{hospitalName}}</div>
+      <div class="title q-mb-lg">配码管理-{{info.orgName}}</div>
       <el-form inline
                label-suffix="："
                v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent
                v-bind:model="model">
-        <el-form-item label="主要编码">
+        <el-form-item label="分类标签">
           <el-input placeholder="请输入"
-                    v-model.trim="model.mainCode"></el-input>
-        </el-form-item>
-        <el-form-item label="疾病名称">
-          <el-input placeholder="请输入"
-                    v-model.trim="model.diseaseName"></el-input>
+                    v-model.trim="model.name"
+                    clearable></el-input>
         </el-form-item>
         <el-form-item label="配码状态">
-          <el-select v-model="model.codingStatus"
+          <el-select v-model="model.mapperStatus"
                      clearable
                      placeholder="全部">
-            <el-option v-for="item in source.CodingStatus"
-                       v-bind:key="item.CustCode"
-                       v-bind:label="item.CustName"
-                       v-bind:value="item.CustCode"></el-option>
+            <el-option v-for="item in source.MapperStatus"
+                       v-bind:key="item.value"
+                       v-bind:label="item.label"
+                       v-bind:value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="审核状态">
           <el-select v-model="model.auditStatus"
                      clearable
                      placeholder="全部">
-            <el-option v-for="item in source.AuditStatus"
-                       v-bind:key="item.CustCode"
-                       v-bind:label="item.CustName"
-                       v-bind:value="item.CustCode"></el-option>
+            <el-option v-for="item in source.MapperAuditStatus"
+                       v-bind:key="item.value"
+                       v-bind:label="item.label"
+                       v-bind:value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button @click="fetch"
+          <el-button v-on:click="fetch"
                      type="primary">查询</el-button>
         </el-form-item>
       </el-form>
@@ -53,35 +50,55 @@
     <div class="card">
 
       <div class="q-mb-md">
-        <el-button v-on:click="openEditlDialog({})"
+        <el-button v-on:click="openEditlDialog"
                    type="primary">配码</el-button>
       </div>
 
       <PeaceTable ref="table"
                   pagination>
         <PeaceTableColumn label=""
-                          width="35"
-                          @row-click="rowClick">
+                          width="60px">
           <template slot-scope="scope">
             <el-radio v-model="radioId"
-                      :label="scope.row.name"></el-radio>
+                      v-bind:label="scope.row.id"
+                      v-on:change="selectItem(scope.row)"><span></span></el-radio>
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn label="主要编码"
-                          prop=""></PeaceTableColumn>
-        <PeaceTableColumn label="疾病名称"
-                          prop=""></PeaceTableColumn>
-        <PeaceTableColumn label="平台主要编码"
-                          prop=""></PeaceTableColumn>
-        <PeaceTableColumn label="平台疾病名称"
-                          prop=""></PeaceTableColumn>
+        <PeaceTableColumn label="系统编码"
+                          prop="code"
+                          min-width="160px"></PeaceTableColumn>
+        <PeaceTableColumn label="分类标签"
+                          prop="name"
+                          min-width="160px"></PeaceTableColumn>
+        <PeaceTableColumn label="平台系统编码"
+                          min-width="160px">
+          <template slot-scope="scope">
+            {{ scope.row.platformClassCode || '--' }}
+          </template>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="平台分类标签"
+                          min-width="160px">
+          <template slot-scope="scope">
+            {{ scope.row.platformClassName || '--' }}
+          </template>
+        </PeaceTableColumn>
         <PeaceTableColumn label="配码状态"
-                          prop=""></PeaceTableColumn>
+                          prop="mapperStatus"
+                          min-width="100px">
+          <template slot-scope="scope">
+            {{scope.row.mapperStatus | filterDictionary(source.MapperStatus,'--')}}
+          </template>
+        </PeaceTableColumn>
         <PeaceTableColumn label="审核状态"
-                          prop=""></PeaceTableColumn>
+                          prop="auditStatus"
+                          min-width="100px">
+          <template slot-scope="scope">
+            {{scope.row.auditStatus | filterDictionary(source.MapperAuditStatus,'--')}}
+          </template>
+        </PeaceTableColumn>
         <PeaceTableColumn label="配码更新时间"
-                          prop=""
-                          min-width="180px"></PeaceTableColumn>
+                          prop="updateTime"
+                          min-width="200px"></PeaceTableColumn>
       </PeaceTable>
 
     </div>
@@ -93,8 +110,7 @@
                   v-if="editModelDialog.visible"
                   append-to-body
                   width="1000px">
-      <EditModel :info="editModelDialog.data"
-                 v-on:cancel="cancel"
+      <EditModel v-bind:info="editModelDialog.data"
                  v-on:complete="complete" />
     </peace-dialog>
 
@@ -120,53 +136,53 @@ export default {
     return {
       radioId: '',
       model: {
-        mainCode: '',
-        diseaseName: '',
-        codingStatus: '',
+        name: '',
+        mapperStatus: '',
         auditStatus: ''
       },
 
       editModelDialog: {
         visible: false,
-        data: {},
-        type: ''
+        data: {}
       },
       source: {
-        CodingStatus: [],
-        AuditStatus: []
+        MapperStatus: [],
+        MapperAuditStatus: []
       }
     }
   },
-  computed: {
-    hospitalName() {
-      return this.info.hospitalName || '北辰医院'
-    },
-    hospitalId() {
-      return this.info.hospitalId
-    }
+  async mounted() {
+    this.source.MapperStatus = await Peace.identity.dictionary.getList('mapper_status')
+    this.source.MapperAuditStatus = await Peace.identity.dictionary.getList('mapper_audit_status')
+    this.$nextTick().then(() => {
+      this.model.mapperStatus = 'wait'
+      this.fetch()
+    })
   },
   methods: {
     fetch() {
       const params = Peace.util.deepClone(this.model)
-      const fetch = Service.getSyncStatusList
+      params.orgCode = this.info.orgCode
+      const fetch = Service.getHumanClassList
       this.$refs.table.reloadData({ fetch, params })
+      this.radioId = ''
+      this.editModelDialog.data = {}
     },
-    openEditlDialog(data, type = 'add') {
-      this.editModelDialog.visible = true
-      this.editModelDialog.data = data
-      this.editModelDialog.type = type
+    openEditlDialog() {
+      if (Object.keys(this.editModelDialog.data).length > 0) {
+        this.editModelDialog.visible = true
+      } else {
+        Peace.util.warning('请选择需要配码的数据')
+      }
     },
     back() {
       this.$emit('onBack')
     },
-    cancel() {
-      this.editModelDialog.visible = false
-    },
     complete() {
-      this.editModelDialog.visible = false
+      this.fetch()
     },
-    rowClick(row) {
-      this.radioId = row.name
+    selectItem(row) {
+      this.editModelDialog.data = row
     }
   }
 }

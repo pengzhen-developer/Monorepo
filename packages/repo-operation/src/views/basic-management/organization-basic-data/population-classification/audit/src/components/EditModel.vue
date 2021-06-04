@@ -6,16 +6,8 @@
         <div class="subtitle text-center">机构字典</div>
         <div class="info">
           <div class="info-item flex">
-            <div class="info-item-label">主要编码</div>
-            <div class="info-item-value">{{dictionaryOrg.mainCode}}</div>
-          </div>
-          <div class="info-item flex">
-            <div class="info-item-label">附加编码</div>
-            <div class="info-item-value">{{dictionaryOrg.extraCode}}</div>
-          </div>
-          <div class="info-item flex">
-            <div class="info-item-label">疾病名称</div>
-            <div class="info-item-value">{{dictionaryOrg.diseaseName}}</div>
+            <div class="info-item-label">分类标签</div>
+            <div class="info-item-value">{{info.name}}</div>
           </div>
         </div>
       </div>
@@ -27,16 +19,8 @@
         <div class="subtitle text-center">平台字典</div>
         <div class="info">
           <div class="info-item flex">
-            <div class="info-item-label">主要编码</div>
-            <div class="info-item-value">{{dictionaryPlat.mainCode}}</div>
-          </div>
-          <div class="info-item flex">
-            <div class="info-item-label">附加编码</div>
-            <div class="info-item-value">{{dictionaryPlat.extraCode}}</div>
-          </div>
-          <div class="info-item flex">
-            <div class="info-item-label">疾病名称</div>
-            <div class="info-item-value">{{dictionaryPlat.diseaseName}}</div>
+            <div class="info-item-label">分类标签</div>
+            <div class="info-item-value">{{info.platformClassName}}</div>
           </div>
         </div>
       </div>
@@ -48,86 +32,48 @@
                  label-suffix="："
                  label-width="auto"
                  v-bind:model="model">
-          <template v-if="info.type==='examine'">
-            <el-form-item label="审核结果">
-              <el-radio-group v-model="model.result">
-                <el-radio :label="true">通过</el-radio>
-                <el-radio :label="false">驳回</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </template>
-          <template v-else>
-            <el-form-item label="审核结果">
-              <span style="color:#EA3930">驳回</span>
-            </el-form-item>
-            <el-form-item label="驳回原因"
-                          prop="ExamineReason"
-                          v-bind:rules="[{ required: true, message: '请输入原因', trigger: 'blur' }]">
-              <el-input show-word-limit
-                        placeholder="请输入"
-                        type="textarea"
-                        maxlength="200"
-                        v-model="model.ExamineReason"></el-input>
-            </el-form-item>
-          </template>
-
+          <el-form-item label="审核结果">
+            <span style="color:#EA3930">驳回</span>
+          </el-form-item>
+          <el-form-item label="驳回原因"
+                        prop="remarks"
+                        v-bind:rules="[{ required: true, message: '请输入驳回原因', trigger: 'blur' }]">
+            <el-input show-word-limit
+                      placeholder="请输入"
+                      type="textarea"
+                      maxlength="200"
+                      v-model="model.remarks"
+                      resize="none"></el-input>
+          </el-form-item>
         </el-form>
       </div>
     </div>
-
-    <template v-if="info.type==='examine'">
-      <div class="flex justify-between full-width q-pt-32">
-        <div class="flex items-center">
-          <el-button @click="skip"
-                     class="skip-btn">跳过</el-button>
-          <span style="color:#EA3930;"
-                class="q-ml-8">点击进行下一条药品审核</span>
-        </div>
-        <div class="flex items-center">
-          <el-button type="primary"
-                     @click="submit">确定</el-button>
-        </div>
-      </div>
-    </template>
-    <template v-else>
-      <div class="flex justify-end full-width q-pt-32">
-        <el-button @click="cancel">取消</el-button>
-        <el-button type="primary"
-                   @click="submit">保存</el-button>
-      </div>
-    </template>
-
+    <div class="flex justify-end full-width q-pt-32">
+      <el-button v-on:click="cancel">取消</el-button>
+      <el-button type="primary"
+                 v-on:click="submit"
+                 v-bind:disabled="saveing">保存</el-button>
+    </div>
   </div>
 </template>
 
 <script>
+import Service from '../service'
 export default {
   name: 'EditModel',
   props: {
-    info: Object,
-    type: String
+    info: Object
   },
 
   data() {
     return {
       model: {
-        result: true,
-        ExamineReason: ''
+        auditOperating: 'Reject',
+        remarks: ''
       },
-      radioId: '',
-      dictionaryOrg: {
-        mainCode: 'A01.001',
-        diseaseName: '肠伤寒',
-        extraCode: 'TJ000024'
-      },
-      dictionaryPlat: {
-        mainCode: '',
-        diseaseName: '',
-        extraCode: ''
-      }
+      saveing: false
     }
   },
-
   methods: {
     //保存配码
     submit() {
@@ -140,18 +86,23 @@ export default {
       })
     },
     saveData() {
-      this.$emit('complete')
+      this.saveing = true
+      const params = Peace.util.deepClone(this.model)
+      params.code = this.info.code
+      params.id = this.info.id
+      params.orgCode = this.info.orgCode
+      Service.updateHumanClassReviewStatus(params)
+        .then(() => {
+          Peace.util.alert('操作成功')
+          this.$emit('complete')
+        })
+        .finally(() => {
+          this.saveing = false
+        })
     },
     cancel() {
       this.$emit('cancel')
-    },
-    //重置配码
-    reset() {},
-    //无法配码
-    unabel() {},
-    //跳过
-    skip() {},
-    fetch() {}
+    }
   }
 }
 </script>

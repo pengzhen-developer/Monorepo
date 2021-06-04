@@ -6,25 +6,29 @@
              ref="ruleForm"
              label-width="auto"
              label-suffix="：">
-      <el-form-item label="系统编码">
-        <div>dddddd</div>
-      </el-form-item>
+      <template v-if="type==='edit'">
+        <el-form-item label="系统编码">
+          <div>{{info.code}}</div>
+        </el-form-item>
+      </template>
       <el-form-item label="分类标签"
-                    prop="mainCode">
-        <el-input v-model.trim="model.mainCode"
+                    prop="name">
+        <el-input v-model.trim="model.name"
                   placeholder="请输入"></el-input>
       </el-form-item>
 
     </el-form>
     <div class="flex justify-end full-width q-pt-32">
-      <el-button @click="cancel">取消</el-button>
+      <el-button v-on:click="cancel">取消</el-button>
       <el-button type="primary"
-                 @click="submit">{{type==='add'?'提交':'保存'}}</el-button>
+                 v-on:click="submit"
+                 v-bind:disabled="saveing">{{type==='add'?'提交':'保存'}}</el-button>
     </div>
   </div>
 </template>
 
 <script>
+import Service from '../service'
 export default {
   name: 'EditModel',
   props: {
@@ -35,12 +39,12 @@ export default {
   data() {
     return {
       model: {
-        mainCode: ''
+        name: ''
       },
-
       rules: {
-        mainCode: [{ required: true, message: '请输入分类标签', tragger: 'blur' }]
-      }
+        name: [{ required: true, message: '请输入分类标签', tragger: 'blur' }]
+      },
+      saveing: false
     }
   },
 
@@ -55,7 +59,31 @@ export default {
       })
     },
     saveData() {
-      this.$emit('complete')
+      this.saveing = true
+      if (this.type === 'add') {
+        const params = Peace.util.deepClone(this.model)
+        params.orgName = this.info.orgName
+        params.orgCode = this.info.orgCode
+        Service.addOrgHumanClass(params)
+          .then(() => {
+            Peace.util.alert('提交成功')
+            this.$emit('complete')
+          })
+          .finally(() => {
+            this.saveing = false
+          })
+      } else {
+        const params = Peace.util.deepClone(this.model)
+        params.id = this.info.id
+        Service.updateOrgHumanClass(params)
+          .then(() => {
+            Peace.util.alert('保存成功')
+            this.$emit('complete')
+          })
+          .finally(() => {
+            this.saveing = false
+          })
+      }
     },
     cancel() {
       this.$emit('cancel')

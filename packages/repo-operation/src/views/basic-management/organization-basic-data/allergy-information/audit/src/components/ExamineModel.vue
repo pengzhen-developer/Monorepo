@@ -7,7 +7,7 @@
         <div class="info">
           <div class="info-item flex">
             <div class="info-item-label">过敏信息</div>
-            <div class="info-item-value">{{info.name}}</div>
+            <div class="info-item-value">{{organInfo.name}}</div>
           </div>
         </div>
       </div>
@@ -20,7 +20,7 @@
         <div class="info">
           <div class="info-item flex">
             <div class="info-item-label">过敏信息</div>
-            <div class="info-item-value">{{info.platformAllergyName}}</div>
+            <div class="info-item-value">{{organInfo.platformAllergyName}}</div>
           </div>
         </div>
       </div>
@@ -33,34 +33,49 @@
                  label-width="auto"
                  v-bind:model="model">
           <el-form-item label="审核结果">
-            <span style="color:#EA3930">驳回</span>
+            <el-radio-group v-model="model.auditOperating">
+              <el-radio label="Pass">通过</el-radio>
+              <el-radio label="Reject">驳回</el-radio>
+            </el-radio-group>
           </el-form-item>
-          <el-form-item label="驳回原因"
-                        prop="remarks"
-                        v-bind:rules="[{ required: true, message: '请输入驳回原因', trigger: 'blur' }]">
-            <el-input show-word-limit
-                      placeholder="请输入"
-                      type="textarea"
-                      maxlength="200"
-                      v-model="model.remarks"
-                      resize="none"></el-input>
-          </el-form-item>
+          <template v-if="model.auditOperating==='Reject'">
+            <el-form-item label="驳回原因"
+                          prop="remarks"
+                          v-bind:rules="[{ required: true, message: '请输入驳回原因', trigger: 'blur' }]">
+              <el-input show-word-limit
+                        placeholder="请输入"
+                        type="textarea"
+                        maxlength="200"
+                        v-model="model.remarks"
+                        resize="none"></el-input>
+            </el-form-item>
+          </template>
         </el-form>
       </div>
     </div>
-    <div class="flex justify-end full-width q-pt-32">
-      <el-button v-on:click="cancel">取消</el-button>
-      <el-button type="primary"
-                 v-on:click="submit"
-                 v-bind:disabled="saveing">保存</el-button>
+
+    <div class="flex justify-between full-width q-pt-32">
+      <div class="flex items-center">
+        <el-button v-on:click="skip"
+                   class="skip-btn"
+                   v-bind:disabled="saveing">跳过</el-button>
+        <span style="color:#EA3930;"
+              class="q-ml-8">点击进行下一条审核</span>
+      </div>
+      <div class="flex items-center">
+        <el-button type="primary"
+                   v-on:click="submit"
+                   v-bind:disabled="saveing">确定</el-button>
+      </div>
     </div>
+
   </div>
 </template>
 
 <script>
 import Service from '../service'
 export default {
-  name: 'EditModel',
+  name: 'ExamineModel',
   props: {
     info: Object
   },
@@ -68,11 +83,18 @@ export default {
   data() {
     return {
       model: {
-        auditOperating: 'Reject',
+        auditOperating: 'Pass',
         remarks: ''
       },
+      radioId: '',
+      organInfo: {},
       saveing: false
     }
+  },
+  mounted() {
+    this.$nextTick().then(() => {
+      this.organInfo = this.info
+    })
   },
   methods: {
     //保存配码
@@ -88,20 +110,30 @@ export default {
     saveData() {
       this.saveing = true
       const params = Peace.util.deepClone(this.model)
-      params.code = this.info.code
-      params.id = this.info.id
-      params.orgCode = this.info.orgCode
+      params.code = this.organInfo.code
+      params.id = this.organInfo.id
+      params.orgCode = this.organInfo.orgCode
       Service.updateAllergyInfoReviewStatus(params)
         .then(() => {
           Peace.util.alert('操作成功')
-          this.$emit('complete')
+          this.skip()
+          this.$emit('examineComplete')
         })
         .finally(() => {
           this.saveing = false
         })
     },
-    cancel() {
-      this.$emit('cancel')
+    //跳过
+    skip() {
+      this.saveing = true
+      const params = { functionOperation: 'Review', id: this.organInfo.id, orgCode: this.organInfo.orgCode }
+      Service.allergyInfoNextData(params)
+        .then((res) => {
+          this.organInfo = res.data
+        })
+        .finally(() => {
+          this.saveing = false
+        })
     }
   }
 }

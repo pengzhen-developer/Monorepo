@@ -6,16 +6,8 @@
         <div class="subtitle text-center">机构字典</div>
         <div class="info">
           <div class="info-item flex">
-            <div class="info-item-label">主要编码</div>
-            <div class="info-item-value">{{dictionaryOrg.mainCode}}</div>
-          </div>
-          <div class="info-item flex">
-            <div class="info-item-label">附加编码</div>
-            <div class="info-item-value">{{dictionaryOrg.extraCode}}</div>
-          </div>
-          <div class="info-item flex">
-            <div class="info-item-label">疾病名称</div>
-            <div class="info-item-value">{{dictionaryOrg.diseaseName}}</div>
+            <div class="info-item-label">过敏信息</div>
+            <div class="info-item-value">{{organInfo.name}}</div>
           </div>
         </div>
       </div>
@@ -27,34 +19,26 @@
         <div class="subtitle text-center">平台字典</div>
         <div class="info">
           <div class="info-item flex">
-            <div class="info-item-label">主要编码</div>
-            <div class="info-item-value">{{dictionaryPlat.mainCode}}</div>
-          </div>
-          <div class="info-item flex">
-            <div class="info-item-label">附加编码</div>
-            <div class="info-item-value">{{dictionaryPlat.extraCode}}</div>
-          </div>
-          <div class="info-item flex">
-            <div class="info-item-label">疾病名称</div>
-            <div class="info-item-value">{{dictionaryPlat.diseaseName}}</div>
+            <div class="info-item-label">过敏信息</div>
+            <div class="info-item-value">{{platInfo.name}}</div>
           </div>
         </div>
       </div>
     </div>
     <div class="q-mt-36">
-      <div class="title">ICD编码查找</div>
+      <div class="title">过敏信息查找</div>
       <div class="card card-search q-mt-16">
         <el-form inline
                  label-suffix="："
                  v-on:keyup.enter.native="fetch"
                  v-on:submit.native.prevent
                  v-bind:model="model">
-          <el-form-item label="疾病名称">
-            <el-input v-model.trim="model.diseaseName"
+          <el-form-item label="过敏信息">
+            <el-input v-model.trim="model.name"
                       placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button @click="fetch"
+            <el-button v-on:click="fetch"
                        type="primary">查询</el-button>
           </el-form-item>
         </el-form>
@@ -62,89 +46,173 @@
 
       <div class="card">
         <PeaceTable ref="table"
-                    pagination>
+                    pagination
+                    v-bind:pageSize='5'>
           <PeaceTableColumn label=""
-                            width="35">
+                            width="60px">
             <template slot-scope="scope">
               <el-radio v-model="radioId"
-                        :label="scope.row.name"></el-radio>
+                        v-bind:label="scope.row.code"
+                        v-on:change="selectItem(scope.row)"><span></span></el-radio>
             </template>
           </PeaceTableColumn>
-          <PeaceTableColumn label="平台编码"
-                            prop=""></PeaceTableColumn>
-          <PeaceTableColumn label="附加编码"
-                            prop=""></PeaceTableColumn>
-          <PeaceTableColumn label="平台疾病名称"
-                            prop=""></PeaceTableColumn>
+          <PeaceTableColumn label="平台系统编码"
+                            prop="code"
+                            min-width="160px"></PeaceTableColumn>
+          <PeaceTableColumn label="平台过敏信息"
+                            prop="name"
+                            min-width="160px">></PeaceTableColumn>
         </PeaceTable>
 
       </div>
     </div>
     <div class="flex justify-between full-width q-pt-32">
       <div class="flex items-center">
-        <el-button @click="skip"
-                   class="skip-btn">跳过</el-button>
+        <el-button v-on:click="skip"
+                   class="skip-btn"
+                   v-bind:disabled="saveing">跳过</el-button>
         <span style="color:#EA3930;"
-              class="q-ml-8">点击进行下一条药品审核</span>
+              class="q-ml-8">点击进行下一条配码</span>
       </div>
-      <div class="flex items-center">
-        <el-button @click="reset">重置配码</el-button>
-        <el-button @click="unabel">无法配码</el-button>
+      <div class="flex items-center"
+           v-if="!(organInfo.mapperStatus==='success'&&organInfo.auditStatus==='pass')">
+        <el-button v-on:click="reset"
+                   v-bind:disabled="saveing">重置配码</el-button>
+        <el-button v-on:click="unabel"
+                   v-bind:disabled="saveing">无法配码</el-button>
         <el-button type="primary"
-                   @click="submit">保存配码</el-button>
+                   v-on:click="save"
+                   v-bind:disabled="saveing">保存配码</el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Service from '../service'
 export default {
   name: 'EditModel',
   props: {
-    info: Object,
-    type: String
+    info: Object
   },
 
   data() {
     return {
       model: {
-        diseaseName: ''
+        name: ''
       },
       radioId: '',
-      dictionaryOrg: {
-        mainCode: 'A01.001',
-        diseaseName: '肠伤寒',
-        extraCode: 'TJ000024'
-      },
-      dictionaryPlat: {
-        mainCode: '',
-        diseaseName: '',
-        extraCode: ''
-      }
+      organInfo: {},
+      platInfo: {},
+      saveing: false
     }
   },
-
+  mounted() {
+    this.$nextTick().then(() => {
+      this.organInfo = this.info
+      this.model.name = this.organInfo.name
+      if (this.organInfo.mapperStatus === 'success') {
+        this.platInfo = { name: this.organInfo.platformAllergyName, code: this.organInfo.platformAllergyCode }
+      }
+      this.fetch()
+    })
+  },
   methods: {
-    //保存配码
-    submit() {
-      this.$refs['ruleForm'].validate((valid) => {
-        if (valid) {
-          this.saveData()
-        } else {
-          return false
+    fetch() {
+      const params = Peace.util.deepClone(this.model)
+      const fetch = Service.matchPlatformAllergyInfo
+      this.$refs.table.reloadData({ fetch, params }).then((res) => {
+        if (this.organInfo.mapperStatus !== 'success') {
+          if (res.data.records.length > 0) {
+            this.radioId = res.data.records[0].code
+            this.selectItem(res.data.records[0])
+          }
         }
       })
     },
-    saveData() {
-      this.$emit('complete')
+    selectItem(row) {
+      this.platInfo = row
+    },
+    save() {
+      if (this.platInfo.code) {
+        this.saveing = true
+        const params = {
+          code: this.organInfo.code,
+          operatingType: 'Save',
+          orgCode: this.organInfo.orgCode,
+          platformAllergyCode: this.platInfo.code,
+          platformAllergyName: this.platInfo.name
+        }
+        Service.allergyInfoMatchCode(params)
+          .then(() => {
+            Peace.util.alert('保存成功')
+            this.$emit('complete')
+            this.skip()
+          })
+          .finally(() => {
+            this.saveing = false
+          })
+      } else {
+        Peace.util.warning('请选择需要配码的数据')
+      }
     },
     //重置配码
-    reset() {},
+    reset() {
+      this.saveing = true
+      const params = {
+        code: this.organInfo.code,
+        operatingType: 'Reset',
+        orgCode: this.organInfo.orgCode,
+        platformAllergyCode: this.platInfo.code,
+        platformAllergyName: this.platInfo.name
+      }
+      Service.allergyInfoMatchCode(params)
+        .then(() => {
+          Peace.util.alert('操作成功')
+          this.platInfo = {}
+          this.radioId = ''
+          this.$emit('complete')
+        })
+        .finally(() => {
+          this.saveing = false
+        })
+    },
     //无法配码
-    unabel() {},
+    unabel() {
+      this.saveing = true
+      const params = {
+        code: this.organInfo.code,
+        operatingType: 'Unable',
+        orgCode: this.organInfo.orgCode,
+        platformAllergyCode: this.platInfo.code,
+        platformAllergyName: this.platInfo.name
+      }
+      Service.allergyInfoMatchCode(params)
+        .then(() => {
+          Peace.util.alert('操作成功')
+          this.platInfo = {}
+          this.radioId = ''
+          this.$emit('complete')
+        })
+        .finally(() => {
+          this.saveing = false
+        })
+    },
     //跳过
-    skip() {},
-    fetch() {}
+    skip() {
+      this.saveing = true
+      const params = { functionOperation: 'MatchCode', id: this.organInfo.id, orgCode: this.organInfo.orgCode }
+      Service.allergyInfoNextData(params)
+        .then((res) => {
+          this.organInfo = res.data
+          this.model.name = this.organInfo.name
+          this.platInfo = {}
+          this.fetch()
+        })
+        .finally(() => {
+          this.saveing = false
+        })
+    }
   }
 }
 </script>

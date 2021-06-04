@@ -1,9 +1,9 @@
 <template>
   <div class="layout-route full-width flex">
-    <MainList @onItemsClick="onItemsClick"
+    <MainList v-on:onItemsClick="onItemsClick"
               v-if="!showManageList"></MainList>
-    <SubList :info="currentInfo"
-             @onBack="onBack"
+    <SubList v-bind:info="currentInfo"
+             v-on:onBack="onBack"
              v-else></SubList>
   </div>
 </template>
@@ -12,7 +12,7 @@
 import SubList from './components/SubList'
 import MainList from './components/MainList'
 export default {
-  name: 'ClassificationMaintenance',
+  //name: 'ClassificationMaintenance',
   components: { SubList, MainList },
   data() {
     return {
@@ -29,6 +29,10 @@ export default {
       this.showManageList = false
       this.currentInfo = {}
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    this.showManageList = false
+    next()
   }
 }
 </script>

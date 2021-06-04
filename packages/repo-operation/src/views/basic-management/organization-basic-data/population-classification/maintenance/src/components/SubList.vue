@@ -5,9 +5,9 @@
     <div class="card card-search">
       <div class="q-mb-md">
         <el-button icon="el-icon-arrow-left"
-                   @click="back">返回上一页</el-button>
+                   v-on:click="back">返回上一页</el-button>
       </div>
-      <div class="title q-mb-lg">分类维护-{{hospitalName}}</div>
+      <div class="title q-mb-lg">分类维护-{{info.orgName}}</div>
       <el-form inline
                label-suffix="："
                v-on:keyup.enter.native="fetch"
@@ -15,10 +15,11 @@
                v-bind:model="model">
         <el-form-item label="分类标签">
           <el-input placeholder="请输入"
-                    v-model.trim="model.mainCode"></el-input>
+                    v-model.trim="model.name"
+                    clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="fetch"
+          <el-button v-on:click="fetch"
                      type="primary">查询</el-button>
         </el-form-item>
       </el-form>
@@ -29,22 +30,23 @@
     <div class="card">
 
       <div class="q-mb-md">
-        <el-button v-on:click="openImportDialog"
-                   type="primary">批量导入</el-button>
-        <el-button v-on:click="openEditlDialog({},'add')">新增</el-button>
+        <el-button v-on:click="openEditlDialog(info,'add')">新增</el-button>
       </div>
 
       <PeaceTable ref="table"
                   pagination>
         <PeaceTableColumn label="系统编码"
-                          prop=""></PeaceTableColumn>
-
+                          prop="code"
+                          min-width="160px"></PeaceTableColumn>
         <PeaceTableColumn label="分类标签"
-                          prop=""></PeaceTableColumn>
+                          prop="name"
+                          min-width="160px"></PeaceTableColumn>
         <PeaceTableColumn label="更新时间"
-                          prop=""
-                          min-width="180px"></PeaceTableColumn>
-        <PeaceTableColumn label="操作">
+                          prop="updateTime"
+                          min-width="200px"></PeaceTableColumn>
+        <PeaceTableColumn label="操作"
+                          fixed="right"
+                          min-width="160px">
           <template slot-scope="scope">
 
             <el-button class="q-px-none"
@@ -63,10 +65,10 @@
                   v-if="editModelDialog.visible"
                   append-to-body
                   width="445px">
-      <EditModel :info="editModelDialog.data"
+      <EditModel v-bind:info="editModelDialog.data"
                  v-on:cancel="cancel"
                  v-on:complete="complete"
-                 :type="'add'" />
+                 v-bind:type="editModelDialog.type" />
     </peace-dialog>
 
   </div>
@@ -74,7 +76,6 @@
 
 <script>
 import Service from '../service'
-
 import EditModel from './EditModel'
 export default {
   name: 'SubList',
@@ -90,10 +91,8 @@ export default {
   data() {
     return {
       model: {
-        mainCode: '',
-        diseaseName: ''
+        name: ''
       },
-
       editModelDialog: {
         visible: false,
         data: {},
@@ -101,21 +100,19 @@ export default {
       }
     }
   },
-  computed: {
-    hospitalName() {
-      return this.info.hospitalName || '北辰医院'
-    },
-    hospitalId() {
-      return this.info.hospitalId
-    }
+  mounted() {
+    this.$nextTick().then(() => {
+      this.fetch()
+    })
   },
   methods: {
     fetch() {
       const params = Peace.util.deepClone(this.model)
-      const fetch = Service.getSyncStatusList
+      params.orgCode = this.info.orgCode
+      const fetch = Service.getHumanClassList
       this.$refs.table.reloadData({ fetch, params })
     },
-    openEditlDialog(data, type = 'add') {
+    openEditlDialog(data, type) {
       this.editModelDialog.visible = true
       this.editModelDialog.data = data
       this.editModelDialog.type = type
@@ -123,12 +120,12 @@ export default {
     back() {
       this.$emit('onBack')
     },
-    openImportDialog() {},
     cancel() {
       this.editModelDialog.visible = false
     },
     complete() {
       this.editModelDialog.visible = false
+      this.fetch()
     }
   }
 }

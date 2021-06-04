@@ -5,34 +5,31 @@
     <div class="card card-search">
       <div class="q-mb-md">
         <el-button icon="el-icon-arrow-left"
-                   @click="back">返回上一页</el-button>
+                   v-on:click="back">返回上一页</el-button>
       </div>
-      <div class="title q-mb-lg">审核管理-{{hospitalName}}</div>
+      <div class="title q-mb-lg">审核管理-{{info.orgName}}</div>
       <el-form inline
                label-suffix="："
                v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent
                v-bind:model="model">
-        <el-form-item label="主要编码">
+        <el-form-item label="过敏信息">
           <el-input placeholder="请输入"
-                    v-model.trim="model.mainCode"></el-input>
-        </el-form-item>
-        <el-form-item label="疾病名称">
-          <el-input placeholder="请输入"
-                    v-model.trim="model.diseaseName"></el-input>
+                    v-model.trim="model.name"
+                    clearable></el-input>
         </el-form-item>
         <el-form-item label="审核状态">
           <el-select v-model="model.auditStatus"
                      clearable
                      placeholder="全部">
-            <el-option v-for="item in source.AuditStatus"
-                       v-bind:key="item.CustCode"
-                       v-bind:label="item.CustName"
-                       v-bind:value="item.CustCode"></el-option>
+            <el-option v-for="item in source.MapperAuditStatus"
+                       v-bind:key="item.value"
+                       v-bind:label="item.label"
+                       v-bind:value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button @click="fetch"
+          <el-button v-on:click="fetch"
                      type="primary">查询</el-button>
         </el-form-item>
       </el-form>
@@ -43,44 +40,68 @@
     <div class="card">
 
       <div class="q-mb-md">
-        <el-button v-on:click="openEditlDialog({},'examine')"
+        <el-button v-on:click="openExamineDialog"
                    type="primary">审核</el-button>
-        <el-button v-on:click="openEditlDialog({},'edit')"
-                   type="primary">修改</el-button>
-        <el-button v-on:click="openRecordDialog({})"
-                   type="primary">审核记录</el-button>
       </div>
 
       <PeaceTable ref="table"
                   pagination>
         <PeaceTableColumn label=""
-                          width="35">
+                          width="60px">
           <template slot-scope="scope">
             <el-radio v-model="radioId"
-                      :label="scope.row.name">&nbsp;</el-radio>
+                      v-bind:label="scope.row.code"
+                      v-on:change="selectItem(scope.row)"><span></span></el-radio>
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn label="主要编码"
-                          prop=""></PeaceTableColumn>
-        <PeaceTableColumn label="疾病名称"
-                          prop=""></PeaceTableColumn>
-        <PeaceTableColumn label="平台主要编码"
-                          prop=""></PeaceTableColumn>
-        <PeaceTableColumn label="平台疾病名称"
-                          prop=""></PeaceTableColumn>
-        <PeaceTableColumn label="配码状态"
-                          prop=""></PeaceTableColumn>
-        <PeaceTableColumn label="审核状态"
-                          prop=""></PeaceTableColumn>
-        <PeaceTableColumn label="操作"
-                          prop="">
+        <PeaceTableColumn label="系统编码"
+                          prop="code"
+                          min-width="160px">></PeaceTableColumn>
+        <PeaceTableColumn label="过敏信息"
+                          prop="name"
+                          min-width="160px">></PeaceTableColumn>
+        <PeaceTableColumn label="平台系统编码"
+                          min-width="160px">>
           <template slot-scope="scope">
-            <el-button class="q-px-none"
-                       type="text"
-                       v-on:click="openEditlDialog(scope.row,'edit')">修改</el-button>
-            <el-button class="q-px-none"
-                       type="text"
-                       v-on:click="openRecordDialog(scope.row)">审核记录</el-button>
+            {{ scope.row.platformAllergyCode || '--' }}
+          </template>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="平台过敏信息"
+                          min-width="160px">>
+          <template slot-scope="scope">
+            {{ scope.row.platformAllergyName || '--' }}
+          </template>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="配码状态"
+                          prop="mapperStatus"
+                          min-width="100px">>
+          <template slot-scope="scope">
+            {{scope.row.mapperStatus | filterDictionary(source.MapperStatus,'--')}}
+          </template>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="审核状态"
+                          prop="auditStatus"
+                          min-width="100px">>
+          <template slot-scope="scope">
+            {{scope.row.auditStatus | filterDictionary(source.MapperAuditStatus,'--')}}
+          </template>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="操作"
+                          fixed="right"
+                          min-width="160px">
+          <template slot-scope="scope">
+            <div v-if="scope.row.auditStatus!=='pass'&&scope.row.auditStatus!=='reject'">--</div>
+            <div v-else>
+              <el-button class="q-px-none"
+                         type="text"
+                         v-on:click="openEditlDialog(scope.row)"
+                         v-if="scope.row.auditStatus==='pass'">修改</el-button>
+              <el-button class="q-px-none"
+                         type="text"
+                         v-on:click="openRecordDialog(scope.row)"
+                         v-if="scope.row.auditStatus==='pass'||scope.row.auditStatus==='reject'">审核记录</el-button>
+            </div>
+
           </template>
         </PeaceTableColumn>
       </PeaceTable>
@@ -90,7 +111,7 @@
     <peace-dialog :close-on-click-modal="false"
                   :close-on-press-escape="false"
                   :visible.sync="editModelDialog.visible"
-                  :title="editModelDialog.type==='examine'?'审核':'修改'"
+                  title="修改"
                   v-if="editModelDialog.visible"
                   append-to-body
                   width="1000px">
@@ -98,6 +119,18 @@
                  v-on:cancel="cancel"
                  v-on:complete="complete" />
     </peace-dialog>
+
+    <peace-dialog :close-on-click-modal="false"
+                  :close-on-press-escape="false"
+                  :visible.sync="examineModelDialog.visible"
+                  title="审核"
+                  v-if="examineModelDialog.visible"
+                  append-to-body
+                  width="1000px">
+      <ExamineModel :info="examineModelDialog.data"
+                    v-on:examineComplete="examineComplete" />
+    </peace-dialog>
+
     <peace-dialog :close-on-click-modal="false"
                   :close-on-press-escape="false"
                   :visible.sync="recordDialog.visible"
@@ -112,12 +145,12 @@
 
 <script>
 import Service from '../service'
-
+import ExamineModel from './ExamineModel'
 import EditModel from './EditModel'
 import RecordModel from './RecordModel'
 export default {
   name: 'SubList',
-  components: { EditModel, RecordModel },
+  components: { ExamineModel, EditModel, RecordModel },
   props: {
     info: {
       type: Object,
@@ -130,46 +163,60 @@ export default {
     return {
       radioId: '',
       model: {
-        mainCode: '',
-        diseaseName: '',
-        codingStatus: '',
+        name: '',
         auditStatus: ''
       },
 
       editModelDialog: {
         visible: false,
-        data: {},
-        type: ''
+        data: {}
+      },
+      examineModelDialog: {
+        visible: false,
+        data: {}
       },
       recordDialog: {
         visible: false,
         data: {}
       },
       source: {
-        CodingStatus: [],
-        AuditStatus: []
+        MapperStatus: [],
+        MapperAuditStatus: []
       }
     }
   },
-  computed: {
-    hospitalName() {
-      return this.info.hospitalName || '北辰医院'
-    },
-    hospitalId() {
-      return this.info.hospitalId
-    }
+  async mounted() {
+    this.source.MapperStatus = await Peace.identity.dictionary.getList('mapper_status')
+    this.source.MapperAuditStatus = await Peace.identity.dictionary.getList('mapper_audit_status')
+    this.$nextTick().then(() => {
+      this.model.auditStatus = 'check'
+      this.fetch()
+    })
   },
   methods: {
     fetch() {
       const params = Peace.util.deepClone(this.model)
-      const fetch = Service.getSyncStatusList
+      params.orgCode = this.info.orgCode
+      const fetch = Service.getAllergyInfoList
       this.$refs.table.reloadData({ fetch, params })
+      this.radioId = ''
+      this.examineModelDialog.data = {}
     },
-    openEditlDialog(data, type) {
+    openEditlDialog(row) {
+      this.editModelDialog.data = row
       this.editModelDialog.visible = true
-      this.editModelDialog.data = data
-      this.editModelDialog.data.type = type
-      this.editModelDialog.type = type
+    },
+    openExamineDialog() {
+      if (!(Object.keys(this.examineModelDialog.data).length > 0)) {
+        return Peace.util.warning('请选择需要审核的数据')
+      }
+      if (this.examineModelDialog.data.auditStatus !== 'check') {
+        return Peace.util.warning('请选择待审核的数据进行操作')
+      }
+      this.examineModelDialog.visible = true
+    },
+    selectItem(row) {
+      this.examineModelDialog.data = row
     },
     openRecordDialog(data) {
       this.recordDialog.visible = true
@@ -178,12 +225,15 @@ export default {
     back() {
       this.$emit('onBack')
     },
-    openImportDialog() {},
     cancel() {
       this.editModelDialog.visible = false
     },
+    examineComplete() {
+      this.fetch()
+    },
     complete() {
       this.editModelDialog.visible = false
+      this.fetch()
     }
   }
 }

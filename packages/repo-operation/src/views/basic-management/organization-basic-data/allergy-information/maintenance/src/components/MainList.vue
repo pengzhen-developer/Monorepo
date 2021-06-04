@@ -7,33 +7,33 @@
                v-on:submit.native.prevent
                v-bind:model="model">
         <el-form-item label="机构名称">
-          <el-input v-model.trim="model.CustName"
-                    placeholder="请输入"></el-input>
+          <el-input v-model.trim="model.orgName"
+                    placeholder="请输入"
+                    clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="fetch"
+          <el-button v-on:click="fetch"
                      type="primary">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
 
     <div class="card">
-      <div class="q-mb-md">
-        <el-button v-on:click="onItemsClick">编码管理</el-button>
-      </div>
       <PeaceTable ref="table"
                   pagination>
         <PeaceTableColumn type="index"
-                          label="序号"></PeaceTableColumn>
+                          label="序号"
+                          width="80px"></PeaceTableColumn>
         <PeaceTableColumn label="机构名称"
-                          prop=""></PeaceTableColumn>
-        <PeaceTableColumn label="ICD编码数量"
-                          prop="">
+                          prop="orgName"
+                          min-width="160px"></PeaceTableColumn>
+        <PeaceTableColumn label="过敏信息数量"
+                          min-width="160px">
           <template slot-scope="scope">
-            <span>543</span>
+            <span class="q-mr-20">{{scope.row.allergyNum}}</span>
             <el-button class="q-px-none"
                        type="text"
-                       v-on:click="onItemsClick(scope.row)">编码管理</el-button>
+                       v-on:click="onItemsClick(scope.row)">过敏管理</el-button>
           </template>
         </PeaceTableColumn>
       </PeaceTable>
@@ -50,14 +50,19 @@ export default {
   data() {
     return {
       model: {
-        CustName: ''
+        orgName: ''
       }
     }
+  },
+  mounted() {
+    this.$nextTick().then(() => {
+      this.fetch()
+    })
   },
   methods: {
     fetch() {
       const params = Peace.util.deepClone(this.model)
-      const fetch = Service.getSyncStatusList
+      const fetch = Service.getAllergyInfoHospitals
       this.$refs.table.reloadData({ fetch, params })
     },
     onItemsClick(data) {

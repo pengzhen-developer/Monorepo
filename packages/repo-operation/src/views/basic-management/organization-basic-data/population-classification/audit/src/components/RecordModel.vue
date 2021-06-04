@@ -5,16 +5,17 @@
                       :key="index"
                       type="primary"
                       placement="left"
-                      v-bind:timestamp="activity.timestamp"
-                      v-bind:timestampSpan="activity.timestampSpan">
-        <div style="font-weight: 500">{{ activity.refundStatusTxt }}</div>
-        <span class="remark_style">{{activity.remark}}</span>
+                      v-bind:timestamp="Peace.util.formatDate(activity.updateTime,'YYYY-MM-DD')"
+                      v-bind:timestampSpan="Peace.util.formatDate(activity.updateTime,'HH:mm:ss')">
+        <div style="font-weight: 500">{{ activity.serviceStates| filterDictionary(source.MapperAuditStatus,'--') }}</div>
+        <span class="remark_style">{{activity.notes}}</span>
       </time-line-item>
     </el-timeline>
   </div>
 </template>
 
 <script>
+import Service from '../service'
 import TimeLineItem from './timelie/TimeLineItem'
 export default {
   name: 'RecordModel',
@@ -24,10 +25,24 @@ export default {
   },
   data() {
     return {
-      activities: [
-        { timestamp: '04-13', timestampSpan: '12:00:00', refundStatusTxt: '审核驳回', remark: '配码错误' },
-        { timestamp: '04-12', timestampSpan: '12:01:00', refundStatusTxt: '审核通过', remark: '' }
-      ]
+      activities: [],
+      source: {
+        MapperAuditStatus: []
+      }
+    }
+  },
+  async mounted() {
+    this.source.MapperAuditStatus = await Peace.identity.dictionary.getList('mapper_audit_status')
+    this.$nextTick().then(() => {
+      this.fetch()
+    })
+  },
+  methods: {
+    fetch() {
+      const params = { operaModule: '20', parentId: this.info.code }
+      Service.humanClassReviewLog(params).then((res) => {
+        this.activities = res.data
+      })
     }
   }
 }

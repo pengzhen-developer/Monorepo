@@ -5,24 +5,21 @@
     <div class="card card-search">
       <div class="q-mb-md">
         <el-button icon="el-icon-arrow-left"
-                   @click="back">返回上一页</el-button>
+                   v-on:click="back">返回上一页</el-button>
       </div>
-      <div class="title q-mb-lg">编码管理-{{hospitalName}}</div>
+      <div class="title q-mb-lg">过敏维护-{{info.orgName}}</div>
       <el-form inline
                label-suffix="："
                v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent
                v-bind:model="model">
-        <el-form-item label="主要编码">
+        <el-form-item label="过敏信息">
           <el-input placeholder="请输入"
-                    v-model.trim="model.mainCode"></el-input>
-        </el-form-item>
-        <el-form-item label="疾病名称">
-          <el-input placeholder="请输入"
-                    v-model.trim="model.diseaseName"></el-input>
+                    v-model.trim="model.name"
+                    clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="fetch"
+          <el-button v-on:click="fetch"
                      type="primary">查询</el-button>
         </el-form-item>
       </el-form>
@@ -33,24 +30,23 @@
     <div class="card">
 
       <div class="q-mb-md">
-        <el-button v-on:click="openImportDialog"
-                   type="primary">批量导入</el-button>
-        <el-button v-on:click="openEditlDialog({},'add')">新增</el-button>
+        <el-button v-on:click="openEditlDialog(info,'add')">新增</el-button>
       </div>
 
       <PeaceTable ref="table"
                   pagination>
-        <PeaceTableColumn label="主要编码"
-                          prop=""></PeaceTableColumn>
-        <PeaceTableColumn label="附加编码"
-                          prop=""></PeaceTableColumn>
-
-        <PeaceTableColumn label="疾病名称"
-                          prop=""></PeaceTableColumn>
-        <PeaceTableColumn label="添加时间"
-                          prop=""
-                          min-width="180px"></PeaceTableColumn>
-        <PeaceTableColumn label="操作">
+        <PeaceTableColumn label="系统编码"
+                          prop="code"
+                          min-width="160px"></PeaceTableColumn>
+        <PeaceTableColumn label="过敏信息"
+                          prop="name"
+                          min-width="160px"></PeaceTableColumn>
+        <PeaceTableColumn label="更新时间"
+                          prop="updateTime"
+                          min-width="200px"></PeaceTableColumn>
+        <PeaceTableColumn label="操作"
+                          min-width="160px"
+                          fixed="right">
           <template slot-scope="scope">
 
             <el-button class="q-px-none"
@@ -65,14 +61,14 @@
     <peace-dialog :close-on-click-modal="false"
                   :close-on-press-escape="false"
                   :visible.sync="editModelDialog.visible"
-                  :title="editModelDialog.type==='add'?'新增ICD编码':'修改ICD编码'"
+                  :title="editModelDialog.type==='add'?'新增过敏信息':'修改过敏信息'"
                   v-if="editModelDialog.visible"
                   append-to-body
                   width="445px">
-      <EditModel :info="editModelDialog.data"
+      <EditModel v-bind:info="editModelDialog.data"
                  v-on:cancel="cancel"
                  v-on:complete="complete"
-                 :type="'add'" />
+                 v-bind:type="editModelDialog.type" />
     </peace-dialog>
 
   </div>
@@ -80,7 +76,6 @@
 
 <script>
 import Service from '../service'
-
 import EditModel from './EditModel'
 export default {
   name: 'SubList',
@@ -96,10 +91,8 @@ export default {
   data() {
     return {
       model: {
-        mainCode: '',
-        diseaseName: ''
+        name: ''
       },
-
       editModelDialog: {
         visible: false,
         data: {},
@@ -107,21 +100,19 @@ export default {
       }
     }
   },
-  computed: {
-    hospitalName() {
-      return this.info.hospitalName || '北辰医院'
-    },
-    hospitalId() {
-      return this.info.hospitalId
-    }
+  mounted() {
+    this.$nextTick().then(() => {
+      this.fetch()
+    })
   },
   methods: {
     fetch() {
       const params = Peace.util.deepClone(this.model)
-      const fetch = Service.getSyncStatusList
+      params.orgCode = this.info.orgCode
+      const fetch = Service.getAllergyInfoList
       this.$refs.table.reloadData({ fetch, params })
     },
-    openEditlDialog(data, type = 'add') {
+    openEditlDialog(data, type) {
       this.editModelDialog.visible = true
       this.editModelDialog.data = data
       this.editModelDialog.type = type
@@ -129,12 +120,12 @@ export default {
     back() {
       this.$emit('onBack')
     },
-    openImportDialog() {},
     cancel() {
       this.editModelDialog.visible = false
     },
     complete() {
       this.editModelDialog.visible = false
+      this.fetch()
     }
   }
 }
