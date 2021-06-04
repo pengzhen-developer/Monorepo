@@ -1,41 +1,52 @@
-
-// 编码审核
-
 <template>
   <div class="layout-route full-width flex">
-    <MainList v-on:onItemsClick="onItemsClick"
-              v-if="!showManageList"></MainList>
-    <SubList v-bind:info="currentInfo"
-             v-on:onBack="onBack"
-             v-else></SubList>
+
+    <MainList v-show="isListView"></MainList>
+
+    <template v-if="isDetailView">
+      <SubList></SubList>
+    </template>
+
   </div>
 </template>
 
 <script>
 import SubList from './components/SubList'
 import MainList from './components/MainList'
+
+import Observable from './observable'
+
 export default {
   name: 'EncodedReviewed',
   components: { SubList, MainList },
   data() {
-    return {
-      showManageList: false,
-      currentInfo: {}
-    }
+    return {}
   },
-  methods: {
-    onItemsClick(data) {
-      this.showManageList = true
-      this.currentInfo = Object.assign({}, data)
+
+  computed: {
+    view() {
+      return Observable.state.view
     },
-    onBack() {
-      this.showManageList = false
-      this.currentInfo = {}
+
+    isListView() {
+      return this.view === Observable.constants.view.LIST
+    },
+
+    isDetailView() {
+      return this.view === Observable.constants.view.DETAIL
     }
   },
+
   beforeRouteLeave(to, from, next) {
-    this.showManageList = false
+    Observable.mutations.changeView(Observable.constants.view.LIST)
+
     next()
+  },
+
+  methods: {
+    back() {
+      Observable.mutations.changeView(Observable.constants.view.LIST)
+    }
   }
 }
 </script>

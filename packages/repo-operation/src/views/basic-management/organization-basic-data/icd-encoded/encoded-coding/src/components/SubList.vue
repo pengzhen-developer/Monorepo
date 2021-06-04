@@ -8,7 +8,7 @@
         <el-button icon="el-icon-arrow-left"
                    @click="back">返回上一页</el-button>
       </div>
-      <div class="title q-mb-lg">配码管理-{{hospitalName}}</div>
+      <div class="title q-mb-lg">配码管理-{{props.orgName}}</div>
       <el-form inline
                label-suffix="："
                v-on:keyup.enter.native="fetch"
@@ -123,20 +123,13 @@
 </template>
 
 <script>
+import Observable from '../observable'
 import Service from '../service'
 
 import EditModel from './EditModel'
 export default {
   name: 'SubList',
   components: { EditModel },
-  props: {
-    info: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    }
-  },
   data() {
     return {
       loading: true,
@@ -159,14 +152,24 @@ export default {
       }
     }
   },
+
   computed: {
-    hospitalName() {
-      return this.info.orgName
+    props() {
+      return Observable.state.props
     },
-    hospitalId() {
-      return this.info.orgCode
+    view() {
+      return Observable.state.view
     }
   },
+
+  watch: {
+    view(value) {
+      if (value === Observable.constants.view.DETAIL) {
+        this.fetch()
+      }
+    }
+  },
+
   async mounted() {
     this.source.AuditStatus = await Peace.identity.dictionary.getList('mapper_audit_status')
     this.source.MapperStatus = await Peace.identity.dictionary.getList('mapper_status')
@@ -178,7 +181,7 @@ export default {
   methods: {
     fetch() {
       const params = Peace.util.deepClone(this.model)
-      params.orgCode = this.hospitalId
+      params.orgCode = this.props.orgCode
       const fetch = Service.getListByOrganizationId
       this.$refs.table.reloadData({ fetch, params }).finally(() => {
         this.loading = false
@@ -195,7 +198,7 @@ export default {
       this.editModelDialog.data = row
     },
     back() {
-      this.$emit('onBack')
+      Observable.mutations.changeView(Observable.constants.view.LIST)
     },
     refresh() {
       this.fetch()

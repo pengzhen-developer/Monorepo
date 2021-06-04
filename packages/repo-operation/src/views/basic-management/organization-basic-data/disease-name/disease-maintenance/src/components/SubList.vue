@@ -8,7 +8,7 @@
         <el-button icon="el-icon-arrow-left"
                    v-on:click="back">返回上一页</el-button>
       </div>
-      <div class="title q-mb-lg">疾病管理-{{hospitalName}}</div>
+      <div class="title q-mb-lg">疾病管理-{{props.orgName}}</div>
       <el-form inline
                label-suffix="："
                v-on:keyup.enter.native="fetch"
@@ -76,20 +76,14 @@
 </template>
 
 <script>
+import Observable from '../observable'
 import Service from '../service'
 
 import EditModel from './EditModel'
 export default {
   name: 'SubList',
   components: { EditModel },
-  props: {
-    info: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    }
-  },
+
   data() {
     return {
       loading: true,
@@ -104,23 +98,34 @@ export default {
       }
     }
   },
+
   computed: {
-    hospitalName() {
-      return this.info.orgName
+    props() {
+      return Observable.state.props
     },
-    hospitalId() {
-      return this.info.orgCode
+    view() {
+      return Observable.state.view
     }
   },
+
+  watch: {
+    view(value) {
+      if (value === Observable.constants.view.DETAIL) {
+        this.fetch()
+      }
+    }
+  },
+
   mounted() {
     this.$nextTick(() => {
       this.fetch()
     })
   },
+
   methods: {
     fetch() {
       const params = Peace.util.deepClone(this.model)
-      params.orgCode = this.hospitalId
+      params.orgCode = this.props.orgCode
       const fetch = Service.getListByOrganizationId
       this.$refs.table.reloadData({ fetch, params }).finally(() => {
         this.loading = false
@@ -129,12 +134,12 @@ export default {
     openEditlDialog(data, type = 'add') {
       this.editModelDialog.visible = true
       this.editModelDialog.data = data
-      this.editModelDialog.data.orgCode = this.hospitalId
-      this.editModelDialog.data.orgName = this.hospitalName
+      this.editModelDialog.data.orgCode = this.props.orgCode
+      this.editModelDialog.data.orgName = this.props.orgName
       this.editModelDialog.type = type
     },
     back() {
-      this.$emit('onBack')
+      Observable.mutations.changeView(Observable.constants.view.LIST)
     },
     openImportDialog() {},
     cancel() {

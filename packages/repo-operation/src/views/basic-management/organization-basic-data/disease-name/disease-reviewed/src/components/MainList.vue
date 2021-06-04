@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import Observable from './../observable'
 import Service from '../service'
 export default {
   name: 'MainList',
@@ -68,11 +69,27 @@ export default {
       }
     }
   },
+
+  computed: {
+    view() {
+      return Observable.state.view
+    }
+  },
+
+  watch: {
+    view(value) {
+      if (value === Observable.constants.view.LIST) {
+        this.fetch()
+      }
+    }
+  },
+
   mounted() {
     this.$nextTick(() => {
       this.fetch()
     })
   },
+
   methods: {
     fetch() {
       const params = Peace.util.deepClone(this.model)
@@ -81,8 +98,9 @@ export default {
         this.loading = false
       })
     },
-    onItemsClick(data) {
-      this.$emit('onItemsClick', data)
+    onItemsClick(row) {
+      Observable.mutations.setProps(row)
+      Observable.mutations.changeView(Observable.constants.view.DETAIL)
     }
   }
 }

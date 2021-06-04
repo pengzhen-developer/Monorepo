@@ -185,6 +185,8 @@ export default {
           Peace.util.success(res.message)
           if (this.type === 'examine') {
             this.skip()
+          } else {
+            this.cancel()
           }
           this.clear()
           this.refresh()
