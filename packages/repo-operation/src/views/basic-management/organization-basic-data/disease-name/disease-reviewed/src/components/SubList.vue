@@ -113,6 +113,7 @@
                   append-to-body
                   width="1000px">
       <EditModel v-bind:info="editModelDialog.data"
+                 v-bind:type="editModelDialog.type"
                  v-on:cancel="cancel"
                  v-on:refresh="refresh"
                  v-on:clear="clear" />
@@ -202,7 +203,6 @@ export default {
       }
       this.editModelDialog.visible = true
       this.editModelDialog.data = data
-      this.editModelDialog.data.type = type
       this.editModelDialog.type = type
     },
     openRecordDialog(data) {

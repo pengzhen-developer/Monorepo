@@ -50,7 +50,7 @@
                  label-suffix="："
                  label-width="auto"
                  v-bind:model="model">
-          <template v-if="info.type==='examine'">
+          <template v-if="type==='examine'">
             <el-form-item label="审核结果">
               <el-radio-group v-model="model.auditOperating">
                 <el-radio v-bind:label="'Pass'">通过</el-radio>
@@ -82,7 +82,7 @@
       </div>
     </div>
 
-    <template v-if="info.type==='examine'">
+    <template v-if="type==='examine'">
       <div class="flex justify-between full-width q-pt-32">
         <div class="flex items-center">
           <el-button v-on:click="skip"
@@ -112,12 +112,8 @@ import Service from '../service'
 export default {
   name: 'EditModel',
   props: {
-    info: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    }
+    info: Object,
+    type: String
   },
 
   data() {
@@ -187,7 +183,7 @@ export default {
       Service.updateReviewStatus(params)
         .then((res) => {
           Peace.util.success(res.message)
-          if (this.info.type === 'examine') {
+          if (this.type === 'examine') {
             this.skip()
           }
           this.clear()
