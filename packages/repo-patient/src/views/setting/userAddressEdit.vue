@@ -82,7 +82,7 @@ export default {
       if (!this.internalAddr.consignee.replace(/\s+/g, '')) {
         bool = false
       }
-      if (!/^1[3|4|5|7|8][0-9]\d{8}$/.test(this.internalAddr.mobile)) {
+      if (!peace.validate.pattern.mobile.test(this.internalAddr.mobile)) {
         bool = false
       }
       if (!this.internalAddr.province || !this.internalAddr.city || !this.internalAddr.district) {
