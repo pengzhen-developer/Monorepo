@@ -10,36 +10,34 @@
         <div class="info-list">
 
           <el-form-item label="平台药品编码">
-            <span>{{model.code}}</span>
+            <span>{{model.platformDrugCode}}</span>
           </el-form-item>
 
           <el-form-item label="药品名称">
-            <span>{{model.name}}</span>
+            <span>{{model.drugName}}</span>
           </el-form-item>
 
           <el-form-item label="剂型">
-            <span>{{model.jixing}}</span>
+            <span>{{model.drugDosageForm || "——"}}</span>
           </el-form-item>
 
           <el-form-item label="抗菌属性">
-            <el-select v-model.trim="model.attributes"
-                       value-key="custCode"
-                       clearable
+            <el-select placeholder="--"
                        class="block"
-                       placeholder="--">
-              <el-option v-bind:key="index"
+                       v-model="model.antiLevel"
+                       clearable>
+              <el-option v-for="item in source.ATTRIBUTES_TAYPES"
+                         v-bind:key="item.value"
                          v-bind:label="item.label"
-                         v-bind:value="item.value"
-                         v-for="(item, index) in source.attributesTypes">
-              </el-option>
+                         v-bind:value="item.value"></el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item label="注射剂"
-                        prop="injection">
-            <el-radio-group v-model="model.injection">
-              <el-radio :label="0">是</el-radio>
-              <el-radio :label="1">否</el-radio>
+                        prop="isInjection">
+            <el-radio-group v-model="model.isInjection">
+              <el-radio label="yes">是</el-radio>
+              <el-radio label="no">否</el-radio>
             </el-radio-group>
           </el-form-item>
 
@@ -55,6 +53,8 @@
 </template>
 
 <script>
+import Service from '../service/index'
+
 export default {
   name: 'EidtInjectionDrugProperitiesDialog',
   props: {
@@ -66,8 +66,11 @@ export default {
     data: {
       handler() {
         if (this.data != null) {
-          this.model.code = this.data.code
-          this.model.label = this.data.label
+          this.model.platformDrugCode = this.data.platformDrugCode
+          this.model.drugName = this.data.drugName
+          this.model.drugDosageForm = this.data.drugDosageForm
+          this.model.isInjection = this.data.isInjection == 'yes' ? 'yes' : 'no'
+          this.model.id = this.data.id
         }
       },
       immediate: true
@@ -77,21 +80,18 @@ export default {
   data() {
     return {
       model: {
-        code: '编码',
-        name: '名称',
-        jixing: '机型',
-        attributes: '',
-        injection: 0
+        id: '',
+        platformDrugCode: '',
+        drugName: '',
+        drugDosageForm: '',
+        antiLevel: '',
+        isInjection: ''
       },
       source: {
-        attributesTypes: [
-          { value: '1', label: '非限制使用级抗菌药物' },
-          { value: '2', label: '限制使用级抗菌药物' },
-          { value: '3', label: '特殊使用级抗菌药物' }
-        ]
+        ATTRIBUTES_TAYPES: []
       },
       rules: {
-        injection: [
+        isInjection: [
           {
             required: true,
             message: '请选中是否是注射剂',
@@ -102,14 +102,26 @@ export default {
     }
   },
 
+  async created() {
+    this.source.ATTRIBUTES_TAYPES = await Peace.identity.dictionary.getList('antiLevel')
+    this.model.antiLevel = this.source.ATTRIBUTES_TAYPES.some((item) => item.value === this.data.antiLevel)
+      ? this.data.antiLevel
+      : ''
+  },
+
   methods: {
     onCancel() {
       this.$emit('onClose', {})
     },
+
     onSave(model) {
       this.$refs[model].validate((valid) => {
         if (valid) {
-          console.log(valid)
+          const params = Peace.util.deepClone(this.model)
+          Service.updatePlatformDrugExtInfo(params).then((res) => {
+            Peace.util.success(res.message)
+            this.$emit('onSuccess')
+          })
         } else {
           return false
         }

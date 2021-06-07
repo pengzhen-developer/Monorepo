@@ -8,13 +8,13 @@
                size="mini">
 
         <el-form-item label="分类标签">
-          <el-input v-model.trim="model.hospitalName"
+          <el-input v-model.trim="model.name"
                     placeholder="请输入"></el-input>
         </el-form-item>
 
         <el-form-item label="更新日期">
           <PeaceDatePicker type="daterange"
-                           v-model="model.pickDate"
+                           v-model="pickDate"
                            value-format="yyyy-MM-dd"
                            start-placeholder="开始日期"
                            end-placeholder="结束日期"></PeaceDatePicker>
@@ -37,13 +37,13 @@
                   size="mini"
                   pagination>
         <PeaceTableColumn label="系统编码"
-                          prop="orderNumber">
+                          prop="code">
         </PeaceTableColumn>
         <PeaceTableColumn label="分类标签"
-                          prop="hospitalName">
+                          prop="name">
         </PeaceTableColumn>
         <PeaceTableColumn label="更新时间"
-                          prop="hospitalName">
+                          prop="updateTime">
         </PeaceTableColumn>
 
         <PeaceTableColumn width="240px"
@@ -72,6 +72,7 @@
 
 <script>
 import AddClassificationDialog from './components/AddClassificationDialog'
+import Service from './service'
 
 export default {
   name: 'CrowdClassification',
@@ -83,15 +84,23 @@ export default {
   data() {
     return {
       model: {
-        hospitalName: '',
-        orgType: '',
-        serviceType: []
+        name: '',
+        beginTime: '',
+        endTime: ''
       },
+      pickDate: [],
       addDialog: {
         visible: false,
         isEdit: false,
         itemData: {}
       }
+    }
+  },
+
+  watch: {
+    pickDate(value) {
+      this.model.beginTime = value?.[0] ?? ''
+      this.model.endTime = value?.[1] ?? ''
     }
   },
 
@@ -102,19 +111,17 @@ export default {
   },
 
   methods: {
-    get() {},
+    get() {
+      const fetch = Service.platformHumanClassPage
+      const params = Peace.util.deepClone(this.model)
+      this.$refs.table.reloadData({ fetch, params })
+    },
 
     // 新增
     addItem() {
       this.addDialog.itemData = {}
       this.addDialog.isEdit = false
       this.addDialog.visible = true
-      // this.addDialog.itemData = {
-      //   code: '111',
-      //   label: 'aaa'
-      // }
-      // this.addDialog.isEdit = true
-      // this.addDialog.visible = true
     },
     // 修改
     editItem(row) {

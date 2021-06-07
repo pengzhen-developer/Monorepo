@@ -8,13 +8,13 @@
                size="mini">
 
         <el-form-item label="药品名称">
-          <el-input v-model.trim="model.hospitalName"
+          <el-input v-model.trim="model.drugName"
                     placeholder="请输入"></el-input>
         </el-form-item>
 
         <el-form-item label="更新日期">
           <PeaceDatePicker type="daterange"
-                           v-model="model.pickDate"
+                           v-model="pickDate"
                            value-format="yyyy-MM-dd"
                            start-placeholder="开始日期"
                            end-placeholder="结束日期"></PeaceDatePicker>
@@ -33,26 +33,41 @@
                   size="mini"
                   pagination>
         <PeaceTableColumn label="平台药品编码"
-                          prop="orderNumber">
+                          width="200px"
+                          prop="platformDrugCode">
         </PeaceTableColumn>
         <PeaceTableColumn label="药品名称"
-                          prop="orderNumber">
+                          show-overflow-tooltip
+                          prop="drugName">
         </PeaceTableColumn>
         <PeaceTableColumn label="规格"
-                          prop="orderNumber">
+                          show-overflow-tooltip
+                          prop="drugSpecifications">
+          <template slot-scope="scope">
+            {{scope.row.drugSpecifications||"——"}}
+          </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="生产厂家"
-                          prop="hospitalName">
-        </PeaceTableColumn>
-        <PeaceTableColumn label="基药">
+                          show-overflow-tooltip
+                          prop="enterpriseCnName">
           <template slot-scope="scope">
-            {{scope.row.enableStatus ? '是':'否'}}
-            <el-switch v-model="scope.row.enableStatus"
+            {{scope.row.enterpriseCnName||"——"}}
+          </template>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="基药"
+                          width="100px">
+          <template slot-scope="scope">
+            {{scope.row.isBaseDrug == "yes" ? '是' : '否'}}
+            <el-switch v-model="scope.row.isBaseDrug"
+                       active-value="yes"
+                       inactive-value="no"
                        @change="changeStatus(scope.row)"></el-switch>
+
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="更新时间"
-                          prop="hospitalName">
+                          width="200px"
+                          prop="updateTime">
         </PeaceTableColumn>
 
       </PeaceTable>
@@ -62,16 +77,19 @@
 </template>
 
 <script>
+import Service from './service'
+
 export default {
   name: 'BasicDrugProperties',
 
   data() {
     return {
       model: {
-        hospitalName: '',
-        orgType: '',
-        serviceType: []
-      }
+        drugName: '',
+        beginTime: '',
+        endTime: ''
+      },
+      pickDate: []
     }
   },
 
@@ -81,23 +99,33 @@ export default {
     })
   },
 
+  watch: {
+    pickDate(value) {
+      this.model.beginTime = value?.[0] ?? ''
+      this.model.endTime = value?.[1] ?? ''
+    }
+  },
+
   methods: {
-    get() {},
+    get() {
+      const fetch = Service.getPageBaseDrugProperties
+      const params = Peace.util.deepClone(this.model)
+      this.$refs.table.reloadData({ fetch, params })
+    },
 
     changeStatus(row) {
-      console.log(row)
-      // const params = {
-      //   id: row.id,
-      //   enableStatus: row.enableStatus
-      // }
-      // Service.updateStatus(params)
-      //   .then((res) => {
-      //     Peace.util.success(res.msg)
-      //     this.get()
-      //   })
-      //   .catch(() => {
-      //     row.enableStatus = !row.enableStatus
-      //   })
+      const params = {
+        id: row.id,
+        isBaseDrug: row.isBaseDrug
+      }
+      Service.updateBaseDrugProperties(params)
+        .then((res) => {
+          Peace.util.success(res.message)
+          this.get()
+        })
+        .catch(() => {
+          row.isBaseDrug = row.isBaseDrug == 'yes' ? 'no' : 'yes'
+        })
     }
   }
 }

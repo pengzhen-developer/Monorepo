@@ -11,12 +11,12 @@
         <div class="info-list">
           <el-form-item label="系统编码"
                         v-if="isEdit">
-            <span>{{model.code}}</span>
+            <span>{{ data.code }}</span>
           </el-form-item>
 
           <el-form-item label="分类标签"
-                        prop="label">
-            <el-input v-model.trim="model.label"
+                        prop="name">
+            <el-input v-model.trim="model.name"
                       placeholder="请输入"
                       maxlength="50"></el-input>
           </el-form-item>
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import Service from '../service/index'
+
 export default {
   name: 'AddClassificationDialog',
   props: {
@@ -44,8 +46,8 @@ export default {
     data: {
       handler() {
         if (this.data != null) {
-          this.model.code = this.data.code
-          this.model.label = this.data.label
+          this.model.id = this.data.id
+          this.model.name = this.data.name
         }
       },
       immediate: true
@@ -55,12 +57,12 @@ export default {
   data() {
     return {
       model: {
-        code: '',
-        label: ''
+        id: '',
+        name: ''
       },
 
       rules: {
-        label: [
+        name: [
           {
             required: true,
             message: '请输入分类标签',
@@ -78,7 +80,18 @@ export default {
     onSave(model) {
       this.$refs[model].validate((valid) => {
         if (valid) {
-          console.log(valid)
+          const params = Peace.util.deepClone(this.model)
+          if (this.isEdit) {
+            Service.editPlatformHumanClass(params).then((res) => {
+              Peace.util.success(res.message)
+              this.$emit('onSuccess')
+            })
+          } else {
+            Service.addPlatformHumanClass(params).then((res) => {
+              Peace.util.success(res.message)
+              this.$emit('onSuccess')
+            })
+          }
         } else {
           return false
         }

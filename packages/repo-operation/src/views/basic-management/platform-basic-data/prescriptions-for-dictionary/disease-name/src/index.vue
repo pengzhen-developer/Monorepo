@@ -8,13 +8,13 @@
                size="mini">
 
         <el-form-item label="疾病名称">
-          <el-input v-model.trim="model.hospitalName"
+          <el-input v-model.trim="model.name"
                     placeholder="请输入"></el-input>
         </el-form-item>
 
         <el-form-item label="更新日期">
           <PeaceDatePicker type="daterange"
-                           v-model="model.pickDate"
+                           v-model="pickDate"
                            value-format="yyyy-MM-dd"
                            start-placeholder="开始日期"
                            end-placeholder="结束日期"></PeaceDatePicker>
@@ -31,24 +31,26 @@
       <div class="q-mb-lg">
         <el-button type="primary"
                    v-on:click="addItem">新增</el-button>
-        <el-button type="primary"
-                   v-on:click="associated">关联IDC10编码</el-button>
       </div>
 
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
         <PeaceTableColumn label="系统编码"
-                          prop="orderNumber">
+                          prop="code">
         </PeaceTableColumn>
         <PeaceTableColumn label="疾病名称"
-                          prop="hospitalName">
+                          prop="name">
         </PeaceTableColumn>
         <PeaceTableColumn label="已关联ICD编码"
-                          prop="hospitalName">
+                          prop="icdCount">
+          <template slot-scope="scope">
+            <el-button type="text"
+                       v-on:click="showDetail(scope.row)">{{scope.row.icdCount}}</el-button>
+          </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="更新时间"
-                          prop="hospitalName">
+                          prop="updateTime">
         </PeaceTableColumn>
 
         <PeaceTableColumn width="240px"
@@ -58,7 +60,7 @@
             <el-button type="text"
                        v-on:click="editItem(scope.row)">修改</el-button>
             <el-button type="text"
-                       v-on:click="editItem(scope.row)">关联ICD编码</el-button>
+                       v-on:click="associated(scope.row)">关联ICD编码</el-button>
           </template>
         </PeaceTableColumn>
       </PeaceTable>
@@ -67,7 +69,7 @@
     <PeaceDialog v-if="addDialog.visible"
                  width="445px"
                  v-bind:visible.sync="addDialog.visible"
-                 :title="addDialog.idEdit ?  '修改疾病名称' : '新增疾病名称'">
+                 :title="addDialog.isEdit ?  '修改疾病名称' : '新增疾病名称'">
       <AddDiseaseNameDialog v-bind:data="addDialog.itemData"
                             v-bind:isEdit="addDialog.isEdit"
                             v-on:onSuccess="addSuccess"
@@ -75,11 +77,19 @@
     </PeaceDialog>
 
     <PeaceDialog v-if="relevanceDialog.visible"
-                 width="1000px"
+                 width="1200px"
                  title="关联ICD编码"
                  v-bind:visible.sync="relevanceDialog.visible">
-      <AssociatedICDCode v-on:onSuccess="associatedSuccess"
+      <AssociatedICDCode v-bind:data="relevanceDialog.itemData"
+                         v-on:onSuccess="associatedSuccess"
                          v-on:onClose="associatedClose"></AssociatedICDCode>
+    </PeaceDialog>
+
+    <PeaceDialog v-if="showIcdDetailsDialog.visible"
+                 width="1000px"
+                 title="已关联ICD编码"
+                 v-bind:visible.sync="showIcdDetailsDialog.visible">
+      <AssociatedICDCodeDetails v-bind:data="showIcdDetailsDialog.itemData"></AssociatedICDCodeDetails>
     </PeaceDialog>
   </div>
 </template>
@@ -87,30 +97,48 @@
 <script>
 import AddDiseaseNameDialog from './components/AddDiseaseNameDialog'
 import AssociatedICDCode from './components/AssociatedICDCode'
+import AssociatedICDCodeDetails from './components/AssociatedICDCodeDetails'
+import Service from './service'
 
 export default {
   name: 'DieaseName',
 
   components: {
     AddDiseaseNameDialog,
-    AssociatedICDCode
+    AssociatedICDCode,
+    AssociatedICDCodeDetails
   },
 
   data() {
     return {
       model: {
-        hospitalName: '',
-        orgType: '',
-        serviceType: []
+        name: '',
+        beginTime: '',
+        endTime: ''
       },
+      pickDate: [],
       addDialog: {
         visible: false,
         isEdit: false,
         itemData: {}
       },
+      //关联ICD编码的弹框
       relevanceDialog: {
+        itemData: {},
+        visible: false
+      },
+      //查看已经关联了的ICD编码详情的弹框
+      showIcdDetailsDialog: {
+        itemData: {},
         visible: false
       }
+    }
+  },
+
+  watch: {
+    pickDate(value) {
+      this.model.beginTime = value?.[0] ?? ''
+      this.model.endTime = value?.[1] ?? ''
     }
   },
 
@@ -121,19 +149,17 @@ export default {
   },
 
   methods: {
-    get() {},
+    get() {
+      const fetch = Service.platformDiseasePage
+      const params = Peace.util.deepClone(this.model)
+      this.$refs.table.reloadData({ fetch, params })
+    },
 
     // 新增
     addItem() {
       this.addDialog.itemData = {}
       this.addDialog.isEdit = false
       this.addDialog.visible = true
-      // this.addDialog.itemData = {
-      //   code: '111',
-      //   label: 'aaa'
-      // }
-      // this.addDialog.isEdit = true
-      // this.addDialog.visible = true
     },
     // 修改
     editItem(row) {
@@ -151,12 +177,19 @@ export default {
       this.get()
     },
 
+    showDetail(data) {
+      this.showIcdDetailsDialog.itemData = data
+      this.showIcdDetailsDialog.visible = true
+    },
+
     //关联ICON
-    associated() {
+    associated(data) {
+      this.relevanceDialog.itemData = data
       this.relevanceDialog.visible = true
     },
     associatedSuccess() {
       this.relevanceDialog.visible = false
+      this.get()
     },
     associatedClose() {
       this.relevanceDialog.visible = false

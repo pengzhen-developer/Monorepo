@@ -8,34 +8,35 @@
                v-bind:model="model">
 
         <el-form-item label="平台药品编码">
-          <span>{{model.code}}</span>
+          <span>{{model.platformDrugCode}}</span>
         </el-form-item>
 
         <el-form-item label="药品名称">
-          <span>{{model.name}}</span>
+          <span>{{model.drugName}}</span>
         </el-form-item>
 
         <el-form-item label="规格">
-          <span>{{model.spec}}</span>
+          <span>{{model.drugSpecifications || "——"}}</span>
         </el-form-item>
 
         <el-form-item label="生产厂家">
-          <span>{{model.company}}</span>
+          <span>{{model.enterpriseCnName || "——"}}</span>
         </el-form-item>
 
         <el-form-item label="药品成分">
           <template>
-            <div class="flex">
+            <div>
               <el-button type="text"
-                         v-on:click="choice">选择成分</el-button>
+                         v-on:click="choice">新增成分</el-button>
               <div>
-                <el-tag v-for="tag in model.tags"
-                        :key="tag.name"
+                <el-tag v-for="tag in ingredientList"
+                        :key="tag.code"
                         size="medium"
                         class="q-mr-4"
                         closable
+                        @close="handleClose(tag)"
                         type="info">
-                  {{tag.name}}
+                  {{tag.cnName}}
                 </el-tag>
               </div>
             </div>
@@ -54,7 +55,7 @@
                  width="800px"
                  append-to-body
                  v-bind:visible.sync="choiceDialog.visible"
-                 title="编辑药品成分">
+                 title="新增成分">
       <ChoiceIngredientAttributesDialog v-on:onSuccess="choiceConfirm"
                                         v-on:onClose="choiceClose"></ChoiceIngredientAttributesDialog>
     </PeaceDialog>
@@ -63,10 +64,27 @@
 
 <script>
 import ChoiceIngredientAttributesDialog from './ChoiceIngredientAttributesDialog'
+import Service from '../service/index'
+
 export default {
   name: 'EditDrugIngredientAttributesDialog',
   props: {
     data: Object
+  },
+  watch: {
+    data: {
+      handler() {
+        if (this.data != null) {
+          this.model.drugName = this.data.drugName
+          this.model.drugSpecifications = this.data.drugSpecifications
+          this.model.enterpriseCnName = this.data.enterpriseCnName
+          this.model.id = this.data.id
+          this.model.platformDrugCode = this.data.platformDrugCode
+          this.model.ingredientCode = this.data.ingredientCode
+        }
+      },
+      immediate: true
+    }
   },
 
   components: {
@@ -76,29 +94,49 @@ export default {
   data() {
     return {
       model: {
-        code: 'dadadadada',
-        name: '附档要多卡看',
-        spec: '1.5*1.2',
-        company: '山东哈扬生物交罚款的骄傲',
-        tags: [
-          { name: '标签一标签一标签一标签一' },
-          { name: '标签二' },
-          { name: '标签三' },
-          { name: '标签四' },
-          { name: '标签五' }
-        ]
+        drugName: '',
+        drugSpecifications: '',
+        enterpriseCnName: '',
+        id: '',
+        platformDrugCode: '',
+        ingredientCode: ''
       },
+      ingredientList: [], //药品成分数据集合
       choiceDialog: {
         visible: false
       }
     }
   },
 
+  async mounted() {
+    this.$nextTick().then(() => {
+      this.getListNameByCodes()
+    })
+  },
+
   methods: {
+    getListNameByCodes() {
+      const params = this.data?.ingredientCode.split('；')
+      Service.getListNameByCodes(params).then((res) => {
+        this.ingredientList = res.data
+      })
+    },
+
+    handleClose(tag) {
+      this.ingredientList.splice(this.ingredientList.indexOf(tag), 1)
+    },
+
     onCancel() {
       this.$emit('onClose', {})
     },
-    onSave() {},
+    onSave() {
+      const params = Peace.util.deepClone(this.model)
+      params.ingredientCode = this.ingredientList.map((item) => item.code).join('；')
+      Service.editPlatformDrugIngredient(params).then((res) => {
+        Peace.util.success(res.message)
+        this.$emit('onSuccess')
+      })
+    },
     //选择成分
     choice() {
       this.choiceDialog.visible = true
@@ -108,7 +146,13 @@ export default {
       this.choiceDialog.visible = false
     },
     //选择成分确定
-    choiceConfirm() {}
+    choiceConfirm(data) {
+      this.choiceDialog.visible = false
+      const aa = this.ingredientList.concat(
+        data.filter((v) => !this.ingredientList.some((item) => item.code === v.code))
+      )
+      this.ingredientList = aa
+    }
   }
 }
 </script>
