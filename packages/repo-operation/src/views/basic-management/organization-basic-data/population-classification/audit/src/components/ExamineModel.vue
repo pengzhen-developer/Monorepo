@@ -47,7 +47,10 @@
                         type="textarea"
                         maxlength="200"
                         v-model="model.remarks"
-                        resize="none"></el-input>
+                        resize="none"
+                        v-bind:autosize="{
+                           minRows: 3, maxRows: 6
+                        }"></el-input>
             </el-form-item>
           </template>
         </el-form>

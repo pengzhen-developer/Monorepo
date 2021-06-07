@@ -181,8 +181,8 @@ export default {
         code: this.organInfo.code,
         operatingType: 'Reset',
         orgCode: this.organInfo.orgCode,
-        platformAllergyCode: this.platInfo.code,
-        platformAllergyName: this.platInfo.name
+        platformAllergyCode: this.platInfo.code ? this.platInfo.code : '',
+        platformAllergyName: this.platInfo.name ? this.platInfo.name : ''
       }
       Service.allergyInfoMatchCode(params)
         .then(() => {
@@ -203,8 +203,8 @@ export default {
         code: this.organInfo.code,
         operatingType: 'Unable',
         orgCode: this.organInfo.orgCode,
-        platformAllergyCode: this.platInfo.code,
-        platformAllergyName: this.platInfo.name
+        platformAllergyCode: this.platInfo.code ? this.platInfo.code : '',
+        platformAllergyName: this.platInfo.name ? this.platInfo.name : ''
       }
       Service.allergyInfoMatchCode(params)
         .then(() => {

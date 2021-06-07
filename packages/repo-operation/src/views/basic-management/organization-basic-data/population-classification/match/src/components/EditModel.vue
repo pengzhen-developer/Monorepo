@@ -182,8 +182,8 @@ export default {
         code: this.organInfo.code,
         operatingType: 'Reset',
         orgCode: this.organInfo.orgCode,
-        platformClassCode: this.platInfo.code,
-        platformClassName: this.platInfo.name
+        platformClassCode: this.platInfo.code ? this.platInfo.code : '',
+        platformClassName: this.platInfo.name ? this.platInfo.name : ''
       }
       Service.humanClassMatchCode(params)
         .then(() => {
@@ -204,8 +204,8 @@ export default {
         code: this.organInfo.code,
         operatingType: 'Unable',
         orgCode: this.organInfo.orgCode,
-        platformClassCode: this.platInfo.code,
-        platformClassName: this.platInfo.name
+        platformClassCode: this.platInfo.code ? this.platInfo.code : '',
+        platformClassName: this.platInfo.name ? this.platInfo.name : ''
       }
       Service.humanClassMatchCode(params)
         .then(() => {
