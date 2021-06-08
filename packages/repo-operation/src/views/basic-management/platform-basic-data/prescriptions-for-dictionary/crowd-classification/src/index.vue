@@ -60,7 +60,7 @@
     <PeaceDialog v-if="addDialog.visible"
                  width="445px"
                  v-bind:visible.sync="addDialog.visible"
-                 :title="addDialog.idEdit ?  '修改人群分类' : '新增人群分类'">
+                 :title="addDialog.isEdit ?  '修改人群分类' : '新增人群分类'">
       <AddClassificationDialog v-bind:data="addDialog.itemData"
                                v-bind:isEdit="addDialog.isEdit"
                                v-on:onSuccess="addSuccess"
