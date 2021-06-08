@@ -85,7 +85,7 @@
         <PeaceTableColumn min-width="120px"
                           label="状态">
           <template slot-scope="scope">
-            <span>{{ scope.row.useStatus === 'yes' ? '启用' : '禁用' }}</span>
+            <span>{{ scope.row.useStatus === 'yes' ? '启用' : '停用' }}</span>
           </template>
         </PeaceTableColumn>
 
