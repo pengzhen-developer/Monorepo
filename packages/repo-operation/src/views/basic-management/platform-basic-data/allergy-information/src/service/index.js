@@ -24,7 +24,6 @@ export default {
    * @param {*} params
    */
   addData(params) {
-
     const isMock = false
 
     const apiPath = 'platformAllergyInfo'
@@ -44,7 +43,6 @@ export default {
    * @param {*} params
    */
   modifyData(params) {
-
     const isMock = false
 
     const apiPath = 'platformAllergyInfo'
@@ -53,8 +51,9 @@ export default {
 
     const requestApi = isMock ? mockPath : serverPath
 
-    const apiMerge = `${requestApi}?id=${params.id}&name=${params.name}`
-    return Peace.http.put(apiMerge)
-
+    return Peace.http.put(requestApi, {
+      id: params.id,
+      name: params.name
+    })
   }
 }
