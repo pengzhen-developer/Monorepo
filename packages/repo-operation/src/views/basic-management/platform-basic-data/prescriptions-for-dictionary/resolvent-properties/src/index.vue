@@ -121,6 +121,7 @@
 
     <PeaceDialog width="976px"
                  v-if="dialogMapping.visible"
+                 v-on:close="cancel"
                  v-bind:visible.sync="dialogMapping.visible"
                  v-bind:model="dialogMapping.model"
                  v-bind:title="dialogMapping.title">
@@ -185,6 +186,7 @@
 
     <PeaceDialog width="976px"
                  v-if="dialogMappingDetail.visible"
+                 v-on:close="cancel"
                  v-bind:visible.sync="dialogMappingDetail.visible"
                  v-bind:model="dialogMappingDetail.model"
                  v-bind:title="dialogMappingDetail.title">
@@ -334,6 +336,10 @@ export default {
     confirmMappingDrugs() {
       const relatedCount = this.dialogMapping.platformDrugCodes.filter((item) => item.isRelated === 'yes')
 
+      if (this.dialogMapping.platformDrugCodes.length === 0) {
+        return Peace.util.warning('请选择关联药品')
+      }
+
       if (relatedCount.length > 0) {
         this.$confirm(`当前选中数据有${relatedCount.length}条已与其他溶媒关联，确定取消原有关联状态，关联现有溶媒？`, '关联确认').then(() => {
           Service.platformDrugMenstruumDic
@@ -366,6 +372,10 @@ export default {
     },
 
     cancelMappingDrugs() {
+      if (this.dialogMapping.platformDrugCodes.length === 0) {
+        return Peace.util.warning('请选择关联药品')
+      }
+
       Service.platformDrugMenstruumDic
         .relatedPlatformDrugs({
           code: this.dialogMapping.model.code,
@@ -397,6 +407,7 @@ export default {
 
       this.dialogMapping.visible = false
       this.dialogMapping.model = {}
+      this.dialogMapping.platformDrugCodes = []
 
       this.dialogMappingDetail.visible = false
       this.dialogMappingDetail.model = {}

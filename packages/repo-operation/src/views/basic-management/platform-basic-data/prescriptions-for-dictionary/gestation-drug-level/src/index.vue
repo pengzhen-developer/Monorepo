@@ -91,6 +91,7 @@
 
     <PeaceDialog width="576px"
                  v-if="dialog.visible"
+                 v-on:close="cancel"
                  v-bind:visible.sync="dialog.visible"
                  v-bind:model="dialog.model"
                  v-bind:title="dialog.title">
