@@ -12,7 +12,8 @@
           <span>{{ data.code || "--" }}</span>
         </el-form-item>
 
-        <el-form-item label="过敏名称：" prop="name">
+        <el-form-item label="过敏名称："
+                      prop="name">
           <el-input v-model="model.name"
                     maxlength="50"
                     placeholder="请输入"
@@ -36,8 +37,7 @@
 </template>
 
 <script>
-
-import Service from '../service';
+import Service from '../service'
 
 export default {
   props: {
@@ -60,17 +60,17 @@ export default {
       isLoading: false,
       visible: this.value,
       model: {
-        name: undefined,
+        name: undefined
       },
       rules: {
-        name: [{ required: true, message: '请输入过敏名称', trigger: 'blur' }],
+        name: [{ required: true, message: '请输入过敏名称', trigger: 'blur' }]
       }
     }
   },
 
   computed: {
     canSubmit() {
-      return Peace.validate.isEmpty(this.model.name) || (this.data.name === this.model.name)
+      return Peace.validate.isEmpty(this.model.name) || this.data.name === this.model.name
     }
   },
 
@@ -98,11 +98,13 @@ export default {
     submitForm() {
       const params = Object.assign({}, this.model)
       this.isLoading = true
-      Service.addData(params).then((res) => {
-        Peace.util.success(res.message)
-        this.visible = false
-        this.$emit('refresh')
-      }).finally(() => this.isLoading = false)
+      Service.modifyData(params)
+        .then((res) => {
+          Peace.util.success(res.message)
+          this.visible = false
+          this.$emit('refresh')
+        })
+        .finally(() => (this.isLoading = false))
     }
   }
 }
