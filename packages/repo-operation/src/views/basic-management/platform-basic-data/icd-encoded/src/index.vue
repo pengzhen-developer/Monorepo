@@ -35,7 +35,8 @@
 
     <div class="card">
       <div class="q-mb-lg">
-        <el-button type="primary" v-on:click="add">新增</el-button>
+        <el-button type="primary"
+                   v-on:click="add">新增</el-button>
       </div>
       <PeaceTable ref="table"
                   size="mini"
@@ -64,7 +65,7 @@
                           label="父节点编码"
                           prop="parentNode">
           <template slot-scope="scope">
-            <span>{{ scope.row.parentNode || '--' }}</span>
+            <span>{{  patientNode(scope.row.parentNode) }}</span>
           </template>
         </PeaceTableColumn>
 
@@ -84,7 +85,7 @@
         <PeaceTableColumn min-width="120px"
                           label="状态">
           <template slot-scope="scope">
-            <span>{{ scope.row.status === 'yes' ? '启用' : '禁用' }}</span>
+            <span>{{ scope.row.useStatus === 'yes' ? '启用' : '禁用' }}</span>
           </template>
         </PeaceTableColumn>
 
@@ -103,7 +104,7 @@
 
     <add-i-c-d-encoded v-model="addDialog.visible"
                        v-if="addDialog.visible"
-                 v-on:refresh="search"></add-i-c-d-encoded>
+                       v-on:refresh="search"></add-i-c-d-encoded>
 
     <modify-i-c-d-encoded v-model="modifyDialog.visible"
                           v-if="modifyDialog.visible"
@@ -115,8 +116,8 @@
 
 <script>
 import Service from './service/index'
-import AddICDEncoded from "./components/AddICDEncoded";
-import ModifyICDEncoded from "./components/ModifyICDEncoded";
+import AddICDEncoded from './components/AddICDEncoded'
+import ModifyICDEncoded from './components/ModifyICDEncoded'
 export default {
   name: 'platform_icd_encode',
   components: {
@@ -126,12 +127,12 @@ export default {
   data() {
     return {
       addDialog: {
-        visible: false,
+        visible: false
       },
 
-      modifyDialog:  {
+      modifyDialog: {
         visible: false,
-        data: undefined,
+        data: undefined
       },
 
       model: {
@@ -143,8 +144,7 @@ export default {
       source: {
         drugCodingStatus: [],
         organizationList: []
-      },
-
+      }
     }
   },
   async mounted() {
@@ -167,6 +167,13 @@ export default {
     modify(item) {
       this.modifyDialog.data = item
       this.modifyDialog.visible = true
+    },
+    patientNode(code) {
+      if (Peace.validate.isEmpty(code) || code === 0 || code === '0') {
+        return '--'
+      } else {
+        return code
+      }
     }
   }
 }
