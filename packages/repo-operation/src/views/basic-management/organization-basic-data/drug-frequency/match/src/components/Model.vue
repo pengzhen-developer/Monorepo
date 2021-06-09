@@ -50,8 +50,8 @@
                  v-on:submit.native.prevent
                  v-bind:model="search">
           <el-form-item label="给药频次名称">
-            <el-input v-model.trim="search.name"
-                      placeholder="请输入"></el-input>
+            <PeaceInput v-model.trim="search.name"
+                        placeholder="请输入"></PeaceInput>
           </el-form-item>
           <el-form-item>
             <el-button @click="fetch"

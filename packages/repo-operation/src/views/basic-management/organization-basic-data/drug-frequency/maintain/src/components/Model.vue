@@ -11,29 +11,25 @@
           <span>{{model.extCode}}</span>
         </template>
         <template v-else>
-          <el-input v-model.trim="model.extCode"
-                    maxlength="100"
-                    placeholder="请输入"></el-input>
+          <PeaceInput v-model.trim="model.extCode"
+                      placeholder="请输入"></PeaceInput>
         </template>
 
       </el-form-item>
       <el-form-item label="给药频次名称"
                     prop="name">
-        <el-input v-model.trim="model.name"
-                  maxlength="100"
-                  placeholder="请输入"></el-input>
+        <PeaceInput v-model.trim="model.name"
+                    placeholder="请输入"></PeaceInput>
       </el-form-item>
       <el-form-item label="给药频次缩写名"
                     prop="abbreviation">
-        <el-input v-model.trim="model.abbreviation"
-                  maxlength="100"
-                  placeholder="请输入"></el-input>
+        <PeaceInput v-model.trim="model.abbreviation"
+                    placeholder="请输入"></PeaceInput>
       </el-form-item>
       <el-form-item label="系数"
                     prop="coefficient">
-        <el-input v-model.trim="model.coefficient"
-                  maxlength="100"
-                  placeholder="请输入"></el-input>
+        <PeaceInput v-model.trim="model.coefficient"
+                    placeholder="请输入"></PeaceInput>
       </el-form-item>
     </el-form>
 

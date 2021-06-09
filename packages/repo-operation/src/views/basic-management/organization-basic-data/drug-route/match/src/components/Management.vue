@@ -15,22 +15,22 @@
                v-on:submit.native.prevent
                v-bind:model="model">
         <el-form-item label="给药途径名称">
-          <el-input v-model.trim="model.name"
-                    placeholder="请输入"></el-input>
+          <PeaceInput v-model.trim="model.name"
+                      placeholder="请输入"></PeaceInput>
         </el-form-item>
         <el-form-item label="平台给药途径名称">
-          <el-input v-model.trim="model.platformName"
-                    placeholder="请输入"></el-input>
+          <PeaceInput v-model.trim="model.platformName"
+                      placeholder="请输入"></PeaceInput>
         </el-form-item>
         <el-form-item label="配码状态">
-          <el-select v-model="model.mapperStatus"
-                     placeholder="全部"
-                     clearable>
+          <PeaceSelect v-model="model.mapperStatus"
+                       placeholder="全部"
+                       clearable>
             <el-option v-for="item in source.ENUM_MATCH_STATUS"
                        v-bind:key="item.value"
                        v-bind:label="item.label"
                        v-bind:value="item.value"></el-option>
-          </el-select>
+          </PeaceSelect>
         </el-form-item>
         <el-form-item label="审核状态">
           <el-select v-model="model.auditStatus"

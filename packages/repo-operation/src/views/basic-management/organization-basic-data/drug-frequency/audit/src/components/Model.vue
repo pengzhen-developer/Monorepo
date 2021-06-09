@@ -64,12 +64,12 @@
           <el-form-item v-if="model.auditOperating === 'Reject'"
                         prop="remarks"
                         label="驳回原因">
-            <el-input type="textarea"
-                      v-bind:autosize="{ minRows: 3, maxRow: 6}"
-                      resize="none"
-                      v-model="model.remarks"
-                      maxlength="200"
-                      show-word-limit></el-input>
+            <PeaceInput type="textarea"
+                        v-bind:autosize="{ minRows: 3, maxRow: 6}"
+                        resize="none"
+                        v-model="model.remarks"
+                        maxlength="200"
+                        show-word-limit></PeaceInput>
           </el-form-item>
         </el-form>
       </div>

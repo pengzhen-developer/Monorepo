@@ -15,12 +15,12 @@
                v-on:submit.native.prevent
                v-bind:model="model">
         <el-form-item label="给药频次编码">
-          <el-input v-model.trim="model.extCode"
-                    placeholder="请输入"></el-input>
+          <PeaceInput v-model.trim="model.extCode"
+                      placeholder="请输入"></PeaceInput>
         </el-form-item>
         <el-form-item label="给药频次名称">
-          <el-input v-model.trim="model.name"
-                    placeholder="请输入"></el-input>
+          <PeaceInput v-model.trim="model.name"
+                      placeholder="请输入"></PeaceInput>
         </el-form-item>
         <el-form-item>
           <el-button type="primary"
