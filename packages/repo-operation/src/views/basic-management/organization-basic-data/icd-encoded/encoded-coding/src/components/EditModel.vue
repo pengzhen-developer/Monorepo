@@ -260,7 +260,7 @@ export default {
 .info {
   border-top: 1px solid #eaeaea;
   border-left: 1px solid #eaeaea;
-  min-width: 384px;
+  width: 384px;
 
   .info-item-label,
   .info-item-value {
