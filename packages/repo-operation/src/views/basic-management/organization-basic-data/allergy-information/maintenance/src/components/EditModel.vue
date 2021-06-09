@@ -13,8 +13,8 @@
       </template>
       <el-form-item label="过敏信息"
                     prop="name">
-        <el-input v-model.trim="model.name"
-                  placeholder="请输入"></el-input>
+        <peace-input v-model.trim="model.name"
+                     placeholder="请输入"></peace-input>
       </el-form-item>
 
     </el-form>

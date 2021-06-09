@@ -34,8 +34,8 @@
                  v-on:submit.native.prevent
                  v-bind:model="model">
           <el-form-item label="过敏信息">
-            <el-input v-model.trim="model.name"
-                      placeholder="请输入"></el-input>
+            <peace-input v-model.trim="model.name"
+                         placeholder="请输入"></peace-input>
           </el-form-item>
           <el-form-item>
             <el-button v-on:click="fetch"

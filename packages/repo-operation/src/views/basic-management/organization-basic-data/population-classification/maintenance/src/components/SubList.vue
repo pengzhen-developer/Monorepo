@@ -14,9 +14,8 @@
                v-on:submit.native.prevent
                v-bind:model="model">
         <el-form-item label="分类标签">
-          <el-input placeholder="请输入"
-                    v-model.trim="model.name"
-                    clearable></el-input>
+          <peace-input placeholder="请输入"
+                       v-model.trim="model.name"></peace-input>
         </el-form-item>
         <el-form-item>
           <el-button v-on:click="fetch"

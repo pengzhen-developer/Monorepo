@@ -14,31 +14,29 @@
                v-on:submit.native.prevent
                v-bind:model="model">
         <el-form-item label="过敏信息">
-          <el-input placeholder="请输入"
-                    v-model.trim="model.name"></el-input>
+          <peace-input placeholder="请输入"
+                       v-model.trim="model.name"></peace-input>
         </el-form-item>
         <el-form-item label="配码状态">
-          <el-select v-model="model.mapperStatus"
-                     clearable
-                     placeholder="全部">
+          <peace-select v-model="model.mapperStatus"
+                        placeholder="全部">
             <el-option v-for="item in source.MapperStatus"
                        v-bind:key="item.value"
                        v-bind:label="item.label"
                        v-bind:value="item.value"></el-option>
-          </el-select>
+          </peace-select>
         </el-form-item>
         <el-form-item label="审核状态">
-          <el-select v-model="model.auditStatus"
-                     clearable
-                     placeholder="全部">
+          <peace-select v-model="model.auditStatus"
+                        placeholder="全部">
             <el-option v-for="item in source.MapperAuditStatus"
                        v-bind:key="item.value"
                        v-bind:label="item.label"
                        v-bind:value="item.value"></el-option>
-          </el-select>
+          </peace-select>
         </el-form-item>
         <el-form-item>
-          <el-button @click="fetch"
+          <el-button v-on:click="fetch"
                      type="primary">查询</el-button>
         </el-form-item>
       </el-form>
