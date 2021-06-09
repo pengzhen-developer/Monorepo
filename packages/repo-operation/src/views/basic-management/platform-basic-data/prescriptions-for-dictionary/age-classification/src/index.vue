@@ -30,7 +30,8 @@
 
     <div class="card">
       <div class="q-mb-lg">
-        <el-button type="primary" v-on:click="add">新增</el-button>
+        <el-button type="primary"
+                   v-on:click="add">新增</el-button>
       </div>
       <PeaceTable ref="table"
                   pagination
@@ -85,19 +86,19 @@
 
 <script>
 import Service from './service/index'
-import EditAgeClassification from "./components/EditAgeClassification";
+import EditAgeClassification from './components/EditAgeClassification'
 
 export default {
   name: 'platform_icd_encode',
   components: {
-    EditAgeClassification,
+    EditAgeClassification
   },
   data() {
     return {
       dialog: {
         visible: false,
         title: undefined,
-        data: undefined,
+        data: undefined
       },
 
       model: {
@@ -108,8 +109,8 @@ export default {
       },
 
       source: {
-        unitList: [],
-      },
+        unitList: []
+      }
     }
   },
   async mounted() {
@@ -120,8 +121,8 @@ export default {
 
   watch: {
     'model.timeRange'(timeRange) {
-      this.model.beginTime = timeRange?.[0] ?? ""
-      this.model.endTime = timeRange?.[1] ?? ""
+      this.model.beginTime = timeRange?.[0] ?? ''
+      this.model.endTime = timeRange?.[1] ?? ''
     }
   },
 
@@ -129,17 +130,17 @@ export default {
     search() {
       const fetch = Service.getList
       const params = Peace.util.deepClone(this.model)
-      this.$refs.table.reloadData({fetch, params}).then((res) => {
+      this.$refs.table.reloadData({ fetch, params }).then((res) => {
         return res
       })
     },
     add() {
-      this.dialog.title = "新增人群分类"
+      this.dialog.title = '新增年龄分类'
       this.dialog.data = undefined
       this.dialog.visible = true
     },
     modify(item) {
-      this.dialog.title = "修改人群分类"
+      this.dialog.title = '修改年龄分类'
       this.dialog.data = item
       this.dialog.visible = true
     }
