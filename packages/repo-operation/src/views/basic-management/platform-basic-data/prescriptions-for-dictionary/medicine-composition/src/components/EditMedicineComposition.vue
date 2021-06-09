@@ -7,13 +7,17 @@
                label-suffix="："
                label-width="auto"
                v-bind:model="model"
-               v-bind:rules="rules">
+               v-bind:rules="rules"
+               v-on:submit.native.prevent
+               v-on:keyup.enter.native="validateForm">
 
-        <el-form-item v-if="isEdit" label="系统编码">
+        <el-form-item v-if="isEdit"
+                      label="系统编码">
           <span>{{ data.code || "--" }}</span>
         </el-form-item>
 
-        <el-form-item label="药品成分" prop="cnName">
+        <el-form-item label="药品成分"
+                      prop="cnName">
           <el-input v-model="model.cnName"
                     clearable
                     maxlength="50"
@@ -58,8 +62,7 @@
 </template>
 
 <script>
-
-import Service from "../service/index";
+import Service from '../service/index'
 
 export default {
   props: {
@@ -89,33 +92,33 @@ export default {
       model: {
         cnName: undefined,
         atcCode: undefined,
-        compositionTypeName: undefined,
+        compositionTypeName: undefined
       },
       rules: {
-        cnName: [{required: true, message: '请输入药品成分', trigger: 'blur'}],
+        cnName: [{ required: true, message: '请输入药品成分', trigger: 'blur' }]
       }
     }
   },
 
   created() {
-
     if (this.sourceList && this.sourceList.length > 0) {
-      this.selectDisable = false;
+      this.selectDisable = false
     }
 
     if (this.data) {
       this.model = Object.assign({}, this.data)
       this.isEdit = true
-      this.list = [{atcCode: this.data.atcCode, classifyName: this.data.compositionTypeName}].concat(this.sourceList.slice(0, 20).filter(item => item.atcCode !== this.data.atcCode))
+      this.list = [{ atcCode: this.data.atcCode, classifyName: this.data.compositionTypeName }].concat(
+        this.sourceList.slice(0, 20).filter((item) => item.atcCode !== this.data.atcCode)
+      )
     } else {
       this.list = this.sourceList.slice(0, 20)
     }
-
   },
 
   computed: {
     submitButtonText() {
-      return this.isEdit ? "保存" : "提交"
+      return this.isEdit ? '保存' : '提交'
     }
   },
 
@@ -131,27 +134,31 @@ export default {
     sourceList(value) {
       this.selectDisable = false
       if (this.isEdit) {
-          this.list = [{atcCode: this.data.atcCode, classifyName: this.data.compositionTypeName}].concat(value.slice(0, 20).filter(item => item.atcCode !== this.data.atcCode))
-        } else {
-          this.list = value.slice(0, 20)
-        }
+        this.list = [{ atcCode: this.data.atcCode, classifyName: this.data.compositionTypeName }].concat(
+          value.slice(0, 20).filter((item) => item.atcCode !== this.data.atcCode)
+        )
+      } else {
+        this.list = value.slice(0, 20)
+      }
     }
   },
 
   methods: {
-
-    filterList(query = "") {
-      this.list = this.sourceList.filter(function (item) {
-        if (this.count < 20 && (item.classifyName.indexOf(query) !== -1)) {
-          this.count++;
-          return true;
-        }
-        return false;
-      }, {count: 0});
+    filterList(query = '') {
+      this.list = this.sourceList.filter(
+        function(item) {
+          if (this.count < 20 && item.classifyName.indexOf(query) !== -1) {
+            this.count++
+            return true
+          }
+          return false
+        },
+        { count: 0 }
+      )
     },
 
     handleCurrentChange(code) {
-      this.model.compositionTypeName = this.sourceList.find(item => item.atcCode === code)?.classifyName
+      this.model.compositionTypeName = this.sourceList.find((item) => item.atcCode === code)?.classifyName
     },
 
     cancel() {
@@ -170,25 +177,22 @@ export default {
       this.isLoading = true
 
       if (this.isEdit) {
-
-
-        Service.modifyData(params).then((res) => {
-          Peace.util.success(res.message)
-          this.visible = false
-          this.$emit('refresh')
-        }).finally(() => this.isLoading = false)
-
+        Service.modifyData(params)
+          .then((res) => {
+            Peace.util.success(res.message)
+            this.visible = false
+            this.$emit('refresh')
+          })
+          .finally(() => (this.isLoading = false))
       } else {
-
-        Service.addData(params).then((res) => {
-          Peace.util.success(res.message)
-          this.visible = false
-          this.$emit('refresh')
-        }).finally(() => this.isLoading = false)
-
+        Service.addData(params)
+          .then((res) => {
+            Peace.util.success(res.message)
+            this.visible = false
+            this.$emit('refresh')
+          })
+          .finally(() => (this.isLoading = false))
       }
-
-
     }
   }
 }

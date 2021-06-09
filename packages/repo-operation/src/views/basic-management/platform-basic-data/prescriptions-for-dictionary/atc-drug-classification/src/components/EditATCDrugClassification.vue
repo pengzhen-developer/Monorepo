@@ -7,7 +7,9 @@
                label-width="auto"
                label-suffix="："
                v-bind:model="model"
-               v-bind:rules="rules">
+               v-bind:rules="rules"
+               v-on:submit.native.prevent
+               v-on:keyup.enter.native="validateForm">
 
         <el-form-item label="ATC级别"
                       prop="atcGrade">

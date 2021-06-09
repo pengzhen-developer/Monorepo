@@ -6,7 +6,9 @@
       <el-form ref="form"
                label-width="auto"
                v-bind:model="model"
-               v-bind:rules="rules">
+               v-bind:rules="rules"
+               v-on:submit.native.prevent
+               v-on:keyup.enter.native="validateForm">
 
         <el-form-item label="主要编码："
                       prop="icd10Code">

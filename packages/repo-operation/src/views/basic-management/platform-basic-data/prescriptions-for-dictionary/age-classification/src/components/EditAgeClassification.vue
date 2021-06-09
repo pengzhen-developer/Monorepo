@@ -7,7 +7,9 @@
                label-suffix="："
                label-width="auto"
                v-bind:model="model"
-               v-bind:rules="rules">
+               v-bind:rules="rules"
+               v-on:submit.native.prevent
+               v-on:keyup.enter.native="validateForm">
 
         <el-form-item label="人群名称"
                       prop="name">

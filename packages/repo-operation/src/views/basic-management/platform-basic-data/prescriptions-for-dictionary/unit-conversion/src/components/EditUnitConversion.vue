@@ -8,7 +8,9 @@
                label-width="120px"
                label-suffix="："
                v-bind:model="model"
-               v-bind:rules="rules">
+               v-bind:rules="rules"
+               v-on:submit.native.prevent
+               v-on:keyup.enter.native="validateForm">
 
         <el-form-item label="单位组名称"
                       prop="ucfName">

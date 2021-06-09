@@ -7,16 +7,20 @@
                label-width="auto"
                label-suffix="："
                v-bind:model="model"
-               v-bind:rules="rules">
+               v-bind:rules="rules"
+               v-on:submit.native.prevent
+               v-on:keyup.enter.native="validateForm">
 
-        <el-form-item label="单位名称" prop="name">
+        <el-form-item label="单位名称"
+                      prop="name">
           <el-input v-model="model.name"
                     maxlength="50"
                     placeholder="请输入单位名称"
                     clearable></el-input>
         </el-form-item>
 
-        <el-form-item label="单位类别"  prop="type">
+        <el-form-item label="单位类别"
+                      prop="type">
 
           <el-select clearable
                      filterable
@@ -47,10 +51,9 @@
 </template>
 
 <script>
-
-import Service from "../service/index";
-import CONSTANT from "../constant";
-import obAccount from "@src/layouts/default/src/observable/ob-account";
+import Service from '../service/index'
+import CONSTANT from '../constant'
+import obAccount from '@src/layouts/default/src/observable/ob-account'
 
 export default {
   props: {
@@ -71,14 +74,14 @@ export default {
       visible: this.value,
       model: {
         name: undefined,
-        type: undefined,
+        type: undefined
       },
       source: {
-        typeList: CONSTANT.UNIT_TYPE,
+        typeList: CONSTANT.UNIT_TYPE
       },
       rules: {
         name: [{ required: true, message: '请输入单位名称', trigger: 'blur' }],
-        type: [{ required: true, message: '请选择包装单位', trigger: 'blur' }],
+        type: [{ required: true, message: '请选择包装单位', trigger: 'blur' }]
       }
     }
   },
@@ -96,12 +99,11 @@ export default {
 
     visible(value) {
       this.$emit('input', value)
-    },
-
+    }
   },
 
   computed: {
-    accountInfo: () => obAccount.state.accountInfo ?? {},
+    accountInfo: () => obAccount.state.accountInfo ?? {}
   },
 
   methods: {
@@ -121,21 +123,22 @@ export default {
       this.isLoading = true
 
       if (this.data) {
-        Service.modifyData(params).then((res) => {
-          Peace.util.success(res.message)
-          this.visible = false
-          this.$emit('refresh')
-        }).finally(() => this.isLoading = false)
-
+        Service.modifyData(params)
+          .then((res) => {
+            Peace.util.success(res.message)
+            this.visible = false
+            this.$emit('refresh')
+          })
+          .finally(() => (this.isLoading = false))
       } else {
-        Service.addData(params).then((res) => {
-          Peace.util.success(res.message)
-          this.visible = false
-          this.$emit('refresh')
-        }).finally(() => this.isLoading = false)
+        Service.addData(params)
+          .then((res) => {
+            Peace.util.success(res.message)
+            this.visible = false
+            this.$emit('refresh')
+          })
+          .finally(() => (this.isLoading = false))
       }
-
-
     }
   }
 }
