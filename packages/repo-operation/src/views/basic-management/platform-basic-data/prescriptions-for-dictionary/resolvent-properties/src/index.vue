@@ -36,6 +36,13 @@
       <div>
         <PeaceTable ref="table"
                     pagination>
+          <PeaceTableColumn label="序号"
+                            type="index"
+                            width="80px">
+            <template slot-scope="{ $index, _self }">
+              {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+            </template>
+          </PeaceTableColumn>
           <PeaceTableColumn label="溶媒编码"
                             prop="code"
                             min-width="180"></PeaceTableColumn>

@@ -125,6 +125,7 @@
                         prop="grade">
             <el-select class="full-width"
                        clearable
+                       filterable
                        placeholder="请选择"
                        v-model="dialog.model.grade">
               <el-option v-for="item in source.listGestationalInfoEnum"

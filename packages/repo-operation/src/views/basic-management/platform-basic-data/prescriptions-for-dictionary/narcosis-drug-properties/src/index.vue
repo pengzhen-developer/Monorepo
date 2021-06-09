@@ -18,6 +18,7 @@
         <el-form-item label="药品类别"
                       prop="drugAttr">
           <el-select clearable
+                     filterable
                      placeholder="全部"
                      v-model="model.drugAttr">
             <el-option v-for="item in source.listDrugAttrEnum"
@@ -48,6 +49,13 @@
       <div>
         <PeaceTable ref="table"
                     pagination>
+          <PeaceTableColumn label="序号"
+                            type="index"
+                            width="80px">
+            <template slot-scope="{ $index, _self }">
+              {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+            </template>
+          </PeaceTableColumn>
           <PeaceTableColumn label="平台药品编码"
                             prop="platformDrugCode"
                             min-width="180"></PeaceTableColumn>
@@ -100,6 +108,7 @@
                         prop="drugAttr">
             <el-select class="full-width"
                        clearable
+                       filterable
                        placeholder="请选择"
                        v-model="dialog.model.drugAttr">
               <el-option v-for="item in source.listDrugAttrEnum"
