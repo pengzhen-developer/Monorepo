@@ -9,17 +9,17 @@
              label-width="auto">
       <el-form-item label="主要编码"
                     prop="icd10Code">
-        <el-input v-model.trim="model.icd10Code"
-                  placeholder="请输入"></el-input>
+        <peace-input v-model.trim="model.icd10Code"
+                     placeholder="请输入"></peace-input>
       </el-form-item>
       <el-form-item label="疾病名称"
                     prop="name">
-        <el-input v-model.trim="model.name"
-                  placeholder="请输入"></el-input>
+        <peace-input v-model.trim="model.name"
+                     placeholder="请输入"></peace-input>
       </el-form-item>
       <el-form-item label="附加编码">
-        <el-input v-model.trim="model.extCode"
-                  placeholder="请输入"></el-input>
+        <peace-input v-model.trim="model.extCode"
+                     placeholder="请输入"></peace-input>
       </el-form-item>
     </el-form>
     <div class="flex justify-end full-width q-pt-32">

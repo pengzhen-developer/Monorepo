@@ -67,15 +67,15 @@
             <el-form-item label="驳回原因"
                           prop="remarks"
                           v-bind:rules="[{ required: true, message: '请输入原因', trigger: 'blur' }]">
-              <el-input show-word-limit
-                        resize="none"
-                        v-bind:autosize="{
+              <peace-input show-word-limit
+                           resize="none"
+                           v-bind:autosize="{
                            minRows: 3, maxRows: 6
                         }"
-                        placeholder="请输入"
-                        type="textarea"
-                        maxlength="200"
-                        v-model="model.remarks"></el-input>
+                           placeholder="请输入"
+                           type="textarea"
+                           maxlength="200"
+                           v-model="model.remarks"></peace-input>
             </el-form-item>
           </template>
         </el-form>

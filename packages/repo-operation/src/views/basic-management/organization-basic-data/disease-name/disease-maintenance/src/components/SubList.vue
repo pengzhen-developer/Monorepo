@@ -15,8 +15,8 @@
                v-on:submit.native.prevent
                v-bind:model="model">
         <el-form-item label="疾病名称">
-          <el-input placeholder="请输入"
-                    v-model.trim="model.name"></el-input>
+          <peace-input placeholder="请输入"
+                       v-model.trim="model.name"></peace-input>
         </el-form-item>
         <el-form-item>
           <el-button v-on:click="fetch"

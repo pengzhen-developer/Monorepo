@@ -8,8 +8,8 @@
                v-on:submit.native.prevent
                v-bind:model="model">
         <el-form-item label="机构名称">
-          <el-input v-model.trim="model.name"
-                    placeholder="请输入"></el-input>
+          <peace-input v-model.trim="model.name"
+                       placeholder="请输入"></peace-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="fetch"
