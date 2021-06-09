@@ -17,7 +17,7 @@ import MainList from './components/MainList'
 import Observable from './observable'
 
 export default {
-  name: 'EncodedCoding',
+  // name: 'EncodedCoding',
   components: { SubList, MainList },
   data() {
     return {}
@@ -25,7 +25,6 @@ export default {
 
   computed: {
     view() {
-      console.log('fddfsdffdsf', Observable.state.view)
       return Observable.state.view
     },
 
@@ -39,7 +38,6 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
-    console.log('erwererwr EncodedCoding')
     Observable.mutations.changeView(Observable.constants.view.LIST)
 
     next()
