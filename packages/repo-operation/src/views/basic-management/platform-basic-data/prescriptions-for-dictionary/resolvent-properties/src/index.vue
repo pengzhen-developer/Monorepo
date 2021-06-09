@@ -9,7 +9,8 @@
                v-bind:model="model">
         <el-form-item label="药品名称"
                       prop="drugName">
-          <el-input clearable
+          <el-input maxlength="50"
+                    clearable
                     placeholder="请输入"
                     v-model.trim="model.drugName"></el-input>
         </el-form-item>
@@ -96,17 +97,23 @@
           </el-form-item>
           <el-form-item label="药品名称"
                         prop="drugName">
-            <el-input v-model="dialog.model.drugName"
+            <el-input maxlength="50"
+                      clearable
+                      v-model="dialog.model.drugName"
                       placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item label="规格"
                         prop="specifications">
-            <el-input v-model="dialog.model.specifications"
+            <el-input maxlength="50"
+                      clearable
+                      v-model="dialog.model.specifications"
                       placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item label="溶媒规格"
                         prop="menstruumSpecifications">
-            <el-input v-model="dialog.model.menstruumSpecifications"
+            <el-input maxlength="50"
+                      clearable
+                      v-model="dialog.model.menstruumSpecifications"
                       placeholder="请输入"></el-input>
           </el-form-item>
         </el-form>
@@ -135,7 +142,9 @@
                  v-bind:model="dialogMapping.model">
           <el-form-item label="药品名称"
                         prop="drugName">
-            <el-input v-model="dialogMapping.model.drugName"
+            <el-input maxlength="50"
+                      clearable
+                      v-model="dialogMapping.model.drugName"
                       placeholder="请输入"></el-input>
           </el-form-item>
           <el-form-item>

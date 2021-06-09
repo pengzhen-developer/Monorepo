@@ -9,7 +9,8 @@
                v-bind:model="model">
         <el-form-item label="剂型名称"
                       prop="name">
-          <el-input clearable
+          <el-input maxlength="50"
+                    clearable
                     placeholder="请输入"
                     v-model.trim="model.name"></el-input>
         </el-form-item>
@@ -83,8 +84,10 @@
           </el-form-item>
           <el-form-item label="剂型名称"
                         prop="name">
-            <el-input placeholder="请输入"
-                      v-model="dialog.model.name"></el-input>
+            <el-input maxlength="50"
+                      clearable
+                      placeholder="请输入"
+                      v-model.trim="dialog.model.name"></el-input>
           </el-form-item>
         </el-form>
       </div>

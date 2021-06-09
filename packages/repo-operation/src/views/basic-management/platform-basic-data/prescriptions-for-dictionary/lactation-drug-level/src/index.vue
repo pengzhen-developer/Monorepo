@@ -9,7 +9,8 @@
                v-bind:model="model">
         <el-form-item label="成分名称"
                       prop="component">
-          <el-input clearable
+          <el-input maxlength="50"
+                    clearable
                     placeholder="请输入"
                     v-model.trim="model.component"></el-input>
         </el-form-item>

@@ -9,7 +9,8 @@
                v-bind:model="model">
         <el-form-item label="药品名称"
                       prop="drugName">
-          <el-input clearable
+          <el-input maxlength="50"
+                    clearable
                     placeholder="请输入"
                     v-model.trim="model.drugName"></el-input>
         </el-form-item>
