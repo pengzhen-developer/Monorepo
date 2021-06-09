@@ -105,6 +105,7 @@
                        clearable
                        filterable
                        placeholder="请选择"
+                       v-bind:disabled="dialog.model.id"
                        v-model="dialog.model.componentCode">
               <el-option v-for="item in source.listPlatformDrugChemicalCompositionEnum"
                          v-bind:key="item.code"
