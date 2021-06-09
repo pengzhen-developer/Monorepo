@@ -2,89 +2,38 @@
 
   <van-popup v-model="show"
              class="popup"
-             :class="{'selected':selected}"
              @click-overlay="changeFlag"
              round
-             :position="position">
+             position="bottom">
 
     <div class="header">
-      请选择本单是否使用医保卡
-      <van-image class="close"
-                 @click="changeFlag"
-                 :src="require('@src/assets/images/ic_close@2x.png')"></van-image>
+      填写医保卡号
     </div>
-    <van-cell center
-              class="switch-out"
-              :class="{'disabled':selected}"
-              title="使用医保卡">
-      <template #right-icon
-                v-if="!selected">
-        <!-- <van-switch v-model="checked"
-                    active-color="#00C6AE"
-                    inactive-color="#cccccc"
-                    size="20" /> -->
-        <van-image class="choose"
-                   v-if="checked"
-                   @click="checked=!checked"
-                   :src="require('@src/assets/images/ic_choose.png')"></van-image>
-        <van-image class="choose"
-                   v-else
-                   @click="checked=!checked"
-                   :src="require('@src/assets/images/ic_choose_not.png')"></van-image>
-      </template>
-      <!-- <template v-else>
-        <div>{{checked?'使用':'不使用'}}</div>
-      </template> -->
-    </van-cell>
-    <template v-if="!selected">
-      <div class="tip"
-           :class="{'selected':checked}">*请绑定xxx的最新医保信息，否则无法使用医保卡支付</div>
-      <div class="banner-bg">
-        <div class="banner-title"
-             :class="{'selected':checked}">天津市人力资源和社会保障局</div>
-        <van-image v-show="this.checked"
-                   :src="require('@src/assets/images/ic_yibaoka.png')"></van-image>
-        <van-image v-show="!this.checked"
-                   :src="require('@src/assets/images/ic_yibaoka_gary.png')"></van-image>
-        <div class="tip-gary">(当前仅支持北辰医院天津医保卡结算）</div>
-      </div>
-      <div class="title"
-           :class="{'selected':checked}">
-        请输入医保卡号
-        <span>(上图红框位置数字)</span>
-      </div>
-      <van-field v-model.trim="cardInfo.medCardNo"
-                 :disabled="!checked"
-                 pattern="\d*"
-                 type="digit"
-                 @input="formateNumber"
-                 @blur="formateNumber"
-                 class="input" />
-
-    </template>
-    <template v-else>
-      <div class="info"
-           v-if="selected&&checked">
-        <div class="name">{{name}}(就诊人姓名)</div>
-        <div class="card">医保卡号：{{cardInfo.medCardNo}}</div>
-        <!-- <div class="price ">
-          <div class="price-item"><span>统筹基金支付金额</span><span>-￥{{yibaoInfo.poolingFundAmount}}</span></div>
-          <div class="price-item"><span>个人账号支付金额</span><span>-￥{{yibaoInfo.personalAccountAmount}}</span></div>
-        </div> -->
-        <div class="price-total"><span>本单划扣</span><span>-￥{{yibaoInfo.totalAmount}}</span></div>
-      </div>
-      <div class="line"></div>
-    </template>
-
-    <div class="tip submit"
-         :class="{'mb14':!selected}">*确认后不可更改</div>
-    <van-button type="primary"
-                round
-                v-show="!selected"
-                @click="submit"
-                :disabled="loading"
-                :loading="loading"
-                size="large">确认</van-button>
+    <div class="tip-header">互联网医院暂不支持门特医保结算</div>
+    <div class="banner-bg">
+      <div class="banner-title">天津市人力资源和社会保障局</div>
+      <van-image :src="require('@src/assets/images/ic_yibaoka.png')"></van-image>
+      <div class="tip-gary">(当前仅支持北辰医院天津医保卡结算）</div>
+    </div>
+    <div class="title">请输入医保卡号<span>(上图红框位置数字)</span></div>
+    <van-field v-model.trim="cardInfo.medCardNo"
+               pattern="\d*"
+               type="digit"
+               @input="formateNumber"
+               @blur="formateNumber"
+               class="input" />
+    <div class="tip">*请绑定xxx的最新医保信息，否则无法使用医保卡支付，确认后不可更改</div>
+    <div class="flex">
+      <van-button class="is__dialog"
+                  round
+                  @click="changeFlag">取消</van-button>
+      <van-button type="primary"
+                  class="is__dialog"
+                  round
+                  @click="submit"
+                  :disabled="loading"
+                  :loading="loading">确认</van-button>
+    </div>
   </van-popup>
 </template>
 
@@ -112,9 +61,6 @@ export default {
     },
     name() {
       return this.info?.familyName
-    },
-    position() {
-      return this.selected == true ? 'center' : 'bottom'
     }
   },
   data() {
@@ -122,7 +68,6 @@ export default {
       show: false,
       loading: false,
       checked: false,
-      selected: false,
       cardInfo: {
         medCardNo: '',
         id: ''
@@ -161,12 +106,6 @@ export default {
       this.$emit('changeFlag', false)
     },
     async submit() {
-      if (!this.checked) {
-        this.$emit('onSuccess', { checked: this.checked, yibaoInfo: { medCardNo: '' } })
-        this.changeFlag()
-        return
-      }
-
       if (!this.cardInfo.medCardNo) {
         return peace.util.warning('请输入医保卡号')
       } else if (!/^[0-9]*$/.test(this.cardInfo.medCardNo)) {
@@ -244,67 +183,31 @@ export default {
 <style lang="scss" scoped>
 .van-popup.popup {
   width: 100%;
-  padding: 14px 16px 20px 16px;
+  padding: 24px 16px;
   background: #fff;
-  &.selected {
-    width: calc(100% - 56px);
-    padding: 15px 20px 17px 13px;
-    background: #fff;
-    border-radius: 7px;
-  }
+
   .header {
-    font-size: 16px;
-    // color: #333;
-    color: transparent;
+    font-size: 18px;
+    color: #333;
     font-weight: bold;
     font-family: PingFangSC-Medium, PingFang SC;
+    line-height: 24px;
     position: relative;
-    width: 100%;
-    span {
-      color: $primary;
-    }
+    text-align: center;
   }
-  .switch-out {
-    padding-left: 0;
-    padding-right: 0;
-    > div {
-      color: #333;
-    }
-    &.disabled {
-      &::after {
-        border-width: 0;
-      }
-    }
-    &::after {
-      left: 0;
-      border-bottom-color: #e8e8e8;
-    }
-    .text {
-      color: $primary;
-      &.disabled {
-        color: #999;
-      }
-    }
+  .tip-header {
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #ffa00c;
+    line-height: 16px;
+    margin-top: 20px;
+    margin-bottom: 14px;
   }
 
-  .tip {
-    color: #999;
-    font-size: 11px;
-    line-height: 16px;
-    margin-top: 13px;
-    &.selected {
-      color: $primary;
-    }
-    &.submit {
-      color: $primary;
-    }
-    &.mb14 {
-      margin-bottom: 14px;
-    }
-  }
   .banner-bg {
-    margin: 10px 0;
-    background: #eeeeee;
+    margin-bottom: 10px;
+    background: rgba(51, 51, 51, 0.05);
     position: relative;
     .banner-title {
       position: absolute;
@@ -315,20 +218,16 @@ export default {
       font-size: 16px;
       font-family: STSongti-SC-Black, STSongti-SC;
       font-weight: 900;
-      color: #cccccc;
       line-height: 1;
       z-index: 10;
-      &.selected {
-        color: #333;
-      }
+      color: #333;
     }
     .van-image {
-      height: 190px;
+      height: 199px;
       width: 100%;
     }
     .tip-gary {
-      color: #999;
-      background: #eeeeee;
+      color: rgba(51, 51, 51, 0.4);
       font-size: 12px;
       text-align: center;
       padding-bottom: 4px;
@@ -349,89 +248,32 @@ export default {
     margin-right: 5px;
   }
   .title {
-    padding-top: 5px;
-    color: #ccc;
+    color: #333;
+    font-size: 16px;
     span {
-      font-size: 12px;
-    }
-    &.selected {
-      color: #000;
-      span {
-        color: #999;
-      }
+      font-size: 14px;
+      color: rgba(51, 51, 51, 0.6);
+      margin-left: 4px;
     }
   }
+  .tip {
+    color: rgba(51, 51, 51, 0.6);
+    font-size: 14px;
+    line-height: 20px;
+  }
   .input {
-    margin: 10px 0 15px 0;
+    margin: 6px 0 4px 0;
     border: 1px solid rgba(0, 0, 0, 0.15);
     height: 44px;
     border-radius: 2px;
     background-color: transparent;
   }
 }
-.info {
-  padding: 15px 9px 15px 8px;
-  border-radius: 2px;
-  border: 1px solid #e8e8e8;
-  margin: 6px 0 10px 0;
-  .name {
-    color: #333;
-    font-weight: 600;
-    padding: 0 10px;
-  }
-  .card {
-    color: #333;
-    font-weight: 400;
-    padding: 0 10px;
-  }
-  .price {
-    margin: 8px 0;
-    padding: 10px;
-    background: #f9f9f9;
-    border-radius: 5px;
-    .price-item {
-      font-size: 13px;
-      color: #999;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      &:first-child {
-        margin-bottom: 10px;
-      }
-    }
-  }
-  .price-total {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0 10px;
-    span {
-      font-size: 14px;
-      color: #333;
-      &:last-child {
-        color: #f2223b;
-        font-weight: 600;
-      }
-    }
-  }
-}
-.line {
-  width: 100%;
-  height: 1px;
-  position: relative;
-  padding-top: 10px;
-  &::after {
-    width: 100%;
-    position: absolute;
-    box-sizing: border-box;
-    content: ' ';
-    pointer-events: none;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    border-bottom: 1px solid #e8e8e8;
-    transform: scaleY(0.5);
-  }
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
 }
 </style>
