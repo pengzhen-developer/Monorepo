@@ -6,6 +6,8 @@
                label-position="right"
                label-width="95px"
                label-suffix="："
+               v-on:submit.native.prevent
+               v-on:keyup.enter.native="save('model')"
                v-bind:model="model"
                v-bind:rules="rules">
         <div class="info-list">
@@ -16,9 +18,9 @@
 
           <el-form-item label="分类标签"
                         prop="name">
-            <el-input v-model.trim="model.name"
-                      placeholder="请输入"
-                      maxlength="50"></el-input>
+            <PeaceInput v-model.trim="model.name"
+                        placeholder="请输入"
+                        maxlength="50"></PeaceInput>
           </el-form-item>
 
         </div>
@@ -27,7 +29,7 @@
     <div class="el-dialog__footer">
       <el-button v-on:click="onCancel">取消</el-button>
       <el-button type="primary"
-                 v-on:click="onSave('model')">保存</el-button>
+                 v-on:click="save('model')">保存</el-button>
     </div>
   </div>
 </template>
@@ -65,7 +67,7 @@ export default {
         name: [
           {
             required: true,
-            message: '请输入分类标签',
+            message: '分类标签必填，请输入',
             trigger: 'blur'
           }
         ]
@@ -77,7 +79,7 @@ export default {
     onCancel() {
       this.$emit('onClose', {})
     },
-    onSave(model) {
+    save(model) {
       this.$refs[model].validate((valid) => {
         if (valid) {
           const params = Peace.util.deepClone(this.model)

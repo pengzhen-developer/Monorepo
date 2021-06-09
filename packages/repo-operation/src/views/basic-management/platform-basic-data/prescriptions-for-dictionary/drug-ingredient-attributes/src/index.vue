@@ -5,11 +5,14 @@
                inline="inline"
                label-width="auto"
                label-suffix="："
+               v-on:submit.native.prevent
+               v-on:keyup.enter.native="fetch"
                size="mini">
 
         <el-form-item label="药品名称">
-          <el-input v-model.trim="model.drugName"
-                    placeholder="请输入"></el-input>
+          <PeaceInput v-model.trim="model.drugName"
+                      maxlength="50"
+                      placeholder="请输入"></PeaceInput>
         </el-form-item>
 
         <el-form-item label="更新日期">
@@ -22,7 +25,7 @@
 
         <el-form-item>
           <el-button type="primary"
-                     v-on:click="get">查询</el-button>
+                     v-on:click="fetch">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -33,29 +36,29 @@
                   size="mini"
                   pagination>
         <PeaceTableColumn label="平台药品编码"
-                          width="150px"
+                          min-width="150px"
                           prop="platformDrugCode">
         </PeaceTableColumn>
         <PeaceTableColumn label="药品名称"
-                          width="200px"
-                          show-overflow-tooltip
+                          min-width="150px"
                           prop="drugName">
         </PeaceTableColumn>
         <PeaceTableColumn label="规格"
-                          show-overflow-tooltip
+                          min-width="150px"
                           prop="drugSpecifications">
           <template slot-scope="scope">
             {{scope.row.drugSpecifications||"——"}}
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="生产厂家"
-                          show-overflow-tooltip
+                          min-width="200px"
                           prop="enterpriseCnName">
           <template slot-scope="scope">
             {{scope.row.enterpriseCnName||"——"}}
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="药品成分"
+                          min-width="150px"
                           show-overflow-tooltip
                           prop="ingredient">
           <template slot-scope="scope">
@@ -63,7 +66,7 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="更新时间"
-                          width="180px"
+                          min-width="180px"
                           prop="updateTime">
         </PeaceTableColumn>
 
@@ -125,12 +128,12 @@ export default {
 
   async mounted() {
     this.$nextTick().then(() => {
-      this.get()
+      this.fetch()
     })
   },
 
   methods: {
-    get() {
+    fetch() {
       const fetch = Service.platformDrugIngredientPage
       const params = Peace.util.deepClone(this.model)
       this.$refs.table.reloadData({ fetch, params })
@@ -144,10 +147,14 @@ export default {
 
     addSuccess() {
       this.addDialog.visible = false
-      this.get()
+      this.fetch()
     }
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" >
+.el-tooltip__popper {
+  max-width: 1200px;
+}
+</style>

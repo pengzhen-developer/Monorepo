@@ -5,6 +5,8 @@
                label-position="right"
                label-width="120px"
                label-suffix="："
+               v-on:submit.native.prevent
+               v-on:keyup.enter.native="save('model')"
                v-bind:model="model"
                v-bind:rules="rules">
         <div class="info-list">
@@ -22,15 +24,16 @@
           </el-form-item>
 
           <el-form-item label="抗菌属性">
-            <el-select placeholder="--"
-                       class="block"
-                       v-model="model.antiLevel"
-                       clearable>
+            <PeaceSelect placeholder="--"
+                         class="block"
+                         filterable
+                         v-model="model.antiLevel"
+                         clearable>
               <el-option v-for="item in source.ATTRIBUTES_TAYPES"
                          v-bind:key="item.value"
                          v-bind:label="item.label"
                          v-bind:value="item.value"></el-option>
-            </el-select>
+            </PeaceSelect>
           </el-form-item>
 
           <el-form-item label="注射剂"
@@ -47,7 +50,7 @@
     <div class="el-dialog__footer">
       <el-button v-on:click="onCancel">取消</el-button>
       <el-button type="primary"
-                 v-on:click="onSave('model')">保存</el-button>
+                 v-on:click="save('model')">保存</el-button>
     </div>
   </div>
 </template>
@@ -114,7 +117,7 @@ export default {
       this.$emit('onClose', {})
     },
 
-    onSave(model) {
+    save(model) {
       this.$refs[model].validate((valid) => {
         if (valid) {
           const params = Peace.util.deepClone(this.model)

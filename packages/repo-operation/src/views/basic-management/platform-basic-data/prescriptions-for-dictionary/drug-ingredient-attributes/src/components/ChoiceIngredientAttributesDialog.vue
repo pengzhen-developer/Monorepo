@@ -2,17 +2,19 @@
   <div class="layout-route">
     <el-form v-bind:model="model"
              inline="inline"
+             v-on:submit.native.prevent
+             v-on:keyup.enter.native="fetch"
              label-suffix="："
              size="mini">
 
       <el-form-item label="成分名称">
-        <el-input v-model.trim="model.cnName"
-                  placeholder="请输入成分名称搜索"></el-input>
+        <PeaceInput v-model.trim="model.cnName"
+                    placeholder="请输入成分名称搜索"></PeaceInput>
       </el-form-item>
 
       <el-form-item>
         <el-button type="primary"
-                   v-on:click="get">查询</el-button>
+                   v-on:click="fetch">查询</el-button>
       </el-form-item>
     </el-form>
 
@@ -21,12 +23,14 @@
                 @selection-change="handleSelectionChange"
                 pagination>
       <el-table-column type="selection"
-                       width="55">
+                       min-width="55">
       </el-table-column>
       <PeaceTableColumn label="成分编码"
+                        min-width="100px"
                         prop="code">
       </PeaceTableColumn>
       <PeaceTableColumn label="成分名称"
+                        min-width="100px"
                         prop="cnName">
       </PeaceTableColumn>
 
@@ -63,12 +67,12 @@ export default {
 
   async mounted() {
     this.$nextTick().then(() => {
-      this.get()
+      this.fetch()
     })
   },
 
   methods: {
-    get() {
+    fetch() {
       const fetch = Service.getPlatformDrugChemicalCompositionListAll
       const params = Peace.util.deepClone(this.model)
       this.$refs.table.reloadData({ fetch, params })

@@ -5,11 +5,11 @@
                 size="mini"
                 pagination>
       <PeaceTableColumn label="主要编码"
-                        width="120px"
+                        min-width="120px"
                         prop="icd10Code">
       </PeaceTableColumn>
       <PeaceTableColumn label="附加编码"
-                        width="120px"
+                        min-width="120px"
                         prop="extCode">
         <template slot-scope="scope">
           {{scope.row.extCode||"——"}}
@@ -17,15 +17,14 @@
       </PeaceTableColumn>
       <PeaceTableColumn label="ICD疾病名称"
                         min-width="200px"
-                        show-overflow-tooltip
                         prop="name">
       </PeaceTableColumn>
       <PeaceTableColumn label="级别"
-                        width="100px"
+                        min-width="100px"
                         prop="leavel">
       </PeaceTableColumn>
       <PeaceTableColumn label="父节点编码"
-                        width="120px"
+                        min-width="120px"
                         prop="parentNode">
         <template slot-scope="scope">
           {{scope.row.parentNode||"——"}}

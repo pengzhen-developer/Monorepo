@@ -3,32 +3,37 @@
     <el-form v-bind:model="model"
              inline="inline"
              label-suffix="："
+             v-on:submit.native.prevent
+             v-on:keyup.enter.native="fetch"
              size="mini">
 
       <el-form-item label="主要编码">
-        <el-input v-model.trim="model.icd10Code"
-                  placeholder="请输入"></el-input>
+        <PeaceInput v-model.trim="model.icd10Code"
+                    maxlength="50"
+                    placeholder="请输入"></PeaceInput>
       </el-form-item>
 
       <el-form-item label="ICD疾病名称">
-        <el-input v-model.trim="model.name"
-                  placeholder="请输入"></el-input>
+        <PeaceInput v-model.trim="model.name"
+                    maxlength="50"
+                    placeholder="请输入"></PeaceInput>
       </el-form-item>
 
       <el-form-item label="级别">
-        <el-select v-model="model.leavel"
-                   placeholder="全部"
-                   clearable>
+        <PeaceSelect v-model="model.leavel"
+                     placeholder="全部"
+                     filterable
+                     clearable>
           <el-option v-for="item in source.Icd10LeavelList"
                      v-bind:key="item.value"
                      v-bind:label="item.label"
                      v-bind:value="item.value"></el-option>
-        </el-select>
+        </PeaceSelect>
       </el-form-item>
 
       <el-form-item>
         <el-button type="primary"
-                   v-on:click="get">查询</el-button>
+                   v-on:click="fetch">查询</el-button>
       </el-form-item>
     </el-form>
 
@@ -44,14 +49,14 @@
                 style="width: 100%"
                 pagination>
       <PeaceTableColumn type="selection"
-                        width="55">
+                        min-width="55">
       </PeaceTableColumn>
       <PeaceTableColumn label="主要编码"
-                        width="120px"
+                        min-width="100px"
                         prop="icd10Code">
       </PeaceTableColumn>
       <PeaceTableColumn label="附加编码"
-                        width="120px"
+                        min-width="80px"
                         prop="extCode">
         <template slot-scope="scope">
           {{scope.row.extCode||"——"}}
@@ -59,22 +64,21 @@
       </PeaceTableColumn>
       <PeaceTableColumn label="ICD疾病名称"
                         min-width="200px"
-                        show-overflow-tooltip
                         prop="name">
       </PeaceTableColumn>
       <PeaceTableColumn label="级别"
-                        width="100px"
+                        min-width="80px"
                         prop="leavel">
       </PeaceTableColumn>
       <PeaceTableColumn label="父节点编码"
-                        width="120px"
+                        min-width="80px"
                         prop="parentNode">
         <template slot-scope="scope">
           {{scope.row.parentNode||"——"}}
         </template>
       </PeaceTableColumn>
       <PeaceTableColumn label="关联状态"
-                        width="120px"
+                        min-width="100px"
                         prop="status">
         <template slot-scope="scope">
           <span>{{scope.row.status=="yes" ? "已关联" : "未关联"}}</span>
@@ -125,12 +129,12 @@ export default {
 
   async mounted() {
     this.$nextTick().then(() => {
-      this.get()
+      this.fetch()
     })
   },
 
   methods: {
-    get() {
+    fetch() {
       const fetch = Service.platformDiagnosisRelationPage
       const params = Peace.util.deepClone(this.model)
       this.$refs.table.reloadData({ fetch, params })

@@ -5,11 +5,14 @@
                inline="inline"
                label-width="auto"
                label-suffix="："
+               v-on:submit.native.prevent
+               v-on:keyup.enter.native="fetch"
                size="mini">
 
         <el-form-item label="疾病名称">
-          <el-input v-model.trim="model.name"
-                    placeholder="请输入"></el-input>
+          <PeaceInput v-model.trim="model.name"
+                      maxlength="50"
+                      placeholder="请输入"></PeaceInput>
         </el-form-item>
 
         <el-form-item label="更新日期">
@@ -22,7 +25,7 @@
 
         <el-form-item>
           <el-button type="primary"
-                     v-on:click="get">查询</el-button>
+                     v-on:click="fetch">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -37,12 +40,15 @@
                   size="mini"
                   pagination>
         <PeaceTableColumn label="系统编码"
+                          min-width="250px"
                           prop="code">
         </PeaceTableColumn>
         <PeaceTableColumn label="疾病名称"
+                          min-width="250px"
                           prop="name">
         </PeaceTableColumn>
         <PeaceTableColumn label="已关联ICD编码"
+                          min-width="80px"
                           prop="icdCount">
           <template slot-scope="scope">
             <el-button type="text"
@@ -50,6 +56,7 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="更新时间"
+                          min-width="180px"
                           prop="updateTime">
         </PeaceTableColumn>
 
@@ -144,12 +151,12 @@ export default {
 
   async mounted() {
     this.$nextTick().then(() => {
-      this.get()
+      this.fetch()
     })
   },
 
   methods: {
-    get() {
+    fetch() {
       const fetch = Service.platformDiseasePage
       const params = Peace.util.deepClone(this.model)
       this.$refs.table.reloadData({ fetch, params })
@@ -174,7 +181,7 @@ export default {
     //新增成功
     addSuccess() {
       this.addDialog.visible = false
-      this.get()
+      this.fetch()
     },
 
     showDetail(data) {
@@ -189,7 +196,7 @@ export default {
     },
     associatedSuccess() {
       this.relevanceDialog.visible = false
-      this.get()
+      this.fetch()
     },
     associatedClose() {
       this.relevanceDialog.visible = false

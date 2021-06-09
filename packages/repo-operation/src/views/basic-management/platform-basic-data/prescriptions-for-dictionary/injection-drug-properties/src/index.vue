@@ -4,12 +4,15 @@
       <el-form v-bind:model="model"
                inline="inline"
                label-width="auto"
+               v-on:submit.native.prevent
+               v-on:keyup.enter.native="fetch"
                label-suffix="："
                size="mini">
 
         <el-form-item label="药品名称">
-          <el-input v-model.trim="model.drugName"
-                    placeholder="请输入"></el-input>
+          <PeaceInput v-model.trim="model.drugName"
+                      maxlength="50"
+                      placeholder="请输入"></PeaceInput>
         </el-form-item>
 
         <el-form-item label="更新日期">
@@ -22,7 +25,7 @@
 
         <el-form-item>
           <el-button type="primary"
-                     v-on:click="get">查询</el-button>
+                     v-on:click="fetch">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -133,11 +136,11 @@ export default {
 
   async created() {
     this.source.ATTRIBUTES_TAYPES = await Peace.identity.dictionary.getList('antiLevel')
-    this.get()
+    this.fetch()
   },
 
   methods: {
-    get() {
+    fetch() {
       const fetch = Service.pageInjectionAndAntibacterials
       const params = Peace.util.deepClone(this.model)
       this.$refs.table.reloadData({ fetch, params })
@@ -156,7 +159,7 @@ export default {
     //新增成功
     addSuccess() {
       this.addDialog.visible = false
-      this.get()
+      this.fetch()
     }
   }
 }
