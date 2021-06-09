@@ -8,25 +8,31 @@
                v-bind:model="model"
                v-bind:rules="rules">
 
-        <el-form-item label="主要编码：" prop="icd10Code">
+        <el-form-item label="主要编码："
+                      prop="icd10Code">
           <el-input v-model="model.icd10Code"
                     placeholder="请输入"
+                    maxlength="50"
                     clearable></el-input>
         </el-form-item>
 
         <el-form-item label="附加编码：">
           <el-input v-model="model.extCode"
                     placeholder="请输入"
+                    maxlength="50"
                     clearable></el-input>
         </el-form-item>
 
-        <el-form-item label="疾病名称：" prop="name">
+        <el-form-item label="疾病名称："
+                      prop="name">
           <el-input v-model="model.name"
                     placeholder="请输入"
+                    maxlength="50"
                     clearable></el-input>
         </el-form-item>
 
-        <el-form-item label="级别： "  prop="leavel">
+        <el-form-item label="级别： "
+                      prop="leavel">
 
           <el-select clearable
                      filterable
@@ -41,7 +47,6 @@
           </el-select>
 
         </el-form-item>
-
 
         <el-form-item label="父节点编码： ">
           <el-select clearable
@@ -73,15 +78,14 @@
 </template>
 
 <script>
-
-import Service from '../service';
+import Service from '../service'
 
 export default {
   props: {
     value: {
       required: true,
       type: Boolean
-    },
+    }
   },
 
   data() {
@@ -93,16 +97,16 @@ export default {
         extCode: undefined,
         name: undefined,
         leavel: undefined,
-        parentNode: undefined,
+        parentNode: undefined
       },
       source: {
         levelList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-        parentNodeCodes: [],
+        parentNodeCodes: []
       },
       rules: {
         icd10Code: [{ required: true, message: '请输入主要编码', trigger: 'blur' }],
         name: [{ required: true, message: '请输入疾病名称', trigger: 'blur' }],
-        leavel: [{ required: true, message: '请选择级别', trigger: 'blur' }],
+        leavel: [{ required: true, message: '请选择级别', trigger: 'blur' }]
       }
     }
   },
@@ -110,7 +114,7 @@ export default {
   mounted() {
     this.$nextTick().then(() => {
       Service.getPatientList().then((res) => {
-        this.source.parentNodeCodes = res.data;
+        this.source.parentNodeCodes = res.data
       })
     })
   },
@@ -139,11 +143,13 @@ export default {
     submitForm() {
       const params = Object.assign({}, this.model)
       this.isLoading = true
-      Service.addData(params).then((res) => {
-        Peace.util.success(res.message)
-        this.visible = false
-        this.$emit('refresh')
-      }).finally(() => this.isLoading = false)
+      Service.addData(params)
+        .then((res) => {
+          Peace.util.success(res.message)
+          this.visible = false
+          this.$emit('refresh')
+        })
+        .finally(() => (this.isLoading = false))
     }
   }
 }

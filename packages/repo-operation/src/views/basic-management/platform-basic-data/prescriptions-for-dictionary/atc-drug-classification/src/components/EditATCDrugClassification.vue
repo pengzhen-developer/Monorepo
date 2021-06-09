@@ -9,7 +9,8 @@
                v-bind:model="model"
                v-bind:rules="rules">
 
-        <el-form-item label="ATC级别"  prop="atcGrade">
+        <el-form-item label="ATC级别"
+                      prop="atcGrade">
 
           <el-select clearable
                      filterable
@@ -25,27 +26,36 @@
 
         </el-form-item>
 
-        <el-form-item label="父节点" prop="parentNode" v-if="model.atcGrade !== 1">
+        <el-form-item label="父节点"
+                      prop="parentNode"
+                      v-if="model.atcGrade !== 1">
           <el-input v-model="model.parentNode"
                     placeholder="请输入"
+                    maxlength="50"
                     clearable></el-input>
         </el-form-item>
 
-        <el-form-item label="ATC编码" prop="atcCode">
+        <el-form-item label="ATC编码"
+                      prop="atcCode">
           <el-input v-model="model.atcCode"
                     placeholder="请输入"
+                    maxlength="50"
                     clearable></el-input>
         </el-form-item>
 
-        <el-form-item label="成分类别（英文）" prop="classifyNameEn">
+        <el-form-item label="成分类别（英文）"
+                      prop="classifyNameEn">
           <el-input v-model="model.classifyNameEn"
                     placeholder="请输入"
+                    maxlength="50"
                     clearable></el-input>
         </el-form-item>
 
-        <el-form-item label="成分类别" prop="classifyName">
+        <el-form-item label="成分类别"
+                      prop="classifyName">
           <el-input v-model="model.classifyName"
                     placeholder="请输入"
+                    maxlength="50"
                     clearable></el-input>
         </el-form-item>
 
@@ -65,8 +75,7 @@
 </template>
 
 <script>
-
-import Service from "../service/index";
+import Service from '../service/index'
 
 export default {
   props: {
@@ -93,23 +102,23 @@ export default {
         classifyNameEn: undefined,
         atcCode: undefined,
         parentNode: undefined,
-        classifyName: undefined,
+        classifyName: undefined
       },
       source: {
         levelList: [
-          {value: 1, label: 1},
-          {value: 2, label: 2},
-          {value: 3, label: 3},
-          {value: 4, label: 4},
-          {value: 5, label: 5}
-        ],
+          { value: 1, label: 1 },
+          { value: 2, label: 2 },
+          { value: 3, label: 3 },
+          { value: 4, label: 4 },
+          { value: 5, label: 5 }
+        ]
       },
       rules: {
         atcGrade: [{ required: true, message: '请选择ATC级别', trigger: 'blur' }],
         parentNode: [{ required: true, message: '请输入父节点', trigger: 'blur' }],
         atcCode: [{ required: true, message: '请输入ATC编码', trigger: 'blur' }],
         classifyNameEn: [{ required: true, message: '请输入成分类别（英文）', trigger: 'blur' }],
-        classifyName:  [{ required: true, message: '请输入成分类别', trigger: 'blur' }]
+        classifyName: [{ required: true, message: '请输入成分类别', trigger: 'blur' }]
       }
     }
   },
@@ -121,12 +130,12 @@ export default {
   },
 
   computed: {
-      isEdit() {
-        return this.data
-      },
-      submitButtonText() {
-        return this.isEdit ? "保存" : "提交"
-      }
+    isEdit() {
+      return this.data
+    },
+    submitButtonText() {
+      return this.isEdit ? '保存' : '提交'
+    }
   },
 
   watch: {
@@ -136,8 +145,7 @@ export default {
 
     visible(value) {
       this.$emit('input', value)
-    },
-
+    }
   },
 
   methods: {
@@ -155,20 +163,22 @@ export default {
       const params = Object.assign({}, this.model)
       this.isLoading = true
       if (this.isEdit) {
-        Service.modifyData(params).then((res) => {
-          Peace.util.success(res.message)
-          this.visible = false
-          this.$emit('refresh')
-        }).finally(() => this.isLoading = false)
+        Service.modifyData(params)
+          .then((res) => {
+            Peace.util.success(res.message)
+            this.visible = false
+            this.$emit('refresh')
+          })
+          .finally(() => (this.isLoading = false))
       } else {
-        Service.addData(params).then((res) => {
-          Peace.util.success(res.message)
-          this.visible = false
-          this.$emit('refresh')
-        }).finally(() => this.isLoading = false)
+        Service.addData(params)
+          .then((res) => {
+            Peace.util.success(res.message)
+            this.visible = false
+            this.$emit('refresh')
+          })
+          .finally(() => (this.isLoading = false))
       }
-
-
     }
   }
 }

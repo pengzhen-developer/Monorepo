@@ -8,25 +8,31 @@
                v-bind:model="model"
                v-bind:rules="rules">
 
-        <el-form-item label="主要编码：" prop="icd10Code">
+        <el-form-item label="主要编码："
+                      prop="icd10Code">
           <el-input v-model="model.icd10Code"
                     placeholder="请输入"
+                    maxlength="50"
                     clearable></el-input>
         </el-form-item>
 
         <el-form-item label="附加编码：">
           <el-input v-model="model.extCode"
                     placeholder="请输入"
+                    maxlength="50"
                     clearable></el-input>
         </el-form-item>
 
-        <el-form-item label="疾病名称：" prop="name">
+        <el-form-item label="疾病名称："
+                      prop="name">
           <el-input v-model="model.name"
                     placeholder="请输入"
+                    maxlength="50"
                     clearable></el-input>
         </el-form-item>
 
-        <el-form-item label="级别： "  prop="leavel">
+        <el-form-item label="级别： "
+                      prop="leavel">
 
           <el-select clearable
                      filterable
@@ -42,7 +48,6 @@
 
         </el-form-item>
 
-
         <el-form-item label="父节点编码： ">
           <el-select clearable
                      filterable
@@ -57,7 +62,8 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="状态：" prop="useStatus">
+        <el-form-item label="状态："
+                      prop="useStatus">
           <el-radio-group v-model="model.useStatus">
             <el-radio label="yes">启用</el-radio>
             <el-radio label="no">停用</el-radio>
@@ -80,8 +86,7 @@
 </template>
 
 <script>
-
-import Service from "../service/index";
+import Service from '../service/index'
 
 export default {
   props: {
@@ -105,18 +110,18 @@ export default {
         name: undefined,
         leavel: undefined,
         parentNode: undefined,
-        useStatus: 'yes',
+        useStatus: 'yes'
       },
       source: {
         levelList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-        parentNodeCodes: [],
+        parentNodeCodes: []
       },
       rules: {
         icd10Code: [{ required: true, message: '请输入主要编码', trigger: 'blur' }],
         name: [{ required: true, message: '请输入疾病名称', trigger: 'blur' }],
         leavel: [{ required: true, message: '请选择级别', trigger: 'blur' }],
         // parentNode: [{ required: true, message: '请选择父节点编码', trigger: 'blur' }],
-        useStatus:  [{ required: true, message: '请选择状态', trigger: 'blur' }]
+        useStatus: [{ required: true, message: '请选择状态', trigger: 'blur' }]
       }
     }
   },
@@ -129,7 +134,7 @@ export default {
       name: this.data.name,
       leavel: this.data.leavel,
       parentNode: this.data.parentNode,
-      useStatus:  this.data.useStatus,
+      useStatus: this.data.useStatus
     }
     this.model = Object.assign({}, tmp)
   },
@@ -137,7 +142,7 @@ export default {
   mounted() {
     this.$nextTick().then(() => {
       Service.getPatientList().then((res) => {
-        this.source.parentNodeCodes = res.data;
+        this.source.parentNodeCodes = res.data
       })
     })
   },
@@ -149,8 +154,7 @@ export default {
 
     visible(value) {
       this.$emit('input', value)
-    },
-
+    }
   },
 
   methods: {
@@ -167,11 +171,13 @@ export default {
     submitForm() {
       const params = Object.assign({}, this.model)
       this.isLoading = true
-      Service.modifyData(params).then((res) => {
-        Peace.util.success(res.message)
-        this.visible = false
-        this.$emit('refresh')
-      }).finally(() => this.isLoading = false)
+      Service.modifyData(params)
+        .then((res) => {
+          Peace.util.success(res.message)
+          this.visible = false
+          this.$emit('refresh')
+        })
+        .finally(() => (this.isLoading = false))
     }
   }
 }

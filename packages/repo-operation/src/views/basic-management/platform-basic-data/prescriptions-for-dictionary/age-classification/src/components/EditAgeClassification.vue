@@ -9,37 +9,48 @@
                v-bind:model="model"
                v-bind:rules="rules">
 
-        <el-form-item label="人群名称" prop="name">
+        <el-form-item label="人群名称"
+                      prop="name">
           <el-input v-model="model.name"
                     clearable
+                    maxlength="50"
                     placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item label="人群年龄单位" prop="ageUnit">
+        <el-form-item label="人群年龄单位"
+                      prop="ageUnit">
 
           <el-select v-model.trim="model.ageUnit"
                      class="block"
                      clearable
                      filterable
                      placeholder="请选择">
-            <el-option v-for="(value,label) in source.unitList"
-                       :key="value"
-                       :label="label"
-                       :value="value">
+            <el-option v-for="item in source.unitList"
+                       :key="item"
+                       :label="item"
+                       :value="item">
             </el-option>
           </el-select>
 
         </el-form-item>
 
-        <el-form-item class="block" label="人群年龄最小值" prop="ageMin">
-          <el-input-number v-model="model.ageMin" :max="model.ageMax" :min="0"
+        <el-form-item class="block"
+                      label="人群年龄最小值"
+                      prop="ageMin">
+          <el-input-number v-model="model.ageMin"
+                           :max="model.ageMax"
+                           :min="0"
+                           maxlength="50"
                            controls-position="right"
                            style="width:100%"></el-input-number>
         </el-form-item>
 
-        <el-form-item label="人群年龄最大值" prop="ageMax">
-          <el-input-number v-model="model.ageMax" :min="model.ageMin || 0"
+        <el-form-item label="人群年龄最大值"
+                      prop="ageMax">
+          <el-input-number v-model="model.ageMax"
+                           :min="model.ageMin || 0"
                            controls-position="right"
+                           maxlength="50"
                            style="width:100%"></el-input-number>
         </el-form-item>
 
@@ -60,8 +71,7 @@
 </template>
 
 <script>
-
-import Service from "../service/index";
+import Service from '../service/index'
 
 export default {
   props: {
@@ -87,20 +97,16 @@ export default {
         name: undefined,
         ageUnit: '岁',
         ageMin: undefined,
-        ageMax: undefined,
+        ageMax: undefined
       },
       source: {
-        unitList: [
-          '岁',
-          '月',
-          '天'
-        ],
+        unitList: ['岁', '月', '天']
       },
       rules: {
-        name: [{required: true, message: '请输入人群名称', trigger: 'blur'}],
-        ageUnit: [{required: true, message: '请选择人群年龄单位', trigger: 'blur'}],
-        ageMin: [{required: true, message: '请输入人群年龄最小值', trigger: 'blur'}],
-        ageMax: [{required: true, message: '请输入人群年龄最大值', trigger: 'blur'}],
+        name: [{ required: true, message: '请输入人群名称', trigger: 'blur' }],
+        ageUnit: [{ required: true, message: '请选择人群年龄单位', trigger: 'blur' }],
+        ageMin: [{ required: true, message: '请输入人群年龄最小值', trigger: 'blur' }],
+        ageMax: [{ required: true, message: '请输入人群年龄最大值', trigger: 'blur' }]
       }
     }
   },
@@ -116,7 +122,7 @@ export default {
       return this.data
     },
     submitButtonText() {
-      return this.isEdit ? "提交" : "保存"
+      return this.isEdit ? '提交' : '保存'
     }
   },
 
@@ -127,8 +133,7 @@ export default {
 
     visible(value) {
       this.$emit('input', value)
-    },
-
+    }
   },
 
   methods: {
@@ -146,19 +151,22 @@ export default {
       const params = Object.assign({}, this.model)
       this.isLoading = true
       if (this.isEdit) {
-        Service.modifyData(params).then((res) => {
-          Peace.util.success(res.message)
-          this.visible = false
-          this.$emit('refresh')
-        }).finally(() => this.isLoading = false)
+        Service.modifyData(params)
+          .then((res) => {
+            Peace.util.success(res.message)
+            this.visible = false
+            this.$emit('refresh')
+          })
+          .finally(() => (this.isLoading = false))
       } else {
-        Service.addData(params).then((res) => {
-          Peace.util.success(res.message)
-          this.visible = false
-          this.$emit('refresh')
-        }).finally(() => this.isLoading = false)
+        Service.addData(params)
+          .then((res) => {
+            Peace.util.success(res.message)
+            this.visible = false
+            this.$emit('refresh')
+          })
+          .finally(() => (this.isLoading = false))
       }
-
     }
   }
 }

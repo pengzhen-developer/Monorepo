@@ -10,7 +10,8 @@
                v-bind:model="model"
                v-bind:rules="rules">
 
-        <el-form-item label="单位组名称" prop="ucfName">
+        <el-form-item label="单位组名称"
+                      prop="ucfName">
           <el-input v-model="model.ucfName"
                     style="width:268px"
                     maxlength="50"
@@ -20,12 +21,15 @@
 
         <el-form-item label="单位转换关系">
 
-          <div v-for="(domain, index) in model.formulaList" v-bind:key="index" class="q-mb-24 row">
+          <div v-for="(domain, index) in model.formulaList"
+               v-bind:key="index"
+               class="q-mb-24 row">
 
             <el-input v-model.number="domain.factor"
                       type="number"
                       style="width:120px; margin-right: 8px"
                       placeholder="请输入数值"
+                      maxlength="50"
                       clearable></el-input>
 
             <el-select clearable
@@ -42,7 +46,8 @@
               </el-option>
             </el-select>
 
-            <el-image style="width: 32px; height: 32px; margin-left: 8px" v-bind:src="require('../assets/img/conversion_icon.png')"></el-image>
+            <el-image style="width: 32px; height: 32px; margin-left: 8px"
+                      v-bind:src="require('../assets/img/conversion_icon.png')"></el-image>
 
           </div>
 
@@ -69,9 +74,8 @@
 </template>
 
 <script>
-
-import Service from "../service/index";
-import obAccount from "@src/layouts/default/src/observable/ob-account";
+import Service from '../service/index'
+import obAccount from '@src/layouts/default/src/observable/ob-account'
 
 export default {
   props: {
@@ -89,37 +93,39 @@ export default {
       visible: this.value,
       model: {
         ucfName: undefined,
-        formulaList: [{
-          factor: undefined,
-          unit: undefined,
-        }],
+        formulaList: [
+          {
+            factor: undefined,
+            unit: undefined
+          }
+        ]
       },
       source: {
-        unitList: [],
+        unitList: []
       },
       rules: {
-        ucfName: [{ required: true, message: '请输入单位名称', trigger: 'blur' }],
+        ucfName: [{ required: true, message: '请输入单位名称', trigger: 'blur' }]
       }
     }
   },
 
   created() {
     if (this.data) {
-      this.isEdit = true;
+      this.isEdit = true
       const tmp = {
         id: this.data.id,
         ucfName: this.data.ucfName,
-        formulaList: this.data.formula.filter(item => item.unit && item.factor),
+        formulaList: this.data.formula.filter((item) => item.unit && item.factor)
       }
-      this.model =  Object.assign({}, tmp)
+      this.model = Object.assign({}, tmp)
     }
   },
 
   mounted() {
     this.$nextTick().then(() => {
-        Service.getUnitList().then((res) => {
-          this.source.unitList = res.data
-        })
+      Service.getUnitList().then((res) => {
+        this.source.unitList = res.data
+      })
     })
   },
 
@@ -130,12 +136,11 @@ export default {
 
     visible(value) {
       this.$emit('input', value)
-    },
-
+    }
   },
 
   computed: {
-    accountInfo: () => obAccount.state.accountInfo ?? {},
+    accountInfo: () => obAccount.state.accountInfo ?? {}
   },
 
   methods: {
@@ -147,11 +152,11 @@ export default {
       this.model.formulaList.push({
         factor: undefined,
         unit: undefined
-      });
+      })
     },
 
     checkStatus(tmp) {
-       return this.model.formulaList.some((item) => item.unit === tmp.name)
+      return this.model.formulaList.some((item) => item.unit === tmp.name)
     },
 
     validateForm() {
@@ -164,21 +169,25 @@ export default {
     submitForm() {
       const params = Object.assign({}, this.model)
       params.createUser = this.accountInfo.name
-      params.formulaList = params.formulaList.filter(item => item.unit && item.factor)
+      params.formulaList = params.formulaList.filter((item) => item.unit && item.factor)
       this.isLoading = true
 
       if (this.isEdit) {
-        Service.modifyData(params).then((res) => {
-          Peace.util.success(res.message)
-          this.visible = false
-          this.$emit('refresh')
-        }).finally(() => this.isLoading = false)
+        Service.modifyData(params)
+          .then((res) => {
+            Peace.util.success(res.message)
+            this.visible = false
+            this.$emit('refresh')
+          })
+          .finally(() => (this.isLoading = false))
       } else {
-        Service.addData(params).then((res) => {
-          Peace.util.success(res.message)
-          this.visible = false
-          this.$emit('refresh')
-        }).finally(() => this.isLoading = false)
+        Service.addData(params)
+          .then((res) => {
+            Peace.util.success(res.message)
+            this.visible = false
+            this.$emit('refresh')
+          })
+          .finally(() => (this.isLoading = false))
       }
     }
   }
@@ -204,8 +213,7 @@ export default {
 ::v-deep input::-webkit-inner-spin-button {
   -webkit-appearance: none !important;
 }
-::v-deep input[type="number"]{
+::v-deep input[type='number'] {
   -moz-appearance: textfield;
 }
-
 </style>
