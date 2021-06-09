@@ -17,7 +17,7 @@ import MainList from './components/MainList'
 import Observable from './observable'
 
 export default {
-  name: 'EncodedReviewed',
+  // name: 'EncodedReviewed',
   components: { SubList, MainList },
   data() {
     return {}
