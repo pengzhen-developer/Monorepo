@@ -99,6 +99,7 @@
     <template>
       <AddPatientMsg :showFamily.sync="showFamily"
                      type="recordCondition"
+                     :patientId="familyInfo.familyId"
                      @changeFlag="changeFlag"></AddPatientMsg>
     </template>
   </div>

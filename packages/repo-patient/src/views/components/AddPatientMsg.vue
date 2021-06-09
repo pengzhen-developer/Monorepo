@@ -9,9 +9,9 @@
              :class="hasFamily==1&&showFamily&&'show'">
           <div class="navWrap">
             <template v-if="type=='doctorDetail'">
-              <div class="title">您已关注{{doctor.name}} {{doctor.doctorTitle}}
-              </div>
-              <div class="subTitle">请填写您的就诊信息</div>
+              <div class="title"
+                   style="text-align:center;">诊后报到</div>
+              <div class="subTitle">欢迎来到{{doctor.name}}的网上诊室，请完善就诊人信息，方便医生找到您。</div>
             </template>
             <template v-else-if="type=='recordCondition'">
               <div class="title">请填写您的就诊信息</div>
@@ -19,14 +19,17 @@
           </div>
           <div class="form form-for-family">
             <van-field label="姓名"
+                       class="is__require"
                        placeholder="请输入姓名"
                        v-model="model.name">
             </van-field>
             <van-field label="身份证号"
+                       class="is__require"
                        placeholder="请输入身份证号"
                        v-model="model.idcard" />
             <van-field @click="showPopupRelation"
                        label="关系"
+                       class="is__require"
                        placeholder="请选择"
                        readonly
                        right-icon="arrow"
@@ -44,7 +47,6 @@
                        right-icon="arrow"
                        v-model="model.birthday" />
             <van-field @click="showPopupNations"
-                       class="require--not"
                        label="民族"
                        placeholder="请输入"
                        readonly
@@ -53,12 +55,12 @@
             <div class="group"
                  v-if="age!= null && age < this.ageLimit">
               <van-cell value="就诊人未满6岁，请填写监护人信息" />
-              <van-field class="w6"
+              <van-field class="w6 is__require"
                          label="监护人姓名"
                          placeholder="请输入姓名"
                          v-model="model.guardianName">
               </van-field>
-              <van-field class="w8"
+              <van-field class="w8 is__require"
                          label="监护人身份证号"
                          placeholder="请输入身份证号"
                          v-model="model.guardianIdCard" />
@@ -74,18 +76,27 @@
             </peace-dialog>
           </div>
           <div class="bottom">
+            <van-button @click="changeFlag(false)"
+                        class="is__dialog"
+                        round>取消</van-button>
+            <van-button @click="submit"
+                        class="is__dialog"
+                        type="primary"
+                        round>{{submitTxt}}</van-button>
+          </div>
+          <!-- <div class="bottom" v-else>
             <van-button @click="submit"
                         round
                         type="primary">{{submitTxt}}</van-button>
-          </div>
+          </div> -->
         </div>
         <div class="family has-family"
              :class="hasFamily==2&&showFamily&&'show'">
           <div class="navWrap">
             <template v-if="type=='doctorDetail'">
-              <div class="title">您已关注{{doctor.name}} {{doctor.doctorTitle}}
-              </div>
-              <div class="subTitle">请填写您的就诊信息</div>
+              <div class="title"
+                   style="text-align:center;">诊后报到</div>
+              <div class="subTitle">欢迎来到{{doctor.name}}的网上诊室，请完善就诊人信息，方便医生找到您。</div>
             </template>
             <template v-else-if="type=='recordCondition'">
               <div class="title">请填写您的就诊信息</div>
@@ -118,9 +129,17 @@
 
           </div>
           <div class="h47"></div>
-          <div class="footWrap"
-               @click="submit">{{submitTxt}}</div>
-
+          <!-- <div class="footWrap"
+               @click="submit">{{submitTxt}}</div> -->
+          <div class="footWrap">
+            <van-button @click="changeFlag(false)"
+                        class="is__dialog"
+                        round>取消</van-button>
+            <van-button @click="submit"
+                        class="is__dialog"
+                        type="primary"
+                        round>{{submitTxt}}</van-button>
+          </div>
         </div>
       </div>
 
@@ -184,11 +203,15 @@ export default {
     type: {
       type: String,
       default: 'doctorDetail'
+    },
+    patientId: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
-      submitTxt: '提交',
+      submitTxt: '确定',
       checkId: -1,
       hasSend: false,
       hasFamily: 0, //判断是否存在家人信息
@@ -301,11 +324,14 @@ export default {
         this.familyList = res.data
         if (res.data.length > 0) {
           this.hasFamily = 2
-          res.data.map((item) => {
+          res.data.map((item, index) => {
             if (item.sex === '1') {
               item.sex = '男'
             } else if (item.sex === '0') {
               item.sex = '女'
+            }
+            if (this.type == 'recordCondition' && item.id === this.patientId) {
+              this.checkId = index
             }
           })
         } else {
@@ -496,6 +522,8 @@ export default {
               //新增家人后断连接IM
               peace.service.IM.initNIMS({ type: 'add', ...res.data })
               this.changeFlag({ flag: true, familyInfo: { familyId: res.data.accid, name: params.name } })
+              //新增成功后 修改当前弹框 hasFamily
+              this.hasFamily = 2
             })
             .finally(() => {
               setTimeout(() => {
@@ -532,7 +560,7 @@ export default {
   display: flex;
   flex-direction: column;
   &.no-family {
-    padding: 20px 16px 0;
+    padding: 20px 0 0;
     height: 75%;
     bottom: -75%;
     &.show {
@@ -550,15 +578,22 @@ export default {
   }
 }
 .navWrap {
-  // min-height: 50px;
-  // height: 50px;
+  padding: 0 16px;
   .title {
     font-size: 18px;
     font-weight: bold;
+    font-family: PingFangSC-Medium, PingFang SC;
+    color: #333333;
+    line-height: 24px;
+    margin-bottom: 20px;
   }
   .subTitle {
-    font-size: 15px;
-    color: #999;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: rgba(51, 51, 51, 0.6);
+    line-height: 20px;
   }
 }
 .mainWrap {
@@ -658,14 +693,12 @@ export default {
 .footWrap {
   width: calc(100% - 32px);
   height: 47px;
-  color: #fff;
-  background-color: #00c6ae;
-  border-radius: 30px;
   position: absolute;
+  background: #fff;
   bottom: 15px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 .form {
   flex: 1;
@@ -674,107 +707,18 @@ export default {
 .bottom {
   padding: 10px 15px;
   display: flex;
-  .van-button {
-    flex: 1;
-  }
-  .van-button + .van-button {
-    margin-left: 10px;
-  }
-}
-.group {
-  .w6 {
-    /deep/.van-cell__title {
-      width: 6em;
-      span {
-        width: 5.6em;
-      }
-    }
-  }
-  .w8 {
-    /deep/.van-cell__title {
-      width: 8em;
-      span {
-        width: 7.6em;
-      }
-    }
-  }
-  /deep/.van-cell__title {
-    // width: 8.6em;
-    // span {
-    //   width: 8em;
-    // }
-
-    .van-field__control {
-      text-align: right;
-    }
-  }
-}
-/deep/ .van-cell__title {
-  width: 4.7em;
-  height: 18px;
-  span {
-    height: 18px;
-    font-size: 16px;
-    line-height: 18px;
-    color: #666;
-    width: 4.3em;
-    text-align: justify;
-    text-align-last: justify;
-    display: inline-block;
-    &::after {
-      content: '';
-      display: inline-block;
-      width: 100%;
-      height: 0px;
-    }
-  }
-}
-.require--not {
-  /deep/.van-field__body {
-    &::before {
-      content: '';
-    }
-  }
-}
-/deep/.van-field__body {
-  position: relative;
-  padding-left: 30px;
-  &::before {
-    position: absolute;
-    left: 0;
-    top: 0;
-    transform: translateY(5px);
-    color: #ee0a24;
-    font-size: 18px;
-    line-height: 18px;
-    content: '*';
-  }
-}
-/deep/ .form.form-for-family > .group > .van-cell,
-/deep/ .form.form-for-family > .van-cell {
-  height: 50px;
   align-items: center;
-  &:last-child {
-    &::after {
-      position: absolute;
-      box-sizing: border-box;
-      content: ' ';
-      pointer-events: none;
-      right: 0;
-      bottom: 0;
-      left: 0.42667rem;
-      border-bottom: 0.02667rem solid #ebedf0;
-      transform: scaleY(0.5);
-    }
-  }
+  justify-content: space-between;
 }
-/deep/ .form.form-for-family > .group > .van-cell > .van-cell__value > .van-field__body > .van-field__control,
-/deep/ .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {
-  color: #666;
-  font-size: 15px;
+
+/deep/ .van-field__control {
   text-align: right;
-  &::placeholder {
-    color: #ccc;
+}
+
+/deep/ .van-cell__title {
+  width: auto;
+  span {
+    position: relative;
   }
 }
 </style>
