@@ -102,7 +102,7 @@ export default {
     data: {
       handler() {
         if (this.data != null) {
-          this.model.deaseCode = this.data.code
+          this.model.diseaseCode = this.data.code
         }
       },
       immediate: true
@@ -115,7 +115,7 @@ export default {
         name: '',
         icd10Code: '',
         leavel: '',
-        deaseCode: ''
+        diseaseCode: ''
       },
       source: {
         Icd10LeavelList: []
@@ -142,7 +142,7 @@ export default {
 
     associated() {
       if (this.multipleSelection.length > 0) {
-        const params = { ids: this.multipleSelection.map((item) => item.id), code: this.model.deaseCode }
+        const params = { ids: this.multipleSelection.map((item) => item.id), code: this.model.diseaseCode }
         Service.getRelationCount(params).then((res) => {
           if (res.data.total === 0) {
             //选中的诊断没有关联过其它疾病 不需要弹框直接关联
@@ -170,7 +170,7 @@ export default {
     },
 
     associatedConfirm() {
-      const params = { ids: this.multipleSelection.map((item) => item.id), code: this.model.deaseCode }
+      const params = { ids: this.multipleSelection.map((item) => item.id), code: this.model.diseaseCode }
       Service.checkRelation(params).then((res) => {
         Peace.util.success(res.message)
         this.$emit('onSuccess')
@@ -179,7 +179,7 @@ export default {
 
     enAssociated() {
       if (this.multipleSelection.length > 0) {
-        const params = { ids: this.multipleSelection.map((item) => item.id), code: this.model.deaseCode }
+        const params = { ids: this.multipleSelection.map((item) => item.id), code: this.model.diseaseCode }
         Service.cancelRelation(params).then((res) => {
           Peace.util.success(res.message)
           this.$emit('onSuccess')
