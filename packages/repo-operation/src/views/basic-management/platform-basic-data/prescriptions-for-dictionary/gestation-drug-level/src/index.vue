@@ -222,7 +222,7 @@ export default {
               validator: (rule, value, callback) => {
                 this.dialog.model.useTimes = [this.dialog.model.useTime, this.dialog.model.useTimeSuffix]
 
-                if (Peace.validate.isEmail(this.dialog.model.useTime) || Peace.validate.isEmail(this.dialog.model.useTimeSuffix)) {
+                if (Peace.validate.isEmpty(this.dialog.model.useTime) || Peace.validate.isEmpty(this.dialog.model.useTimeSuffix)) {
                   callback(new Error('请选择使用时间'))
                 } else if (this.dialog.model.useTimeSuffix < this.dialog.model.useTime) {
                   callback(new Error('开始时间不能大于结束时间'))
