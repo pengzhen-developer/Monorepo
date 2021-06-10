@@ -46,10 +46,10 @@
                        v-on:click="onItemsClick(scope.row)">配码管理</el-button>
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn label="已通过数量"
+        <PeaceTableColumn label="配码成功数量"
                           prop="successNumber"
                           min-width="160px"></PeaceTableColumn>
-        <PeaceTableColumn label="已驳回数量"
+        <PeaceTableColumn label="无法配码数量"
                           prop="failNumber"
                           min-width="160px"></PeaceTableColumn>
       </PeaceTable>
