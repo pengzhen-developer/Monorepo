@@ -53,7 +53,7 @@
                           prop="abbreviation">
         </PeaceTableColumn>
         <PeaceTableColumn min-width="100px">
-          <template slot="header">
+          <template v-slot:header>
             <div class="table-heder-frequency">
               <div class="table-heder-frequency-text">系数</div>
               <img v-popover:popover
