@@ -8,11 +8,11 @@
                v-on:keyup.enter.native="fetch"
                v-bind:model="model">
         <el-form-item label="成分名称"
-                      prop="componentCode">
+                      prop="component">
           <el-input maxlength="50"
                     clearable
                     placeholder="请输入"
-                    v-model.trim="model.componentCode"></el-input>
+                    v-model.trim="model.component"></el-input>
         </el-form-item>
 
         <el-form-item label="更新时间"
@@ -52,11 +52,8 @@
                             prop="code"
                             min-width="180"></PeaceTableColumn>
           <PeaceTableColumn label="成分名称"
-                            prop="componentCode"
+                            prop="component"
                             min-width="120">
-            <template slot-scope="scope">
-              {{ formatComponentCode(scope.row.componentCode) }}
-            </template>
           </PeaceTableColumn>
           <PeaceTableColumn label="妊娠期用药级别"
                             prop="grade"
@@ -199,7 +196,7 @@ export default {
   data() {
     return {
       model: {
-        componentCode: '',
+        component: '',
         times: []
       },
 
