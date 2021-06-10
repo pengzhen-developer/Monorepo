@@ -79,7 +79,7 @@ export default {
   nextData(params) {
     const isMock = false
 
-    const apiPath = 'orgUseDrugRoute/nextData'
+    const apiPath = 'orgUseDrugFrequency/nextData'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_IDIC + apiPath
 
