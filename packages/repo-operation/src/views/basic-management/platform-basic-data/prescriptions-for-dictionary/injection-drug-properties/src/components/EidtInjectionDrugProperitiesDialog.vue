@@ -69,10 +69,6 @@ export default {
     data: {
       handler() {
         if (this.data != null) {
-          this.model.platformDrugCode = this.data.platformDrugCode
-          this.model.drugName = this.data.drugName
-          this.model.drugDosageForm = this.data.drugDosageForm
-          this.model.isInjection = this.data.isInjection == 'yes' ? 'yes' : 'no'
           this.model.id = this.data.id
         }
       },
@@ -107,12 +103,23 @@ export default {
 
   async created() {
     this.source.ATTRIBUTES_TAYPES = await Peace.identity.dictionary.getList('antiLevel')
-    this.model.antiLevel = this.source.ATTRIBUTES_TAYPES.some((item) => item.value === this.data.antiLevel)
-      ? this.data.antiLevel
-      : ''
+    this.getBaseAndExtInfoById()
   },
 
   methods: {
+    getBaseAndExtInfoById() {
+      const params = { id: this.data?.id }
+      Service.getBaseAndExtInfoById(params).then((res) => {
+        this.model.platformDrugCode = res.data.platformDrugCode
+        this.model.drugName = res.data.drugName
+        this.model.drugDosageForm = res.data.drugDosageForm
+        this.model.isInjection = res.data.isInjection == 'yes' ? 'yes' : 'no'
+        this.model.antiLevel = this.source.ATTRIBUTES_TAYPES.some((item) => item.value === res.data.antiLevel)
+          ? res.data.antiLevel
+          : ''
+      })
+    },
+
     onCancel() {
       this.$emit('onClose', {})
     },

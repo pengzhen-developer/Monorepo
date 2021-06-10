@@ -75,12 +75,7 @@ export default {
     data: {
       handler() {
         if (this.data != null) {
-          this.model.drugName = this.data.drugName
-          this.model.drugSpecifications = this.data.drugSpecifications
-          this.model.enterpriseCnName = this.data.enterpriseCnName
           this.model.id = this.data.id
-          this.model.platformDrugCode = this.data.platformDrugCode
-          this.model.ingredientCode = this.data.ingredientCode
         }
       },
       immediate: true
@@ -110,13 +105,24 @@ export default {
 
   async mounted() {
     this.$nextTick().then(() => {
-      this.getListNameByCodes()
+      this.platformDrugIngredient()
     })
   },
 
   methods: {
+    platformDrugIngredient() {
+      const params = { id: this.data?.id }
+      Service.platformDrugIngredient(params).then((res) => {
+        this.model.drugName = res.data.drugName
+        this.model.drugSpecifications = res.data.drugSpecifications
+        this.model.enterpriseCnName = res.data.enterpriseCnName
+        this.model.platformDrugCode = res.data.platformDrugCode
+        this.model.ingredientCode = res.data.ingredientCode
+        this.getListNameByCodes()
+      })
+    },
     getListNameByCodes() {
-      const params = this.data?.ingredientCode.split('；')
+      const params = this.model?.ingredientCode.split('；')
       Service.getListNameByCodes(params).then((res) => {
         this.ingredientList = res.data
       })
