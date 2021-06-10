@@ -142,6 +142,7 @@ export default {
       radioId: '',
       model: {
         name: '',
+        mapperStatus: 'success',
         auditStatus: ''
       },
 

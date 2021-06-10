@@ -165,6 +165,7 @@ export default {
         orgCode: '',
         name: '',
         platformName: '',
+        mapperStatus: 'success',
         auditStatus: ''
       },
       modelDialog: {

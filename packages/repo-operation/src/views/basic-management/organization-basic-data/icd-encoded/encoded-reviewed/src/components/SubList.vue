@@ -147,6 +147,7 @@ export default {
       model: {
         icd10Code: '',
         name: '',
+        mapperStatus: 'success',
         auditStatus: ''
       },
 
