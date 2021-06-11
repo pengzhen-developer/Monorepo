@@ -8,7 +8,7 @@
                v-on:submit.native.prevent
                v-bind:model="model">
         <el-form-item label="机构名称">
-          <peace-input v-model.trim="model.name"
+          <peace-input v-model.trim="model.orgName"
                        placeholder="请输入"></peace-input>
         </el-form-item>
         <el-form-item>
@@ -65,7 +65,7 @@ export default {
     return {
       loading: true,
       model: {
-        name: ''
+        orgName: ''
       }
     }
   },
