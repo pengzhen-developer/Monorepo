@@ -56,8 +56,8 @@
                      remote
                      class="block"
                      v-model.trim="model.parentNode"
-                     v-on:loading="remoteLoading"
-                     v-on:remote-method="getRemoteList"
+                     :loading="remoteLoading"
+                     :remote-method="getRemoteList"
                      placeholder="请选择">
             <el-option v-for="item in source.parentNodeCodes"
                        :key="item.icd10Code"
