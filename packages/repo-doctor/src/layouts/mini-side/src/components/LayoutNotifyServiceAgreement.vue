@@ -1,8 +1,8 @@
 <template>
   <div>
     <PeaceDialog v-bind:visible="visible"
-                 v-bind:show-close="false"
-                 v-bind:title="title">
+                 v-bind:show-close="false">
+      <div class="text-h5 q-mb-sm">{{ title }}</div>
       <div class="q-mb-md">
         <span>最近更新日期：</span>
         <span>{{ updatedTime }}</span>
@@ -12,10 +12,22 @@
            v-html="content">
       </div>
 
-      <div class="flex justify-end">
+      <div slot="footer">
         <el-button v-on:click="cancel">关闭并退出</el-button>
-        <el-button type="primary"
-                   v-on:click="agree">同意并继续</el-button>
+
+        <PeaceCountdown class="q-mx-12"
+                        v-bind:time="countdownTime"
+                        v-on:end="showCountdown = false">
+          <template slot-scope="props">
+            <el-button type="primary"
+                       v-bind:disabled="showCountdown"
+                       v-on:click="agree">
+              <span>同意并继续</span>
+              <span v-if="showCountdown"> ({{ parseInt(props.minutes * 60) + parseInt(props.seconds) }}s) </span>
+            </el-button>
+
+          </template>
+        </PeaceCountdown>
       </div>
     </PeaceDialog>
   </div>
@@ -29,6 +41,9 @@ export default {
   data() {
     return {
       visible: false,
+
+      showCountdown: true,
+      countdownTime: 1000 * 15,
 
       agreementId: '',
       title: '',
