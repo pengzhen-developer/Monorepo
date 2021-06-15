@@ -1,12 +1,9 @@
 <template>
-  <div class="session-list-item flex column cursor-pointer q-py-md q-px-sm"
-       v-bind:class="{ active : this.active}">
+  <div class="session-list-item flex column cursor-pointer q-py-md q-px-sm" v-bind:class="{ active: this.active }">
     <div class="flex justify-between items-baseline q-mb-sm">
       <div class="flex items-end">
-
         <template v-if="unread">
-          <el-badge v-bind:value="unread"
-                    class="q-mr-md">
+          <el-badge v-bind:value="unread" class="q-mr-md">
             <span class="text-bold"> {{ patientInfo.familyName }} </span>
           </el-badge>
         </template>
@@ -15,26 +12,21 @@
         </template>
 
         <span class="q-mr-sm text-caption"> {{ patientInfo.familySex }} </span>
-        <span class="q-mr-sm text-caption"> {{ `${ patientInfo.familyAge }` }} </span>
+        <span class="q-mr-sm text-caption"> {{ `${patientInfo.familyAge}` }} </span>
       </div>
       <div>
-        <el-tag effect="plain"
-                v-bind:style="inquiryStatusTextStyle">{{ inquiryStatusText }}</el-tag>
+        <el-tag effect="plain" v-bind:style="inquiryStatusTextStyle">{{ inquiryStatusText }}</el-tag>
       </div>
     </div>
-    <div class="full-width q-mb-md text-caption ellipsis"
-         style="max-height: 24px;">
+    <div class="full-width q-mb-md text-caption ellipsis" style="max-height: 24px;">
       <span v-html="lastMessage"></span>
     </div>
     <div class="flex justify-between ">
-
       <div class="flex items-center text-grey text-caption">
-        <q-icon class="q-mr-xs"
-                v-bind:name="`img:${inquiryTypeImage}`"></q-icon>
+        <q-icon class="q-mr-xs" v-bind:name="`img:${inquiryTypeImage}`"></q-icon>
         <span>{{ inquiryTypeText }} </span>
 
-        <span v-if="showPayType"
-              class="tag-style q-ml-10">{{ payTypeText }}</span>
+        <span v-if="showPayType" class="tag-style q-ml-10">{{ payTypeText }}</span>
       </div>
 
       <div class="text-grey text-caption">

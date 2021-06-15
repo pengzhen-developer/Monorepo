@@ -1,20 +1,18 @@
 <template>
   <SessionListContainer active="faceToFace">
     <div class="q-ma-8">
-
-      <el-select class="col full-width"
-                 remote
-                 filterable
-                 clearable
-                 v-model="search"
-                 placeholder="请输入患者名字"
-                 v-bind:remote-method="querySearchAsync"
-                 @focus="querySearchAsync('')"
-                 @change="handleSelect">
-        <el-option v-bind:key="item.patientNo"
-                   v-bind:label="item.text"
-                   v-bind:value="item.patientNo"
-                   v-for="item in searchPatientList">
+      <el-select
+        class="col full-width"
+        remote
+        filterable
+        clearable
+        v-model="search"
+        placeholder="请输入患者名字"
+        v-bind:remote-method="querySearchAsync"
+        @focus="querySearchAsync('')"
+        @change="handleSelect"
+      >
+        <el-option v-bind:key="item.patientNo" v-bind:label="item.text" v-bind:value="item.patientNo" v-for="item in searchPatientList">
           <div class="flex items-center autocomplete-item">
             <span class="q-mr-10 text-bold"> {{ item.name }} </span>
             <span class="q-mr-10 text-bold"> {{ item.sex }} </span>
@@ -22,41 +20,38 @@
           </div>
         </el-option>
       </el-select>
-
     </div>
 
     <div class="flex column content">
       <template v-if="patientList.length">
-        <q-scroll-area class="col"
-                       id="scrollView"
-                       v-bind:thumb-style="thumbStyle">
-          <SessionListItem v-for="patient in patientList"
-                           v-bind:key="patient.patientNo"
-                           v-on:click.native="selectPatient(patient)"
-                           v-bind:active="patient.patientNo === storePatient.patientNo"
-                           v-bind:patient="patient"></SessionListItem>
+        <q-scroll-area class="col" id="scrollView" v-bind:thumb-style="thumbStyle">
+          <SessionListItem
+            v-for="patient in patientList"
+            v-bind:key="patient.patientNo"
+            v-on:click.native="selectPatient(patient)"
+            v-bind:active="patient.patientNo === storePatient.patientNo"
+            v-bind:patient="patient"
+          ></SessionListItem>
         </q-scroll-area>
       </template>
 
       <template v-else>
         <div class="col flex column justify-center items-center">
-          <img class="q-mb-md"
-               src="~@src/assets/images/inquiry/ic_no one.png" />
+          <img class="q-mb-md" src="~@src/assets/images/inquiry/ic_no one.png" />
           <span class="text-grey-5">暂无会话</span>
         </div>
       </template>
     </div>
 
-    <PeaceDialog :visible.sync="addPatientDialog.visible"
-                 v-if="addPatientDialog.visible"
-                 :before-close="closeMenu"
-                 append-to-body
-                 width="420px"
-                 title="添加患者">
-      <AddPatient ref="checkInput"
-                  v-on:closeMenu="closeMenu"
-                  v-on:sendRecipe="sendRecipe"
-                  v-on:updateList="updateList"> </AddPatient>
+    <PeaceDialog
+      :visible.sync="addPatientDialog.visible"
+      v-if="addPatientDialog.visible"
+      :before-close="closeMenu"
+      append-to-body
+      width="420px"
+      title="添加患者"
+    >
+      <AddPatient ref="checkInput" v-on:closeMenu="closeMenu" v-on:sendRecipe="sendRecipe"> </AddPatient>
     </PeaceDialog>
   </SessionListContainer>
 </template>
@@ -105,7 +100,7 @@ export default {
       handler(val) {
         this.$nextTick(function() {
           const activePatient = function(el) {
-            return el.patientNo == val.patientNo
+            return el.patientNo === val.patientNo
           }
           const index = this.patientList.findIndex(activePatient)
           const position = index > 0 ? index : 0
@@ -243,11 +238,11 @@ export default {
       }
     },
 
-    // 添加患者的回调
-    updateList() {
-      // 刷新患者列表，新加患者应该在列表第一个
-      this.getPatientList()
-    },
+    // // 添加患者的回调
+    // updateList() {
+    //   // 刷新患者列表，新加患者应该在列表第一个
+    //   this.getPatientList()
+    // },
 
     sendRecipe() {
       // 设置开处方标记

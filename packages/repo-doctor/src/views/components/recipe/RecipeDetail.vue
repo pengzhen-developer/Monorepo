@@ -6,9 +6,7 @@
 
     <div class="text-grey-6 row items-center justify-between">
       <span>No.{{ data.PrescriptionNo }}</span>
-      <el-button v-if="data.pngUrl"
-                 type="text"
-                 v-on:click="showOriginInfo">查看原始处方</el-button>
+      <el-button v-if="data.pngUrl" type="text" v-on:click="showOriginInfo">查看原始处方</el-button>
     </div>
 
     <div class="q-px-sm">
@@ -17,10 +15,7 @@
         <p class="text-h5 q-mb-none text-weight-bolder">{{ data.MedicalInstitutionName }}</p>
         <p class="text-h5 q-mb-md text-weight-bolder">处方笺</p>
         <!-- 处方状态图片 -->
-        <img v-if="data.stampUrl"
-             v-bind:src="data.stampUrl"
-             class="absolute"
-             style="width: 72px; height: 72px; right: 36px; bottom: -70px;" />
+        <img v-if="data.stampUrl" v-bind:src="data.stampUrl" class="absolute" style="width: 72px; height: 72px; right: 36px; bottom: -70px;" />
       </div>
 
       <div class="q-mt-sm q-mb-xl dashed-line"></div>
@@ -62,8 +57,7 @@
             </el-form-item>
           </div>
 
-          <div v-if="data.weight"
-               class="q-mb-xs row q-col-gutter-x-md">
+          <div v-if="data.weight" class="q-mb-xs row q-col-gutter-x-md">
             <el-form-item class="col">
               <div slot="label">
                 <span class="inline-block">体重</span>
@@ -97,25 +91,20 @@
                 <span>：</span>
               </div>
               <span>
-                {{ data.diagnoseList && data.diagnoseList.map(item => item.name).join(' | ') }}
+                {{ data.diagnoseList && data.diagnoseList.map((item) => item.name).join(' | ') }}
               </span>
             </el-form-item>
           </div>
         </el-form>
-
       </div>
 
       <!-- 处方明细信息 -->
       <div class="q-mb-md">
         <div class="flex justify-between items-end q-mb-xs">
           <span class="text-h6 text-weight-bold">Rp</span>
-          <div class="flex items-baseline cursor-pointer"
-               v-if="canShowAudit"
-               v-on:click="showAudit"
-               v-bind:class="getThemeClass()">
+          <div class="flex items-baseline cursor-pointer" v-if="canShowAudit" v-on:click="showAudit" v-bind:class="getThemeClass()">
             <span class="text-subtitle1 text-weight-bold q-mr-sm">{{ data.PrescriptionAudit.auditResult }}</span>
-            <i class="text-subtitle2 el-icon-question"
-               style="line-height: none;"></i>
+            <i class="text-subtitle2 el-icon-question" style="line-height: none;"></i>
           </div>
         </div>
 
@@ -124,8 +113,7 @@
         <!-- 药品 -->
         <div class="q-mb-xl">
           <template v-for="(drug, index) in data.DrugList">
-            <div v-bind:key="drug.drugCode"
-                 class="q-py-md">
+            <div v-bind:key="drug.drugCode" class="q-py-md">
               <div class="flex justify-between q-mb-sm text-subtitle1 text-weight-bold">
                 <div>
                   <span class="q-mr-sm">{{ drug.drugName }}</span>
@@ -138,20 +126,16 @@
               </div>
               <div class="text-grey-6">
                 <span>用法用量：</span>
-                <span>{{ `${ drug.drugRoute }，` }}</span>
+                <span>{{ `${drug.drugRoute}，` }}</span>
                 <span>每次</span>
-                <span>{{ `${ drug.OnceDose }${ drug.OnceUnit }，` }}</span>
-                <span>{{ `${ drug.medicationFrequency }，` }}</span>
-                <span>{{ `${ drug.medication_days }天。` }}</span>
+                <span>{{ `${drug.OnceDose}${drug.OnceUnit}，` }}</span>
+                <span>{{ `${drug.medicationFrequency}，` }}</span>
+                <span>{{ `${drug.medication_days}天。` }}</span>
               </div>
             </div>
 
-            <div v-if="index === data.DrugList.length - 1"
-                 v-bind:key="drug.drugName"
-                 class="oblique-line"></div>
-            <div v-else
-                 v-bind:key="drug.drugName"
-                 class="dashed-line"></div>
+            <div v-if="index === data.DrugList.length - 1" v-bind:key="drug.drugName" class="oblique-line"></div>
+            <div v-else v-bind:key="drug.drugName" class="dashed-line"></div>
           </template>
         </div>
       </div>
@@ -199,25 +183,18 @@
         </el-form>
       </div>
 
-      <div class="q-mb-md"
-           style="border-bottom: 1px solid #F3F3F3;"></div>
+      <div class="q-mb-md" style="border-bottom: 1px solid #F3F3F3;"></div>
 
       <!-- 药师审核信息 -->
       <div class="q-mb-md">
-        <el-form class="row q-col-gutter-x-md"
-                 label-width="auto"
-                 space-view>
-          <el-form-item class="col-6"
-                        label="药师审方结果：">
+        <el-form class="row q-col-gutter-x-md" label-width="auto" space-view>
+          <el-form-item class="col-6" label="药师审方结果：">
             <span>{{ data.PrescriptionExamMemo }}</span>
           </el-form-item>
-          <el-form-item class="col-6"
-                        label="系统审方结果：">
+          <el-form-item class="col-6" label="系统审方结果：">
             <!-- 暂无对接 -->
           </el-form-item>
-          <el-form-item class="col-6"
-                        label="药师质疑原因："
-                        v-if="data.queryReason">
+          <el-form-item class="col-6" label="药师质疑原因：" v-if="data.queryReason">
             <span>{{ data.queryReason }}</span>
           </el-form-item>
         </el-form>
@@ -225,19 +202,12 @@
     </div>
 
     <!-- 前置审方详情 -->
-    <PeaceDialog title="智能审方结果"
-                 v-bind:visible.sync="visible"
-                 absolute-center
-                 append-to-body>
+    <PeaceDialog title="智能审方结果" v-bind:visible.sync="visible" absolute-center append-to-body>
       <RecipeAudit v-bind:data="audit"></RecipeAudit>
     </PeaceDialog>
 
-    <PeaceDialog title="原始处方"
-                 v-bind:visible.sync="originVisible"
-                 append-to-body>
-      <img v-if="data.pngUrl"
-           v-bind:src="data.pngUrl"
-           class="full-width" />
+    <PeaceDialog title="原始处方" v-bind:visible.sync="originVisible" append-to-body>
+      <img v-if="data.pngUrl" v-bind:src="data.pngUrl" class="full-width" />
     </PeaceDialog>
   </div>
 </template>

@@ -114,6 +114,25 @@ export default {
   },
 
   /**
+   * 检查当前咨询能否发送处方
+   *
+   * @param {*} params
+   */
+  checkSendPRStatus(params) {
+    const isMock = false
+
+    const apiPath = 'client/prescription/patient/getHistoryRegisteringInfo'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
    * 获取病历详情
    *
    * @param {*} params

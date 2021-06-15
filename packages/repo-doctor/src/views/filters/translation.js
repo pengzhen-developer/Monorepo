@@ -43,7 +43,6 @@ const ConsultationStatus = [
   { value: 10, label: '医生已退诊' }
 ]
 
-
 const ConsultStatusTextBorderColor = [
   { value: 1, label: '#FA8C16' },
   { value: 2, label: '#FF3B30' },
@@ -54,7 +53,7 @@ const ConsultStatusTextBorderColor = [
   { value: 7, label: '#999999' },
   { value: 8, label: '#999999' },
   { value: 9, label: '#FA8C16' },
-  { value: 10, label: '#FF3B30' },
+  { value: 10, label: '#FF3B30' }
 ]
 
 const ConsultStatusBgColor = [
@@ -67,17 +66,10 @@ const ConsultStatusBgColor = [
   { value: 7, label: '#FFFFFF' },
   { value: 8, label: '#FFFFFF' },
   { value: 9, label: '#FEFCEB' },
-  { value: 10, label: '#FFFFFF' },
+  { value: 10, label: '#FFFFFF' }
 ]
 
-export {
-  ReferralStatus,
-  ReferralStatusTextBorderColor,
-  ReferralStatusBgColor,
-  ConsultationStatus,
-  ConsultStatusTextBorderColor,
-  ConsultStatusBgColor
-}
+export { ReferralStatus, ReferralStatusTextBorderColor, ReferralStatusBgColor, ConsultationStatus, ConsultStatusTextBorderColor, ConsultStatusBgColor }
 
 export default {
   ReferralStatus,

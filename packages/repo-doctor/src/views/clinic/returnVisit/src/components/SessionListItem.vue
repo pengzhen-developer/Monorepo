@@ -1,12 +1,9 @@
 <template>
-  <div class="session-list-item flex column cursor-pointer q-py-md q-px-sm"
-       v-bind:class="{ active : this.active}">
+  <div class="session-list-item flex column cursor-pointer q-py-md q-px-sm" v-bind:class="{ active: this.active }">
     <div class="flex justify-between items-baseline q-mb-sm">
       <div class="flex items-end">
-
         <template v-if="unread">
-          <el-badge v-bind:value="unread"
-                    class="q-mr-md">
+          <el-badge v-bind:value="unread" class="q-mr-md">
             <span class="text-bold"> {{ patientInfo.familyName }} </span>
           </el-badge>
         </template>
@@ -15,22 +12,18 @@
         </template>
 
         <span class="q-mr-sm text-caption"> {{ patientInfo.familySex }} </span>
-        <span class="q-mr-sm text-caption"> {{ `${ patientInfo.familyAge }` }} </span>
+        <span class="q-mr-sm text-caption"> {{ `${patientInfo.familyAge}` }} </span>
       </div>
       <div>
-        <el-tag effect="plain"
-                v-bind:style="inquiryStatusTextStyle">{{ inquiryStatusText }}</el-tag>
+        <el-tag effect="plain" v-bind:style="inquiryStatusTextStyle">{{ inquiryStatusText }}</el-tag>
       </div>
     </div>
-    <div class="full-width q-mb-md text-caption ellipsis"
-         style="max-height: 24px;">
+    <div class="full-width q-mb-md text-caption ellipsis" style="max-height: 24px;">
       <span v-html="lastMessage"></span>
     </div>
     <div class="row justify-between items-center">
       <div>
-        <el-tag v-if="showPayType"
-                style="transform: scale(0.8);"
-                type="warning">{{ payTypeText }}</el-tag>
+        <el-tag v-if="showPayType" style="transform: scale(0.8);" type="warning">{{ payTypeText }}</el-tag>
       </div>
       <div class="text-grey text-caption">
         <PeaceCountdown v-bind:time="1000 * 60 * 60 * 24 * 365">

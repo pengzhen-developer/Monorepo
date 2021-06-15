@@ -180,7 +180,6 @@
               </div>
             </div>
           </template>
-
           <!-- 消息内容 -->
           <div class="message-body message-card">
             <div class="message-header">
@@ -199,6 +198,35 @@
             </div>
             <div class="message-line"></div>
             <div class="message-footer" style="cursor: pointer;" @click="getCheckOrderDetail(message)">查看详情</div>
+          </div>
+        </template>
+
+        <!-- 检验单 -->
+        <template v-if="getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.检验单">
+          <!-- 消息时间 -->
+          <template v-if="isShowMessageTime(message, index)">
+            <div class="message time">
+              <div class="message-body">
+                {{ (message.time || message.sendtime).toDate().formatWXDate() }}
+              </div>
+            </div>
+          </template>
+          <!-- 消息内容 -->
+          <div class="message-body message-card">
+            <div class="message-header">
+              <img width="17px" height="20px" :src="require('@src/assets/images/ic_check.png')" />
+              <span>检验单</span>
+            </div>
+            <div class="message-content">
+              <div
+                style="display:flex; justify-content: space-between; align-items: center; color: #333;"
+                v-for="item in message.content.data.checkComboList"
+                :key="item.comboNo"
+              >
+                <div class="left">{{ item.comboName }}</div>
+                <div class="right" style="width: 40px; text-align: right;"></div>
+              </div>
+            </div>
           </div>
         </template>
 

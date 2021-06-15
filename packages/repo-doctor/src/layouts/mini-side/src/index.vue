@@ -1,19 +1,11 @@
 <template>
-  <q-layout class="layout"
-            view="hHh lpR lFf">
-
+  <q-layout class="layout" view="hHh lpR lFf">
     <LayoutNotify>
-
       <q-header class="layout-header bg-white q-mb-xs">
         <LayoutHeader></LayoutHeader>
       </q-header>
 
-      <q-drawer class="layout-drawer"
-                side="left"
-                show-if-above
-                v-bind:width="64"
-                v-bind:breakpoint="0"
-                v-model="showDrawerModel">
+      <q-drawer class="layout-drawer" side="left" show-if-above v-bind:width="64" v-bind:breakpoint="0" v-model="showDrawerModel">
         <LayoutNav v-bind:defaultActive="defaultActive"></LayoutNav>
       </q-drawer>
 
@@ -23,7 +15,6 @@
           <LayoutView class="bg-white"></LayoutView>
         </q-page>
       </q-page-container>
-
     </LayoutNotify>
   </q-layout>
 </template>

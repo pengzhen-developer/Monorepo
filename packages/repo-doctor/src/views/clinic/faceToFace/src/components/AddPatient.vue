@@ -1,106 +1,74 @@
 <template>
   <div>
     <div class="el-dialog__body">
-      <el-form class="q-pr-md"
-               v-bind:model="ruleForm"
-               v-bind:rules="rules"
-               label-position="right"
-               label-width="auto"
-               ref="ruleForm">
-        <el-form-item label="姓名"
-                      prop="name">
+      <el-form class="q-pr-md" v-bind:model="ruleForm" v-bind:rules="rules" label-position="right" label-width="auto" ref="ruleForm">
+        <el-form-item label="姓名" prop="name">
           <span slot="label">姓名：</span>
-          <el-autocomplete class="col full-width"
-                           popper-class="add-patient-autocomplete"
-                           remote
-                           filterable
-                           clearable
-                           placeholder="请输入患者名字"
-                           v-on:select="handleSelect"
-                           v-bind:disabled="isChaperonage"
-                           v-bind:fetch-suggestions="querySearchAsync"
-                           v-model="ruleForm.name">
+          <el-autocomplete
+            class="col full-width"
+            popper-class="add-patient-autocomplete"
+            remote
+            filterable
+            clearable
+            placeholder="请输入患者名字"
+            v-on:select="handleSelect"
+            v-bind:disabled="isChaperonage"
+            v-bind:fetch-suggestions="querySearchAsync"
+            v-model="ruleForm.name"
+          >
             <template slot-scope="{ item }">
-              <span>{{ `${ item.name } / ${ item.idCard }` }}</span>
+              <span>{{ `${item.name} / ${item.idCard}` }}</span>
             </template>
           </el-autocomplete>
         </el-form-item>
-        <el-form-item label="身份证"
-                      prop="idCard">
+        <el-form-item label="身份证" prop="idCard">
           <span slot="label">身份证：</span>
-          <el-input v-bind:disabled="isChaperonage"
-                    v-model="ruleForm.idCard"
-                    placeholder="请输入身份证号"></el-input>
+          <el-input v-bind:disabled="isChaperonage" v-model="ruleForm.idCard" placeholder="请输入身份证号"></el-input>
         </el-form-item>
-        <el-form-item label="性别"
-                      prop="sex"
-                      v-if="ruleForm.sex">
+        <el-form-item label="性别" prop="sex" v-if="ruleForm.sex">
           <span slot="label">性别：</span>
-          <el-input v-model="ruleForm.sex"
-                    v-bind:disabled="true"></el-input>
+          <el-input v-model="ruleForm.sex" v-bind:disabled="true"></el-input>
         </el-form-item>
 
-        <el-form-item label="生日"
-                      prop="birthday"
-                      v-if="ruleForm.birthday">
+        <el-form-item label="生日" prop="birthday" v-if="ruleForm.birthday">
           <span slot="label">生日：</span>
-          <el-input suffix-icon="el-icon-date"
-                    v-model="ruleForm.birthday"
-                    v-bind:disabled="true"></el-input>
+          <el-input suffix-icon="el-icon-date" v-model="ruleForm.birthday" v-bind:disabled="true"></el-input>
         </el-form-item>
 
-        <el-form-item label="联系方式"
-                      prop="tel">
+        <el-form-item label="联系方式" prop="tel">
           <span slot="label">手机号：</span>
-          <el-input v-bind:disabled="isChaperonage"
-                    v-model.number.trim="ruleForm.tel"
-                    placeholder="请输入手机号码"></el-input>
+          <el-input v-bind:disabled="isChaperonage" v-model.number.trim="ruleForm.tel" placeholder="请输入手机号码"></el-input>
         </el-form-item>
 
-        <hr v-if="isChaperonage">
+        <hr v-if="isChaperonage" />
         <div v-if="isChaperonage">
-
           <div class="q-mb-md">
-            <el-alert type="warning"
-                      show-icon=""
-                      v-bind:closable="false"
-                      title="就诊人身份证信息未进入认证库，请填写陪同人信息"></el-alert>
+            <el-alert type="warning" show-icon="" v-bind:closable="false" title="就诊人身份证信息未进入认证库，请填写陪同人信息"></el-alert>
           </div>
 
-          <el-form-item label=""
-                        prop="chaperonageName">
+          <el-form-item label="" prop="chaperonageName">
             <span slot="label">陪同人姓名：</span>
-            <el-input v-model.trim="ruleForm.chaperonageName"
-                      placeholder="请输入姓名"></el-input>
+            <el-input v-model.trim="ruleForm.chaperonageName" placeholder="请输入姓名"></el-input>
           </el-form-item>
 
-          <el-form-item label=""
-                        prop="chaperonageIdCard">
+          <el-form-item label="" prop="chaperonageIdCard">
             <span slot="label">身份证：</span>
-            <el-input v-model.trim="ruleForm.chaperonageIdCard"
-                      placeholder="请输入身份证号"></el-input>
+            <el-input v-model.trim="ruleForm.chaperonageIdCard" placeholder="请输入身份证号"></el-input>
           </el-form-item>
-
         </div>
       </el-form>
     </div>
 
     <div class="el-dialog__footer">
       <el-button @click="closeMenu">取消</el-button>
-      <el-button @click="submitForm"
-                 type="primary">开处方</el-button>
+      <el-button @click="submitForm" type="primary">开处方</el-button>
     </div>
 
-    <div v-if="tips.showTips"
-         class="tip-style row items-center justify-between q-pr-md">
-      <i class="el-icon-warning q-ml-16"
-         type="warning"> 该就诊人已是您的患者，无需重复添加！</i>
+    <div v-if="tips.showTips" class="tip-style row items-center justify-between q-pr-md">
+      <i class="el-icon-warning q-ml-16" type="warning"> 该就诊人已是您的患者，无需重复添加！</i>
 
-      <el-button type="text"
-                 v-on:click="goToRecipe"
-                 class="text-color">去开处方</el-button>
+      <el-button type="text" v-on:click="goToRecipe" class="text-color">去开处方</el-button>
     </div>
-
   </div>
 </template>
 
@@ -166,12 +134,12 @@ export default {
     // 根据身份证解析性别和生日
     'ruleForm.idCard'(val) {
       if (Peace.validate.isIDCard(val)) {
-        if (val.length == 15) {
+        if (val.length === 15) {
           this.ruleForm.sexKey = val.toString().charAt(14) % 2
           this.ruleForm.sex = this.ruleForm.sexKey ? '男' : '女'
           this.ruleForm.birthday = '19' + val.substr(6, 2) + '-' + val.substr(8, 2) + '-' + val.substr(10, 2)
         }
-        if (val.length == 18) {
+        if (val.length === 18) {
           this.ruleForm.sexKey = val.toString().charAt(16) % 2
           this.ruleForm.sex = this.ruleForm.sexKey ? '男' : '女'
           this.ruleForm.birthday = val.substr(6, 4) + '-' + val.substr(10, 2) + '-' + val.substr(12, 2)
@@ -307,10 +275,10 @@ export default {
 
 .tip-style {
   position: relative;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  height: 32;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
   margin: 16px -16px -16px -16px;
   // margin: 16px 8px;
   background: #ffaa002d;

@@ -4,79 +4,81 @@
       <div class="q-editor__toolbars-container">
         <div class="q-editor__toolbar row no-wrap scroll-x bg-grey-1">
           <div class="q-editor__toolbar-group">
-            <el-upload v-bind:auto-upload="false"
-                       v-bind:on-change="sendImage"
-                       accept=".jpg, .jpeg, .png, .gif, .bmp, .pdf, .JPG, .JPEG, .PBG, .GIF, .BMP, .PDF"
-                       action=" "
-                       ref="upload">
+            <el-upload
+              ref="upload"
+              accept=".jpg, .jpeg, .png, .gif, .bmp, .pdf, .JPG, .JPEG, .PBG, .GIF, .BMP, .PDF"
+              action=" "
+              v-bind:auto-upload="false"
+              v-bind:on-change="sendImage"
+            >
               <el-button type="text">
                 <div class="flex items-center">
-                  <img class="q-mr-xs"
-                       src="~@src/assets/images/inquiry/chat_icon_pic.png" />
+                  <img class="q-mr-xs" src="~@src/assets/images/inquiry/chat_icon_pic.png" alt="" />
                   <span class="text-grey-6">发图片</span>
                 </div>
               </el-button>
             </el-upload>
           </div>
           <div class="q-editor__toolbar-group">
-            <el-dropdown szie="medium"
-                         placement="top">
+            <el-dropdown placement="top" szie="medium">
               <el-button type="text">
                 <div class="flex items-center">
-                  <img class="q-mr-xs"
-                       src="~@src/assets/images/inquiry/chat_icon_language.png" />
+                  <img class="q-mr-xs" src="~@src/assets/images/inquiry/chat_icon_language.png" alt="" />
                   <span class="text-grey-6">常用语</span>
                 </div>
               </el-button>
 
-              <el-dropdown-menu class="el-dropdown-menu-quickReply"
-                                slot="dropdown">
-                <el-dropdown-item v-for="(item, index) in quickReply"
-                                  v-bind:key="item"
-                                  v-on:click.native="sendText(item)">
+              <el-dropdown-menu slot="dropdown" class="el-dropdown-menu-quickReply">
+                <el-dropdown-item v-for="(item, index) in quickReply" v-bind:key="item" v-on:click.native="sendText(item)">
                   {{ index + 1 }}. {{ item }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
           <div class="q-editor__toolbar-group">
-            <el-button type="text"
-                       v-on:click="sendCase">
+            <el-button type="text" v-on:click="sendCase">
               <div class="flex items-center">
-                <img class="q-mr-xs"
-                     src="~@src/assets/images/inquiry/chat_icon_medical.png" />
+                <img class="q-mr-xs" src="~@src/assets/images/inquiry/chat_icon_medical.png" alt="" />
                 <span class="text-grey-6">写病历</span>
               </div>
             </el-button>
           </div>
-          <div v-if="inquiryType === 'video'"
-               class="q-editor__toolbar-group">
-            <el-button type="text"
-                       v-on:click="sendVideo">
+          <div class="q-editor__toolbar-group">
+            <el-button type="text" v-on:click="sendRecipe">
               <div class="flex items-center">
-                <img class="q-mr-xs"
-                     src="~@src/assets/images/inquiry/chat_icon_video.png" />
+                <img class="q-mr-xs" src="~@src/assets/images/inquiry/chat_icon_pr.png" alt="" />
+                <span class="text-grey-6">开处方</span>
+              </div>
+            </el-button>
+          </div>
+          <div v-if="canShowInspect" class="q-editor__toolbar-group">
+            <el-button type="text" v-on:click="sendInspection">
+              <div class="flex items-center">
+                <img class="q-mr-xs" src="~@src/assets/images/inquiry/icon_jyd_unchecked.png" alt="" />
+                <span class="text-grey-6">开检验</span>
+              </div>
+            </el-button>
+          </div>
+          <div v-if="inquiryType === 'video'" class="q-editor__toolbar-group">
+            <el-button type="text" v-on:click="sendVideo">
+              <div class="flex items-center">
+                <img class="q-mr-xs" src="~@src/assets/images/inquiry/chat_icon_video.png" alt="" />
                 <span class="text-grey-6">视频通话</span>
               </div>
             </el-button>
           </div>
           <div class="q-editor__toolbar-group">
-            <el-button type="text"
-                       v-on:click="sendTransfer">
+            <el-button type="text" v-on:click="sendTransfer">
               <div class="flex items-center">
-                <img class="q-mr-xs"
-                     src="~@src/assets/images/inquiry/chat_icon_zhuanzhen.png" />
+                <img class="q-mr-xs" src="~@src/assets/images/inquiry/chat_icon_zhuanzhen.png" alt="" />
                 <span class="text-grey-6">申请转诊</span>
               </div>
             </el-button>
           </div>
-          <div v-if="false"
-               class="q-editor__toolbar-group">
-            <el-button type="text"
-                       v-on:click="sendConsultation">
+          <div v-if="false" class="q-editor__toolbar-group">
+            <el-button type="text" v-on:click="sendConsultation">
               <div class="flex items-center">
-                <img class="q-mr-xs"
-                     src="~@src/assets/images/inquiry/yuanchenghuizhen1.png" />
+                <img class="q-mr-xs" src="~@src/assets/images/inquiry/yuanchenghuizhen1.png" alt="" />
                 <span class="text-grey-6">申请会诊</span>
               </div>
             </el-button>
@@ -84,41 +86,33 @@
         </div>
       </div>
       <div class="q-editor__content session-detail-input">
-        <el-input type="textarea"
-                  resize="none"
-                  placeholder="请输入文字..."
-                  v-model="editorMessage"
-                  v-on:keydown.prevent.enter.exact.native="sendText()"
-                  v-on:keydown.prevent.ctrl.enter.exact.native="warpText()"></el-input>
+        <el-input
+          v-model="editorMessage"
+          placeholder="请输入文字..."
+          resize="none"
+          type="textarea"
+          v-on:keydown.prevent.enter.exact.native="sendText()"
+          v-on:keydown.prevent.ctrl.enter.exact.native="warpText()"
+        ></el-input>
       </div>
     </div>
 
     <div class="footer q-px-md flex justify-end items-center">
-      <el-button size="mini"
-                 plain
-                 v-on:click="overInquiry">
+      <el-button plain size="mini" v-on:click="overInquiry">
         <span class="text-caption">结束问诊</span>
       </el-button>
 
-      <el-button size="mini"
-                 type="primary"
-                 v-on:click.native="sendText()">
+      <el-button size="mini" type="primary" v-on:click.native="sendText()">
         <span class="text-caption">发送 ( Enter )</span>
       </el-button>
     </div>
 
     <!-- 模态框 - 填写拒绝原因 -->
-    <PeaceDialog width="348px"
-                 top="25vh"
-                 class="no-header"
-                 v-if="overInquiryVisible"
-                 v-bind:visible.sync="overInquiryVisible">
+    <PeaceDialog v-if="overInquiryVisible" class="no-header" top="25vh" v-bind:visible.sync="overInquiryVisible" width="348px">
       <OverInquiry v-on:close="overInquiryVisible = false"></OverInquiry>
     </PeaceDialog>
 
-    <PeaceDialog v-bind:visible.sync="caseDetail.visible"
-                 append-to-body
-                 title="病历详情">
+    <PeaceDialog append-to-body title="病历详情" v-bind:visible.sync="caseDetail.visible">
       <CaseDetail v-bind:data="caseDetail.data"></CaseDetail>
     </PeaceDialog>
   </div>
@@ -181,6 +175,10 @@ export default {
 
     inquiryType() {
       return this.inquiryInfo?.inquiryType
+    },
+
+    canShowInspect() {
+      return this.$store.state?.inquiry?.session?.content?.inquiryInfo?.isReferral === 1
     }
   },
 
@@ -275,6 +273,49 @@ export default {
       })
     },
 
+    sendRecipe() {
+      const params = {
+        inquiryNo: this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryNo
+      }
+
+      // 检查是否为有效会话
+      Service.checkOverInquiry(params).then((res) => {
+        // 非有效会话
+        if (res.data.status === 1) {
+          return Peace.util.warning('当前为无效会话，暂时无法发处方。请先与患者进行病情沟通')
+        }
+        // 未填写病历，提示填写病历
+        else if (res.data.caseStatus === 1) {
+          const message = '给用户发送病历后才能【发处方】，是否立即填写病历？'
+          const confirmOption = {
+            type: 'warning',
+            confirmButtonText: '去填写'
+          }
+
+          return Peace.util.confirm(message, undefined, confirmOption, () => {
+            this.sendCase()
+          })
+        }
+
+        this.checkStatus()
+      })
+    },
+
+    checkStatus() {
+      const params = {
+        familyId: this.$store.state.inquiry?.session?.content?.patientInfo?.familyId,
+        patientId: this.$store.state.inquiry?.session?.content?.patientInfo?.patientId,
+        inquiryNo: this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryNo
+      }
+
+      // 检查当前咨询能否发送处方
+      Service.checkSendPRStatus(params).then((res) => {
+        if (res.data.status === 'yes') {
+          this.$emit('control', '发处方')
+        }
+      })
+    },
+
     sendTransfer() {
       const params = {
         inquiryNo: this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryNo
@@ -301,6 +342,10 @@ export default {
 
         this.$emit('control', '申请转诊')
       })
+    },
+
+    sendInspection() {
+      this.$emit('control', '开检验')
     },
 
     sendConsultation() {
@@ -337,7 +382,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss">
 .el-dropdown-menu-quickReply {
@@ -403,6 +447,7 @@ export default {
       .el-textarea {
         height: 100%;
       }
+
       .el-textarea__inner {
         height: 100%;
         border: 0;

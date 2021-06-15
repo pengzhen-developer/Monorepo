@@ -4,88 +4,81 @@
       <div class="q-editor__toolbars-container">
         <div class="q-editor__toolbar row no-wrap scroll-x bg-grey-1">
           <div class="q-editor__toolbar-group">
-            <el-upload v-bind:auto-upload="false"
-                       v-bind:on-change="sendImage"
-                       accept=".jpg, .jpeg, .png, .gif, .bmp, .pdf, .JPG, .JPEG, .PBG, .GIF, .BMP, .PDF"
-                       action=" "
-                       ref="upload">
+            <el-upload
+              v-bind:auto-upload="false"
+              v-bind:on-change="sendImage"
+              accept=".jpg, .jpeg, .png, .gif, .bmp, .pdf, .JPG, .JPEG, .PBG, .GIF, .BMP, .PDF"
+              action=" "
+              ref="upload"
+            >
               <el-button type="text">
                 <div class="flex items-center">
-                  <img class="q-mr-xs"
-                       src="~@src/assets/images/inquiry/chat_icon_pic.png" />
+                  <img class="q-mr-xs" src="~@src/assets/images/inquiry/chat_icon_pic.png" />
                   <span class="text-grey-6">发图片</span>
                 </div>
               </el-button>
             </el-upload>
           </div>
           <div class="q-editor__toolbar-group">
-            <el-dropdown szie="medium"
-                         placement="top">
+            <el-dropdown szie="medium" placement="top">
               <el-button type="text">
                 <div class="flex items-center">
-                  <img class="q-mr-xs"
-                       src="~@src/assets/images/inquiry/chat_icon_language.png" />
+                  <img class="q-mr-xs" src="~@src/assets/images/inquiry/chat_icon_language.png" />
                   <span class="text-grey-6">常用语</span>
                 </div>
               </el-button>
 
-              <el-dropdown-menu class="el-dropdown-menu-quickReply"
-                                slot="dropdown">
-                <el-dropdown-item v-for="(item, index) in quickReply"
-                                  v-bind:key="item"
-                                  v-on:click.native="sendText(item)">
+              <el-dropdown-menu class="el-dropdown-menu-quickReply" slot="dropdown">
+                <el-dropdown-item v-for="(item, index) in quickReply" v-bind:key="item" v-on:click.native="sendText(item)">
                   {{ index + 1 }}. {{ item }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
           <div class="q-editor__toolbar-group">
-            <el-button type="text"
-                       v-on:click="sendCase">
+            <el-button type="text" v-on:click="sendCase">
               <div class="flex items-center">
-                <img class="q-mr-xs"
-                     src="~@src/assets/images/inquiry/chat_icon_medical.png" />
+                <img class="q-mr-xs" src="~@src/assets/images/inquiry/chat_icon_medical.png" />
                 <span class="text-grey-6">写病历</span>
               </div>
             </el-button>
           </div>
           <div class="q-editor__toolbar-group">
-            <el-button type="text"
-                       v-on:click="sendRecipe">
+            <el-button type="text" v-on:click="sendRecipe">
               <div class="flex items-center">
-                <img class="q-mr-xs"
-                     src="~@src/assets/images/inquiry/chat_icon_pr.png" />
+                <img class="q-mr-xs" src="~@src/assets/images/inquiry/chat_icon_pr.png" />
                 <span class="text-grey-6">开处方</span>
               </div>
             </el-button>
           </div>
-          <div class="q-editor__toolbar-group">
-            <el-button type="text"
-                       v-on:click="sendVideo">
+          <div class="q-editor__toolbar-group" v-if="canShowInspect">
+            <el-button type="text" v-on:click="sendInspection">
               <div class="flex items-center">
-                <img class="q-mr-xs"
-                     src="~@src/assets/images/inquiry/chat_icon_video.png" />
+                <img class="q-mr-xs" src="~@src/assets/images/inquiry/icon_jyd_unchecked.png" />
+                <span class="text-grey-6">开检验</span>
+              </div>
+            </el-button>
+          </div>
+          <div class="q-editor__toolbar-group">
+            <el-button type="text" v-on:click="sendVideo">
+              <div class="flex items-center">
+                <img class="q-mr-xs" src="~@src/assets/images/inquiry/chat_icon_video.png" />
                 <span class="text-grey-6">视频通话</span>
               </div>
             </el-button>
           </div>
           <div class="q-editor__toolbar-group">
-            <el-button type="text"
-                       v-on:click="sendTransfer">
+            <el-button type="text" v-on:click="sendTransfer">
               <div class="flex items-center">
-                <img class="q-mr-xs"
-                     src="~@src/assets/images/inquiry/chat_icon_zhuanzhen.png" />
+                <img class="q-mr-xs" src="~@src/assets/images/inquiry/chat_icon_zhuanzhen.png" />
                 <span class="text-grey-6">申请转诊</span>
               </div>
             </el-button>
           </div>
-          <div v-if="false"
-               class="q-editor__toolbar-group">
-            <el-button type="text"
-                       v-on:click="sendConsultation">
+          <div v-if="false" class="q-editor__toolbar-group">
+            <el-button type="text" v-on:click="sendConsultation">
               <div class="flex items-center">
-                <img class="q-mr-xs"
-                     src="~@src/assets/images/inquiry/yuanchenghuizhen1.png" />
+                <img class="q-mr-xs" src="~@src/assets/images/inquiry/yuanchenghuizhen1.png" />
                 <span class="text-grey-6">申请会诊</span>
               </div>
             </el-button>
@@ -93,42 +86,33 @@
         </div>
       </div>
       <div class="q-editor__content session-detail-input">
-        <el-input type="textarea"
-                  resize="none"
-                  placeholder="请输入文字..."
-                  v-model="editorMessage"
-                  v-on:keydown.prevent.enter.exact.native="sendText()"
-                  v-on:keydown.prevent.ctrl.enter.exact.native="warpText()"></el-input>
+        <el-input
+          type="textarea"
+          resize="none"
+          placeholder="请输入文字..."
+          v-model="editorMessage"
+          v-on:keydown.prevent.enter.exact.native="sendText()"
+          v-on:keydown.prevent.ctrl.enter.exact.native="warpText()"
+        ></el-input>
       </div>
     </div>
 
     <div class="footer q-px-md flex justify-end items-center">
-
-      <el-button size="mini"
-                 plain
-                 v-on:click="overInquiry">
+      <el-button size="mini" plain v-on:click="overInquiry">
         <span class="text-caption">结束问诊</span>
       </el-button>
 
-      <el-button size="mini"
-                 type="primary"
-                 v-on:click.native="sendText()">
+      <el-button size="mini" type="primary" v-on:click.native="sendText()">
         <span class="text-caption">发送 ( Enter )</span>
       </el-button>
     </div>
 
     <!-- 模态框 - 填写拒绝原因 -->
-    <PeaceDialog width="348px"
-                 top="25vh"
-                 class="no-header"
-                 v-if="overInquiryVisible"
-                 v-bind:visible.sync="overInquiryVisible">
+    <PeaceDialog width="348px" top="25vh" class="no-header" v-if="overInquiryVisible" v-bind:visible.sync="overInquiryVisible">
       <OverInquiry v-on:close="overInquiryVisible = false"></OverInquiry>
     </PeaceDialog>
 
-    <PeaceDialog v-bind:visible.sync="caseDetail.visible"
-                 append-to-body
-                 title="病历详情">
+    <PeaceDialog v-bind:visible.sync="caseDetail.visible" append-to-body title="病历详情">
       <CaseDetail v-bind:data="caseDetail.data"></CaseDetail>
     </PeaceDialog>
   </div>
@@ -192,6 +176,10 @@ export default {
 
     canShowOver() {
       return this.$store.state?.inquiry?.session?.content?.inquiryInfo?.inquiryStatus === type.INQUIRY.INQUIRY_STATUS.问诊中
+    },
+
+    canShowInspect() {
+      return this.$store.state?.inquiry?.session?.content?.inquiryInfo?.isReferral === 1
     }
   },
 
@@ -312,6 +300,10 @@ export default {
 
         this.$emit('control', '发处方')
       })
+    },
+
+    sendInspection() {
+      this.$emit('control', '开检验')
     },
 
     sendTransfer() {

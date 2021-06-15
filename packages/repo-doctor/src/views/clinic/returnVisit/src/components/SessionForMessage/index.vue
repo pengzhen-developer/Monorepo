@@ -2,11 +2,8 @@
   <div class="fit relative-position">
     <!-- 消息组件 -->
     <!-- 消息组件位于其它组件的底部，当业务组件激活时，使用 'fixed-none' 样式使之不可见 -->
-    <div class="fit flex column"
-         v-bind:class="{ 'fixed-none': componentInstance} ">
-      <q-scroll-area class="content"
-                     ref="scrollArea"
-                     v-bind:thumb-style="thumbStyle">
+    <div class="fit flex column" v-bind:class="{ 'fixed-none': componentInstance }">
+      <q-scroll-area class="content" ref="scrollArea" v-bind:thumb-style="thumbStyle">
         <MessageList></MessageList>
       </q-scroll-area>
 
@@ -16,14 +13,9 @@
     </div>
 
     <!-- 业务组件 ： 发病历 / 发处方 -->
-    <div class="fit flex"
-         v-if="componentInstance">
-      <q-scroll-area class="content"
-                     v-bind:thumb-style="thumbStyle">
-        <Component v-bind:is="componentInstance"
-                   v-bind:session="session"
-                   v-bind:cacheKey="session.content.inquiryInfo.inquiryNo"
-                   v-on:close="close">
+    <div class="fit flex" v-if="componentInstance">
+      <q-scroll-area class="content" v-bind:thumb-style="thumbStyle">
+        <Component v-bind:is="componentInstance" v-bind:session="session" v-bind:cacheKey="session.content.inquiryInfo.inquiryNo" v-on:close="close">
         </Component>
       </q-scroll-area>
     </div>
@@ -39,6 +31,7 @@ import MessageSendCase from './MessageSendCase'
 import MessageSendRecipe from './MessageSendRecipe'
 import MessageSendTransfer from './MessageSendTransfer'
 import MessageSendConsultation from './MessageSendConsultation'
+import MessageSendInspection from '@src/views/clinic/inquiry/src/components/SessionForMessage/MessageSendInspection'
 
 export default {
   components: {
@@ -52,7 +45,8 @@ export default {
         ['发病历']: MessageSendCase,
         ['发处方']: MessageSendRecipe,
         ['申请转诊']: MessageSendTransfer,
-        ['申请会诊']: MessageSendConsultation
+        ['申请会诊']: MessageSendConsultation,
+        ['开检验']: MessageSendInspection
       },
 
       componentType: 'MessageList'
@@ -117,7 +111,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .content {

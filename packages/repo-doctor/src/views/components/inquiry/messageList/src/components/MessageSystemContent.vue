@@ -1,7 +1,6 @@
 <template>
   <div>
-    <MessageSystem :text="text"
-                   @onClickText="onClickText"></MessageSystem>
+    <MessageSystem :text="text" @onClickText="onClickText"></MessageSystem>
   </div>
 </template>
 

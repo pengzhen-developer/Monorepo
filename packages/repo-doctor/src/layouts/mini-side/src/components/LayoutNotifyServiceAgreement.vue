@@ -9,8 +9,7 @@
       </div>
 
       <div class="q-mb-md service-agreement__virtual_box"
-           v-html="content">
-      </div>
+           v-html="content"></div>
 
       <div slot="footer">
         <el-button v-on:click="cancel">关闭并退出</el-button>

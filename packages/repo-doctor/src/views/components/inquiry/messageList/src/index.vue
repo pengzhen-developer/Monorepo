@@ -1,34 +1,29 @@
-
 <template>
   <div>
     <!-- 待接诊   -->
     <template v-if="type === 'inquiry' && $store.getters['inquiry/inquiryInfo'].inquiryStatus === constant.INQUIRY_STATUS.待接诊">
-      <InquiryPreliminaryForReceive v-if="messageList && messageList[0]"
-                                    :data="messageList[0].content.data">
-      </InquiryPreliminaryForReceive>
+      <InquiryPreliminaryForReceive v-if="messageList && messageList[0]" :data="messageList[0].content.data"> </InquiryPreliminaryForReceive>
     </template>
     <template v-else>
       <div class="message-list-chat-room">
         <template v-if="messageList && messageList.length">
           <div class="item">
-            <div :key="message.time"
-                 :class="getMessageFlow(message)"
-                 class="message"
-                 v-for="(message ,index) in messageList">
-              <MessageContainer :message="message"
-                                :index="index"
-                                :showTime="isShowMessageTime(message ,index)"
-                                :patientInfo="currentPatientInfo"
-                                :doctorInfo="currentDoctorInfo"
-                                :avatorClick="false"
-                                :IsInFlamilyList="true"></MessageContainer>
+            <div :key="message.idClient" :class="getMessageFlow(message)" class="message" v-for="(message, index) in messageList">
+              <MessageContainer
+                :message="message"
+                :index="index"
+                :showTime="isShowMessageTime(message, index)"
+                :patientInfo="currentPatientInfo"
+                :doctorInfo="currentDoctorInfo"
+                :avatorClick="false"
+                :IsInFlamilyList="true"
+              ></MessageContainer>
             </div>
           </div>
         </template>
       </div>
     </template>
   </div>
-
 </template>
 <script>
 //
@@ -139,7 +134,7 @@ export default {
 
   methods: {
     scrollMessageToBottom() {
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         const element = document.querySelector('.message-list-scrollbar .el-scrollbar__wrap')
 
         if (element) {

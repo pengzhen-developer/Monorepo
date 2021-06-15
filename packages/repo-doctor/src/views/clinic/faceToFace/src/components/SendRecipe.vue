@@ -8,9 +8,7 @@
         <p class="text-h5">普通处方笺</p>
       </div>
 
-      <el-form v-bind:model="{}"
-               space-sm
-               label-width="auto">
+      <el-form v-bind:model="{}" space-sm label-width="auto">
         <div class="row">
           <div class="col">
             <el-form-item label="姓名：">
@@ -38,15 +36,9 @@
           <div class="col-6">
             <el-form-item label="体重：">
               <div class="flex">
-                <el-input-number ref="weightInput"
-                                 controls-position="right"
-                                 v-bind:min="0"
-                                 v-bind:max="200"
-                                 v-model="model.weight"
-                                 v-bind:precision="2">
+                <el-input-number ref="weightInput" controls-position="right" v-bind:min="0" v-bind:max="200" v-model="model.weight" v-bind:precision="2">
                 </el-input-number>
-                <div class="flex items-center q-px-sm"
-                     style="border-radius: 5px">
+                <div class="flex items-center q-px-sm" style="border-radius: 5px">
                   kg
                 </div>
               </div>
@@ -56,16 +48,17 @@
           <div class="col-6">
             <el-form-item label="身高：">
               <div class="flex">
-                <el-input-number ref="heightInput"
-                                 style="width: 100px;"
-                                 controls-position="right"
-                                 v-bind:min="0.1"
-                                 v-bind:max="999"
-                                 v-model="model.height"
-                                 v-bind:precision="1">
+                <el-input-number
+                  ref="heightInput"
+                  style="width: 100px;"
+                  controls-position="right"
+                  v-bind:min="0.1"
+                  v-bind:max="999"
+                  v-model="model.height"
+                  v-bind:precision="1"
+                >
                 </el-input-number>
-                <div class="flex items-center q-px-sm"
-                     style="border-radius: 5px">
+                <div class="flex items-center q-px-sm" style="border-radius: 5px">
                   cm
                 </div>
               </div>
@@ -75,12 +68,9 @@
 
         <div class="row">
           <div class="col">
-            <el-form-item required=""
-                          v-bind:show-message="false"
-                          label="诊断：">
+            <el-form-item required="" v-bind:show-message="false" label="诊断：">
               <div class="row">
-                <QuickSelectDiagnose class="col"
-                                     v-model="model.diagnoseList"></QuickSelectDiagnose>
+                <QuickSelectDiagnose class="col" v-model="model.diagnoseList"></QuickSelectDiagnose>
               </div>
             </el-form-item>
           </div>
@@ -88,13 +78,9 @@
 
         <div class="row">
           <div class="col">
-            <el-form-item required=""
-                          v-bind:show-message="false"
-                          label="过敏史：">
+            <el-form-item required="" v-bind:show-message="false" label="过敏史：">
               <div class="row">
-                <QuickSelectAllergyHistory allow-create
-                                           class="col"
-                                           v-model="model.allergyHistoryList"></QuickSelectAllergyHistory>
+                <QuickSelectAllergyHistory allow-create class="col" v-model="model.allergyHistoryList"></QuickSelectAllergyHistory>
               </div>
             </el-form-item>
           </div>
@@ -102,17 +88,17 @@
 
         <div class="row">
           <div class="col">
-            <el-form-item required=""
-                          v-bind:show-message="false"
-                          label="主诉：">
+            <el-form-item required="" v-bind:show-message="false" label="主诉：">
               <div class="flex">
-                <el-input class="col"
-                          type="textarea"
-                          show-word-limit
-                          placeholder="请输入内容"
-                          v-bind:maxlength="500"
-                          v-bind:autosize="{ minRows: 2, maxRows: 4}"
-                          v-model="model.baseIllness">
+                <el-input
+                  class="col"
+                  type="textarea"
+                  show-word-limit
+                  placeholder="请输入内容"
+                  v-bind:maxlength="500"
+                  v-bind:autosize="{ minRows: 2, maxRows: 4 }"
+                  v-model="model.baseIllness"
+                >
                 </el-input>
               </div>
             </el-form-item>
@@ -128,48 +114,45 @@
       </div>
 
       <div class="q-mb-sm">
-        <DrugSelect ref="drugSelect"
-                    v-model="model.drugList"
-                    v-bind:type="`faceToFace`"
-                    v-bind:scene="`face`"
-                    v-bind:patientNo="patientInfo.patientNo"
-                    v-bind:prescriptionTag.sync="model.prescriptionTag"
-                    v-bind:max-count="5"></DrugSelect>
+        <DrugSelect
+          ref="drugSelect"
+          v-model="model.drugList"
+          v-bind:type="`faceToFace`"
+          v-bind:scene="`face`"
+          v-bind:patientNo="patientInfo.patientNo"
+          v-bind:prescriptionTag.sync="model.prescriptionTag"
+          v-bind:max-count="5"
+        ></DrugSelect>
       </div>
 
       <div class="q-mb-sm text-center">
         <el-button v-on:click="close">取消</el-button>
-        <el-button v-on:click="send"
-                   v-bind:disabled="sending"
-                   type="primary">发送</el-button>
+        <el-button v-on:click="send" v-bind:disabled="sending" type="primary">发送</el-button>
       </div>
     </div>
 
     <!-- 系统审方结果 -->
-    <PeaceDialog absolute-center
-                 title="系统审方结果"
-                 v-bind:visible.sync="auditDialog.visible"
-                 v-loading="sending"
-                 element-loading-text="拼命加载中"
-                 element-loading-background="rgba(0, 0, 0, 0.4)">
+    <PeaceDialog
+      absolute-center
+      title="系统审方结果"
+      v-bind:visible.sync="auditDialog.visible"
+      v-loading="sending"
+      element-loading-text="拼命加载中"
+      element-loading-background="rgba(0, 0, 0, 0.4)"
+    >
       <RecipeAudit v-bind:data="auditDialog.data"></RecipeAudit>
 
       <div class="q-my-md flex justify-center">
         <el-button v-on:click="sendConfirm">继续发送</el-button>
-        <el-button type="primary"
-                   v-on:click="auditDialog.visible = false">返回修改</el-button>
+        <el-button type="primary" v-on:click="auditDialog.visible = false">返回修改</el-button>
       </div>
     </PeaceDialog>
 
     <!-- 库存提示 -->
-    <PeaceDialog absolute-center
-                 width="500px"
-                 title="库存提示"
-                 v-bind:visible.sync="stockDialog.visible">
+    <PeaceDialog absolute-center width="500px" title="库存提示" v-bind:visible.sync="stockDialog.visible">
       <div class="q-pa-md">
         <div class="q-mb-md">
-          <p v-for="(item, index) in stockDialog.data"
-             v-bind:key="index">
+          <p v-for="(item, index) in stockDialog.data" v-bind:key="index">
             {{ item }}
           </p>
           <p>以上药品不可开具处方！请修改~</p>
@@ -181,15 +164,12 @@
         </div>
 
         <div class="text-center">
-          <el-button type="primary"
-                     v-on:click="stockDialog.visible = false">知道了</el-button>
+          <el-button type="primary" v-on:click="stockDialog.visible = false">知道了</el-button>
         </div>
       </div>
     </PeaceDialog>
-
   </div>
 </template>
-
 
 <script>
 import { mutations, store } from './../store'
@@ -250,6 +230,19 @@ export default {
     }
   },
 
+  watch: {
+    patientInfo: {
+      handler(val) {
+        this.$nextTick(function() {
+          if (val) {
+            this.getPatientDetailInfo()
+          }
+        })
+      },
+      immediate: true
+    }
+  },
+
   computed: {
     docInfo() {
       return Peace.$store.state.user?.userInfo?.list?.docInfo
@@ -260,9 +253,9 @@ export default {
     }
   },
 
-  created() {
-    this.getPatientDetailInfo()
-  },
+  // created() {
+  //   this.getPatientDetailInfo()
+  // },
 
   methods: {
     // 获取患者信息
@@ -455,7 +448,7 @@ export default {
   padding: 12px;
   background-color: #f9f9f9;
   font-size: 18px;
-  margin: 0px;
+  margin: 0;
 }
 
 .require-style {
