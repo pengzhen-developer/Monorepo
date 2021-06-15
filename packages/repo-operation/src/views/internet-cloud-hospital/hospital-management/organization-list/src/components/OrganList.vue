@@ -4,14 +4,16 @@
       <el-form :model="model"
                label-suffix="："
                label-width="auto"
+               v-on:keyup.enter.native="fetch"
+               v-on:submit.native.prevent
                inline>
         <region-selector :defaultArea="false"
                          :selected="false"
                          clearable
                          ref="regionSelector"></region-selector>
         <el-form-item label="医疗机构">
-          <el-input placeholder="输入医院名字"
-                    v-model="model.netHospital_name"></el-input>
+          <peace-input placeholder="输入医院名字"
+                       v-model="model.netHospital_name"></peace-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="fetch"
@@ -38,7 +40,8 @@
         <PeaceTableColumn label="医院地址"
                           min-width="200"
                           prop="address"></PeaceTableColumn>
-        <PeaceTableColumn label="使用状态">
+        <PeaceTableColumn label="使用状态"
+                          min-width="100">
           <template slot-scope="scope">
             <el-switch @change="changeStatus(scope.row)"
                        :active-value="1"
@@ -48,28 +51,47 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="操作"
-                          min-width="120"
+                          min-width="160"
                           fixed="right">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="serviceAgreement(scope.row)">服务协议</el-button>
+            <el-button type="text"
+                       v-on:click="servicePhone(scope.row)">客服电话</el-button>
           </template>
         </PeaceTableColumn>
       </PeaceTable>
     </div>
+
+    <!-- 新增、编辑 -->
+    <PeaceDialog :visible.sync="addModelDialog.visible"
+                 title="客服电话"
+                 v-if="addModelDialog.visible"
+                 width="376px">
+      <AddPhone v-bind:data="addModelDialog.data"
+                v-on:onClose="close"
+                v-on:onFresh="fetch"></AddPhone>
+    </PeaceDialog>
   </div>
 </template>
 
 <script>
 import Service from '../service'
 import Observable from '../observable'
+
+import AddPhone from './AddPhone.vue'
 export default {
+  components: { AddPhone },
   data() {
     return {
       model: {
         netHospital_name: '',
         p: 1,
         size: 10
+      },
+      addModelDialog: {
+        data: {},
+        visible: false
       }
     }
   },
@@ -125,6 +147,16 @@ export default {
     serviceAgreement(row) {
       Observable.mutations.setProps({ hosId: row.id })
       Observable.mutations.changeView(Observable.constants.view.ADD)
+    },
+    servicePhone(row) {
+      this.addModelDialog.data = {
+        hosId: row.id,
+        phone: row.phone
+      }
+      this.addModelDialog.visible = true
+    },
+    close() {
+      this.addModelDialog.visible = false
     }
   }
 }
