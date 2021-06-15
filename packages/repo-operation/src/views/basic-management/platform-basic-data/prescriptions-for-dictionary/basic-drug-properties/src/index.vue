@@ -117,20 +117,24 @@ export default {
     },
 
     changeStatus(row) {
-      this.$confirm('确定修改吗?', '提示').then(() => {
-        const params = {
-          id: row.id,
-          isBaseDrug: row.isBaseDrug
-        }
-        Service.updateBaseDrugProperties(params)
-          .then((res) => {
-            Peace.util.success(res.message)
-            this.fetch()
-          })
-          .catch(() => {
-            row.isBaseDrug = row.isBaseDrug == 'yes' ? 'no' : 'yes'
-          })
-      })
+      this.$confirm('确定修改吗?', '提示')
+        .then(() => {
+          const params = {
+            id: row.id,
+            isBaseDrug: row.isBaseDrug
+          }
+          Service.updateBaseDrugProperties(params)
+            .then((res) => {
+              Peace.util.success(res.message)
+              this.fetch()
+            })
+            .catch(() => {
+              row.isBaseDrug = row.isBaseDrug == 'yes' ? 'no' : 'yes'
+            })
+        })
+        .catch(() => {
+          row.isBaseDrug = row.isBaseDrug == 'yes' ? 'no' : 'yes'
+        })
     }
   }
 }
