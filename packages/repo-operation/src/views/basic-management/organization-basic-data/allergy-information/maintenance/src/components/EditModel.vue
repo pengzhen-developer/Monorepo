@@ -80,6 +80,8 @@ export default {
           })
       } else {
         const params = Peace.util.deepClone(this.model)
+        params.orgName = this.info.orgName
+        params.orgCode = this.info.orgCode
         params.id = this.info.id
         Service.updateOrgAllergyInfo(params)
           .then(() => {
