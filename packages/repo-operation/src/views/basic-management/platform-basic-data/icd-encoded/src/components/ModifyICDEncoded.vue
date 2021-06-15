@@ -57,7 +57,7 @@
                      class="block"
                      v-model.trim="model.parentNode"
                      v-on:loading="remoteLoading"
-                     v-on:remote-method="getRemoteList"
+                     v-on:remote-method="remoteMethod"
                      placeholder="请选择">
             <el-option v-for="item in source.parentNodeCodes"
                        :key="item.icd10Code + item.name"
@@ -147,7 +147,7 @@ export default {
 
   mounted() {
     this.$nextTick().then(() => {
-      this.getRemoteList('')
+      this.getRemoteList()
     })
   },
 
