@@ -1289,6 +1289,42 @@ const routers = [
       auth: true
     },
     component: () => import('@src/views/servicePackage/userServicePackageDetail.vue')
+  },
+  /** 检查挂号订单-预售订单 */
+  {
+    path: '/inspectionRegisteredDetailBefore/:json',
+    name: '/inspectionRegisteredDetailBefore',
+    meta: {
+      auth: true
+    },
+    component: () => import('@src/views/inspection/InspectionRegisteredDetailBefore')
+  },
+  /** 检查挂号订单详情 */
+  {
+    path: '/inspectionRegisteredDetail/:json',
+    name: '/inspectionRegisteredDetail',
+    meta: {
+      auth: true
+    },
+    component: () => import('@src/views/inspection/InspectionRegisteredDetail')
+  },
+  /** 检查订单-预售订单 */
+  {
+    path: '/inspectionDetailBefore/:json',
+    name: '/inspectionDetailBefore',
+    meta: {
+      auth: true
+    },
+    component: () => import('@src/views/inspection/InspectionDetailBefore')
+  },
+  /** 检查订单详情 */
+  {
+    path: '/inspectionDetail/:json',
+    name: '/inspectionDetail',
+    meta: {
+      auth: true
+    },
+    component: () => import('@src/views/inspection/InspectionDetail')
   }
 ]
 

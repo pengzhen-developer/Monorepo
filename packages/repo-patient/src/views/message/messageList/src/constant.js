@@ -20,7 +20,9 @@ export const INQUIRY_MESSAGE_TYPE = {
   会诊单: '792',
   检查单: '793',
   问诊卡片: '794',
-  转诊卡片: '795'
+  转诊卡片: '795',
+  检验挂号单: '797',
+  检验单: '798'
 }
 /** 问诊状态 */
 export const INQUIRY_STATUS = {

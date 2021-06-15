@@ -5,12 +5,11 @@
        v-bind:class="{'line-through':lineThrough}">
     <span v-bind:style="`lineHeight:${size}px`">{{prefix}}{{originalPrice}}</span>
     <div class="price-result"
-         v-bind:style="`transformOrigin:${transformOrigin};${transformOrigin}:0;`">
-      <div v-bind:style="`fontSize:${unitSize}px`"
-           style="white-space:nowrap;"
+         v-bind:style="`transformOrigin:${transformOrigin};${transformOrigin}:0;color:${color}`">
+      <div v-bind:style="`fontSize:${unitSize}rem;white-space:nowrap;font-weight:normal;`"
            class="mb1">{{prefix}}</div>
-      <div v-bind:style="`fontSize:${integerSize}px`">{{originalPrice | getPriceInteger}}</div>
-      <div v-bind:style="`fontSize:${decimalSize}px`"
+      <div v-bind:style="`fontSize:${integerSize}rem`">{{originalPrice | getPriceInteger}}</div>
+      <div v-bind:style="`fontSize:${decimalSize}rem;font-weight:normal;`"
            class="mb1">
         {{originalPrice | getPriceDecimal}}
       </div>
@@ -25,6 +24,12 @@ export default {
       type: String,
       default: () => {
         return 'left'
+      }
+    },
+    color: {
+      type: [String],
+      default: () => {
+        return ''
       }
     },
     price: {
@@ -87,14 +92,15 @@ export default {
     originalPrice() {
       return (this.price - 0).toFixed(2)
     },
+    // /37.5    rem
     integerSize() {
-      return 2 * (this.intSize || this.size)
+      return (2 * (this.intSize || this.size)) / 37.5
     },
     decimalSize() {
-      return 2 * (this.decSize || this.size - 4)
+      return (2 * (this.decSize || this.size - 4)) / 37.5
     },
     unitSize() {
-      return 2 * (this.prefixSize || this.size - 2)
+      return (2 * (this.prefixSize || this.size - 2)) / 37.5
     }
   },
 

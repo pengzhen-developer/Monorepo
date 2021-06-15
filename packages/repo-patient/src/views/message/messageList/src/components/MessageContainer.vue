@@ -56,6 +56,8 @@ import MessageConsultationCardContent from './MessageConsultationCardContent'
 import MessageRecipeCardContent from './MessageRecipeCardContent'
 import MessageReferralCardContent from './MessageReferralCardContent'
 import MessageCheckCardContent from './MessageCheckCardContent'
+import MessageInspectionCardContent from './MessageInspectionCardContent'
+import MessageInspectionRegistedCardContent from './MessageInspectionRegistedCardContent'
 import MessageVideoContent from './MessageVideoContent'
 import MessageAudioContent from './MessageAudioContent'
 
@@ -70,6 +72,8 @@ export default {
     MessageRecipeCardContent,
     MessageReferralCardContent,
     MessageCheckCardContent,
+    MessageInspectionCardContent,
+    MessageInspectionRegistedCardContent,
     MessageVideoContent,
     MessageAudioContent
   },
@@ -175,6 +179,8 @@ export default {
         [Constant.INQUIRY_MESSAGE_TYPE.转诊单]: MessageReferralCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.转诊卡片]: MessageReferralCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.检查单]: MessageCheckCardContent,
+        [Constant.INQUIRY_MESSAGE_TYPE.检验单]: MessageInspectionCardContent,
+        [Constant.INQUIRY_MESSAGE_TYPE.检验挂号单]: MessageInspectionRegistedCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.视频通话]: MessageVideoContent,
         [Constant.INQUIRY_MESSAGE_TYPE.视频异常]: MessageVideoContent
       }

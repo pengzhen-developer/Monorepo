@@ -107,6 +107,71 @@ export function getFamilyDoctorInfo(params) {
   return peace.http.post(getFamilyDoctorInfo, params)
 }
 
+/**
+ * 权益抵扣
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getPermissionsDeduction(params) {
+  const PermissionsDeduction = 'client/v1/Insurance/permissionsDeduction'
+
+  return peace.http.post(PermissionsDeduction, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
+/**
+ * 检验挂号单 - 订单详情 / 预售订单
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getCheckRegisterOrderDetail(params) {
+  const CheckRegisterOrderDetail = 'client/v1/checkRegisteringOrder/detail'
+
+  return peace.http.post(CheckRegisterOrderDetail, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
+/**
+ * 检验挂号单 - 提交订单
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function submitCheckRegisteringOrder(params) {
+  const Submit = 'client/v1/checkRegisteringOrder/submit'
+
+  return peace.http.post(Submit, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
+/**
+ * 检验单 - 订单详情 / 预售订单
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getCheckOrderDetail(params) {
+  const CheckOrderDetail = 'client/v1/checkOrder/detail'
+
+  return peace.http.post(CheckOrderDetail, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
+
 export default {
   /** 根据 session id 获取问诊状态 */
   getList,
@@ -124,5 +189,17 @@ export default {
   checkSource,
 
   /** 预售订单-医生患者信息 */
-  getFamilyDoctorInfo
+  getFamilyDoctorInfo,
+
+  /** 权益抵扣 */
+  getPermissionsDeduction,
+
+  /** 检验挂号单 - 订单详情 */
+  getCheckRegisterOrderDetail,
+
+  /** 检验挂号单 -提交订单 */
+  submitCheckRegisteringOrder,
+
+  /** 检验单 - 订单详情 */
+  getCheckOrderDetail
 }

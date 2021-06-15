@@ -4,18 +4,17 @@
              @click-overlay="cancel"
              round
              position="bottom">
-    <div class="header">支付方式</div>
+    <div class="header">抵扣方式</div>
     <div class="content">
       <van-radio-group v-model="paymentId">
         <van-cell-group>
-          <van-cell :title="item.label"
-                    :icon="item.icon"
+          <van-cell :title="item.name"
                     clickable
                     v-for="item in list"
-                    :key="item.vlaue"
-                    @click="paymentId=item.value">
+                    :key="item.type"
+                    @click="paymentId=item.type">
             <template #right-icon>
-              <van-radio :name="item.value">
+              <van-radio :name="item.type">
                 <template #icon="props">
                   <van-image style="width:24px;"
                              :src="props.checked?activeIcon:inactiveIcon"></van-image>
@@ -68,7 +67,7 @@ export default {
     'info.value': {
       handler(val) {
         if (val) {
-          this.paymentId = this.info.value
+          this.paymentId = this.info.type
         }
       },
       immediate: true
@@ -92,7 +91,7 @@ export default {
     submit() {
       this.show = false
       this.$emit('changePaymentModelDialog', false)
-      const model = this.list.find((item) => item.value === this.paymentId)
+      const model = this.list.find((item) => item.type === this.paymentId)
       this.$emit('onSuccess', model)
     }
   }

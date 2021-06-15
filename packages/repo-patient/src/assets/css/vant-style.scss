@@ -179,6 +179,23 @@ input {
       margin-left: 8.53%;
     }
   }
+
+  //小按钮
+  &.is__small {
+    border: none;
+    background: rgba(51, 51, 51, 0.05);
+    font-size: 14px;
+    width: 88px;
+    height: 32px;
+    &.van-button--primary {
+      color: #fff;
+      background-color: $primary;
+    }
+
+    & + .van-button {
+      margin-left: 8px;
+    }
+  }
 }
 
 .van-overlay {

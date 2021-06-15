@@ -508,6 +508,7 @@ export default {
 
   activated() {
     this.getFamilyDoctorInfo()
+
     //V1.7.0仅安排咨询订单支持服务包
     if (this.inquriyStyle == 'inquiry') {
       this.getServicePackageRecord()
@@ -547,7 +548,16 @@ export default {
         this.params = Object.assign({}, this.params, res)
       }
     },
-
+    //获取权益抵扣列表
+    getPermissionsDeduction() {
+      const params = {
+        doctorId: this.doctorInfo.doctorId,
+        nethospitalId: this.doctorInfo.nethospitalId
+      }
+      peace.service.inquiry.getPermissionsDeduction(params).then((res) => {
+        console.log(res)
+      })
+    },
     //修改号源
     changeSource() {
       let json = peace.util.encode({
@@ -760,6 +770,7 @@ export default {
           this.doctorInfo = res.data.doctorInfo
           this.familyInfo = res.data.familyInfo
           this.insuranceConfig = res.data.insuranceConfig
+          this.getPermissionsDeduction()
         })
         .finally(() => {
           this.loading = false
