@@ -68,7 +68,7 @@
                  title="客服电话"
                  v-if="addModelDialog.visible"
                  width="376px">
-      <AddPhone v-bind:data="addModelDialog.data"
+      <AddPhone v-bind:info="addModelDialog.data"
                 v-on:onClose="close"
                 v-on:onFresh="fetch"></AddPhone>
     </PeaceDialog>
@@ -150,8 +150,8 @@ export default {
     },
     servicePhone(row) {
       this.addModelDialog.data = {
-        hosId: row.id,
-        phone: row.phone
+        nethospitalId: row.id,
+        serviceTel: row.service_tel
       }
       this.addModelDialog.visible = true
     },

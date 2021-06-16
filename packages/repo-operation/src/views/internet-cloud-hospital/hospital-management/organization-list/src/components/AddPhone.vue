@@ -6,8 +6,8 @@
              v-bind:model="model"
              v-bind:rules="rules">
       <el-form-item label="客服电话"
-                    prop="phone">
-        <peace-input v-model.trim="model.phone"
+                    prop="serviceTel">
+        <peace-input v-model.trim="model.serviceTel"
                      placeholder="请输入11位电话"
                      maxlength="11"></peace-input>
       </el-form-item>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-// import Service from '../service'
+import Service from '../service'
 export default {
   props: {
     info: Object
@@ -42,7 +42,7 @@ export default {
 
     return {
       rules: {
-        phone: [
+        serviceTel: [
           {
             required: true,
             validator: checkPhone,
@@ -51,8 +51,8 @@ export default {
         ]
       },
       model: {
-        phone: '',
-        hosId: ''
+        serviceTel: '',
+        nethospitalId: ''
       },
       isLoading: false
     }
@@ -70,17 +70,15 @@ export default {
       this.validateForm().then(() => {
         this.isLoading = true
         const params = Peace.util.deepClone(this.model)
-        console.log(params)
-        //   Service.addServiceInfo(params)
-        //     .then(() => {
-        //       Peace.util.success('提交成功')
-        //       this.$emit('onClose')
-        //       this.$emit('onFresh')
-        //     })
-        //     .finally(() => {
-
-        this.isLoading = false
-        //  })
+        Service.addServiceTel(params)
+          .then((res) => {
+            Peace.util.success(res.msg || '提交成功')
+            this.$emit('onClose')
+            this.$emit('onFresh')
+          })
+          .finally(() => {
+            this.isLoading = false
+          })
       })
     },
     validateForm() {
