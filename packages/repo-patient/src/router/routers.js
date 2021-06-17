@@ -896,7 +896,7 @@ const routers = [
     meta: {
       auth: false,
       navbar: {
-        title: '复诊续方',
+        title: '复诊开药',
         back: true
       }
     },

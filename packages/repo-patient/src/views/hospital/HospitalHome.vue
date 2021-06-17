@@ -334,14 +334,14 @@ export default {
         if (item.serviceName === '预约挂号' || item.serviceName === '查询报告') {
           const title = item.serviceName === '预约挂号' ? `线下预约挂号功能正在建设中` : `在线查询报告功能正在建设中`
           const message =
-            item.serviceName === '预约挂号' ? `如需在线复诊请点击“复诊续方”\n其他问题请点击“在线咨询”` : `如需在线报告解读，请点击“在线咨询”、“复诊续方”`
+            item.serviceName === '预约挂号' ? `如需在线复诊请点击“复诊开药”\n其他问题请点击“在线咨询”` : `如需在线报告解读，请点击“在线咨询”、“复诊开药”`
           return Dialog.confirm({
             title: '提示',
             message: `<div><div class="hos-title">${title}</div><div class="hos-message">${message}</div></div>`,
             messageAlign: 'left',
             className: 'hos-dialog',
             cancelButtonText: `在线咨询`,
-            confirmButtonText: `复诊续方`,
+            confirmButtonText: `复诊开药`,
             cancelButtonColor: '#00c6ae',
             closeOnClickOverlay: true
           })
@@ -401,7 +401,7 @@ export default {
           this.$router.push(`/components/doctorList/${json}`)
           break
         // 复诊续方
-        case '复诊续方':
+        case '复诊开药':
           //有挂号信息
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
