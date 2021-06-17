@@ -176,6 +176,8 @@ export default {
         Constant.INQUIRY_MESSAGE_TYPE.退诊,
         Constant.INQUIRY_MESSAGE_TYPE.取消问诊,
         Constant.INQUIRY_MESSAGE_TYPE.服务提醒,
+        Constant.INQUIRY_MESSAGE_TYPE.检验挂号单提醒,
+        Constant.INQUIRY_MESSAGE_TYPE.检验单提醒,
         Constant.INQUIRY_MESSAGE_TYPE.审核处方通过
       ]
 
