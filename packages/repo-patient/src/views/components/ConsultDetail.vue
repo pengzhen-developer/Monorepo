@@ -853,7 +853,7 @@ export default {
           res.data.inquiryInfo.time = (expireTime - inquiryInfo.currentTime) * 1000
         }
         this.internalData = Object.assign({}, res.data)
-        this.phoneDialog.data.phone = this.internalData.orderInfo.phoneNumber
+        this.phoneDialog.data.phone = this.internalData.orderInfo.serviceTel
         this.cbDialog.data.money = this.internalData.orderInfo.orderMoney
         if (res.data.inquiryInfo.serviceType == 'returnVisit') {
           await this.getFirstOptionList()

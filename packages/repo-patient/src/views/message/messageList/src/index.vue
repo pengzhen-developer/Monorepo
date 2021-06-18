@@ -406,7 +406,7 @@ export default {
         this.internalDoctorInfo = res.data.list[0].doctorInfo
         this.internalPatientInfo = res.data.list[0].patientInfo
         this.infoData = res.data.list[0].inquiryInfo
-        this.phoneDialog.data.phone = res.data.list[0].inquiryInfo.phoneNumber
+        this.phoneDialog.data.phone = res.data.list[0].inquiryInfo.serviceTel
         this.checkFamilyIsInFlamilyList()
         this.countDownTime = new Date(this.infoData.expireTime) - new Date() - peace.config.system.timeDifference
       })
@@ -418,7 +418,7 @@ export default {
         this.infoData = res.data.inquiryInfo
         this.internalPatientInfo = res.data.familyInfo
         this.internalDoctorInfo = res.data.doctorInfo
-        this.phoneDialog.data.phone = res.data.orderInfo.phoneNumber || res.data.inquiryInfo.phoneNumber
+        this.phoneDialog.data.phone = res.data.orderInfo.serviceTel || res.data.inquiryInfo.serviceTel
         this.checkFamilyIsInFlamilyList()
       })
     },
