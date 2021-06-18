@@ -11,25 +11,32 @@
       </div>
     </template>
 
-    <div :style="{ 'justify-content': flow === 'in' ? 'flex-start' : flow === 'out' ? 'flex-end' : 'center' }" style="display: flex; align-items: center;">
-      <div class="message-avatar" @click="onClickAvatar()" v-if="flow === 'in'">
-        <img v-if="roleAvatar" :src="roleAvatar" />
-        <div class="img-name" v-else>{{ roleName }}</div>
+    <div :style="{ 'justify-content': flow === 'in' ? 'flex-start' : flow === 'out' ? 'flex-end' : 'center' }"
+         style="display: flex; align-items: center;">
+      <div class="message-avatar"
+           @click="onClickAvatar()"
+           v-if="flow === 'in'">
+        <img v-if="roleAvatar"
+             :src="roleAvatar" />
+        <div class="img-name"
+             v-else>{{ roleName }}</div>
       </div>
 
       <!-- 消息内容 -->
-      <component
-        :style="{ 'text-align': flow === 'in' ? 'left' : flow === 'out' ? 'right' : 'center' }"
-        style="width:73%;"
-        :is="messageComponent"
-        :message="message"
-        :flow="flow"
-        :type="type"
-      ></component>
+      <component :style="{ 'text-align': flow === 'in' ? 'left' : flow === 'out' ? 'right' : 'center' }"
+                 style="width:73%;"
+                 :is="messageComponent"
+                 :message="message"
+                 :flow="flow"
+                 :type="type"></component>
 
-      <div class="message-avatar" @click="onClickAvatar()" v-if="flow === 'out'">
-        <img v-if="roleAvatar" :src="roleAvatar" />
-        <div class="img-name" v-else>{{ roleName }}</div>
+      <div class="message-avatar"
+           @click="onClickAvatar()"
+           v-if="flow === 'out'">
+        <img v-if="roleAvatar"
+             :src="roleAvatar" />
+        <div class="img-name"
+             v-else>{{ roleName }}</div>
       </div>
     </div>
   </div>
@@ -51,6 +58,7 @@ import MessageFirstOptionCardContent from './MessageFirstOptionCardContent.vue'
 import MessageAudioContent from './MessageAudioContent'
 import MessageQuestionRecipeContent from './MessageQuestionRecipeContent'
 import MessageInspectCardContent from './MessageInspectCardContent'
+import MessageInspectRegisterCardContent from './MessageInspectRegisterCardContent'
 export default {
   components: {
     MessageTextContent,
@@ -65,7 +73,8 @@ export default {
     MessageVideoContent,
     MessageAudioContent,
     MessageQuestionRecipeContent,
-    MessageInspectCardContent
+    MessageInspectCardContent,
+    MessageInspectRegisterCardContent
   },
   props: {
     /**消息 */
@@ -175,6 +184,7 @@ export default {
         [Constant.INQUIRY_MESSAGE_TYPE.诊疗卡片]: MessageFirstOptionCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.检查单]: MessageCheckCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.检验单]: MessageInspectCardContent,
+        [Constant.INQUIRY_MESSAGE_TYPE.检验挂号单]: MessageInspectRegisterCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.视频通话]: MessageVideoContent,
         [Constant.INQUIRY_MESSAGE_TYPE.视频异常]: MessageVideoContent,
         [Constant.INQUIRY_MESSAGE_TYPE.处方被质疑]: MessageQuestionRecipeContent

@@ -2,15 +2,18 @@
   <div class="inquiry-session-message-list">
     <!-- 待接诊 -->
     <template v-if="type === 'inquiry' && $store.getters['inquiry/inquiryInfo'].inquiryStatus === Peace.type.INQUIRY.INQUIRY_STATUS.待接诊">
-      <InquiryPreliminaryForReceive v-if="messageList && messageList[0]" :data="messageList[0].content.data"> </InquiryPreliminaryForReceive>
+      <InquiryPreliminaryForReceive v-if="messageList && messageList[0]"
+                                    :data="messageList[0].content.data"> </InquiryPreliminaryForReceive>
     </template>
 
     <!-- 已接诊 -->
     <template v-else>
-      <div :class="getMessageFlow(message)" :key="message.time" class="message" v-for="(message, index) in messageList">
+      <div :class="getMessageFlow(message)"
+           :key="message.time"
+           class="message"
+           v-for="(message, index) in messageList">
         <!-- 文本消息 -->
-        <template
-          v-if="
+        <template v-if="
             getMessageType(message) === 'text' ||
               getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.发起问诊 ||
               getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.接诊 ||
@@ -20,8 +23,7 @@
               getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.退诊 ||
               getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.取消问诊 ||
               getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.服务提醒
-          "
-        >
+          ">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message, index)">
             <div class="message time">
@@ -32,7 +34,8 @@
           </template>
 
           <!-- 消息内容 -->
-          <div class="message-body" v-html="getMessageText(message)"></div>
+          <div class="message-body"
+               v-html="getMessageText(message)"></div>
         </template>
 
         <!-- 问诊卡片 -->
@@ -47,16 +50,23 @@
           </template>
 
           <!-- 消息内容 -->
-          <div @click="getPreliminaryDetail(message)" class="message-body message-card">
+          <div @click="getPreliminaryDetail(message)"
+               class="message-body message-card">
             <div class="message-header">
-              <img width="20px" height="17px" :src="require('@src/assets/images/ic_message.png')" />
+              <img width="20px"
+                   height="17px"
+                   :src="require('@src/assets/images/ic_message.png')" />
               <span v-text="message.content.data.patientInfo.familyName"></span>
               <span>|</span>
               <span v-text="message.content.data.patientInfo.familySex"></span>
               <span>|</span>
               <span v-text="message.content.data.patientInfo.familyAge"></span>
-              <img v-if="!message.content.data.inquiryOrderInfo.isAgain" :src="require('@src/assets/images/ic_zx.png')" class="fz" />
-              <img v-if="message.content.data.inquiryOrderInfo.isAgain" :src="require('@src/assets/images/ic_fz.png')" class="fz" />
+              <img v-if="!message.content.data.inquiryOrderInfo.isAgain"
+                   :src="require('@src/assets/images/ic_zx.png')"
+                   class="fz" />
+              <img v-if="message.content.data.inquiryOrderInfo.isAgain"
+                   :src="require('@src/assets/images/ic_fz.png')"
+                   class="fz" />
             </div>
             <div class="message-line"></div>
             <div class="message-content">
@@ -81,7 +91,9 @@
 
           <!-- 消息内容 -->
           <div class="message-body message-check">
-            <div class="message-header"><img width="17px" height="17px" :src="require('@src/assets/images/ic_zhuan.png')" /> <span>转诊单</span></div>
+            <div class="message-header"><img width="17px"
+                   height="17px"
+                   :src="require('@src/assets/images/ic_zhuan.png')" /> <span>转诊单</span></div>
             <div class="message-content">
               <div class="item">
                 <div class="left other justify">就诊人</div>
@@ -94,14 +106,16 @@
 
               <div class="item">
                 <div class="left other justify">转诊医生</div>
-                <div class="right other" v-if="message.content.data.referralInfo.toDoctorInfo">
+                <div class="right other"
+                     v-if="message.content.data.referralInfo.toDoctorInfo">
                   <div>{{ message.content.data.referralInfo.toDoctorInfo.name }} {{ message.content.data.referralInfo.toDoctorInfo.deptName }}</div>
                   <div>{{ message.content.data.referralInfo.toDoctorInfo.hospitalName }}</div>
                 </div>
               </div>
               <div class="message-line-solid"></div>
             </div>
-            <div class="message-footer" @click="getTransfelDetail(message)">
+            <div class="message-footer"
+                 @click="getTransfelDetail(message)">
               <span>查看详情</span>
             </div>
           </div>
@@ -128,7 +142,9 @@
 
           <!-- 消息内容 -->
           <div class="message-body message-check">
-            <div class="message-header"><img width="17px" height="17px" :src="require('@src/assets/images/ic_hui.png')" /> <span>会诊单</span></div>
+            <div class="message-header"><img width="17px"
+                   height="17px"
+                   :src="require('@src/assets/images/ic_hui.png')" /> <span>会诊单</span></div>
             <div class="message-content">
               <div class="item">
                 <div class="left other justify">就诊人</div>
@@ -146,7 +162,8 @@
               </div>
               <div class="item">
                 <div class="left other justify">会诊医生</div>
-                <div class="right other" v-if="message.content.data.consultInfo.toDoctorInfo">
+                <div class="right other"
+                     v-if="message.content.data.consultInfo.toDoctorInfo">
                   <div>
                     <span>{{ message.content.data.consultInfo.toDoctorInfo.name }} </span>
                     <span>{{ message.content.data.consultInfo.toDoctorInfo.deptName }}</span>
@@ -156,7 +173,8 @@
               </div>
               <div class="message-line-solid"></div>
             </div>
-            <div class="message-footer" @click="getConsultDetail(message)">
+            <div class="message-footer"
+                 @click="getConsultDetail(message)">
               <span>查看详情</span>
             </div>
           </div>
@@ -183,26 +201,29 @@
           <!-- 消息内容 -->
           <div class="message-body message-card">
             <div class="message-header">
-              <img width="17px" height="20px" :src="require('@src/assets/images/ic_check.png')" />
+              <img width="17px"
+                   height="20px"
+                   :src="require('@src/assets/images/ic_check.png')" />
               <span>检查单</span>
             </div>
             <div class="message-content">
-              <div
-                style="display:flex; justify-content: space-between; align-items: center; color: #333;"
-                v-for="item in message.content.data.checkOrderInfo.checkOrderTxt"
-                :key="item.itemId"
-              >
+              <div style="display:flex; justify-content: space-between; align-items: center; color: #333;"
+                   v-for="item in message.content.data.checkOrderInfo.checkOrderTxt"
+                   :key="item.itemId">
                 <div class="left">{{ item.name }}</div>
-                <div class="right" style="width: 40px; text-align: right;"></div>
+                <div class="right"
+                     style="width: 40px; text-align: right;"></div>
               </div>
             </div>
             <div class="message-line"></div>
-            <div class="message-footer" style="cursor: pointer;" @click="getCheckOrderDetail(message)">查看详情</div>
+            <div class="message-footer"
+                 style="cursor: pointer;"
+                 @click="getCheckOrderDetail(message)">查看详情</div>
           </div>
         </template>
 
-        <!-- 检验单 -->
-        <template v-if="getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.检验单">
+        <!-- 检验挂号单 -->
+        <template v-if="getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.检验挂号单">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message, index)">
             <div class="message time">
@@ -214,29 +235,28 @@
           <!-- 消息内容 -->
           <div class="message-body message-card">
             <div class="message-header">
-              <img width="17px" height="20px" :src="require('@src/assets/images/ic_check.png')" />
-              <span>检验单</span>
+              <img width="17px"
+                   height="20px"
+                   :src="require('@src/assets/images/ic_check.png')" />
+              <span>检验挂号单</span>
             </div>
             <div class="message-content">
-              <div
-                style="display:flex; justify-content: space-between; align-items: center; color: #333;"
-                v-for="item in message.content.data.checkComboList"
-                :key="item.comboNo"
-              >
+              <div style="display:flex; justify-content: space-between; align-items: center; color: #333;"
+                   v-for="item in message.content.data.checkComboList"
+                   :key="item.comboNo">
                 <div class="left">{{ item.comboName }}</div>
-                <div class="right" style="width: 40px; text-align: right;"></div>
+                <div class="right"
+                     style="width: 40px; text-align: right;"></div>
               </div>
             </div>
           </div>
         </template>
 
         <!-- 视频消息 -->
-        <template
-          v-if="
+        <template v-if="
             getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话 ||
               getMessageType(message) === Peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频记录
-          "
-        >
+          ">
           <!-- 消息时间 -->
           <template v-if="isShowMessageTime(message, index)">
             <div class="message time">
@@ -248,9 +268,13 @@
 
           <!-- 消息内容 -->
           <div class="message-body">
-            <img v-if="getMessageFlow(message) === 'in'" src="~@/assets/images/inquiry/ic_video_right@2x.png" style="width: 18px; margin-right: 10px;" />
+            <img v-if="getMessageFlow(message) === 'in'"
+                 src="~@/assets/images/inquiry/ic_video_right@2x.png"
+                 style="width: 18px; margin-right: 10px;" />
             <span>{{ getMessageText(message) }}</span>
-            <img v-if="getMessageFlow(message) === 'out'" src="~@/assets/images/inquiry/ic_video_left@2x.png" style="width: 18px; margin-left: 10px;" />
+            <img v-if="getMessageFlow(message) === 'out'"
+                 src="~@/assets/images/inquiry/ic_video_left@2x.png"
+                 style="width: 18px; margin-left: 10px;" />
           </div>
         </template>
 
@@ -267,7 +291,9 @@
 
           <!-- 消息内容 -->
           <div v-viewer>
-            <img :src="message.file.url" style="max-width: 400px; max-height: 600px; " title="查看大图" />
+            <img :src="message.file.url"
+                 style="max-width: 400px; max-height: 600px; "
+                 title="查看大图" />
           </div>
         </template>
 
@@ -284,7 +310,9 @@
 
           <!-- 消息内容 -->
           <div class="message-body message-check">
-            <div class="message-header"><img width="17px" height="17px" :src="require('@src/assets/images/ic_fabingli.png')" /> <span>病历</span></div>
+            <div class="message-header"><img width="17px"
+                   height="17px"
+                   :src="require('@src/assets/images/ic_fabingli.png')" /> <span>病历</span></div>
             <div class="message-content">
               <div class="item">
                 <div class="left other justify">诊断</div>
@@ -296,7 +324,8 @@
               </div>
               <div class="message-line-solid"></div>
             </div>
-            <div class="message-footer" @click="getCaseDetail(message)">
+            <div class="message-footer"
+                 @click="getCaseDetail(message)">
               <span>查看详情</span>
             </div>
           </div>
@@ -314,7 +343,9 @@
           </template>
           <!-- 消息内容 -->
           <div class="message-body message-check">
-            <div class="message-header"><img width="17px" height="17px" :src="require('@src/assets/images/ic_rp.png')" /> <span>处方</span></div>
+            <div class="message-header"><img width="17px"
+                   height="17px"
+                   :src="require('@src/assets/images/ic_rp.png')" /> <span>处方</span></div>
             <div class="message-content">
               <div class="item">
                 <div class="left other justify">诊断</div>
@@ -330,7 +361,8 @@
               </div>
               <div class="message-line-solid"></div>
             </div>
-            <div class="message-footer" @click="getRecipeDetail(message)">
+            <div class="message-footer"
+                 @click="getRecipeDetail(message)">
               <span>查看详情</span>
             </div>
           </div>
@@ -338,25 +370,48 @@
       </div>
     </template>
 
-    <PeaceDialog :visible.sync="caseDetail.visible" append-to-body title="病历详情">
+    <PeaceDialog :visible.sync="caseDetail.visible"
+                 append-to-body
+                 title="病历详情">
       <InquirySessionCaseDetail :data="caseDetail.data"></InquirySessionCaseDetail>
     </PeaceDialog>
-    <PeaceDialog :visible.sync="recipeDetail.visible" v-if="recipeDetail.visible" append-to-body title="处方详情">
+    <PeaceDialog :visible.sync="recipeDetail.visible"
+                 v-if="recipeDetail.visible"
+                 append-to-body
+                 title="处方详情">
       <InquirySessionRecipeDetail :data="recipeDetail.data"></InquirySessionRecipeDetail>
     </PeaceDialog>
-    <PeaceDialog :visible.sync="transfer.visible" v-if="transfer.visible" append-to-body title="转诊详情">
-      <InquiryTransferDetail :data="transfer.data" :type="transfer.referral_type" @close="() => (transfer.visible = false)"></InquiryTransferDetail>
+    <PeaceDialog :visible.sync="transfer.visible"
+                 v-if="transfer.visible"
+                 append-to-body
+                 title="转诊详情">
+      <InquiryTransferDetail :data="transfer.data"
+                             :type="transfer.referral_type"
+                             @close="() => (transfer.visible = false)"></InquiryTransferDetail>
     </PeaceDialog>
-    <PeaceDialog :visible.sync="consultation.visible" v-if="consultation.visible" width="500" append-to-body title="会诊详情">
-      <InquiryConsultationDetail :data="consultation.data" @close="() => (consultation.visible = false)"> </InquiryConsultationDetail>
+    <PeaceDialog :visible.sync="consultation.visible"
+                 v-if="consultation.visible"
+                 width="500"
+                 append-to-body
+                 title="会诊详情">
+      <InquiryConsultationDetail :data="consultation.data"
+                                 @close="() => (consultation.visible = false)"> </InquiryConsultationDetail>
     </PeaceDialog>
 
-    <PeaceDialog :visible.sync="preliminary.visible" v-if="preliminary.visible" append-to-body title="问诊单详情">
-      <InquiryPreliminary :data="preliminary.data" @close="() => (preliminary.visible = false)"></InquiryPreliminary>
+    <PeaceDialog :visible.sync="preliminary.visible"
+                 v-if="preliminary.visible"
+                 append-to-body
+                 title="问诊单详情">
+      <InquiryPreliminary :data="preliminary.data"
+                          @close="() => (preliminary.visible = false)"></InquiryPreliminary>
     </PeaceDialog>
 
-    <PeaceDialog :visible.sync="checkOrder.visible" v-if="checkOrder.visible" append-to-body title="检查单详情">
-      <InquiryCheckOrderInfo :data="checkOrder.data" @close="() => (checkOrder.visible = false)"></InquiryCheckOrderInfo>
+    <PeaceDialog :visible.sync="checkOrder.visible"
+                 v-if="checkOrder.visible"
+                 append-to-body
+                 title="检查单详情">
+      <InquiryCheckOrderInfo :data="checkOrder.data"
+                             @close="() => (checkOrder.visible = false)"></InquiryCheckOrderInfo>
     </PeaceDialog>
 
     <PeaceDialog v-bind:visible.sync="recipeDetail.visible">
