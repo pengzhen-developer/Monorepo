@@ -24,7 +24,7 @@
 
       <!-- 消息内容 -->
       <component :style="{ 'text-align' : flow === 'in' ? 'left' : flow === 'out' ? 'right' : 'center' }"
-                 style="width:73%;"
+                 :class="messageContentClass"
                  :is="messageComponent"
                  :message="message"
                  :flow="flow"
@@ -136,6 +136,14 @@ export default {
       // 根据消息类型，适配 UI Component
       return this.componentAdapter(messageType)
     },
+    messageContentClass() {
+      const messageType = this.message.type === 'custom' ? this.message.content.code : this.message.type
+      const customCodeList = [Constant.INQUIRY_MESSAGE_TYPE.检验挂号单提醒, Constant.INQUIRY_MESSAGE_TYPE.检验单提醒]
+      if (customCodeList.includes(messageType)) {
+        return 'message-remind-text'
+      }
+      return 'message-body-wrap'
+    },
     type() {
       return this.message.type === 'custom' ? this.message.content.code : this.message.type
     },
@@ -171,6 +179,8 @@ export default {
         [Constant.INQUIRY_MESSAGE_TYPE.评价提示]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.服务提醒]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.服务包提醒]: MessageSystemContent,
+        [Constant.INQUIRY_MESSAGE_TYPE.检验挂号单提醒]: MessageSystemContent,
+        [Constant.INQUIRY_MESSAGE_TYPE.检验单提醒]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.审核处方通过]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.病历]: MessageCaseCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.处方]: MessageRecipeCardContent,
@@ -202,7 +212,9 @@ export default {
         Constant.INQUIRY_MESSAGE_TYPE.取消问诊,
         Constant.INQUIRY_MESSAGE_TYPE.服务提醒,
         Constant.INQUIRY_MESSAGE_TYPE.审核处方通过,
-        Constant.INQUIRY_MESSAGE_TYPE.服务包提醒
+        Constant.INQUIRY_MESSAGE_TYPE.服务包提醒,
+        Constant.INQUIRY_MESSAGE_TYPE.检验挂号单提醒,
+        Constant.INQUIRY_MESSAGE_TYPE.检验单提醒
       ]
 
       if (this.message.type === 'custom') {

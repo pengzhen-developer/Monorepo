@@ -139,6 +139,7 @@ export function getCheckRegisterOrderDetail(params) {
     }
   })
 }
+
 /**
  * 检验挂号单 - 提交订单
  *
@@ -155,6 +156,24 @@ export function submitCheckRegisteringOrder(params) {
     }
   })
 }
+
+/**
+ * 检验挂号单 - 取消订单
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function cancelCheckRegisteringOrder(params) {
+  const Submit = 'client/v1/checkRegisteringOrder/cancel'
+
+  return peace.http.post(Submit, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
+
 /**
  * 检验单 - 订单详情 / 预售订单
  *
@@ -166,6 +185,40 @@ export function getCheckOrderDetail(params) {
   const CheckOrderDetail = 'client/v1/checkOrder/detail'
 
   return peace.http.post(CheckOrderDetail, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
+
+/**
+ * 检验单 - 提交订单
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function submitCheckOrder(params) {
+  const Submit = 'client/v1/checkOrder/submit'
+
+  return peace.http.post(Submit, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
+
+/**
+ * 检验单 - 取消订单
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function cancelcheckOrder(params) {
+  const Submit = 'client/v1/checkOrder/cancel'
+
+  return peace.http.post(Submit, params, {
     headers: {
       post: { 'Content-Type': 'application/json' }
     }
@@ -200,6 +253,15 @@ export default {
   /** 检验挂号单 -提交订单 */
   submitCheckRegisteringOrder,
 
+  /** 检验挂号单 - 取消订单 */
+  cancelCheckRegisteringOrder,
+
   /** 检验单 - 订单详情 */
-  getCheckOrderDetail
+  getCheckOrderDetail,
+
+  /** 检验单 - 提交订单 */
+  submitCheckOrder,
+
+  /** 检验单 - 取消订单 */
+  cancelcheckOrder
 }

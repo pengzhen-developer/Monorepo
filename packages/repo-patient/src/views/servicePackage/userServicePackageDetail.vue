@@ -279,7 +279,7 @@ export default {
       peace.service.servicePackage.OrderDetail(params).then((res) => {
         res.data.time = (res.data.expireTime - res.data.currentTime) * 1000
         this.info = res.data
-        this.phoneDialog.data.phone = this.info.phoneNumber
+        this.phoneDialog.data.phone = this.info.serviceTel
 
         this.hasUsedAll = res.data.equities.find((item) => item.residueNum > 0) ? false : true
         this.hasUsed = res.data.equities.find((item) => item.residueNum != item.totalNum) ? true : false

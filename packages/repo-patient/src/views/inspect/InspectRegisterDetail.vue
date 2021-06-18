@@ -33,11 +33,11 @@
           <div class="title mt16">检验项目</div>
           <div class="brief">
             <!-- 检验单卡片 -->
-            <InspectionCard v-bind:list="internalData.checkRegisteringOrderDetails"
-                            v-bind:totalPrice="internalData.checkRegisteringOrderTotalPrice"
-                            v-bind:orderNo="internalData.orderNo"
-                            v-bind:orderId="internalData.orderId"
-                            v-bind:showFooter="true"></InspectionCard>
+            <InspectCard v-bind:list="internalData.checkRegisteringOrderDetails"
+                         v-bind:totalPrice="internalData.checkRegisteringOrderTotalPrice"
+                         v-bind:orderNo="internalData.orderNo"
+                         v-bind:orderId="internalData.orderId"
+                         v-bind:showFooter="true"></InspectCard>
 
           </div>
         </div>
@@ -194,9 +194,9 @@ Vue.use(CountDown)
 import ExpenseDetail from '@src/views/components//ExpenseDetail'
 import CallPhone from '@src/views/components/CallPhone'
 
-import DoctorCard from './DoctorCard.vue'
-import FamilyCard from './FamilyCard.vue'
-import InspectionCard from './InspectionCard.vue'
+import DoctorCard from './components/DoctorCard.vue'
+import FamilyCard from './components/FamilyCard.vue'
+import InspectCard from './components/InspectCard.vue'
 const ENUM = {
   // 支付类型
   // wxpay（微信）
@@ -236,7 +236,7 @@ export default {
   components: {
     DoctorCard,
     FamilyCard,
-    InspectionCard,
+    InspectCard,
 
     ExpenseDetail,
     CallPhone,

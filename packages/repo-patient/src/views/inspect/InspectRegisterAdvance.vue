@@ -1,48 +1,46 @@
 <template>
   <div class="page"
-       v-if="firstLoad">
-    <div class="consult-detatil"
-         :style="{'margin-bottom':footerHeight}">
+       v-if="loading.get">
+    <div class="consult-detatil">
 
-      <!--医生名片-->
-      <div class="module"
-           v-if="internalData.doctorInfo">
-        <DoctorCard v-bind:doctorInfo="internalData.doctorInfo"
-                    v-bind:typeText="'检验挂号单'"></DoctorCard>
+      <div class="module">
+        <DoctorCard v-bind:doctor="doctorInfo"
+                    v-bind:type="'检验挂号单'"></DoctorCard>
       </div>
 
-      <!--订单内容-->
       <div class="module order">
-        <div class="module-item"
-             v-if="internalData.familyInfo">
+
+        <div class="module-item">
           <div class="title">个人信息</div>
-          <FamilyCard v-bind:familyInfo="internalData.familyInfo"></FamilyCard>
+          <FamilyCard v-bind:familyInfo="patientInfo"></FamilyCard>
         </div>
 
-        <!--病情描述-->
         <div class="module-item">
           <div class="title mt16">检验项目</div>
           <div class="brief">
-            <!-- 检验单卡片 -->
-            <InspectionCard v-bind:list="internalData.checkRegisteringOrderDetails"
-                            v-bind:totalPrice="internalData.checkRegisteringOrderTotalPrice"
-                            v-bind:orderNo="internalData.orderNo"
-                            v-bind:orderId="internalData.orderId"
-                            v-bind:showFooter="true"></InspectionCard>
+            <InspectCard v-bind:list="inspectList"
+                         v-bind:totalPrice="model.checkRegisteringOrderTotalPrice"
+                         v-bind:cmd="'remind'"></InspectCard>
           </div>
         </div>
+
       </div>
-      <OrderPaymentCard v-bind:info="info"
-                        v-if="firstLoad"
-                        v-on:onChooseDeductionType="onChooseDeductionType"></OrderPaymentCard>
+
+      <PayCard v-bind:doctorId="model.doctorId"
+               v-bind:familyId="model.familyId"
+               v-bind:familyName="patientInfo.name"
+               v-bind:payType="payType"
+               v-bind:payInfo="payInfo"
+               v-bind:deduction="deductionList"
+               v-on:update="updatePayInfo"></PayCard>
 
       <!-- footer -->
       <div class="pay fixedBottom">
         <div class="pay-item">
           <van-button round
-                      @click="goToInspectionRegisteredDetail"
+                      @click="submit"
                       type="primary"
-                      :disabled="sending"
+                      :disabled="loading.submit"
                       size="large">提交订单</van-button>
         </div>
       </div>
@@ -58,116 +56,117 @@
 
 <script>
 import peace from '@src/library'
+import { Dialog } from 'vant'
 
-import Vue from 'vue'
-import { Dialog, CountDown } from 'vant'
-Vue.use(CountDown)
-
+import DoctorCard from './components/DoctorCard'
+import FamilyCard from './components/FamilyCard'
+import InspectCard from './components/InspectCard'
+import PayCard from './components/PayCard'
 import ExpenseDetail from '@src/views/components//ExpenseDetail'
 
-import DoctorCard from './DoctorCard'
-import FamilyCard from './FamilyCard'
-import InspectionCard from './InspectionCard'
-import OrderPaymentCard from './OrderPaymentCard'
-const ENUM = {
-  // 支付类型
-  // wxpay（微信）
-  // alipay（支付宝）
-  // yibaopay（医保支付）
-  PAYMENT_TYPE: {
-    微信支付: 'wxpay',
-    支付宝支付: 'alipay',
-    医保卡支付: 'yibaopay'
-  }
-}
 export default {
   components: {
     DoctorCard,
     FamilyCard,
-    InspectionCard,
-    OrderPaymentCard,
+    InspectCard,
+    PayCard,
     ExpenseDetail,
     [Dialog.Component.name]: Dialog.Component
   },
 
-  props: {
-    data: {
-      type: Object,
-      default() {
-        return undefined
-      }
-    }
-  },
-
   data() {
     return {
-      ENUM: ENUM,
-      internalData: {},
-      permissionsDeductions: [],
-      currentSeriveInfo: {},
-      firstLoad: false,
-      sending: false,
-      footerHeight: '0px',
-      phoneDialog: {
-        visible: false,
-        data: {
-          phone: ''
-        }
+      loading: {
+        get: true,
+        submit: false
       },
-      paymentDialog: {
-        visible: false
+      model: {},
+      // 医生信息
+      doctorInfo: {},
+      // 患者信息
+      patientInfo: {},
+      // 检验单信息
+      inspectList: [],
+      // 抵扣信息
+      deductionList: [],
+      // 默认选中微信支付
+      payType: 'wxpay',
+      // 支付信息
+      payInfo: {
+        orderMoney: 0,
+
+        // 所选医保卡卡号
+        medCardNo: '',
+        // 医保待遇类型
+        medicalTreatmentType: '',
+        // 医保待遇类型名称
+        medicalTreatmentTypeName: '',
+        // 疾病种类
+        diseases: '',
+        // 疾病种类名称
+        diseasesName: '',
+
+        // 所选商保ID
+        sbInsuranceId: '',
+        // 所选商保名称
+        sbInsuranceName: '',
+
+        // 所选服务包ID
+        servicePackageId: '',
+        // 所选服务包名称
+        servicePackageName: '',
+        // 所选权益ID
+        patientEquitiesId: '',
+        // 所选权益名称
+        equityName: '',
+        // 权益剩余次数
+        residueNum: ''
       },
       dialog: {
         visible: false,
         data: {}
-      },
-
-      payIndex: 0,
-      info: {}
+      }
     }
   },
-  watch: {
-    data: {
-      handler() {
-        this.internalData = this.data
-      },
-      immediate: true
-    }
-  },
-  computed: {
-    moneyRecord() {
-      const list = this.internalData?.moneyRecord || []
-
-      return list
-    },
-
-    paymentTypeText() {
-      return Object.keys(ENUM.PAYMENT_TYPE).find((key) => ENUM.PAYMENT_TYPE[key] === this.internalData.paymentType)
-    },
-    orderStatusText() {
-      return Object.keys(ENUM.ORDER_STATUS).find((key) => ENUM.ORDER_STATUS[key] === this.internalData.orderStatus)
-    },
-    orderStatusMessage() {
-      return ENUM.OREDER_STATUS_TEXT[this.internalData.orderStatus]
-    },
-
-    canShowPhoneBox() {
-      return true
-      // return this.phoneDialog?.data?.phone
-    }
-  },
-
   activated() {
-    this.get()
-    this.$nextTick(() => {
-      const element = document.querySelector('.pay')
-      this.footerHeight = element ? element.clientHeight + 8 + 'px' : '0px'
-    })
+    this.getDetail()
   },
 
   methods: {
-    callPhone() {
-      this.phoneDialog.visible = true
+    // 获取检验挂号单详情
+    getDetail() {
+      const params = peace.util.decode(this.$route.params.json)
+      peace.service.inquiry
+        .getCheckRegisterOrderDetail(params)
+        .then((res) => {
+          this.model = res.data
+          this.doctorInfo = res.data?.doctorInfo || {}
+          this.patientInfo = res.data?.familyInfo || {}
+          this.inspectList = res.data?.checkRegisteringOrderDetails || []
+          this.getDeduction()
+        })
+        .finally(() => {
+          this.loading.get = false
+        })
+    },
+    // 获取抵扣配置
+    getDeduction() {
+      let params = {
+        doctorId: this.model.doctorId,
+        nethospitalId: this.model.doctorInfo.nethospitalId,
+        orderType: 6 // 1咨询 2复诊 3购药 4挂号 5服务包 6检验挂号订单 7检验单
+      }
+      peace.service.inquiry.getPermissionsDeduction(params).then((res) => {
+        this.deductionList = res.data || []
+      })
+    },
+    updatePayInfo() {},
+    // 跳转检验挂号单详情
+    goInspectRegisterDetail() {
+      let json = peace.util.encode({
+        orderId: this.model.orderId
+      })
+      this.$router.replace(`/inspectRegisterDetail/${json}`)
     },
 
     changeFlag() {
@@ -175,57 +174,7 @@ export default {
       this.get()
     },
 
-    get() {
-      this.getDetail()
-    },
-
-    cancelInquiryOrder(orderNo) {
-      let params = {
-        orderNo: orderNo,
-        cancelType: 2
-      }
-      peace.service.patient.cancel(params).finally(() => {
-        this.getDetail()
-      })
-    },
-
-    goToPay(data) {
-      let order = data.orderInfo
-      let totalMoney = order.totalMoney
-      if (!Number(totalMoney)) {
-        this.getDetail()
-        return
-      }
-      let orderNo = order.orderNo
-      peace.wx.pay({ orderNo }, null, this.getDetail, this.getDetail)
-    },
-    onChooseDeductionType(res) {
-      if (res) {
-        this.currentSeriveInfo = res
-      }
-    },
-    getDetail() {
-      let params = {
-        orderId: 'sdfsdfvrru'
-      }
-
-      peace.service.inquiry.getCheckRegisterOrderDetail(params).then((res) => {
-        this.internalData = res.data
-        this.firstLoad = true
-        this.info.doctorId = this.internalData.doctorId
-        this.info.nethospitalId = this.internalData.doctorInfo.nethospitalId
-        this.info.orderMoney = this.internalData.orderMoney
-      })
-    },
-    goToInspectionRegisteredDetail(orderId) {
-      const params = {
-        orderId: orderId
-      }
-
-      let json = peace.util.encode(params)
-      this.$router.replace(`/inspectionRegisteredDetail/${json}`)
-    },
-    apply() {
+    submit() {
       // if (this.yibaoText && !this.yibaoTypeText) {
       //   return peace.util.alert('请选择医保类型')
       // }

@@ -48,15 +48,10 @@
       </van-cell>
     </van-cell-group>
 
-    <!-- 选择支付方式 -->
-    <PaymentModel v-model="paymentDialog.visible"
-                  :info="paymentDialog.data"
-                  :list="permissionsDeductions"
-                  @onSuccess="selectPaymentCallback"></PaymentModel>
     <!-- 医保 -->
-    <YibaoCaedSelect v-model="yibaoDialog.visible"
+    <YibaoCardSelect v-model="yibaoDialog.visible"
                      :info="yibaoDialog.data"
-                     @onSuccess="selectYiybaoCallback"></YibaoCaedSelect>
+                     @onSuccess="selectYiybaoCallback"></YibaoCardSelect>
 
     <!-- 选择服务包权益 -->
     <SelectServicePackage v-model="servicePackageDialog.visible"
@@ -68,16 +63,74 @@
 
 <script>
 import peace from '@src/library'
-import PaymentModel from '@src/views/components/PaymentModel'
 
-import YibaoCaedSelect from '@src/views/components/YibaoCardSelect'
+import YibaoCardSelect from '@src/views/components/YibaoCardSelect'
 import SelectServicePackage from '@src/views/components/SelectServicePackage'
 export default {
-  name: 'OrderPaymentCard',
+  name: 'PayCard',
   props: {
-    info: Object
+    familyId: {
+      type: [String, Number],
+      default() {
+        return ''
+      }
+    },
+    familyName: {
+      type: String,
+      default() {
+        return ''
+      }
+    },
+    doctorId: {
+      type: [String, Number],
+      default() {
+        return ''
+      }
+    },
+    // 支付方式
+    payType: {
+      type: String,
+      default() {
+        return ''
+      }
+    },
+    // 支付信息
+    payInfo: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    // 抵扣配置
+    deduction: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    // 服务包默认权益
+    equitiesId: {
+      type: String,
+      default() {
+        return ''
+      }
+    },
+    // 商保配置
+    sbConfig: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    // 商保列表
+    sbInsuranceList: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
   },
-  components: { PaymentModel, YibaoCaedSelect, SelectServicePackage },
+  components: { YibaoCardSelect, SelectServicePackage },
   data() {
     return {
       payIndex: 0,
@@ -98,11 +151,112 @@ export default {
       yibaoDialog: {
         visible: false,
         data: {}
-      }
+      },
+
+      // 组件内部使用的支付方式 (wxpay:全自费支付 deduction:医保/权益抵扣)
+      innerPayType: '',
+      // 抵扣类型
+      deductionType: '',
+      // 抵扣弹窗
+      deductionDialog: {
+        show: false,
+        payType: ''
+      },
+
+      // 支付信息
+      innerPayInfo: {
+        orderMoney: 0,
+
+        // 所选医保卡卡号
+        medCardNo: '',
+        // 医保待遇类型
+        medicalTreatmentType: '',
+        // 医保待遇类型名称
+        medicalTreatmentTypeName: '',
+        // 疾病种类
+        diseases: '',
+        // 疾病种类名称
+        diseasesName: '',
+
+        // 所选商保ID
+        sbInsuranceId: '',
+        // 所选商保名称
+        sbInsuranceName: '',
+
+        // 所选服务包ID
+        servicePackageId: '',
+        // 所选服务包名称
+        servicePackageName: '',
+        // 所选权益ID
+        patientEquitiesId: '',
+        // 所选权益名称
+        equityName: '',
+        // 权益剩余次数
+        residueNum: ''
+      },
+
+      // 医保卡列表
+      ybInsuranceList: [],
+      // 所用医保卡
+      ybInsuranceCard: {
+        familyId: '',
+        familyName: '',
+        medCardId: '',
+        medCardNo: '',
+        region: ''
+      },
+      // 是否显示医保弹窗
+      ybVisible: false,
+
+      // 是否显示医保类型
+      ybTypeVisible: false,
+
+      // 服务包权益列表
+      servicePackageList: [],
+      // 是否显示服务包权益弹窗
+      spVisible: false,
+
+      // 是否显示商保弹窗
+      sbVisible: false
     }
   },
-  mounted() {
-    this.getPermissionsDeduction()
+  watch: {
+    payType: {
+      handler(payType) {
+        if (payType === 'wxpay') {
+          this.innerPayType = 'wxpay'
+          // this.deductionType = ''
+        } else {
+          this.innerPayType = 'deduction'
+          this.deductionType = payType
+        }
+      },
+      immediate: true
+    },
+    payInfo: {
+      handler(payInfo) {
+        this.innerPayInfo = payInfo
+      },
+      immediate: true
+    },
+    deduction: {
+      handler(deduction) {
+        // servicePackage 服务包抵扣 yibaopay 医保支付 shangbaopay 商保
+        let yibaopay = deduction.find((item) => item.type === 'yibaopay')
+        let servicePackage = deduction.find((item) => item.type === 'servicePackage')
+        let shangbaopay = deduction.find((item) => item.type === 'shangbaopay')
+        if (yibaopay) {
+          this.getMedicalInsuranceList()
+        }
+        if (servicePackage) {
+          this.getServicePackageList()
+        }
+        if (shangbaopay) {
+          // 商保配置从父组件传入
+        }
+      },
+      immediate: true
+    }
   },
   computed: {
     payMoney() {
@@ -123,6 +277,10 @@ export default {
     }
   },
   methods: {
+    // 获取医保卡列表
+    getMedicalInsuranceList() {},
+    // 获取服务包权益列表
+    getServicePackageList() {},
     getPermissionsDeduction() {
       const params = {
         doctorId: this.info.doctorId,

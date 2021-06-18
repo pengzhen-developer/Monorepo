@@ -1292,39 +1292,39 @@ const routers = [
   },
   /** 检查挂号订单-预售订单 */
   {
-    path: '/inspectionRegisteredDetailBefore/:json',
-    name: '/inspectionRegisteredDetailBefore',
+    path: '/inspectRegisterAdvance/:json',
+    name: '/inspectRegisterAdvance',
     meta: {
       auth: true
     },
-    component: () => import('@src/views/inspection/InspectionRegisteredDetailBefore')
+    component: () => import('@src/views/inspect/InspectRegisterAdvance')
   },
   /** 检查挂号订单详情 */
   {
-    path: '/inspectionRegisteredDetail/:json',
-    name: '/inspectionRegisteredDetail',
+    path: '/inspectRegisterDetail/:json',
+    name: '/inspectRegisterDetail',
     meta: {
       auth: true
     },
-    component: () => import('@src/views/inspection/InspectionRegisteredDetail')
+    component: () => import('@src/views/inspect/InspectRegisterDetail')
   },
   /** 检查订单-预售订单 */
   {
-    path: '/inspectionDetailBefore/:json',
-    name: '/inspectionDetailBefore',
+    path: '/inspectAdvance/:json',
+    name: '/inspectAdvance',
     meta: {
       auth: true
     },
-    component: () => import('@src/views/inspection/InspectionDetailBefore')
+    component: () => import('@src/views/inspect/InspectAdvance')
   },
   /** 检查订单详情 */
   {
-    path: '/inspectionDetail/:json',
-    name: '/inspectionDetail',
+    path: '/inspectDetail/:json',
+    name: '/inspectDetail',
     meta: {
       auth: true
     },
-    component: () => import('@src/views/inspection/InspectionDetail')
+    component: () => import('@src/views/inspect/InspectDetail')
   }
 ]
 

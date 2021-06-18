@@ -2,27 +2,21 @@
   <div class="doctor">
     <div class="doctor-logo">
       <van-image round
-                 v-bind:src="doctorInfo.photoDoc"></van-image>
+                 v-bind:src="doctor.photoDoc"></van-image>
     </div>
     <div class="doctor-body">
       <div class="doctor-name">
-        {{ doctorInfo.doctorName }}
-        <span class="doctor-small">
-          {{ doctorInfo.doctorTitle }}
-        </span>
+        {{ doctor.doctorName }}
+        <span class="doctor-small">{{ doctor.doctorTitle }}</span>
         <span class='type-tag'
-              v-if="typeText">{{typeText}}</span>
-        <van-image v-if="serviceType==='image'|| serviceType === 'returnVisit'"
-                   :src="require('@src/assets/images/icons/icon_01_01_06.jpg')"></van-image>
-        <van-image v-if="serviceType==='video'"
-                   :src="require('@src/assets/images/icons/icon_01_01_07.jpg')"></van-image>
+              v-if="type">{{type}}</span>
       </div>
 
       <div class="doctor-hospitalName">
         <span class="doctor-small">
-          {{ doctorInfo.netdeptChild }} |
+          {{ doctor.netdeptChild }} |
         </span>
-        {{ doctorInfo.hospitalName }}
+        {{ doctor.hospitalName }}
       </div>
     </div>
   </div>
@@ -32,9 +26,18 @@
 export default {
   name: 'DoctorCard',
   props: {
-    doctorInfo: Object,
-    serviceType: String,
-    typeText: String
+    doctor: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    type: {
+      type: String,
+      default() {
+        return ''
+      }
+    }
   }
 }
 </script>

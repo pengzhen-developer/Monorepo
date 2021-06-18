@@ -5,8 +5,8 @@
       <div class="item"
            v-for="(item,index) in list"
            v-bind:key="index">
-        <span>{{item.itemName}}</span>
-        <peace-price v-bind:price="item.itemPrice"
+        <span>{{item.comboName}}</span>
+        <peace-price v-bind:price="sumComboPrice(item.itemList)"
                      v-bind:transformOrigin="'right'"></peace-price>
       </div>
       <div class="item">
@@ -18,15 +18,13 @@
         </span>
       </div>
     </div>
-    <template v-if="showFooter">
-      <div class="footer before"
-           v-if="!orderNo">完成挂号缴费后，可支付检查项目</div>
-      <div class="footer"
-           v-on:click="goToInspectionPage"
-           v-else>
-        立即查看 >
-      </div>
-    </template>
+    <div class="footer before"
+         v-if="cmd === 'remind'">完成挂号缴费后，可支付检查项目</div>
+    <div class="footer"
+         v-on:click="goToInspectionPage"
+         v-if="cmd === 'view'">
+      立即查看 >
+    </div>
 
   </div>
 </template>
@@ -34,17 +32,25 @@
 <script>
 import peace from '@src/library'
 export default {
-  name: 'InspectionCard',
+  name: 'InspectCard',
   props: {
     list: Array,
     totalPrice: String,
-    orderNo: String,
-    orderId: String,
-    showFooter: Boolean
+    cmd: String,
+    inspectId: String
   },
   methods: {
+    sumComboPrice(itemList) {
+      let sum = 0
+      if (itemList && itemList.length > 0) {
+        sum = itemList.reduce((sum, cur) => {
+          return Number(sum) + Number(cur.itemPrice)
+        }, 0)
+      }
+      return sum
+    },
     goToInspectionPage() {
-      const json = peace.util.encode({ orderId: this.orderId })
+      const json = peace.util.encode({ orderId: this.inspectId })
       if (this.orderNo) {
         this.gotoOrderDetail(json)
       } else {

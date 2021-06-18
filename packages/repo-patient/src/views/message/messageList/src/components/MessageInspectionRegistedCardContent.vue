@@ -27,7 +27,7 @@ export default {
   methods: {
     onClickDetail() {
       let params = {
-        orderId: 'sdfsdfvrru'
+        orderId: this.message.content.data.checkRegOrderId
       }
 
       peace.service.inquiry.getCheckRegisterOrderDetail(params).then((res) => {
@@ -40,10 +40,10 @@ export default {
       })
     },
     gotoOrderBefore(json) {
-      this.$router.push(`/inspectionRegisteredBeforeDetail/${json}`)
+      this.$router.push(`/inspectRegisterAdvance/${json}`)
     },
     gotoOrderDetail(json) {
-      this.$router.push(`/inspectionRegisteredDetail/${json}`)
+      this.$router.push(`/inspectRegisterDetail/${json}`)
     }
   }
 }
