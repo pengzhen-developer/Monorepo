@@ -56,6 +56,8 @@ import MessageConsultationCardContent from './MessageConsultationCardContent'
 import MessageRecipeCardContent from './MessageRecipeCardContent'
 import MessageReferralCardContent from './MessageReferralCardContent'
 import MessageCheckCardContent from './MessageCheckCardContent'
+import MessageInspectRegisterCardContent from './MessageInspectRegisterCardContent'
+import MessageInspectCardContent from './MessageInspectCardContent'
 import MessageVideoContent from './MessageVideoContent'
 import MessageAudioContent from './MessageAudioContent'
 
@@ -70,6 +72,8 @@ export default {
     MessageRecipeCardContent,
     MessageReferralCardContent,
     MessageCheckCardContent,
+    MessageInspectRegisterCardContent,
+    MessageInspectCardContent,
     MessageVideoContent,
     MessageAudioContent
   },
@@ -168,6 +172,8 @@ export default {
         [Constant.INQUIRY_MESSAGE_TYPE.评价提示]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.服务提醒]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.审核处方通过]: MessageSystemContent,
+        [Constant.INQUIRY_MESSAGE_TYPE.检验挂号单提醒]: MessageSystemContent,
+        [Constant.INQUIRY_MESSAGE_TYPE.检验单提醒]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.病历]: MessageCaseCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.处方]: MessageRecipeCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.问诊卡片]: MessageInquiryCardContent,
@@ -175,6 +181,8 @@ export default {
         [Constant.INQUIRY_MESSAGE_TYPE.转诊单]: MessageReferralCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.转诊卡片]: MessageReferralCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.检查单]: MessageCheckCardContent,
+        [Constant.INQUIRY_MESSAGE_TYPE.检验挂号单]: MessageInspectRegisterCardContent,
+        [Constant.INQUIRY_MESSAGE_TYPE.检验单]: MessageInspectCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.视频通话]: MessageVideoContent,
         [Constant.INQUIRY_MESSAGE_TYPE.视频异常]: MessageVideoContent
       }
@@ -195,6 +203,8 @@ export default {
         Constant.INQUIRY_MESSAGE_TYPE.退诊,
         Constant.INQUIRY_MESSAGE_TYPE.取消问诊,
         Constant.INQUIRY_MESSAGE_TYPE.服务提醒,
+        Constant.INQUIRY_MESSAGE_TYPE.检验挂号单提醒,
+        Constant.INQUIRY_MESSAGE_TYPE.检验单提醒,
         Constant.INQUIRY_MESSAGE_TYPE.审核处方通过
       ]
 
