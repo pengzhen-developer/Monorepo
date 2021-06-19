@@ -1,62 +1,46 @@
 <template>
   <div class="page"
-       v-if="firstLoad">
-    <div class="consult-detatil"
-         :style="{'margin-bottom':payBottomHeight}">
+       v-if="!loading.get">
+    <div class="consult-detatil">
+
       <div class="module top">
         <div class="top-title">
-          {{ internalData.orderStatusTxt }}
-          <div class='type-tag'>检验</div>
+          {{ model.orderStatusTxt }}
+          <div class='type-tag'>检验挂号</div>
         </div>
         <div class="status-message">
-          {{ orderStatusMessage }}
+          {{ model.checkRegisteringOrderMsg }}
         </div>
       </div>
 
-      <!--医生名片-->
-      <div class="module"
-           v-if="internalData.doctorInfo">
-        <DoctorCard v-bind:doctorInfo="internalData.doctorInfo"></DoctorCard>
+      <div class="module">
+        <DoctorCard v-bind:doctor="doctorInfo"
+                    v-bind:type="'检验挂号单'"></DoctorCard>
       </div>
 
-      <!--订单内容-->
       <div class="module order">
-
-        <div class="module-item"
-             v-if="internalData.familyInfo">
+        <div class="module-item">
           <div class="title">个人信息</div>
-          <FamilyCard v-bind:familyInfo="internalData.familyInfo"></FamilyCard>
+          <FamilyCard v-bind:family="familyInfo"></FamilyCard>
         </div>
-        <!-- 检验信息 -->
         <div class="module-item">
           <div class="title">检验信息</div>
-          <div class="module-item-content">
-            <div class="module-item-label auto">开立时间：</div>
-            <div class="module-item-value">{{internalData.createdTime}}</div>
-          </div>
-          <div class="module-item-content">
-            <div class="module-item-label auto">执行科室：</div>
-            <div class="module-item-value">{{internalData.doctorDep}}</div>
-          </div>
+          <InspectInfo v-bind:department="model.execDept"
+                       v-bind:time="model.makeTime"></InspectInfo>
         </div>
-        <!--费用明细-->
         <div class="module-item">
           <div class="title mt16">费用明细</div>
           <div class="brief">
-            <!-- 检验单卡片 -->
-            <InspectCard v-bind:list="internalData.checkOrderDetails"
-                         v-bind:totalPrice="internalData.totalMoney"
-                         v-bind:orderNo="internalData.orderNo"
-                         v-bind:orderId="internalData.orderId"></InspectCard>
-
+            <InspectCost v-bind:inspect="inspectList"></InspectCost>
           </div>
         </div>
       </div>
+
       <!-- 订单收费明细 -->
       <div class="module message"
-           v-if="moneyRecord.length>0">
+           v-if="model.moneyRecord.length>0">
         <div class="module-item-content message size-14"
-             v-for="(item,index) in moneyRecord"
+             v-for="(item, index) in model.moneyRecord"
              :key="index">
           <div class="module-item-label">{{item.name}}：</div>
           <div class="module-item-value">
@@ -68,25 +52,14 @@
           </div>
         </div>
       </div>
-      <div class="module message"
-           v-else>
-        <div class="module-item-content message size-14">
-          <div class="module-item-label">订单费用：</div>
-          <div class="module-item-value">
-            <peace-price v-bind:price="internalData.totalMoney"
-                         v-bind:transformOrigin="'right'"
-                         v-bind:size="14"></peace-price>
-          </div>
-        </div>
-      </div>
 
       <!--  自费支付-->
       <div class="module money">
-        <div class="brief right">自费支付：
+        <div class="brief right">自费金额：
           <div class="money">
-            <span v-if="internalData.refundTime "
+            <span v-if="model.payStatus === 3"
                   style="margin-right:-20px;">（已退款）</span>
-            <peace-price v-bind:price="  internalData.payStatus===ENUM.PAY_STATUS.未支付  ? internalData.payMoney:internalData.orderMoney"
+            <peace-price v-bind:price="model.payStatus > 1 ? model.payMoney:model.orderMoney"
                          v-bind:transformOrigin="'right'"
                          v-bind:size="16"></peace-price>
           </div>
@@ -97,36 +70,31 @@
       <div class="module">
         <div class="module-item-content size-14">
           <div class="module-item-label">订单编号：</div>
-          <div class="module-item-value">{{ internalData.orderNo }}</div>
+          <div class="module-item-value">{{ model.orderNo }}</div>
         </div>
         <div class="module-item-content size-14">
           <div class="module-item-label">订单时间：</div>
-          <div class="module-item-value">{{ internalData.orderTime }}</div>
+          <div class="module-item-value">{{ model.createdTime | formatDate }}</div>
         </div>
-        <template v-if="internalData.paymentType">
+        <template v-if="model.payStatus > 0">
           <div class="module-item-content start size-14">
             <div class="module-item-label">支付方式：</div>
-            <div class="module-item-value">{{paymentTypeText}}</div>
+            <div class="module-item-value">{{model.paymentType}}</div>
           </div>
           <div class="module-item-content size-14">
             <div class="module-item-label">支付时间：</div>
-            <div class="module-item-value">{{ internalData.payTime }}</div>
+            <div class="module-item-value">{{ model.payTime | formatDate }}</div>
           </div>
         </template>
         <div class="module-item-content size-14"
-             v-if="internalData.orderStatus== ENUM.ORDER_STATUS.已取消">
+             v-if="model.orderStatus === 2">
           <div class="module-item-label">取消时间：</div>
-          <div class="module-item-value">{{ internalData.cancelTime }}</div>
-        </div>
-        <div class="module-item-content size-14"
-             v-if="internalData.refundTime">
-          <div class="module-item-label">退款时间：</div>
-          <div class="module-item-value">{{ internalData.refundTime }}</div>
+          <div class="module-item-value">{{ model.cancelTime | formatDate }}</div>
         </div>
       </div>
       <!-- 联系客服 -->
       <div class="module phone"
-           v-if="canShowPhoneBox"
+           v-if="model.doctorInfo.serviceTel"
            @click="callPhone">
         <div class="module-item">
           <van-image :src="require('@src/assets/images/ic_call_default.png')"></van-image>
@@ -135,39 +103,37 @@
       </div>
 
     </div>
-    <!-- footer -->
-    <template>
-      <!-- <div class="footer fixedBottom"
-           v-if="canShowCancelBottom">
-        <div class="footer-btn wait-btn"
-             @click="showCancellPop(internalData)">
-          {{internalData.inquiryInfo.serviceType=='returnVisit'?'取消预约':'取消订单'}}</div>
-      </div> -->
-      <div class="count-down"
-           v-bind:style="{'bottom':footerHeight}"
-           v-if="canShowPayBottom">
+
+    <!-- orderStatus 1：待支付 2：已取消 3：已完成 -->
+    <!-- payStatus 0：未支付 1：已支付 2：退款中 3：已退款 -->
+    <div class="page-bottom-h100"
+         v-if="model.orderStatus === 1"></div>
+    <div class="page-bottom page-bottom-h100"
+         v-if="model.orderStatus === 1">
+
+      <div class="count-down">
         <span>订单 </span>
-        <van-count-down millisecond
-                        @finish="finish(internalData)"
-                        :time="internalData.time"
-                        format="mm:ss" />
+        <van-count-down v-if="model.countdown > 0"
+                        millisecond
+                        :time="model.countdown"
+                        format="mm:ss"
+                        @finish="finishHander" />
         <span> 后自动关闭</span>
       </div>
-      <div class="pay fixedBottom"
-           v-if="canShowPayBottom">
+      <div class="pay">
         <div class="pay-item">
           <div class="money">
             <span>应付金额 :</span>
-            <peace-price v-bind:price="internalData.orderMoney"
+            <peace-price v-bind:price="model.orderMoney"
                          v-bind:size="18"></peace-price>
           </div>
         </div>
         <div class="pay-item">
           <van-button class="is__small"
                       round
-                      @click="showCancellPop(internalData)">取消订单</van-button>
+                      @click="showCancelDialog">取消订单</van-button>
           <peace-button class="is__small"
-                        @click="goToPay(internalData)"
+                        @click="pay"
                         round
                         type="primary"
                         throttle
@@ -176,328 +142,187 @@
           </peace-button>
         </div>
       </div>
-    </template>
-
-    <!-- 确认支付弹框 -->
-    <ExpenseDetail v-model="dialog.visible"
-                   @changeFlag="changeFlag"
-                   :info="dialog.data"></ExpenseDetail>
+    </div>
 
     <!-- 电话弹框 -->
-    <template>
-      <CallPhone v-model="phoneDialog.visible"
-                 :phone="phoneDialog.data.phone"></CallPhone>
-    </template>
+    <CallPhone v-model="phoneDialog.visible"
+               :phone="phoneDialog.phone"></CallPhone>
+
+    <!-- 确认支付弹框 -->
+    <ExpenseDetail v-model="payDialog.visible"
+                   @changeFlag="changeFlag"
+                   :info="payDialog.data"></ExpenseDetail>
+
+    <!-- 取消申请发票提示 -->
+    <ApplyForInvoice v-model="invoiceDialog.visible"
+                     :message="invoiceDialog.data.message"></ApplyForInvoice>
 
   </div>
 </template>
 
 <script>
 import peace from '@src/library'
-
 import Vue from 'vue'
-import { Dialog, CountDown } from 'vant'
+import { Dialog, Toast, CountDown } from 'vant'
 Vue.use(CountDown)
-
-import ExpenseDetail from '@src/views/components//ExpenseDetail'
-import CallPhone from '@src/views/components/CallPhone'
+Vue.use(Toast)
 
 import DoctorCard from './components/DoctorCard.vue'
 import FamilyCard from './components/FamilyCard.vue'
-import InspectCard from './components/InspectCard.vue'
-const ENUM = {
-  // 支付类型
-  // wxpay（微信）
-  // alipay（支付宝）
-  // yibaopay（医保支付）
-  PAYMENT_TYPE: {
-    微信支付: 'wxpay',
-    支付宝支付: 'alipay',
-    医保卡支付: 'yibaopay'
-  },
-  /** 支付状态 */
-  PAY_STATUS: {
-    未支付: 0,
-    已支付: 1,
-    退款中: 2,
-    已退款: 3
-  },
-  /** 订单状态   1：待支付 2：已取消 3：已完成*/
-  ORDER_STATUS: {
-    待支付: 1,
-    已取消: 2,
-    已完成: 3
-  },
+import InspectInfo from './components/InspectInfo'
+import InspectCost from './components/InspectCost.vue'
 
-  OREDER_STATUS_TEXT: {
-    1: '请及时缴费，完成后到执行科室进行',
-    2: '订单已取消，如遇紧急情况请及时就医',
-    3: '祝您身体健康'
-  },
-  /** isShowCancelButton 0不显示1显示 */
-  CANCEL_BUTTON_STATUS: {
-    不显示: 0,
-    显示: 1
-  }
-}
+import CallPhone from '@src/views/components/CallPhone'
+import ExpenseDetail from '@src/views/components//ExpenseDetail'
+import ApplyForInvoice from '@src/views/components/ApplyForInvoice'
+
 export default {
   components: {
     DoctorCard,
     FamilyCard,
-    InspectCard,
-
+    InspectInfo,
+    InspectCost,
     ExpenseDetail,
     CallPhone,
+    ApplyForInvoice,
 
     [Dialog.Component.name]: Dialog.Component
   },
 
-  props: {
-    data: {
-      type: Object,
-      default() {
-        return undefined
-      }
-    }
-  },
-
   data() {
     return {
-      ENUM: ENUM,
-      internalData: {},
-      firstLoad: false,
-      footerHeight: '0px',
+      loading: {
+        get: true,
+        pay: false
+      },
+      model: {},
+      // 医生信息
+      doctorInfo: {},
+      // 患者信息
+      familyInfo: {},
+      // 检验单信息
+      inspectList: [],
+
       phoneDialog: {
         visible: false,
-        data: {
-          phone: ''
-        }
+        phone: ''
       },
 
-      dialog: {
+      payDialog: {
+        visible: false,
+        data: {}
+      },
+
+      invoiceDialog: {
         visible: false,
         data: {}
       }
     }
   },
-  watch: {
-    data: {
-      handler() {
-        this.internalData = this.data
-      },
-      immediate: true
-    },
-    canShowPayBottom: {
-      handler() {
-        this.$nextTick(() => {
-          const element = document.querySelector('.pay')
-          const countDownEle = document.querySelector('.count-down')
-          this.footerHeight = element ? element.clientHeight + 'px' : '0px'
-          this.payBottomHeight = element && countDownEle ? element.clientHeight + countDownEle.clientHeight + 8 + 'px' : '0px'
-        })
-      },
-      immediate: true
+  computed: {
+    // 检验卡片类型
+    inspectCmd() {
+      return this.model.payStatus > 0 ? 'view' : 'remind'
     }
   },
-  computed: {
-    moneyRecord() {
-      const list = this.internalData?.moneyRecord || []
-      if (!Array.isArray(list)) {
-        return []
-      }
-      return list
-    },
-
-    paymentTypeText() {
-      return Object.keys(ENUM.PAYMENT_TYPE).find((key) => ENUM.PAYMENT_TYPE[key] === this.internalData.paymentType)
-    },
-
-    orderStatusMessage() {
-      return this.ENUM.OREDER_STATUS_TEXT[this.internalData.orderStatus]
-    },
-    canShowPayBottom() {
-      return this.internalData?.orderStatus === ENUM.ORDER_STATUS.待支付
-    },
-
-    canShowPhoneBox() {
-      return true
-      // return this.phoneDialog?.data?.phone
+  filters: {
+    formatDate: (timestamp) => {
+      return new Date(timestamp * 1000).toDate().formatDate('yyyy-MM-dd HH:mm:ss')
     }
   },
 
   activated() {
-    this.get()
+    this.getDetail()
   },
 
   methods: {
+    // 获取检验单详情
+    getDetail() {
+      const params = peace.util.decode(this.$route.params.json)
+      peace.service.inquiry
+        .getCheckOrderDetail(params)
+        .then((res) => {
+          // 倒计时
+          res.data.countdown = (res.data.expireTime - res.data.currentTime) * 1000
+
+          this.model = res.data
+          this.doctorInfo = res.data?.doctorInfo || {}
+          this.familyInfo = res.data?.familyInfo || {}
+          this.inspectList = res.data?.checkRegisteringOrderDetails || []
+        })
+        .finally(() => {
+          this.loading.get = false
+        })
+    },
+    // 联系客服
     callPhone() {
+      this.phoneDialog.phone = this.model.doctorInfo.serviceTel
       this.phoneDialog.visible = true
     },
-
     changeFlag() {
-      this.dialog.visible = false
-      this.get()
-    },
-
-    get() {
+      this.payDialog.visible = false
       this.getDetail()
     },
-    finish(data) {
-      if (!this.canShowPayBottom) return
-      data.inquiryInfo.time = 0
-      this.cancelInquiryOrder(data.orderInfo.orderNo)
-    },
-    cancelInquiryOrder(orderNo) {
-      let params = {
-        orderNo: orderNo,
-        cancelType: 2
-      }
-      peace.service.patient.cancel(params).finally(() => {
-        this.getDetail()
+    // 倒计时结束回调
+    finishHander() {
+      Toast.loading({
+        mask: true,
+        duration: 1000,
+        message: '订单刷新中...'
       })
-    },
 
-    goToPay(data) {
-      let order = data.orderInfo
-      let totalMoney = order.totalMoney
-      if (!Number(totalMoney)) {
-        this.getDetail()
-        return
-      }
-      let orderNo = order.orderNo
-      peace.wx.pay({ orderNo }, null, this.getDetail, this.getDetail)
+      this.cancel('auto')
     },
-    getDetail() {
-      let params = {
-        orderId: 'ardcfrtrew'
-      }
-
-      peace.service.inquiry.getCheckOrderDetail(params).then((res) => {
-        this.internalData = res.data
-        this.firstLoad = true
-      })
-    },
-
-    showCancellPop(item) {
+    showCancelDialog() {
       Dialog.confirm({
         title: '温馨提示',
-        message: '是否确认取消咨询？'
+        message: '是否确认取消？'
       })
         .then(() => {
-          const params = {
-            orderNo: item.orderNo
+          this.cancel('hand')
+        })
+        .catch(() => {})
+    },
+    // 取消
+    cancel(type = 'auto') {
+      let params = {
+        orderId: this.model.orderId,
+        cancelType: type == 'auto' ? 2 : 1 // 1手动 2自动
+      }
+      peace.service.inquiry
+        .cancelcheckOrder(params)
+        .then(() => {
+          if (type == 'auto') {
+            this.getDetail()
+          } else {
+            peace.util.alert('取消成功')
+            this.getDetail()
           }
-          peace.service.patient
-            .cancel(params)
-            .then((res) => {
-              peace.util.alert(res.msg)
-
-              this.get()
-            })
-            .catch((res) => {
-              if (res.data.code == '202') {
-                this.invoiceDialog.visible = true
-                this.invoiceDialog.data.message = res.data.msg
-              } else {
-                setTimeout(() => {
-                  this.get()
-                }, 1500)
-              }
-            })
         })
-        .catch(() => {
-          // on cancel
+        .catch((res) => {
+          if (res.data.code == '202') {
+            this.invoiceDialog.visible = true
+            this.invoiceDialog.data.message = res.data.msg
+          } else {
+            setTimeout(() => {
+              this.getDetail()
+            }, 1500)
+          }
         })
+    },
+    // 支付
+    pay() {
+      if (this.loading.pay) {
+        return false
+      }
+      this.loading.pay = true
+      peace.wx.pay({ orderNo: this.model.orderNo }, null, this.getDetail, this.getDetail)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-//footer
-
-.fixedBottom {
-  width: 100%;
-  background-color: #fff;
-  display: flex;
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
-  box-shadow: 0px -1px 1px 0px rgba(51, 51, 51, 0.16);
-}
-
-.footer {
-  height: 80px;
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  padding: 8px 16px 24px;
-  .footer-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    border-radius: 40px;
-    height: 48px;
-    padding: 12px 0;
-    font-size: 18px;
-    font-weight: 500;
-    line-height: normal;
-    &.chat-btn {
-      color: #fff;
-      background: rgba(0, 202, 173, 1);
-      border: 1px solid rgba(0, 198, 174, 1);
-    }
-    &.wait-btn {
-      color: #999;
-      border: 1px solid #ccc;
-    }
-    &:first-child {
-      margin-right: 12px;
-    }
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-}
-.count-down {
-  position: fixed;
-  left: 0;
-  width: 100%;
-  height: 36px;
-  font-size: 12px;
-  background: #fefceb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #f96a0e;
-  .van-count-down {
-    color: #f96a0e;
-  }
-  > span {
-    margin: 0 3px;
-  }
-}
-.pay {
-  padding: 24px 16px;
-  justify-content: space-between;
-  .pay-item {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    .money {
-      color: #000;
-      font-size: 16px;
-      .peace-price {
-        color: #f2223b;
-        font-size: 18px;
-        font-weight: 600;
-      }
-    }
-  }
-}
 .module-item-content {
   display: flex;
   align-items: center;
@@ -715,6 +540,59 @@ export default {
     width: 100%;
     .money {
       color: #f2223b;
+    }
+  }
+}
+
+.page-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 64px;
+  z-index: 100;
+  background-color: #ffffff;
+}
+
+.page-bottom-h64 {
+  height: 64px !important;
+}
+
+.page-bottom-h100 {
+  height: 100px !important;
+}
+.count-down {
+  width: 100%;
+  height: 36px;
+  font-size: 12px;
+  background: #fefceb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f96a0e;
+  .van-count-down {
+    color: #f96a0e;
+  }
+  > span {
+    margin: 0 3px;
+  }
+}
+.pay {
+  display: flex;
+  padding: 16px;
+  justify-content: space-between;
+  .pay-item {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    .money {
+      color: #000;
+      font-size: 16px;
+      .peace-price {
+        color: #f2223b;
+        font-size: 18px;
+        font-weight: 600;
+      }
     }
   }
 }

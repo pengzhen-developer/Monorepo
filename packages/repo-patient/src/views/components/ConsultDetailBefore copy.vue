@@ -167,15 +167,87 @@
         </div>
       </div>
 
-      <div class="pay-card-wrap">
-        <PayCard v-bind:doctorId="params.doctorId"
-                 v-bind:familyId="params.familyId"
-                 v-bind:familyName="familyInfo.name"
-                 v-bind:payType="payType"
-                 v-bind:payInfo="payInfo"
-                 v-bind:deduction="deductionList"
-                 v-bind:equitiesId="params.patientEquitiesId"
-                 v-on:update="updatePayInfo"></PayCard>
+      <div class="module info">
+        <!-- 订单金额 -->
+        <div class="brief">
+          <div class="brief-left">
+            订单金额
+          </div>
+          <div class="brief-right">
+            <peace-price :price="params.price"
+                         transformOrigin="right"
+                         size="16"
+                         prefixSize="16"></peace-price>
+          </div>
+        </div>
+        <!-- 支付方式 -->
+        <div class="brief">
+          <div class="brief-left">
+            支付方式
+          </div>
+          <div class="brief-right"
+               @click="choosePayment">
+            <van-image :src="paymentDialog.data.icon"></van-image>
+            <span>{{paymentDialog.data.label}}</span>
+            <van-image :src="require('@src/assets/images/ic_right.png')"></van-image>
+          </div>
+        </div>
+        <!-- 选中服务包 -->
+        <div class="brief"
+             v-if="servicesList.length>0&&hasSelectedServicePackage&&paymentDialog.data.value==='servicePackage'">
+          <div class="brief-left">服务包名称</div>
+          <div class="brief-right"
+               :class="{'checked':servicePackageDialog.data.servicePackageId,'unchecked':!servicePackageDialog.data.servicePackageId}"
+               @click="showServicePackageDialog">
+            <span>{{servicePackageDialog.data.servicePackageName||'请选择'}}</span>
+            <van-image :src="require('@src/assets/images/ic_right.png')"
+                       v-if="servicePackageDialog.data.servicePackageId"></van-image>
+          </div>
+        </div>
+        <div class="brief text-gery"
+             v-if="servicesList.length>0&&hasSelectedServicePackage&&paymentDialog.data.value==='servicePackage'">
+          <div class="brief-left">权益名称</div>
+          <div class="brief-right"
+               :class="{'checked':servicePackageDialog.data.patientEquitiesId,'unchecked':!servicePackageDialog.data.patientEquitiesId}">
+            <span>{{servicePackageDialog.data.patientEquitiesName||'请选择'}}</span>
+          </div>
+        </div>
+        <!-- 选中医保 -->
+        <div class="brief"
+             v-if="canShowYibao&&paymentDialog.data.value==='yibaopay'">
+          <div class="brief-left">
+            <span>医保卡号</span>
+          </div>
+          <div class="brief-right"
+               :class="{'checked':yibaoText,'unchecked':!yibaoText}"
+               @click="chooseYibao">
+            <span>{{yibaoText||'请选择'}}</span>
+            <van-image :src="require('@src/assets/images/ic_right.png')"></van-image>
+          </div>
+        </div>
+        <!-- <div class="brief"
+             v-if="yibaoText">
+          <div class="brief-left">医保类型:</div>
+          <div class="brief-right"
+               :class="{'checked':yibaoTypeText,'unchecked':!yibaoTypeText}"
+               @click="chooseYibaoType">{{yibaoTypeText||'请选择'}}
+          </div>
+        </div> -->
+        <!-- 选中商保 -->
+
+        <!-- 自费金额 -->
+        <div class="brief"
+             v-if="canShowPayMoney">
+          <div class="brief-left">
+            自费金额
+          </div>
+          <div class="brief-right red">
+            <peace-price :price="payMoney"
+                         transformOrigin="right"
+                         size="16"
+                         prefixSize="16"></peace-price>
+          </div>
+        </div>
       </div>
 
       <!-- 预售订单 - 非当日-->
@@ -201,23 +273,63 @@
                     @click="imagePreview.visible = false" />
       </template>
     </van-image-preview>
+    <!-- 医保 -->
 
+    <YibaoCaedSelect v-model="showCard"
+                     :info="info"
+                     @onSuccess="onSuccess"></YibaoCaedSelect>
+    <!-- 医保类型-->
+    <SelectYiBaoType v-model="yibaoTypeDialog.visible"
+                     :medCardId="yibaoTypeDialog.medCardId"
+                     @onSuccess="selectYibaoTypeCallback"
+                     @onCancel="seleecYibaoCancel"></SelectYiBaoType>
+
+    <!-- 选择抵扣 -->
+    <SelectDeduction v-model="paymentDialog.visible"
+                     :info="paymentDialog.data"
+                     :list="paymentList"
+                     @onSuccess="selectPaymentCallback"></SelectDeduction>
     <!-- 确认支付弹框 -->
     <ExpenseDetail v-model="dialog.visible"
                    :info="dialog.data"></ExpenseDetail>
+
+    <!-- 选择服务包权益 -->
+    <SelectServicePackage v-model="servicePackageDialog.visible"
+                          :info="servicePackageDialog.data"
+                          :list="servicesList"
+                          @onSuccess="SelectServicePackageCallback"></SelectServicePackage>
 
   </div>
 </template>
 
 <script>
-import PayCard from '@src/views/components/PayCard.vue'
-import ExpenseDetail from '@src/views/components/ExpenseDetail'
+import YibaoCaedSelect from '@src/views/components/YibaoCardSelect'
+import SelectYiBaoType from '@src/views/components/YibaoTypeSelect'
+import ExpenseDetail from '@src/views/components//ExpenseDetail'
 import InquiryStageMark from '@src/views/components/InquiryStageMark'
+import SelectServicePackage from '@src/views/components/SelectServicePackage'
+import SelectDeduction from '@src/views/components/SelectDeduction'
 
 import peace from '@src/library'
 
 import { Dialog } from 'vant'
 const ENUM = {
+  // 支付类型
+  // wxpay（微信）
+  // alipay（支付宝）
+  // yibaopay（医保支付）
+  PAYMENT_TYPE: {
+    微信支付: 'wxpay',
+    支付宝支付: 'alipay',
+    医保支付: 'yibaopay'
+  },
+  PAYMENT_LIST: [
+    { value: 'servicePackage', label: '服务包', icon: require('@src/assets/images/ic_pay_service.png') },
+    { value: 'wxpay', label: '微信支付', icon: require('@src/assets/images/ic_pay_wechat_payment.png') },
+    { value: 'yibaopay', label: '医保卡', icon: require('@src/assets/images/ic_pay_yiyao.png') },
+    { value: 'shangbaopay', label: '商保权益抵扣', icon: require('@src/assets/images/ic_pay_shangbao.png') }
+  ],
+
   /** 问诊状态 */
   INQUIRY_STATUS: {
     待支付: 1,
@@ -242,10 +354,14 @@ const ENUM = {
 export default {
   components: {
     [Dialog.Component.name]: Dialog.Component,
-    PayCard,
+    YibaoCaedSelect,
     ExpenseDetail,
-    InquiryStageMark
+    InquiryStageMark,
+    SelectYiBaoType,
+    SelectServicePackage,
+    SelectDeduction
   },
+
   props: {
     data: {
       type: Object,
@@ -254,12 +370,14 @@ export default {
       }
     }
   },
+
   data() {
     return {
       ENUM: ENUM,
       loading: true,
       doctorInfo: {},
       familyInfo: {},
+      insuranceConfig: {},
       imagePreview: {
         visible: false,
         position: 0,
@@ -267,48 +385,53 @@ export default {
       },
       params: {},
       sending: false,
+      firstVisitData: null,
+      canSeeMoreCase: false,
+      showCard: false,
+      hasFirstVisitInfo: false,
+      yibaoText: '',
+      yibaoTypeText: '',
+      yibaoInfo: {},
       dialog: {
         visible: false,
         data: {}
       },
+      yibaoTypeDialog: {
+        visible: false,
+        medCardId: ''
+      },
+      paymentDialog: {
+        visible: false,
+        data: {}
+      },
+      servicesList: [],
 
-      // 抵扣信息
-      deductionList: [],
-      // 默认选中微信支付
-      payType: 'wxpay',
-      // 支付信息
-      payInfo: {
-        orderMoney: 0,
-
-        // 所选医保卡卡号
-        medCardNo: '',
-        // 医保待遇类型
-        medicalTreatmentType: '',
-        // 医保待遇类型名称
-        medicalTreatmentTypeName: '',
-        // 疾病种类
-        diseases: '',
-        // 疾病种类名称
-        diseasesName: '',
-
-        // 所选服务包ID
-        servicePackageId: '',
-        // 所选服务包名称
-        servicePackageName: '',
-        // 所选权益ID
-        patientEquitiesId: '',
-        // 所选权益名称
-        patientEquitiesName: '',
-
-        // H5 商保未开放，暂不考虑
-        // 所选商保ID
-        sbInsuranceId: '',
-        // 所选商保名称
-        sbInsuranceName: ''
+      hasSelectedServicePackage: false,
+      servicePackageDialog: {
+        visible: false,
+        data: {
+          patientEquitiesId: '',
+          patientEquitiesName: '',
+          servicePackageId: '',
+          servicePackageName: ''
+        }
       }
     }
   },
   computed: {
+    paymentList() {
+      let list = peace.util.deepClone(this.ENUM.PAYMENT_LIST)
+      if (!this.canShowYibao) {
+        list = list.filter((item) => item.value !== 'yibaopay')
+      }
+      if (!this.canShowShangbao) {
+        list = list.filter((item) => item.value !== 'shangbaopay')
+      }
+      if (this.servicesList.length == 0) {
+        list = list.filter((item) => item.value !== 'servicePackage')
+      }
+      return list
+    },
     pregnancyText() {
       return this.ENUM.WOMAN_TYPE_TEXT_MAP[this.params.isPregnancy]
     },
@@ -329,6 +452,12 @@ export default {
         sourceCode: this.params?.sourceCode,
         sourceItemCode: this.params?.sourceItemCode
       }
+    },
+    payMoney() {
+      return this.canShowPayMoney && this.paymentDialog.data.value === 'wxpay' ? this.params.price : '0.00'
+    },
+    canShowPayMoney() {
+      return this.paymentDialog.data.value === 'servicePackage' || this.paymentDialog.data.value === 'wxpay' ? true : false
     },
     canShowTip() {
       //报道  复诊且预约日期大于今日
@@ -359,71 +488,75 @@ export default {
     hasReturnVisitInfo() {
       return this.params?.confirmIllness
     },
+
     canShowSupplementaryInfo() {
       return this.params && (this.params.affectedImages.length > 0 || this.pregnancyText || this.params.allergicHistory)
+    },
+    canShowYibao() {
+      return this.params?.serviceType == 'returnVisit' && this.insuranceConfig?.medicalInsuranceConfig != null ? true : false
+    },
+    canShowShangbao() {
+      //H5暂无商保对接
+      // return this.insuranceConfig?.commercialInsuranceConfig!=null ? true : false
+      return false
+    },
+    canShowDiscount() {
+      //咨询暂无优惠活动
+      return false
+    }
+  },
+
+  activated() {
+    this.getFamilyDoctorInfo()
+
+    //V1.7.0仅安排咨询订单支持服务包
+    if (this.inquriyStyle == 'inquiry') {
+      this.getServicePackageRecord()
     }
   },
   created() {
-    let json = peace.util.decode(this.$route.params.json)
-    // 初始化医保、商保信息
-    json.cardno = ''
-    json.divisionId = ''
-
-    this.params = json
-    this.payInfo.orderMoney = this.params.price
+    this.paymentDialog.data = this.paymentList.find((item) => item.value === 'wxpay')
+    this.params = peace.util.decode(this.$route.params.json)
     this.onEmits()
-  },
-  activated() {
-    this.getFamilyDoctorInfo()
   },
   destroyed() {
     this.offEmits()
   },
   methods: {
-    // 获取家人及医生信息
-    getFamilyDoctorInfo() {
-      const params = {
-        familyId: this.params.familyId,
-        doctorId: this.params.doctorId,
-        consultingType: this.params.consultingType, //image 图文 video 视频 returnVisit复诊续方
-        orderType: this.params.consultingType == 'returnVisit' ? 2 : 1, //1.咨询 2.复诊 3.购药
-        appointmentDate: this.params.appointmentDate, //预约时间
-        appointmentStartTime: this.params.appointmentStartTime, //预约开始时间
-        appointmentEndTime: this.params.appointmentEndTime, //预约结束时间
-        sourceCode: this.params.sourceCode //预约号源编码
-      }
-      peace.service.inquiry
-        .getFamilyDoctorInfo(params)
-        .then((res) => {
-          this.doctorInfo = res.data.doctorInfo
-          this.familyInfo = res.data.familyInfo
-          this.getPermissionsDeduction()
-        })
-        .finally(() => {
-          this.loading = false
-        })
-    },
-    //获取权益抵扣列表
-    getPermissionsDeduction() {
-      const params = {
-        doctorId: this.doctorInfo.doctorId,
-        nethospitalId: this.doctorInfo.nethospitalId,
-        orderType: this.params.serviceType == 'returnVisit' ? 2 : 1 // 1咨询 2复诊 3购药 4挂号 5服务包 6检验挂号订单 7检验单
-      }
-      peace.service.inquiry.getPermissionsDeduction(params).then((res) => {
-        this.deductionList = res.data || []
-      })
-    },
     onEmits() {
       $peace.$on('SelectSourceAgain', this.selectSourceCallback)
     },
+
     offEmits() {
       $peace.$off('SelectSourceAgain')
+    },
+    showServicePackageDialog() {
+      this.servicePackageDialog.visible = true
+    },
+    selectPaymentCallback(res) {
+      if (res) {
+        this.paymentDialog.data = Object.assign({}, this.paymentDialog.data, res)
+      }
+    },
+    SelectServicePackageCallback(res) {
+      if (res) {
+        this.servicePackageDialog.data = Object.assign({}, this.servicePackageDialog.data, res)
+      }
     },
     selectSourceCallback(res) {
       if (res) {
         this.params = Object.assign({}, this.params, res)
       }
+    },
+    //获取权益抵扣列表
+    getPermissionsDeduction() {
+      const params = {
+        doctorId: this.doctorInfo.doctorId,
+        nethospitalId: this.doctorInfo.nethospitalId
+      }
+      peace.service.inquiry.getPermissionsDeduction(params).then((res) => {
+        console.log(res)
+      })
     },
     //修改号源
     changeSource() {
@@ -437,6 +570,37 @@ export default {
         emit: 'SelectSourceAgain'
       })
       this.$router.push(`/appoint/doctor/appointDoctorSelect/${json}`)
+    },
+
+    onSuccess(result) {
+      if (result.checked == true) {
+        // this.yibaoTypeDialog.visible = true
+
+        // if (this.yibaoInfo.medCardNo != result.yibaoInfo.medCardNo) {
+        //   this.yibaoTypeText = ''
+        // }
+
+        this.yibaoInfo = result.yibaoInfo
+        // this.yibaoTypeDialog.medCardId = this.yibaoInfo.id
+        this.yibaoText = this.yibaoInfo.medCardNo
+      }
+    },
+    selectYibaoTypeCallback(result) {
+      this.yibaoInfo = Object.assign(this.yibaoInfo, result.yibaoInfo)
+      this.yibaoTypeText = this.yibaoInfo.yibaoTypeText
+    },
+    seleecYibaoCancel() {
+      // this.yibaoTypeText = ''
+    },
+    choosePayment() {
+      this.paymentDialog.visible = true
+    },
+    chooseYibao() {
+      this.showCard = true
+    },
+    chooseYibaoType() {
+      this.yibaoTypeDialog.visible = true
+      this.yibaoTypeDialog.medCardId = this.yibaoInfo.id
     },
     gotoCaseDetail(dataNo) {
       const token = $peace.cache.get($peace.type.USER.INFO).loginInfo.accessToken
@@ -454,68 +618,32 @@ export default {
       this.$router.push(`/components/FirstVisitList/${json}`)
     },
 
-    // 更新支付信息
-    updatePayInfo(result) {
-      this.payType = result.payType
-      this.payInfo = result.payInfo
-
-      this.params.patientEquitiesId = result.payInfo.patientEquitiesId
-      this.params.medCardNo = result.payInfo.medCardNo
-      this.params.cardno = result.payInfo.sbInsuranceId
-    },
-
     apply() {
-      // if (this.payInfo.medCardNo && !this.payInfo.medicalTreatmentType) {
-      //   peace.util.alert('请选择医保类型')
-      //   return false
+      // if (this.yibaoText && !this.yibaoTypeText) {
+      //   return peace.util.alert('请选择医保类型')
       // }
-
-      let errMsg = ''
-      // servicePackage 服务包抵扣 yibaopay 医保支付 shangbaopay 商保
-      switch (this.payType) {
-        case 'servicePackage':
-          errMsg = !this.params.patientEquitiesId ? '请选择服务包' : ''
-          break
+      this.sending = true
+      let params = peace.util.deepClone(this.params)
+      params.medCardNo = this.yibaoInfo.medCardNo || ''
+      params.patientEquitiesId = this.hasSelectedServicePackage == false ? '' : this.servicePackageDialog.data.patientEquitiesId
+      let message = ''
+      switch (this.paymentDialog.data.value) {
         case 'yibaopay':
-          errMsg = !this.params.medCardNo ? '请填写医保卡号' : ''
+          params.patientEquitiesId = ''
+          message = !params.medCardNo ? '请填写医保卡号' : ''
           break
-        case 'shangbaopay':
-          errMsg = !this.params.cardno ? '请选择商保权益' : ''
+        case 'servicePackage':
+          params.medCardNo = ''
+          message = !params.patientEquitiesId ? '请选择服务包' : ''
           break
         default:
-          errMsg = ''
+          params.patientEquitiesId = ''
+          params.medCardNo = ''
           break
       }
-
-      if (errMsg) {
-        peace.util.alert(errMsg)
-        return false
-      }
-
-      if (this.sending) {
-        return false
-      }
-      this.sending = true
-
-      let params = peace.util.deepClone(this.params)
-      // 服务包、医保、商保互斥
-      // servicePackage 服务包抵扣 yibaopay 医保支付 shangbaopay 商保
-      if (this.payType === 'servicePackage') {
-        params.medCardNo = ''
-        params.cardno = ''
-      }
-      if (this.payType === 'wxpay') {
-        params.medCardNo = ''
-        params.cardno = ''
-        params.patientEquitiesId = ''
-      }
-      if (this.payType === 'yibaopay') {
-        params.cardno = ''
-        params.patientEquitiesId = ''
-      }
-      if (this.payType === 'shangbaopay') {
-        params.patientEquitiesId = ''
-        params.medCardNo = ''
+      if (message) {
+        this.sending = false
+        return peace.util.alert(message)
       }
 
       peace.service.inquiry
@@ -625,6 +753,61 @@ export default {
       // this.$router.replace(`/components/ExpenseDetail/${json}`)
     },
 
+    getFamilyDoctorInfo() {
+      const params = {
+        familyId: this.params.familyId,
+        doctorId: this.params.doctorId,
+        consultingType: this.params.consultingType, //image 图文 video 视频 returnVisit复诊续方
+        orderType: this.params.consultingType == 'returnVisit' ? 2 : 1, //1.咨询 2.复诊 3.购药
+        appointmentDate: this.params.appointmentDate, //预约时间
+        appointmentStartTime: this.params.appointmentStartTime, //预约开始时间
+        appointmentEndTime: this.params.appointmentEndTime, //预约结束时间
+        sourceCode: this.params.sourceCode //预约号源编码
+      }
+      peace.service.inquiry
+        .getFamilyDoctorInfo(params)
+        .then((res) => {
+          this.doctorInfo = res.data.doctorInfo
+          this.familyInfo = res.data.familyInfo
+          this.insuranceConfig = res.data.insuranceConfig
+          this.getPermissionsDeduction()
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    getServicePackageRecord() {
+      const params = {
+        doctorId: this.params.doctorId
+      }
+      peace.service.servicePackage.getRecord(params).then((res) => {
+        this.servicesList = res.data || []
+        if (this.servicesList.length > 0) {
+          this.paymentDialog.data = this.paymentList.find((item) => item.value === 'servicePackage')
+          this.hasSelectedServicePackage = true
+        }
+
+        //若是直接从医生主页进行问诊且该用户有可用服务包
+        if (!this.params.patientEquitiesId && this.servicesList.length > 0) {
+          this.servicePackageDialog.data.servicePackageId = this.servicesList[0].servicePackageId
+          this.servicePackageDialog.data.servicePackageName = this.servicesList[0].servicePackageName
+          this.servicePackageDialog.data.patientEquitiesId = this.servicesList[0].equities[0].patientEquitiesId
+          this.servicePackageDialog.data.patientEquitiesName = this.servicesList[0].equities[0].equitiesName
+          this.servicePackageDialog.data.patientEquitiesName = `${this.servicesList[0].equities[0].equitiesName}(剩余${this.servicesList[0].equities[0].residueNum}次)`
+        } else {
+          res.data.map((item) => {
+            item.equities.map((e) => {
+              if (e.patientEquitiesId == this.params.patientEquitiesId) {
+                this.servicePackageDialog.data.servicePackageId = item.servicePackageId
+                this.servicePackageDialog.data.servicePackageName = item.servicePackageName
+                this.servicePackageDialog.data.patientEquitiesId = e.patientEquitiesId
+                this.servicePackageDialog.data.patientEquitiesName = `${e.equitiesName}(剩余${e.residueNum}次)`
+              }
+            })
+          })
+        }
+      })
+    },
     viewImage(file, fileIndex, files) {
       this.imagePreview.visible = true
       this.imagePreview.position = fileIndex
@@ -635,10 +818,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pay-card-wrap {
-  margin-bottom: 8px;
-}
-
 .info-title {
   font-size: 16px;
   font-family: PingFangSC-Regular, PingFang SC;

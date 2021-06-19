@@ -1,6 +1,6 @@
 <template>
   <div class="page"
-       v-if="loading.get">
+       v-if="!loading.get">
     <div class="consult-detatil">
 
       <div class="module">
@@ -12,7 +12,7 @@
 
         <div class="module-item">
           <div class="title">个人信息</div>
-          <FamilyCard v-bind:familyInfo="patientInfo"></FamilyCard>
+          <FamilyCard v-bind:family="familyInfo"></FamilyCard>
         </div>
 
         <div class="module-item">
@@ -26,13 +26,15 @@
 
       </div>
 
-      <PayCard v-bind:doctorId="model.doctorId"
-               v-bind:familyId="model.familyId"
-               v-bind:familyName="patientInfo.name"
-               v-bind:payType="payType"
-               v-bind:payInfo="payInfo"
-               v-bind:deduction="deductionList"
-               v-on:update="updatePayInfo"></PayCard>
+      <div class="pay-card-wrap">
+        <PayCard v-bind:doctorId="model.doctorId"
+                 v-bind:familyId="model.familyId"
+                 v-bind:familyName="familyInfo.name"
+                 v-bind:payType="payType"
+                 v-bind:payInfo="payInfo"
+                 v-bind:deduction="deductionList"
+                 v-on:update="updatePayInfo"></PayCard>
+      </div>
 
       <!-- footer -->
       <div class="pay fixedBottom">
@@ -46,9 +48,9 @@
       </div>
 
       <!-- 确认支付弹框 -->
-      <ExpenseDetail v-model="dialog.visible"
+      <ExpenseDetail v-model="payDialog.visible"
                      @changeFlag="changeFlag"
-                     :info="dialog.data"></ExpenseDetail>
+                     :info="payDialog.data"></ExpenseDetail>
 
     </div>
   </div>
@@ -61,8 +63,8 @@ import { Dialog } from 'vant'
 import DoctorCard from './components/DoctorCard'
 import FamilyCard from './components/FamilyCard'
 import InspectCard from './components/InspectCard'
-import PayCard from './components/PayCard'
-import ExpenseDetail from '@src/views/components//ExpenseDetail'
+import PayCard from '@src/views/components/PayCard'
+import ExpenseDetail from '@src/views/components/ExpenseDetail'
 
 export default {
   components: {
@@ -84,7 +86,7 @@ export default {
       // 医生信息
       doctorInfo: {},
       // 患者信息
-      patientInfo: {},
+      familyInfo: {},
       // 检验单信息
       inspectList: [],
       // 抵扣信息
@@ -106,11 +108,6 @@ export default {
         // 疾病种类名称
         diseasesName: '',
 
-        // 所选商保ID
-        sbInsuranceId: '',
-        // 所选商保名称
-        sbInsuranceName: '',
-
         // 所选服务包ID
         servicePackageId: '',
         // 所选服务包名称
@@ -118,11 +115,17 @@ export default {
         // 所选权益ID
         patientEquitiesId: '',
         // 所选权益名称
-        equityName: '',
-        // 权益剩余次数
-        residueNum: ''
+        patientEquitiesName: '',
+
+        // H5 商保未开放，暂不考虑
+        // 所选商保ID
+        sbInsuranceId: '',
+        // 所选商保名称
+        sbInsuranceName: ''
       },
-      dialog: {
+
+      // 支付弹窗
+      payDialog: {
         visible: false,
         data: {}
       }
@@ -141,8 +144,9 @@ export default {
         .then((res) => {
           this.model = res.data
           this.doctorInfo = res.data?.doctorInfo || {}
-          this.patientInfo = res.data?.familyInfo || {}
+          this.familyInfo = res.data?.familyInfo || {}
           this.inspectList = res.data?.checkRegisteringOrderDetails || []
+          this.payInfo.orderMoney = res.data?.totalMoney || 0
           this.getDeduction()
         })
         .finally(() => {
@@ -160,117 +164,72 @@ export default {
         this.deductionList = res.data || []
       })
     },
-    updatePayInfo() {},
-    // 跳转检验挂号单详情
-    goInspectRegisterDetail() {
-      let json = peace.util.encode({
-        orderId: this.model.orderId
-      })
-      this.$router.replace(`/inspectRegisterDetail/${json}`)
+    // 更新支付信息
+    updatePayInfo(result) {
+      this.payType = result.payType
+      this.payInfo = result.payInfo
     },
 
     changeFlag() {
-      this.dialog.visible = false
-      this.get()
+      this.payDialog.visible = false
+      this.getDetail()
     },
 
     submit() {
-      // if (this.yibaoText && !this.yibaoTypeText) {
-      //   return peace.util.alert('请选择医保类型')
+      // if (this.payInfo.medCardNo && !this.payInfo.medicalTreatmentType) {
+      //   peace.util.alert('请选择医保类型')
+      //   return false
       // }
-      this.sending = true
-      let params = peace.util.deepClone(this.params)
-      params.medCardNo = this.yibaoInfo.medCardNo || ''
-      params.patientEquitiesId = this.hasSelectedServicePackage == false ? '' : this.servicePackageDialog.data.patientEquitiesId
-      let message = ''
-      switch (this.paymentDialog.data.value) {
+
+      // 检验挂号单只有 微信支付、医保支付
+      let errMsg = ''
+      switch (this.payType) {
         case 'yibaopay':
-          params.patientEquitiesId = ''
-          message = !params.medCardNo ? '请填写医保卡号' : ''
+          errMsg = !this.payInfo.medCardNo ? '请填写医保卡号' : ''
+          break
+        case 'shangbaopay':
+          errMsg = !this.payInfo.sbInsuranceId ? '请选择商保权益' : ''
           break
         case 'servicePackage':
-          params.medCardNo = ''
-          message = !params.patientEquitiesId ? '请选择服务包' : ''
+          errMsg = !this.payInfo.patientEquitiesId ? '请选择服务包权益' : ''
           break
         default:
-          params.patientEquitiesId = ''
-          params.medCardNo = ''
+          errMsg = ''
           break
       }
-      if (message) {
-        this.sending = false
-        return peace.util.alert(message)
+
+      if (errMsg) {
+        peace.util.alert(errMsg)
+        return false
+      }
+
+      if (this.loading.submit) {
+        return false
+      }
+      this.loading.submit = true
+
+      let params = {
+        orderId: this.model.orderId,
+        medCardNo: this.payType === 'yibaopay' ? this.payInfo.medCardNo : '',
+        cardNo: this.payType === 'shangbaopay' ? this.payInfo.sbInsuranceId : '',
+        paymentType: this.payType
       }
 
       peace.service.inquiry
-        .apply(params)
+        .submitCheckRegisteringOrder(params)
         .then((res) => {
-          // 订单提交成功
-          if (res.data.errorState === 0) {
-            // 需要支付，跳转支付
-            if (res.data.inquiryStatus === 1) {
-              if (res.data.inquiryType == 'returnVisit' && res.data.isCurrentDate == 2) {
-                this.goToInspectionRegisteredDetail(res.data)
-              } else {
-                this.gotoExpenseDetailPage(res.data)
-              }
-            }
-            // 不需要支付，跳转订单
-            else {
-              this.goToInspectionRegisteredDetail(res.data)
-            }
+          let json = {
+            money: res.data.orderMoney, //自费金额
+            moneyRecord: res.data.moneyRecord, //费用明细
+            orderNo: res.data.orderNo,
+            orderId: this.model.orderId,
+            orderType: 'inspectAdvance'
           }
-
-          // 订单提交失败
-          // errorState:1 存在未支付订单， 跳转订单
-          if (res.data.errorState === 1) {
-            return Dialog.confirm({
-              title: '提示',
-              message: res.msg,
-              confirmButtonText: '去看看'
-            }).then(() => {
-              this.goToConsultDetail(res.data)
-            })
-          }
-
-          // errorState:2 存在未结束订单，跳转咨询
-          if (res.data.errorState === 2) {
-            return Dialog.confirm({
-              title: '提示',
-              message: res.msg,
-              confirmButtonText: '继续咨询'
-            }).then(() => {
-              this.goToMessage(res.data)
-            })
-          }
-        })
-        .catch((res) => {
-          //203  号源不足 或 号源过期
-          if (res.data.code == '203') {
-            return Dialog.confirm({
-              title: '提示',
-              message: res.data.msg,
-              confirmButtonText: '确定'
-            }).then(() => {
-              this.changeSource()
-            })
-          }
-          //205 医保不可用
-          else if (res.data.code == '205') {
-            return Dialog.confirm({
-              title: '提示',
-              message: res.data.msg,
-              confirmButtonText: '确定',
-              showCancelButton: false
-            }).then(() => {
-              this.goToConsultDetail(res.data.data)
-            })
-          } else {
-            peace.util.alert(res.data.msg)
-          }
+          this.payDialog.data = json
+          this.payDialog.visible = true
         })
         .finally(() => {
-          this.sending = false
+          this.loading.submit = false
         })
     }
   }
@@ -278,26 +237,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.fixedBottom {
-  width: 100%;
-  background-color: #fff;
-  display: flex;
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
-  box-shadow: 0px -1px 1px 0px rgba(51, 51, 51, 0.16);
-}
-
-.pay {
-  padding: 8px 16px 24px;
-  justify-content: space-between;
-  .pay-item {
-    display: flex;
-    align-items: center;
-    flex: 1;
-  }
+.page {
+  box-sizing: border-box;
+  min-height: 100%;
+  padding-bottom: 82px;
+  background-color: #f5f5f5;
 }
 
 .module-item {
@@ -314,11 +258,6 @@ export default {
   }
 }
 
-.page {
-  min-height: 100%;
-  background-color: #f5f5f5;
-  padding-bottom: 0.1px;
-}
 .consult-detatil {
   background-color: #f5f5f5;
   color: #333;
@@ -395,6 +334,32 @@ export default {
       top: 50%;
       transform: translateY(-50%);
     }
+  }
+}
+
+.pay-card-wrap {
+  margin-bottom: 8px;
+}
+
+.fixedBottom {
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  box-shadow: 0px -1px 1px 0px rgba(51, 51, 51, 0.16);
+}
+
+.pay {
+  padding: 8px 16px 24px;
+  justify-content: space-between;
+  .pay-item {
+    display: flex;
+    align-items: center;
+    flex: 1;
   }
 }
 </style>

@@ -1,31 +1,30 @@
 <template>
-
   <van-popup v-model="show"
              @click-overlay="cancel"
              round
              position="bottom">
     <div class="header">抵扣方式</div>
     <div class="content">
-      <van-radio-group v-model="paymentId">
+      <van-radio-group v-model="payType">
         <van-cell-group>
-          <van-cell :title="item.name"
-                    clickable
-                    v-for="item in list"
-                    :key="item.type"
-                    @click="paymentId=item.type">
-            <template #right-icon>
-              <van-radio :name="item.type">
-                <template #icon="props">
-                  <van-image style="width:24px;"
-                             :src="props.checked?activeIcon:inactiveIcon"></van-image>
-                </template>
-              </van-radio>
-
-            </template>
-          </van-cell>
+          <template v-for="item in deduction">
+            <van-cell v-if="item.status"
+                      :key="item.type"
+                      v-bind:title="item.name"
+                      clickable
+                      @click="payType = item.type">
+              <template #right-icon>
+                <van-radio :name="item.type">
+                  <template #icon="props">
+                    <van-image style="width:24px;"
+                               :src="props.checked ? activeIcon : inactiveIcon"></van-image>
+                  </template>
+                </van-radio>
+              </template>
+            </van-cell>
+          </template>
         </van-cell-group>
       </van-radio-group>
-
     </div>
     <div class="footer">
       <van-button round
@@ -36,23 +35,29 @@
 
 <script>
 export default {
-  name: 'PaymentModel',
+  name: 'PayType',
   model: {
     prop: 'showModel',
-    event: 'changePaymentModelDialog'
+    event: 'changePayTypeDialog'
   },
   props: {
     showModel: {
       type: Boolean,
       required: true
     },
-    list: {
+    deduction: {
       type: Array,
-      required: true
+      required: true,
+      default() {
+        return []
+      }
     },
-    info: {
-      type: Object,
-      required: true
+    type: {
+      type: String,
+      required: true,
+      default() {
+        return ''
+      }
     }
   },
   watch: {
@@ -64,10 +69,10 @@ export default {
       },
       immediate: true
     },
-    'info.value': {
+    type: {
       handler(val) {
         if (val) {
-          this.paymentId = this.info.type
+          this.payType = this.type
         }
       },
       immediate: true
@@ -76,7 +81,7 @@ export default {
   data() {
     return {
       show: false,
-      paymentId: '',
+      payType: '',
       activeIcon: require('@src/assets/images/ic_choose.png'),
       inactiveIcon: require('@src/assets/images/ic_choose_not.png')
     }
@@ -85,14 +90,13 @@ export default {
   methods: {
     cancel() {
       this.show = false
-      this.$emit('changePaymentModelDialog', false)
-      this.$emit('onCancel')
+      this.$emit('changePayTypeDialog', false)
+      this.$emit('cancel')
     },
     submit() {
       this.show = false
-      this.$emit('changePaymentModelDialog', false)
-      const model = this.list.find((item) => item.type === this.paymentId)
-      this.$emit('onSuccess', model)
+      this.$emit('changePayTypeDialog', false)
+      this.$emit('success', this.payType)
     }
   }
 }

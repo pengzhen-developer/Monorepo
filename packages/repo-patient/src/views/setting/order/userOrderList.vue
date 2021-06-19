@@ -352,6 +352,133 @@
               </van-button>
             </div>
           </div>
+
+          <!-- 检验挂号 -->
+          <div class="order-item"
+               :key="index"
+               v-if="item.orderType=='checkRegisteringOrder'">
+            <div @click="goInspectRegisterDetailPage(item,index,'countDown_inspectregister_')">
+              <div class="order-item-doctor-info">
+                <van-image v-bind:src='item.doctorInfo.avartor'
+                           class="order-item-doctor-info-avatar"></van-image>
+                <div class="order-item-doctor-info-body">
+                  <div class="order-item-doctor-info-body-top">
+                    <div class="name">{{item.doctorInfo.name}}<span>{{item.doctorInfo.deptName}}</span></div>
+                    <div :class="['strip-eye','color-' + item.orderType + '-' +item.orderStatus]"
+                         style="color:#00c6ae;">
+                      {{item.orderStatusTxt}}
+                    </div>
+                  </div>
+                  <div :class="['order-tag','color-image']">检验挂号</div>
+                </div>
+              </div>
+              <div class="order-item-order-info">
+                <div class="order-item-order-info-item">
+                  <div class="order-item-order-info-item-key">就诊人：</div>
+                  <div class="order-item-order-info-item-val">{{item.familyInfo.name}}
+                    {{item.familyInfo.sex}}
+                    {{item.familyInfo.age}}</div>
+                </div>
+                <div class="order-item-order-info-item">
+                  <div class="order-item-order-info-item-key">订单金额：</div>
+                  <div class="order-item-order-info-item-val">
+                    <peace-price class="refund"
+                                 v-bind:price="item.totalMoney"></peace-price>
+                    <div v-if="item.payStatus === 3">
+                      <span style="margin-left:-4px;">(已退款</span>
+                      <peace-price v-bind:price="item.payMoney"></peace-price>
+                      <span style="margin-left:-4px;">)</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="order-item-order-info-item">
+                  <div class="order-item-order-info-item-key">下单时间：</div>
+                  <div class="order-item-order-info-item-val">{{item.createdTime | formatDate}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="order-item-order-bottom"
+                 v-if="item.orderStatus === 1">
+              <div class="count-down">
+                <span>订单关闭倒计时：</span>
+                <van-count-down millisecond
+                                @finish="finishHander(item,index)"
+                                :ref="'countDown_inspectregister_' + index"
+                                :time="item.time"
+                                format="mm:ss" />
+              </div>
+              <peace-button class="label blue"
+                            @click="goPay(item,index,'countDown_inspectregister_')"
+                            throttle
+                            :throttleTime="3000">
+                继续支付
+              </peace-button>
+            </div>
+          </div>
+
+          <!-- 检验 -->
+          <div class="order-item"
+               :key="index"
+               v-if="item.orderType=='checkOrder'">
+            <div @click="goInspectDetailPage(item,index,'countDown_inspect_')">
+              <div class="order-item-doctor-info">
+                <van-image v-bind:src='item.doctorInfo.avartor'
+                           class="order-item-doctor-info-avatar"></van-image>
+                <div class="order-item-doctor-info-body">
+                  <div class="order-item-doctor-info-body-top">
+                    <div class="name">{{item.doctorInfo.name}}<span>{{item.doctorInfo.deptName}}</span></div>
+                    <div :class="['strip-eye','color-' + item.orderType + '-' +item.orderStatus]"
+                         style="color:#00c6ae;">
+                      {{item.orderStatusTxt}}
+                    </div>
+                  </div>
+                  <div :class="['order-tag','color-image']">检验</div>
+                </div>
+              </div>
+              <div class="order-item-order-info">
+                <div class="order-item-order-info-item">
+                  <div class="order-item-order-info-item-key">就诊人：</div>
+                  <div class="order-item-order-info-item-val">{{item.familyInfo.name}}
+                    {{item.familyInfo.sex}}
+                    {{item.familyInfo.age}}</div>
+                </div>
+                <div class="order-item-order-info-item">
+                  <div class="order-item-order-info-item-key">订单金额：</div>
+                  <div class="order-item-order-info-item-val">
+                    <peace-price class="refund"
+                                 v-bind:price="item.totalMoney"></peace-price>
+                    <div v-if="item.payStatus === 3">
+                      <span style="margin-left:-4px;">(已退款</span>
+                      <peace-price v-bind:price="item.payMoney"></peace-price>
+                      <span style="margin-left:-4px;">)</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="order-item-order-info-item">
+                  <div class="order-item-order-info-item-key">下单时间：</div>
+                  <div class="order-item-order-info-item-val">{{item.createdTime | formatDate}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="order-item-order-bottom"
+                 v-if="item.orderStatus === 1">
+              <div class="count-down">
+                <span>订单关闭倒计时：</span>
+                <van-count-down millisecond
+                                @finish="finishHander(item,index)"
+                                :ref="'countDown_inspect_' + index"
+                                :time="item.time"
+                                format="mm:ss" />
+              </div>
+              <peace-button class="label blue"
+                            @click="goPay(item,index,'countDown_inspect_')"
+                            throttle
+                            :throttleTime="3000">
+                继续支付
+              </peace-button>
+            </div>
+          </div>
+
         </template>
       </div>
     </van-list>
@@ -448,6 +575,7 @@ export default {
       orderType: '',
       orderNo: '',
       inquiryId: '',
+      orderId: '',
 
       showInvoiceModel: false,
       receiptNumber: '',
@@ -455,6 +583,11 @@ export default {
       showQRCode: false,
       QRCodeURL: '',
       pickUpCode: ''
+    }
+  },
+  filters: {
+    formatDate: (timestamp) => {
+      return new Date(timestamp * 1000).toDate().formatDate('yyyy-MM-dd HH:mm:ss')
     }
   },
   activated() {
@@ -547,6 +680,16 @@ export default {
         peace.service.servicePackage.applyCancel(params).finally(() => {
           this.get('init')
         })
+      } else if (item.orderType == 'checkRegisteringOrder') {
+        const params = { orderId: item.orderId, cancelType: 2 }
+        peace.service.inquiry.cancelCheckRegisteringOrder(params).finally(() => {
+          this.get('init')
+        })
+      } else if (item.orderType == 'checkOrder') {
+        const params = { orderId: item.orderId, cancelType: 2 }
+        peace.service.inquiry.cancelcheckOrder(params).finally(() => {
+          this.get('init')
+        })
       }
       let data = JSON.parse(JSON.stringify(item))
       this.orderList.splice(index, 1, data)
@@ -561,6 +704,9 @@ export default {
       } else if (data.orderType == 'inquiry' || data.orderType == 'returnVisit') {
         this.orderNo = data.orderInfo.orderNo
         this.inquiryId = data.inquiryInfo.inquiryId
+      } else if (data.orderType == 'checkRegisteringOrder' || data.orderType == 'checkOrder') {
+        this.orderNo = data.orderNo
+        this.orderId = data.orderId
       }
       this.orderType = data.orderType
       peace.wx.pay({ orderNo: this.orderNo }, null, this.payCallback, this.payCallback)
@@ -572,6 +718,10 @@ export default {
         this.inquiryPayCallback()
       } else if (this.orderType == 'servicePackage') {
         this.servicePackagePayCallback()
+      } else if (this.orderType == 'checkRegisteringOrder') {
+        this.inspectRegisterPayCallback()
+      } else if (this.orderType == 'checkOrder') {
+        this.inspectPayCallback()
       }
     },
     registerPayCallback() {
@@ -587,6 +737,14 @@ export default {
         inquiryId: this.inquiryId
       })
       this.$router.replace(`/setting/userConsultDetail/${json}`)
+    },
+    inspectRegisterPayCallback() {
+      let json = peace.util.encode({ orderId: this.orderId })
+      this.$router.replace(`/inspectRegisterDetail/${json}`)
+    },
+    inspectPayCallback() {
+      let json = peace.util.encode({ orderId: this.orderId })
+      this.$router.replace(`/inspectDetail/${json}`)
     },
     get(type) {
       if (!this.timer) {
@@ -645,6 +803,18 @@ export default {
                 item.inquiryType = item.orderInfo.inquiryType == 'image' ? '图文咨询' : '视频咨询'
                 item.inquiryTypeStyle = item.orderInfo.inquiryType == 'image' ? 'image' : 'video'
               }
+            } else if (item.orderType == 'checkRegisteringOrder') {
+              if (item.expireTime > item.currentTime) {
+                item.time = item.expireTime - item.currentTime
+              }
+              item.inquiryType = '检验挂号'
+              item.inquiryTypeStyle = 'inspectregister'
+            } else if (item.orderType == 'checkOrder') {
+              if (item.expireTime > item.currentTime) {
+                item.time = item.expireTime - item.currentTime
+              }
+              item.inquiryType = '检验'
+              item.inquiryTypeStyle = 'inspect'
             }
           })
         }
@@ -772,6 +942,28 @@ export default {
         inquiryId: item.inquiryInfo.inquiryId
       })
       this.$router.push(`/setting/userConsultDetail/${json}`)
+    },
+    goInspectRegisterDetailPage(item, index, type) {
+      if (this.$refs[type + index] && this.$refs[type + index].length > 0) {
+        const countDown = this.$refs[type + index][0]
+        countDown.pause()
+      }
+
+      let json = peace.util.encode({
+        orderId: item.orderId
+      })
+      this.$router.replace(`/inspectRegisterDetail/${json}`)
+    },
+    goInspectDetailPage(item, index, type) {
+      if (this.$refs[type + index] && this.$refs[type + index].length > 0) {
+        const countDown = this.$refs[type + index][0]
+        countDown.pause()
+      }
+
+      let json = peace.util.encode({
+        orderId: item.orderId
+      })
+      this.$router.replace(`/inspectDetail/${json}`)
     },
     goOrderDetailPage(item, index, type) {
       if (this.$refs[type + index] && this.$refs[type + index].length > 0) {

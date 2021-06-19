@@ -154,8 +154,12 @@ export default {
         this.inquiryPayCallback()
       } else if (this.type == 'servicePackage') {
         this.servicePackagePayCallback()
-      } else {
+      } else if (this.type == 'drug') {
         this.drugPayCallback()
+      } else if (this.type == 'inspectAdvance') {
+        this.inspectAdvancePayCallback()
+      } else if (this.type == 'inspect') {
+        this.inspectPayCallback()
       }
     },
     servicePackagePayCallback() {
@@ -178,6 +182,14 @@ export default {
       const json = peace.util.encode({ orderNo: this.orderNo })
       this.$router.replace(`/order/userDrugDetail/${json}`)
     },
+    inspectAdvancePayCallback() {
+      const json = peace.util.encode({ orderId: this.info.orderId })
+      this.$router.replace(`/inspectRegisterDetail/${json}`)
+    },
+    inspectPayCallback() {
+      const json = peace.util.encode({ orderId: this.info.orderId })
+      this.$router.replace(`/inspectDetail/${json}`)
+    },
     finishHander() {
       if (this.type == 'register') {
         this.cancelRegisterOrder()
@@ -185,7 +197,7 @@ export default {
         this.cancelInquiryOrder()
       } else if (this.type == 'servicePackage') {
         this.cancelServicePackageOrder()
-      } else {
+      } else if (this.type == 'drug') {
         this.cancelDrugOrder()
       }
     },

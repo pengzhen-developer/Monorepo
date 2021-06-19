@@ -1,25 +1,12 @@
 <template>
   <div class="family">
     <div class="module-item-content">
-      <div class="module-item-label auto">姓名：</div>
-      <div class="module-item-value">{{family.name}}</div>
+      <div class="module-item-label auto">开立时间：</div>
+      <div class="module-item-value">{{time | formatDate}}</div>
     </div>
     <div class="module-item-content">
-      <div class="module-item-label auto">年龄：</div>
-      <div class="module-item-value">{{family.age }}</div>
-    </div>
-    <div class="module-item-content">
-      <div class="module-item-label auto">性别：</div>
-      <div class="module-item-value">{{family.sex}}
-      </div>
-    </div>
-    <div class="module-item-content"
-         v-if="family.guardianName">
-      <div class="module-item-label auto">监护人：</div>
-      <div class="module-item-value">{{family.guardianName}} |
-        {{family.guardianSex}} |
-        {{family.guardianAge}}
-      </div>
+      <div class="module-item-label auto">执行科室：</div>
+      <div class="module-item-value">{{department }}</div>
     </div>
 
   </div>
@@ -27,13 +14,24 @@
 
 <script>
 export default {
-  name: 'FamilyCard',
+  name: 'InspectInfo',
   props: {
-    family: {
-      type: Object,
+    department: {
+      type: String,
       default() {
-        return {}
+        return ''
       }
+    },
+    time: {
+      type: String,
+      default() {
+        return ''
+      }
+    }
+  },
+  filters: {
+    formatDate: (timestamp) => {
+      return new Date(timestamp * 1000).toDate().formatDate('yyyy-MM-dd HH:mm:ss')
     }
   }
 }

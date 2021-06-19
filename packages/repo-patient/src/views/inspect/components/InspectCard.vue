@@ -34,10 +34,30 @@ import peace from '@src/library'
 export default {
   name: 'InspectCard',
   props: {
-    list: Array,
-    totalPrice: String,
-    cmd: String,
-    inspectId: String
+    list: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    totalPrice: {
+      type: String,
+      default() {
+        return ''
+      }
+    },
+    cmd: {
+      type: String,
+      default() {
+        return ''
+      }
+    },
+    inspectId: {
+      type: String,
+      default() {
+        return ''
+      }
+    }
   },
   methods: {
     sumComboPrice(itemList) {
@@ -58,10 +78,10 @@ export default {
       }
     },
     gotoOrderBefore(json) {
-      this.$router.push(`/inspectionBeforeDetail/${json}`)
+      this.$router.push(`/inspectAdvance/${json}`)
     },
     gotoOrderDetail(json) {
-      this.$router.push(`/inspectionDetail/${json}`)
+      this.$router.push(`/inspectDetail/${json}`)
     }
   }
 }
