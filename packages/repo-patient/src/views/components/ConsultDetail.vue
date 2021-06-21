@@ -321,6 +321,8 @@
             <div class="module-item-label">支付方式：</div>
             <div class="module-item-value">{{paymentTypeText}}</div>
           </div>
+        </template>
+        <template v-if="internalData.orderInfo.payTime">
           <div class="module-item-content size-14">
             <div class="module-item-label">支付时间：</div>
             <div class="module-item-value">{{ internalData.orderInfo.payTime }}</div>
