@@ -53,8 +53,11 @@
         <el-form-item label="父节点编码： ">
           <el-select clearable
                      filterable
+                     remote
                      class="block"
                      v-model.trim="model.parentNode"
+                     :loading="remoteLoading"
+                     :remote-method="getRemoteList"
                      placeholder="请选择">
             <el-option v-for="item in source.parentNodeCodes"
                        :key="item.icd10Code"
@@ -93,6 +96,7 @@ export default {
   data() {
     return {
       isLoading: false,
+      remoteLoading: false,
       visible: this.value,
       model: {
         icd10Code: undefined,
@@ -115,9 +119,7 @@ export default {
 
   mounted() {
     this.$nextTick().then(() => {
-      Service.getPatientList().then((res) => {
-        this.source.parentNodeCodes = res.data
-      })
+      this.getRemoteList()
     })
   },
 
@@ -152,6 +154,14 @@ export default {
           this.$emit('refresh')
         })
         .finally(() => (this.isLoading = false))
+    },
+    getRemoteList(query) {
+      this.remoteLoading = true
+      Service.getPatientList(query)
+        .then((res) => {
+          this.source.parentNodeCodes = res.data
+        })
+        .finally(() => (this.remoteLoading = false))
     }
   }
 }

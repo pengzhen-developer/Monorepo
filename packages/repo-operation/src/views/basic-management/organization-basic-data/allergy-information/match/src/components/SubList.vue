@@ -71,13 +71,13 @@
         <PeaceTableColumn label="平台系统编码"
                           min-width="160px">
           <template slot-scope="scope">
-            {{ scope.row.platformClassCode || '--' }}
+            {{ scope.row.platformAllergyCode || '--' }}
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="平台过敏信息"
                           min-width="160px">
           <template slot-scope="scope">
-            {{ scope.row.platformClassName || '--' }}
+            {{ scope.row.platformAllergyName || '--' }}
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="配码状态"

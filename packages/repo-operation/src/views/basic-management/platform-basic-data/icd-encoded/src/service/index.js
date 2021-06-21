@@ -24,7 +24,6 @@ export default {
    * @param {*} params
    */
   addData(params) {
-
     const isMock = false
 
     const apiPath = 'platformDiagnosis'
@@ -44,7 +43,6 @@ export default {
    * @param {*} params
    */
   modifyData(params) {
-
     const isMock = false
 
     const apiPath = 'platformDiagnosis'
@@ -63,11 +61,10 @@ export default {
    *
    * @param {*} params
    */
-  getPatientList() {
-
+  getPatientList(word) {
     const isMock = false
 
-    const apiPath = `platformDiagnosis/listDiagnosis?code=`
+    const apiPath = `platformDiagnosis/listDiagnosis?code=${word ?? ''}`
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_IDIC + apiPath
 
@@ -76,7 +73,5 @@ export default {
     return Peace.http.get(requestApi).then((res) => {
       return res
     })
-  },
-
-
+  }
 }
