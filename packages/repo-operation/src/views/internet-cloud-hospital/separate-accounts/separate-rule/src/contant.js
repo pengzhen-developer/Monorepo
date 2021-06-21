@@ -10,6 +10,6 @@ export default {
     { key: 3, value: '购药订单' },
     { key: 5, value: '服务包订单' },
     { key: 6, value: '检验挂号订单' },
-    { key: 7, value: '检验单订单' }
+    { key: 7, value: '预约检验订单' }
   ]
 }

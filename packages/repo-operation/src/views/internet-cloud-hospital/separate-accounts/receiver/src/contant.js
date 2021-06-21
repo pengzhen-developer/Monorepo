@@ -10,6 +10,6 @@ export default {
     { value: 3, label: '购药订单' },
     { value: 5, label: '服务包订单' },
     { value: 6, label: '检验挂号订单' },
-    { value: 7, label: '检验单订单' }
+    { value: 7, label: '预约检验订单' }
   ]
 }
