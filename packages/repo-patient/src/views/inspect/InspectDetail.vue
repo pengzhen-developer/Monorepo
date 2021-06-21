@@ -6,16 +6,15 @@
       <div class="module top">
         <div class="top-title">
           {{ model.orderStatusTxt }}
-          <div class='type-tag'>检验挂号</div>
+          <div class='type-tag'>检验</div>
         </div>
         <div class="status-message">
-          {{ model.checkRegisteringOrderMsg }}
+          {{ model.checkOrderMsg }}
         </div>
       </div>
 
       <div class="module">
-        <DoctorCard v-bind:doctor="doctorInfo"
-                    v-bind:type="'检验挂号单'"></DoctorCard>
+        <DoctorCard v-bind:doctor="doctorInfo"></DoctorCard>
       </div>
 
       <div class="module order">
@@ -128,7 +127,7 @@
                          v-bind:size="18"></peace-price>
           </div>
         </div>
-        <div class="pay-item">
+        <div class="pay-item pay-justify-end">
           <van-button class="is__small"
                       round
                       @click="showCancelDialog">取消订单</van-button>
@@ -248,7 +247,7 @@ export default {
           this.model = res.data
           this.doctorInfo = res.data?.doctorInfo || {}
           this.familyInfo = res.data?.familyInfo || {}
-          this.inspectList = res.data?.checkRegisteringOrderDetails || []
+          this.inspectList = res.data?.checkOrderDetails || []
         })
         .finally(() => {
           this.loading.get = false
@@ -585,6 +584,9 @@ export default {
     display: flex;
     align-items: center;
     flex: 1;
+    &.pay-justify-end {
+      justify-content: flex-end;
+    }
     .money {
       color: #000;
       font-size: 16px;

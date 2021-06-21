@@ -14,8 +14,7 @@
       </div>
 
       <div class="module">
-        <DoctorCard v-bind:doctor="doctorInfo"
-                    v-bind:type="'检验挂号单'"></DoctorCard>
+        <DoctorCard v-bind:doctor="doctorInfo"></DoctorCard>
       </div>
 
       <div class="module order">
@@ -126,7 +125,7 @@
                          v-bind:size="18"></peace-price>
           </div>
         </div>
-        <div class="pay-item">
+        <div class="pay-item pay-justify-end">
           <van-button class="is__small"
                       round
                       @click="showCancelDialog">取消订单</van-button>
@@ -149,7 +148,7 @@
       <div class="pay">
         <div class="pay-item">
         </div>
-        <div class="pay-item">
+        <div class="pay-item pay-justify-end">
           <van-button class="is__small"
                       round
                       @click="showCancelDialog">取消订单</van-button>
@@ -596,6 +595,9 @@ export default {
     display: flex;
     align-items: center;
     flex: 1;
+    &.pay-justify-end {
+      justify-content: flex-end;
+    }
     .money {
       color: #000;
       font-size: 16px;

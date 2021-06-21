@@ -5,7 +5,7 @@
 
       <div class="module">
         <DoctorCard v-bind:doctor="doctorInfo"
-                    v-bind:type="'检验挂号单'"></DoctorCard>
+                    v-bind:type="'检验'"></DoctorCard>
       </div>
 
       <div class="module order">
@@ -143,7 +143,7 @@ export default {
   },
 
   methods: {
-    // 获取检验挂号单详情
+    // 获取检验单详情
     getDetail() {
       const params = peace.util.decode(this.$route.params.json)
       peace.service.inquiry
@@ -152,7 +152,7 @@ export default {
           this.model = res.data
           this.doctorInfo = res.data?.doctorInfo || {}
           this.familyInfo = res.data?.familyInfo || {}
-          this.inspectList = res.data?.checkRegisteringOrderDetails || []
+          this.inspectList = res.data?.checkOrderDetails || []
           this.payInfo.orderMoney = res.data?.totalMoney || 0
           this.getDeduction()
         })

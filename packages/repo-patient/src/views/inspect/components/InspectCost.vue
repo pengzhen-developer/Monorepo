@@ -35,7 +35,7 @@ export default {
   background: #ffffff;
   box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
-  padding: 0 16px;
+  padding: 0 16px 12px 16px;
   .header {
     font-size: 16px;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -58,11 +58,8 @@ export default {
     color: #333333;
     line-height: 24px;
     margin-bottom: 12px;
-    &:first-child {
-      margin-bottom: 8px;
-    }
     &:last-child {
-      margin-bottom: 11px;
+      margin-bottom: 0;
     }
     > span {
       &:first-child {

@@ -5,7 +5,7 @@
 
       <div class="module">
         <DoctorCard v-bind:doctor="doctorInfo"
-                    v-bind:type="'检验挂号单'"></DoctorCard>
+                    v-bind:type="'检验挂号'"></DoctorCard>
       </div>
 
       <div class="module order">

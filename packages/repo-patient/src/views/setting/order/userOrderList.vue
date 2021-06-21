@@ -59,7 +59,8 @@
                  v-if="item.orderStatus==1">
               <div class="count-down">
                 <span>订单关闭倒计时：</span>
-                <van-count-down millisecond
+                <van-count-down v-if="item.time > 0"
+                                millisecond
                                 @finish="finishHander(item,index)"
                                 :ref="'countDown_servicePackage_' + index"
                                 :time="item.time"
@@ -401,7 +402,8 @@
                  v-if="item.orderStatus === 1">
               <div class="count-down">
                 <span>订单关闭倒计时：</span>
-                <van-count-down millisecond
+                <van-count-down v-if="item.time > 0"
+                                millisecond
                                 @finish="finishHander(item,index)"
                                 :ref="'countDown_inspectregister_' + index"
                                 :time="item.time"
@@ -464,7 +466,8 @@
                  v-if="item.orderStatus === 1">
               <div class="count-down">
                 <span>订单关闭倒计时：</span>
-                <van-count-down millisecond
+                <van-count-down v-if="item.time > 0"
+                                millisecond
                                 @finish="finishHander(item,index)"
                                 :ref="'countDown_inspect_' + index"
                                 :time="item.time"
@@ -805,13 +808,13 @@ export default {
               }
             } else if (item.orderType == 'checkRegisteringOrder') {
               if (item.expireTime > item.currentTime) {
-                item.time = item.expireTime - item.currentTime
+                item.time = (item.expireTime - item.currentTime) * 1000
               }
               item.inquiryType = '检验挂号'
               item.inquiryTypeStyle = 'inspectregister'
             } else if (item.orderType == 'checkOrder') {
               if (item.expireTime > item.currentTime) {
-                item.time = item.expireTime - item.currentTime
+                item.time = (item.expireTime - item.currentTime) * 1000
               }
               item.inquiryType = '检验'
               item.inquiryTypeStyle = 'inspect'

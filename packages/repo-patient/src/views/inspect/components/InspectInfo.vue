@@ -23,7 +23,7 @@ export default {
       }
     },
     time: {
-      type: String,
+      type: [Number, String],
       default() {
         return ''
       }
