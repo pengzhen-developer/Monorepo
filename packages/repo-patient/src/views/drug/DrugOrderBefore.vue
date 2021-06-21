@@ -456,28 +456,30 @@ export default {
         this.yibaoInfo.medCardNo = this.order.MedicalCardNo
       }
 
-      let paymentType = ''
+      let paymentType = []
       //支付方式：wxpay（微信） shangbao（商保支付） yibaopay（医保支付）deliverypay（货到付款） shoppay（到店支付）
       //payMode 1 在线支付  2 到店支付  3 货到付款
 
       const price = this.order.TotalAmount
       switch (this.page.payIndex) {
         case 1:
-          if (price > 0) {
-            paymentType = 'wxpay'
+          if (this.shangbaoChecked) {
+            paymentType.push('shangbao')
+          } else if (this.yibaoChecked) {
+            paymentType.push('yibaopay')
+          } else {
+            if (price > 0) {
+              paymentType.push('wxpay')
+            }
           }
           break
         case 2:
-          paymentType = 'shoppay'
+          paymentType.push('shoppay')
           break
         case 3:
-          paymentType = 'deliverypay'
+          paymentType.push('deliverypay')
           break
       }
-
-      const shangbao = this.shangbaoChecked ? ',shangbao' : ''
-      const yibao = this.yibaoChecked ? ',yibaopay' : ''
-      paymentType = paymentType + shangbao + yibao
 
       if (!this.hasSubmitOrder) {
         peace.util.alert('请勿重复提交')
@@ -486,7 +488,7 @@ export default {
 
       this.hasSubmitOrder = false
       let params = {
-        paymentType,
+        paymentType: paymentType.join(','),
         jztClaimNo: this.order.jztClaimNo,
         drugStoreId: this.order.DrugStoreId,
         accessCode: this.order.AccessCode,

@@ -498,6 +498,9 @@ export default {
       this.sending = true
 
       let params = peace.util.deepClone(this.params)
+
+      params.paymentType = this.payType
+
       // 服务包、医保、商保互斥
       // servicePackage 服务包抵扣 yibaopay 医保支付 shangbaopay 商保
       if (this.payType === 'servicePackage') {
