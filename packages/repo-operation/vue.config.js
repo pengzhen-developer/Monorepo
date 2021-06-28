@@ -1,6 +1,7 @@
 // 配置请参考 https://cli.vuejs.org/config/#global-cli-config
 
 const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
   // https://cli.vuejs.org/config/#vue-config-js
@@ -17,6 +18,13 @@ module.exports = {
     // 移除 prefetch 插件
     config.plugins.delete('prefetch')
     config.plugins.delete('preload')
+    config.plugin('provide').use(webpack.ProvidePlugin, [
+      {
+        ['window.Quill']: 'quill/dist/quill.js',
+        ['Quill']: 'quill/dist/quill.js'
+      }
+    ])
+
     // 设置别名
     config.resolve.alias
       .set('@', path.join(__dirname, ''))
