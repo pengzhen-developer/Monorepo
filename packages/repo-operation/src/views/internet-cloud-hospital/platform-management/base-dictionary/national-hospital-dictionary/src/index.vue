@@ -70,8 +70,8 @@
                  :visible.sync="detailsDialog.visible"
                  title="医院详情"
                  v-if="detailsDialog.visible">
-      <HospitalInfo v-bind:data="detailsDialog.data"
-                    v-on:onClose="detailsDialog.visible=false"
+      <HospitalInfo v-bind:info="detailsDialog.data"
+                    v-on:close="detailsDialog.visible=false"
                     v-on:onSuccess="editSuccess"></HospitalInfo>
     </PeaceDialog>
 
@@ -121,12 +121,14 @@ export default {
       )
     },
     getDetails(data) {
-      this.detailsDialog.data = data
-      this.detailsDialog.visible = true
+      const params = { hospital_id: data.id }
+      Service.detailHospital(params).then((res) => {
+        this.detailsDialog.data = res.data
+        this.detailsDialog.visible = true
+      })
     },
 
     editSuccess() {
-      this.detailsDialog.visible = false
       this.get()
     }
   }

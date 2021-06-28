@@ -1,79 +1,61 @@
 <template>
-  <div class="info">
-    <div class="info-row">
-      <div class="info-row-label">
-        <span>医院编码</span>
-      </div>
-      <div class="info-row-content">
-        <el-input disabled
-                  readonly
-                  v-model="detail.code"></el-input>
-      </div>
-    </div>
-    <div class="info-row">
-      <div class="info-row-label">
-        <span>医院名称</span>
-      </div>
-      <div class="info-row-content">
-        <el-input @blur="update"
-                  v-model="detail.name"></el-input>
-      </div>
-    </div>
-    <div class="info-row">
-      <div class="info-row-label">
-        <span>简介</span>
-      </div>
-      <div class="info-row-content">
-        <el-input :autosize="{ minRows: 3 }"
-                  @blur="update"
-                  resize="none"
-                  type="textarea"
-                  v-model="detail.content"></el-input>
-      </div>
-    </div>
-    <div class="info-row">
-      <div class="info-row-label">
-        <span>地址</span>
-      </div>
-      <div class="info-row-content">
-        <el-input @blur="update"
-                  v-model="detail.address"></el-input>
-      </div>
-    </div>
-    <div class="info-row">
-      <div class="info-row-label">
-        <span>联系电话</span>
-      </div>
-      <div class="info-row-content">
-        <el-input @blur="update"
-                  v-model="detail.phone"></el-input>
-      </div>
-    </div>
-    <div class="info-row">
-      <div class="info-row-label">
-        <span>网站地址</span>
-      </div>
-      <div class="info-row-content">
-        <el-input @blur="update"
-                  v-model="detail.web_site"></el-input>
-      </div>
-    </div>
-    <div class="info-row">
-      <div class="info-row-label">
-        <span>所属区域</span>
-      </div>
-      <div class="info-row-content">
-        <el-input @blur="update"
-                  v-model="detail.area"></el-input>
-      </div>
-    </div>
-    <div class="inline-center mb-sm mt-lg">
-      <el-radio-group v-model="detail.is_show">
-        <el-radio :label="1">展示</el-radio>
-        <el-radio :label="2">不展示</el-radio>
-      </el-radio-group>
-    </div>
+
+  <div class="el-dialog__body">
+    <el-form label-position="right"
+             label-width="95px"
+             label-suffix="："
+             v-bind:model="detail">
+
+      <el-form-item label="医院编码">
+        <PeaceInput v-model.trim="detail.code"
+                    :disabled="true"></PeaceInput>
+      </el-form-item>
+
+      <el-form-item label="医院名称"
+                    prop="name">
+        <PeaceInput v-model.trim="detail.name"
+                    @blur="update"></PeaceInput>
+      </el-form-item>
+
+      <el-form-item label="简介">
+        <PeaceInput :autosize="{ minRows: 3 }"
+                    @blur="update"
+                    type="textarea"
+                    resize="none"
+                    v-model.trim="detail.content"></PeaceInput>
+      </el-form-item>
+
+      <el-form-item label="地址">
+        <PeaceInput v-model.trim="detail.address"
+                    @blur="update"></PeaceInput>
+      </el-form-item>
+
+      <el-form-item label="联系电话">
+        <PeaceInput v-model.trim="detail.phone"
+                    @blur="update"></PeaceInput>
+      </el-form-item>
+
+      <el-form-item label="网站地址">
+        <PeaceInput v-model.trim="detail.web_site"
+                    @blur="update"></PeaceInput>
+      </el-form-item>
+
+      <el-form-item label="所属区域">
+        <PeaceInput v-model.trim="detail.area"
+                    @blur="update"></PeaceInput>
+      </el-form-item>
+
+      <el-form-item>
+        <el-radio-group v-model="detail.is_show">
+          <el-radio :label="1">展示</el-radio>
+          <el-radio :label="2">不展示</el-radio>
+        </el-radio-group>
+      </el-form-item>
+
+    </el-form>
+
   </div>
+
 </template>
 <script>
 import Service from '../service/index'
@@ -141,15 +123,4 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-::v-deep .info-row {
-  margin-bottom: 10px;
-  &-label {
-    &:after {
-      display: none;
-    }
-  }
-  &-content {
-    padding-left: 20px;
-  }
-}
 </style>
