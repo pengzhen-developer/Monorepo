@@ -606,6 +606,8 @@ export default {
         appointmentEndTime: '',
         recordNo: ''
       },
+      // 首诊记录
+      firstOptionList: [],
       //病历列表
       caseList: [],
       // 附件
@@ -1059,6 +1061,7 @@ export default {
               temp[time] = list.filter((item) => item.createdTime.toDate().formatDate('yyyy-MM-dd') === time)
             })
           }
+          this.firstOptionList = list
           this.caseList = temp
           return true
         }
@@ -1466,9 +1469,47 @@ export default {
 
       //选择家人
       if (this.current.field === this.ANSWER_FIELD.FAMILY) {
-        //是否可以选病历或者上传病历
-        if (this.isAcceptNotHasFirstOptionRecord && this.isFirstOptionRecord != 1) {
-          nextQuestionIndex = currentQuestionIndex + 2
+        if (this.model.consultingType == 'returnVisit') {
+          //机构是否接收上传有诊疗记录的复诊患者
+          // `isAffirmFirstClinicalVisit` tinyint(1) DEFAULT '1' COMMENT '接收系统确认在本院有诊疗记录的复诊患者（1、关闭 2、开启）',
+          // `isUploadFirstClinicalVisit` tinyint(1) DEFAULT '2' COMMENT '接收上传有诊疗记录的复诊患者（1、关闭 2、开启）',
+          // this.isAcceptNotHasFirstOptionRecord = resultData?.data?.hospitalInfo.isAffirmFirstClinicalVisit == 1 ? true : false
+          // 是否有his诊疗记录
+          // this.isFirstOptionRecord = resultData?.data?.isFirstOptionRecord
+
+          if (!this.isAcceptNotHasFirstOptionRecord) {
+            // 要求患者必须在本院his中有建档信息
+            if (this.isFirstOptionRecord === 1) {
+              // 就诊人在his中有建档信息
+              if (this.firstOptionList.length > 0) {
+                // 有诊疗记录
+                // 选择病历（继续下一步）
+                nextQuestionIndex = currentQuestionIndex + 1
+              } else {
+                // 无诊疗记录 （下一步问诊描述）
+                nextQuestionIndex = this.questionList.length - 1
+              }
+            } else {
+              // 就诊人在his中无建档信息（不会走到这里，因为选择就诊人时就调接口就判断了）
+            }
+          } else {
+            // 允许患者上传就诊记录
+            if (this.isFirstOptionRecord === 1) {
+              // 就诊人在his中有建档信息
+              if (this.firstOptionList.length > 0) {
+                // 有诊疗记录
+                // 选择病历（继续下一步）
+                nextQuestionIndex = currentQuestionIndex + 1
+              } else {
+                // 无诊疗记录 （下一步问诊描述）
+                nextQuestionIndex = this.questionList.length - 1
+              }
+            } else {
+              // 就诊人在his中无建档信息
+              // 下一步去手动上传病历
+              nextQuestionIndex = currentQuestionIndex + 2
+            }
+          }
         } else {
           nextQuestionIndex = currentQuestionIndex + 1
         }
@@ -1486,11 +1527,14 @@ export default {
 
       //选择病历
       else if (this.current.field === this.ANSWER_FIELD.SELECT_CASE) {
-        //医院只允许选择his病历
-        if (!this.selectCase && !this.isAcceptNotHasFirstOptionRecord) {
-          nextQuestionIndex = -2
+        if (this.selectCase) {
+          nextQuestionIndex = this.questionList.length - 1
         } else {
-          nextQuestionIndex = currentQuestionIndex + 1
+          if (!this.isAcceptNotHasFirstOptionRecord) {
+            nextQuestionIndex = this.questionList.length - 1
+          } else {
+            nextQuestionIndex = this.questionList.length - 1
+          }
         }
       }
 
