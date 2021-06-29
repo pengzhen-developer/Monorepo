@@ -362,7 +362,7 @@ export default {
     // 确定选择医保
     confirmYbInsurance(result) {
       if (result?.yibaoInfo?.medCardNo) {
-        this.innerPayInfo.medCardNo = result.medCardNo
+        this.innerPayInfo.medCardNo = result.yibaoInfo.medCardNo
         this.$emit('update', {
           payType: this.deductionType,
           payInfo: this.innerPayInfo
