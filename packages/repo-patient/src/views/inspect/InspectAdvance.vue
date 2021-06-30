@@ -143,11 +143,11 @@ export default {
   },
 
   methods: {
-    // 获取检验单详情
+    // 获取检验单预售订单详情
     getDetail() {
       const params = peace.util.decode(this.$route.params.json)
       peace.service.inquiry
-        .getCheckOrderDetail(params)
+        .getCheckOrderDetailBefore(params)
         .then((res) => {
           this.model = res.data
           this.doctorInfo = res.data?.doctorInfo || {}
@@ -215,7 +215,7 @@ export default {
       this.loading.submit = true
 
       let params = {
-        orderId: this.model.orderId,
+        checkRecordId: peace.util.decode(this.$route.params.json).checkRecordId,
         medCardNo: this.payType === 'yibaopay' ? this.payInfo.medCardNo : '',
         cardNo: this.payType === 'shangbaopay' ? this.payInfo.sbInsuranceId : '',
         paymentType: this.payType
@@ -228,7 +228,6 @@ export default {
             money: res.data.orderMoney, //自费金额
             moneyRecord: res.data.moneyRecord, //费用明细
             orderNo: res.data.orderNo,
-            orderId: this.model.orderId,
             orderType: 'inspect'
           }
           this.payDialog.data = json

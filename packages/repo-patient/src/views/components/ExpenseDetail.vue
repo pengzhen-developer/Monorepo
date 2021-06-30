@@ -183,11 +183,11 @@ export default {
       this.$router.replace(`/order/userDrugDetail/${json}`)
     },
     inspectAdvancePayCallback() {
-      const json = peace.util.encode({ orderId: this.info.orderId })
+      const json = peace.util.encode({ orderNo: this.info.orderNo })
       this.$router.replace(`/inspectRegisterDetail/${json}`)
     },
     inspectPayCallback() {
-      const json = peace.util.encode({ orderId: this.info.orderId })
+      const json = peace.util.encode({ orderNo: this.info.orderNo })
       this.$router.replace(`/inspectDetail/${json}`)
     },
     finishHander() {

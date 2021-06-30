@@ -953,7 +953,7 @@ export default {
       }
 
       let json = peace.util.encode({
-        orderId: item.orderId
+        orderNo: item.orderNo
       })
       this.$router.replace(`/inspectRegisterDetail/${json}`)
     },

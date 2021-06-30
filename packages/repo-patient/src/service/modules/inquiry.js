@@ -124,7 +124,7 @@ export function getPermissionsDeduction(params) {
   })
 }
 /**
- * 检验挂号单 - 订单详情 / 预售订单
+ * 检验挂号单 - 订单详情
  *
  * @export
  * @param {*} params 参数列表
@@ -139,7 +139,22 @@ export function getCheckRegisterOrderDetail(params) {
     }
   })
 }
+/**
+ * 检验挂号单 -  预售订单
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getCheckRegisterOrderDetailBefore(params) {
+  const preSale = 'client/v1/checkRegisteringOrder/preSale'
 
+  return peace.http.post(preSale, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
 /**
  * 检验挂号单 - 提交订单
  *
@@ -175,7 +190,7 @@ export function cancelCheckRegisteringOrder(params) {
 }
 
 /**
- * 检验单 - 订单详情 / 预售订单
+ * 检验单 - 订单详情
  *
  * @export
  * @param {*} params 参数列表
@@ -190,7 +205,22 @@ export function getCheckOrderDetail(params) {
     }
   })
 }
+/**
+ * 检验单 -  预售订单
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getCheckOrderDetailBefore(params) {
+  const preSale = 'client/v1/checkOrder/preSale'
 
+  return peace.http.post(preSale, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
 /**
  * 检验单 - 提交订单
  *
@@ -250,6 +280,8 @@ export default {
   /** 检验挂号单 - 订单详情 */
   getCheckRegisterOrderDetail,
 
+  /** 检验挂号单 - 预售订单 */
+  getCheckRegisterOrderDetailBefore,
   /** 检验挂号单 -提交订单 */
   submitCheckRegisteringOrder,
 
@@ -258,6 +290,9 @@ export default {
 
   /** 检验单 - 订单详情 */
   getCheckOrderDetail,
+
+  /** 检验单 - 预售订单 */
+  getCheckOrderDetailBefore,
 
   /** 检验单 - 提交订单 */
   submitCheckOrder,

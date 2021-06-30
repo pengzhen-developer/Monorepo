@@ -27,14 +27,14 @@ export default {
   methods: {
     onClickDetail() {
       let params = {
-        orderId: this.message.content.data.checkRegOrderId
+        checkRecordId: this.message.content.data.checkRecordId
       }
-
-      peace.service.inquiry.getCheckRegisterOrderDetail(params).then((res) => {
-        const json = peace.util.encode(params)
-        if (res.data.orderNo) {
+      peace.service.inquiry.getCheckRegisterOrderDetailBefore(params).then((res) => {
+        if (res.data.registeringOrderNo) {
+          const json = peace.util.encode({ orderNo: res.data.registeringOrderNo })
           this.gotoOrderDetail(json)
         } else {
+          const json = peace.util.encode(params)
           this.gotoOrderBefore(json)
         }
       })
