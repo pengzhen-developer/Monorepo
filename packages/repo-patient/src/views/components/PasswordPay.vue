@@ -61,7 +61,7 @@ export default {
         0: {
           name: '订单金额',
           key: 'consult'
-        }, // 咨询支付
+        }, // 问诊支付
         1: {
           name: '服务充值',
           key: 'recharge'

@@ -38,7 +38,7 @@ export function isRegisterData(params) {
 }
 
 /**
- * 获取医院科室二联动接口（咨询业务）
+ * 获取医院科室二联动接口（问诊业务）
  *
  * @export
  * @param {*} params 参数列表
@@ -96,7 +96,7 @@ export default {
 
   isRegisterData, //判断机构下是否有号源
 
-  getDeptList, // 科室列表[咨询业务]
+  getDeptList, // 科室列表[问诊业务]
 
   getHospitalByRegister, // 医院列表[预约业务]
   getRealDeptByRegister, // 科室列表[预约业务]

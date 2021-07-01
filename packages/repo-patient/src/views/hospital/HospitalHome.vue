@@ -64,7 +64,7 @@
              v-for="(item, index) in hospitalInfo.hospitalServiceList"
              :key="'index' + index"
              @click="goMenuList(item)">
-          <!-- "serviceLogoId": //图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊续方 5:在线咨询 6:健康百科 7:智能导诊 8:中药寄送 -->
+          <!-- "serviceLogoId": //图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊续方 5:在线问诊 6:健康百科 7:智能导诊 8:中药寄送 -->
           <div class="img">
             <img :src="require('@src/assets/images/newIndex/icon_0' + item.serviceLogoId + '.png')" />
             <!-- <img class="wait"
@@ -334,13 +334,13 @@ export default {
         if (item.serviceName === '预约挂号' || item.serviceName === '查询报告') {
           const title = item.serviceName === '预约挂号' ? `线下预约挂号功能正在建设中` : `在线查询报告功能正在建设中`
           const message =
-            item.serviceName === '预约挂号' ? `如需在线复诊请点击“复诊开药”\n其他问题请点击“在线咨询”` : `如需在线报告解读，请点击“在线咨询”、“复诊开药”`
+            item.serviceName === '预约挂号' ? `如需在线复诊请点击“复诊开药”\n其他问题请点击“在线问诊”` : `如需在线报告解读，请点击“在线问诊”、“复诊开药”`
           return Dialog.confirm({
             title: '提示',
             message: `<div><div class="hos-title">${title}</div><div class="hos-message">${message}</div></div>`,
             messageAlign: 'left',
             className: 'hos-dialog',
-            cancelButtonText: `在线咨询`,
+            cancelButtonText: `在线问诊`,
             confirmButtonText: `复诊开药`,
             cancelButtonColor: '#00c6ae',
             closeOnClickOverlay: true
@@ -356,7 +356,7 @@ export default {
             })
             .catch((e) => {
               if (e === 'cancel') {
-                //跳转在线咨询
+                //跳转在线问诊
                 json = peace.util.encode({
                   netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
                   serviceType: 'inquiry',
@@ -369,9 +369,10 @@ export default {
           return peace.util.alert('该功能正在建设中，敬请期待')
         }
       }
-      switch (item.serviceName) {
+      //"serviceLogoId": //图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊续方 5:在线问诊 6:健康百科 7:智能导诊 8:中药寄送
+      switch (item.serviceLogoId) {
         // 预约挂号
-        case '预约挂号':
+        case 1:
           if (this.hasRegisterData) {
             //有挂号信息
             json = peace.util.encode({
@@ -391,8 +392,8 @@ export default {
 
           break
 
-        // 在线咨询
-        case '在线咨询':
+        // 在线问诊
+        case 5:
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
             serviceType: 'inquiry',
@@ -401,7 +402,7 @@ export default {
           this.$router.push(`/components/doctorList/${json}`)
           break
         // 复诊续方
-        case '复诊开药':
+        case 4:
           //有挂号信息
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
@@ -417,7 +418,7 @@ export default {
           // this.$router.push(`/components/doctorList/${json}`)
           break
         //智能导诊
-        case '智能导诊':
+        case 7:
           json = peace.util.encode({
             nethospitalid: this.hospitalInfo.nethospitalInfo.netHospitalId,
             Date: new Date()
@@ -425,7 +426,7 @@ export default {
           this.$router.push(`/diagnose/select/diagnoseSelectBody/${json}`)
           break
         // 查询报告
-        case '查询报告':
+        case 2:
           json = peace.util.encode({
             hsp: {
               hospitalName: this.hospitalInfo.nethospitalInfo.name,

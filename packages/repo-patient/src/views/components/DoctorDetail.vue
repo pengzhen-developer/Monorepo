@@ -157,21 +157,21 @@
           </div>
         </div>
 
-        <!-- 在线咨询 -->
+        <!-- 在线问诊 -->
         <div class="body-card">
           <div class="row flex column">
             <div class="row flex">
               <van-image width="32px"
                          height="32px"
                          :src="require('@src/assets/images/ic_interrogation.png')" />
-              <h4 class="body-card-title">在线咨询</h4>
+              <h4 class="body-card-title">在线问诊</h4>
             </div>
             <div class="row body-card-tip">
               医生提供图文或视频健康指导，不进行医学判断
             </div>
           </div>
           <div class="row flex col-two ">
-            <!-- 图文咨询-->
+            <!-- 图文问诊-->
             <div class=" row flex column center"
                  @click="showDialog(serviceImageInfo, 'image')">
               <van-image width="27px"
@@ -188,7 +188,7 @@
               <div class="service-consult-content auto">
                 <div class="row flex column"
                      style="margin: 0;">
-                  <span class="service-consult-content-name">图文咨询</span>
+                  <span class="service-consult-content-name">图文问诊</span>
                   <span v-if="serviceImageInfo.status=='1'"
                         class="row flex">
                     <span class="service-consult-content-fee">
@@ -206,10 +206,10 @@
               </div>
             </div>
 
-            <!-- 视频咨询-->
+            <!-- 视频问诊-->
             <div class=" row flex column center"
                  @click="showDialog(serviceImageInfo, 'video')">
-              <!-- 视频咨询尚未开通 -->
+              <!-- 视频问诊尚未开通 -->
               <van-image round
                          width="27px"
                          height="27px"
@@ -226,7 +226,7 @@
               <div class="service-consult-content auto">
                 <div class="row flex column"
                      style="margin: 0;">
-                  <span class="service-consult-content-name">视频咨询</span>
+                  <span class="service-consult-content-name">视频问诊</span>
                   <span v-if="serviceVideoInfo.status=='1'"
                         class="row flex">
                     <span class="service-consult-content-fee">
@@ -530,7 +530,7 @@
 
     </template>
 
-    <!-- 咨询提示 ,复诊提示-->
+    <!-- 问诊提示 ,复诊提示-->
     <UserServiceNotice v-model="dialog.visible"
                        v-bind:info="dialog.data"
                        @onSucces="gotoInquiryApplyPage"></UserServiceNotice>
@@ -690,8 +690,8 @@ export default {
     },
 
     gotoInquiryApplyPage() {
-      // serviceType  服务类别（inquiry：在线咨询 returnVisit：复诊 ）
-      //在线咨询
+      // serviceType  服务类别（inquiry：在线问诊 returnVisit：复诊 ）
+      //在线问诊
       if (this.dialog.data.type === 'image') {
         const json = peace.util.encode({
           doctorId: this.doctor.doctorInfo.doctorId,
@@ -704,7 +704,7 @@ export default {
       else if (this.dialog.data.type === 'video') {
         return peace.util.alert('H5版本暂不支持视频问诊')
       }
-      //复诊咨询
+      //复诊问诊
       else if (this.dialog.data.type === 'returnVisit') {
         const json = peace.util.encode({
           doctorId: this.doctor.doctorInfo.doctorId,

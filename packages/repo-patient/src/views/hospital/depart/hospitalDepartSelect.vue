@@ -133,7 +133,7 @@ export default {
     onItemClick(data) {
       this.activeId = data.id
       this.goDoctorListPage({
-        // 咨询入参
+        // 问诊入参
         netHospitalId: this.hospitalInfo.netHospitalId,
         level: 2,
         deptChildId: data.id,
@@ -150,7 +150,7 @@ export default {
         obj.serviceType = 'inquiry'
         let json = peace.util.encode(obj)
 
-        // 咨询入口
+        // 问诊入口
         this.$router.push(`/components/doctorList/${json}`)
         return
       }

@@ -126,7 +126,7 @@ export default {
                 inquiryId
               }
               if (inquiryId != '') {
-                // 去咨询界面
+                // 去问诊界面
                 let json = peace.util.encode(params)
                 this.$router.replace(`/setting/userConsultDetail/${json}`)
               } else {

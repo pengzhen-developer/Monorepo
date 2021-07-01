@@ -185,7 +185,7 @@
          v-if="data[current].familyInfo.transferStatus == '4'">
       <div @click="applyConsult(data[current].familyInfo.isConsultation)"
            class="btn"
-           :class="data[current].familyInfo.isConsultation ? 'btn-default' : 'btn-blue'">咨询医生</div>
+           :class="data[current].familyInfo.isConsultation ? 'btn-default' : 'btn-blue'">问诊医生</div>
     </div>
   </div>
 </template>
@@ -247,7 +247,7 @@ export default {
       this.hasApply = true
       Dialog.confirm({
         title: '温馨提示',
-        message: '是否开启线上咨询？'
+        message: '是否开启线上问诊？'
       })
         .then(() => {
           peace.service.group
@@ -272,7 +272,7 @@ export default {
               if (res.data.code == '202') {
                 Dialog.confirm({
                   title: '温馨提示',
-                  message: res.data.msg + '是否继续咨询？',
+                  message: res.data.msg + '是否继续问诊？',
                   confirmButtonText: '查看详情'
                 }).then(() => {
                   const inquiryId = res.data.data.data.inquiryId

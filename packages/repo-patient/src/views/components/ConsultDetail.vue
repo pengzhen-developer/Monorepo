@@ -12,7 +12,7 @@
                  v-if="retrunVisitBlock">
               复诊</div>
             <div class='typeTag zx'
-                 v-else>咨询</div>
+                 v-else>问诊</div>
 
           </div>
           <div class="cancelTip"
@@ -357,10 +357,10 @@
              v-if="canShowInvoiceBtn">申请发票</div>
         <div class="footer-btn chat-btn"
              @click="goChatingPage(internalData)"
-             v-if="canShowChatBtn">咨询记录</div>
+             v-if="canShowChatBtn">问诊记录</div>
         <div class="footer-btn chat-btn"
              @click="goChatingPage(internalData)"
-             v-if="cnaShowEnterChat">进入咨询</div>
+             v-if="cnaShowEnterChat">进入问诊</div>
 
       </div>
       <div class="pay fixedBottom"
@@ -406,7 +406,7 @@
     </template>
 
     <peace-dialog :visible.sync="caseDetail.visible"
-                  title="咨询小结">
+                  title="问诊小结">
       <TheCase :data="caseDetail.data"></TheCase>
     </peace-dialog>
 
@@ -416,7 +416,7 @@
     </peace-dialog>
 
     <peace-dialog :visible.sync="chatingPage.visible"
-                  title="咨询记录">
+                  title="问诊记录">
       <MessageList :data="chatingPage.data"></MessageList>
     </peace-dialog>
 
@@ -935,7 +935,7 @@ export default {
     },
 
     goChatingPage(item) {
-      // 问诊中时, 咨询记录跳转聊天页
+      // 问诊中时, 问诊记录跳转聊天页
       if (item.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中) {
         const params = peace.util.encode({
           id: 'p2p-' + item.doctorInfo.doctorId,
@@ -963,7 +963,7 @@ export default {
     showCancellPop(item) {
       Dialog.confirm({
         title: '温馨提示',
-        message: '是否确认取消咨询？'
+        message: '是否确认取消问诊？'
       })
         .then(() => {
           const params = {

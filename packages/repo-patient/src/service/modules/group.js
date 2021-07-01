@@ -75,7 +75,7 @@ export function getInspectDetail(params) {
   return peace.http.post(getInspectDetail, params)
 }
 /**
- * 发起转诊咨询
+ * 发起转诊问诊
  *
  * @export
  * @param {*referralNo:	string,*inquiryNo:	string} params 参数列表
@@ -205,7 +205,7 @@ export default {
   /** 获取检查单详情 */
   getInspectDetail,
 
-  /** 发起转诊咨询 */
+  /** 发起转诊问诊 */
   applyConsult,
 
   /*评论相关*/

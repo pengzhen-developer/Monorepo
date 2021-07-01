@@ -132,7 +132,7 @@ export function getPrescripInfo(params) {
 }
 
 /**
- * 获取咨询列表
+ * 获取问诊列表
  *
  * @export
  * @param {*} params 参数列表
@@ -158,7 +158,7 @@ export function inquiryDetail(params) {
 }
 
 /**
- * 获取咨询详情
+ * 获取问诊详情
  *
  * @export
  * @param {*} params 参数列表
@@ -184,7 +184,7 @@ export function getLast(params) {
 }
 
 /**
- * 取消咨询
+ * 取消问诊
  *
  * @export
  * @param {*} params 参数列表
@@ -527,13 +527,13 @@ export default {
   getMyPrescripList,
   /** 获取处方详情 */
   getPrescripInfo,
-  /** 获取咨询列表 */
+  /** 获取问诊列表 */
   inquiryList,
-  /** 获取咨询详情 */
+  /** 获取问诊详情 */
   chatDetail,
   /** 获取问诊详情 */
   inquiryDetail,
-  /** 取消咨询 */
+  /** 取消问诊 */
   cancel,
   /**复诊报道 */
   report,

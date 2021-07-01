@@ -15,7 +15,7 @@
           <span>请先了解</span>
           <span @click="showInformedConsent"
                 class="link">《知情同意书》</span>
-          <span>，如继续咨询表明您已知悉相关内容。您的信息严格保密，请放心咨询！</span>
+          <span>，如继续问诊表明您已知悉相关内容。您的信息严格保密，请放心问诊！</span>
         </div>
       </transition-group>
 
@@ -212,7 +212,7 @@
                             :disabled="sending">
                   <div slot="default"
                        style="display:flex;align-items:center;">
-                    <span>立即咨询</span>
+                    <span>立即问诊</span>
                     <van-icon name="arrow"
                               size="10" />
                   </div>
@@ -460,20 +460,20 @@ const IMAGES_UPLOAD_TYPE = {
   // 患处
   AFFECTED_IMAGES: 2
 }
-/**在线咨询 INQUIRY_QUESTION_LIST*/
+/**在线问诊 INQUIRY_QUESTION_LIST*/
 const INQUIRY_QUESTION_LIST = [
   {
     no: 0,
     answerList: [],
     field: ANSWER_FIELD.FAMILY,
-    question: '请问您要为哪位就诊人咨询？',
+    question: '请问您要为哪位就诊人问诊？',
     mode: ANSWER_MODE.CHECK
   },
   {
     no: 1,
     answerList: [],
     field: ANSWER_FIELD.ILLNESS_DESCRIBE,
-    question: '请问您要咨询什么问题？（您可输入病情描述，如发病时间、主要病症、治疗经过、目前状况等。）',
+    question: '请问您要问诊什么问题？（您可输入病情描述，如发病时间、主要病症、治疗经过、目前状况等。）',
     mode: ANSWER_MODE.INPUT
   }
 ]
@@ -482,7 +482,7 @@ const FUZHEN_HAS_HIS_QUESTION_LIST = [
     no: 0,
     answerList: [],
     field: ANSWER_FIELD.FAMILY,
-    question: '请问您要为哪位就诊人咨询？',
+    question: '请问您要为哪位就诊人问诊？',
     mode: ANSWER_MODE.CHECK
   },
   {
@@ -507,7 +507,7 @@ const FUZHEN_QUESTION_LIST = [
     no: 0,
     answerList: [],
     field: ANSWER_FIELD.FAMILY,
-    question: '请问您要为哪位就诊人咨询？',
+    question: '请问您要为哪位就诊人问诊？',
     mode: ANSWER_MODE.CHECK
   },
   {
@@ -578,7 +578,7 @@ export default {
         confirmIllness: '',
         // 问诊类型
         consultingType: '',
-        //区分咨询、复诊
+        //区分问诊、复诊
         serviceType: '',
         // 是否复诊
         isAgain: false,
@@ -1094,7 +1094,7 @@ export default {
         if (this.model.serviceType == 'returnVisit') {
           serviceName = '复诊续方'
         } else {
-          serviceName = this.model.consultingType == 'video' ? '视频咨询' : '图文咨询'
+          serviceName = this.model.consultingType == 'video' ? '视频问诊' : '图文问诊'
           doctor.doctorInfo.service.inquiry.forEach((item) => {
             if (item.type == this.model.consultingType) {
               serviceMoney = Number(item.price)
@@ -1201,7 +1201,7 @@ export default {
       const message =
         type == 'error'
           ? '您未选择任何在院就诊记录，不可以进行在线复诊'
-          : '基础情况收集完毕，请及时咨询医生，进行专业的临床诊断。本次咨询基础情况将自动推送给医生。'
+          : '基础情况收集完毕，请及时问诊医生，进行专业的临床诊断。本次问诊基础情况将自动推送给医生。'
       this.doneList.push({
         message: message
       })

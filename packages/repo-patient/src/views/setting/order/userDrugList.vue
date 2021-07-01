@@ -607,7 +607,7 @@ export default {
   color: #999;
   text-align: right;
 }
-/* color-x: 咨询单状态，
+/* color-x: 问诊单状态，
  * color-0x 转诊单状态 ↓
  *  01:转出待审核  02:转出已拒绝 03:转出已通过/转入待审核 04:转入已通过 05:转入已拒绝 06:转诊完成 07:转诊已关闭
  * color-ax 购药单状态

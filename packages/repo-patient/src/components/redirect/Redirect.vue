@@ -60,7 +60,7 @@ const prescribeId = peace.util.queryUrlParam('prescribeId')
 const orderNo = peace.util.queryUrlParam('orderNo')
 const orderType = peace.util.queryUrlParam('orderType')
 /**
- * 咨询-复诊详情
+ * 问诊-复诊详情
  * prescribeId
  */
 const inquiryId = peace.util.queryUrlParam('inquiryId')
@@ -91,7 +91,7 @@ export default {
         prescriptionDetail: '/components/theRecipe',
         /** 购药订单详情 */
         medicineOrderDetail: '/order/userDrugDetail',
-        /** 复诊-咨询订单详情 */
+        /** 复诊-问诊订单详情 */
         visitOrderDetail: '/setting/userConsultDetail',
         /** 挂号订单详情 */
         registerDetail: '/setting/order/userOrderDetail',

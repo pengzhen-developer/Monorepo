@@ -222,7 +222,7 @@ export default {
       if (item.residueNum == 0 || this.info.servicePackageStatus == 4) {
         return
       }
-      //1.7.0仅支持 在线咨询
+      //1.7.0仅支持 在线问诊
       peace.service.servicePackage.doctorServiceManage({ doctorId: this.info.doctorId }).then((res) => {
         let isOpenImageService = false
         if (res.data && res.data.service && res.data.service.length > 0) {
@@ -242,7 +242,7 @@ export default {
         } else {
           Dialog.confirm({
             title: '温馨提示',
-            message: `医生已关闭图文咨询服务，${this.info.servicePackageName}权益暂不可用`,
+            message: `医生已关闭图文问诊服务，${this.info.servicePackageName}权益暂不可用`,
             confirmButtonText: '知道了',
             showCancelButton: false
           })

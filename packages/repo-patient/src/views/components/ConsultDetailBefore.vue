@@ -228,8 +228,8 @@ const ENUM = {
     已取消: 6
   },
   INQUIRY_TXET_MAP: {
-    image: '图文咨询',
-    video: '视频咨询',
+    image: '图文问诊',
+    video: '视频问诊',
     returnVisit: '复诊'
   },
   WOMAN_TYPE_TEXT_MAP: {
@@ -386,7 +386,7 @@ export default {
         familyId: this.params.familyId,
         doctorId: this.params.doctorId,
         consultingType: this.params.consultingType, //image 图文 video 视频 returnVisit复诊续方
-        orderType: this.params.consultingType == 'returnVisit' ? 2 : 1, //1.咨询 2.复诊 3.购药
+        orderType: this.params.consultingType == 'returnVisit' ? 2 : 1, //1.问诊 2.复诊 3.购药
         appointmentDate: this.params.appointmentDate, //预约时间
         appointmentStartTime: this.params.appointmentStartTime, //预约开始时间
         appointmentEndTime: this.params.appointmentEndTime, //预约结束时间
@@ -408,7 +408,7 @@ export default {
       const params = {
         doctorId: this.doctorInfo.doctorId,
         nethospitalId: this.doctorInfo.nethospitalId,
-        orderType: this.params.serviceType == 'returnVisit' ? 2 : 1 // 1咨询 2复诊 3购药 4挂号 5服务包 6检验挂号订单 7检验单
+        orderType: this.params.serviceType == 'returnVisit' ? 2 : 1 // 问诊 2复诊 3购药 4挂号 5服务包 6检验挂号订单 7检验单
       }
       peace.service.inquiry.getPermissionsDeduction(params).then((res) => {
         this.deductionList = res.data || []
@@ -552,12 +552,12 @@ export default {
             })
           }
 
-          // errorState:2 存在未结束订单，跳转咨询
+          // errorState:2 存在未结束订单，跳转问诊
           if (res.data.errorState === 2) {
             return Dialog.confirm({
               title: '提示',
               message: res.msg,
-              confirmButtonText: '继续咨询'
+              confirmButtonText: '继续问诊'
             }).then(() => {
               this.goToMessage(res.data)
             })

@@ -71,7 +71,7 @@
               <div :data-index="index"
                    @click="goChatingPage(item)"
                    class="label blue"
-                   v-if="item.inquiryInfo.inquiryStatus === 2">咨询记录</div>
+                   v-if="item.inquiryInfo.inquiryStatus === 2">问诊记录</div>
               <div :data-index="index"
                    @click="showCancellPop(item)"
                    class="label gary">取消订单</div>
@@ -118,13 +118,13 @@
       <template v-if="loaded && consultList.length == 0">
         <div class="none-page">
           <div class="icon icon_none_consult"></div>
-          <div class="none-text">暂无咨询记录</div>
+          <div class="none-text">暂无问诊记录</div>
         </div>
       </template>
     </van-list>
 
     <peace-dialog :visible.sync="caseDetail.visible"
-                  title="咨询小结">
+                  title="问诊小结">
       <TheCase :data="caseDetail.data"></TheCase>
     </peace-dialog>
 
@@ -134,7 +134,7 @@
     </peace-dialog>
 
     <peace-dialog :visible.sync="chatingPage.visible"
-                  title="咨询记录">
+                  title="问诊记录">
       <MessageList :data="chatingPage.data"
                    :doctorInfo="chatingPage.doctorInfo"
                    :navBar="false">
@@ -264,7 +264,7 @@ export default {
             item.time = (expireTime - inquiryInfo.currentTime) * 1000
           }
           // item.inquiryType =
-          //   (inquiryInfo.inquiryType == '图文咨询' ? '图文' : '视频') + (inquiryInfo.isAgain == 1 ? '复诊' : '咨询')
+          //   (inquiryInfo.inquiryType == '图文问诊' ? '图文' : '视频') + (inquiryInfo.isAgain == 1 ? '复诊' : '问诊')
 
           item.inquiryType = inquiryInfo.isAgain == 1 ? '复诊续方' : inquiryInfo.inquiryType
         })
@@ -320,7 +320,7 @@ export default {
 
     goChatingPage(item) {
       let params = ''
-      // 问诊中时, 咨询记录跳转聊天页
+      // 问诊中时, 问诊记录跳转聊天页
       if (item.inquiryInfo.inquiryStatus === peace.type.INQUIRY.INQUIRY_STATUS.问诊中) {
         params = peace.util.encode({
           id: 'p2p-' + item.doctorInfo.doctorId,
@@ -356,7 +356,7 @@ export default {
     showCancellPop(item) {
       Dialog.confirm({
         title: '温馨提示',
-        message: '是否确认取消咨询？'
+        message: '是否确认取消问诊？'
       })
         .then(() => {
           const params = {
@@ -519,8 +519,8 @@ export default {
   color: #999;
   text-align: right;
 }
-/* color-x: 咨询单状态，
- * color-iX:咨询单状态新；i5 已完成 i4 已退诊 i3咨询中
+/* color-x: 问诊单状态，
+ * color-iX:问诊单状态新；i5 已完成 i4 已退诊 i3问诊中
  * color-0x 转诊单状态 ↓
  *  01:转出待审核  02:转出已拒绝 03:转出已通过/转入待审核 04:转入已通过 05:转入已拒绝 06:转诊完成 07:转诊已关闭
  * color-ax 购药单状态

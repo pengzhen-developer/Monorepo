@@ -109,7 +109,7 @@ export default {
 
     getServiceMoney(doctor) {
       const minMoney = doctor.money
-      //免费咨询列表收费应该显示为免费，而不是0起
+      //免费问诊列表收费应该显示为免费，而不是0起
       const params = peace.util.decode(this.$route.params.json)
       if (params.doctorTag === 'freeConsult') {
         return '免费'

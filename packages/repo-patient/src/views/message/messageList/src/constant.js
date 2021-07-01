@@ -35,9 +35,9 @@ export const INQUIRY_STATUS = {
   已完成: 5,
   已取消: 6
 }
-/**  咨询状态文字字典 */
+/**  问诊状态文字字典 */
 export const INQUIRY_STATUS_MAP = {
-  3: '咨询中',
+  3: '问诊中',
   4: '已退诊',
   5: '已结束'
 }

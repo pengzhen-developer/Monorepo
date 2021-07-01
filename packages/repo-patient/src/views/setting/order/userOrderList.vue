@@ -74,7 +74,7 @@
               </peace-button>
             </div>
           </div>
-          <!-- 咨询订单 -->
+          <!-- 问诊订单 -->
           <div class="order-item"
                :key="index"
                v-if="item.orderType=='inquiry'||item.orderType=='returnVisit'">
@@ -803,7 +803,7 @@ export default {
                   item.heightLight = true
                 }
               } else {
-                item.inquiryType = item.orderInfo.inquiryType == 'image' ? '图文咨询' : '视频咨询'
+                item.inquiryType = item.orderInfo.inquiryType == 'image' ? '图文问诊' : '视频问诊'
                 item.inquiryTypeStyle = item.orderInfo.inquiryType == 'image' ? 'image' : 'video'
               }
             } else if (item.orderType == 'checkRegisteringOrder') {
@@ -833,7 +833,7 @@ export default {
       let orderNo = item.orderInfo.orderNo
       Dialog.confirm({
         title: '温馨提示',
-        message: '是否确认取消咨询？'
+        message: '是否确认取消问诊？'
       })
         .then(() => {
           this.cancelInquiryOrder(orderNo, index, 'hand')
@@ -1300,7 +1300,7 @@ export default {
         1:'待支付',2:'已取消',3:'已付款',4:'已完成',5:'已退号',6:'退款中',7:'已退款',
         },
         
-        *咨询订单状态
+        *问诊订单状态
         inquiry: {
             1: '待支付',2: '待接诊',3: '已接诊', 4: '已退诊',5: '已完成',6: '已取消'
           },

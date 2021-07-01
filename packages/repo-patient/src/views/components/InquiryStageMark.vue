@@ -18,10 +18,10 @@
 
 </template>
 <script>
-//资料登记 - 提交咨询 - 医患交流
+//资料登记 - 提交问诊 - 医患交流
 const STAGE_INQUIRY = [
   { key: 'smartAssistant', value: '资料登记' },
-  { key: 'preSaleOrder', value: '提交咨询' },
+  { key: 'preSaleOrder', value: '提交问诊' },
   { key: 'consultationRoom', value: '医患交流' }
 ]
 //智能预诊-预约复诊-医生问诊-开方购药

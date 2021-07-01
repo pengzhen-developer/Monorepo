@@ -420,28 +420,28 @@ const routers = [
     },
     component: () => import('@src/views/card/index.vue')
   },
-  // 我的咨询
+  // 我的问诊
   {
     path: '/setting/userConsultList',
     name: '/setting/userConsultList',
     meta: {
       auth: true,
       navbar: {
-        title: '我的咨询',
+        title: '我的问诊',
         back: true
       }
     },
     component: () => import('@src/views/setting/UserConsultList.vue')
   },
 
-  // 咨询详情
+  // 问诊详情
   {
     path: '/setting/userConsultDetail/:json',
     name: '/setting/userConsultDetail',
     meta: {
       auth: true,
       navbar: {
-        title: '咨询详情',
+        title: '问诊详情',
         back: true
       }
     },
@@ -487,14 +487,14 @@ const routers = [
     },
     component: () => import('@src/views/components/TheRecipe.vue')
   },
-  // 咨询小结（病历详情）
+  // 问诊小结（病历详情）
   {
     path: '/components/theCase/:json',
     name: '/components/theCase/:json',
     meta: {
       auth: true,
       navbar: {
-        title: '咨询小结',
+        title: '问诊小结',
         back: true
       }
     },
@@ -675,7 +675,7 @@ const routers = [
       keepAlive: true,
       auth: true,
       navbar: {
-        title: '图文咨询',
+        title: '图文问诊',
         back: true
       }
     },

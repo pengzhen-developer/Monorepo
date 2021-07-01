@@ -48,8 +48,8 @@
       <div @click="goMenuPage('',{type:'userConsult'})"
            class="card-simple icon_01_01_12"
            type="userConsult">
-        <div class="card-tit">我的咨询</div>
-        <div class="card-brief">个人咨询详情管理</div>
+        <div class="card-tit">我的问诊</div>
+        <div class="card-brief">个人问诊详情管理</div>
       </div>
     </div>
     <DepartPage :items="data.department"
