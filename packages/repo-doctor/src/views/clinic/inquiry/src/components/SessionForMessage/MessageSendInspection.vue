@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex column">
     <el-alert :closable="false" title="开检验" type="success">
       <div slot="title">
         <span>开检验</span>
@@ -7,16 +7,28 @@
       </div>
     </el-alert>
 
-    <div class="q-pa-lg">
-      <el-input v-model="filterText" placeholder="输入关键字进行过滤" clearable></el-input>
-      <el-tree ref="tree" v-loading="loading" show-checkbox v-bind:data="data" v-bind:filter-node-method="filterNode" v-bind:props="props" v-on:check="onCheck">
+    <div class="q-pa-lg col overflow-auto">
+      <el-input v-model="filterText" clearable placeholder="输入关键字进行过滤"></el-input>
+
+      <el-tree
+        lazy
+        v-bind:load="loadNode"
+        ref="tree"
+        v-loading="loading"
+        show-checkbox
+        v-bind:data="data"
+        v-bind:filter-node-method="filterNode"
+        v-bind:props="props"
+        v-on:check="onCheck"
+      >
       </el-tree>
+
       <div class="q-py-sm q-px-md" style="border: 1px solid #eee; border-top: none;">
-        已选择 <span class="text-primary">{{ checked.filter((item) => item.itemList === undefined).length }}</span> 项医嘱
+        已选择 <span class="text-primary">{{ checked.length }}</span> 项医嘱
       </div>
     </div>
 
-    <div class="flex justify-center q-mb-md">
+    <div class="footer justify-center flex">
       <el-button v-on:click="close">取消</el-button>
       <el-button type="primary" v-bind:disabled="checked.length === 0" v-bind:loading="isLoading" v-on:click="submit">
         发送
@@ -50,6 +62,10 @@ export default {
   },
 
   async created() {
+    this.$nextTick(() => {
+      this.$el.style.height = document.body.clientHeight - this.$el.offsetHeight - 20 + 'px'
+    })
+
     this.data = await this.loadData()
   },
 
@@ -72,16 +88,23 @@ export default {
       })
     },
 
+    loadNode(node, resolve) {
+      if (node.level === 1) {
+        const data = node.data.itemList
+        resolve(data)
+      }
+    },
+
     filterNode(value, data) {
       if (!value) {
         return true
       } else {
-        return data.patientName && data.patientName.indexOf(value) !== -1
+        return data.comboName && data.comboName.indexOf(value) !== -1
       }
     },
 
     onCheck() {
-      this.checked = this.$refs.tree.getCheckedNodes()
+      this.checked = this.$refs.tree.getCheckedNodes().filter((item) => item.itemList && item.itemList.length > 0)
     },
 
     close() {
@@ -89,32 +112,14 @@ export default {
     },
 
     submit() {
-      const tmp = [...this.checked].filter((item) => item.itemList === undefined)
-
+      debugger
       let items = []
-      for (let item of tmp) {
-        let index = items.findIndex((tmp) => {
-          return tmp.comboNo === item.comboNo
+      for (let item of [...this.checked]) {
+        items.push({
+          comboNo: item.comboNo,
+          comboName: item.comboName
         })
-        if (index !== -1) {
-          items[index].itemList.push({
-            itemNo: item.itemNo,
-            itemName: item.itemName
-          })
-        } else {
-          items.push({
-            comboNo: item.comboNo,
-            comboName: item.patientName,
-            itemList: [
-              {
-                itemNo: item.itemNo,
-                itemName: item.itemName
-              }
-            ]
-          })
-        }
       }
-
       this.isLoading = true
       const params = {
         inquiryNo: this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryNo,
@@ -130,3 +135,21 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+/deep/ .el-tree-node__children {
+  pointer-events: none;
+  cursor: default;
+  padding-left: 20px;
+  .el-checkbox {
+    display: none;
+  }
+  .el-tree-node__expand-icon {
+    display: none;
+  }
+}
+
+/deep/ .el-checkbox .el-checkbox__inner {
+  display: inline-block;
+}
+</style>

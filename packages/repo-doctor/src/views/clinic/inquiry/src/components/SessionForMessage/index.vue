@@ -29,7 +29,7 @@
     </div>
 
     <!-- 业务组件 ： 发病历 / 发处方 -->
-    <div class="fit flex" v-if="componentInstance">
+    <div class="fit flex column" v-if="componentInstance">
       <q-scroll-area class="content" v-bind:thumb-style="thumbStyle">
         <Component v-bind:is="componentInstance" v-bind:session="session" v-on:close="close"> </Component>
       </q-scroll-area>
@@ -93,6 +93,11 @@ export default {
   },
 
   watch: {
+    session(newValue, oldValue) {
+      if (oldValue && oldValue.id !== newValue.id) {
+        this.close()
+      }
+    },
     sessionMessagaes() {
       // 监听消息，当存在消息更新，滚动至最底部
       this.$nextTick().then(() => {
