@@ -955,7 +955,7 @@ export default {
       let json = peace.util.encode({
         orderNo: item.orderNo
       })
-      this.$router.replace(`/inspectRegisterDetail/${json}`)
+      this.$router.push(`/inspectRegisterDetail/${json}`)
     },
     goInspectDetailPage(item, index, type) {
       if (this.$refs[type + index] && this.$refs[type + index].length > 0) {
@@ -966,7 +966,7 @@ export default {
       let json = peace.util.encode({
         orderNo: item.orderNo
       })
-      this.$router.replace(`/inspectDetail/${json}`)
+      this.$router.push(`/inspectDetail/${json}`)
     },
     goOrderDetailPage(item, index, type) {
       if (this.$refs[type + index] && this.$refs[type + index].length > 0) {

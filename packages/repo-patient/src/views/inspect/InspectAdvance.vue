@@ -31,12 +31,13 @@
       </div>
 
       <div class="pay-card-wrap">
-        <PayCard v-bind:doctorId="model.doctorId"
+        <PayCard v-bind:doctorId="model.doctorInfo.doctorId"
                  v-bind:familyId="model.familyId"
                  v-bind:familyName="familyInfo.name"
                  v-bind:payType="payType"
                  v-bind:payInfo="payInfo"
-                 v-bind:deduction="deductionList"
+                 v-bind:nethospitalId="model.doctorInfo.nethospitalId"
+                 v-bind:orderType="7"
                  v-on:update="updatePayInfo"></PayCard>
       </div>
 
@@ -95,8 +96,6 @@ export default {
       familyInfo: {},
       // 检验单信息
       inspectList: [],
-      // 抵扣信息
-      deductionList: [],
       // 默认选中微信支付
       payType: 'wxpay',
       // 支付信息
@@ -154,22 +153,10 @@ export default {
           this.familyInfo = res.data?.familyInfo || {}
           this.inspectList = res.data?.comboList || []
           this.payInfo.orderMoney = res.data?.totalMoney || 0
-          this.getDeduction()
         })
         .finally(() => {
           this.loading.get = false
         })
-    },
-    // 获取抵扣配置
-    getDeduction() {
-      let params = {
-        doctorId: this.model.doctorId,
-        nethospitalId: this.model.doctorInfo.nethospitalId,
-        orderType: 7 // 1问诊 2复诊 3购药 4挂号 5服务包 6检验挂号订单 7检验单
-      }
-      peace.service.inquiry.getPermissionsDeduction(params).then((res) => {
-        this.deductionList = res.data || []
-      })
     },
     // 更新支付信息
     updatePayInfo(result) {

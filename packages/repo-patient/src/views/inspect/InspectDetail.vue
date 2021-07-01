@@ -75,7 +75,12 @@
           <div class="module-item-label">订单时间：</div>
           <div class="module-item-value">{{ model.createdTime | formatDate }}</div>
         </div>
+
         <template v-if="model.payStatus > 0">
+          <div class="module-item-content size-14">
+            <div class="module-item-label">病历编号：</div>
+            <div class="module-item-value">{{ model.familyInfo.hisPatientId }}</div>
+          </div>
           <div class="module-item-content start size-14">
             <div class="module-item-label">支付方式：</div>
             <div class="module-item-value">{{model.paymentType}}</div>

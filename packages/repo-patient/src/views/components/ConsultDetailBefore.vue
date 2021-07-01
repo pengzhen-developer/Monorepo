@@ -166,14 +166,14 @@
           </div>
         </div>
       </div>
-
       <div class="pay-card-wrap">
         <PayCard v-bind:doctorId="params.doctorId"
                  v-bind:familyId="params.familyId"
                  v-bind:familyName="familyInfo.name"
                  v-bind:payType="payType"
                  v-bind:payInfo="payInfo"
-                 v-bind:deduction="deductionList"
+                 v-bind:nethospitalId="doctorInfo.nethospitalId"
+                 v-bind:orderType="params.serviceType == 'returnVisit' ? 2 : 1"
                  v-bind:equitiesId="params.patientEquitiesId"
                  v-on:update="updatePayInfo"></PayCard>
       </div>
@@ -272,8 +272,6 @@ export default {
         data: {}
       },
 
-      // 抵扣信息
-      deductionList: [],
       // 默认选中微信支付
       payType: 'wxpay',
       // 支付信息
@@ -397,23 +395,12 @@ export default {
         .then((res) => {
           this.doctorInfo = res.data.doctorInfo
           this.familyInfo = res.data.familyInfo
-          this.getPermissionsDeduction()
         })
         .finally(() => {
           this.loading = false
         })
     },
-    //获取权益抵扣列表
-    getPermissionsDeduction() {
-      const params = {
-        doctorId: this.doctorInfo.doctorId,
-        nethospitalId: this.doctorInfo.nethospitalId,
-        orderType: this.params.serviceType == 'returnVisit' ? 2 : 1 // 问诊 2复诊 3购药 4挂号 5服务包 6检验挂号订单 7检验单
-      }
-      peace.service.inquiry.getPermissionsDeduction(params).then((res) => {
-        this.deductionList = res.data || []
-      })
-    },
+
     onEmits() {
       $peace.$on('SelectSourceAgain', this.selectSourceCallback)
     },

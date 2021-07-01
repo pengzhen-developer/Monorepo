@@ -44,7 +44,7 @@ export default {
   methods: {
     onClickDetail() {
       if (!this.canClick) {
-        return peace.util.alert('咨询已结束，如需服务需再次咨询')
+        return peace.util.alert('问诊已结束，如需服务需再次问诊')
       }
       let params = {
         checkRecordId: this.message.content.data.checkRecordId

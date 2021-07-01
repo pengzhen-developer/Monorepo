@@ -1,6 +1,7 @@
 <template>
   <div>
-    <van-cell-group class="group">
+    <van-cell-group class="group"
+                    v-if="loading">
       <van-cell title="订单金额">
         <peace-price v-bind:price="innerPayInfo.orderMoney"
                      v-bind:transformOrigin="'right'"
@@ -131,13 +132,25 @@ export default {
         return {}
       }
     },
-    // 抵扣配置
-    deduction: {
-      type: Array,
+    nethospitalId: {
+      type: [String, Number],
       default() {
-        return []
+        return ''
       }
     },
+    orderType: {
+      type: [String, Number],
+      default() {
+        return ''
+      }
+    },
+    // 抵扣配置
+    // deduction: {
+    //   type: Array,
+    //   default() {
+    //     return []
+    //   }
+    // },
     // 服务包默认权益
     equitiesId: {
       type: String,
@@ -213,13 +226,17 @@ export default {
       // 是否显示医保类型
       ybTypeVisible: false,
 
+      deduction: [],
+
       // 服务包权益列表
       servicePackageList: [],
       // 是否显示服务包权益弹窗
       spVisible: false,
 
       // 是否显示商保弹窗
-      sbVisible: false
+      sbVisible: false,
+
+      loading: false
     }
   },
   watch: {
@@ -241,27 +258,23 @@ export default {
       },
       immediate: true
     },
-    deduction: {
-      handler(deduction) {
-        // servicePackage 服务包抵扣 yibaopay 医保支付 shangbaopay 商保
-        let yibaopay = deduction.find((item) => item.type === 'yibaopay')
-        let servicePackage = deduction.find((item) => item.type === 'servicePackage')
-        let shangbaopay = deduction.find((item) => item.type === 'shangbaopay')
-        if (yibaopay) {
-          // 选择医保卡组件获取
-          this.showYb = true
-        }
-        if (servicePackage) {
-          this.getServicePackageList()
-        }
-        if (shangbaopay) {
-          // 商保配置从父组件传入
+    canGetDeduction: {
+      handler(val) {
+        if (val) {
+          this.getPermissionsDeduction()
         }
       },
       immediate: true
     }
   },
   computed: {
+    canGetDeduction() {
+      if (this.doctorId && this.nethospitalId) {
+        return true
+      } else {
+        return false
+      }
+    },
     getDeductionName() {
       let deduction = this.deduction.filter((item) => {
         return item.type === this.deductionType
@@ -276,58 +289,90 @@ export default {
     }
   },
   methods: {
+    //获取权益抵扣列表
+    getPermissionsDeduction() {
+      const params = {
+        doctorId: this.doctorId,
+        nethospitalId: this.nethospitalId,
+        orderType: this.orderType // 问诊 2复诊 3购药 4挂号 5服务包 6检验挂号订单 7检验单
+      }
+      peace.service.inquiry.getPermissionsDeduction(params).then((res) => {
+        this.deduction = res.data || []
+        // servicePackage 服务包抵扣 yibaopay 医保支付 shangbaopay 商保
+        let yibaopay = this.deduction.find((item) => item.type === 'yibaopay')
+        let servicePackage = this.deduction.find((item) => item.type === 'servicePackage')
+        let shangbaopay = this.deduction.find((item) => item.type === 'shangbaopay')
+        if (yibaopay) {
+          // 选择医保卡组件获取
+          this.showYb = true
+        }
+        if (shangbaopay) {
+          // 商保配置从父组件传入
+        }
+        if (servicePackage) {
+          this.getServicePackageList()
+        } else {
+          this.loading = true
+        }
+      })
+    },
     // 获取服务包权益列表
     getServicePackageList() {
       let params = {
         doctorId: this.doctorId
       }
-      peace.service.servicePackage.getRecord(params).then((res) => {
-        let servicePackageList = res.data || []
+      peace.service.servicePackage
+        .getRecord(params)
+        .then((res) => {
+          let servicePackageList = res.data || []
 
-        let servicePackageId = ''
-        let servicePackageName = ''
-        let patientEquitiesId = ''
-        let patientEquitiesName = ''
+          let servicePackageId = ''
+          let servicePackageName = ''
+          let patientEquitiesId = ''
+          let patientEquitiesName = ''
 
-        if (servicePackageList.length > 0) {
-          if (this.equitiesId) {
-            servicePackageList.forEach((item) => {
-              item.equities.forEach((sitem) => {
-                if (sitem.patientEquitiesId == this.equitiesId) {
-                  servicePackageId = item.servicePackageId
-                  servicePackageName = item.servicePackageName
-                  patientEquitiesId = this.equitiesId
-                  patientEquitiesName = sitem.equitiesName
-                  patientEquitiesName = `${sitem.equitiesName}(剩余${sitem.residueNum}次)`
-                }
+          if (servicePackageList.length > 0) {
+            if (this.equitiesId) {
+              servicePackageList.forEach((item) => {
+                item.equities.forEach((sitem) => {
+                  if (sitem.patientEquitiesId == this.equitiesId) {
+                    servicePackageId = item.servicePackageId
+                    servicePackageName = item.servicePackageName
+                    patientEquitiesId = this.equitiesId
+                    patientEquitiesName = sitem.equitiesName
+                    patientEquitiesName = `${sitem.equitiesName}(剩余${sitem.residueNum}次)`
+                  }
+                })
               })
-            })
-          } else {
-            servicePackageId = servicePackageList[0].servicePackageId
-            servicePackageName = servicePackageList[0].servicePackageName
-            patientEquitiesId = servicePackageList[0].equities[0].patientEquitiesId
-            patientEquitiesName = servicePackageList[0].equities[0].equitiesName
-            patientEquitiesName = `${servicePackageList[0].equities[0].equitiesName}(剩余${servicePackageList[0].equities[0].residueNum}次)`
+            } else {
+              servicePackageId = servicePackageList[0].servicePackageId
+              servicePackageName = servicePackageList[0].servicePackageName
+              patientEquitiesId = servicePackageList[0].equities[0].patientEquitiesId
+              patientEquitiesName = servicePackageList[0].equities[0].equitiesName
+              patientEquitiesName = `${servicePackageList[0].equities[0].equitiesName}(剩余${servicePackageList[0].equities[0].residueNum}次)`
+            }
           }
-        }
 
-        this.servicePackageList = servicePackageList
-        this.innerPayInfo.servicePackageId = servicePackageId
-        this.innerPayInfo.servicePackageName = servicePackageName
-        this.innerPayInfo.patientEquitiesId = patientEquitiesId
-        this.innerPayInfo.patientEquitiesName = patientEquitiesName
+          this.servicePackageList = servicePackageList
+          this.innerPayInfo.servicePackageId = servicePackageId
+          this.innerPayInfo.servicePackageName = servicePackageName
+          this.innerPayInfo.patientEquitiesId = patientEquitiesId
+          this.innerPayInfo.patientEquitiesName = patientEquitiesName
 
-        if (patientEquitiesId) {
-          // 有服务包权益，就默认选中
-          this.innerPayType = 'deduction'
-          this.deductionType = 'servicePackage'
-          this.deductionDialog.payType = 'servicePackage'
-          this.$emit('update', {
-            payType: this.deductionType,
-            payInfo: this.innerPayInfo
-          })
-        }
-      })
+          if (patientEquitiesId) {
+            // 有服务包权益，就默认选中
+            this.innerPayType = 'deduction'
+            this.deductionType = 'servicePackage'
+            this.deductionDialog.payType = 'servicePackage'
+            this.$emit('update', {
+              payType: this.deductionType,
+              payInfo: this.innerPayInfo
+            })
+          }
+        })
+        .finally(() => {
+          this.loading = true
+        })
     },
     // 选择支付方式
     selectPayType(payType) {
