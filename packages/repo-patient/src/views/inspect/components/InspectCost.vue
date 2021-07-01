@@ -2,13 +2,10 @@
   <div class="inspection">
     <div v-for="(item,index) in inspect"
          v-bind:key="index">
-      <div class="header">{{item.comboName}}</div>
       <div class="content">
-        <div class="item"
-             v-for="(sitem, sindex) in item.itemList"
-             v-bind:key="sindex">
-          <span>{{sitem.itemName}}</span>
-          <peace-price v-bind:price="sitem.itemPrice"
+        <div class="item">
+          <span>{{item.comboName}}</span>
+          <peace-price v-bind:price="sumComboPrice(item.itemList)"
                        v-bind:transformOrigin="'right'"></peace-price>
         </div>
       </div>
@@ -26,6 +23,17 @@ export default {
         return []
       }
     }
+  },
+  methods: {
+    sumComboPrice(itemList) {
+      let sum = 0
+      if (itemList && itemList.length > 0) {
+        sum = itemList.reduce((sum, cur) => {
+          return Number(sum) + Number(cur.itemPrice)
+        }, 0)
+      }
+      return sum
+    }
   }
 }
 </script>
@@ -33,18 +41,6 @@ export default {
 <style lang="scss" scoped>
 .inspection {
   background: #ffffff;
-  box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
-  padding: 0 16px 12px 16px;
-  .header {
-    font-size: 16px;
-    font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: bold;
-    color: #333333;
-    line-height: 24px;
-    padding-top: 12px;
-    margin-bottom: 14px;
-  }
   .content {
     padding-bottom: 1px;
   }
