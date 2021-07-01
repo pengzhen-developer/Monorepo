@@ -70,12 +70,16 @@ export default {
       return sum
     },
     goToInspectionPage() {
-      const json = peace.util.encode({ orderId: this.inspectId })
-      if (this.orderNo) {
-        this.gotoOrderDetail(json)
-      } else {
-        this.gotoOrderBefore(json)
-      }
+      const params = { checkRecordId: this.inspectId }
+      peace.service.inquiry.getCheckOrderDetailBefore(params).then((res) => {
+        if (res.data.checkOrderNo) {
+          const json = peace.util.encode({ orderNo: res.data.checkOrderNo })
+          this.gotoOrderDetail(json)
+        } else {
+          const json = peace.util.encode(params)
+          this.gotoOrderBefore(json)
+        }
+      })
     },
     gotoOrderBefore(json) {
       this.$router.push(`/inspectAdvance/${json}`)

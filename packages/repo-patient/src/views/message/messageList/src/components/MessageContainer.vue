@@ -27,6 +27,7 @@
                  :class="messageContentClass"
                  :is="messageComponent"
                  :message="message"
+                 :inquiryStatus="inquiryStatus"
                  :flow="flow"
                  :type="type"></component>
 
@@ -82,6 +83,11 @@ export default {
     message: {
       type: Object,
       required: true
+    },
+    /**问诊状态 */
+    inquiryStatus: {
+      type: [Number, String],
+      required: false
     },
     /**是否显示显示 */
     showTime: {

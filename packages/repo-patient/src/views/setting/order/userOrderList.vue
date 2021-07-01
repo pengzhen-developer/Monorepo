@@ -742,11 +742,11 @@ export default {
       this.$router.replace(`/setting/userConsultDetail/${json}`)
     },
     inspectRegisterPayCallback() {
-      let json = peace.util.encode({ orderId: this.orderId })
+      let json = peace.util.encode({ orderNo: this.orderNo })
       this.$router.replace(`/inspectRegisterDetail/${json}`)
     },
     inspectPayCallback() {
-      let json = peace.util.encode({ orderId: this.orderId })
+      let json = peace.util.encode({ orderNo: this.orderNo })
       this.$router.replace(`/inspectDetail/${json}`)
     },
     get(type) {
@@ -964,7 +964,7 @@ export default {
       }
 
       let json = peace.util.encode({
-        orderId: item.orderId
+        orderNo: item.orderNo
       })
       this.$router.replace(`/inspectDetail/${json}`)
     },

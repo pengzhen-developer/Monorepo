@@ -44,6 +44,7 @@
              class="message"
              v-for="(message ,index) in messageList">
           <MessageContainer :message="message"
+                            :inquiryStatus="inquiryStatus"
                             :index="index"
                             :showTime="isShowMessageTime(message ,index) || showTimeDic[getMessageType(message)]"
                             :patientInfo="patientInfo"

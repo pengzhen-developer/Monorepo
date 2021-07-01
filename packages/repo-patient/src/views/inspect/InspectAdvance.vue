@@ -152,7 +152,7 @@ export default {
           this.model = res.data
           this.doctorInfo = res.data?.doctorInfo || {}
           this.familyInfo = res.data?.familyInfo || {}
-          this.inspectList = res.data?.checkOrderDetails || []
+          this.inspectList = res.data?.comboList || []
           this.payInfo.orderMoney = res.data?.totalMoney || 0
           this.getDeduction()
         })

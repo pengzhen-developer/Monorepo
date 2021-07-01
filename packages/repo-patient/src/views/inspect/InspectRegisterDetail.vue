@@ -28,7 +28,7 @@
             <InspectCard v-bind:list="inspectList"
                          v-bind:totalPrice="model.checkRegisteringOrderTotalPrice"
                          v-bind:cmd="inspectCmd"
-                         v-bind:inspectId="model.checkOrderId"></InspectCard>
+                         v-bind:inspectId="model.checkRecordId"></InspectCard>
           </div>
         </div>
       </div>

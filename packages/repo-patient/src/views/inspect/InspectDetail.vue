@@ -285,7 +285,7 @@ export default {
     // 取消
     cancel(type = 'auto') {
       let params = {
-        orderId: this.model.orderId,
+        orderNo: this.model.orderNo,
         cancelType: type == 'auto' ? 2 : 1 // 1手动 2自动
       }
       peace.service.inquiry
