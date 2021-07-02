@@ -186,6 +186,8 @@ export default {
 
 .van-cell {
   &__title {
+    display: flex;
+    align-items: center;
     .custom-title,
     .custom-age {
       display: inline-block;

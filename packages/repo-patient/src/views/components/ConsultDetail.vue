@@ -485,15 +485,6 @@ import CallPhone from '@src/views/components/CallPhone'
 import PayCallback from '@src/views/components/PayCallback'
 import ApplyForInvoice from '@src/views/components/ApplyForInvoice'
 const ENUM = {
-  // 支付类型
-  // wxpay（微信）
-  // alipay（支付宝）
-  // yibaopay（医保支付）
-  PAYMENT_TYPE: {
-    微信支付: 'wxpay',
-    支付宝支付: 'alipay',
-    医保卡支付: 'yibaopay'
-  },
   PAY_TYPE_TEXT: {
     wxpay: '自费支付微信',
     yibaopay: '医保',
@@ -640,7 +631,7 @@ export default {
       if (this.internalData.orderInfo.servicePackageName) {
         return `-(${this.internalData.orderInfo.servicePackageName})`
       } else {
-        return Object.keys(ENUM.PAYMENT_TYPE).find((key) => ENUM.PAYMENT_TYPE[key] === this.internalData.orderInfo.paymentType)
+        return this.internalData.orderInfo.paymentTypeTxt
       }
     },
     retrunVisitBlock() {

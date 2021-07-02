@@ -1389,4 +1389,9 @@ export default {
     transform: translateX(16px);
   }
 }
+
+/deep/.van-cell__title {
+  display: flex;
+  align-items: center;
+}
 </style>

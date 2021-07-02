@@ -83,7 +83,7 @@
           </div>
           <div class="module-item-content start size-14">
             <div class="module-item-label">支付方式：</div>
-            <div class="module-item-value">{{model.paymentType}}</div>
+            <div class="module-item-value">{{model.paymentTypeTxt}}</div>
           </div>
           <div class="module-item-content size-14">
             <div class="module-item-label">支付时间：</div>

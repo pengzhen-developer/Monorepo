@@ -99,7 +99,7 @@
       <div class="service-item-content"
            v-if="info.payTime">
         <div class="service-item-content-lable">支付方式：</div>
-        <div class="service-item-content-value">{{paymentTypeText}}</div>
+        <div class="service-item-content-value">{{info.paymentTypeTxt}}</div>
       </div>
       <div class="service-item-content"
            v-if="info.payTime">
@@ -164,11 +164,6 @@ import CallPhone from '@src/views/components/CallPhone'
 import { Dialog } from 'vant'
 
 const CONSTANT = {
-  PAYMENT_TYPE: {
-    微信支付: 'wxpay',
-    支付宝支付: 'alipay',
-    医保卡支付: 'yibaopay'
-  },
   PAY_TYPE_TEXT: {
     wxpay: '自费支付微信',
     yibaopay: '医保',
@@ -212,9 +207,6 @@ export default {
     next()
   },
   computed: {
-    paymentTypeText() {
-      return Object.keys(CONSTANT.PAYMENT_TYPE).find((key) => CONSTANT.PAYMENT_TYPE[key] === this.info.paymentType)
-    },
     canApply() {
       return this.info?.orderStatus == 3
     },
@@ -247,7 +239,7 @@ export default {
         order_id: this.info.orderNo,
         trigger_page: '订单详情',
         click_object: '继续支付',
-        own_expense_pay_method: this.CONSTANT.PAY_TYPE_TEXT[this.info.paymentType]
+        own_expense_pay_method: CONSTANT.PAY_TYPE_TEXT[this.info.paymentType]
       }
       peace.service.sensors.payOrder(params)
     },
