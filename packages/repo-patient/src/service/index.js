@@ -22,8 +22,12 @@ import group from './modules/group'
 import yibao from './modules/yibao'
 import remind from './modules/remind'
 import servicePackage from './modules/servicePackages'
+
+//神策埋点
+import sensors from './modules/sensors'
 export default {
   IM,
+
   inquiry,
   login,
   index,
@@ -39,5 +43,7 @@ export default {
   group,
   yibao,
   remind,
-  servicePackage
+  servicePackage,
+
+  sensors
 }

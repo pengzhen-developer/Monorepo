@@ -494,6 +494,12 @@ const ENUM = {
     支付宝支付: 'alipay',
     医保卡支付: 'yibaopay'
   },
+  PAY_TYPE_TEXT: {
+    wxpay: '自费支付微信',
+    yibaopay: '医保',
+    shangbaopay: '商保',
+    servicePackage: '服务包'
+  },
   /** 问诊状态 */
   INQUIRY_STATUS: {
     待支付: 1,
@@ -507,6 +513,11 @@ const ENUM = {
   CANCEL_BUTTON_STATUS: {
     不显示: 0,
     显示: 1
+  },
+  INQUIRY_TXET_MAP_SA: {
+    image: '图文咨询',
+    video: '视频咨询',
+    returnVisit: '复诊续方'
   }
 }
 export default {
@@ -589,7 +600,8 @@ export default {
       reportHeight: '0px',
 
       showInvoiceModel: false,
-      refreshTimer: null
+      refreshTimer: null,
+      enter_time: ''
     }
   },
   watch: {
@@ -745,12 +757,47 @@ export default {
     this.get()
   },
   created() {
+    this.enter_time = new Date().getTime()
     const tradeType = peace.util.decode(this.$route.params.json)?.tradeType
     if (tradeType && this.currentStatus != ENUM.INQUIRY_STATUS.待接诊) {
       this.cbDialog.visible = true
     }
   },
+  beforeRouteLeave(to, from, next) {
+    this.trackByLeave()
+    next()
+  },
   methods: {
+    trackByLeave() {
+      const params = {
+        page_name: '咨询订单详情',
+        organization_name: this.internalData.doctorInfo.hospitalName,
+        show_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.globalPageStop(params)
+    },
+    trackByPayOrder(type = 'submit') {
+      const params = {
+        organization_name: this.internalData.doctorInfo.hospitalName,
+        business_type: this.ENUM.INQUIRY_TXET_MAP_SA[this.internalData.orderInfo.inquiryType],
+        order_id: this.internalData.orderInfo.orderId,
+        trigger_page: '订单详情',
+        click_object: type === 'submit' ? '确认支付' : '继续支付',
+        own_expense_pay_method: this.ENUM.PAY_TYPE_TEXT[this.internalData.orderInfo.paymentType]
+      }
+      peace.service.sensors.payOrder(params)
+    },
+    trackByCancelOrder() {
+      const params = {
+        page_name: '咨询订单详情',
+        organization_name: this.internalData.doctorInfo.hospitalName,
+        business_type: this.ENUM.INQUIRY_TXET_MAP_SA[this.internalData.orderInfo.inquiryType],
+        trigger_page: '订单详情',
+        order_status_on_cancel: this.internalData.inquiryInfo.statusTxt,
+        click_object: '取消订单'
+      }
+      peace.service.sensors.cancelOrder(params)
+    },
     H5PayCallback() {
       this.refreshOrder()
     },
@@ -837,6 +884,7 @@ export default {
         this.getConsultDetail()
         return
       }
+      this.trackByPayOrder('submit')
       let orderNo = order.orderNo
       peace.wx.pay({ orderNo }, null, this.getConsultDetail, this.getConsultDetail)
     },
@@ -966,6 +1014,7 @@ export default {
         message: '是否确认取消问诊？'
       })
         .then(() => {
+          this.trackByCancelOrder()
           const params = {
             orderNo: item.orderInfo.orderNo
           }

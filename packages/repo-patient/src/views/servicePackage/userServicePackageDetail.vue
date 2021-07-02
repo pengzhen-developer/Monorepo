@@ -168,6 +168,12 @@ const CONSTANT = {
     微信支付: 'wxpay',
     支付宝支付: 'alipay',
     医保卡支付: 'yibaopay'
+  },
+  PAY_TYPE_TEXT: {
+    wxpay: '自费支付微信',
+    yibaopay: '医保',
+    shangbaopay: '商保',
+    servicePackage: '服务包'
   }
 }
 export default {
@@ -191,11 +197,19 @@ export default {
         data: {
           divisionId: ''
         }
-      }
+      },
+      enter_time: ''
     }
   },
   activated() {
     this.get()
+  },
+  created() {
+    this.enter_time = new Date().getTime()
+  },
+  beforeRouteLeave(to, from, next) {
+    this.trackByLeave()
+    next()
   },
   computed: {
     paymentTypeText() {
@@ -218,6 +232,36 @@ export default {
     }
   },
   methods: {
+    trackByLeave() {
+      const params = {
+        page_name: '购买服务包订单详情',
+        organization_name: this.info.hospitalName,
+        show_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.globalPageStop(params)
+    },
+    trackByPayOrder() {
+      const params = {
+        organization_name: this.info.hospitalName,
+        business_type: '服务包',
+        order_id: this.info.orderNo,
+        trigger_page: '订单详情',
+        click_object: '继续支付',
+        own_expense_pay_method: this.CONSTANT.PAY_TYPE_TEXT[this.info.paymentType]
+      }
+      peace.service.sensors.payOrder(params)
+    },
+    trackByCancelOrder() {
+      const params = {
+        page_name: '购买服务包订单详情',
+        organization_name: this.info.hospitalName,
+        business_type: '服务包',
+        trigger_page: '订单详情',
+        order_status_on_cancel: this.info.orderStatusTxt,
+        click_object: '取消订单'
+      }
+      peace.service.sensors.cancelOrder(params)
+    },
     gotoApply(item) {
       if (item.residueNum == 0 || this.info.servicePackageStatus == 4) {
         return
@@ -286,6 +330,7 @@ export default {
       })
     },
     cancel() {
+      this.trackByCancelOrder()
       if (this.info.cancelType) {
         this.applyCancel()
       } else {
@@ -313,6 +358,7 @@ export default {
       })
     },
     pay() {
+      this.trackByPayOrder()
       let orderNo = this.info.orderNo
       peace.wx.pay({ orderNo }, null, this.get, this.get)
     },

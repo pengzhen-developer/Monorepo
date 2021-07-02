@@ -139,6 +139,14 @@ export default {
   },
 
   methods: {
+    trackByClcik(click_object) {
+      if (this.params.serviceType === 'returnVisit') {
+        const params = {
+          click_object
+        }
+        peace.service.sensors.appointmentRegister(params)
+      }
+    },
     gotoDoctorDetail() {
       if (this.params.serviceType === 'returnVisit') {
         const json = peace.util.encode({
@@ -196,6 +204,7 @@ export default {
       this.activeIndex = index
       this.activeDate = item.date
       this.getSourceData(item)
+      this.trackByClcik('切换日期')
     },
     async goAppointOrderSubmitPage(item, obj) {
       if (item.isExpire == 1 || item.number == 0) {
@@ -257,6 +266,8 @@ export default {
           this.dialog.data = Object.assign({}, temp, { type: 'returnVisit' })
           // const json = peace.util.encode(temp)
           // this.$router.push(`/components/doctorInquiryApply/${json}`)
+
+          this.trackByClcik('预约')
         } else {
           if (!this.params.emit) {
             this.params.model = Object.assign(this.params.model, temp)

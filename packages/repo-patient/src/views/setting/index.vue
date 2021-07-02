@@ -87,7 +87,8 @@ export default {
         {}
       ],
       username: '',
-      usertel: ''
+      usertel: '',
+      enter_time: ''
     }
   },
   filters: {
@@ -106,8 +107,21 @@ export default {
     this.usertel = userInfo.patientInfo.tel
     this.getWaitPayOrderNum()
   },
-
+  beforeRouteLeave(to, from, next) {
+    this.trackByLeave()
+    next()
+  },
+  created() {
+    this.enter_time = new Date().getTime()
+  },
   methods: {
+    trackByLeave() {
+      const params = {
+        page_name: '个人中心',
+        show_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.globalPageStop(params)
+    },
     canShowWaitPayOrderNum(index) {
       return index == 1 && this.waitPayOrderNum > 0
     },

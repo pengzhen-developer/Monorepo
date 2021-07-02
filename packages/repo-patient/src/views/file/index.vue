@@ -159,7 +159,8 @@ export default {
       familyId: '',
       idCard: '',
 
-      Long: false
+      Long: false,
+      enter_time: ''
     }
   },
   activated() {
@@ -168,6 +169,7 @@ export default {
   created() {
     // this.getFamilyList()
     this.Long = this.isLong()
+    this.enter_time = new Date().getTime()
   },
 
   mounted() {
@@ -175,8 +177,19 @@ export default {
       this.changeSwipeTrack(0)
     })
   },
+  beforeRouteLeave(to, from, next) {
+    this.trackByLeave()
+    next()
+  },
 
   methods: {
+    trackByLeave() {
+      const params = {
+        page_name: '健康档案',
+        show_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.globalPageStop(params)
+    },
     goFamily() {
       this.$router.push('/setting/myFamilyMembers')
     },

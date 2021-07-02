@@ -264,6 +264,7 @@ export default {
       }
 
       peace.cache.remove(peace.type.SYSTEM.NETHOSPITALID)
+      peace.cache.remove(peace.type.SYSTEM.NETHOSPITALNAME)
       peace.cache.remove(peace.type.SYSTEM.CHANNELID)
     },
 

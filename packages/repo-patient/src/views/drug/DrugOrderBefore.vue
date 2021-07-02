@@ -273,7 +273,9 @@ export default {
         visible: false,
         informedConsent: ''
       },
-      coldStorageError: false
+      coldStorageError: false,
+      enter_time: '',
+      isSend: false
     }
   },
 
@@ -286,8 +288,15 @@ export default {
   },
   destroyed() {
     $peace.$off('SelectAddress')
+    this.trackByConfirm()
+    this.trackByLeave()
+    //没有选择提交订单 而是返回时 触发
+    if (!this.isSend) {
+      this.trackByCommit()
+    }
   },
   created() {
+    this.enter_time = new Date().getTime()
     $peace.$on('SelectAddress', this.selectAddressCallback)
 
     this.initData(this.$route.params.json)
@@ -331,6 +340,32 @@ export default {
     }
   },
   methods: {
+    trackByLeave() {
+      const params = {
+        page_name: '购药订单确认页面',
+        organization_name: this.order.netHospitalName,
+        show_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.globalPageStop(params)
+    },
+    trackByConfirm() {
+      const params = {
+        page_address: '/drug/drugOrderBefore',
+        business_type: '处方购药',
+        order_type: '处方购药',
+        pay_method: this.order.paymentType,
+        event_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.confirmOrder(params)
+    },
+    trackByCommit(type = '') {
+      const params = {
+        business_type: '处方购药',
+        click_object: type === 'apply' ? '提交订单' : '返回',
+        pay_method_on_submit: this.order.paymentType
+      }
+      peace.service.sensors.commitOrder(params)
+    },
     openInformedConsentModel() {
       if (!peace.validate.pattern.mobile.test(this.consigneeInfo.mobile)) {
         return peace.util.alert('请输入正确的手机号')
@@ -346,7 +381,8 @@ export default {
         peace.util.alert('请添加收货地址')
         return
       }
-
+      this.trackByCommit('apply')
+      this.isSend = true
       peace.service.patient
         .checkDrugAttr({
           jztClaimNo: this.order.jztClaimNo,

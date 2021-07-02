@@ -7614,6 +7614,11 @@ rxjs@^6.4.0:
   dependencies:
     tslib "^1.9.0"
 
+sa-sdk-javascript@^1.18.2:
+  version "1.18.2"
+  resolved "https://registry.yarnpkg.com/sa-sdk-javascript/-/sa-sdk-javascript-1.18.2.tgz#585480242f1be489d733422385464147d6f38aa8"
+  integrity sha512-DzNLzfhfOlQluu/UxYjm5ri2qjHy1mND5l+CX+jDM150GUZmArxEnJ+vyeLMT0oHRYfAksxegsObSeYxVhXVxw==
+
 safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
   resolved "https://registry.npm.taobao.org/safe-buffer/download/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"

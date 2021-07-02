@@ -171,7 +171,9 @@ export default {
           peace.cache.set(peace.type.USER.INFO, res.data)
           //缓存登录手机号
           peace.cache.set(peace.type.USER.TEL, this.model.tel)
-
+          //登录后 神策埋点设置用户信息
+          $peace.$sensors.login(res.data.patientInfo.id)
+          $peace.$sensors.setProfile({ login_id: res.data.patientInfo.id, is_login: true })
           this.$nextTick(() => {
             // 初始化 IM
             peace.service.IM.initNIMS()

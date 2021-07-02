@@ -79,11 +79,24 @@ export default {
       dialog: {
         visible: false,
         data: {}
-      }
+      },
+      enter_time: '',
+      isSend: false
     }
   },
   activated() {
     this.get()
+  },
+  created() {
+    this.enter_time = new Date().getTime()
+  },
+  destroyed() {
+    this.trackByConfirm()
+    this.trackByLeave()
+    //没有选择提交订单 而是返回时 触发
+    if (!this.isSend) {
+      this.trackByCommit()
+    }
   },
   computed: {
     canShowRefundTip() {
@@ -97,6 +110,32 @@ export default {
     }
   },
   methods: {
+    trackByLeave() {
+      const params = {
+        page_name: '服务包确认订单页面',
+        organization_name: this.info.hospitalName,
+        show_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.globalPageStop(params)
+    },
+    trackByConfirm() {
+      const params = {
+        page_address: '/servicePackage/userServicePackageDetailBefore',
+        business_type: '服务包',
+        order_type: '服务包',
+        pay_method: '自费支付微信',
+        event_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.confirmOrder(params)
+    },
+    trackByCommit(type = '') {
+      const params = {
+        business_type: '服务包',
+        click_object: type === 'apply' ? '提交订单' : '返回',
+        pay_method_on_submit: '自费支付微信'
+      }
+      peace.service.sensors.commitOrder(params)
+    },
     get() {
       const params = peace.util.decode(this.$route.params.json)
       peace.service.servicePackage.getServicePackageDetail(params).then((res) => {
@@ -104,6 +143,8 @@ export default {
       })
     },
     submit() {
+      this.trackByCommit('apply')
+      this.isSend = true
       const params = {
         servicePackageId: this.info.servicePackageId
       }

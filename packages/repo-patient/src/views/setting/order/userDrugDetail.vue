@@ -469,7 +469,8 @@ export default {
         data: {
           divisionId: ''
         }
-      }
+      },
+      enter_time: ''
     }
   },
 
@@ -589,7 +590,8 @@ export default {
       if (ShippingMethod === undefined || callOrderStatus === undefined) return false
       return (
         ShippingMethod === ENUM.SHIPPING_METHOD.到店取药 &&
-        callOrderStatus >= ENUM.ORDER_STATUS.已下单 && callOrderStatus != ENUM.ORDER_STATUS.已取消 &&
+        callOrderStatus >= ENUM.ORDER_STATUS.已下单 &&
+        callOrderStatus != ENUM.ORDER_STATUS.已取消 &&
         this.pickUpCode
       )
     },
@@ -606,17 +608,51 @@ export default {
       )
     }
   },
-
+  beforeRouteLeave(to, from, next) {
+    this.trackByLeave()
+    next()
+  },
   activated() {
     this.getDrugOrderDetail()
   },
   created() {
+    this.enter_time = new Date().getTime()
     const tradeType = peace.util.decode(this.$route.params.json)?.tradeType
     if (tradeType && this.currentStatus != ENUM.ORDER_STATUS.已下单) {
       this.cbDialog.visible = true
     }
   },
   methods: {
+    trackByLeave() {
+      const params = {
+        page_name: '购药订单详情',
+        organization_name: this.order.drugStoreName,
+        show_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.globalPageStop(params)
+    },
+    trackByPayOrder() {
+      const params = {
+        organization_name: this.order.drugStoreName,
+        business_type: '处方购药',
+        order_id: this.order.orderNo,
+        trigger_page: '订单详情',
+        click_object: '继续支付',
+        own_expense_pay_method: this.order.paymentTypeTxt
+      }
+      peace.service.sensors.payOrder(params)
+    },
+    trackByCancelOrder() {
+      const params = {
+        page_name: '购药订单详情',
+        organization_name: this.order.drugStoreName,
+        business_type: '处方购药',
+        trigger_page: '订单详情',
+        order_status_on_cancel: this.order.callOrderStatusTxt,
+        click_object: '取消订单'
+      }
+      peace.service.sensors.cancelOrder(params)
+    },
     showRefundTip() {
       this.refundTipDialog.data.divisionId = this.order.divisionId
       this.refundTipDialog.visible = true
@@ -678,6 +714,7 @@ export default {
       this.getDrugOrderDetail()
     },
     payOrder(order) {
+      this.trackByPayOrder()
       let orderNo = order.orderNo
       peace.wx.pay({ orderNo }, null, this.payCallback, this.payCallback)
     },
@@ -761,6 +798,7 @@ export default {
       })
     },
     canselOrder() {
+      this.trackByCancelOrder()
       const status = this.order.callOrderStatus
       const divisionId = this.order.divisionId //北辰医院his对接不需要跳转页面发起申请
       if (status == ENUM.ORDER_STATUS.待下单 || (status !== ENUM.ORDER_STATUS.待下单 && divisionId)) {

@@ -232,11 +232,23 @@ const ENUM = {
     video: '视频问诊',
     returnVisit: '复诊'
   },
+
+  INQUIRY_TXET_MAP_SA: {
+    image: '图文咨询',
+    video: '视频咨询',
+    returnVisit: '复诊续方'
+  },
   WOMAN_TYPE_TEXT_MAP: {
     1: '不在特殊时期',
     2: '备孕期',
     3: '怀孕期',
     4: '哺乳期'
+  },
+  PAY_TYPE_TEXT: {
+    wxpay: '自费支付微信',
+    yibaopay: '医保',
+    shangbaopay: '商保',
+    servicePackage: '服务包'
   }
 }
 export default {
@@ -303,7 +315,9 @@ export default {
         sbInsuranceId: '',
         // 所选商保名称
         sbInsuranceName: ''
-      }
+      },
+      enter_time: '',
+      isSend: false
     }
   },
   computed: {
@@ -362,6 +376,8 @@ export default {
     }
   },
   created() {
+    this.enter_time = new Date().getTime()
+
     let json = peace.util.decode(this.$route.params.json)
     // 初始化医保、商保信息
     json.cardno = ''
@@ -376,8 +392,40 @@ export default {
   },
   destroyed() {
     this.offEmits()
+    this.trackByConfirm()
+    this.trackByLeave()
+    //没有选择提交订单 而是返回时 触发
+    if (!this.isSend) {
+      this.trackByCommit()
+    }
   },
   methods: {
+    trackByLeave() {
+      const params = {
+        page_name: '咨询订单确认页面',
+        show_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.globalPageStop(params)
+    },
+    trackByConfirm() {
+      const params = {
+        page_address: '/components/ConsultDetailBefore',
+        business_type: this.ENUM.INQUIRY_TXET_MAP_SA[this.params.consultingType],
+        order_type: this.ENUM.INQUIRY_TXET_MAP_SA[this.params.consultingType],
+        pay_method: this.ENUM.PAY_TYPE_TEXT[this.payType],
+        event_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.confirmOrder(params)
+    },
+    trackByCommit(type = '') {
+      const params = {
+        business_type: this.ENUM.INQUIRY_TXET_MAP_SA[this.params.consultingType],
+        click_object: type === 'apply' ? '提交订单' : '返回',
+        pay_method_on_submit: this.ENUM.PAY_TYPE_TEXT[this.payType]
+      }
+      peace.service.sensors.commitOrder(params)
+    },
+
     // 获取家人及医生信息
     getFamilyDoctorInfo() {
       const params = {
@@ -507,7 +555,8 @@ export default {
         params.patientEquitiesId = ''
         params.medCardNo = ''
       }
-
+      this.trackByCommit('apply')
+      this.isSend = true
       peace.service.inquiry
         .apply(params)
         .then((res) => {

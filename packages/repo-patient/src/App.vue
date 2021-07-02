@@ -164,6 +164,7 @@ export default {
 
   created() {
     this.restoreUserInfo()
+    this.initSensors()
     // 待优化项
     // 当系统初始化时，App.vue 优先于 Component.vue 执行
     // 当访问系统入口 Redirect.vue 时
@@ -224,7 +225,9 @@ export default {
         peace.service.IM.initNIMS()
       }
     },
-
+    initSensors() {
+      $peace.service.sensors.getSensors()
+    },
     back() {
       this.$router.go(-1)
     },

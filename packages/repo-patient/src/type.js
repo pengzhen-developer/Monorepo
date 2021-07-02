@@ -31,6 +31,8 @@ export const SYSTEM = {
 
   // 当前登录用户机构来源
   NETHOSPITALID: 'NETHOSPITALID',
+  //当前登录用户机构来源名称
+  NETHOSPITALNAME: 'NETHOSPITALNAME',
   // 当前登录用户渠道来源
   CHANNELID: 'CHANNELID',
 

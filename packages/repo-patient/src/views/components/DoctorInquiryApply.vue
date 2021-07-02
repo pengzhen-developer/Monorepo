@@ -689,7 +689,11 @@ export default {
       },
       selectCase: null,
       isFirstOptionRecord: null,
-      isAcceptNotHasFirstOptionRecord: null
+      isAcceptNotHasFirstOptionRecord: null,
+
+      toPage: '',
+
+      enter_time: ''
     }
   },
 
@@ -723,7 +727,11 @@ export default {
       }
     })
   },
-
+  // beforeRouteLeave(to, from, next) {
+  //   this.trackByJump()
+  //   this.trackByLeave()
+  //   next()
+  // },
   activated() {
     this.$nextTick().then(() => {
       this.scrollToBottom()
@@ -731,6 +739,7 @@ export default {
   },
 
   created() {
+    this.enter_time = new Date().getTime()
     this.onEmits()
 
     // 获取字典数据
@@ -756,9 +765,45 @@ export default {
 
   destroyed() {
     this.offEmits()
+    this.trackByJump()
+    this.trackByLeave()
   },
 
   methods: {
+    trackByJump() {
+      const params = {
+        business_type: this.doctor.doctorInfo.serviceName,
+        end_question_id: this.answerList[this.answerList.length - 1].question,
+        to_page: this.toPage
+      }
+      peace.service.sensors.jumpDoctorAssistant(params)
+    },
+    trackByLeave() {
+      const params = {
+        page_name: '医生助手',
+        show_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.globalPageStop(params)
+    },
+    trackByClick() {
+      let supplementQquestionShorter = []
+      this.chatList.forEach((item) => {
+        if (item.mode === SUPPLEMENTARY_MODE.ALLERGIES) {
+          supplementQquestionShorter.push('过敏史')
+        } else if (item.mode === SUPPLEMENTARY_MODE.WOMAN) {
+          supplementQquestionShorter.push('特殊人群')
+        } else if (item.mode === SUPPLEMENTARY_MODE.IMAGES) {
+          supplementQquestionShorter.push('补充资料')
+        }
+      })
+      const params = {
+        business_type: this.doctor.doctorInfo.serviceName,
+        make_appointment_click: this.model.serviceType == 'returnVisit' ? '去预约' : '去咨询',
+        supplement_question_click: this.chatList.length > 0 ? '是' : '否',
+        supplement_question_shorter: supplementQquestionShorter.join(',')
+      }
+      peace.service.sensors.clickDoctorAssistant(params)
+    },
     hasFixed(e) {
       this.isFixed = e.isFixed
     },
@@ -1232,6 +1277,7 @@ export default {
                       familyId: familyId
                     })
                     //跳转订单详情
+                    this.toPage = '订单详情'
                     this.$router.replace(`/setting/userConsultDetail/${params}`)
                   })
 
@@ -1253,6 +1299,7 @@ export default {
                     // 清除聊天记录
                     peace.service.IM.resetInquirySessionMessages()
                     // 跳转聊天详情
+                    this.toPage = '会话页面'
                     this.$router.replace(`/components/messageList/${param}`)
                   })
 
@@ -1593,7 +1640,7 @@ export default {
 
     async apply() {
       this.sending = true
-
+      await this.trackByClick()
       await this.applyHandler()
 
       this.sending = false
@@ -1669,6 +1716,7 @@ export default {
       const json = peace.util.deepClone(this.model)
       const model = peace.util.encode(json)
       if (json.serviceType !== 'returnVisit') {
+        this.toPage = '预售订单'
         this.$router.replace(`/components/ConsultDetailBefore/${model}`)
         return
       }
@@ -1684,6 +1732,7 @@ export default {
       return peace.service.inquiry
         .checkSource(params)
         .then(() => {
+          this.toPage = '预售订单'
           this.$router.replace(`/components/ConsultDetailBefore/${model}`)
         })
         .catch((res) => {
@@ -1718,6 +1767,7 @@ export default {
       }
       const model = peace.util.deepClone(this.model)
       let json = peace.util.encode({ model, ...param })
+      this.toPage = '预约复诊时间'
       this.$router.replace(`/appoint/doctor/appointDoctorSelect/${json}`)
     },
     viewImage(file, fileIndex) {

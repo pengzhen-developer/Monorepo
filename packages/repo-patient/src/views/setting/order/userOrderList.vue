@@ -512,6 +512,12 @@ Vue.use(CountDown)
 import QRCode from '@src/views/components/QRCode'
 import InvoiceModel from '@src/views/components/InvoiceModel'
 const ENUM = {
+  PAY_TYPE_TEXT: {
+    wxpay: '自费支付微信',
+    yibaopay: '医保',
+    shangbaopay: '商保',
+    servicePackage: '服务包'
+  },
   SHIPPING_METHOD: {
     SELF: 0,
     HOME: 1
@@ -585,7 +591,8 @@ export default {
 
       showQRCode: false,
       QRCodeURL: '',
-      pickUpCode: ''
+      pickUpCode: '',
+      enter_time: ''
     }
   },
   filters: {
@@ -600,8 +607,32 @@ export default {
     this.orderList = []
     this.get()
   },
-
+  created() {
+    this.enter_time = new Date().getTime()
+  },
+  beforeRouteLeave(to, from, next) {
+    this.trackByLeave()
+    next()
+  },
   methods: {
+    trackByLeave() {
+      const params = {
+        page_name: '列表页面',
+        show_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.globalPageStop(params)
+    },
+    trackByPayOrder(orderNo, orderType, paymentType, hospitalName) {
+      const params = {
+        organization_name: hospitalName,
+        business_type: orderType,
+        order_id: orderNo,
+        trigger_page: '订单列表',
+        click_object: '继续支付',
+        own_expense_pay_method: this.ENUM.PAY_TYPE_TEXT[paymentType] || paymentType
+      }
+      peace.service.sensors.payOrder(params)
+    },
     getServicePackageInquiryShowMoreText(status) {
       return status == 4 || status == 6 ? false : true
     },
@@ -697,23 +728,7 @@ export default {
       let data = JSON.parse(JSON.stringify(item))
       this.orderList.splice(index, 1, data)
     },
-    goPay(data, index, type) {
-      if (this.$refs[type + index] && this.$refs[type + index].length > 0) {
-        const countDown = this.$refs[type + index][0]
-        countDown.pause()
-      }
-      if (data.orderType == 'register' || data.orderType == 'servicePackage') {
-        this.orderNo = data.orderNo
-      } else if (data.orderType == 'inquiry' || data.orderType == 'returnVisit') {
-        this.orderNo = data.orderInfo.orderNo
-        this.inquiryId = data.inquiryInfo.inquiryId
-      } else if (data.orderType == 'checkRegisteringOrder' || data.orderType == 'checkOrder') {
-        this.orderNo = data.orderNo
-        this.orderId = data.orderId
-      }
-      this.orderType = data.orderType
-      peace.wx.pay({ orderNo: this.orderNo }, null, this.payCallback, this.payCallback)
-    },
+
     payCallback() {
       if (this.orderType == 'register') {
         this.registerPayCallback()
@@ -1013,11 +1028,42 @@ export default {
         })
       })
     },
+    goPay(data, index, type) {
+      if (this.$refs[type + index] && this.$refs[type + index].length > 0) {
+        const countDown = this.$refs[type + index][0]
+        countDown.pause()
+      }
+      let paymentType = ''
+      let hospitalName = ''
+
+      if (data.orderType == 'register' || data.orderType == 'servicePackage') {
+        this.orderNo = data.orderNo
+        paymentType = data.paymentType
+        hospitalName = data.doctorInfo.hospitalName
+
+        this.trackByPayOrder(this.orderNo, this.orderType, paymentType, hospitalName)
+      } else if (data.orderType == 'inquiry' || data.orderType == 'returnVisit') {
+        this.orderNo = data.orderInfo.orderNo
+        this.inquiryId = data.inquiryInfo.inquiryId
+        paymentType = data.orderInfo.paymentType
+        hospitalName = data.doctorInfo.hospitalName
+
+        this.trackByPayOrder(this.orderNo, this.orderType, paymentType, hospitalName)
+      } else if (data.orderType == 'checkRegisteringOrder' || data.orderType == 'checkOrder') {
+        this.orderNo = data.orderNo
+        this.orderId = data.orderId
+      }
+      this.orderType = data.orderType
+      peace.wx.pay({ orderNo: this.orderNo }, null, this.payCallback, this.payCallback)
+    },
     payOrder(item, index, type) {
       if (this.$refs[type + index] && this.$refs[type + index].length > 0) {
         const countDown = this.$refs[type + index][0]
         countDown.pause()
       }
+
+      this.trackByPayOrder(item.orderNo, item.orderType, item.paymentType, item.drugStoreName)
+
       let orderNo = item.orderNo
       this.currentOrderId = item.orderNo
       let params = { orderNo }

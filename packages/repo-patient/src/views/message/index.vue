@@ -82,6 +82,11 @@
 import peace from '@src/library'
 
 export default {
+  data() {
+    return {
+      enter_time: ''
+    }
+  },
   activated() {
     if (this.$route.params.sessionId) {
       const interval = setInterval(() => {
@@ -107,7 +112,21 @@ export default {
       return this.$store.state.inquiry.serviceRemind
     }
   },
+  created() {
+    this.enter_time = new Date().getTime()
+  },
+  beforeRouteLeave(to, from, next) {
+    this.trackByLeave()
+    next()
+  },
   methods: {
+    trackByLeave() {
+      const params = {
+        page_name: '消息列表',
+        show_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.globalPageStop(params)
+    },
     getLastMessage(session) {
       const messageType = session.lastMsg.type
 

@@ -125,7 +125,7 @@
                          :src="require('@src/assets/images/ic_consultation.png')" />
               <h4 class="body-card-title">复诊续方</h4>
               <div class=" flex flex-1 end"
-                   @click="gotoAppointPage(returnVisitList[0].timeSharing)">
+                   @click="gotoAppointPage(returnVisitList[0].timeSharing,'more')">
                 <span class="see-more">查看更多</span>
                 <van-image width="13px"
                            height="13px"
@@ -148,7 +148,7 @@
                              v-bind:price="item.unitPrice"></peace-price>
                 <!-- @click.stop="showDialog(item,'returnVisit')" -->
                 <van-button round
-                            @click="gotoAppointPage(item.timeSharing)"
+                            @click="gotoAppointPage(item.timeSharing,'appoint')"
                             size="small"
                             :class="{'full':item.state==='full'}"
                             :type="item.state!=='full'?'primary':''">{{item.state!=='full'?'预约':'约满'}}</van-button>
@@ -585,7 +585,8 @@ export default {
         total: 0,
         info: null
       },
-      isLoading: true
+      isLoading: true,
+      enter_time: ''
     }
   },
   activated() {
@@ -616,8 +617,28 @@ export default {
       peace.cache.remove(peace.type.SYSTEM.EWM_INFO)
     }
   },
-
+  created() {
+    this.enter_time = new Date().getTime()
+  },
+  beforeRouteLeave(to, from, next) {
+    this.trackByLeave()
+    next()
+  },
   methods: {
+    trackByLeave() {
+      const params = {
+        page_name: '医生主页',
+        show_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.globalPageStop(params)
+    },
+    trackByClcik(click_object, page_area) {
+      const params = {
+        click_object,
+        page_area
+      }
+      peace.service.sensors.clickDoctorHomePage(params)
+    },
     hasLogin() {
       return peace.cache.get(peace.type.USER.INFO) == null ? false : true
     },
@@ -632,7 +653,8 @@ export default {
       }
     },
     //复诊续方查看更多
-    gotoAppointPage(time) {
+    gotoAppointPage(time, type) {
+      this.trackByClcik(type === 'more' ? '复诊续方查看更多' : '复诊续方预约', '服务区')
       let json = peace.util.encode({
         doctorId: this.doctor.doctorInfo.doctorId,
         hospitalCode: this.doctor.doctorInfo.nethospitalid,
@@ -647,6 +669,9 @@ export default {
     },
 
     showDialog(serviceInfo, type) {
+      if (type === 'image' || type === 'video') {
+        this.trackByClcik(type === 'image' ? '在线咨询图文咨询' : '在线咨询视频咨询', '服务区')
+      }
       if (!this.hasLogin()) {
         this.goLogin()
         return
@@ -775,6 +800,7 @@ export default {
 
     showMore() {
       this.fold = !this.fold
+      this.trackByClcik('展开', '基础资料')
     },
 
     shareDoctor(doctorInfo) {
@@ -785,11 +811,15 @@ export default {
 
       peace.service.patient.attention(params).then(() => {
         doctorInfo.attentionStatus = true
+
+        this.trackByClcik('关注', '基础资料')
       })
     },
 
     goMap(doctorInfo) {
       if (doctorInfo.address || (doctorInfo.latitude && doctorInfo.longitude)) {
+        this.trackByClcik('所属机构', '基础资料')
+
         const json = peace.util.encode({
           name: doctorInfo.hospitalName,
           address: doctorInfo.address,
@@ -868,10 +898,12 @@ export default {
       this.$router.push(`/appoint/order/appointOrderSubmit/${params}`)
     },
     gotoServicePageListPage() {
+      this.trackByClcik('服务包查看更多', '服务区')
       const params = peace.util.encode({ doctorId: this.doctor.doctorInfo.doctorId })
       this.$router.push(`/servicePackage/list/${params}`)
     },
     gotoServicePackageDeatilPage(servicePackageId) {
+      this.trackByClcik('服务包查看详情', '服务区')
       const params = peace.util.encode({ servicePackageId: servicePackageId })
       this.$router.push(`/servicePackage/detail/${params}`)
     },

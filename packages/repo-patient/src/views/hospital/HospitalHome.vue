@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="intro"
-               @click="brief.visible = true">医院简介</div>
+               @click="showIntro">医院简介</div>
         </div>
         <div class="location">
           <span class="name"
@@ -33,7 +33,8 @@
         }}</span>
           <a :href="`tel:${hospitalInfo.nethospitalInfo.phoneNumber}`"
              v-if="hospitalInfo.nethospitalInfo.phoneNumber"
-             class="tel"><img src="../../assets/images/newIndex/ic_phone.png" /></a>
+             class="tel"
+             @click="trackByClick('联系电话','基础资料')"><img src="../../assets/images/newIndex/ic_phone.png" /></a>
         </div>
         <div class="notice">
           <i class="alarm"></i>
@@ -47,17 +48,6 @@
              class="arrow"
              v-if="noticeBarIsSet"></i>
         </div>
-        <!-- <div class="notice">
-          <i class="alarm"></i>
-          <van-notice-bar class="message-box"
-                          color="#999999"
-                          background="transparent"
-                          v-bind:text="noticeBarText"
-                          @click="goHospitalNoticeDetail()" />
-          <i @click="goHospitalNoticeList()"
-             class="arrow"
-             v-if="noticeBarIsSet"></i>
-        </div> -->
       </section>
       <section class="functions">
         <div class="item "
@@ -181,14 +171,21 @@ export default {
 
       isLoading: false,
 
-      colorArr: ['#E6FFFB', '#E6F7FF', '#F9F0FF', '#F0F5FF', '#E6FFFB', '#FFFBE6']
+      colorArr: ['#E6FFFB', '#E6F7FF', '#F9F0FF', '#F0F5FF', '#E6FFFB', '#FFFBE6'],
+
+      from_page: '',
+      enter_time: ''
     }
   },
 
   activated() {
-    this.getHospitalInfo()
+    this.getHospitalInfo('init')
     this.isRegisterData()
   },
+  created() {
+    this.enter_time = new Date().getTime()
+  },
+
   computed: {
     noticeBarText() {
       if (this.hospitalInfo?.notices?.length > 0) {
@@ -225,12 +222,54 @@ export default {
       return this.hospitalInfo?.notices?.length > 0
     }
   },
-  mounted() {
-    this.colorArr.sort(() => Math.random() - 0.5)
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      if (from.path != '/' && from.path != '/redirect') {
+        vm.from_page = from.path
+
+        if ($peace.cache.get($peace.type.SYSTEM.NETHOSPITALID) && from.path.indexOf('/home/index') != -1) {
+          vm.from_page = ''
+        }
+      }
+    })
+  },
+
+  beforeRouteLeave(to, from, next) {
+    this.trackByLeave()
+    next()
   },
 
   methods: {
-    getHospitalInfo() {
+    trackByLeave() {
+      const params = {
+        page_name: '首页',
+        show_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.globalPageStop(params)
+    },
+
+    trackByOpen() {
+      const params = {
+        from_page: this.from_page,
+        load_duration: (new Date().getTime() - this.enter_time) / 1000
+      }
+      peace.service.sensors.homeTrackByOpen(params)
+    },
+
+    trackByClick(clickObject, clickArea) {
+      const params = {
+        click_object: clickObject,
+        area: clickArea
+      }
+      peace.service.sensors.homeTrackByClick(params)
+    },
+
+    showIntro() {
+      this.brief.visible = true
+      this.trackByClick('医院简介', '基础资料')
+    },
+
+    getHospitalInfo(type = '') {
       const params = peace.util.decode(this.$route.params.json)
       const nethospitalId = params.netHospitalId || peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
       const channelId = peace.cache.get(peace.type.SYSTEM.CHANNELID)
@@ -245,8 +284,16 @@ export default {
         }
         if (channelId) {
           obj.url = peace.config.api.base + 'h5/redirect?redirect=home&netHospitalId=' + nethospitalId + '&channelId=' + channelId
+          //用户从机构渠道进入程序，缓存机构名称用于 神策埋点
+          $peace.cache.set($peace.type.SYSTEM.NETHOSPITALNAME, this.hospitalInfo.nethospitalInfo.name)
         }
         peace.wx.share.share(obj)
+
+        if (type == 'init') {
+          this.$nextTick(() => {
+            this.trackByOpen()
+          })
+        }
       })
     },
 
@@ -262,12 +309,16 @@ export default {
     },
 
     goDoctorHomeIndexPage(item) {
+      this.trackByClick(item.doctorName, '医生')
+
       const json = peace.util.encode({ doctorId: item.doctorId })
 
       this.$router.push(`/components/doctorDetail/${json}`)
     },
 
     goAllDepartment() {
+      this.trackByClick('科室更多', '科室')
+
       const json = peace.util.encode({
         netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
         id: 'consult',
@@ -278,6 +329,8 @@ export default {
     },
 
     goDepartmentDoctorList(item) {
+      this.trackByClick(item.netdeptName, '科室')
+
       const json = peace.util.encode({
         netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
         deptId: item.id,
@@ -289,6 +342,8 @@ export default {
     },
 
     goStarDoctor() {
+      this.trackByClick('医生更多', '医生')
+
       const json = peace.util.encode({
         netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
         type: 'starDoctorList',
@@ -300,6 +355,8 @@ export default {
     },
 
     goHospitalNoticeDetail() {
+      this.trackByClick('医院通知', '基础资料')
+
       if (!this.noticeBarIsSet) {
         return
       }
@@ -311,6 +368,8 @@ export default {
     },
 
     goHospitalNoticeList() {
+      this.trackByClick('医院通知', '基础资料')
+
       const json = peace.util.encode({
         netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId
       })
@@ -373,6 +432,7 @@ export default {
       switch (item.serviceLogoId) {
         // 预约挂号
         case 1:
+          this.trackByClick('预约挂号', '功能入口')
           if (this.hasRegisterData) {
             //有挂号信息
             json = peace.util.encode({
@@ -394,6 +454,7 @@ export default {
 
         // 在线问诊
         case 5:
+          this.trackByClick('问诊服务', '功能入口')
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
             serviceType: 'inquiry',
@@ -403,6 +464,7 @@ export default {
           break
         // 复诊续方
         case 4:
+          this.trackByClick('复诊续方', '功能入口')
           //有挂号信息
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
@@ -427,6 +489,7 @@ export default {
           break
         // 查询报告
         case 2:
+          this.trackByClick('查询报告', '功能入口')
           json = peace.util.encode({
             hsp: {
               hospitalName: this.hospitalInfo.nethospitalInfo.name,

@@ -71,7 +71,9 @@ module.exports = {
     }
     config.plugins = [...config.plugins, ...plugins]
   },
-
+  devServer: {
+    disableHostCheck: true
+  },
   //增加vue.config.js文件配置css
   css: {
     loaderOptions: {
