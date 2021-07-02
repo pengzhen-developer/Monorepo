@@ -57,8 +57,7 @@
                 :moreIcon="data.moreIcon"></DepartPage>
     <van-cell @click="goMenuPage({},{type:'crowdLists'})"
               is-link
-              value="常见人群"
-              style="border-top:10px solid #f5f5f5;font-size:18px;padding: 16px;" />
+              value="常见人群" />
     <Humens :data="data.crowdListsDisease"
             :items="data.crowdLists"
             :max="3"
@@ -66,8 +65,7 @@
             style="padding-bottom:10px"></Humens>
     <van-cell @click="goMenuPage(data.recommendOrgan,{type:'recommendHsp'})"
               :is-link="data.recommendOrgan.length>2"
-              value="推荐互联网医院"
-              style="border-top:10px solid #f5f5f5;font-size:18px;padding: 16px;" />
+              value="推荐互联网医院" />
     <HspPage :items="data.recommendOrgan"
              :max="2"
              :isHome="true"
@@ -413,7 +411,17 @@ export default {
 .van-hairline--top-bottom::after {
   border: none;
 }
-
+.van-cell {
+  border-top: 10px solid #f5f5f5;
+  font-size: 18px;
+  line-height: 18px;
+  padding: 16px;
+}
+::v-deep .van-cell__value--alone {
+  display: flex;
+  align-items: center;
+  color: #333;
+}
 .van-cell:not(:last-child)::after {
   content: '';
   border: none;
