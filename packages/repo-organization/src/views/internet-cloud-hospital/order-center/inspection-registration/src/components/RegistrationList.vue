@@ -68,7 +68,7 @@
         <PeaceTableColumn label="预约医生"
                           prop="doctorName"
                           min-width="80px"></PeaceTableColumn>
-        <PeaceTableColumn label="预约时间"
+        <PeaceTableColumn label="支付时间"
                           min-width="180px">
           <template slot-scope="scope">
             {{scope.row.appointmentTime||'-'}}

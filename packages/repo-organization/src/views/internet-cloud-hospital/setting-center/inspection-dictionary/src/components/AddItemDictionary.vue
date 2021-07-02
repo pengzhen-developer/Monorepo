@@ -23,7 +23,8 @@
       <el-form-item label="简码"
                     prop="abbreviation">
         <peace-input v-model.trim="model.abbreviation"
-                     placeholder="请输入"></peace-input>
+                     placeholder="请输入"
+                     maxlength="100"></peace-input>
       </el-form-item>
       <el-form-item label="项目单价"
                     prop="price">
