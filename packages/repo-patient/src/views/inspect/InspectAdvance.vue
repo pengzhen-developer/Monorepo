@@ -32,7 +32,7 @@
 
       <div class="pay-card-wrap">
         <PayCard v-bind:doctorId="model.doctorInfo.doctorId"
-                 v-bind:familyId="model.familyId"
+                 v-bind:familyId="model.familyInfo.familyId"
                  v-bind:familyName="familyInfo.name"
                  v-bind:payType="payType"
                  v-bind:payInfo="payInfo"
