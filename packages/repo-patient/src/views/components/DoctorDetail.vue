@@ -670,7 +670,7 @@ export default {
 
     showDialog(serviceInfo, type) {
       if (type === 'image' || type === 'video') {
-        this.trackByClcik(type === 'image' ? '在线咨询图文咨询' : '在线咨询视频咨询', '服务区')
+        this.trackByClcik(type === 'image' ? '在线问诊图文问诊' : '在线问诊视问诊', '服务区')
       }
       if (!this.hasLogin()) {
         this.goLogin()

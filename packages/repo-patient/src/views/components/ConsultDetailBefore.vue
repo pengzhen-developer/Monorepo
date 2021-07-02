@@ -234,8 +234,8 @@ const ENUM = {
   },
 
   INQUIRY_TXET_MAP_SA: {
-    image: '图文咨询',
-    video: '视频咨询',
+    image: '图文问诊',
+    video: '视频问诊',
     returnVisit: '复诊续方'
   },
   WOMAN_TYPE_TEXT_MAP: {
@@ -402,7 +402,7 @@ export default {
   methods: {
     trackByLeave() {
       const params = {
-        page_name: '咨询订单确认页面',
+        page_name: '问诊订单确认页面',
         show_duration: (new Date().getTime() - this.enter_time) / 1000
       }
       peace.service.sensors.globalPageStop(params)

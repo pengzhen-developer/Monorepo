@@ -798,7 +798,7 @@ export default {
       })
       const params = {
         business_type: this.doctor.doctorInfo.serviceName,
-        make_appointment_click: this.model.serviceType == 'returnVisit' ? '去预约' : '去咨询',
+        make_appointment_click: this.model.serviceType == 'returnVisit' ? '去预约' : '去问诊',
         supplement_question_click: this.chatList.length > 0 ? '是' : '否',
         supplement_question_shorter: supplementQquestionShorter.join(',')
       }

@@ -515,8 +515,8 @@ const ENUM = {
     显示: 1
   },
   INQUIRY_TXET_MAP_SA: {
-    image: '图文咨询',
-    video: '视频咨询',
+    image: '图文问诊',
+    video: '视频问诊',
     returnVisit: '复诊续方'
   }
 }
@@ -770,7 +770,7 @@ export default {
   methods: {
     trackByLeave() {
       const params = {
-        page_name: '咨询订单详情',
+        page_name: '问诊订单详情',
         organization_name: this.internalData.doctorInfo.hospitalName,
         show_duration: (new Date().getTime() - this.enter_time) / 1000
       }
@@ -789,7 +789,7 @@ export default {
     },
     trackByCancelOrder() {
       const params = {
-        page_name: '咨询订单详情',
+        page_name: '问诊订单详情',
         organization_name: this.internalData.doctorInfo.hospitalName,
         business_type: this.ENUM.INQUIRY_TXET_MAP_SA[this.internalData.orderInfo.inquiryType],
         trigger_page: '订单详情',
