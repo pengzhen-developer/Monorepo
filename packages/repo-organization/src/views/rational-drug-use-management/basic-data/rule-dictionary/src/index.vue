@@ -14,7 +14,8 @@
       <iframeContainer v-if="type === 'iframe'"
                        class="bg-white q-pa-md"
                        ref="iframe"
-                       v-bind:src="src"></iframeContainer>
+                       v-bind:src="src"
+                       v-bind:full-height="true"></iframeContainer>
       <div v-if="type === 'component'"
            class="full-width bg-white q-pa-md">
         <component v-bind:is="src"></component>
