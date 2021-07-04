@@ -176,7 +176,7 @@
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn label="操作" width="50px">
+        <PeaceTableColumn label="操作" width="60px">
           <template slot-scope="scope">
             <el-button type="text text-grey-333" v-on:click="deleteDrugList(scope.row)">删除</el-button>
           </template>
