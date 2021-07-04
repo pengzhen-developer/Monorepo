@@ -1016,6 +1016,9 @@ export default {
   }
   .van-field {
     padding: 0;
+    &::after {
+      border: 0;
+    }
     /deep/.van-field__control {
       width: 82px;
       color: #666;
