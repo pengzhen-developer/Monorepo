@@ -52,7 +52,15 @@ export function pay(params, orderExp = null, paySuc = null, payCancel = null) {
       .pay(params)
       .then((res) => {
         if (res.code === 200) {
-          let data = res.data
+          let data = {
+            appId: res.data.appId,
+            timeStamp: res.data.timeStamp,
+            nonceStr: res.data.nonceStr,
+            package: res.data.package,
+            signType: res.data.signType,
+            paySign: res.data.paySign
+          }
+
           if (data) {
             payInvoke(data, paySuc, payCancel)
           }
