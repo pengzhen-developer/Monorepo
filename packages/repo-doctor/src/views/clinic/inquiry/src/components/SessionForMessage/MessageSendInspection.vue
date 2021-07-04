@@ -99,7 +99,7 @@ export default {
       if (!value) {
         return true
       } else {
-        return data.comboName && data.comboName.indexOf(value) !== -1
+        return (data.comboName && data.comboName.indexOf(value) !== -1) || (data.abbreviation && data.abbreviation.indexOf(value) !== -1)
       }
     },
 
