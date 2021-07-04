@@ -1,14 +1,24 @@
 <template>
   <div>
     <div class="flex justify-between q-my-md">
-      <el-form inline v-bind:model="model">
-        <el-form-item v-if="type !== `faceToFace`" required label="Rp 类型：">
+      <el-form inline
+               v-bind:model="model">
+        <el-form-item v-if="type !== `faceToFace`"
+                      required
+                      label="Rp 类型：">
           <el-radio-group v-model="model.prescriptionTag">
-            <el-radio v-for="item in source.prescriptionTag" v-bind:key="item.value" v-bind:label="item.value" v-bind:disabled="disabledInsideDrug(item)">
+            <el-radio v-for="item in source.prescriptionTag"
+                      v-bind:key="item.value"
+                      v-bind:label="item.value"
+                      v-bind:disabled="disabledInsideDrug(item)">
               <template v-if="disabledInsideDrug(item)">
-                <el-tooltip content="" placement="top" effect="light">
-                  <div class="flex items-center justify-center" slot="content">
-                    <i style="color: #EA940FFF;" class="el-alert__icon el-icon-warning q-mr-sm"></i>
+                <el-tooltip content=""
+                            placement="top"
+                            effect="light">
+                  <div class="flex items-center justify-center"
+                       slot="content">
+                    <i style="color: #EA940FFF;"
+                       class="el-alert__icon el-icon-warning q-mr-sm"></i>
                     <span>该就诊人在 HIS无建档信息，不能开具院内处方</span>
                   </div>
                   <span>{{ item.label }}</span>
@@ -23,31 +33,43 @@
       </el-form>
 
       <div>
-        <el-button plain v-on:click="showHistoryPrescription">历史处方</el-button>
+        <el-button plain
+                   v-on:click="showHistoryPrescription">历史处方</el-button>
 
-        <el-button plain v-on:click="showCommonlyPrescription">常用处方</el-button>
+        <el-button plain
+                   v-on:click="showCommonlyPrescription">常用处方</el-button>
       </div>
     </div>
 
-    <el-card class="q-mb-md" v-show="value && value.length > 0">
-      <PeaceTable class="editable q-mb-sm" size="medium" v-bind:data="value">
-        <PeaceTableColumn label="药品名称" prop="drugName" min-width="140px">
+    <el-card class="q-mb-md"
+             v-show="value && value.length > 0">
+      <el-table class="editable q-mb-sm"
+                size="medium"
+                v-bind:data="value">
+        <PeaceTableColumn label="药品名称"
+                          prop="drugName"
+                          min-width="140px">
           <template slot-scope="{ row }">
             <div class="ellipsis">
-              <el-tooltip effect="light" placement="top-start">
+              <el-tooltip effect="light"
+                          placement="top-start">
                 <span>{{ row.drugName }}</span>
 
-                <div style="max-width: 200px;" slot="content">
+                <div style="max-width: 200px;"
+                     slot="content">
                   <div class="flex q-mb-sm">
-                    <span class="text-black" style="width: 60px;">药品名称：</span>
+                    <span class="text-black"
+                          style="width: 60px;">药品名称：</span>
                     <span class="col">{{ row.drugName }}</span>
                   </div>
                   <div class="flex q-mb-sm">
-                    <span class="text-black" style="width: 60px;">药品规格：</span>
+                    <span class="text-black"
+                          style="width: 60px;">药品规格：</span>
                     <span class="col">{{ row.specification }}</span>
                   </div>
                   <div class="flex q-mb-sm">
-                    <span class="text-black" style="width: 60px;">生产厂家：</span>
+                    <span class="text-black"
+                          style="width: 60px;">生产厂家：</span>
                     <span class="col">{{ row.companyName }}</span>
                   </div>
                 </div>
@@ -56,118 +78,152 @@
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn show-overflow-tooltip label="药品规格" prop="specification" min-width="70px">
+        <PeaceTableColumn show-overflow-tooltip
+                          label="药品规格"
+                          prop="specification"
+                          min-width="70px">
           <template slot-scope="{ row }">
             {{ row.specification }}
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn label="单次剂量" min-width="100px">
+        <PeaceTableColumn label="单次剂量"
+                          min-width="100px">
           <template slot="header">
             <span class="text-red">*</span>
             <span>单次剂量</span>
           </template>
           <template slot-scope="{ $index, row }">
-            <el-form v-on:submit.native.prevent v-bind:show-message="false" v-bind:model="row">
-              <el-form-item required prop="singleDose">
+            <el-form v-on:submit.native.prevent
+                     v-bind:show-message="false"
+                     v-bind:model="row">
+              <el-form-item required
+                            prop="singleDose">
                 <div class="flex justify-center items-center">
-                  <el-input-number
-                    class="editable col"
-                    style="width: 90px"
-                    placeholder="请输入"
-                    controls-position="right"
-                    v-on:change="calculateCount(row)"
-                    v-on:blur="formatNumeral(row, 'singleDose', '0.000')"
-                    v-bind:id="`row-${$index}-component`"
-                    v-bind:min="0.001"
-                    v-model="row.singleDose"
-                  ></el-input-number>
-                  <span class="text-caption ellipsis text-grey-7 q-mx-xs" style="max-width: 50px;" v-bind:title="row.drugUnit">{{ row.drugUnit }}</span>
+                  <el-input-number class="editable col"
+                                   style="width: 90px"
+                                   placeholder="请输入"
+                                   controls-position="right"
+                                   v-on:change="calculateCount(row)"
+                                   v-on:blur="formatNumeral(row, 'singleDose', '0.000')"
+                                   v-bind:id="`row-${$index}-component`"
+                                   v-bind:min="0.001"
+                                   v-model="row.singleDose"></el-input-number>
+                  <span class="text-caption ellipsis text-grey-7 q-mx-xs"
+                        style="max-width: 50px;"
+                        v-bind:title="row.drugUnit">{{ row.drugUnit }}</span>
                 </div>
               </el-form-item>
             </el-form>
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn label="用药频次" min-width="90px">
+        <PeaceTableColumn label="用药频次"
+                          min-width="90px">
           <template slot="header">
             <span class="text-red">*</span>
             <span>用药频次</span>
           </template>
           <template slot-scope="{ row }">
-            <el-form v-on:submit.native.prevent v-bind:show-message="false" v-bind:model="row">
-              <el-form-item required inline-message prop="drugFrequencyId">
-                <el-select clearable filterable class="editable" placeholder="请选择" v-on:change="calculateCount(row)" v-model="row.drugFrequencyId">
-                  <el-option
-                    v-for="item in source.drugFrequencyList"
-                    v-bind:key="item.id"
-                    v-bind:label="item.drugtimes_name"
-                    v-bind:value="item.id"
-                  ></el-option>
+            <el-form v-on:submit.native.prevent
+                     v-bind:show-message="false"
+                     v-bind:model="row">
+              <el-form-item required
+                            inline-message
+                            prop="drugFrequencyId">
+                <el-select clearable
+                           filterable
+                           class="editable"
+                           placeholder="请选择"
+                           v-on:change="calculateCount(row)"
+                           v-model="row.drugFrequencyId">
+                  <el-option v-for="item in source.drugFrequencyList"
+                             v-bind:key="item.id"
+                             v-bind:label="item.drugtimes_name"
+                             v-bind:value="item.id"></el-option>
                 </el-select>
               </el-form-item>
             </el-form>
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn label="给药途径" min-width="90px">
+        <PeaceTableColumn label="给药途径"
+                          min-width="90px">
           <template slot="header">
             <span class="text-red">*</span>
             <span>给药途径</span>
           </template>
           <template slot-scope="{ row }">
-            <el-form v-on:submit.native.prevent v-bind:show-message="false" v-bind:model="row">
-              <el-form-item required inline-message prop="drugRouteId">
-                <el-select clearable filterable class="editable" placeholder="请选择" v-model="row.drugRouteId">
-                  <el-option v-for="item in source.drugRouteList" v-bind:key="item.id" v-bind:label="item.drugway_name" v-bind:value="item.id"></el-option>
+            <el-form v-on:submit.native.prevent
+                     v-bind:show-message="false"
+                     v-bind:model="row">
+              <el-form-item required
+                            inline-message
+                            prop="drugRouteId">
+                <el-select clearable
+                           filterable
+                           class="editable"
+                           placeholder="请选择"
+                           v-model="row.drugRouteId">
+                  <el-option v-for="item in source.drugRouteList"
+                             v-bind:key="item.id"
+                             v-bind:label="item.drugway_name"
+                             v-bind:value="item.id"></el-option>
                 </el-select>
               </el-form-item>
             </el-form>
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn label="用药天数" min-width="90px">
+        <PeaceTableColumn label="用药天数"
+                          min-width="90px">
           <template slot="header">
             <span class="text-red">*</span>
             <span>用药天数</span>
           </template>
           <template slot-scope="{ row }">
-            <el-form v-on:submit.native.prevent v-bind:show-message="false" v-bind:model="row">
-              <el-form-item required inline-message prop="useDrugDays">
+            <el-form v-on:submit.native.prevent
+                     v-bind:show-message="false"
+                     v-bind:model="row">
+              <el-form-item required
+                            inline-message
+                            prop="useDrugDays">
                 <div class="flex justify-center items-center">
-                  <el-input-number
-                    class="editable col"
-                    controls-position="right"
-                    placeholder="请输入"
-                    v-bind:min="1"
-                    v-bind:max="60"
-                    v-on:change="calculateCount(row)"
-                    v-model="row.useDrugDays"
-                  ></el-input-number>
+                  <el-input-number class="editable col"
+                                   controls-position="right"
+                                   placeholder="请输入"
+                                   v-bind:min="1"
+                                   v-bind:max="60"
+                                   v-on:change="calculateCount(row)"
+                                   v-model="row.useDrugDays"></el-input-number>
                 </div>
               </el-form-item>
             </el-form>
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn label="药品数量" min-width="100px">
+        <PeaceTableColumn label="药品数量"
+                          min-width="100px">
           <template slot="header">
             <span class="text-red">*</span>
             <span>药品数量</span>
           </template>
           <template slot-scope="{ row }">
-            <el-form v-on:submit.native.prevent v-bind:show-message="false" v-bind:model="row">
-              <el-form-item required prop="drugNum">
+            <el-form v-on:submit.native.prevent
+                     v-bind:show-message="false"
+                     v-bind:model="row">
+              <el-form-item required
+                            prop="drugNum">
                 <div class="flex justify-center items-center">
-                  <el-input-number
-                    class="editable col"
-                    placeholder="请输入"
-                    controls-position="right"
-                    v-bind:min="1"
-                    v-bind:precision="0"
-                    v-model="row.drugNum"
-                  ></el-input-number>
-                  <span class="text-caption ellipsis text-grey-7 q-mx-xs" style="max-width: 50px;" v-bind:title="row.drugQuantityUnit">{{
+                  <el-input-number class="editable col"
+                                   placeholder="请输入"
+                                   controls-position="right"
+                                   v-bind:min="1"
+                                   v-bind:precision="0"
+                                   v-model="row.drugNum"></el-input-number>
+                  <span class="text-caption ellipsis text-grey-7 q-mx-xs"
+                        style="max-width: 50px;"
+                        v-bind:title="row.drugQuantityUnit">{{
                     row.drugQuantityUnit
                   }}</span>
                 </div>
@@ -176,54 +232,77 @@
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn label="操作" width="60px">
+        <PeaceTableColumn label="操作"
+                          width="50px">
           <template slot-scope="scope">
-            <el-button type="text text-grey-333" v-on:click="deleteDrugList(scope.row)">删除</el-button>
+            <el-button type="text text-grey-333"
+                       v-on:click="deleteDrugList(scope.row)">删除</el-button>
           </template>
         </PeaceTableColumn>
-      </PeaceTable>
+      </el-table>
 
-      <el-alert v-if="isColdStorag" type="warning" show-icon="" title="处方中有冷藏储存的药品，请提醒患者到店/院自提" v-bind:closable="false"></el-alert>
+      <el-alert v-if="isColdStorag"
+                type="warning"
+                show-icon=""
+                title="处方中有冷藏储存的药品，请提醒患者到店/院自提"
+                v-bind:closable="false"></el-alert>
     </el-card>
 
-    <el-autocomplete
-      size="medium"
-      class="q-mb-md full-width"
-      suffix-icon="el-icon-search"
-      popper-class="el-autocomplete-drug"
-      placeholder="+ 添加药品（最多可添加 5 种药品）"
-      v-model="queryDrugString"
-      v-bind:fetch-suggestions="getDrugList"
-      v-on:select="selectDrugList"
-    >
+    <el-autocomplete size="medium"
+                     class="q-mb-md full-width"
+                     suffix-icon="el-icon-search"
+                     popper-class="el-autocomplete-drug"
+                     placeholder="+ 添加药品（最多可添加 5 种药品）"
+                     v-model="queryDrugString"
+                     v-bind:fetch-suggestions="getDrugList"
+                     v-on:select="selectDrugList">
       <template slot-scope="{ item }">
-        <div class="flex q-py-sm el-autocomplete-drug-item" v-bind:class="{ disabled: item.drugStock === 0 }">
+        <div class="flex q-py-sm el-autocomplete-drug-item"
+             v-bind:class="{ disabled: item.drugStock === 0 }">
           <div class="col q-mr-md ellipsis">
-            <span class="text-subtitle2" v-bind:title="item.drugName">{{ item.drugName }}</span>
+            <span class="text-subtitle2"
+                  v-bind:title="item.drugName">{{ item.drugName }}</span>
           </div>
-          <div class="q-mr-md ellipsis" style="width: 120px;">
-            <span class="text-grey-6 text-caption" v-bind:title="item.specification">{{ item.specification }}</span>
+          <div class="q-mr-md ellipsis"
+               style="width: 120px;">
+            <span class="text-grey-6 text-caption"
+                  v-bind:title="item.specification">{{ item.specification }}</span>
           </div>
           <div class="col q-mr-md ellipsis">
-            <span class="text-grey-6 text-caption" v-bind:title="item.companyName">{{ item.companyName }}</span>
+            <span class="text-grey-6 text-caption"
+                  v-bind:title="item.companyName">{{ item.companyName }}</span>
           </div>
           <div style="width: 60px;">
-            <span v-if="item.drugStock === 0" class="text-subtitle2 text-grey-6">暂无库存</span>
+            <span v-if="item.drugStock === 0"
+                  class="text-subtitle2 text-grey-6">暂无库存</span>
           </div>
         </div>
       </template>
     </el-autocomplete>
 
-    <PeaceDialog v-if="historyPrescriptionDialog.visible" v-bind:visible.sync="historyPrescriptionDialog.visible" title="历史处方" width="800px">
-      <PeaceTable pagination ref="table">
-        <PeaceTableColumn label="疾病诊断" min-width="160px" prop="diagnosis">
+    <PeaceDialog v-if="historyPrescriptionDialog.visible"
+                 v-bind:visible.sync="historyPrescriptionDialog.visible"
+                 title="历史处方"
+                 width="800px">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn label="疾病诊断"
+                          min-width="160px"
+                          prop="diagnosis">
           <template slot-scope="scope">{{ scope.row.diagnoseList.map((item) => item.name).join(' | ') }}</template>
         </PeaceTableColumn>
-        <PeaceTableColumn label="处方药品" min-width="300px" prop="drugjson">
+        <PeaceTableColumn label="处方药品"
+                          min-width="300px"
+                          prop="drugjson">
           <template slot-scope="scope">
-            <div v-for="drug in scope.row.drugList" v-bind:key="drug.durgId" class="q-mb-sm">
+            <div v-for="drug in scope.row.drugList"
+                 v-bind:key="drug.durgId"
+                 class="q-mb-sm">
               <div>
-                <el-tag class="q-mr-sm" effect="dark" type="warning" v-if="drug.drugStatus === 'disable'">停用</el-tag>
+                <el-tag class="q-mr-sm"
+                        effect="dark"
+                        type="warning"
+                        v-if="drug.drugStatus === 'disable'">停用</el-tag>
                 <span class="text-weight-bold q-mr-md">{{ drug.drugName }}</span>
                 <span class="text-caption">{{ drug.specification }}</span>
               </div>
@@ -235,26 +314,47 @@
             </div>
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn v-bind:show-overflow-tooltip="false" fixed="right" label="操作" width="80px">
+        <PeaceTableColumn v-bind:show-overflow-tooltip="false"
+                          fixed="right"
+                          label="操作"
+                          width="80px">
           <template slot-scope="scope">
-            <el-button type="text" v-on:click="checkHistoryPrescription(scope.row)">选择</el-button>
+            <el-button type="text"
+                       v-on:click="checkHistoryPrescription(scope.row)">选择</el-button>
           </template>
         </PeaceTableColumn>
       </PeaceTable>
     </PeaceDialog>
 
-    <PeaceDialog v-if="commonlyPrescriptionDialog.visible" v-bind:visible.sync="commonlyPrescriptionDialog.visible" title="常用处方" width="800px">
-      <PeaceTable pagination ref="table">
-        <PeaceTableColumn label="疾病诊断" min-width="160px" prop="diagnosis">
+    <PeaceDialog v-if="commonlyPrescriptionDialog.visible"
+                 v-bind:visible.sync="commonlyPrescriptionDialog.visible"
+                 title="常用处方"
+                 width="800px">
+      <PeaceTable pagination
+                  ref="table">
+        <PeaceTableColumn label="疾病诊断"
+                          min-width="160px"
+                          prop="diagnosis">
           <template slot-scope="scope">{{ scope.row.diagnoseList.map((item) => item.name).join(' | ') }}</template>
         </PeaceTableColumn>
-        <PeaceTableColumn label="性别" width="80px" prop="sex"></PeaceTableColumn>
-        <PeaceTableColumn label="年龄" width="120px" prop="age"></PeaceTableColumn>
-        <PeaceTableColumn label="处方药品" min-width="300px" prop="drugjson">
+        <PeaceTableColumn label="性别"
+                          width="80px"
+                          prop="sex"></PeaceTableColumn>
+        <PeaceTableColumn label="年龄"
+                          width="120px"
+                          prop="age"></PeaceTableColumn>
+        <PeaceTableColumn label="处方药品"
+                          min-width="300px"
+                          prop="drugjson">
           <template slot-scope="scope">
-            <div v-for="drug in scope.row.drugList" v-bind:key="drug.durgId" class="q-mb-sm">
+            <div v-for="drug in scope.row.drugList"
+                 v-bind:key="drug.durgId"
+                 class="q-mb-sm">
               <div>
-                <el-tag class="q-mr-sm" effect="dark" type="warning" v-if="drug.drugStatus === 'disable'">停用</el-tag>
+                <el-tag class="q-mr-sm"
+                        effect="dark"
+                        type="warning"
+                        v-if="drug.drugStatus === 'disable'">停用</el-tag>
                 <span class="text-weight-bold q-mr-md">{{ drug.drugName }}</span>
                 <span class="text-caption">{{ drug.specification }}</span>
               </div>
@@ -266,9 +366,13 @@
             </div>
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn v-bind:show-overflow-tooltip="false" fixed="right" label="操作" width="80px">
+        <PeaceTableColumn v-bind:show-overflow-tooltip="false"
+                          fixed="right"
+                          label="操作"
+                          width="80px">
           <template slot-scope="scope">
-            <el-button type="text" v-on:click="checkCommonlyPrescription(scope.row)">选择</el-button>
+            <el-button type="text"
+                       v-on:click="checkCommonlyPrescription(scope.row)">选择</el-button>
           </template>
         </PeaceTableColumn>
       </PeaceTable>
