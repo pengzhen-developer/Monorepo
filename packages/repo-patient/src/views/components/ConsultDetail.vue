@@ -771,7 +771,7 @@ export default {
       const params = {
         organization_name: this.internalData.doctorInfo.hospitalName,
         business_type: this.ENUM.INQUIRY_TXET_MAP_SA[this.internalData.orderInfo.inquiryType],
-        order_id: this.internalData.orderInfo.orderId,
+        order_id: this.internalData.orderInfo.orderNo,
         trigger_page: '订单详情',
         click_object: type === 'submit' ? '确认支付' : '继续支付',
         own_expense_pay_method: this.ENUM.PAY_TYPE_TEXT[this.internalData.orderInfo.paymentType]
