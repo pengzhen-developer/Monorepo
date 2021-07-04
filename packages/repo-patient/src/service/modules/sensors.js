@@ -225,7 +225,6 @@ function jumpDoctorAssistant(params) {
   $peace.$sensors.track('JumpDoctorAssistant', {
     page_app_name: 'H5',
     organization_name: params.organization_name || $peace.cache.get($peace.type.SYSTEM.NETHOSPITALNAME),
-    page_name: '复诊预约',
     business_type: params.business_type,
     end_question_id: params.end_question_id,
     to_page: params.to_page
