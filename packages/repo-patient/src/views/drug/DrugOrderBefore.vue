@@ -344,7 +344,7 @@ export default {
       const params = {
         page_name: '购药订单确认页面',
         organization_name: this.order.netHospitalName,
-        show_duration: (new Date().getTime() - this.enter_time) / 1000
+        event_duration: (new Date().getTime() - this.enter_time) / 1000
       }
       peace.service.sensors.globalPageStop(params)
     },

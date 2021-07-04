@@ -763,7 +763,7 @@ export default {
       const params = {
         page_name: '问诊订单详情',
         organization_name: this.internalData.doctorInfo.hospitalName,
-        show_duration: (new Date().getTime() - this.enter_time) / 1000
+        event_duration: (new Date().getTime() - this.enter_time) / 1000
       }
       peace.service.sensors.globalPageStop(params)
     },

@@ -132,7 +132,7 @@ function globalPageStop(params) {
     page_name: params.page_name,
     page_app_name: 'H5',
     organization_name: params.organization_name || $peace.cache.get($peace.type.SYSTEM.NETHOSPITALNAME),
-    show_duration: params.show_duration
+    event_duration: params.event_duration
   })
 }
 

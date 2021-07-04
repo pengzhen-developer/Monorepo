@@ -114,7 +114,7 @@ export default {
       const params = {
         page_name: '服务包确认订单页面',
         organization_name: this.info.hospitalName,
-        show_duration: (new Date().getTime() - this.enter_time) / 1000
+        event_duration: (new Date().getTime() - this.enter_time) / 1000
       }
       peace.service.sensors.globalPageStop(params)
     },

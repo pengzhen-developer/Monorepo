@@ -243,7 +243,7 @@ export default {
     trackByLeave() {
       const params = {
         page_name: '首页',
-        show_duration: (new Date().getTime() - this.enter_time) / 1000
+        event_duration: (new Date().getTime() - this.enter_time) / 1000
       }
       peace.service.sensors.globalPageStop(params)
     },
