@@ -390,6 +390,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    z-index: 666;
     .footer-left {
       font-size: 16px;
       display: flex;
