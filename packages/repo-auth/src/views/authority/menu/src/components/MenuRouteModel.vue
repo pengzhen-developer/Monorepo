@@ -2,22 +2,22 @@
   <div>
     <el-card class="q-mb-md">
       <el-table :data="menuRoutes">
+        <PeaceTableColumn label="ID"
+                          align="left"
+                          width="90px"
+                          prop="routeId">
+        </PeaceTableColumn>
         <PeaceTableColumn label="路由类别"
                           align="left"
-                          width="100px"
+                          width="90px"
                           prop="routeType">
           <template slot-scope="scope">
             {{scope.row.routeType == 1 ?'主路由':'子路由'}}
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn label="ID"
-                          align="left"
-                          width="100px"
-                          prop="routeId">
-        </PeaceTableColumn>
         <PeaceTableColumn label="路由名称"
                           align="left"
-                          width="100px"
+                          width="90px"
                           prop="routeName">
         </PeaceTableColumn>
         <PeaceTableColumn label="标签名称"
@@ -36,7 +36,7 @@
                           prop="realPath">
         </PeaceTableColumn>
         <PeaceTableColumn label="操作"
-                          min-width="100px">
+                          min-width="120px">
           <template slot-scope="scope">
             <el-button class="q-px-none"
                        type="text"
@@ -49,7 +49,7 @@
       </el-table>
     </el-card>
 
-    <el-card>
+    <el-card v-bind:header="query.routeId ? `修改路由 - 当前修改项 : 【${query.routeId}】` : '新增路由'">
       <el-form ref="form"
                label-position="right"
                label-width="auto"
@@ -57,7 +57,6 @@
                v-bind:model="query"
                v-bind:rules="rules">
         <div class="info-content">
-
           <el-form-item label="路由名称"
                         class="tow-col"
                         prop="routeName">
@@ -130,11 +129,12 @@
           <el-button type="primary"
                      class="large hasmargin "
                      v-bind:disabled="loading"
-                     v-on:click="save">确 定</el-button>
+                     v-on:click="save">{{ query.routeId ? '修 改' : '新 增'}}</el-button>
           <el-button type="default"
                      class="large hasmargin "
+                     v-if="query.routeId"
                      v-bind:disabled="loading"
-                     v-on:click="cancel">取 消</el-button>
+                     v-on:click="cancel">重 置</el-button>
         </div>
       </el-form>
     </el-card>
@@ -216,6 +216,25 @@ export default {
   },
   methods: {
     cancel() {
+      this.query = {
+        //标签页状态-是否可关闭 0 1
+        closable: '1',
+        //标签页状态-是否可启用 0 1
+        enable: '1',
+        //菜单id
+        menuId: '',
+        //组件名称
+        name: '',
+        //实际地址
+        realPath: '',
+        //路由名称
+        routeName: '',
+        //路由地址
+        routePath: '',
+        //路由类型（1：主路由，2：子路由）
+        routeType: 1
+      }
+      this.query.menuId = this.info.id
       this.routeId = ''
       this.$refs.form.resetFields()
     },

@@ -12,12 +12,17 @@
                 v-bind:data='list'
                 size="mini">
 
-        <PeaceTableColumnTree label="菜单名称"
-                              min-width="140px"
-                              prop="name"
+        <PeaceTableColumnTree label="ID"
+                              min-width="120px"
+                              prop="id"
                               align="left">
-
         </PeaceTableColumnTree>
+        <PeaceTableColumn label="菜单名称"
+                          min-width="140px"
+                          prop="name"
+                          align="left">
+
+        </PeaceTableColumn>
         <PeaceTableColumn width="120px"
                           prop="isDisplay">
           <template slot="header">
