@@ -41,7 +41,7 @@
                       pagination>
             <PeaceTableColumn label="ID"
                               prop="id"
-                              width="50px"></PeaceTableColumn>
+                              width="80px"></PeaceTableColumn>
             <PeaceTableColumn label="字典类型"
                               prop="type"
                               min-width="80px"></PeaceTableColumn>
@@ -52,7 +52,7 @@
                               prop="remarks"
                               min-width="80px"></PeaceTableColumn>
             <PeaceTableColumn label="操作"
-                              width="100px">
+                              width="80px">
               <template slot-scope="scope">
                 <el-button type="text"
                            v-on:click="editDictType(scope.row)">编辑</el-button>
@@ -77,7 +77,7 @@
                       pagination>
             <PeaceTableColumn label="ID"
                               prop="id"
-                              width="50px"></PeaceTableColumn>
+                              width="80px"></PeaceTableColumn>
             <PeaceTableColumn label="label"
                               prop="label"
                               min-width="80px"></PeaceTableColumn>
@@ -91,7 +91,7 @@
                               prop="remarks"
                               min-width="80px"></PeaceTableColumn>
             <PeaceTableColumn label="操作"
-                              width="100px">
+                              width="120px">
               <template slot-scope="scope">
                 <el-button type="text"
                            v-on:click="editDictItem(scope.row)">编辑</el-button>
