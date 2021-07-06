@@ -100,6 +100,17 @@ export default {
   },
 
   methods: {
+    trackByPayOrder() {
+      const params = {
+        organization_name: this.info.hospitalName,
+        business_type: this.info.businessType,
+        order_id: this.orderNo,
+        trigger_page: '划价页面',
+        click_object: '确认支付',
+        own_expense_pay_method: this.info.payMethod
+      }
+      peace.service.sensors.payOrder(params)
+    },
     changeFlag(type) {
       this.show = false
       this.$emit('changeFlag', false)
@@ -113,6 +124,8 @@ export default {
       if (this.type !== 'drug') {
         orderExp = this.orderExp()
       }
+      this.trackByPayOrder()
+      debugger
       peace.wx.pay(params, orderExp, this.payCallback, this.payCallback)
     },
     orderExp(res) {

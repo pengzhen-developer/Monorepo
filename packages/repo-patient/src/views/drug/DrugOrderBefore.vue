@@ -553,6 +553,11 @@ export default {
             this.payCallback()
           } else {
             this.dialog.visible = true
+
+            params.payMethod = this.order.paymentType
+            params.businessType = '处方购药'
+            params.hospitalName = this.order.netHospitalName
+
             this.dialog.data = params
           }
         })

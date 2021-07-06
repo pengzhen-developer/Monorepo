@@ -662,7 +662,10 @@ export default {
         doctorName: data.doctorName,
         orderNo: data.orderNo,
         inquiryId: data.inquiryId,
-        orderType: 'inquiry'
+        orderType: 'inquiry',
+        payMethod: this.ENUM.PAY_TYPE_TEXT[this.payType],
+        businessType: this.ENUM.INQUIRY_TXET_MAP_SA[this.params.consultingType],
+        hospitalName: this.doctorInfo.hospitalName
       }
       this.dialog.visible = true
       this.dialog.data = json

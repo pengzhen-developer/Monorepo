@@ -157,7 +157,10 @@ export default {
         money: data.orderMoney, //自费金额
         moneyRecord: data.moneyRecord, //费用明细
         orderNo: data.orderNo,
-        orderType: 'servicePackage'
+        orderType: 'servicePackage',
+        payMethod: '自费支付微信',
+        businessType: '服务包',
+        hospitalName: this.info.hospitalName
       }
       this.dialog.visible = true
       this.dialog.data = json
