@@ -224,7 +224,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      if (from.path != '/' && from.path != '/redirect') {
+      if (from.path != '/' && from.path != '/redirect' && from.path != '/WXAuth') {
         vm.from_page = from.path
 
         if ($peace.cache.get($peace.type.SYSTEM.NETHOSPITALID) && from.path.indexOf('/home/index') != -1) {
@@ -249,6 +249,10 @@ export default {
     },
 
     trackByOpen() {
+      const json = peace.util.decode(this.$route.params.json)
+      if (json.isShare === 'true') {
+        this.from_page = '分享打开'
+      }
       const params = {
         from_page: this.from_page,
         load_duration: (new Date().getTime() - this.enter_time) / 1000
@@ -283,7 +287,7 @@ export default {
           imgUrl: this.hospitalInfo.nethospitalInfo.icon
         }
         if (channelId) {
-          obj.url = peace.config.api.base + 'h5/redirect?redirect=home&netHospitalId=' + nethospitalId + '&channelId=' + channelId
+          obj.url = peace.config.api.base + 'h5/redirect?redirect=home&netHospitalId=' + nethospitalId + '&channelId=' + channelId + '&isShare=true'
           //用户从机构渠道进入程序，缓存机构名称用于 神策埋点
           $peace.cache.set($peace.type.SYSTEM.NETHOSPITALNAME, this.hospitalInfo.nethospitalInfo.name)
         }
