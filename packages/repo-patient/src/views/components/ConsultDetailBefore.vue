@@ -618,7 +618,12 @@ export default {
               confirmButtonText: '确定',
               showCancelButton: false
             }).then(() => {
-              this.goToConsultDetail(res.data.data)
+              /**
+               *  2021-07-06
+               *  V1.12.0 逻辑改了，先划价，再生成订单 ； 故只弹提示，不跳转详情
+               *
+               * */
+              // this.goToConsultDetail(res.data.data)
             })
           } else {
             peace.util.alert(res.data.msg)
