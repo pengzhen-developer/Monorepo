@@ -297,7 +297,6 @@
 </template>
 
 <script>
-// import InquirySessionMessageList from '@src/views/components/inquiry/InquirySessionMessageList'
 import InquirySessionMessageList from '@src/views/components/inquiry/messageList/index'
 import ConsultationSessionCaseDetail from './ConsultationSessionCaseDetail'
 import ConsultationSessionRecipeDetail from './ConsultationSessionRecipeDetail'

@@ -10,7 +10,7 @@
       <div class="row items-baseline">
         <div class="col-2.5"
              style="color: #666666">病情描述：</div>
-        <div class="col-9 text-justify q-mb-md"
+        <div class="col-9 q-mb-md"
              style="color: #333333">
           {{ item.describe }}
         </div>
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import InquirySessionMessageList from '@src/views/components/inquiry/InquirySessionMessageList'
+import InquirySessionMessageList from '@src/views/components/inquiry/messageList'
 export default {
   name: 'InquiryRecordListCell',
   props: {
