@@ -389,11 +389,13 @@ export default {
       //   // peace.util.alert('暂未开放，敬请期待')
       //   return
       // }
+
       if (item.isExist !== 1) {
-        if (item.serviceName === '预约挂号' || item.serviceName === '查询报告') {
-          const title = item.serviceName === '预约挂号' ? `线下预约挂号功能正在建设中` : `在线查询报告功能正在建设中`
-          const message =
-            item.serviceName === '预约挂号' ? `如需在线复诊请点击“复诊开药”\n其他问题请点击“在线问诊”` : `如需在线报告解读，请点击“在线问诊”、“复诊开药”`
+        //"serviceLogoId": //图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊续方 5:在线问诊 6:健康百科 7:智能导诊 8:中药寄送
+        if (item.serviceLogoId === 1 || item.serviceLogoId === 2) {
+          this.trackByClick(item.serviceLogoId === 1 ? '预约挂号' : '查询报告', '功能入口')
+          const title = item.serviceLogoId === 1 ? `线下预约挂号功能正在建设中` : `在线查询报告功能正在建设中`
+          const message = item.serviceLogoId === 1 ? `如需在线复诊请点击“复诊开药”\n其他问题请点击“在线问诊”` : `如需在线报告解读，请点击“在线问诊”、“复诊开药”`
           return Dialog.confirm({
             title: '提示',
             message: `<div><div class="hos-title">${title}</div><div class="hos-message">${message}</div></div>`,
