@@ -108,8 +108,11 @@ export default {
     this.getWaitPayOrderNum()
   },
   beforeRouteLeave(to, from, next) {
-    this.trackByLeave()
+    this.$destroy()
     next()
+  },
+  destroyed() {
+    this.trackByLeave()
   },
   created() {
     this.enter_time = new Date().getTime()

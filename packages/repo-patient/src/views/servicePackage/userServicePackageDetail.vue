@@ -203,8 +203,11 @@ export default {
     this.enter_time = new Date().getTime()
   },
   beforeRouteLeave(to, from, next) {
-    this.trackByLeave()
+    this.$destroy()
     next()
+  },
+  destroyed() {
+    this.trackByLeave()
   },
   computed: {
     canApply() {

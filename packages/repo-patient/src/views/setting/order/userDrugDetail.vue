@@ -609,8 +609,11 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
-    this.trackByLeave()
+    this.$destroy()
     next()
+  },
+  destroyed() {
+    this.trackByLeave()
   },
   activated() {
     this.getDrugOrderDetail()

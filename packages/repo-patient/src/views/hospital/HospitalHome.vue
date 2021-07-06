@@ -235,11 +235,13 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
-    peace.cache.remove(peace.type.SYSTEM.IS_SHARE)
-    this.trackByLeave()
+    this.$destroy()
     next()
   },
-
+  destroyed() {
+    peace.cache.remove(peace.type.SYSTEM.IS_SHARE)
+    this.trackByLeave()
+  },
   methods: {
     trackByLeave() {
       const params = {

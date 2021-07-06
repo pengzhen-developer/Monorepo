@@ -178,10 +178,12 @@ export default {
     })
   },
   beforeRouteLeave(to, from, next) {
-    this.trackByLeave()
+    this.$destroy()
     next()
   },
-
+  destroyed() {
+    this.trackByLeave()
+  },
   methods: {
     trackByLeave() {
       const params = {
