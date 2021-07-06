@@ -35,6 +35,8 @@ export const SYSTEM = {
   NETHOSPITALNAME: 'NETHOSPITALNAME',
   // 当前登录用户渠道来源
   CHANNELID: 'CHANNELID',
+  //当前用户是否通过分享进入机构主页
+  IS_SHARE: 'IS_SHARE',
 
   // 是否扫码进入
   IS_EWM: 'h5.isEwm',

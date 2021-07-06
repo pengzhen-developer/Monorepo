@@ -235,6 +235,7 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
+    peace.cache.remove(peace.type.SYSTEM.IS_SHARE)
     this.trackByLeave()
     next()
   },
@@ -249,8 +250,8 @@ export default {
     },
 
     trackByOpen() {
-      const json = peace.util.decode(this.$route.params.json)
-      if (json.isShare === 'true') {
+      const isShare = peace.cache.get(peace.type.SYSTEM.IS_SHARE)
+      if (isShare === 'true') {
         this.from_page = '分享打开'
       }
       const params = {
@@ -287,7 +288,7 @@ export default {
           imgUrl: this.hospitalInfo.nethospitalInfo.icon
         }
         if (channelId) {
-          obj.url = peace.config.api.base + 'h5/redirect?redirect=home&netHospitalId=' + nethospitalId + '&channelId=' + channelId + '&isShare=true'
+          obj.url = process.env.VUE_APP_BASE_URL + 'patient/redirect?redirect=home&netHospitalId=' + nethospitalId + '&channelId=' + channelId + '&isShare=true'
           //用户从机构渠道进入程序，缓存机构名称用于 神策埋点
           $peace.cache.set($peace.type.SYSTEM.NETHOSPITALNAME, this.hospitalInfo.nethospitalInfo.name)
         }

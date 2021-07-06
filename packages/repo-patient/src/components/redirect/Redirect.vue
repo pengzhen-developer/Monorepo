@@ -44,7 +44,7 @@ const netHospitalId = peace.util.queryUrlParam('netHospitalId')
  * 分享标识, 机构主页分享进入会有此参数，用以区分 用户是否通过分享进入程序
  *
  */
-const isShare = peace.util.queryUrlParam('isShare')
+const IS_SHARE = peace.util.queryUrlParam('isShare')
 /**
  * 医生ID 扫码进入
  * 例如在首页 /home/index 中判断是否存在 ID ，用于加载不同的组件
@@ -183,8 +183,7 @@ export default {
       if (redirectKey === 'home') {
         if (netHospitalId && channelId) {
           const json = peace.util.encode({
-            netHospitalId: netHospitalId,
-            isShare: isShare
+            netHospitalId: netHospitalId
           })
           this.$router.replace(`${this.redirectMap[redirectKey]}/${json}`)
         } else {
@@ -271,12 +270,14 @@ export default {
       peace.cache.remove(peace.type.SYSTEM.NETHOSPITALID)
       peace.cache.remove(peace.type.SYSTEM.NETHOSPITALNAME)
       peace.cache.remove(peace.type.SYSTEM.CHANNELID)
+      peace.cache.remove(peace.type.SYSTEM.IS_SHARE)
     },
 
     // 缓存
     cacheParams() {
       peace.cache.set(peace.type.SYSTEM.NETHOSPITALID, netHospitalId)
       peace.cache.set(peace.type.SYSTEM.CHANNELID, channelId)
+      peace.cache.set(peace.type.SYSTEM.IS_SHARE, IS_SHARE)
     }
   }
 }
