@@ -54,7 +54,7 @@
              v-for="(item, index) in hospitalInfo.hospitalServiceList"
              :key="'index' + index"
              @click="goMenuList(item)">
-          <!-- "serviceLogoId": //图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊续方 5:在线问诊 6:健康百科 7:智能导诊 8:中药寄送 -->
+          <!-- "serviceLogoId": //图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊开药 5:在线问诊 6:健康百科 7:智能导诊 8:中药寄送 -->
           <div class="img">
             <img :src="require('@src/assets/images/newIndex/icon_0' + item.serviceLogoId + '.png')" />
             <!-- <img class="wait"
@@ -398,7 +398,7 @@ export default {
       // }
 
       if (item.isExist !== 1) {
-        //"serviceLogoId": //图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊续方 5:在线问诊 6:健康百科 7:智能导诊 8:中药寄送
+        //"serviceLogoId": //图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊开药 5:在线问诊 6:健康百科 7:智能导诊 8:中药寄送
         if (item.serviceLogoId === 1 || item.serviceLogoId === 2) {
           this.trackByClick(item.serviceLogoId === 1 ? '预约挂号' : '查询报告', '功能入口')
           const title = item.serviceLogoId === 1 ? `线下预约挂号功能正在建设中` : `在线查询报告功能正在建设中`
@@ -414,7 +414,7 @@ export default {
             closeOnClickOverlay: true
           })
             .then(() => {
-              //跳转复诊续方
+              //跳转复诊开药
               json = peace.util.encode({
                 netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
                 id: 'returnVisit',
@@ -437,7 +437,7 @@ export default {
           return peace.util.alert('该功能正在建设中，敬请期待')
         }
       }
-      //"serviceLogoId": //图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊续方 5:在线问诊 6:健康百科 7:智能导诊 8:中药寄送
+      //"serviceLogoId": //图标id 1:预约挂号 2:查询报告 3:值班医生 4:复诊开药 5:在线问诊 6:健康百科 7:智能导诊 8:中药寄送
       switch (item.serviceLogoId) {
         // 预约挂号
         case 1:
@@ -471,7 +471,7 @@ export default {
           })
           this.$router.push(`/components/doctorList/${json}`)
           break
-        // 复诊续方
+        // 复诊开药
         case 4:
           this.trackByClick('复诊续方', '功能入口')
           //有挂号信息

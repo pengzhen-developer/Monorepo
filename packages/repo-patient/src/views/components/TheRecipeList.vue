@@ -50,7 +50,7 @@
           <div class="icon icon_none_prescrip"></div>
           <div class="none-text">
             <div>暂无可用处方</div>
-            <div>如有用药需求请先在线复诊续方</div>
+            <div>如有用药需求请先在线复诊开药</div>
           </div>
           <!-- <van-button type='primary' @click="gotoDoctorList">在线复诊</van-button> -->
         </div>

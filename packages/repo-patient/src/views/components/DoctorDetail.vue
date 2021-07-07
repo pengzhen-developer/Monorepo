@@ -115,7 +115,7 @@
           </div>
         </div>
 
-        <!-- 复诊续方 -->
+        <!-- 复诊开药 -->
         <div class="body-card"
              v-if="returnVisitList.length>0">
           <div class="row flex column">
@@ -123,7 +123,7 @@
               <van-image width="32px"
                          height="32px"
                          :src="require('@src/assets/images/ic_consultation.png')" />
-              <h4 class="body-card-title">复诊续方</h4>
+              <h4 class="body-card-title">复诊开药</h4>
               <div class=" flex flex-1 end"
                    @click="gotoAppointPage(returnVisitList[0].timeSharing,'more')">
                 <span class="see-more">查看更多</span>
@@ -357,7 +357,7 @@
           </div>
 
           <van-tabs v-model="activeTab">
-            <van-tab title="复诊续方时间">
+            <van-tab title="复诊开药时间">
               <table class="time-table">
                 <thead>
                   <tr>
@@ -655,7 +655,7 @@ export default {
         this.getWapDoctorInfo()
       }
     },
-    //复诊续方查看更多
+    //复诊开药查看更多
     gotoAppointPage(time, type) {
       this.trackByClcik(type === 'more' ? '复诊续方查看更多' : '复诊续方预约', '服务区')
       let json = peace.util.encode({

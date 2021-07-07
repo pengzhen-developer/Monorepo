@@ -501,7 +501,7 @@ const FUZHEN_HAS_HIS_QUESTION_LIST = [
     mode: ANSWER_MODE.INPUT
   }
 ]
-/**复诊续方 FUZHEN_QUESTION_LIST*/
+/**复诊开药 FUZHEN_QUESTION_LIST*/
 const FUZHEN_QUESTION_LIST = [
   {
     no: 0,
@@ -1137,7 +1137,7 @@ export default {
           serviceMoney = 0
         serviceMoney = Number(params.price)
         if (this.model.serviceType == 'returnVisit') {
-          serviceName = '复诊续方'
+          serviceName = '复诊开药'
         } else {
           serviceName = this.model.consultingType == 'video' ? '视频问诊' : '图文问诊'
           doctor.doctorInfo.service.inquiry.forEach((item) => {

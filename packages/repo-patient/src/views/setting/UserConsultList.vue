@@ -266,7 +266,7 @@ export default {
           // item.inquiryType =
           //   (inquiryInfo.inquiryType == '图文问诊' ? '图文' : '视频') + (inquiryInfo.isAgain == 1 ? '复诊' : '问诊')
 
-          item.inquiryType = inquiryInfo.isAgain == 1 ? '复诊续方' : inquiryInfo.inquiryType
+          item.inquiryType = inquiryInfo.isAgain == 1 ? '复诊开药' : inquiryInfo.inquiryType
         })
         this.consultList = this.consultList.concat(res.data.list)
         this.loading = false

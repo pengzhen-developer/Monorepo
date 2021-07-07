@@ -431,7 +431,7 @@ export default {
       const params = {
         familyId: this.params.familyId,
         doctorId: this.params.doctorId,
-        consultingType: this.params.consultingType, //image 图文 video 视频 returnVisit复诊续方
+        consultingType: this.params.consultingType, //image 图文 video 视频 returnVisit复诊开药
         orderType: this.params.consultingType == 'returnVisit' ? 2 : 1, //1.问诊 2.复诊 3.购药
         appointmentDate: this.params.appointmentDate, //预约时间
         appointmentStartTime: this.params.appointmentStartTime, //预约开始时间

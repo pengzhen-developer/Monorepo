@@ -246,7 +246,7 @@ export default {
           })
         }
       }
-      /**复诊续方*/
+      /**复诊开药*/
       if (this.params.serviceType === 'returnVisit') {
         const temp = {
           doctorId: this.doctorInfo.doctorId,
