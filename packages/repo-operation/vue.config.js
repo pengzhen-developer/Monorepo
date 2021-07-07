@@ -44,18 +44,7 @@ module.exports = {
       ['element-ui']: 'ELEMENT'
     }
   },
-  devServer: {
-    proxy: {
-      '/idic': {
-        target: 'https://devidic.holoalpha.com/apis',
-        changeOrigin: true,
-        ws: true,
-        pathRewrite: {
-          '^/idic': ''
-        }
-      }
-    }
-  },
+  devServer: {},
   css: {
     loaderOptions: {
       sass: {
