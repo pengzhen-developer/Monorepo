@@ -207,7 +207,7 @@ function clickDoctorAssistant(params) {
   $peace.$sensors.track('ClickDoctorAssistant', {
     page_app_name: 'H5',
     organization_name: params.organization_name || $peace.cache.get($peace.type.SYSTEM.NETHOSPITALNAME),
-    page_name: '复诊预约',
+    page_name: '医生助手',
     business_type: params.business_type,
     make_appointment_click: params.make_appointment_click,
     supplement_question_click: params.supplement_question_click,
