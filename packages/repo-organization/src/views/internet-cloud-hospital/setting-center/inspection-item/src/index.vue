@@ -47,8 +47,8 @@
       </div>
       <PeaceTable ref="table"
                   pagination>
-        <PeaceTableColumn type="index"
-                          label="序号"
+        <PeaceTableColumn label="序号"
+                          prop="orderNumber"
                           width="80px"></PeaceTableColumn>
         <PeaceTableColumn label="组套名称"
                           prop="comboName"
