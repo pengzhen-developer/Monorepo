@@ -33,7 +33,7 @@ export default {
         return callback(new Error('请输入11位电话'))
       }
 
-      if (!Peace.validate.isTelephone(value)) {
+      if (value.length != 11) {
         callback(new Error('电话号码不正确'))
       }
 
