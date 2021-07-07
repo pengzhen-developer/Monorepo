@@ -146,7 +146,7 @@ function homeTrackByOpen(params) {
   $peace.$sensors.track('OpenHomePage', {
     page_app_name: 'H5',
     from_page: params.from_page,
-    load_duration: '',
+    load_duration: params.load_duration,
     organization_name: params.organization_name || $peace.cache.get($peace.type.SYSTEM.NETHOSPITALNAME),
     page_name: '首页'
   })
