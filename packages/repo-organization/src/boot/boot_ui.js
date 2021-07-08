@@ -38,7 +38,7 @@ export default ({ Vue }) => {
   Vue.use(PeaceElementUI)
 
   console.log(
-    `%c ${'ElementUI'} %c ${ElementUI.version} %c`,
+    `%c ${'@jk998/peace-element-ui'} %c ${PeaceElementUI.version} %c`,
     'background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff',
     'background:#41b883 ; padding: 1px; border-radius: 3px;  color: #fff',
     'background:transparent'

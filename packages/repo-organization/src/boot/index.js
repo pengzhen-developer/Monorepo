@@ -12,12 +12,12 @@ import boot_Library from './boot_library'
 import boot_Redirect from './boot_redirect'
 import boot_Identity from './boot_identity'
 
+// UI Library
+import boot_UI from './boot_ui'
+
 // Quasar is required
 // Some libraries depend on it
 import boot_Quasar from './boot_quasar'
-
-// UI Library
-import boot_UI from './boot_ui'
 
 // global style
 import boot_styles from './boot_styles'
@@ -40,11 +40,11 @@ const install = async () => {
     // identity
     boot_Identity,
 
-    // Framework
-    boot_Quasar,
-
     // UI
     boot_UI,
+
+    // Framework
+    boot_Quasar,
 
     // global style
     boot_styles

@@ -9,14 +9,14 @@ export default async ({ Vue }) => {
       baseApi: process.env.VUE_APP_API_AUTH
     },
     socket: {
-      debug: true
+      debug: false
     }
   })
 
   CreateSocket()
 
   console.log(
-    `%c ${'Identity'} %c ${Identity.version} %c`,
+    `%c ${'@jk998/identity'} %c ${Identity.version} %c`,
     'background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff',
     'background:#41b883 ; padding: 1px; border-radius: 3px;  color: #fff',
     'background:transparent'
