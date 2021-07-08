@@ -97,7 +97,7 @@
             <div class="text-grey-6"
                  v-if="drug.usage">
               <span>
-                用法用量：{{drug.usage}}。每次{{drug.doseNoce}}{{drug.doseUnit}}，每日{{drug.dailyTimes}}次，{{drug.useDays}}天
+                用法用量：{{drug.usage}}。每次{{drug.doseNoce}}{{drug.doseUnit}}，{{ drug.dailyTimes ? drug.dailyTimes + '，' : '' }}{{drug.useDays}}天
               </span>
             </div>
           </div>
