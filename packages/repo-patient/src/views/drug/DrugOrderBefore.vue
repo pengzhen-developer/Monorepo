@@ -534,7 +534,7 @@ export default {
     },
 
     submitOrder() {
-      if (this.canShowYibao) {
+      if (this.order.MedicalCardNo && this.page.payIndex === 1) {
         this.yibaoInfo.medCardNo = this.order.MedicalCardNo
       }
 
@@ -547,7 +547,7 @@ export default {
         case 1:
           if (this.shangbaoChecked) {
             paymentType.push('shangbao')
-          } else if (this.yibaoChecked) {
+          } else if (this.yibaoInfo.medCardNo) {
             paymentType.push('yibaopay')
           } else {
             if (price > 0) {
