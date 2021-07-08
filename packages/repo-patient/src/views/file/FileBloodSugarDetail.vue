@@ -147,7 +147,6 @@ export default {
 
   methods: {
     getOscillogram(tag, type) {
-      // debugger
       const params = $peace.util.decode($peace.$route.params.json)
       peace.service.health.getOscillogram(params).then((res) => {
         const upData = res.data.upInfo

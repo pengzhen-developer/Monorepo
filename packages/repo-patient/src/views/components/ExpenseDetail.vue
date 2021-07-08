@@ -125,7 +125,6 @@ export default {
         orderExp = this.orderExp()
       }
       this.trackByPayOrder()
-      debugger
       peace.wx.pay(params, orderExp, this.payCallback, this.payCallback)
     },
     orderExp(res) {

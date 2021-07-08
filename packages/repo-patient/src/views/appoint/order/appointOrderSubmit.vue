@@ -332,7 +332,6 @@ export default {
           }
         })
         .catch(() => {
-          //debugger
           this.showBtn = true
 
           // Dialog.alert({
