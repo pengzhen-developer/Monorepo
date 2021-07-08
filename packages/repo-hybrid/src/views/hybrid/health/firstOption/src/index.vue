@@ -63,7 +63,7 @@
           <div class="p-drug-qty">x{{item.number}}{{item.numberUnit}}</div>
         </div>
         <div class="text-grey-999"
-             v-if="item.usage">用法用量：{{item.usage}}。每次{{item.doseNoce}}{{item.doseUnit}}，每日{{item.dailyTimes}}次，{{item.useDays}}天</div>
+             v-if="item.usage">用法用量：{{item.usage}}。每次{{item.doseNoce}}{{item.doseUnit}}，{{item.dailyTimes ? item.dailyTimes + '，': ''}}{{item.useDays}}天</div>
         <q-separator v-show="index == detail.drugJson.length"
                      color="text-separator q-mt-10" />
       </div>
