@@ -1038,20 +1038,23 @@ export default {
       }
       let paymentType = ''
       let hospitalName = ''
-
+      let business_type = ''
       if (data.orderType == 'register' || data.orderType == 'servicePackage') {
         this.orderNo = data.orderNo
         paymentType = data.paymentType
         hospitalName = data.doctorInfo.hospitalName
 
-        this.trackByPayOrder(this.orderNo, this.orderType, paymentType, hospitalName)
+        if (data.orderType == 'servicePackage') {
+          business_type = '服务包'
+          this.trackByPayOrder(this.orderNo, business_type, paymentType, hospitalName)
+        }
       } else if (data.orderType == 'inquiry' || data.orderType == 'returnVisit') {
         this.orderNo = data.orderInfo.orderNo
         this.inquiryId = data.inquiryInfo.inquiryId
         paymentType = data.orderInfo.paymentType
         hospitalName = data.doctorInfo.hospitalName
-
-        this.trackByPayOrder(this.orderNo, this.orderType, paymentType, hospitalName)
+        business_type = data.orderType == 'returnVisit' ? '复诊开药' : data.orderInfo.inquiryType === 'image' ? '图文问诊' : '视频问诊'
+        this.trackByPayOrder(this.orderNo, business_type, paymentType, hospitalName)
       } else if (data.orderType == 'checkRegisteringOrder' || data.orderType == 'checkOrder') {
         this.orderNo = data.orderNo
         this.orderId = data.orderId
@@ -1065,7 +1068,7 @@ export default {
         countDown.pause()
       }
 
-      this.trackByPayOrder(item.orderNo, item.orderType, item.paymentType, item.drugStoreName)
+      this.trackByPayOrder(item.orderNo, '处方购药', item.paymentType, item.drugStoreName)
 
       let orderNo = item.orderNo
       this.currentOrderId = item.orderNo
