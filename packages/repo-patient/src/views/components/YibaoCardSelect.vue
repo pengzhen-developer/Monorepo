@@ -126,7 +126,7 @@ export default {
         medCardNo: this.cardInfo.medCardNo,
         id: this.cardInfo.id
       }
-      this.$emit('onSuccess', { checked: this.checked, yibaoInfo: this.yibaoInfo })
+      this.$emit('onSuccess', { checked: true, yibaoInfo: this.yibaoInfo })
       this.changeFlag()
       this.loading = false
     },

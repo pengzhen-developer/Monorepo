@@ -127,19 +127,43 @@
                  :class="{'money':PromotionsCut>0}">{{PromotionsCut}}</div>
           </div>
         </template>
-        <template v-if="canShowYibao">
-          <div class="line"></div>
-          <div class="dl-packet">
-            <div class="dt">使用医保卡 ：</div>
-            <div class="dd"
-                 :class="{'money':yibaoChecked||order.MedicalCardNo}"
-                 @click="chooseYibao">{{ order.MedicalCardNo || yibaoText }}</div>
-          </div>
-          <!-- <div class="line"></div>
-          <div class="dl-packet">
-            <div class="dt">医保类型 ：</div>
-            <div class="dd money">{{  yibaoTypeText }}</div>
-          </div> -->
+
+        <template v-if="isInquirySource">
+          <template v-if="cnaShowYibaoByInquiry">
+            <div class="line"></div>
+            <div class="dl-packet">
+              <div class="dt">使用医保卡 ：</div>
+              <div class="dd"
+                   :class="{'money':yibaoChecked||order.MedicalCardNo}"
+                   @click="chooseYibao">{{ order.MedicalCardNo || yibaoText }}</div>
+              <van-icon name="arrow"
+                        v-if="yibaoChecked?false:!order.MedicalCardNo?true:false" />
+            </div>
+            <template v-if="order.medicalTreatmentType">
+              <div class="line"></div>
+              <div class="dl-packet">
+                <div class="dt">医保类型 ：</div>
+                <div class="dd money">{{  yibaoTypeText }}</div>
+              </div>
+            </template>
+          </template>
+        </template>
+        <template v-else>
+          <template v-if="canShowYibao">
+            <div class="line"></div>
+            <div class="dl-packet">
+              <div class="dt">使用医保卡 ：</div>
+              <div class="dd"
+                   :class="{'money':yibaoChecked||order.MedicalCardNo}"
+                   @click="chooseYibao">{{ order.MedicalCardNo || yibaoText }}</div>
+
+            </div>
+            <!-- <div class="line"></div>
+              <div class="dl-packet">
+                <div class="dt">医保类型 ：</div>
+                <div class="dd money">{{  yibaoTypeText }}</div>
+              </div> -->
+          </template>
         </template>
         <template v-if="canShowShangbao">
           <div class="line"></div>
@@ -308,7 +332,7 @@ export default {
       return this.order?.ColdStorage == 1
     },
     yibaoTypeText() {
-      return this.order.diseases ? `${this.order.medicalTreatmentTxt}-${this.order.diseases}` : `${this.order.medicalTreatmentTxt}`
+      return this.order.diseases ? `${this.order.medicalTreatmentTypeTxt}-${this.order.diseases}` : `${this.order.medicalTreatmentTypeTxt}`
     },
     info() {
       return {
@@ -318,9 +342,22 @@ export default {
         jntPrescriptionNo: this.page?.json?.JztClaimNo
       }
     },
+    // source 处方来源：1 复诊  2 会诊 3 面诊 4 问诊 5 转诊
+    isInquirySource() {
+      return this.order.source === 4
+    },
+
     canShowYibao() {
       return this.order?.insuranceConfig?.medicalInsuranceConfig != null && this.order?.MedicalCardNo ? true : false
     },
+
+    // insureTypeCode 0自费 11医保
+    // payMode 1 在线支付  2 到店支付  3 货到付款
+    //咨询购药 单独处理
+    cnaShowYibaoByInquiry() {
+      return this.order.insureTypeCode === 11 && this.order?.insuranceConfig?.medicalInsuranceConfig != null && this.page.payIndex == 1
+    },
+
     canShowShangbao() {
       //H5暂无商保对接
       // return this.order?.insuranceConfig?.commercialInsuranceConfig != null ? true : false
@@ -429,13 +466,22 @@ export default {
       this.yibaoChecked = false
     },
     onSuccess(result) {
+      console.log('onSuccess', result)
       this.yibaoChecked = result.checked
       this.yibaoText = result.yibaoInfo.medCardNo
       this.yibaoInfo = result.yibaoInfo
     },
     chooseYibao() {
-      if (!this.order.MedicalCardNo) {
-        this.showCard = true
+      // source 处方来源：1 复诊  2 会诊 3 面诊 4 问诊 5 转诊
+      if (this.isInquirySource) {
+        // insureTypeCode 0自费 11医保
+        if (this.order.insureTypeCode === 11 && !this.order.MedicalCardNo) {
+          this.showCard = true
+        }
+      } else {
+        if (!this.order.MedicalCardNo) {
+          this.showCard = true
+        }
       }
     },
     selectAddressCallback(json) {
@@ -922,6 +968,9 @@ export default {
 }
 .intro {
   padding: 8px 15px;
+}
+.dl-packet {
+  align-items: center;
 }
 .intro .dl-packet .dt {
   font-size: 13px;
