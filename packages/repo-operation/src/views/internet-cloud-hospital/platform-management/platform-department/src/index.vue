@@ -55,19 +55,21 @@
 
         <peace-table-column label="科室图标">
           <template slot-scope="scope">
-            <img :src="imageSrc(scope.row.deptIcon)"
-                 :alt="scope.row.deptName"
-                 class="dept-image">
+            <el-image :src="imageSrc(scope.row.deptIcon)"
+                      :alt="scope.row.deptName"
+                      class="dept-image"></el-image>
           </template>
         </peace-table-column>
 
-        <peace-table-column label="属性" min-width="80px">
+        <peace-table-column label="属性"
+                            min-width="80px">
           <template slot-scope="scope">
             <div>{{ scope.row.attribute | filterDictionary(source.DisplayAttrForDepartment) }}</div>
           </template>
         </peace-table-column>
 
-        <peace-table-column label="展示位置" min-width="120px">
+        <peace-table-column label="展示位置"
+                            min-width="120px">
           <template slot-scope="scope">
             <div>{{ scope.row.displayPosition | filterDictionary(source.DepartmentPosition) }}</div>
           </template>
@@ -93,13 +95,12 @@
           </template>
         </peace-table-column>
 
-
       </PeaceTable>
     </div>
 
     <edit-department v-model="dialog.visible"
                      v-if="dialog.visible"
-                     v-bind:title = "dialog.title"
+                     v-bind:title="dialog.title"
                      v-bind:data="dialog.data"
                      v-on:refresh="search">
 
@@ -114,8 +115,8 @@
                   v-if="draggableDialogVisible"
                   width="500px">
       <dept-draggable :isSingle="false"
-                     :list="dragList"
-                     @getSorts="getSorts" />
+                      :list="dragList"
+                      @getSorts="getSorts" />
     </peace-dialog>
 
   </div>
@@ -124,8 +125,8 @@
 <script>
 import Service from './service/index'
 import CONSTANT from './constant'
-import EditDepartment from "./components/EditDepartment"
-import DeptDraggable from "./components/DeptDraggable"
+import EditDepartment from './components/EditDepartment'
+import DeptDraggable from './components/DeptDraggable'
 
 export default {
   components: {
@@ -140,7 +141,7 @@ export default {
         data: {
           attribute: 0,
           displayPosition: 0
-        },
+        }
       },
 
       total: 10,
@@ -148,13 +149,13 @@ export default {
       dragList: [],
 
       model: {
-        platDeptName: "",
-        displayPosition: "",
+        platDeptName: '',
+        displayPosition: ''
       },
 
       source: {
         DisplayAttrForDepartment: CONSTANT.DisplayAttrForDepartment,
-        DepartmentPosition:  CONSTANT.DepartmentPosition,
+        DepartmentPosition: CONSTANT.DepartmentPosition
       }
     }
   },
@@ -186,7 +187,7 @@ export default {
     },
 
     add() {
-      this.dialog.title = "新增科室"
+      this.dialog.title = '新增科室'
       this.dialog.data = {
         attribute: 0,
         displayPosition: 1
@@ -197,8 +198,8 @@ export default {
     // 进入拖拽排序
     openDraggableDialog() {
       Service.getDepartments({
-        platDeptName: "",
-        displayPosition: "",
+        platDeptName: '',
+        displayPosition: '',
         p: 1,
         size: this.total
       }).then((res) => {
@@ -227,17 +228,18 @@ export default {
       data.append('platDeptList', JSON.stringify(newSort))
 
       Service.updateSorts(data)
-          .then(() => {
-            Peace.util.success('科室排序已更新！')
-            this.search()
-          })
-          .finally(() => {
-            this.draggableDialogVisible = false
-          })
+        .then(() => {
+          Peace.util.success('科室排序已更新！')
+          this.search()
+        })
+        .finally(() => {
+          this.draggableDialogVisible = false
+        })
     },
 
     imageSrc(path) {
-      `${process.env.VUE_APP_API_BASE}nethospital${path}`
+      const tmp = `${process.env.VUE_APP_API_BASE}nethospital${path}`
+      return tmp
     }
   }
 }

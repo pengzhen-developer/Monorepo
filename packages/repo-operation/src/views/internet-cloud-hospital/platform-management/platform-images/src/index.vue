@@ -20,11 +20,10 @@
              class="img-item"
              v-for="item in list">
 
-          <el-image
-              class="preview-img"
-              :src="imageSrc(item.imageUrl)"
-              fit="scale-down"
-              :preview-src-list="[imageSrc(item.imageUrl)]">
+          <el-image class="preview-img"
+                    :src="imageSrc(item.imageUrl)"
+                    fit="scale-down"
+                    :preview-src-list="[imageSrc(item.imageUrl)]">
           </el-image>
           <p :title="item.imageName"
              class="image-name">{{ item.imageName }}</p>
@@ -67,7 +66,7 @@ export default {
       list: [],
       count: 0,
       uploadDialogVisible: false,
-      options:  [
+      options: [
         { value: 1, label: '其他' },
         { value: 2, label: '平台科室' },
         { value: 3, label: '广告图片' }
