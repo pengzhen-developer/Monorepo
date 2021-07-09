@@ -14,9 +14,8 @@
         <el-form-item v-if="model.id"
                       label="科室ID"
                       prop="name">
-          <el-input
-              v-model="model.id"
-              disabled></el-input>
+          <el-input v-model="model.id"
+                    disabled></el-input>
 
         </el-form-item>
 
@@ -78,7 +77,7 @@
 
           <img v-if="selected.imageUrl || model.imgUrl"
                :src="selected.imageUrl ? imageSrc(selected.imageUrl) : imageSrc(model.imgUrl)"
-               class="select-icon"/>
+               class="select-icon" />
 
         </el-form-item>
 
@@ -101,7 +100,7 @@
                   title="科室图标"
                   width="400px">
       <images-selector :default-usage="2"
-                       @getSelected="getSelectedIcon"/>
+                       @getSelected="getSelectedIcon" />
     </peace-dialog>
   </div>
 </template>
@@ -123,7 +122,7 @@ export default {
     },
     data: undefined
   },
-  components: {ImagesSelector},
+  components: { ImagesSelector },
   data() {
     return {
       iconsDialogVisible: false,
@@ -144,8 +143,8 @@ export default {
         DisplayAttrForDepartment: CONSTANT.DisplayAttrForDepartment
       },
       rules: {
-        deptName: [{required: true, message: '请输入科室名称', trigger: 'blur'}],
-        attribute: [{required: true, message: '请选择属性', trigger: 'blur'}],
+        deptName: [{ required: true, message: '请输入科室名称', trigger: 'blur' }],
+        attribute: [{ required: true, message: '请选择属性', trigger: 'blur' }]
         // imgUrl: [{required: true, message: '请选择图片', trigger: 'blur'}],
       }
     }
@@ -182,28 +181,25 @@ export default {
       const params = Object.assign({}, this.model)
       this.isLoading = true
       if (this.data.deptId) {
-
-
         Service.modifyData(params)
-            .then((res) => {
-              const msg = res.msg || '科室修改成功！'
-              Peace.util.success(msg)
-              this.visible = false
-              this.$emit('refresh')
-            })
-            .finally(() => (this.isLoading = false))
+          .then((res) => {
+            const msg = res.msg || '科室修改成功！'
+            Peace.util.success(msg)
+            this.visible = false
+            this.$emit('refresh')
+          })
+          .finally(() => (this.isLoading = false))
       } else {
-
         params.imgUrl = params.imageUrl
 
         Service.addData(params)
-            .then((res) => {
-              const msg = res.msg || '科室新增成功！'
-              Peace.util.success(msg)
-              this.visible = false
-              this.$emit('refresh')
-            })
-            .finally(() => (this.isLoading = false))
+          .then((res) => {
+            const msg = res.msg || '科室新增成功！'
+            Peace.util.success(msg)
+            this.visible = false
+            this.$emit('refresh')
+          })
+          .finally(() => (this.isLoading = false))
       }
     },
 
@@ -219,7 +215,7 @@ export default {
     },
 
     imageSrc(path) {
-      return  `${process.env.VUE_APP_API_BASE}nethospital${path}`
+      return `${process.env.VUE_APP_API_BASE}nethospital${path}`
     }
   }
 }
