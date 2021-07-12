@@ -58,7 +58,7 @@
           <div class="money">
             <span v-if="model.payStatus === 3"
                   style="margin-right:-20px;">（已退款）</span>
-            <peace-price v-bind:price="model.payStatus > 1 ? model.payMoney:model.orderMoney"
+            <peace-price v-bind:price="model.payStatus >= 1 ? model.payMoney:model.orderMoney"
                          v-bind:transformOrigin="'right'"
                          v-bind:size="16"></peace-price>
           </div>
