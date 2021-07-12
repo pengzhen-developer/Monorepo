@@ -23,8 +23,7 @@
                       prop="deptName">
           <el-input v-model="model.deptName"
                     clearable
-                    maxlength="50"
-                    placeholder="请输入单位名称"></el-input>
+                    maxlength="50"></el-input>
         </el-form-item>
 
         <el-form-item label="属性"

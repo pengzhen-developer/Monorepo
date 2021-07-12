@@ -17,7 +17,7 @@
         <img
           :class="{'actived': icon.isSelected}"
           :src="baseUrl + icon[imageKey]"
-          @click="selected(icon)"/>
+          @click="selected(icon)" alt=""/>
       </div>
     </div>
     <div class="text-center q-my-md">
