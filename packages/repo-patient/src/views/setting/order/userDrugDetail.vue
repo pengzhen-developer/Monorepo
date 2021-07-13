@@ -733,11 +733,7 @@ export default {
         this.QRCodeURL = res.data.qrCode
         this.cbDialog.data.money = this.order.orderMoney.toFixed(2)
 
-        if (this.isCloudPharmacy) {
-          this.phoneDialog.data.phone = res.data.phoneNumber
-        } else {
-          this.phoneDialog.data.phone = res.data.contractTel
-        }
+        this.phoneDialog.data.phone = res.data.serviceTel
 
         if (this.order.expireTime > this.order.currentTime) {
           this.time = this.order.expireTime - this.order.currentTime
