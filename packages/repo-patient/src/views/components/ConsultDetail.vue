@@ -942,7 +942,7 @@ export default {
           this.internalData.inquiryInfo.appointmentStatus == 1 && !this.internalData.inquiryInfo.reportTime
             ? this.internalData.inquiryInfo.statusTxtContent
             : '订单创建15分钟后未支付将自动关闭',
-        '2': '已通知医生尽快接诊。12小时内未接诊将自动退诊。',
+        '2': '已通知医生尽快接诊。24小时内未接诊将自动退诊。',
         // '2': '',
         '3': '请及时与医生沟通',
         // '4': '医生已退诊',
