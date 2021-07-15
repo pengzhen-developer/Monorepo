@@ -10,7 +10,7 @@
         <span class="item-title">年龄</span>
         <el-select v-model="models.Age.humanCode"
                    placeholder="请选择"
-                   style="width: 80px; margin-right: 8px;"
+                   style="width: 86px; margin-right: 8px;"
                    v-on:change="onAgeChange">
           <el-option v-for="item in source.humanCodeList"
                      :key="item.id"
@@ -38,7 +38,7 @@
                    :disabled="ageDisable"
                    placeholder="请选择"
                    style="width: 80px; margin-right: 8px;">
-          <el-option v-for="item in source.utilList"
+          <el-option v-for="item in utilList"
                      :key="item.value"
                      :label="item.label"
                      :value="item.value">
@@ -71,8 +71,8 @@
         <span class="item-title">体重大小</span>
         <el-select v-model="models.WeightSize.value1"
                    placeholder="请选择"
-                   style="width: 80px; margin-right: 8px;">
-          <el-option v-for="item in source.weightList"
+                   style="width: 100px; margin-right: 8px;">
+          <el-option v-for="item in weightList"
                      :key="item.value"
                      :label="item.label"
                      :value="item.value">
@@ -134,8 +134,8 @@
         <el-select v-model="models.Route.contain"
                    class="q-mr-md"
                    placeholder="请选择"
-                   style="width: 80px">
-          <el-option v-for="item in source.containList"
+                   style="width: 86px">
+          <el-option v-for="item in containList"
                      :key="item.value"
                      :label="item.label"
                      :value="item.value">
@@ -160,8 +160,8 @@
         <span class="item-title">性别</span>
         <el-select v-model="models.Gender.value1"
                    placeholder="请选择"
-                   style="width: 80px; margin-right: 8px;">
-          <el-option v-for="item in source.sexList"
+                   style="width: 60px; margin-right: 8px;">
+          <el-option v-for="item in sexList"
                      :key="item.value"
                      :label="item.label"
                      :value="item.value">
@@ -221,7 +221,7 @@ import ChoiceCrowdThreeDialog from './ChoiceCrowdThreeDialog'
 
 import DeliveryWayDialog from './DeliveryWayDialog'
 import DeliveryWayThreeDialog from './DeliveryWayThreeDialog'
-
+import obPreconditionDic from '../observable/ob-precondition-dic'
 export default {
   props: {
     value: {
@@ -261,11 +261,7 @@ export default {
       isLoading: false,
       visible: this.value,
       source: {
-        humanCodeList: [],
-        utilList: [],
-        weightList: [],
-        containList: [],
-        sexList: []
+        humanCodeList: []
       },
       models: {
         Age: {
@@ -344,16 +340,10 @@ export default {
     }
   },
 
-  async mounted() {
-    this.source.utilList = await Peace.identity.dictionary.getList('age_type')
-    this.source.weightList = await Peace.identity.dictionary.getList('compare')
-    this.source.containList = await Peace.identity.dictionary.getList('belonged_type')
-    this.source.sexList = await Peace.identity.dictionary.getList('rule_gender')
-  },
-
   created() {
     if (Object.keys(this.model).length > 0) {
-      this.models = Object.assign({ ...this.models }, this.model)
+      const models = Object.assign({}, this.models, this.model)
+      this.models = Peace.util.deepClone(models)
     }
     this.$nextTick(() => {
       this.getPlatformAgeClass()
@@ -361,6 +351,10 @@ export default {
   },
 
   computed: {
+    utilList: () => obPreconditionDic.state.utilList,
+    weightList: () => obPreconditionDic.state.weightList,
+    containList: () => obPreconditionDic.state.containList,
+    sexList: () => obPreconditionDic.state.sexList,
     ageDisable() {
       return this.models.Age.humanCode !== ''
     }
@@ -518,12 +512,7 @@ export default {
     checked(item) {
       switch (item.ceType) {
         case 'Age':
-          return (
-            (item.humanCode || item.humanCode === '') &&
-            (item.value1 || item.value1 === 0) &&
-            item.value2 &&
-            item.value3
-          )
+          return (item.humanCode || item.humanCode === '') && (item.value1 || item.value1 === 0) && item.value2 && item.value3
         case 'Weight':
           return (item.value1 || item.value1 === 0) && (item.value2 || item.value2 === 0)
         case 'WeightSize':

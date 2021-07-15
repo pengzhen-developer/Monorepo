@@ -88,6 +88,7 @@ import CONSTANT from './constant'
 import PrecoditionInfo from './components/PrecoditionInfo'
 import PreconditionView from './components/PreconditionView'
 import Service from './service/index'
+import obPreconditionDic from './observable/ob-precondition-dic'
 
 export default {
   props: {
@@ -147,7 +148,19 @@ export default {
     }
   },
 
-  created() {
+  async mounted() {
+    const utilList = await Peace.identity.dictionary.getList('age_type')
+    const weightList = await Peace.identity.dictionary.getList('compare')
+    const containList = await Peace.identity.dictionary.getList('belonged_type')
+    const sexList = await Peace.identity.dictionary.getList('rule_gender')
+    const warningLevelList = await Peace.identity.dictionary.getList('warning_level')
+
+    await obPreconditionDic.mutations.set('utilList', utilList)
+    await obPreconditionDic.mutations.set('weightList', weightList)
+    await obPreconditionDic.mutations.set('containList', containList)
+    await obPreconditionDic.mutations.set('sexList', sexList)
+    await obPreconditionDic.mutations.set('warningLevelList', warningLevelList)
+
     this.$nextTick(() => {
       this.fetch()
     })
@@ -199,11 +212,7 @@ export default {
             // 其中前置条件需要做转换
             if (models) {
               models.map((temp) => {
-                if (
-                  temp.conditionExpression &&
-                  temp.conditionExpression.ceList &&
-                  temp.conditionExpression.ceList.length > 0
-                ) {
+                if (temp.conditionExpression && temp.conditionExpression.ceList && temp.conditionExpression.ceList.length > 0) {
                   let tmp = temp.conditionExpression.ceList ?? []
                   let ceListDic = {}
                   for (let condition of tmp) {

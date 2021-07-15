@@ -1,7 +1,8 @@
 <template>
   <div class="prompt-level full-height">
     <div class="prompt-level__content full-height full-width flex items-center q-pl-md no-wrap">
-      <span class="q-mr-md text-weight-medium" style="white-space: nowrap;">提示级别</span>
+      <span class="q-mr-md text-weight-medium"
+            style="white-space: nowrap;">提示级别</span>
       <el-form v-if="isEditing"
                ref="validateForm"
                class="col"
@@ -11,11 +12,10 @@
         <el-form-item>
           <el-select v-model="model.warningLevel"
                      style="min-width: 80px;">
-            <el-option
-                v-for="item in warningLevelList"
-                v-bind:key="item.label"
-                v-bind:label="item.label"
-                v-bind:value="item.value"></el-option>
+            <el-option v-for="item in warningLevelList"
+                       v-bind:key="item.label"
+                       v-bind:label="item.label"
+                       v-bind:value="item.value"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import obPreconditionDic from '../observable/ob-precondition-dic'
 export default {
   props: {
     model: Object,
@@ -35,14 +36,8 @@ export default {
     }
   },
 
-  data() {
-    return {
-      warningLevelList: []
-    }
-  },
-
-  async mounted() {
-    this.warningLevelList = await Peace.identity.dictionary.getList('warning_level')
+  computed: {
+    warningLevelList: () => obPreconditionDic.state.warningLevelList
   },
 
   created() {
