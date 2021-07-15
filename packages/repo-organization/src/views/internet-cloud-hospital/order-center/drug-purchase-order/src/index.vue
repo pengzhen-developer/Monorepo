@@ -23,7 +23,7 @@
                     placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item>
+        <!-- <el-form-item>
           <span slot="label">
             <span>支付类型</span>
             <span>：</span>
@@ -36,7 +36,7 @@
                        :value="item.value"
                        v-for="item in source.ENUM_PAYMENT"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item>
           <span slot="label">
@@ -160,12 +160,12 @@
             <span> ¥ {{ scope.row.orderMoney }}</span>
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn label="支付类型"
+        <!-- <PeaceTableColumn label="支付类型"
                           min-width="120">
           <template slot-scope="scope">
             <span>{{ getPaymentStatus(scope.row.paymentType) }}</span>
           </template>
-        </PeaceTableColumn>
+        </PeaceTableColumn> -->
         <PeaceTableColumn label="订单状态"
                           min-width="100">
           <template slot-scope="scope">

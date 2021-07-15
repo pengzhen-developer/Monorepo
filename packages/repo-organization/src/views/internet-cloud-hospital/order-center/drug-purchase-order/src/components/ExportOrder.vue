@@ -13,7 +13,7 @@
                      v-for="(item, index) in drugstoreList"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="支付类型">
+      <!-- <el-form-item label="支付类型">
         <el-select v-model="exportModel.payType"
                    clearable
                    placeholder="全部">
@@ -22,7 +22,7 @@
                      :value="item.value"
                      v-for="item in source.ENUM_PAYMENT"></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="配送类型">
         <el-select v-model="exportModel.sendType"
                    placeholder="全部"
