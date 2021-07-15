@@ -95,7 +95,7 @@ export default {
       if (this.drugType === 'platform') {
         this.dialog.visible = true
         this.dialog.data = [...this.model.diagnosisItemList]
-      } else if (this.drugType === 'org') {
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
         this.dialogThree.visible = true
         this.dialogThree.data = [...this.model.diagnosisItemList]
       }
@@ -103,7 +103,7 @@ export default {
     editIndication(data) {
       if (this.drugType === 'platform') {
         this.dialog.visible = false
-      } else if (this.drugType === 'org') {
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
         this.dialogThree.visible = false
       }
       this.model.diagnosisItemList = data
