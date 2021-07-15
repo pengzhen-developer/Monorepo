@@ -17,7 +17,7 @@
                        v-bind:src="src"
                        v-bind:full-height="true"></iframeContainer>
       <div v-if="type === 'component'"
-           class="full-width bg-white q-pa-md">
+           class="full-width bg-white ">
         <component v-bind:is="src"></component>
       </div>
 
@@ -29,14 +29,22 @@
 import CONSTANT from './constant'
 import iframeContainer from '@src/views/iframe'
 import DrugPackagingInformation from './components/drug-packaging-information'
+import DiseaseMaintain from './components/disease-maintain'
+import AllergyMaintain from './components/allergy-maintain'
+import PopulationMaintain from './components/population-maintain'
+import ICD from './components/ICD'
 
-import { dom } from 'quasar'
+//import { dom } from 'quasar'
 
 export default {
   name: 'RuleDictionary',
   components: {
     iframeContainer,
-    DrugPackagingInformation
+    DrugPackagingInformation,
+    DiseaseMaintain,
+    AllergyMaintain,
+    PopulationMaintain,
+    ICD
   },
 
   data() {
@@ -56,16 +64,16 @@ export default {
       this.src = process.env.VUE_APP_SITE_PRESCRIPTION + this.menuList[Number(this.active)].url
     }
   },
-  mounted() {
-    this.$nextTick(function() {
-      // dom.offset 是 quasar 提供的工具类
-      // 自行了解相关 api 文档
-      const offset = dom.offset(this.$refs.iframe.$el)
+  // mounted() {
+  //   this.$nextTick(function() {
+  //     // dom.offset 是 quasar 提供的工具类
+  //     // 自行了解相关 api 文档
+  //     const offset = dom.offset(this.$refs.iframe.$el)
 
-      // iframe 铺满全屏
-      this.$refs.iframe.$el.style.height = `${document.body.clientHeight - offset?.top - 20}px`
-    })
-  },
+  //     // iframe 铺满全屏
+  //     this.$refs.iframe.$el.style.height = `${document.body.clientHeight - offset?.top - 20}px`
+  //   })
+  // },
   methods: {
     handleClick() {
       this.type = this.menuList[Number(this.active)].type

@@ -1,6 +1,6 @@
 <template>
-  <div class="layout-route bg-grey-2">
-    <div class="card card-search q-mb-md">
+  <div>
+    <div class="card card-search">
       <el-form inline=""
                label-width="auto"
                label-suffix="："
@@ -21,6 +21,7 @@
         </el-form-item>
       </el-form>
     </div>
+    <div style="borderTop:16px solid #f5f5f5;"></div>
     <div class="card">
 
       <div class="top-menu">

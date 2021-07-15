@@ -114,7 +114,7 @@ export default {
     })
   },
   /**
-   * 通用规则
+   * 通用规则 自定义规则
    *
    * @param {*} params
    * @returns {Object}
@@ -122,32 +122,13 @@ export default {
   ruleCountOfOrgan(params) {
     const isMock = false
 
-    const apiPath = `durjztdurengine/billMain/ruleCountOfOrgan?ruleType=${params.ruleType}&hosCode=${params.hosCode}`
+    const apiPath = `quake/commonRule/ruleCount?custCode=${params.custCode}`
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.post(requestApi).then((res) => {
-      return res
-    })
-  },
-  /**
-   * 自定义规则
-   *
-   * @param {*} params
-   * @returns {Object}
-   */
-  ruleCount(params) {
-    const isMock = false
-
-    const apiPath = `durjztdurengine/billMain/ruleCount?ruleType=${params.ruleType}&hosCode=${params.hosCode}`
-    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-    const serverPath = process.env.VUE_APP_API_BASE + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi).then((res) => {
+    return Peace.http.get(requestApi).then((res) => {
       return res
     })
   },

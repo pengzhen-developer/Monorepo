@@ -86,23 +86,21 @@ export default {
         custCode: Util.user.getUserInfo().custCode
       }
 
-      const paramsRuleCount1 = {
-        hosCode: Util.user.getUserInfo().custCode,
-        ruleType: 1
+      const paramsRuleCount = {
+        custCode: Util.user.getUserInfo().custCode
       }
 
-      const paramsRuleCount2 = {
-        hosCode: Util.user.getUserInfo().custCode,
-        ruleType: 2
-      }
+      // const paramsRuleCount2 = {
+      //   hosCode: Util.user.getUserInfo().custCode,
+
+      // }
 
       const iterable = [
         Service.getControlledMenuList(controlledParams),
         Service.drugCount(params),
         Service.PharCount(params),
         Service.PrescriptionCount(),
-        Service.ruleCountOfOrgan(paramsRuleCount1),
-        Service.ruleCount(paramsRuleCount2),
+        Service.ruleCountOfOrgan(paramsRuleCount),
         Service.CustDrugsTotal(params)
       ]
 
@@ -115,11 +113,11 @@ export default {
         this.totalStatis.totalCount = Peace.numeral(values[3].data.totalCount).format('0,0')
         this.prescripStatis.checkedCount = Peace.numeral(values[3].data.checkedCount).format('0,0')
         this.prescripStatis.uncheckedCount = Peace.numeral(values[3].data.uncheckedCount).format('0,0')
-        this.auditStatis.applyCount = Peace.numeral(values[4].data).format('0,0')
-        this.auditStatis.customCust = Peace.numeral(values[5].data).format('0,0')
-        this.auditStatis.AwaitExamineCount = Peace.numeral(values[6].data.AwaitExamineCount).format('0,0')
-        this.auditStatis.MappingCount = Peace.numeral(values[6].data.MappingCount).format('0,0')
-        this.auditStatis.NotMappingCount = Peace.numeral(values[6].data.NotMappingCount).format('0,0')
+        this.auditStatis.applyCount = Peace.numeral(values[4].data.commonRuleCount).format('0,0')
+        this.auditStatis.customCust = Peace.numeral(values[4].data.orgRuleCount).format('0,0')
+        this.auditStatis.AwaitExamineCount = Peace.numeral(values[5].data.AwaitExamineCount).format('0,0')
+        this.auditStatis.MappingCount = Peace.numeral(values[5].data.MappingCount).format('0,0')
+        this.auditStatis.NotMappingCount = Peace.numeral(values[5].data.NotMappingCount).format('0,0')
       })
     }
   }

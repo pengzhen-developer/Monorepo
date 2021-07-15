@@ -15,10 +15,10 @@
                    lazy>
         <DrugUnit></DrugUnit>
       </el-tab-pane>
-      <el-tab-pane label="ICD"
+      <!-- <el-tab-pane label="ICD"
                    lazy>
         <ICD10></ICD10>
-      </el-tab-pane>
+      </el-tab-pane> -->
     </el-tabs>
 
   </div>
@@ -29,15 +29,15 @@
 import ToDrugChannel from './components/ToDrugChannel'
 import ToDrugFrequency from './components/ToDrugFrequency'
 import DrugUnit from './components/DrugUnit'
-import ICD10 from './components/ICD10'
+// import ICD10 from './components/ICD10'
 
 export default {
   name: 'DictionaryManagement',
   components: {
     ToDrugChannel,
     ToDrugFrequency,
-    DrugUnit,
-    ICD10
+    DrugUnit
+    // ICD10
   },
   data() {
     return {
