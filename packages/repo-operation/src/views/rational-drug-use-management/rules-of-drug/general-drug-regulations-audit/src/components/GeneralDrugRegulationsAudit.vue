@@ -115,7 +115,7 @@ export default {
 
     validate() {
       return new Promise((resolve, reject) => {
-        if (!this.approvalStatus && !this.reason) {
+        if (this.approvalStatus === 'reject' && !this.reason) {
           Peace.util.warning('请输入驳回原因。')
 
           reject()
