@@ -119,7 +119,7 @@
                           min-width="100"
                           prop="drug_form"></PeaceTableColumn>
         <PeaceTableColumn label="药品单价（元）"
-                          width="110"
+                          width="130"
                           prop="drug_unitPrice">
           <template slot-scope="scope">
             <div> {{scope.row.drug_unitPrice || '--'}} </div>
@@ -128,6 +128,13 @@
         <PeaceTableColumn label="批准文号"
                           min-width="180"
                           prop="license_number"></PeaceTableColumn>
+        <PeaceTableColumn label="拆零"
+                          width="100"
+                          prop="is_disconnect_attr">
+          <template slot-scope="scope">
+            <div> {{scope.row.is_disconnect_attr | getEnumLabel(source.ENUM_DISCONNECT)}} </div>
+          </template>
+        </PeaceTableColumn>
         <PeaceTableColumn label="药品来源"
                           width="125"
                           prop="source">
@@ -239,14 +246,16 @@ export default {
         ENUM_DRUG_SOURCE: CONSTANT.ENUM_DRUG_SOURCE,
         ENUM_DRUG_STATUS: CONSTANT.ENUM_DRUG_STATUS,
         ENUM_MEDICAL_STATUS: CONSTANT.ENUM_MEDICAL_STATUS,
-        ENUM_DRUG_STORAGE: CONSTANT.ENUM_DRUG_STORAGE
+        ENUM_DRUG_STORAGE: CONSTANT.ENUM_DRUG_STORAGE,
+        ENUM_DISCONNECT: CONSTANT.ENUM_DISCONNECT
       },
       model: {
         drugname: '',
         source: '',
         status: '',
         is_medical: '',
-        drug_storage: ''
+        drug_storage: '',
+        is_disconnect_attr: ''
       },
 
       currentDrug: {},

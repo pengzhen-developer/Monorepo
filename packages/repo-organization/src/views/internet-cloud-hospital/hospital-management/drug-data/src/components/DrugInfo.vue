@@ -27,21 +27,16 @@ export default {
       source: {
         ENUM_DRUG_SOURCE: CONSTANT.ENUM_DRUG_SOURCE,
         ENUM_MEDICAL_STATUS: CONSTANT.ENUM_MEDICAL_STATUS,
-        ENUM_DRUG_STORAGE: CONSTANT.ENUM_DRUG_STORAGE
+        ENUM_DRUG_STORAGE: CONSTANT.ENUM_DRUG_STORAGE,
+        ENUM_DISCONNECT: CONSTANT.ENUM_DISCONNECT
       },
       drugInfo: []
     }
   },
+  created() {
+    this.drugInfo = this.getData()
+  },
   methods: {
-    getMedicalStatus(status) {
-      return this.source.ENUM_MEDICAL_STATUS.find((item) => item.value == status)?.label
-    },
-    getDrugSource(source) {
-      return this.source.ENUM_DRUG_SOURCE.find((item) => item.value == source)?.label
-    },
-    getDrugStorage(storage) {
-      return this.source.ENUM_DRUG_STORAGE.find((item) => item.value == storage)?.label
-    },
     getData() {
       const drug = this.drug
 
@@ -111,12 +106,27 @@ export default {
           col2: drug.drug_useunit,
           col3: '储存条件',
           col4: drug.drug_storage
+        },
+        {
+          col1: '拆零',
+          col2: this.getDisconnect(drug.is_disconnect_attr),
+          col3: '',
+          col4: ''
         }
       ]
+    },
+    getMedicalStatus(status) {
+      return this.source.ENUM_MEDICAL_STATUS.find((item) => item.value == status)?.label
+    },
+    getDrugSource(source) {
+      return this.source.ENUM_DRUG_SOURCE.find((item) => item.value == source)?.label
+    },
+    getDrugStorage(storage) {
+      return this.source.ENUM_DRUG_STORAGE.find((item) => item.value == storage)?.label
+    },
+    getDisconnect(disconnect) {
+      return this.source.ENUM_DISCONNECT.find((item) => item.value == disconnect)?.label
     }
-  },
-  created() {
-    this.drugInfo = this.getData()
   }
 }
 </script>

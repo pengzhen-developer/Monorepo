@@ -142,6 +142,17 @@
                      v-for="item in source.ENUM_DRUG_STORAGE"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="拆零："
+                    prop="is_disconnect_attr">
+        <el-select v-model="drug.is_disconnect_attr"
+                   clearable
+                   placeholder="请选择">
+          <el-option :key="item.label"
+                     :label="item.label"
+                     :value="item.value"
+                     v-for="item in source.ENUM_DISCONNECT"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item style="width: 100%;margin: 32px 0 16px 0;text-align: right;">
         <el-button @click="cancel"
                    type="default">取消</el-button>
@@ -200,11 +211,27 @@ export default {
           return callback(new Error(msg))
         })
     }
+    const checkDrugCount = (rule, value, callback) => {
+      if (value) {
+        // 移除拆零校验
+        this.$refs.drugModel.clearValidate('is_disconnect_attr')
+      }
+      callback()
+    }
+    const checkDisconnect = (rule, value, callback) => {
+      if (value === 'yes') {
+        if (!this.drug.drug_count) {
+          return callback(new Error('请输入包装数量'))
+        }
+      }
+      callback()
+    }
     return {
       source: {
         ENUM_DRUG_SOURCE: CONSTANT.ENUM_DRUG_SOURCE,
         ENUM_MEDICAL_STATUS: CONSTANT.ENUM_MEDICAL_STATUS,
-        ENUM_DRUG_STORAGE: CONSTANT.ENUM_DRUG_STORAGE
+        ENUM_DRUG_STORAGE: CONSTANT.ENUM_DRUG_STORAGE,
+        ENUM_DISCONNECT: CONSTANT.ENUM_DISCONNECT
       },
       drug: {
         drug_id: '',
@@ -229,7 +256,8 @@ export default {
         drug_useunit: '',
         drug_unitPrice: '',
         is_medical: 2,
-        drug_storage: 1
+        drug_storage: 1,
+        is_disconnect_attr: ''
       },
       rules: {
         drug_number: [
@@ -309,6 +337,18 @@ export default {
             message: '请选择储存条件',
             trigger: 'change'
           }
+        ],
+        drug_count: [
+          {
+            validator: checkDrugCount,
+            trigger: 'blur'
+          }
+        ],
+        is_disconnect_attr: [
+          {
+            validator: checkDisconnect,
+            trigger: 'change'
+          }
         ]
       }
     }
@@ -361,7 +401,6 @@ export default {
   background: rgba(255, 170, 0, 0.1);
   border-radius: 2px;
   width: calc(100% + 40px);
-
   margin: -10px 0 20px -20px;
   i {
     width: 16px;

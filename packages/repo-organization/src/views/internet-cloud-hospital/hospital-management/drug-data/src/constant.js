@@ -19,5 +19,10 @@ export default {
     { value: 1, label: '常温' },
     { value: 2, label: '冷藏' },
     { value: 3, label: '阴凉' }
+  ],
+  // 是否拆零
+  ENUM_DISCONNECT: [
+    { value: 'yes', label: '是' },
+    { value: 'no', label: '否' }
   ]
 }
