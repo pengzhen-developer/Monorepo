@@ -25,7 +25,7 @@
       </div>
 
       <div>
-        <KnowledgeButton v-bind:drugCSCCode="data.drugStandardCode"></KnowledgeButton>
+        <KnowledgeButton v-bind:drugCscCode="data.drugStandardCode"></KnowledgeButton>
       </div>
     </div>
 
