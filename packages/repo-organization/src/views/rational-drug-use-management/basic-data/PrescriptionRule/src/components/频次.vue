@@ -90,8 +90,7 @@ export default {
   },
   computed: {
     description() {
-      return `不在范围${this.model.frequencyRuleList.minFrequencyName || '--'}至${this.model.frequencyRuleList
-        .maxFrequencyName || '--'}`
+      return `不在范围${this.model.frequencyRuleList.minFrequencyName || '--'}至${this.model.frequencyRuleList.maxFrequencyName || '--'}`
     }
   },
   methods: {
@@ -104,7 +103,7 @@ export default {
         }
         this.dialog.type = 0
         this.dialog.visible = true
-      } else if (this.drugType === 'org') {
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
         this.dialogThree.data = {
           coefficient: this.model.frequencyRuleList.minFrequency,
           name: this.model.frequencyRuleList.minFrequencyName,
@@ -123,7 +122,7 @@ export default {
         }
         this.dialog.type = 1
         this.dialog.visible = true
-      } else if (this.drugType === 'org') {
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
         this.dialogThree.data = {
           coefficient: this.model.frequencyRuleList.maxFrequency,
           name: this.model.frequencyRuleList.maxFrequencyName,
@@ -143,7 +142,7 @@ export default {
       }
       if (this.drugType === 'platform') {
         this.dialog.visible = false
-      } else if (this.drugType === 'org') {
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
         this.dialogThree.visible = false
       }
     },

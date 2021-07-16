@@ -107,7 +107,7 @@ export default {
       if (this.drugType === 'platform') {
         this.dialog.visible = true
         this.dialog.data = [...this.model.routeRuleObj.routeItemList]
-      } else if (this.drugType === 'org') {
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
         this.dialogThree.visible = true
         this.dialogThree.data = [...this.model.routeRuleObj.routeItemList]
       }
@@ -116,7 +116,7 @@ export default {
     editSuccess(data) {
       if (this.drugType === 'platform') {
         this.dialog.visible = false
-      } else if (this.drugType === 'org') {
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
         this.dialogThree.visible = false
       }
 

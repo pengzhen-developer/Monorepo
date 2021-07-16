@@ -456,7 +456,7 @@ export default {
       if (this.drugType === 'platform') {
         this.indicationDialogOptions.data = [...this.models.Indication.listValue]
         this.indicationDialogOptions.visible = true
-      } else if (this.drugType === 'org') {
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
         this.indicationDialogOptionsThree.data = [...this.models.Indication.listValue]
         this.indicationDialogOptionsThree.visible = true
       }
@@ -465,7 +465,7 @@ export default {
     editIndication(data) {
       if (this.drugType === 'platform') {
         this.indicationDialogOptions.visible = false
-      } else if (this.drugType === 'org') {
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
         this.indicationDialogOptionsThree.visible = false
       }
       this.models.Indication.listValue = data
@@ -475,7 +475,7 @@ export default {
       if (this.drugType === 'platform') {
         this.choiceCrowdDialogOptions.data = [...this.models.HumanClassify.listValue]
         this.choiceCrowdDialogOptions.visible = true
-      } else if (this.drugType === 'org') {
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
         this.choiceCrowdDialogOptionsThree.data = [...this.models.HumanClassify.listValue]
         this.choiceCrowdDialogOptionsThree.visible = true
       }
@@ -484,7 +484,7 @@ export default {
     editCrowd(data) {
       if (this.drugType === 'platform') {
         this.choiceCrowdDialogOptions.visible = false
-      } else if (this.drugType === 'org') {
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
         this.choiceCrowdDialogOptionsThree.visible = false
       }
       this.models.HumanClassify.listValue = data
@@ -494,7 +494,7 @@ export default {
       if (this.drugType === 'platform') {
         this.deliveryWayDialogOptions.data = [...this.models.Route.listValue]
         this.deliveryWayDialogOptions.visible = true
-      } else if (this.drugType === 'org') {
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
         this.deliveryWayDialogOptionsThree.data = [...this.models.Route.listValue]
         this.deliveryWayDialogOptionsThree.visible = true
       }
@@ -503,7 +503,7 @@ export default {
     editDeliveryWay(data) {
       if (this.drugType === 'platform') {
         this.deliveryWayDialogOptions.visible = false
-      } else if (this.drugType === 'org') {
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
         this.deliveryWayDialogOptionsThree.visible = false
       }
       this.models.Route.listValue = data
