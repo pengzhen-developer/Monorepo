@@ -191,14 +191,21 @@ export default {
             // 如果服务端返回的对象有对应的Key，需要对 `前置条件` 数据进行转换
             if (models) {
               models.map((temp) => {
-                // TransForm (Array --> Object)
-                let tmp = temp.conditionExpression?.ceList ?? []
-                let ceListDic = {}
-                for (let condition of tmp) {
-                  ceListDic[`${condition.ceType}`] = condition
-                  ceListDic[`${condition.ceType}`].checked = true
+                if (
+                    temp.conditionExpression &&
+                    temp.conditionExpression.ceList &&
+                    temp.conditionExpression.ceList.length > 0
+                ) {
+                  let tmp = temp.conditionExpression.ceList ?? []
+                  let ceListDic = {}
+                  for (let condition of tmp) {
+                    ceListDic[`${condition.ceType}`] = condition
+                    ceListDic[`${condition.ceType}`].checked = true
+                  }
+                  temp.conditionExpressionString = { ceList: ceListDic, hasPrecondition: true }
+                } else {
+                  temp.conditionExpressionString = { ceList: undefined, hasPrecondition: false }
                 }
-                temp.conditionExpressionString = { ceList: ceListDic, hasPrecondition: true }
               })
               item.models = models
             }

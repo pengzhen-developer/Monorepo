@@ -3,8 +3,6 @@
     <span v-if="info.Age"
           class="q-mr-md">年龄: {{ info.Age.value1 }}-{{ info.Age.value2 }} {{ info.Age.value3 | filterDictionary(utilList,'--') }}</span>
 
-    <span v-if="info.Gender" class="q-mr-md">性别: {{ info.Gender.value1 | filterDictionary(sexList,'--') }}</span>
-
     <span v-if="info.Weight" class="q-mr-md">体重: {{ info.Weight.value1 }}-{{ info.Weight.value2 }}kg</span>
 
     <span v-if="info.WeightSize"
@@ -16,6 +14,10 @@
 
     <span
         v-if="info.Route">给药途径: {{ info.Route.contain | filterDictionary(containList,'--') }} {{ RouteMessage }}</span>
+
+    <span v-if="info.Gender" class="q-mr-md">性别: {{ info.Gender.value1 | filterDictionary(sexList,'--') }}</span>
+
+
   </div>
 </template>
 

@@ -31,8 +31,9 @@
 
     <div class="toolbar-style">
       <el-button v-on:click="back">退出编辑</el-button>
-      <el-button v-on:click="save">保存</el-button>
+      <el-button v-on:click="save" v-bind:loading="saveLoading">保存</el-button>
       <el-button type="primary"
+                 v-bind:loading="submitLoading"
                  v-on:click="submit">提交审核
       </el-button>
     </div>
@@ -54,6 +55,13 @@ export default {
     }
   },
 
+  data () {
+    return {
+      saveLoading: false,
+      submitLoading: false,
+    }
+  },
+
   methods: {
     back() {
       this.$emit('onBack')
@@ -61,6 +69,7 @@ export default {
     save() {
       this.$refs.ruleView.validate().then((data) => {
         this.$refs.ruleView.loading = true
+        this.saveLoading = true
         Service.saveRules({
           drugCscCode: this.drugInfo.drugCscCode,
           drugType: 'platform',
@@ -72,6 +81,7 @@ export default {
             this.$emit('onSuccess')
           })
           .finally(() => {
+            this.saveLoading = false
             this.$refs.ruleView.loading = false
           })
       })
@@ -79,6 +89,7 @@ export default {
     submit() {
       this.$refs.ruleView.validate().then((data) => {
         this.$refs.ruleView.loading = true
+        this.submitLoading = true;
         Service.saveRules({
           drugCscCode: this.drugInfo.drugCscCode,
           drugType: 'platform',
@@ -90,6 +101,7 @@ export default {
             this.$emit('onSuccess')
           })
           .finally(() => {
+            this.submitLoading = false
             this.$refs.ruleView.loading = false
           })
       })
