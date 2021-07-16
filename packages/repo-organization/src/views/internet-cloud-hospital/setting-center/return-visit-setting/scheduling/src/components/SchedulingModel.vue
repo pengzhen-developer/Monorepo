@@ -23,13 +23,13 @@
           <div class="times">
             <el-time-picker :clearable="false"
                             :picker-options="{
-                selectableRange: time.amStart+'- '+time.amEnd
+                selectableRange: time.amStart+' - '+time.amEnd
               }"
                             v-model="amStart"></el-time-picker>
             <span class="separator">—</span>
             <el-time-picker :clearable="false"
                             :picker-options="{
-                selectableRange: time.amStart+'- '+time.amEnd
+                selectableRange: time.amStart+' - '+time.amEnd
               }"
                             min-time
                             v-model="amEnd"></el-time-picker>
@@ -154,9 +154,9 @@ export default {
       radio: 1,
       time: {
         amStart: '08:00:00',
-        amEnd: ' 12:00:00',
+        amEnd: '12:00:00',
         pmStart: '13:00:00',
-        pmEnd: ' 18:00:00'
+        pmEnd: '18:00:00'
       },
       doctorId: '',
       amStart: new Date(InitDate + ' 08:00:00').getTime(),
@@ -181,16 +181,53 @@ export default {
       }
     }
   },
+  created() {
+    if (this.sourceDisType === '0') {
+      this.time = {
+        amStart: '00:00:00',
+        amEnd: '12:00:00',
+        pmStart: '12:00:00',
+        pmEnd: '23:59:59'
+      }
+    } else if (this.sourceDisType === '1') {
+      this.time = {
+        amStart: '08:00:00',
+        amEnd: '12:00:00',
+        pmStart: '13:00:00',
+        pmEnd: '18:00:00'
+      }
+    }
+    this.mappingData(this.data)
+  },
 
   methods: {
-    changeTime() {
-      this.amStart = this.formatTime(this.time.amStart)
-      this.amEnd = this.formatTime(this.time.amEnd)
-      this.pmStart = this.formatTime(this.time.pmStart)
-      this.pmEnd = this.formatTime(this.time.pmEnd)
-    },
-    formatTime(time) {
-      return new Date(InitDate + ' ' + time).getTime()
+    // 初始化数据（传入编辑数据）
+    mappingData(params) {
+      if (params) {
+        this.doctorId = params.doctorId
+
+        if (params.workStartAM) {
+          this.amStart = new Date(`${InitDate} ${params.workStartAM}`)
+        }
+        if (params.workEndAM) {
+          this.amEnd = new Date(`${InitDate} ${params.workEndAM}`)
+        }
+        if (params.workStartPM) {
+          this.pmStart = new Date(`${InitDate} ${params.workStartPM}`)
+        }
+        if (params.workEndPM) {
+          this.pmEnd = new Date(`${InitDate} ${params.workEndPM}`)
+        }
+
+        this.amNumber = params.totalCountAM || undefined
+        this.pmNumber = params.totalCountPM || undefined
+        this.price = params.unitPrice || '0'
+        this.type = parseInt(params.sourceLevelType)
+        this.isStop = params.isStopClass
+        this.doctorDisabled = true
+      } else {
+        this.doctorId = this.doctors[0].doctorId
+      }
     },
     checkDoctorStatus(id) {
       const signStatus = this.doctors.find((item) => item.doctorId == id).signStatus
@@ -282,39 +319,7 @@ export default {
       }
 
       this.$emit('submit', params)
-    },
-
-    // 初始化数据（传入编辑数据）
-    mappingData(params) {
-      if (params) {
-        this.doctorId = params.doctorId
-
-        if (params.workStartAM) {
-          this.amStart = new Date(`${InitDate} ${params.workStartAM}`)
-        }
-        if (params.workEndAM) {
-          this.amEnd = new Date(`${InitDate} ${params.workEndAM}`)
-        }
-        if (params.workStartPM) {
-          this.pmStart = new Date(`${InitDate} ${params.workStartPM}`)
-        }
-        if (params.workEndPM) {
-          this.pmEnd = new Date(`${InitDate} ${params.workEndPM}`)
-        }
-
-        this.amNumber = params.totalCountAM || undefined
-        this.pmNumber = params.totalCountPM || undefined
-        this.price = params.unitPrice || '0'
-        this.type = parseInt(params.sourceLevelType)
-        this.isStop = params.isStopClass
-        this.doctorDisabled = true
-      } else {
-        this.doctorId = this.doctors[0].doctorId
-      }
     }
-  },
-  created() {
-    this.mappingData(this.data)
   }
 }
 </script>

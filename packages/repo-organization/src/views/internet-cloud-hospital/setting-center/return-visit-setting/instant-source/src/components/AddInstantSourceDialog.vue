@@ -63,7 +63,7 @@
 
                 <el-form-item prop="bookingStart">
                   <el-time-picker :clearable="false"
-                                  :picker-options="{selectableRange: time.amStart+'-'+maxTime }"
+                                  :picker-options="{selectableRange: time.amStart+' - '+maxTime }"
                                   v-model="model.bookingStart"></el-time-picker>
                 </el-form-item>
 
@@ -71,7 +71,7 @@
 
                 <el-form-item prop="bookingEnd">
                   <el-time-picker :clearable="false"
-                                  :picker-options="{ selectableRange: minTime+'-'+time.amEnd}"
+                                  :picker-options="{ selectableRange: minTime+' - '+time.amEnd}"
                                   min-time
                                   v-model="model.bookingEnd"></el-time-picker>
                 </el-form-item>
@@ -183,8 +183,8 @@ export default {
         }
       },
       time: {
-        amStart: '08:00:00',
-        amEnd: ' 12:00:00'
+        amStart: '00:00:00',
+        amEnd: '12:00:00'
       },
       loading: false,
       rules: {
@@ -331,13 +331,13 @@ export default {
     //切换时间断
     changeTimeOptions() {
       if (this.model.ampm == 'AM') {
-        this.time.amStart = '08:00:00'
+        this.time.amStart = '00:00:00'
         this.time.amEnd = '12:00:00'
         this.model.bookingStart = new Date(InitDate + ' 08:00:00').getTime()
         this.model.bookingEnd = new Date(InitDate + ' 12:00:00').getTime()
       } else {
-        this.time.amStart = '13:00:00'
-        this.time.amEnd = '18:00:00'
+        this.time.amStart = '12:00:00'
+        this.time.amEnd = '23:59:59'
         this.model.bookingStart = new Date(InitDate + ' 13:00:00').getTime()
         this.model.bookingEnd = new Date(InitDate + ' 18:00:00').getTime()
       }
