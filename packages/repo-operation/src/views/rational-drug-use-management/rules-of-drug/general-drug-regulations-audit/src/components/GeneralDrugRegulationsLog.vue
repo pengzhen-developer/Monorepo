@@ -6,9 +6,16 @@
     <div class="q-mb-xl">
       <div class="flex text-grey-333 ">
         <div class="q-mr-md text-weight-bold">{{ data.drugName }}</div>
-        <div class="q-mr-md">{{ data.drugCscCode }}</div>
+
         <div class="q-mr-md">{{ data.specifications }}</div>
         <div class="q-mr-md">{{ data.manufacturer }}</div>
+      </div>
+
+      <div class="flex">
+        <div class="q-mr-md"
+             style="font-size: 13px">{{ data.drugCscCode }}</div>
+        <div class="q-mr-md"
+             style="font-size: 13px">{{ data.approvalNo }}</div>
       </div>
     </div>
 
@@ -19,8 +26,8 @@
                     v-bind:key="index"
                     v-bind:timestamp="Peace.dayjs(log.createTime).format('YYYY-MM-DD')"
                     v-bind:timestampSpan="Peace.dayjs(log.createTime).format('HH:mm:ss')">
+        <div style="color: #3099A6; font-weight:500">{{ log.operatorStates }}</div>
         <div style="color: rgba(51, 51, 51, 1);">{{ log.operator }}</div>
-        <div style="color: rgba(51, 51, 51, 0.6);">{{ log.operatorStates }}</div>
         <div style="color: rgba(51, 51, 51, 0.6);">{{ log.notes }}</div>
       </TimeLineItem>
     </el-timeline>
