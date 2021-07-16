@@ -13,11 +13,11 @@
       </el-tab-pane>
       <el-tab-pane label="药品规则"
                    lazy>
-        <IframeView checkNum="药品规则"></IframeView>
+        <DrugRule></DrugRule>
       </el-tab-pane>
       <el-tab-pane label="科室规则"
                    lazy>
-        <IframeView checkNum="科室规则"></IframeView>
+        <DepartmentRule></DepartmentRule>
       </el-tab-pane>
       <el-tab-pane label="管理规则"
                    lazy>
@@ -34,9 +34,13 @@ import IframeView from './components/IframeView'
 
 export default {
   name: 'PrescriptionCheckingRule',
+
   components: {
-    IframeView
+    IframeView,
+    DrugRule: () => import('@src/views/rational-drug-use-management/basic-data/drug-rule'),
+    DepartmentRule: () => import('@src/views/rational-drug-use-management/basic-data/department-rule')
   },
+
   data() {
     return {
       checkPos: '0'

@@ -24,8 +24,11 @@ const createStyleConfig = (configuration) => {
     ['primary-light-9', hexToRGBA(configuration.theme.primary, 0.9)],
 
     ['grey-333', '#333333'],
+    ['grey-333-60', '#33333399'],
     ['grey-666', '#666666'],
-    ['grey-999', '#999999']
+    ['grey-666-60', '#66666699'],
+    ['grey-999', '#999999'],
+    ['grey-999-60', '#99999999']
   ])
 
   return styleConfig

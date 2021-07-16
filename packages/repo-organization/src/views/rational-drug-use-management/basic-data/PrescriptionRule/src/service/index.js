@@ -8,7 +8,7 @@ export default {
 
     const apiPath = 'idic/platformDisease/pageContainsDiagnosis'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
+    const serverPath = process.env.VUE_APP_API_AUDITENGINE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 

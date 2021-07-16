@@ -46,7 +46,8 @@
     <div class="card">
       <PeaceTable ref="table"
                   size="mini"
-                  pagination>
+                  pagination
+                  v-on:current-change="tt">
         <el-table-column label="序号"
                          type="index"
                          align="center"
@@ -134,6 +135,10 @@ export default {
       const fetch = Service.recordList
       const params = Peace.util.deepClone(this.model)
       this.$refs.table.reloadData({ fetch, params })
+    },
+
+    tt() {
+      debugger
     }
   }
 }
