@@ -4,26 +4,33 @@
     <el-tabs type="card"
              v-model="checkPos">
       <el-tab-pane label="基础规则"
+                   name="基础规则"
                    lazy>
         <IframeView checkNum="基础规则"></IframeView>
       </el-tab-pane>
       <el-tab-pane label="TNA规则"
+                   name="TNA规则"
                    lazy>
         <IframeView checkNum="TNA规则"></IframeView>
       </el-tab-pane>
       <el-tab-pane label="药品规则"
+                   name="药品规则"
                    lazy>
-        <DrugRule></DrugRule>
       </el-tab-pane>
       <el-tab-pane label="科室规则"
+                   name="科室规则"
                    lazy>
-        <DepartmentRule></DepartmentRule>
       </el-tab-pane>
       <el-tab-pane label="管理规则"
+                   name="管理规则"
                    lazy>
         <IframeView checkNum="管理规则"></IframeView>
       </el-tab-pane>
     </el-tabs>
+
+    <!-- el-tab-pane 不支持 positon: sticky，因此单独在外层 div 布局 -->
+    <DrugRule v-show="checkPos === '药品规则'"></DrugRule>
+    <DepartmentRule v-show="checkPos === '科室规则'"></DepartmentRule>
 
   </div>
 </template>
