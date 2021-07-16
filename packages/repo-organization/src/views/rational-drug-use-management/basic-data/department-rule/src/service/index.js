@@ -56,7 +56,7 @@ export default {
   },
 
   /**
-   * 保存药品规则
+   * 保存科室规则
    *
    * @param {*} params
    */
@@ -69,6 +69,24 @@ export default {
     const requestApi = isMock ? mockPath : serverPath
 
     return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 删除科室规则
+   *
+   * @param {*} params
+   */
+  deleteDepartmentRule(params) {
+    const isMock = false
+    const apiPath = 'quake/departmentRule/deleteDepartmentRule'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.delete(requestApi, { params }).then((res) => {
       return res
     })
   }

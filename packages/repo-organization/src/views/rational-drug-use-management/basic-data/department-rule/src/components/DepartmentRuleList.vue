@@ -39,6 +39,9 @@
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
         </PeaceTableColumn>
+        <PeaceTableColumn label="规则编号"
+                          prop="id"
+                          min-width="120px"></PeaceTableColumn>
         <PeaceTableColumn label="药品编码"
                           prop="drugCoding"
                           min-width="180px"></PeaceTableColumn>
@@ -62,11 +65,14 @@
                           min-width="100px"></PeaceTableColumn>
         <PeaceTableColumn fixed="right"
                           label="操作"
-                          width="120px">
-          <template>
+                          width="220px">
+          <template slot-scope="scope">
             <el-button type="text"
-                       v-on:click="remove">删除</el-button>
-            <el-button type="text">详情</el-button>
+                       v-on:click="remove(scope.row)">删除</el-button>
+            <el-button type="text"
+                       v-on:click="edit(scope.row)">编辑规则</el-button>
+            <el-button type="text"
+                       v-on:click="detail(scope.row)">查看规则</el-button>
           </template>
         </PeaceTableColumn>
       </PeaceTable>
@@ -103,9 +109,20 @@ export default {
       this.$emit('add')
     },
 
-    remove() {
-      this.$confirm('确定要删除吗？').then(() => {
-        window.alert(1)
+    edit(data) {
+      this.$emit('edit', data)
+    },
+
+    detail(data) {
+      this.$emit('detail', data)
+    },
+
+    remove(row) {
+      this.$confirm('确定要删除吗？', '提示', { type: 'warning' }).then(() => {
+        Service.deleteDepartmentRule({ departmentCode: row.departmentCode, drugCscCode: row.drugCscCode }).then(() => {
+          Peace.util.alert('删除成功')
+          this.fetch()
+        })
       })
     }
   }

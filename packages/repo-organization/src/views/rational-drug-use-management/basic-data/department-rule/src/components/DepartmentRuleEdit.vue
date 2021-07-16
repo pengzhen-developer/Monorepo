@@ -1,7 +1,7 @@
 <template>
   <div class="layout-route">
     <el-alert type="warning"
-              title="本机构所有本位码相同的药品将共用此机构药品规则，多人同时编辑将会出现新版本覆盖旧版本的情况。"
+              title="本机构所有本位码相同的药品在同一科室将共用此科室药品规则，多人同时编辑将会出现新版本覆盖旧版本的情况。"
               show-icon=""
               v-bind:closable="false"></el-alert>
 
@@ -16,10 +16,10 @@
       </div>
 
       <div class="flex text-grey-333 ">
-        <div class="q-mr-md text-weight-bold">{{ data.productName }}</div>
+        <div class="q-mr-md text-weight-bold">{{ data.drugName }}</div>
         <div class="q-mr-md">{{ data.drugCscCode }}</div>
-        <div class="q-mr-md">{{ data.drugSpecifications }}</div>
-        <div class="q-mr-md">{{ data.enterpriseName }}</div>
+        <div class="q-mr-md">{{ data.specifications }}</div>
+        <div class="q-mr-md">{{ data.productName }}</div>
       </div>
     </div>
 
@@ -28,7 +28,7 @@
       <DrugRule ref="ruleView"
                 style="padding: 0;"
                 v-bind:id="data.drugCscCode"
-                v-bind:drugType="'org'"></DrugRule>
+                v-bind:drugType="'department'"></DrugRule>
     </div>
 
     <div class="fixed-bottom card text-right">

@@ -1,106 +1,56 @@
 <template>
-  <PeaceDialog v-bind="$attrs"
-               v-bind:visible.sync="internalVisible">
-    <div>
-      <el-form inline
-               label-width="auto"
-               label-suffix="："
-               v-bind:model="model">
-        <el-form-item label="选择科室"
-                      style="margin: 0;">
-          <el-cascader ref="cascaderRef"
-                       v-model="department"
-                       clearable=""
-                       v-bind:options="options"
-                       v-bind:props="props"></el-cascader>
-        </el-form-item>
-      </el-form>
+  <div class="layout-route">
+    <el-alert type="warning"
+              title="本机构所有本位码相同的药品在同一科室将共用此科室药品规则，多人同时编辑将会出现新版本覆盖旧版本的情况。"
+              show-icon=""
+              v-bind:closable="false"></el-alert>
+
+    <div class="card q-mb-md">
+      <div class="q-mb-md">
+        <el-button icon="el-icon-arrow-left"
+                   v-on:click="back">返回上一页</el-button>
+      </div>
+
+      <div class="text-subtitle1 text-weight-bold q-mb-sm">
+        <span class="text-grey-333">科室药品规则编辑 - {{ department.label }}</span>
+      </div>
+
+      <div class="flex text-grey-333 ">
+        <div class="q-mr-md text-weight-bold">{{ data.drugName }}</div>
+        <div class="q-mr-md">{{ data.drugCscCode }}</div>
+        <div class="q-mr-md">{{ data.specifications }}</div>
+        <div class="q-mr-md">{{ data.productName }}</div>
+      </div>
     </div>
 
-    <div v-if="department.length">
-      <el-divider></el-divider>
-
-      <el-form inline
-               label-width="auto"
-               label-suffix="："
-               v-bind:model="model"
-               v-on:keyup.enter.native="fetch"
-               v-on:submit.native.prevent>
-        <el-form-item label="药品名称">
-          <el-input v-model="model.name"
-                    placeholder="请输入药品名称"></el-input>
-        </el-form-item>
-        <el-form-item label="厂家">
-          <el-input v-model="model.manufactory"
-                    placeholder="请输入厂家"></el-input>
-        </el-form-item>
-        <el-form-item label="">
-          <el-button type="primary"
-                     v-on:click="fetch">查询</el-button>
-        </el-form-item>
-      </el-form>
-
-      <PeaceTable ref="tableRef"
-                  pagination>
-        <PeaceTableColumn label="序号"
-                          width="80px">
-          <template slot-scope="{ $index, _self }">
-            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
-          </template>
-        </PeaceTableColumn>
-        <PeaceTableColumn label="药品编码"
-                          prop="drugCoding"></PeaceTableColumn>
-        <PeaceTableColumn label="药品名称"
-                          prop="drugName"></PeaceTableColumn>
-        <PeaceTableColumn label="规格"
-                          prop="specifications"></PeaceTableColumn>
-        <PeaceTableColumn label="厂家"
-                          prop="productName"></PeaceTableColumn>
-        <PeaceTableColumn label="操作"
-                          width="120px">
-          <template slot-scope="scope">
-            <el-button type="text"
-                       v-on:click="add(scope.row)">创建科室规则</el-button>
-          </template>
-        </PeaceTableColumn>
-      </PeaceTable>
+    <div class="card"
+         style="margin-bottom: 72px">
+      <DrugRule ref="ruleView"
+                style="padding: 0;"
+                v-bind:id="data.drugCscCode"
+                v-bind:drugType="'department'"></DrugRule>
     </div>
-  </PeaceDialog>
+
+    <div class="fixed-bottom card text-right">
+      <el-button v-on:click="back">退出编辑</el-button>
+      <el-button type="primary"
+                 v-on:click="save">保存</el-button>
+    </div>
+  </div>
 </template>
 
 <script>
-import Service from './../service'
+import Service from '../service'
 
 export default {
   props: {
+    data: Object,
+    department: Object,
     visible: Boolean
   },
 
-  data() {
-    return {
-      department: [],
-
-      deptId: '',
-
-      model: {},
-
-      props: {
-        label: 'label',
-        value: 'id'
-      },
-
-      options: []
-    }
-  },
-
-  watch: {
-    department(value) {
-      this.deptId = value[value.length - 1]
-
-      this.$nextTick(() => {
-        this.fetch()
-      })
-    }
+  components: {
+    DrugRule: () => import('@src/views/rational-drug-use-management/basic-data/PrescriptionRule')
   },
 
   computed: {
@@ -108,44 +58,46 @@ export default {
       get() {
         return this.visible
       },
+
       set(value) {
         this.$emit('update:visible', value)
       }
     }
   },
 
-  async created() {
-    this.options = (await Service.getDeptTree()).data
-
-    this.options.forEach((item) => {
-      if (item.children.length === 0) {
-        delete item.children
-      } else {
-        item.children.forEach((item) => {
-          if (item.children.length === 0) {
-            delete item.children
-          }
-        })
-      }
-    })
-  },
-
   methods: {
-    fetch() {
-      const fetch = Service.getT
-      const params = this.model
-
-      this.$refs.tableRef.reloadData({ fetch, params })
-    },
-
-    add(data) {
+    back() {
       this.internalVisible = false
 
-      this.$emit('add', data, this.$refs.cascaderRef.getCheckedNodes(true)[0])
+      this.$emit('fetch')
+    },
+
+    save() {
+      this.$refs.ruleView.validate().then((data) => {
+        Service.saveRules({
+          drugCscCode: this.data.drugCscCode,
+          departmentCode: this.department.value,
+          departmentName: this.department.label,
+          drugType: 'department',
+          submitReview: 0,
+          rules: data
+        })
+          .then(() => {
+            Peace.util.success('保存成功')
+          })
+          .finally(() => {
+            this.$refs.ruleView.loading = false
+
+            this.back()
+          })
+      })
     }
   }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.layout-route {
+  padding: 0 !important;
+}
 </style>
