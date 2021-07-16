@@ -17,7 +17,6 @@
 
     <span v-if="info.Gender" class="q-mr-md">性别: {{ info.Gender.value1 | filterDictionary(sexList,'--') }}</span>
 
-
   </div>
 </template>
 
