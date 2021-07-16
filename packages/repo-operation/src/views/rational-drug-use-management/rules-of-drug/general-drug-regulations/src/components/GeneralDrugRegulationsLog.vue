@@ -6,7 +6,7 @@
     <div class="q-mb-xl">
       <div class="flex text-grey-333 ">
         <div class="q-mr-md text-weight-bold">{{ data.drugName }}</div>
-        <div class="q-mr-md">{{ data.drugCSCCode }}</div>
+        <div class="q-mr-md">{{ data.drugCscCode }}</div>
         <div class="q-mr-md">{{ data.specifications }}</div>
         <div class="q-mr-md">{{ data.manufacturer }}</div>
       </div>

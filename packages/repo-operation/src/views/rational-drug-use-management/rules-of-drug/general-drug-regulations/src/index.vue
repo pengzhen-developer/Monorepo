@@ -14,7 +14,7 @@
                  v-on:submit.native.prevent>
 
           <el-form-item label="药品本位码">
-            <el-input v-model.trim="model.drugCSCCode"
+            <el-input v-model.trim="model.drugCscCode"
                       clearable
                       placeholder="请输入"></el-input>
           </el-form-item>
@@ -182,7 +182,7 @@ export default {
   data() {
     return {
       model: {
-        drugCSCCode: undefined,
+        drugCscCode: undefined,
         drugState: undefined,
         operatorName: undefined,
         auditionName: undefined

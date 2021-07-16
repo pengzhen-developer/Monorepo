@@ -13,7 +13,7 @@
 
       <knowledgeButton class="q-mb-xg absolute"
                        style="bottom: 20px; right: 20px"
-                       v-bind:drugCSCCode="drugInfo.drugCscCode"></knowledgeButton>
+                       v-bind:drugCscCode="drugInfo.drugCscCode"></knowledgeButton>
 
       <div class="q-mb-md q-mt-xs">
         <span class="text-weight-medium q-mr-md">{{ drugInfo.drugName }}</span>
@@ -46,7 +46,7 @@ import KnowledgeButton from './KnowledgeButton'
 
 export default {
   name: 'EditDrugRules',
-  components: {RuleView, KnowledgeButton},
+  components: { RuleView, KnowledgeButton },
   props: {
     drugInfo: {
       required: true,
@@ -59,44 +59,40 @@ export default {
       this.$emit('onBack')
     },
     save() {
-      this.$refs.ruleView
-          .validate()
-          .then((data) => {
-            this.$refs.ruleView.loading = true
-            Service.saveRules({
-              drugCscCode: this.drugInfo.drugCscCode,
-              drugType: 'platform',
-              submitReview: 0,
-              rules: data
-            })
-                .then(() => {
-                  Peace.util.success('保存成功')
-                  this.$emit('onSuccess')
-                })
-                .finally(() => {
-                  this.$refs.ruleView.loading = false
-                })
+      this.$refs.ruleView.validate().then((data) => {
+        this.$refs.ruleView.loading = true
+        Service.saveRules({
+          drugCscCode: this.drugInfo.drugCscCode,
+          drugType: 'platform',
+          submitReview: 0,
+          rules: data
+        })
+          .then(() => {
+            Peace.util.success('保存成功')
+            this.$emit('onSuccess')
           })
+          .finally(() => {
+            this.$refs.ruleView.loading = false
+          })
+      })
     },
     submit() {
-      this.$refs.ruleView
-          .validate()
-          .then((data) => {
-            this.$refs.ruleView.loading = true
-            Service.saveRules({
-              drugCscCode: this.drugInfo.drugCscCode,
-              drugType: 'platform',
-              submitReview: 1,
-              rules: data
-            })
-                .then(() => {
-                  Peace.util.success('提交审核成功')
-                  this.$emit('onSuccess')
-                })
-                .finally(() => {
-                  this.$refs.ruleView.loading = false
-                })
+      this.$refs.ruleView.validate().then((data) => {
+        this.$refs.ruleView.loading = true
+        Service.saveRules({
+          drugCscCode: this.drugInfo.drugCscCode,
+          drugType: 'platform',
+          submitReview: 1,
+          rules: data
+        })
+          .then(() => {
+            Peace.util.success('提交审核成功')
+            this.$emit('onSuccess')
           })
+          .finally(() => {
+            this.$refs.ruleView.loading = false
+          })
+      })
     }
   }
 }
