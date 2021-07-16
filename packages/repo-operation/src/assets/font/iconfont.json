@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "22658549",
+      "name": "药品规则",
+      "font_class": "yaopinguize",
+      "unicode": "e6a5",
+      "unicode_decimal": 59045
+    },
+    {
       "icon_id": "22003242",
       "name": "详情说明",
       "font_class": "xingzhuangjiehe",
