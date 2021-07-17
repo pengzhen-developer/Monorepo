@@ -397,17 +397,35 @@ export default {
     },
 
     getPlatformAgeClass() {
-      Service.getPlatformAgeClass().then((res) => {
-        const tmp = {
-          id: '',
-          name: '自定义',
-          ageMin: undefined,
-          ageMax: undefined,
-          ageUnit: undefined,
-          ageUnitEn: undefined
-        }
-        this.source.humanCodeList = [tmp, ...res.data]
-      })
+      if (this.drugType === 'platform') {
+        Service.getPlatformAgeClass().then((res) => {
+          const tmp = {
+            id: '',
+            name: '自定义',
+            ageMin: undefined,
+            ageMax: undefined,
+            ageUnit: undefined
+          }
+          this.source.humanCodeList = [tmp, ...res.data]
+          this.source.humanCodeList.map((item) => {
+            item.id = String(item.id)
+          })
+        })
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
+        Service.getOrgAgeClass().then((res) => {
+          const tmp = {
+            id: '',
+            name: '自定义',
+            ageMin: undefined,
+            ageMax: undefined,
+            ageUnit: undefined
+          }
+          this.source.humanCodeList = [tmp, ...res.data.records]
+          this.source.humanCodeList.map((item) => {
+            item.id = String(item.id)
+          })
+        })
+      }
     },
 
     onAgeChange(val) {
@@ -420,7 +438,7 @@ export default {
         if (item) {
           this.models.Age.value1 = item.ageMin
           this.models.Age.value2 = item.ageMax
-          this.models.Age.value3 = item.ageUnitEn
+          this.models.Age.value3 = item.ageUnit
         }
       }
     },
@@ -512,7 +530,12 @@ export default {
     checked(item) {
       switch (item.ceType) {
         case 'Age':
-          return (item.humanCode || item.humanCode === '') && (item.value1 || item.value1 === 0) && item.value2 && item.value3
+          return (
+            (item.humanCode || item.humanCode === '') &&
+            (item.value1 || item.value1 === 0) &&
+            item.value2 &&
+            item.value3
+          )
         case 'Weight':
           return (item.value1 || item.value1 === 0) && (item.value2 || item.value2 === 0)
         case 'WeightSize':

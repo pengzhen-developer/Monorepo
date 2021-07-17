@@ -79,10 +79,10 @@ export default {
 
   created() {
     if (this.data?.doseUnit) {
-      if (this.data.unitType === '1') {
+      if (Number(this.data.unitType) === 1) {
         this.radio = 0
         this.multipleSelection = this.data.doseUnit
-      } else if (this.data.unitType === '2') {
+      } else if (Number(this.data.unitType) === 2) {
         this.radio = 1
         this.multipleSelectionOther = this.data.doseUnit
       }

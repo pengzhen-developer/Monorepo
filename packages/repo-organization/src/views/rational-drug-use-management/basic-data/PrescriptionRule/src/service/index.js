@@ -8,7 +8,7 @@ export default {
 
     const apiPath = 'idic/platformDisease/pageContainsDiagnosis'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    const serverPath = process.env.VUE_APP_API_AUDITENGINE + apiPath
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -196,9 +196,24 @@ export default {
   /** 三方数据的接口**/
 
   /**
+   * 年龄列表（三方）
+   */
+  getOrgAgeClass(params = {}) {
+    params.orgCode = Peace.cache.localStorage.get('user_info')?.custCode
+    const isMock = false
+    const apiPath = 'idic/orgAgeClass/page'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
+    const requestApi = isMock ? mockPath : serverPath
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+  /**
    * 禁忌症列表（三方）
    */
-  getPageContainsDiagnosis(params) {
+  getPageContainsDiagnosis(params = {}) {
+    params.orgCode = Peace.cache.localStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'idic/orgDisease/pageContainsDiagnosis'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
@@ -211,7 +226,8 @@ export default {
   /**
    * 频次列表（三方）
    */
-  getPageByCondition(params) {
+  getPageByCondition(params = {}) {
+    params.orgCode = Peace.cache.localStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'idic/orgUseDrugFrequency/page'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
@@ -224,7 +240,8 @@ export default {
   /**
    * 给药途径列表（三方）
    */
-  getOrgUseDrugRoute(params) {
+  getOrgUseDrugRoute(params = {}) {
+    params.orgCode = Peace.cache.localStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'idic/orgUseDrugRoute/page'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
@@ -237,7 +254,8 @@ export default {
   /**
    * 过敏列表（三方）
    */
-  getOrgAllergyInfo(params) {
+  getOrgAllergyInfo(params = {}) {
+    params.orgCode = Peace.cache.localStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'idic/orgAllergyInfo/page'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
@@ -250,7 +268,8 @@ export default {
   /**
    * 人群列表（三方）
    */
-  getOrgHumanClass(params) {
+  getOrgHumanClass(params = {}) {
+    params.orgCode = Peace.cache.localStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'idic/orgHumanClass/page'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath

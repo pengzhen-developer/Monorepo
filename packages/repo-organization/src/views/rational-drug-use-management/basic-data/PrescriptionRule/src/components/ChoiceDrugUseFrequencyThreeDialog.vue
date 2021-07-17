@@ -164,7 +164,7 @@ export default {
       }
       if (this.model.otherCoefficient) {
         if (
-          this.joinType === 0 &&
+          Number(this.joinType) === 0 &&
           parseFloat(this.multipleSelection.coefficient) > parseFloat(this.model.otherCoefficient)
         ) {
           Peace.util.warning('最小频次系数不得大于最大频次系数')
@@ -172,7 +172,7 @@ export default {
         }
 
         if (
-          this.joinType === 1 &&
+          Number(this.joinType) === 1 &&
           parseFloat(this.multipleSelection.coefficient) < parseFloat(this.model.otherCoefficient)
         ) {
           Peace.util.warning('最大频次系数不得小于最小频次系数')
