@@ -9,7 +9,7 @@
       </div>
 
       <span class="text-weight-medium text-grey-333"
-            style="font-size: 20px;">药品规则编辑</span>
+            style="font-size: 20px;">通用规则编辑</span>
 
       <knowledgeButton class="q-mb-xg absolute"
                        style="bottom: 20px; right: 20px"
@@ -31,7 +31,8 @@
 
     <div class="toolbar-style">
       <el-button v-on:click="back">退出编辑</el-button>
-      <el-button v-on:click="save" v-bind:loading="saveLoading">保存</el-button>
+      <el-button v-on:click="save"
+                 v-bind:loading="saveLoading">保存</el-button>
       <el-button type="primary"
                  v-bind:loading="submitLoading"
                  v-on:click="submit">提交审核
@@ -55,10 +56,10 @@ export default {
     }
   },
 
-  data () {
+  data() {
     return {
       saveLoading: false,
-      submitLoading: false,
+      submitLoading: false
     }
   },
 
@@ -70,11 +71,14 @@ export default {
       this.$refs.ruleView.validate().then((data) => {
         this.$refs.ruleView.loading = true
         this.saveLoading = true
+        const { drugName, manufacturer, drugCscCode } = this.drugInfo
         Service.saveRules({
-          drugCscCode: this.drugInfo.drugCscCode,
+          drugCscCode: drugCscCode,
           drugType: 'platform',
           submitReview: 0,
-          rules: data
+          rules: data,
+          drugName: drugName,
+          manufactory: manufacturer
         })
           .then(() => {
             Peace.util.success('保存成功')
@@ -89,12 +93,15 @@ export default {
     submit() {
       this.$refs.ruleView.validate().then((data) => {
         this.$refs.ruleView.loading = true
-        this.submitLoading = true;
+        this.submitLoading = true
+        const { drugName, manufacturer, drugCscCode } = this.drugInfo
         Service.saveRules({
-          drugCscCode: this.drugInfo.drugCscCode,
+          drugCscCode: drugCscCode,
           drugType: 'platform',
           submitReview: 1,
-          rules: data
+          rules: data,
+          drugName: drugName,
+          manufactory: manufacturer
         })
           .then(() => {
             Peace.util.success('提交审核成功')
