@@ -1,6 +1,7 @@
 <template>
   <div v-loading="loading"
-       class="q-pa-md bg-white row relative-position">
+       class="q-pa-md bg-white row relative-position"
+       style="min-height: 100px;">
 
     <!--    <q-scroll-observer horizontal @scroll="onscroll"></q-scroll-observer>-->
     <div ref="scrollArea"
@@ -150,23 +151,21 @@ export default {
   },
 
   async mounted() {
-
     const utilList = await Peace.identity.dictionary.getList('age_type')
     const weightList = await Peace.identity.dictionary.getList('compare')
     const containList = await Peace.identity.dictionary.getList('belonged_type')
     const sexList = await Peace.identity.dictionary.getList('rule_gender')
-    const warningLevelList =  await Peace.identity.dictionary.getList('warning_level')
+    const warningLevelList = await Peace.identity.dictionary.getList('warning_level')
 
     await obPreconditionDic.mutations.set('utilList', utilList)
-    await obPreconditionDic.mutations.set('weightList' ,weightList)
-    await obPreconditionDic.mutations.set('containList' ,containList)
-    await obPreconditionDic.mutations.set('sexList' ,sexList)
-    await obPreconditionDic.mutations.set('warningLevelList' ,warningLevelList)
+    await obPreconditionDic.mutations.set('weightList', weightList)
+    await obPreconditionDic.mutations.set('containList', containList)
+    await obPreconditionDic.mutations.set('sexList', sexList)
+    await obPreconditionDic.mutations.set('warningLevelList', warningLevelList)
 
     this.$nextTick(() => {
       this.fetch()
     })
-
   },
 
   watch: {
@@ -215,11 +214,7 @@ export default {
             // 其中前置条件需要做转换
             if (models) {
               models.map((temp) => {
-                if (
-                  temp.conditionExpression &&
-                  temp.conditionExpression.ceList &&
-                  temp.conditionExpression.ceList.length > 0
-                ) {
+                if (temp.conditionExpression && temp.conditionExpression.ceList && temp.conditionExpression.ceList.length > 0) {
                   let tmp = temp.conditionExpression.ceList ?? []
                   let ceListDic = {}
                   for (let condition of tmp) {
@@ -334,11 +329,11 @@ export default {
 
       // 校验是否有完成项
       if (completeResult.length === 0) {
-        this.$alert('规则类容不能为空', '提示', {
+        this.$alert('规则内容不能为空', '提示', {
           type: 'warning',
           confirmButtonText: '知道了'
         })
-        return Promise.reject('规则类容不能为空')
+        return Promise.reject('规则内容不能为空')
       }
 
       // 去除重复数据
