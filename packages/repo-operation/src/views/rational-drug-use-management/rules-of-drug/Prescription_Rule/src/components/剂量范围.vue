@@ -22,14 +22,14 @@
         <el-input-number v-model="model.dosageRuleList.eachMinDose"
                          :controls="false"
                          :max="parseFloat(model.dosageRuleList.eachMaxDose)"
-                         :min="0"
+                         :min="0.00001"
                          :precision="5"
                          class="q-mr-8 q-ml-8"
                          placeholder="请输入"></el-input-number>
         <span>至</span>
         <el-input-number v-model="model.dosageRuleList.eachMaxDose"
                          :controls="false"
-                         :min="parseFloat(model.dosageRuleList.eachMinDose)"
+                         :min="parseFloat(model.dosageRuleList.eachMinDose) || 0.00001"
                          :precision="5"
                          class="q-mr-8 q-ml-8"
                          placeholder="请输入"></el-input-number>

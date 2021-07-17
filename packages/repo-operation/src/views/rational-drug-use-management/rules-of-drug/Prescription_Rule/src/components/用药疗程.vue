@@ -22,7 +22,7 @@
         <el-input-number v-model="model.treatmentRuleList.daysOfTreatment"
                          :precision="2"
                          :controls="false"
-                         :min="0"
+                         :min="0.01"
                          class="q-mr-8"
                          placeholder="请输入"></el-input-number>
         <span>天</span>

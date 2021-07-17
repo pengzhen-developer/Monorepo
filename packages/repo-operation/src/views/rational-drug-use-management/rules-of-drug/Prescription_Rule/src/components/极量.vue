@@ -17,7 +17,7 @@
                        :controls="false"
                        class="q-mr-8 q-ml-8"
                        :precision="5"
-                       :min="0"
+                       :min="0.00001"
                        placeholder="请输入"></el-input-number>
 
       <div v-on:click="addUnit"
