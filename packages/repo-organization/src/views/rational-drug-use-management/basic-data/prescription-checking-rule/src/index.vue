@@ -50,7 +50,7 @@ export default {
 
   data() {
     return {
-      checkPos: '0'
+      checkPos: '基础规则'
     }
   },
   created() {

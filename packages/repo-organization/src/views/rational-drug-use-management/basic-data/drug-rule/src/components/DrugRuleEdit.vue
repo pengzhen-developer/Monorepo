@@ -82,6 +82,7 @@ export default {
       this.$refs.ruleView.validate().then((data) => {
         Service.saveRules({
           drugCscCode: this.data.drugStandardCode,
+          custDrugsCode: this.data.custDrugsCode,
           drugType: 'org',
           submitReview: 0,
           rules: data

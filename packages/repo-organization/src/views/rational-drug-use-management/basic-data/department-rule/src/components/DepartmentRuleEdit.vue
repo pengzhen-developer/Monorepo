@@ -34,6 +34,7 @@
     <div class="fixed-bottom card text-right">
       <el-button v-on:click="back">退出编辑</el-button>
       <el-button type="primary"
+                 v-bind:loading="loading"
                  v-on:click="save">保存</el-button>
     </div>
   </div>
@@ -51,6 +52,12 @@ export default {
 
   components: {
     DrugRule: () => import('@src/views/rational-drug-use-management/basic-data/PrescriptionRule')
+  },
+
+  data() {
+    return {
+      loading: false
+    }
   },
 
   computed: {
@@ -74,10 +81,13 @@ export default {
 
     save() {
       this.$refs.ruleView.validate().then((data) => {
+        this.loading = true
+
         Service.saveRules({
           drugCscCode: this.data.drugCscCode,
           departmentCode: this.department.value,
           departmentName: this.department.label,
+          custDrugsCode: this.data.drugCoding,
           drugType: 'department',
           submitReview: 0,
           rules: data
@@ -86,6 +96,7 @@ export default {
             Peace.util.success('保存成功')
           })
           .finally(() => {
+            this.loading = false
             this.$refs.ruleView.loading = false
 
             this.back()
