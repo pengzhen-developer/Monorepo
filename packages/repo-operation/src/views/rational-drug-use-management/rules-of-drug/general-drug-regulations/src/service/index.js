@@ -5,11 +5,11 @@ export default {
    * @returns {*}
    */
   getCustomRulesList(params) {
-    const isMock = true
+    const isMock = false
 
     const apiPath = 'quake/commonRule/pageCommonRule'
-    const mockPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
-    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
