@@ -327,11 +327,11 @@ export default {
 
       // 校验是否有完成项
       if (completeResult.length === 0) {
-        this.$alert('规则类容不能为空', '提示', {
+        this.$alert('规则内容不能为空', '提示', {
           type: 'warning',
           confirmButtonText: '知道了'
         })
-        return Promise.reject('规则类容不能为空')
+        return Promise.reject('规则内容不能为空')
       }
 
       // 去除重复数据

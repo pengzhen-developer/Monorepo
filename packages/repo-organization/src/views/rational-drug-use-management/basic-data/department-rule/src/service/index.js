@@ -8,10 +8,9 @@ export default {
   get(params) {
     const isMock = false
 
-    const apiPath = 'webapi/api/HospitalManage/List'
+    const apiPath = 'quake/departmentRule/getDepartmentRuleList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    // const serverPath = process.env.VUE_APP_API_BASE + apiPath
-    const serverPath = 'https://devdurservice.holoalpha.com/quake/departmentRule/getDepartmentRuleList'
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -28,10 +27,10 @@ export default {
   getDeptTree(params) {
     const isMock = false
 
-    const apiPath = 'webapi/api/HospitalManage/List'
+    const apiPath = 'quake/departmentRule/getDepartmentTree'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    // const serverPath = process.env.VUE_APP_API_BASE + apiPath
-    const serverPath = ' https://devdurservice.holoalpha.com/quake/departmentRule/getDepartmentTree'
+
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -43,10 +42,9 @@ export default {
   getT(params) {
     const isMock = false
 
-    const apiPath = 'webapi/api/HospitalManage/List'
+    const apiPath = 'quake/departmentRule/getDrugInfo'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-    // const serverPath = process.env.VUE_APP_API_BASE + apiPath
-    const serverPath = ' https://devdurservice.holoalpha.com/quake/departmentRule/getDrugInfo'
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
