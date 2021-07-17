@@ -77,6 +77,8 @@ export default {
       this.$refs.ruleView.validate().then((data) => {
         Service.saveRules({
           drugCscCode: this.data.drugStandardCode,
+          drugName: this.data.productName,
+          manufactory: this.data.enterpriseName,
           custDrugsCode: this.data.custDrugsCode,
           drugType: 'org',
           submitReview: 0,
@@ -97,6 +99,8 @@ export default {
       this.$refs.ruleView.validate().then((data) => {
         Service.saveRules({
           drugCscCode: this.data.drugStandardCode,
+          drugName: this.data.productName,
+          manufactory: this.data.enterpriseName,
           drugType: 'org',
           submitReview: 1,
           rules: data

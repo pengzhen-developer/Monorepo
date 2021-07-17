@@ -85,6 +85,8 @@ export default {
 
         Service.saveRules({
           drugCscCode: this.data.drugCscCode,
+          drugName: this.data.drugName,
+          manufactory: this.data.manufactory,
           departmentCode: this.department.value,
           departmentName: this.department.label,
           custDrugsCode: this.data.drugCoding,

@@ -17,9 +17,9 @@
 
       <div class="flex text-grey-333 ">
         <div class="q-mr-md text-weight-bold">{{ data.drugName }}</div>
-        <div class="q-mr-md">{{ data.drugCscCode }}</div>
+        <div class="q-mr-md">{{ data.dosageFormName }}</div>
         <div class="q-mr-md">{{ data.specifications }}</div>
-        <div class="q-mr-md">{{ data.productName }}</div>
+        <div class="q-mr-md">{{ data.manufactory }}</div>
       </div>
     </div>
 
@@ -85,6 +85,8 @@ export default {
 
         Service.saveRules({
           drugCscCode: this.data.drugCscCode,
+          drugName: this.data.drugName,
+          manufactory: this.data.manufactory,
           departmentCode: this.department.value,
           departmentName: this.department.label,
           custDrugsCode: this.data.drugCoding,
