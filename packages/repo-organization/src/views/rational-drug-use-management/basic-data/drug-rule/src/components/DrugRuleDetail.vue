@@ -3,7 +3,7 @@
     <div class="card q-mb-md">
       <div class="flex text-grey-333 ">
         <div class="q-mr-md text-weight-bold">{{ data.productName }}</div>
-        <div class="q-mr-md">{{ data.drugStandardCode }}</div>
+        <div class="q-mr-md">{{ data.dosageFormName }}</div>
         <div class="q-mr-md">{{ data.drugSpecifications }}</div>
         <div class="q-mr-md">{{ data.enterpriseName }}</div>
       </div>
