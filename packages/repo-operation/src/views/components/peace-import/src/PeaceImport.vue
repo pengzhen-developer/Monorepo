@@ -43,7 +43,7 @@
             </div>
             <span class="import-error-tips">{{errorTipText}}</span>
             <el-button type="text"
-                       v-if="havePaper"
+                       v-if="paperUrl"
                        @click="downloadPaper"
                        class="import-error-download">下载错误报告</el-button>
           </div>
@@ -90,7 +90,8 @@ export default {
     templateDownloadUrl: String,
     templateName: String,
     maxSize: Number,
-    stepsDataInput: Object
+    stepsDataInput: Object,
+    downloadErrorUrl: String
   },
 
   components: { Steps },
@@ -103,7 +104,6 @@ export default {
       },
       errorTipText: '',
       successTipText: '',
-      havePaper: false,
       paperUrl: '',
       max: 5,
       stepsData: {
@@ -159,18 +159,13 @@ export default {
     // 批量导入成功回调
     onSuccess(res) {
       this.done = true
-      if (res.code === 200 && res.success) {
+      if (res.code === 200) {
         this.stepsData.active = 2
-        this.successTipText = res.msg
-      } else if (res.code == 203) {
-        this.stepsData.active = 1
-        this.errorTipText = res.msg
-        this.havePaper = true
-        this.paperUrl = res.data.url
+        this.successTipText = res.message
       } else {
         this.stepsData.active = 1
-        this.errorTipText = res.msg
-        this.havePaper = false
+        this.errorTipText = res.message
+        this.paperUrl = res.data.errorAddress
       }
       this.clearFiles()
     },
@@ -198,7 +193,7 @@ export default {
         type: 'info',
         closeOnClickModal: false
       }).then(() => {
-        const url = this.paperUrl
+        const url = `${Peace.validate.isEmpty(this.downloadErrorUrl) ? '' : this.downloadErrorUrl}${this.paperUrl}`
         window.open(url, '_blank')
         this.$alert('', '错误报告获取成功！', {
           message: <div class="alert-text">若无法正常下载,请复制链接至其他浏览器重试{url}</div>

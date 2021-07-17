@@ -195,7 +195,7 @@ export default {
         actions: `${process.env.VUE_APP_SITE_AUDITENGINE}quake/commonRule/upload`,
         templateDownloadUrl: `${process.env.VUE_APP_SITE_AUDITENGINE}quake/commonRule/download`,
         downloadErrorUrl: `${process.env.VUE_APP_SITE_AUDITENGINE}quake`,
-        templateName: '通用规则药品模板',
+        templateName: '通用规则药品',
         stepsDataInput: {
           active: 0,
           list: [
