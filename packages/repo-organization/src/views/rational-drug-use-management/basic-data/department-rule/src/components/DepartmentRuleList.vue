@@ -55,7 +55,7 @@
                           prop="specifications"
                           min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="厂家"
-                          prop="manufacturer"
+                          prop="manufactory"
                           min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="科室"
                           prop="departmentName"
