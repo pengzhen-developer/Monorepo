@@ -29,8 +29,8 @@
     </el-tabs>
 
     <!-- el-tab-pane 不支持 positon: sticky，因此单独在外层 div 布局 -->
-    <DrugRule v-show="checkPos === '药品规则'"></DrugRule>
-    <DepartmentRule v-show="checkPos === '科室规则'"></DepartmentRule>
+    <DrugRule v-if="checkPos === '药品规则'"></DrugRule>
+    <DepartmentRule v-if="checkPos === '科室规则'"></DepartmentRule>
 
   </div>
 </template>
