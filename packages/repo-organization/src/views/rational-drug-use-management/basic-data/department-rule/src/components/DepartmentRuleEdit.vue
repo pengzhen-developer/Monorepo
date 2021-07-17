@@ -96,12 +96,13 @@ export default {
         })
           .then(() => {
             Peace.util.success('保存成功')
-          })
-          .finally(() => {
             this.loading = false
             this.$refs.ruleView.loading = false
-
             this.back()
+          })
+          .catch(() => {
+            this.loading = false
+            this.$refs.ruleView.loading = false
           })
       })
     }

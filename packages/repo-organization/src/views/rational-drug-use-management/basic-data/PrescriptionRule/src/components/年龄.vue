@@ -26,7 +26,7 @@
                          :precision="0"
                          :disabled="ageDisable"
                          :max="parseInt(model.ageRuleList.maxAge)"
-                         :min="0"
+                         :min="minAge"
                          placeholder="请输入"></el-input-number>
 
         <span>至</span>
@@ -36,7 +36,7 @@
                          class="q-mr-8 q-ml-8"
                          :precision="0"
                          :disabled="ageDisable"
-                         :min="parseInt(model.ageRuleList.minAge) || 0"
+                         :min="parseInt(model.ageRuleList.minAge) || minAge"
                          placeholder="请输入"></el-input-number>
 
         <el-select v-model="model.ageRuleList.ageUnit"
@@ -97,6 +97,9 @@ export default {
   computed: {
     ageDisable() {
       return this.model.ageRuleList.humanCode !== ''
+    },
+    minAge() {
+      return this.model.ageRuleList.humanCode === '' ? 1 : 0
     }
   },
 
