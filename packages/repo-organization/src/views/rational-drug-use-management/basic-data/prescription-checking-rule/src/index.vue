@@ -21,11 +21,14 @@
                    name="科室规则"
                    lazy>
       </el-tab-pane>
+      <!-- 管理规则本期未重构，无业务，接口迁移后，无法访问，因此暂时屏蔽 -->
+      <!-- 
       <el-tab-pane label="管理规则"
-                   name="管理规则"
-                   lazy>
+                 name="管理规则"
+                 lazy>
         <IframeView checkNum="管理规则"></IframeView>
-      </el-tab-pane>
+      </el-tab-pane> 
+      -->
     </el-tabs>
 
     <!-- el-tab-pane 不支持 positon: sticky，因此单独在外层 div 布局 -->

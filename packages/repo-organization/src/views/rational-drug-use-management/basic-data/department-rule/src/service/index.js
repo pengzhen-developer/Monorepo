@@ -29,7 +29,6 @@ export default {
 
     const apiPath = 'quake/departmentRule/getDepartmentTree'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
-
     const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath

@@ -23,10 +23,6 @@
           <div class="q-mr-md">{{ data.enterpriseName }}</div>
         </div>
       </div>
-
-      <div>
-        <KnowledgeButton v-bind:drugCscCode="data.drugStandardCode"></KnowledgeButton>
-      </div>
     </div>
 
     <div class="card"
@@ -55,8 +51,7 @@ export default {
   },
 
   components: {
-    DrugRule: () => import('@src/views/rational-drug-use-management/basic-data/PrescriptionRule'),
-    KnowledgeButton: () => import('@src/views/rational-drug-use-management/basic-data/PrescriptionRule/src/components/KnowledgeButton')
+    DrugRule: () => import('@src/views/rational-drug-use-management/basic-data/PrescriptionRule')
   },
 
   computed: {
