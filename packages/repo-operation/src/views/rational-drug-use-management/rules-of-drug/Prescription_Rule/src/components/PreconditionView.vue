@@ -24,13 +24,15 @@
                            :controls="false"
                            :disabled="ageDisable"
                            :max="parseInt(models.Age.value2)"
-                           :min="0"
+                           :precision="0"
+                           :min="minAge"
                            placeholder="请输入"></el-input-number>
           <span>至</span>
           <el-input-number v-model.trim="models.Age.value2"
                            :controls="false"
                            :disabled="ageDisable"
-                           :min="parseInt(models.Age.value1) || 0"
+                           :min="parseInt(models.Age.value1) || minAge"
+                           :precision="0"
                            placeholder="请输入"></el-input-number>
         </div>
 
@@ -53,13 +55,13 @@
           <el-input-number v-model.trim="models.Weight.value1"
                            :controls="false"
                            :max="parseFloat(models.Weight.value2)"
-                           :min="0"
+                           :min="0.01"
                            :precision="2"
                            placeholder="请输入"></el-input-number>
           <span>至</span>
           <el-input-number v-model.trim="models.Weight.value2"
                            :controls="false"
-                           :min="parseFloat(models.Weight.value1) || 0"
+                           :min="parseFloat(models.Weight.value1) || 0.01"
                            :precision="2"
                            placeholder="请输入"></el-input-number>
         </div>
@@ -80,6 +82,7 @@
         </el-select>
         <el-input-number v-model.trim="models.WeightSize.value2"
                          :controls="false"
+                         :min="0.01"
                          :precision="2"
                          class="q-mr-8"
                          placeholder="请输入"
@@ -357,6 +360,9 @@ export default {
     sexList: () => obPreconditionDic.state.sexList,
     ageDisable() {
       return this.models.Age.humanCode !== ''
+    },
+    minAge() {
+      return this.models.Age.value1 === undefined ? 1 : 0
     }
   },
 
@@ -530,12 +536,7 @@ export default {
     checked(item) {
       switch (item.ceType) {
         case 'Age':
-          return (
-            (item.humanCode || item.humanCode === '') &&
-            (item.value1 || item.value1 === 0) &&
-            item.value2 &&
-            item.value3
-          )
+          return (item.humanCode || item.humanCode === '') && (item.value1 || item.value1 === 0) && item.value2 && item.value3
         case 'Weight':
           return (item.value1 || item.value1 === 0) && (item.value2 || item.value2 === 0)
         case 'WeightSize':

@@ -82,9 +82,11 @@ export default {
         })
           .then(() => {
             Peace.util.success('保存成功')
+            this.saveLoading = false
+            this.$refs.ruleView.loading = false
             this.$emit('onSuccess')
           })
-          .finally(() => {
+          .catch(() => {
             this.saveLoading = false
             this.$refs.ruleView.loading = false
           })
@@ -105,9 +107,11 @@ export default {
         })
           .then(() => {
             Peace.util.success('提交审核成功')
+            this.submitLoading = false
+            this.$refs.ruleView.loading = false
             this.$emit('onSuccess')
           })
-          .finally(() => {
+          .catch(() => {
             this.submitLoading = false
             this.$refs.ruleView.loading = false
           })
