@@ -44,7 +44,7 @@
                    :disabled="ageDisable"
                    style="width: 80px; margin-right: 8px;">
           <el-option v-for="item in source.AgeType"
-                     :key="item.value"
+                     :key="item.label"
                      :label="item.label"
                      :value="item.value">
           </el-option>
@@ -75,6 +75,13 @@ export default {
       required: false,
       type: Boolean,
       default: true
+    },
+    drugType: {
+      required: true,
+      type: String,
+      validator(value) {
+        return ['platform', 'department', 'org'].includes(value)
+      }
     }
   },
 
@@ -105,17 +112,35 @@ export default {
 
   methods: {
     getPlatformAgeClass() {
-      Service.getPlatformAgeClass().then((res) => {
-        const tmp = {
-          id: '',
-          name: '自定义',
-          ageMin: undefined,
-          ageMax: undefined,
-          ageUnit: undefined,
-          ageUnitEn: undefined
-        }
-        this.source.humanCodeList = [tmp, ...res.data]
-      })
+      if (this.drugType === 'platform') {
+        Service.getPlatformAgeClass().then((res) => {
+          const tmp = {
+            id: '',
+            name: '自定义',
+            ageMin: undefined,
+            ageMax: undefined,
+            ageUnit: undefined
+          }
+          this.source.humanCodeList = [tmp, ...res.data]
+          this.source.humanCodeList.map((item) => {
+            item.id = String(item.id)
+          })
+        })
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
+        Service.getOrgAgeClass().then((res) => {
+          const tmp = {
+            id: '',
+            name: '自定义',
+            ageMin: undefined,
+            ageMax: undefined,
+            ageUnit: undefined
+          }
+          this.source.humanCodeList = [tmp, ...res.data.records]
+          this.source.humanCodeList.map((item) => {
+            item.id = String(item.id)
+          })
+        })
+      }
     },
     onAgeChange(val) {
       if (Peace.validate.isEmpty(val)) {
@@ -127,7 +152,7 @@ export default {
         if (item) {
           this.model.ageRuleList.minAge = item.ageMin
           this.model.ageRuleList.maxAge = item.ageMax
-          this.model.ageRuleList.ageUnit = item.ageUnitEn
+          this.model.ageRuleList.ageUnit = item.ageUnit
         }
       }
     },

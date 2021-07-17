@@ -72,12 +72,12 @@ export default {
   created() {
     if (this.data?.length > 0) {
       const type = this.data[0]?.type
-      if (type === 1) {
+      if (Number(type) === 1) {
         this.radio = 0
         this.multipleSelection = this.data.map((item) => {
           return item.code
         })
-      } else if (type === 2) {
+      } else if (Number(type) === 2) {
         this.radio = 1
         this.multipleSelectionOther = this.data.map((item) => {
           return item.atcCode

@@ -261,7 +261,7 @@ export default {
       isLoading: false,
       visible: this.value,
       source: {
-        humanCodeList: [],
+        humanCodeList: []
       },
       models: {
         Age: {
@@ -342,7 +342,7 @@ export default {
 
   created() {
     if (Object.keys(this.model).length > 0) {
-      const models = Object.assign({} , this.models, this.model)
+      const models = Object.assign({}, this.models, this.model)
       this.models = Peace.util.deepClone(models)
     }
     this.$nextTick(() => {
@@ -397,17 +397,35 @@ export default {
     },
 
     getPlatformAgeClass() {
-      Service.getPlatformAgeClass().then((res) => {
-        const tmp = {
-          id: '',
-          name: '自定义',
-          ageMin: undefined,
-          ageMax: undefined,
-          ageUnit: undefined,
-          ageUnitEn: undefined
-        }
-        this.source.humanCodeList = [tmp, ...res.data]
-      })
+      if (this.drugType === 'platform') {
+        Service.getPlatformAgeClass().then((res) => {
+          const tmp = {
+            id: '',
+            name: '自定义',
+            ageMin: undefined,
+            ageMax: undefined,
+            ageUnit: undefined
+          }
+          this.source.humanCodeList = [tmp, ...res.data]
+          this.source.humanCodeList.map((item) => {
+            item.id = String(item.id)
+          })
+        })
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
+        Service.getOrgAgeClass().then((res) => {
+          const tmp = {
+            id: '',
+            name: '自定义',
+            ageMin: undefined,
+            ageMax: undefined,
+            ageUnit: undefined
+          }
+          this.source.humanCodeList = [tmp, ...res.data.records]
+          this.source.humanCodeList.map((item) => {
+            item.id = String(item.id)
+          })
+        })
+      }
     },
 
     onAgeChange(val) {
@@ -420,7 +438,7 @@ export default {
         if (item) {
           this.models.Age.value1 = item.ageMin
           this.models.Age.value2 = item.ageMax
-          this.models.Age.value3 = item.ageUnitEn
+          this.models.Age.value3 = item.ageUnit
         }
       }
     },

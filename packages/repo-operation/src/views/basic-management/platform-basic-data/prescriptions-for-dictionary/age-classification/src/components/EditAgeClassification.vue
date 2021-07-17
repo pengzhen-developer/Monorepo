@@ -27,10 +27,10 @@
                      clearable
                      filterable
                      placeholder="请选择">
-            <el-option v-for="item in source.unitList"
-                       :key="item"
-                       :label="item"
-                       :value="item">
+            <el-option v-for="item in source.AgeType"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
             </el-option>
           </el-select>
 
@@ -97,12 +97,12 @@ export default {
       visible: this.value,
       model: {
         name: undefined,
-        ageUnit: '岁',
+        ageUnit: 'Y',
         ageMin: undefined,
         ageMax: undefined
       },
       source: {
-        unitList: ['岁', '月', '天']
+        AgeType: []
       },
       rules: {
         name: [{ required: true, message: '请输入人群名称', trigger: 'blur' }],
@@ -117,6 +117,10 @@ export default {
     if (this.isEdit) {
       this.model = Object.assign({}, this.data)
     }
+  },
+
+  async mounted() {
+    this.source.AgeType = await Peace.identity.dictionary.getList('age_type')
   },
 
   computed: {

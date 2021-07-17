@@ -47,7 +47,13 @@
 
         <PeaceTableColumn label="人群年龄单位"
                           min-width="100px"
-                          prop="ageUnit"></PeaceTableColumn>
+                          prop="ageUnit">
+
+          <template slot-scope="scope">
+            {{scope.row.ageUnit | filterDictionary(source.unitList,'--')}}
+          </template>
+
+        </PeaceTableColumn>
 
         <PeaceTableColumn label="人群年龄最小值"
                           min-width="100px"
@@ -114,6 +120,7 @@ export default {
     }
   },
   async mounted() {
+    this.source.unitList = await Peace.identity.dictionary.getList('age_type')
     this.$nextTick().then(() => {
       this.search()
     })

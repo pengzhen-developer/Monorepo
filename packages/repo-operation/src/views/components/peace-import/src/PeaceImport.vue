@@ -14,7 +14,6 @@
           <el-button @click="download"
                      v-if="templateDownloadUrl"
                      icon="el-icon-download"> 模板下载</el-button>
-
           <el-upload :action="actions"
                      :auto-upload="false"
                      :headers="headers"
@@ -22,6 +21,7 @@
                      :multiple="false"
                      :on-error="onError"
                      :on-success="onSuccess"
+                     :before-upload="beforeUpload"
                      accept=".xls, .xlsx"
                      class="upload"
                      drag
@@ -29,7 +29,7 @@
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
               将文件拖到此处，或 <em>点击上传</em>
-              <p class="el-upload-tips">请按照模板格式上传 Excel 文件(.xls | .xlsx)</p>
+              <p class="el-upload-tips">请按照模板格式上传 Excel 文件(.xls | .xlsx)，且文件大小不得超过{{max}}M</p>
             </div>
           </el-upload>
 
@@ -89,6 +89,7 @@ export default {
     actions: String,
     templateDownloadUrl: String,
     templateName: String,
+    maxSize: Number,
     stepsDataInput: Object
   },
 
@@ -104,6 +105,7 @@ export default {
       successTipText: '',
       havePaper: false,
       paperUrl: '',
+      max: 5,
       stepsData: {
         active: 0,
         list: [
@@ -129,6 +131,14 @@ export default {
       handler() {
         if (typeof this.stepsDataInput == 'object') {
           this.stepsData = Object.assign({}, this.stepsDataInput)
+        }
+      },
+      immediate: true
+    },
+    maxSize: {
+      handler() {
+        if (this.maxSize > 0) {
+          this.max = this.maxSize
         }
       },
       immediate: true
@@ -209,6 +219,16 @@ export default {
           message: <div class="alert-text">若无法正常下载,请复制链接至其他浏览器重试{url}</div>
         })
       })
+    },
+
+    // 校验上传文件
+    beforeUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < this.max
+
+      if (!isLt2M) {
+        this.$message.error(`上传文件大小不能超过${this.max}M`)
+      }
+      return isLt2M
     }
   }
 }
