@@ -1,6 +1,7 @@
 <template>
   <div>
     <PeaceDialog title="添加条件"
+                 append-to-body
                  v-bind:visible.sync="visible"
                  width="800px">
       <el-input v-model="searchWord"
@@ -163,18 +164,12 @@ export default {
         return
       }
       if (this.model.otherCoefficient) {
-        if (
-          Number(this.joinType) === 0 &&
-          parseFloat(this.multipleSelection.coefficient) > parseFloat(this.model.otherCoefficient)
-        ) {
+        if (Number(this.joinType) === 0 && parseFloat(this.multipleSelection.coefficient) > parseFloat(this.model.otherCoefficient)) {
           Peace.util.warning('最小频次系数不得大于最大频次系数')
           return
         }
 
-        if (
-          Number(this.joinType) === 1 &&
-          parseFloat(this.multipleSelection.coefficient) < parseFloat(this.model.otherCoefficient)
-        ) {
+        if (Number(this.joinType) === 1 && parseFloat(this.multipleSelection.coefficient) < parseFloat(this.model.otherCoefficient)) {
           Peace.util.warning('最大频次系数不得小于最小频次系数')
           return
         }
