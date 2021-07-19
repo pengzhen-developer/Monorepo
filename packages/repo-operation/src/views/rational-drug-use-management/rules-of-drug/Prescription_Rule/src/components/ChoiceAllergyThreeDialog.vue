@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <el-input v-model="searchWord"
+      <el-input v-model.trim="searchWord"
                 class="q-mb-md"
                 placeholder="请输入内容"
                 style="width: 288px;"
@@ -33,13 +33,18 @@
       <peace-table ref="table"
                    pagination
                    row-key="code"
-                   size="mini"
-                   @selection-change="handleSelectionChange">
-
-        <peace-table-column :reserve-selection="true"
-                            type="selection"
-                            :selectable="isSelect"
-                            width="55">
+                   size="mini">
+        <peace-table-column width="50px">
+          <template #header>
+            <el-checkbox v-model="checkAll"
+                         v-bind:indeterminate="isIndeterminate"
+                         v-on:change="handleCheckAllChange"></el-checkbox>
+          </template>
+          <template slot-scope="scope">
+            <el-checkbox v-bind:label="scope.row.code"
+                         v-bind:value="multipleSelection.some(item => item.code === scope.row.code)"
+                         v-on:change="e => handleCheckedItemChange(e, scope.row)"><span></span></el-checkbox>
+          </template>
         </peace-table-column>
         <peace-table-column label="过敏信息编码"
                             min-width="120px"
@@ -104,12 +109,11 @@ export default {
 
   data() {
     return {
-      isLoading: false,
       visible: this.value,
       searchWord: '',
       multipleSelection: [],
-      reserveSelected: false,
-      currentTableData: [],
+      isIndeterminate: false,
+      checkAll: false,
       source: {
         MapperStatus: [],
         AuditStatus: []
@@ -130,7 +134,6 @@ export default {
     this.source.MapperStatus = await Peace.identity.dictionary.getList('mapper_status')
     this.source.AuditStatus = await Peace.identity.dictionary.getList('mapper_audit_status')
   },
-  computed: {},
 
   watch: {
     value(value) {
@@ -147,38 +150,54 @@ export default {
       const params = {
         name: this.searchWord
       }
-
-      const filter = (res) => {
-        this.$nextTick(() => this.toggleSelection())
-        this.currentTableData = res.data.records
-        return res
-      }
-
-      this.$refs.table.reloadData({ fetch, params, filter })
+      this.$refs.table.reloadData({
+        fetch,
+        params,
+        filter: (res) => {
+          setTimeout(this.setCheckAllState)
+          return res
+        }
+      })
     },
+
     isSelect(row) {
       return row.mapperStatus === 'success' && row.auditStatus === 'pass'
     },
-    toggleSelection() {
-      const table = this.$refs.table.$children[1]
-      const tmpSelections = [...this.multipleSelection]
-      this.reserveSelected = true
-      tmpSelections.forEach((row) => {
-        const selectData = this.currentTableData.find((item) => {
-          return row.code === item.code // 注意这里寻找的字段要唯一，示例仅参考
-        })
-        if (selectData) {
-          table.toggleRowSelection(selectData, true)
-        }
+    handleCheckAllChange(val) {
+      this.$refs.table.internalData.forEach((item) => {
+        this.handleCheckedItemChange(val, item)
       })
-      this.reserveSelected = false
+      this.isIndeterminate = false
     },
 
-    handleSelectionChange(val) {
-      if (!this.reserveSelected) {
-        this.multipleSelection = val
+    handleCheckedItemChange(a, b) {
+      const index = this.multipleSelection.findIndex((item) => item.code === b.code)
+      if (a) {
+        if (index === -1) {
+          this.multipleSelection.push(b)
+        }
+      } else {
+        if (index !== -1) {
+          this.multipleSelection.splice(index, 1)
+        }
       }
+      this.setCheckAllState()
     },
+
+    setCheckAllState() {
+      this.checkAll =
+        this.$refs.table.internalData.every((item) => {
+          return this.multipleSelection.some((aa) => aa.code === item.code)
+        }) &&
+        this.multipleSelection.length > 0 &&
+        this.$refs.table.internalData.length > 0
+
+      this.isIndeterminate =
+        this.$refs.table.internalData.some((item) => {
+          return this.multipleSelection.some((aa) => aa.code === item.code)
+        }) && !this.checkAll
+    },
+
     cancel() {
       this.visible = false
     },
