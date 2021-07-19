@@ -39,8 +39,8 @@
                           prop="frequencyNum">
           <template slot-scope="scope">
             <span class="q-mr-md">{{ scope.row.frequencyNum }}</span>
-            <el-button type="text"
-                       v-on:click="gotoDetailView(scope.row)">频次管理</el-button>
+            <!-- <el-button type="text"
+                       v-on:click="gotoDetailView(scope.row)">频次管理</el-button> -->
           </template>
         </PeaceTableColumn>
       </PeaceTable>

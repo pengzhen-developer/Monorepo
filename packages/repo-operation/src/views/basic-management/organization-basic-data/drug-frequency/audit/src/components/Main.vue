@@ -39,8 +39,8 @@
                           prop="checkNumber">
           <template slot-scope="scope">
             <span class="q-mr-md">{{ scope.row.checkNumber }}</span>
-            <el-button type="text"
-                       v-on:click="gotoDetailView(scope.row)">审核管理</el-button>
+            <!-- <el-button type="text"
+                       v-on:click="gotoDetailView(scope.row)">审核管理</el-button> -->
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
