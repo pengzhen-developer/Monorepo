@@ -96,7 +96,7 @@ export default {
 
   methods: {
     getPlatformUnitDicPageForDose() {
-      Service.getPlatformUnitDicPage({ type: 'package', size: 500 }).then((res) => {
+      Service.getPlatformUnitDicPage({ type: 'dose', size: 500 }).then((res) => {
         this.optionsForDose = res.data.records
         if (this.radio === 0 && !this.multipleSelection && this.optionsForDose.length > 0) {
           this.multipleSelection = this.optionsForDose[0].name
@@ -106,7 +106,7 @@ export default {
       })
     },
     getPlatformUnitDicPageForPack() {
-      Service.getPlatformUnitDicPage({ type: 'dose', size: 500 }).then((res) => {
+      Service.getPlatformUnitDicPage({ type: 'package', size: 500 }).then((res) => {
         this.optionsForPack = res.data.records
       })
     },
