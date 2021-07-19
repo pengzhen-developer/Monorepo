@@ -55,7 +55,7 @@
         <PeaceTableColumn label="规格"
                           prop="specifications"></PeaceTableColumn>
         <PeaceTableColumn label="厂家"
-                          prop="productName"></PeaceTableColumn>
+                          prop="manufactory"></PeaceTableColumn>
         <PeaceTableColumn label="操作"
                           width="120px">
           <template slot-scope="scope">
