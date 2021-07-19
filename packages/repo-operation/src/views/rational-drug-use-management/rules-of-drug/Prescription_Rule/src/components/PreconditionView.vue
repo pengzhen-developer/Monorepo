@@ -1,6 +1,7 @@
 <template>
   <div>
     <PeaceDialog title="请设置规则审查条件"
+                 append-to-body
                  v-bind:visible.sync="visible"
                  width="540px">
 
