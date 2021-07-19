@@ -1,6 +1,7 @@
 <template>
   <div>
     <PeaceDialog title="添加条件"
+                 append-to-body
                  v-bind:visible.sync="visible"
                  width="715px">
 
