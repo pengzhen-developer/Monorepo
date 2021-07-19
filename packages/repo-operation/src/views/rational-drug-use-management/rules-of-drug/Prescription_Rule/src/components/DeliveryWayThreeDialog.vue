@@ -38,11 +38,13 @@
         <peace-table-column width="50px">
           <template #header>
             <el-checkbox v-model="checkAll"
+                         :disabled="isAllDisable"
                          v-bind:indeterminate="isIndeterminate"
                          v-on:change="handleCheckAllChange"></el-checkbox>
           </template>
           <template slot-scope="scope">
             <el-checkbox v-bind:label="scope.row.code"
+                         :disabled="isSelect(scope.row)"
                          v-bind:value="multipleSelection.some(item => item.code === scope.row.code)"
                          v-on:change="e => handleCheckedItemChange(e, scope.row)"><span></span></el-checkbox>
           </template>
@@ -116,6 +118,7 @@ export default {
       multipleSelection: [],
       isIndeterminate: false,
       checkAll: false,
+      isAllDisable: false,
       source: {
         MapperStatus: [],
         AuditStatus: []
@@ -163,13 +166,17 @@ export default {
         }
       })
     },
+
     isSelect(row) {
-      return row.mapperStatus === 'success' && row.auditStatus === 'pass'
+      return row.mapperStatus != 'success' || row.auditStatus != 'pass'
     },
+
     handleCheckAllChange(val) {
-      this.$refs.table.internalData.forEach((item) => {
-        this.handleCheckedItemChange(val, item)
-      })
+      this.$refs.table.internalData
+        .filter((item) => !this.isSelect(item))
+        .forEach((item) => {
+          this.handleCheckedItemChange(val, item)
+        })
       this.isIndeterminate = false
     },
 
@@ -188,17 +195,23 @@ export default {
     },
 
     setCheckAllState() {
+      this.isAllDisable = !this.$refs.table.internalData.some((aa) => !this.isSelect(aa))
+
       this.checkAll =
-        this.$refs.table.internalData.every((item) => {
-          return this.multipleSelection.some((aa) => aa.code === item.code)
-        }) &&
+        this.$refs.table.internalData
+          .filter((item) => !this.isSelect(item))
+          .every((item) => {
+            return this.multipleSelection.some((aa) => aa.code === item.code)
+          }) &&
         this.multipleSelection.length > 0 &&
-        this.$refs.table.internalData.length > 0
+        this.$refs.table.internalData.filter((item) => !this.isSelect(item)).length > 0
 
       this.isIndeterminate =
-        this.$refs.table.internalData.some((item) => {
-          return this.multipleSelection.some((aa) => aa.code === item.code)
-        }) && !this.checkAll
+        this.$refs.table.internalData
+          .filter((item) => !this.isSelect(item))
+          .some((item) => {
+            return this.multipleSelection.some((aa) => aa.code === item.code)
+          }) && !this.checkAll
     },
 
     cancel() {
