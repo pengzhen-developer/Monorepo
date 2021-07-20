@@ -90,7 +90,7 @@ export default {
 
     getCountdown() {
       if (this.inquiryInfo?.inquiryStatus === Type.INQUIRY.INQUIRY_STATUS.待接诊) {
-        const timerEnd = this.inquiryInfo?.startTime?.toDate()?.getTime() + Type.INQUIRY.自动退诊时间 * 60 * 60 * 1000
+        const timerEnd = this.inquiryInfo?.expireTime?.toDate()?.getTime()
 
         return this.formatDuration(new Date(), timerEnd)
       }

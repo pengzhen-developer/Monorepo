@@ -44,9 +44,6 @@ export const USER = {
  * 问诊类型常量
  */
 export const INQUIRY = {
-  /** 自动退诊时间(小时) : 默认 12 小时 */
-  自动退诊时间: 12,
-
   /** 问诊状态 */
   INQUIRY_STATUS: {
     待支付: 1,
