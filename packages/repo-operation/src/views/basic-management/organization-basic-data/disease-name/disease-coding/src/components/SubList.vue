@@ -76,10 +76,10 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="平台疾病名称"
-                          prop="patformDiseaseName"
+                          prop="platformDiseaseName"
                           min-width="160px">
           <template slot-scope="scope">
-            {{ scope.row.patformDiseaseName ||'--'}}
+            {{ scope.row.platformDiseaseName ||'--'}}
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="配码状态"
