@@ -105,6 +105,10 @@ export default {
       validator(value) {
         return ['platform', 'department', 'org'].includes(value)
       }
+    },
+    departmentCode: {
+      required: false,
+      type: String
     }
   },
 
@@ -126,28 +130,26 @@ export default {
       rules: [],
       loading: false,
       // 导航栏当前Index
-      tabSelectedIndex: 0,
+      tabSelectedIndex: 0
     }
   },
 
   async mounted() {
-
     const utilList = await Peace.identity.dictionary.getList('age_type')
     const weightList = await Peace.identity.dictionary.getList('compare')
     const containList = await Peace.identity.dictionary.getList('belonged_type')
     const sexList = await Peace.identity.dictionary.getList('rule_gender')
-    const warningLevelList =  await Peace.identity.dictionary.getList('warning_level')
+    const warningLevelList = await Peace.identity.dictionary.getList('warning_level')
 
     await obPreconditionDic.mutations.set('utilList', utilList)
-    await obPreconditionDic.mutations.set('weightList' ,weightList)
-    await obPreconditionDic.mutations.set('containList' ,containList)
-    await obPreconditionDic.mutations.set('sexList' ,sexList)
-    await obPreconditionDic.mutations.set('warningLevelList' ,warningLevelList)
+    await obPreconditionDic.mutations.set('weightList', weightList)
+    await obPreconditionDic.mutations.set('containList', containList)
+    await obPreconditionDic.mutations.set('sexList', sexList)
+    await obPreconditionDic.mutations.set('warningLevelList', warningLevelList)
 
     this.$nextTick(() => {
       this.fetch()
     })
-
   },
 
   watch: {
@@ -168,7 +170,8 @@ export default {
       this.loading = true
       Service.getRulesDetail({
         drugCscCode: this.id,
-        drugType: this.drugType
+        drugType: this.drugType,
+        departmentCode: this.departmentCode
       })
         .then((res) => {
           const orginRules = res.data?.rules ?? []
@@ -191,11 +194,7 @@ export default {
             // 如果服务端返回的对象有对应的Key，需要对 `前置条件` 数据进行转换
             if (models) {
               models.map((temp) => {
-                if (
-                    temp.conditionExpression &&
-                    temp.conditionExpression.ceList &&
-                    temp.conditionExpression.ceList.length > 0
-                ) {
+                if (temp.conditionExpression && temp.conditionExpression.ceList && temp.conditionExpression.ceList.length > 0) {
                   let tmp = temp.conditionExpression.ceList ?? []
                   let ceListDic = {}
                   for (let condition of tmp) {
