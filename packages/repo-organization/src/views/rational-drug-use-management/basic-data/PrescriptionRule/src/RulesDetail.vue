@@ -105,6 +105,10 @@ export default {
       validator(value) {
         return ['platform', 'department', 'org'].includes(value)
       }
+    },
+    departmentCode: {
+      required: false,
+      type: String
     }
   },
 
@@ -178,7 +182,8 @@ export default {
       this.loading = true
       Service.getRulesDetail({
         drugCscCode: this.id,
-        drugType: this.drugType
+        drugType: this.drugType,
+        departmentCode: this.departmentCode
       })
         .then((res) => {
           const orginRules = res.data?.rules ?? []
