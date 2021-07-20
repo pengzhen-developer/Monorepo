@@ -28,7 +28,8 @@
       <DrugRule ref="ruleView"
                 style="padding: 0;"
                 v-bind:id="data.drugCscCode"
-                v-bind:drugType="'department'"></DrugRule>
+                v-bind:drugType="'department'"
+                v-bind:departmentCode="department.value"></DrugRule>
     </div>
 
     <div class="fixed-bottom card text-right">
