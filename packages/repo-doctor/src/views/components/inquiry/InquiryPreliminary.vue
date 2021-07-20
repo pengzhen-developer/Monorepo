@@ -131,12 +131,11 @@
                   style="min-width: unset; margin: 0 10px 0 0;">:</span>
             <div class="form-img"
                  style="display: inline-block; ">
-              <viewer :images="internalData.inquiryOrderInfo.imgs">
-                <img v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
-                     :key="index"
-                     class="img"
-                     :src="item">
-              </viewer>
+              <el-image v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
+                        :key="index"
+                        class="img"
+                        :src="item"
+                        :preview-src-list="[item]"></el-image>
             </div>
           </div>
 
@@ -166,12 +165,11 @@
                   style="min-width: unset; margin: 0 10px 0 0;">:</span>
             <div class="form-img"
                  style="display: inline-block; ">
-              <viewer :images="internalData.inquiryOrderInfo.aImages">
-                <img v-for="(item,index) in internalData.inquiryOrderInfo.aImages"
-                     :key="index"
-                     class="img"
-                     :src="item">
-              </viewer>
+              <el-image v-for="(item,index) in internalData.inquiryOrderInfo.aImages"
+                        :key="index"
+                        class="img"
+                        :src="item"
+                        v-bind:preview-src-list="[item]" />
             </div>
           </div>
           <div class="form-dl"

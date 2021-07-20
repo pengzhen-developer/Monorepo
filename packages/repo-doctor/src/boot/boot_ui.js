@@ -43,7 +43,7 @@ export default ({ Vue }) => {
       zIndex: 9999,
       navbar: false,
       title: false,
-      toolbar: false,
+      toolbar: true,
       tooltip: false
     }
   })

@@ -63,14 +63,11 @@
               v-if="internalData.inquiryOrderInfo.imgs.length==0">
           确认遗失
         </span>
-        <viewer class="value img-container"
-                v-else
-                :images="internalData.inquiryOrderInfo.imgs">
-          <img v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
-               :key="index"
-               :src="item"
-               class="img">
-        </viewer>
+        <el-image v-for="(item,index) in internalData.inquiryOrderInfo.imgs"
+                  :key="index"
+                  :src="item"
+                  :preview-src-list="[item]"
+                  class="img" />
       </div>
       <div>
         <span class="label">疾病诊断</span>
@@ -87,13 +84,11 @@
       <div v-if="internalData.inquiryOrderInfo.aImages.length>0">
         <span class="label">患处图片</span>
         <span class="divider">:</span>
-        <viewer class="value img-container"
-                :images="internalData.inquiryOrderInfo.aImages">
-          <img v-for="(item,index) in internalData.inquiryOrderInfo.aImages"
-               :key="index"
-               :src="item"
-               class="img">
-        </viewer>
+        <el-image v-for="(item,index) in internalData.inquiryOrderInfo.aImages"
+                  :key="index"
+                  :src="item"
+                  v-bind:preview-src-list="[item]"
+                  class="img" />
       </div>
       <div v-if="internalData.inquiryOrderInfo.pregnancyText">
         <span class="label">特殊时期</span>

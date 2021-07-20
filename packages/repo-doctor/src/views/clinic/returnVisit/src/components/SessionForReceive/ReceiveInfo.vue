@@ -119,15 +119,13 @@
             <span>确认遗失</span>
           </template>
           <template v-else>
-            <viewer class="flex"
-                    v-bind:images="inquiryOrderInfo.imgs">
-              <img v-for="image in inquiryOrderInfo.imgs"
-                   fit="fit"
-                   v-bind:key="image"
-                   v-bind:src="image"
-                   class="q-mr-md q-mb-sm"
-                   style="max-width: 60px; max-height: 60px;" />
-            </viewer>
+            <el-image v-for="image in inquiryOrderInfo.imgs"
+                      fit="fit"
+                      v-bind:key="image"
+                      v-bind:src="image"
+                      v-bind:preview-src-list="[image]"
+                      class="q-mr-md q-mb-sm"
+                      style="max-width: 60px; max-height: 60px;" />
           </template>
         </div>
       </div>
@@ -146,15 +144,14 @@
       <div class="q-mb-xs row">
         <span class="q-mr-sm text-grey-7">患处图片：</span>
         <div class="col">
-          <viewer class="flex"
-                  v-bind:images="inquiryOrderInfo.aImages">
-            <img v-for="image in inquiryOrderInfo.aImages"
-                 fit="fit"
-                 v-bind:key="image"
-                 v-bind:src="image"
-                 class="q-mr-md q-mb-sm"
-                 style="max-width: 60px; max-height: 60px;" />
-          </viewer>
+
+          <el-image v-for="image in inquiryOrderInfo.aImages"
+                    fit="fit"
+                    v-bind:key="image"
+                    v-bind:src="image"
+                    v-bind:preview-src-list="[image]"
+                    class="q-mr-md q-mb-sm"
+                    style="max-width: 60px; max-height: 60px;" />
         </div>
       </div>
       <div class="q-mb-xs row"

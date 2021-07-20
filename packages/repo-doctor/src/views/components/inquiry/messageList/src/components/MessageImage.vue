@@ -1,10 +1,10 @@
 <template>
   <!-- 消息内容 -->
-  <div v-viewer
-       class="cursor-pointer">
-    <img :src="imgUrl"
-         style="max-width: 400px; max-height: 600px; "
-         title="查看大图" />
+  <div class="cursor-pointer">
+    <el-image :src="imgUrl"
+              :preview-src-list="[imgUrl]"
+              style="max-width: 400px; max-height: 600px; "
+              title="查看大图" />
   </div>
 </template>
 

@@ -16,17 +16,13 @@
         </div>
       </div>
 
-      <viewer v-if="item.imageList && item.imageList.length > 0"
-              class="row full-width wrap q-mb-md"
-              :images="item.imageList"
-              v-on:click.native="stopEvent">
-        <div v-for="(image, index) in item.imageList"
-             v-bind:key="index.toString()"
-             class="col-4 q-pr-sm q-pb-sm">
-          <img v-bind:src="image"
-               class="fit" />
-        </div>
-      </viewer>
+      <div v-for="(image, index) in item.imageList"
+           v-bind:key="index.toString()"
+           class="col-4 q-pr-sm q-pb-sm">
+        <el-image v-bind:src="image"
+                  v-bind:preview-src-list="[image]"
+                  class="fit" />
+      </div>
 
       <div class="row items-center q-mb-md"
            v-if="(item.caseNo && item.caseNo.length > 0) || item.prescribePrescripCount > 0 || item.referralCount > 0">
