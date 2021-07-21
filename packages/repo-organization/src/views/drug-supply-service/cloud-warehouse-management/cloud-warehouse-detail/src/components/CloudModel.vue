@@ -1,54 +1,85 @@
 <template>
   <div>
-    <el-form ref="form"
-             label-position="right"
-             label-width="138px"
-             label-suffix="："
-             v-bind:model="model"
-             v-bind:rules="rules">
-      <div class="info-content">
-        <el-form-item label="云仓名称"
-                      prop="Name">
-          <el-input placeholder="请输入"
-                    v-model.trim="model.Name"
-                    maxlength="30"></el-input>
-        </el-form-item>
-        <el-form-item label="云仓系统"
-                      prop="SystemCode">
-          <el-select v-model="model.SystemCode"
-                     @change="selectSystem"
-                     :disabled="edit"
-                     clearable
-                     placeholder="请选择"
-                     style="width:100%;">
-            <el-option v-for="item in systemConfig"
-                       :key="item.SystemCode"
-                       :label="item.Name"
-                       :value="item.SystemCode"></el-option>
-          </el-select>
-        </el-form-item>
+    <template v-if="edit && view">
+      <el-form ref="form"
+               label-position="right"
+               label-width="138px"
+               label-suffix="："
+               space-md
+               v-bind:model="viewModel">
+        <div class="info-content">
+          <el-form-item label="云仓名称">
+            <div class="flex justify-between align-center">
+              <span>{{viewModel.Name}}</span>
+              <el-button class="q-mr-32"
+                         type="text"
+                         size="mini"
+                         icon="el-icon-edit"
+                         v-on:click="view = false">修改</el-button>
+            </div>
+          </el-form-item>
+          <el-form-item label="云仓系统">
+            {{systemName}}
+          </el-form-item>
+          <el-form-item v-for="item in currentSystem.item"
+                        :key="item.Name"
+                        :label="item.Label">
+            {{viewModel[item.Name]}}
+          </el-form-item>
+        </div>
+      </el-form>
+    </template>
+    <template v-else>
+      <el-form ref="form"
+               label-position="right"
+               label-width="138px"
+               label-suffix="："
+               v-bind:model="model"
+               v-bind:rules="rules">
+        <div class="info-content">
+          <el-form-item label="云仓名称"
+                        prop="Name">
+            <el-input placeholder="请输入"
+                      v-model.trim="model.Name"
+                      maxlength="30"></el-input>
+          </el-form-item>
+          <el-form-item label="云仓系统"
+                        prop="SystemCode">
+            <el-select v-model="model.SystemCode"
+                       @change="selectSystem"
+                       :disabled="edit"
+                       clearable
+                       placeholder="请选择"
+                       style="width:100%;">
+              <el-option v-for="item in systemConfig"
+                         :key="item.SystemCode"
+                         :label="item.Name"
+                         :value="item.SystemCode"></el-option>
+            </el-select>
+          </el-form-item>
 
-        <el-form-item v-for="item in currentSystem.item"
-                      :key="item.Name"
-                      :label="item.Label"
-                      :prop="item.Name"
-                      :rules="[
+          <el-form-item v-for="item in currentSystem.item"
+                        :key="item.Name"
+                        :label="item.Label"
+                        :prop="item.Name"
+                        :rules="[
       { required: true, message: `请输入${item.Label}`, trigger: 'blur' },
       { validator: validateSystemField, trigger: 'blur' }
     ]">
-          <el-input placeholder="请输入"
-                    v-model.trim="model[item.Name]"
-                    maxlength="70"></el-input>
-        </el-form-item>
+            <el-input placeholder="请输入"
+                      v-model.trim="model[item.Name]"
+                      maxlength="70"></el-input>
+          </el-form-item>
 
-      </div>
-      <div class="text-right">
-        <el-button v-on:click="cancelDialog">取 消</el-button>
-        <el-button type="primary"
-                   v-bind:disabled="saveing"
-                   v-on:click="save">提 交</el-button>
-      </div>
-    </el-form>
+        </div>
+        <div class="text-right">
+          <el-button v-on:click="cancelEdit">取消修改</el-button>
+          <el-button type="primary"
+                     v-bind:disabled="saveing"
+                     v-on:click="save">保存</el-button>
+        </div>
+      </el-form>
+    </template>
   </div>
 </template>
 
@@ -73,7 +104,6 @@ const DEFAULT_SYSTEM = {
 }
 
 export default {
-  name: 'add-ware-house',
   components: {},
   props: {
     edit: {
@@ -88,6 +118,8 @@ export default {
   },
   data() {
     return {
+      view: true,
+      viewModel: DEFAULT_MODEL,
       saveing: false,
       // 云仓信息
       model: DEFAULT_MODEL,
@@ -114,7 +146,14 @@ export default {
       }
     }
   },
+  computed: {
+    systemName() {
+      return this.systemConfig.find((item) => item.SystemCode == this.viewModel.SystemCode)?.Name
+    }
+  },
   mounted() {
+    this.view = true
+    this.viewModel = Object.assign({}, DEFAULT_MODEL, this.data)
     this.model = Object.assign({}, DEFAULT_MODEL, this.data)
     this.systemConfig = Peace.util.deepClone(this.config)
     this.$nextTick(() => {
@@ -206,6 +245,10 @@ export default {
     },
     cancelDialog() {
       this.$emit('onCloseWare')
+    },
+    cancelEdit() {
+      this.view = true
+      this.model = Object.assign({}, DEFAULT_MODEL, this.data)
     }
   }
 }

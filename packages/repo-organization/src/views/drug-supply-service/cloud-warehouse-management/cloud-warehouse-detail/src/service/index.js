@@ -1,5 +1,25 @@
 export default {
   /**
+   * 获取云仓列表
+   *
+   * @param {*} params
+   */
+  getCloudList(params) {
+    const isMock = false
+
+    const apiPath = 'psd/CircConfig/List'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    // const serverPath = process.env.VUE_APP_API_BASE + apiPath
+    const serverPath = 'http://devyapi.holoalpha.com/mock/179/' + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.get(requestApi, { params }).then((res) => {
+      return res
+    })
+  },
+
+  /**
    * 获取云仓详情
    *
    * @param {*} params
@@ -124,6 +144,46 @@ export default {
     const apiPath = 'psd/CircConfig/SaveInformedConsentInfo'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 获取商品列表
+   *
+   * @param {*} params
+   */
+  getGoodsList(params) {
+    const isMock = false
+
+    const apiPath = 'psd/CircConfig/GoodsManagement'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    // const serverPath = process.env.VUE_APP_API_BASE + apiPath
+    const serverPath = 'http://devyapi.holoalpha.com/mock/179/' + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.get(requestApi, { params }).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 商品上下架
+   *
+   * @param {*} params
+   */
+  updateGoodsStatus(params) {
+    const isMock = false
+
+    const apiPath = 'psd/CircConfig/UpdateGoodsStatus'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    // const serverPath = process.env.VUE_APP_API_BASE + apiPath
+    const serverPath = 'http://devyapi.holoalpha.com/mock/179/' + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
