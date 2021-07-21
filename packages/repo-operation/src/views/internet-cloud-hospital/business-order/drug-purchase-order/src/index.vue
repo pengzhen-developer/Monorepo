@@ -79,7 +79,7 @@
                        v-for="item in source.orderPayStatus"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="支付类型">
+        <!-- <el-form-item label="支付类型">
           <el-select v-model="search.payType">
             <el-option label="全部"
                        value=""></el-option>
@@ -88,7 +88,7 @@
                        :value="item.value"
                        v-for="item in source.payTypeList"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="订单编号">
           <el-input placeholder="输入订单编号"
                     v-model="search.orderNo"
