@@ -1,7 +1,7 @@
 <template>
   <PeaceDialog v-bind="$attrs"
                v-bind:visible.sync="internalVisible">
-    <div>
+    <div v-loading="loading">
       <el-form inline
                label-width="auto"
                label-suffix="："
@@ -78,6 +78,7 @@ export default {
 
   data() {
     return {
+      loading: true,
       department: [],
 
       deptId: '',
@@ -128,6 +129,8 @@ export default {
         })
       }
     })
+
+    this.loading = false
   },
 
   methods: {
