@@ -187,10 +187,7 @@ export default {
 
   props: {
     // 会话对象
-    session: Object,
-
-    // 缓存键，处理【问诊】、【复诊】、【面诊】、【会诊】等场景下的处方缓存
-    cacheKey: String
+    session: Object
   },
 
   data() {
@@ -421,7 +418,6 @@ export default {
               }
               // 系统验证成功，发送处方成功
               else {
-                this.cacheKey && Peace.cache.sessionStorage.remove(this.cacheKey)
                 Peace.util.success(res.msg)
 
                 this.$emit('close')
@@ -491,7 +487,6 @@ export default {
 
       Service.confirmSend(params)
         .then((res) => {
-          this.cacheKey && Peace.cache.sessionStorage.remove(this.cacheKey)
           Peace.util.success(res.msg)
 
           this.$emit('close')
@@ -502,15 +497,6 @@ export default {
     },
 
     close() {
-      const recipeCache = {
-        weight: this.model.weight,
-        prescriptionTag: this.model.prescriptionTag,
-        diagnoseList: this.model.diagnoseList,
-        drugList: this.model.drugList
-      }
-
-      this.cacheKey && Peace.cache.sessionStorage.set(this.cacheKey, recipeCache)
-
       this.$emit('close')
     }
   }

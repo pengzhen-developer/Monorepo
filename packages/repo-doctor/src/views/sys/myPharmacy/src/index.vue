@@ -4,8 +4,6 @@
       <el-button-group>
         <el-button v-on:click="changeActive('常用药品')"
                    v-bind:type="activeTheme('常用药品')">常用药品</el-button>
-        <el-button v-on:click="changeActive('常用处方')"
-                   v-bind:type="activeTheme('常用处方')">常用处方</el-button>
       </el-button-group>
     </div>
 

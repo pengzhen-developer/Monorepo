@@ -2,7 +2,7 @@
 <template>
   <div class="bg-white overflow-auto">
     <div class="q-pa-md full-height"
-         style="min-width: 1300px; max-width: 1440px; margin: 0 auto; ">
+         style="min-width: 1440px; max-width: 1440px; margin: 0 auto; ">
       <div class="flex full-height consultation bg-white"
            style="border: 1px solid #f4f4f4;">
         <div class="consultation-left">

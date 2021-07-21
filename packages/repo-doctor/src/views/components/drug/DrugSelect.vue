@@ -35,9 +35,6 @@
       <div>
         <el-button plain
                    v-on:click="showHistoryPrescription">历史处方</el-button>
-
-        <el-button plain
-                   v-on:click="showCommonlyPrescription">常用处方</el-button>
       </div>
     </div>
 
@@ -203,7 +200,7 @@
         </PeaceTableColumn>
 
         <PeaceTableColumn label="药品数量"
-                          min-width="100px">
+                          width="160px">
           <template slot="header">
             <span class="text-red">*</span>
             <span>药品数量</span>
@@ -211,22 +208,31 @@
           <template slot-scope="{ row }">
             <el-form v-on:submit.native.prevent
                      v-bind:show-message="false"
-                     v-bind:model="row">
+                     v-bind:model="row"
+                     inline>
               <el-form-item required
-                            prop="drugNum">
-                <div class="flex justify-center items-center">
-                  <el-input-number class="editable col"
-                                   placeholder="请输入"
-                                   controls-position="right"
-                                   v-bind:min="1"
-                                   v-bind:precision="0"
-                                   v-model="row.drugNum"></el-input-number>
-                  <span class="text-caption ellipsis text-grey-7 q-mx-xs"
-                        style="max-width: 50px;"
-                        v-bind:title="row.drugQuantityUnit">{{
-                    row.drugQuantityUnit
-                  }}</span>
-                </div>
+                            prop="drugNum"
+                            style="margin: 0;">
+                <el-input-number class="editable"
+                                 placeholder="请输入"
+                                 controls-position="right"
+                                 v-bind:min="1"
+                                 v-bind:precision="0"
+                                 v-model="row.drugNum"
+                                 style="width: 80px"></el-input-number>
+              </el-form-item>
+
+              <el-form-item required
+                            prop="drugQuantityUnit"
+                            style="margin: 0;">
+                <el-select v-model="row.drugQuantityUnit"
+                           style="width: 64px;"
+                           v-on:change="() => changeDrugQuantityUnit(row) && calculateCount(row)">
+                  <el-option v-for="item in row.splitZeroList"
+                             v-bind:key="item.packageUnitTag"
+                             v-bind:label="item.unit"
+                             v-bind:value="item.unit"></el-option>
+                </el-select>
               </el-form-item>
             </el-form>
           </template>
@@ -325,58 +331,6 @@
         </PeaceTableColumn>
       </PeaceTable>
     </PeaceDialog>
-
-    <PeaceDialog v-if="commonlyPrescriptionDialog.visible"
-                 v-bind:visible.sync="commonlyPrescriptionDialog.visible"
-                 title="常用处方"
-                 width="800px">
-      <PeaceTable pagination
-                  ref="table">
-        <PeaceTableColumn label="疾病诊断"
-                          min-width="160px"
-                          prop="diagnosis">
-          <template slot-scope="scope">{{ scope.row.diagnoseList.map((item) => item.name).join(' | ') }}</template>
-        </PeaceTableColumn>
-        <PeaceTableColumn label="性别"
-                          width="80px"
-                          prop="sex"></PeaceTableColumn>
-        <PeaceTableColumn label="年龄"
-                          width="120px"
-                          prop="age"></PeaceTableColumn>
-        <PeaceTableColumn label="处方药品"
-                          min-width="300px"
-                          prop="drugjson">
-          <template slot-scope="scope">
-            <div v-for="drug in scope.row.drugList"
-                 v-bind:key="drug.durgId"
-                 class="q-mb-sm">
-              <div>
-                <el-tag class="q-mr-sm"
-                        effect="dark"
-                        type="warning"
-                        v-if="drug.drugStatus === 'disable'">停用</el-tag>
-                <span class="text-weight-bold q-mr-md">{{ drug.drugName }}</span>
-                <span class="text-caption">{{ drug.specification }}</span>
-              </div>
-              <span>用法用量：</span>
-              <span>每次{{ drug.singleDose }}{{ drug.drugUnit }}</span>
-              <span>，{{ drug.drugFrequency }}</span>
-              <span>，{{ drug.drugRoute }}</span>
-              <span v-if="drug.useDrugDays">，{{ drug.useDrugDays }}天</span>
-            </div>
-          </template>
-        </PeaceTableColumn>
-        <PeaceTableColumn v-bind:show-overflow-tooltip="false"
-                          fixed="right"
-                          label="操作"
-                          width="80px">
-          <template slot-scope="scope">
-            <el-button type="text"
-                       v-on:click="checkCommonlyPrescription(scope.row)">选择</el-button>
-          </template>
-        </PeaceTableColumn>
-      </PeaceTable>
-    </PeaceDialog>
   </div>
 </template>
 
@@ -437,9 +391,13 @@ export default {
 
   watch: {
     value(value) {
-      // 是否有冷藏药品
+      // 当选择药品发生变化后，判断是否有冷藏药品，提示用户
       this.isColdStorag = this.value.filter((item) => item.coldStorage === 1).length > 0
 
+      // 当选择药品发生变化后，处理是否选择了最小单位/包装单位，修改行数据 packageUnitTag = '最小单位/包装单位'
+      this.value.forEach((row) => this.changeDrugQuantityUnit(row))
+
+      // v-model 语法糖，通知父组件自动更新绑定值
       this.$emit('input', value)
     },
 
@@ -508,17 +466,37 @@ export default {
       })
     },
 
+    /**
+     * @description: 自动计算药品数量
+     * @param {*} row
+     * @return {*}
+     */
     calculateCount(row) {
       if (row.drugNature === 1) {
-        // 药品数量 = (单次剂量 * 用药天数 * 用药频次) /（基础规格 * 包装规格)
         const 单次剂量 = parseFloat(row.singleDose)
         const 用药天数 = parseFloat(row.useDrugDays)
         const 用药频次 = parseFloat(this.source.drugFrequencyList.find((item) => item.id === row.drugFrequencyId)?.frequencyValue)
-        const 基础规格_包装规格 = parseFloat(row.drugSpecNum)
-        const 药品数量 = (单次剂量 * 用药天数 * 用药频次) / 基础规格_包装规格
 
-        if (!Number.isNaN(药品数量) && Number.isFinite(药品数量)) {
-          row.drugNum = Math.ceil(药品数量)
+        // 包装单位
+        // 药品数量 （包装单位）= (单次剂量 * 用药天数 * 用药频次) / (基础规格 * 包装规格)
+        if (row.splitZeroList.find((item) => item.unit === row.drugQuantityUnit)?.packageUnitTag === 'packageUnit') {
+          const 基础规格_包装规格 = parseFloat(row.splitZeroList.find((item) => item.unit === row.drugQuantityUnit)?.value)
+          const 药品数量 = (单次剂量 * 用药天数 * 用药频次) / 基础规格_包装规格
+
+          if (!Number.isNaN(药品数量) && Number.isFinite(药品数量)) {
+            row.drugNum = Math.ceil(药品数量)
+          }
+        }
+
+        // 最小单位
+        // 药品数量（最小单位）=(单次剂量 * 频次系数 * 用药天数) / (基本剂量)
+        if (row.splitZeroList.find((item) => item.unit === row.drugQuantityUnit)?.packageUnitTag === 'minUnit') {
+          const 基本剂量 = parseFloat(row.splitZeroList.find((item) => item.unit === row.drugQuantityUnit)?.value)
+          const 药品数量 = (单次剂量 * 用药天数 * 用药频次) / 基本剂量
+
+          if (!Number.isNaN(药品数量) && Number.isFinite(药品数量)) {
+            row.drugNum = Math.ceil(药品数量)
+          }
         }
       }
     },
@@ -581,11 +559,11 @@ export default {
         const drug = this.value[index]
 
         if (drug.drugId && drug.drugName) {
-          // 验证给药途径
-          if (Peace.validate.isEmpty(drug.drugRouteId)) {
+          // 验证单次剂量
+          if (Peace.validate.isEmpty(drug.singleDose)) {
             validObj = {
               isValid: false,
-              message: `【${drug.drugName}】请选择给药途径`
+              message: `【${drug.drugName}】请输入单次剂量`
             }
 
             break
@@ -601,21 +579,11 @@ export default {
             break
           }
 
-          // 验证单次剂量
-          if (Peace.validate.isEmpty(drug.singleDose)) {
+          // 验证给药途径
+          if (Peace.validate.isEmpty(drug.drugRouteId)) {
             validObj = {
               isValid: false,
-              message: `【${drug.drugName}】请输入单次剂量`
-            }
-
-            break
-          }
-
-          // 验证用药数量
-          if (Peace.validate.isEmpty(drug.drugNum)) {
-            validObj = {
-              isValid: false,
-              message: `【${drug.drugName}】请输入用药数量`
+              message: `【${drug.drugName}】请选择给药途径`
             }
 
             break
@@ -626,6 +594,26 @@ export default {
             validObj = {
               isValid: false,
               message: `【${drug.drugName}】请输入用药天数`
+            }
+
+            break
+          }
+
+          // 验证药品数量
+          if (Peace.validate.isEmpty(drug.drugNum)) {
+            validObj = {
+              isValid: false,
+              message: `【${drug.drugName}】请输入药品数量`
+            }
+
+            break
+          }
+
+          // 验证药品单位
+          if (Peace.validate.isEmpty(drug.drugQuantityUnit)) {
+            validObj = {
+              isValid: false,
+              message: `【${drug.drugName}】请输入药品单位`
             }
 
             break
@@ -642,26 +630,11 @@ export default {
       }
     },
 
-    showCommonlyPrescription() {
-      this.commonlyPrescriptionDialog.visible = true
-
-      this.$nextTick().then(() => {
-        this.getCommonlyPrescriptionList()
-      })
-    },
-
-    getCommonlyPrescriptionList() {
-      const fetch = Service.getCommonlyPrescriptionList
-      const params = this.model
-
-      this.$refs.table.loadData({ fetch, params })
-    },
-
-    checkCommonlyPrescription(row) {
+    checkHistoryPrescription(row) {
       const notifyAlreadySelect = () => {
         return new Promise((resolve) => {
           if (this.value && this.value.length > 0) {
-            return Peace.util.confirm('选择常用处方，将清除已选药品', '提示', {}, resolve)
+            return Peace.util.confirm('选择历史处方，将清除已选药品', '提示', {}, resolve)
           } else {
             return resolve()
           }
@@ -670,7 +643,7 @@ export default {
 
       const notifyDrguSource = () => {
         return new Promise((resolve) => {
-          const excludeDrug = row.drugList.filter((item) => item.drugSource !== this.model.prescriptionTag)
+          const excludeDrug = row.newDrugList.filter((item) => item.drugSource !== this.model.prescriptionTag)
 
           if (excludeDrug && excludeDrug.length > 0) {
             const excludeDrugMessName = excludeDrug.map((item) => `【${item.drugName}】`).join('、')
@@ -683,7 +656,7 @@ export default {
       }
 
       const mergeDrug = () => {
-        const includeDrug = row.drugList.filter((item) => item.drugSource === this.model.prescriptionTag)
+        const includeDrug = row.newDrugList.filter((item) => item.drugSource === this.model.prescriptionTag)
 
         includeDrug.forEach((drug) => {
           drug.drugNum = drug.drugNum ?? undefined
@@ -723,8 +696,8 @@ export default {
       })
     },
 
-    checkHistoryPrescription(row) {
-      this.checkCommonlyPrescription(row)
+    changeDrugQuantityUnit(row) {
+      row.packageUnitTag = row.splitZeroList.find((item) => item.unit === row.drugQuantityUnit)?.packageUnitTag
     }
   }
 }
