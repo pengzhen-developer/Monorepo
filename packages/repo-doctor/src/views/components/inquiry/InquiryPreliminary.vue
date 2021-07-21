@@ -263,8 +263,20 @@ export default {
     },
 
     payTypeText() {
-      const text = Object.keys(Type.INQUIRY.INQUIRY_PAY_TYPE).find((key) => Type.INQUIRY.INQUIRY_PAY_TYPE[key] === this.data.inquiryOrderInfo.paymentType)
-      return text
+      if (this.data.inquiryInfo.paymentType === 1) {
+        return '自费'
+      }
+      if (this.data.inquiryInfo.paymentType === 2) {
+        return '普通医保'
+      }
+      if (this.data.inquiryInfo.paymentType === 3) {
+        return '商保'
+      }
+      if (this.data.inquiryInfo.paymentType === 4) {
+        return `门特-${this.data.inquiryInfo.medicalDiseases}`
+      }
+
+      return ''
     }
   },
 
