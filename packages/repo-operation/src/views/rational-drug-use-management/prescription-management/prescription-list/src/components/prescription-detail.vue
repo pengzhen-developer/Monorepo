@@ -117,7 +117,7 @@
                   用法用量: {{ drug.DrugRoute }}。
                   每次{{ drug.OnceDose}}{{ drug.OnceUnit }}，
                   {{ drug.MedicationFrequency }}
-                  {{ drug.MedicationDays ? "，" + drug.MedicationDays + "天" : "" }}
+                  {{ drug.medicaDays ? "，" + drug.medicaDays + "天" : "" }}
                 </span>
               </div>
             </div>
