@@ -3,7 +3,7 @@ export default {
   ORDER_INQUIRY_TYPE: [
     { value: 'image', label: '图文' },
     { value: 'video', label: '视频' },
-    { value: 'returnVisit', label: '复诊续方' }
+    { value: 'returnVisit', label: '复诊开药' }
   ],
   // 咨询、复诊订单的支付状态
   OEDER_STATUS: [

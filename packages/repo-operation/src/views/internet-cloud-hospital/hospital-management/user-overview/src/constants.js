@@ -2,7 +2,7 @@ export default {
   INQIRY_TYPE: [
     { value: 'image', label: '图文' },
     { value: 'video', label: '视频' },
-    { value: 'returnVisit', label: '复诊续方' }
+    { value: 'returnVisit', label: '复诊开药' }
   ],
   ORDER_STATUS: [
     { value: 1, label: '待支付' },
