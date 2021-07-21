@@ -8,7 +8,7 @@
                    v-on:click="back">返回上一页</el-button>
       </div>
       <div class="q-mb-24 org-name">
-        {{props.云仓名称}}
+        {{props.Name}}
       </div>
       <el-form inline
                label-suffix="："
@@ -16,15 +16,15 @@
                v-on:submit.native.prevent
                v-bind:model="model">
         <el-form-item label="药品编码">
-          <PeaceInput v-model.trim="model.code"
+          <PeaceInput v-model.trim="model.CustDrugsCode"
                       placeholder="请输入"></PeaceInput>
         </el-form-item>
         <el-form-item label="药品名称">
-          <PeaceInput v-model.trim="model.name"
+          <PeaceInput v-model.trim="model.ProductName"
                       placeholder="请输入"></PeaceInput>
         </el-form-item>
         <el-form-item label="药品状态">
-          <PeaceSelect v-model="model.status"
+          <PeaceSelect v-model="model.OnShelves"
                        placeholder="全部"
                        clearable>
             <el-option v-for="item in source.DRUG_STATUS"
@@ -59,42 +59,42 @@
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="药品编码"
-                          prop="药品编码">
+                          prop="CustDrugsCode">
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="药品名称"
-                          prop="药品名称">
+                          prop="ProductName">
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="药品规格"
-                          prop="药品规格">
+                          prop="DrugSpecifications">
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="生产厂家"
-                          prop="生产厂家">
+                          prop="EnterpriseName">
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="包装单位"
-                          prop="包装单位">
+                          prop="PackUnit">
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="批准文号"
-                          prop="批准文号">
+                          prop="ApprovalNumber">
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="库存"
-                          prop="库存">
+                          prop="Stock">
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="药品状态"
-                          prop="药品状态">
+                          prop="OnShelves">
           <template slot-scope="scope">
-            <span>{{scope.row.status | filterDictionary(source.DRUG_STATUS)}}</span>
+            <span>{{scope.row.OnShelves | filterDictionary(source.DRUG_STATUS)}}</span>
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn min-width="200px"
                           label="更新时间"
-                          prop="更新时间">
+                          prop="UpdateTime">
         </PeaceTableColumn>
       </PeaceTable>
     </div>
@@ -107,25 +107,15 @@ import Observable from '../observable'
 import Service from '../service'
 import CONSTANT from '../constant'
 
-let CLOUD_MODEL = {
-  Id: '', // 云仓唯一标识
-  Name: '', // 名称
-  SystemCode: '', // 系统编码
-  Type: '', // 系统类型 0 ERP  2 九州云仓
-  CodeIn3PartPlatform: '', // 物流中心ID  / branchid
-  IDIn3PartPlatform: '', // 运营方ID
-  PrentCustList: [] // 机构数据信息
-}
-
 export default {
   data() {
     return {
       loading: true,
       model: {
-        ID: '',
-        code: '',
-        name: '',
-        status: ''
+        PharmacyCode: '',
+        CustDrugsCode: '',
+        ProductName: '',
+        OnShelves: ''
       },
       multipleSelection: [],
       source: {
@@ -153,7 +143,7 @@ export default {
 
   mounted() {
     this.$nextTick().then(() => {
-      if (this.props.云仓ID) {
+      if (this.props.PharmacyCode) {
         this.fetch()
       }
     })
@@ -163,18 +153,10 @@ export default {
     fetch() {
       this.loading = true
       const fetch = Service.getGoodsList
-      const params = Object({}, this.model, { 云仓ID: this.props.云仓ID })
+      const params = Object({}, this.model, { PharmacyCode: this.props.PharmacyCode })
 
       this.$refs.table.reloadData({ fetch, params }).finally(() => {
         this.loading = false
-      })
-    },
-    getInfo() {
-      let params = {
-        ID: this.props.ID
-      }
-      Service.getInfo(params).then((res) => {
-        this.cloudInfo = res.data.GetCustIn3PartRes || Object.assign({}, CLOUD_MODEL)
       })
     },
 
@@ -189,28 +171,36 @@ export default {
         return false
       }
       if (type === 'up') {
-        let hasDown = list.find((item) => item.status === 0)
+        let hasDown = list.find((item) => item.OnShelves === 0)
         if (hasDown) {
           Peace.util.warning('仅【未上架】商品能进行上架操作，请选择对应的药品状态完成操作')
           return false
         }
         let params = {
-          ids: list.map((item) => item.id),
-          staus: 'up'
+          stocks: list.map((item) => {
+            return {
+              Id: item.Id,
+              OnShelves: 1
+            }
+          })
         }
         Service.updateGoodsStatus(params).then(() => {
           Peace.util.success('上架成功')
           this.fetch()
         })
       } else if (type === 'down') {
-        let hasUp = list.find((item) => item.status === 1)
+        let hasUp = list.find((item) => item.OnShelves === 1)
         if (hasUp) {
           Peace.util.warning('仅【已上架】商品能进行下架操作，请选择对应的药品状态完成操作')
           return false
         }
         let params = {
-          ids: list.map((item) => item.id),
-          staus: 'down'
+          stocks: list.map((item) => {
+            return {
+              Id: item.Id,
+              OnShelves: 0
+            }
+          })
         }
         Service.updateGoodsStatus(params).then(() => {
           Peace.util.success('下架成功')

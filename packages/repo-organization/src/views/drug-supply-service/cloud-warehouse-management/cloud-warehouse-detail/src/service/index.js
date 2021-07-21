@@ -7,10 +7,9 @@ export default {
   getCloudList(params) {
     const isMock = false
 
-    const apiPath = 'psd/CircConfig/List'
+    const apiPath = 'psd/DrugStore/custCloudWarehouseList'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-    // const serverPath = process.env.VUE_APP_API_BASE + apiPath
-    const serverPath = 'http://devyapi.holoalpha.com/mock/179/' + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
@@ -160,14 +159,13 @@ export default {
   getGoodsList(params) {
     const isMock = false
 
-    const apiPath = 'psd/CircConfig/GoodsManagement'
+    const apiPath = 'psd/Pharmacy/GetDrugStockListV2'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-    // const serverPath = process.env.VUE_APP_API_BASE + apiPath
-    const serverPath = 'http://devyapi.holoalpha.com/mock/179/' + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.get(requestApi, { params }).then((res) => {
+    return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
   },
@@ -180,10 +178,9 @@ export default {
   updateGoodsStatus(params) {
     const isMock = false
 
-    const apiPath = 'psd/CircConfig/UpdateGoodsStatus'
+    const apiPath = 'psd/DrugStock/OnShelvesV3'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-    // const serverPath = process.env.VUE_APP_API_BASE + apiPath
-    const serverPath = 'http://devyapi.holoalpha.com/mock/179/' + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 

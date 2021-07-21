@@ -17,15 +17,15 @@
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="云仓名称"
-                          prop="云仓名称">
+                          prop="Name">
         </PeaceTableColumn>
         <PeaceTableColumn min-width="160px"
                           label="云仓系统"
-                          prop="云仓系统">
+                          prop="SysName">
         </PeaceTableColumn>
         <PeaceTableColumn min-width="180px"
                           label="创建时间"
-                          prop="创建时间">
+                          prop="CreateTime">
         </PeaceTableColumn>
         <PeaceTableColumn fixed="right"
                           header-align="left"
@@ -119,9 +119,8 @@ export default {
     fetch() {
       this.loading = true
       const fetch = Service.getCloudList
-      const params = {}
 
-      this.$refs.table.reloadData({ fetch, params }).finally(() => {
+      this.$refs.table.reloadData({ fetch }).finally(() => {
         this.loading = false
       })
     },
@@ -138,18 +137,12 @@ export default {
 
     detail(row) {
       let params = {
-        ID: row.ID
+        ID: row.Id
       }
       Service.getInfo(params).then((res) => {
         this.systemDict = res.data.CloudStructure
-        // this.cloudInfo = res.data.GetCustIn3PartRes || Object.assign({}, CLOUD_MODEL)
-        this.cloudInfo = {
-          Id: '213213',
-          Name: '九州通ERP',
-          SystemCode: 'erp',
-          Type: 0,
-          PrentCustList: []
-        }
+        this.cloudInfo = res.data.GetCustIn3PartRes || Object.assign({}, CLOUD_MODEL)
+
         this.isEdit = true
         this.cloudVisible = true
       })

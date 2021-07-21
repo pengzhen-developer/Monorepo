@@ -8,7 +8,7 @@
                    v-on:click="back">返回上一页</el-button>
       </div>
       <div class="org-name">
-        {{props.云仓名称}}
+        {{props.Name}}
       </div>
     </div>
 
@@ -80,7 +80,7 @@ export default {
 
   mounted() {
     this.$nextTick().then(() => {
-      if (this.props.云仓ID) {
+      if (this.props.Id) {
         this.getInfo()
       }
     })
@@ -90,7 +90,7 @@ export default {
     getInfo() {
       this.loading = true
       let params = {
-        云仓ID: this.props.云仓ID
+        ID: this.props.Id
       }
       Service.getInfo(params)
         .then((res) => {

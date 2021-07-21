@@ -215,8 +215,14 @@ export default {
       if (value) {
         // 移除拆零校验
         this.$refs.drugModel.clearValidate('is_disconnect_attr')
+        if (!Peace.validate.isPInterger(value)) {
+          return callback(new Error('请输入正整数'))
+        } else {
+          callback()
+        }
+      } else {
+        callback()
       }
-      callback()
     }
     const checkDisconnect = (rule, value, callback) => {
       if (value === 'yes') {
