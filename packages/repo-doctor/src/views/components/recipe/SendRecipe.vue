@@ -267,9 +267,12 @@ export default {
   },
 
   created() {
-    Promise.all([this.getCase(), this.getPrevInquiry(), this.checkIsBuilding()]).then(() => {
-      this.resetDataFromCache()
-    })
+    // 验证是否建档
+    // 北辰医院非建档用户，无法开具院内处方
+    this.checkIsBuilding()
+
+    // 带入病历信息
+    this.getCase()
   },
 
   methods: {
@@ -317,38 +320,6 @@ export default {
             console.log('checkIsBuilding' + this.model.prescriptionTag)
           }
         })
-      }
-    },
-
-    getPrevInquiry() {
-      const recipeCache = this.cacheKey && Peace.cache.sessionStorage.get(this.cacheKey)
-      const params = {
-        familyId: this.session.content.patientInfo.familyId
-      }
-
-      if (recipeCache) {
-        return Promise.resolve()
-      } else {
-        return Service.getLastInfo(params).then((res) => {
-          if (res.data.drugList?.length > 0) {
-            Peace.util.success('当前预填处方信息是带入了就诊人上一次的处方，仅作为参考，可修改！')
-
-            this.model.drugList = res.data.drugList
-            this.model.prescriptionTag = res.data.prescriptionTag
-          }
-        })
-      }
-    },
-
-    resetDataFromCache() {
-      const recipeCache = this.cacheKey && Peace.cache.sessionStorage.get(this.cacheKey)
-
-      if (recipeCache) {
-        this.model.weight = recipeCache.weight
-        this.model.drugList = recipeCache.drugList
-        this.model.prescriptionTag = recipeCache.prescriptionTag
-
-        this.model.diagnoseList = recipeCache.diagnoseList.concat([])
       }
     },
 
