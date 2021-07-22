@@ -11,7 +11,6 @@
         </span>
         <span>{{ info.doctor_title }}</span>
         <span>{{ info.netdept_child }}</span>
-        <!-- <span><img src="" alt=""></span> -->
         <br>
         <span>{{ info.netHospital_name }}</span>
       </div>
@@ -144,91 +143,133 @@
         </div>
       </div>
     </div>
-    <div class="info-block q-mb-16">
+    <div class="info-block">
       <div class="info-title">订单信息</div>
-
-      <div class="info-row">
-        <div class="info-row-label">
-          <span>订单编号</span>
-        </div>
-        <div class="info-row-content">{{ info.order_no }}</div>
-      </div>
-
-      <div class="info-row">
-        <div class="info-row-label">
-          <span>下单时间</span>
-        </div>
-        <div class="info-row-content">{{ info.created_time }}</div>
-      </div>
-
-      <div class="info-row">
-        <div class="info-row-label">
-          <span>订单费用</span>
-        </div>
-        <div class="info-row-content"
-             v-if="info.order_money">{{ info.order_money }}元</div>
-      </div>
-
-      <div class="info-row"
-           v-if="info.serviceEquities">
-        <div class="info-row-label">
-          <span>权益抵扣</span>
-        </div>
-        <div class="info-row-content">{{ info.serviceEquities }}</div>
-      </div>
-
-      <template v-if="info.paymentType">
+      <div class="info-block-content">
         <div class="info-row">
           <div class="info-row-label">
-            <span>支付方式</span>
+            <span>订单编号</span>
           </div>
-          <div class="info-row-content">{{ info.paymentType | getEnumLable(source.paymentStatus) }}</div>
+          <div class="info-row-content">{{ info.order_no }}</div>
         </div>
+
         <div class="info-row">
+          <div class="info-row-label">
+            <span>下单时间</span>
+          </div>
+          <div class="info-row-content">{{ info.created_time }}</div>
+        </div>
+        <template v-if="info.payInfo">
+          <div class="info-row"
+               v-if="info.payInfo.payModeTxt&&info.payTime">
+            <div class="info-row-label">
+              <span>支付方式</span>
+            </div>
+            <div class="info-row-content">{{info.payInfo.paymentTypeTxt?info.payInfo.payModeTxt +'-' + info.payInfo.paymentTypeTxt : info.payInfo.payModeTxt }}</div>
+          </div>
+          <div class="info-row"
+               v-if="info.payInfo.deductionTypeTxt">
+            <div class="info-row-label">
+              <span>抵扣类型</span>
+            </div>
+            <div class="info-row-content">{{ info.payInfo.deductionTypeTxt }}</div>
+          </div>
+
+          <div class="info-row"
+               v-if="info.payInfo.medicalTreatmentTypetxt">
+            <div class="info-row-label">
+              <span>医保类型</span>
+            </div>
+            <div class="info-row-content">{{ info.payInfo.medicalTreatmentTypetxt }}</div>
+          </div>
+
+          <div class="info-row"
+               v-if="info.payInfo.diseasesTxt">
+            <div class="info-row-label">
+              <span>病种</span>
+            </div>
+            <div class="info-row-content">{{ info.payInfo.diseasesTxt }}</div>
+          </div>
+
+          <div class="info-row"
+               v-if="info.payInfo.servicePackageName">
+            <div class="info-row-label">
+              <span>服务包名称</span>
+            </div>
+            <div class="info-row-content">{{ info.payInfo.servicePackageName }}</div>
+          </div>
+
+          <div class="info-row"
+               v-if="info.payInfo.equitiesName">
+            <div class="info-row-label">
+              <span>服务包权益</span>
+            </div>
+            <div class="info-row-content">{{ info.payInfo.equitiesName }}</div>
+          </div>
+        </template>
+        <div class="info-row"
+             v-if="info.payTime">
           <div class="info-row-label">
             <span>支付时间</span>
           </div>
           <div class="info-row-content">{{ info.payTime }}</div>
         </div>
-      </template>
-
-      <div class="info-row">
-        <div class="info-row-label">
-          <span>{{moneyText}}</span>
+        <div class="info-row"
+             v-if="info.payTime&&info.divisionId">
+          <div class="info-row-label">
+            <span>发票号</span>
+          </div>
+          <div class="info-row-content">{{ info.divisionId }}</div>
         </div>
-        <div class="info-row-content">
-          <span class="red"
-                v-if="info.pay_money">{{ info.pay_money }}元</span>
-          <span v-if="info.orderStatus === 5"
-                style="font-size: 12px;">(已退款)</span>
+        <div class="info-row"
+             v-if="info.backTime">
+          <div class="info-row-label">
+            <span>退诊时间</span>
+          </div>
+          <div class="info-row-content">{{ info.backTime }}</div>
+        </div>
+
+        <div class="info-row"
+             v-if="info.cancelTime">
+          <div class="info-row-label">
+            <span>取消时间</span>
+          </div>
+          <div class="info-row-content">{{ info.cancelTime }}</div>
+        </div>
+
+        <div class="info-row"
+             v-if="info.backEquities">
+          <div class="info-row-label">
+            <span>权益回退</span>
+          </div>
+          <div class="info-row-content">{{ info.backEquities }}</div>
         </div>
       </div>
-    </div>
+      <div class="info-block-content">
+        <template v-if="info.moneyRecord&&info.moneyRecord.length>0">
+          <div class="info-row"
+               v-for="(item,index) in info.moneyRecord"
+               :key="index">
+            <div class="info-row-label">
+              <span>{{item.name}}</span>
+            </div>
+            <div class="info-row-content">{{ item.value }}</div>
+          </div>
+        </template>
+        <div class="info-row">
+          <div class="info-row-label">
+            <span>自费金额</span>
+          </div>
+          <div class="info-row-content">
 
-    <div class="info-row"
-         v-if="info.backTime">
-      <div class="info-row-label">
-        <span>退诊时间</span>
+            <span class="red">￥{{ info.pay_money }}</span>
+            <span v-if="info.orderStatus === 5"
+                  style="font-size: 12px;">(已退款)</span>
+          </div>
+        </div>
       </div>
-      <div class="info-row-content">{{ info.backTime }}</div>
-    </div>
 
-    <div class="info-row"
-         v-if="info.cancelTime">
-      <div class="info-row-label">
-        <span>取消时间</span>
-      </div>
-      <div class="info-row-content">{{ info.cancelTime }}</div>
     </div>
-
-    <div class="info-row"
-         v-if="info.backEquities">
-      <div class="info-row-label">
-        <span>权益回退</span>
-      </div>
-      <div class="info-row-content">{{ info.backEquities }}</div>
-    </div>
-
   </div>
 </template>
 <script>
@@ -247,16 +288,6 @@ export default {
     }
   },
   computed: {
-    moneyText() {
-      let str = ''
-      if (this.info.orderStatus >= 3 || this.info.payTime != null) {
-        str = '实付金额'
-      } else {
-        str = '应付金额'
-      }
-      return str
-    },
-
     orderLabelColor() {
       let color = '#fff'
       switch (this.info.inquiryStatus) {
@@ -324,9 +355,9 @@ $border-color: #f3f3f3;
     & > span {
       text-align: right;
     }
-    &:after {
-      content: '：';
-    }
+    // &:after {
+    //   content: '：';
+    // }
   }
   .info-row-content {
     padding-left: 2px;
@@ -337,11 +368,6 @@ $border-color: #f3f3f3;
     & > img {
       height: 20px;
       display: block;
-    }
-  }
-  &.two-cols {
-    .info-row-content {
-      width: calc(50% - 1em - 4.3em);
     }
   }
 }
@@ -392,7 +418,7 @@ $border-color: #f3f3f3;
   .info-row-content {
     font-weight: normal;
     & > span + span {
-      margin-left: 1em;
+      margin-left: 4px;
     }
   }
   .info-row-label,
@@ -451,6 +477,16 @@ $border-color: #f3f3f3;
     margin-right: 8px;
     margin-bottom: -2px;
     border-radius: 2px;
+  }
+}
+.info-block-content {
+  width: 100%;
+  background: #f5f5f5;
+  margin-top: 10px;
+  padding: 5px 15px;
+  border-radius: 8px;
+  .info-row-content {
+    padding-left: 20px;
   }
 }
 .info-row {

@@ -6,45 +6,49 @@
                label-suffix="："
                inline>
         <el-form-item label="机构名称">
-          <el-select v-model="search.orgName">
-            <el-option label="全部"
-                       value=""></el-option>
+          <el-select v-model="search.orgName"
+                     clearable=""
+                     placeholder="全部">
             <el-option :key="index"
                        :label="item.orgName"
                        :value="item.orgName"
                        v-for="(item, index) in orgNameList"></el-option>
           </el-select>
         </el-form-item>
+
         <el-form-item label="咨询类型">
-          <el-select v-model="search.orderType">
-            <el-option label="全部"
-                       value></el-option>
+          <el-select v-model="search.orderType"
+                     clearable=""
+                     placeholder="全部">
             <el-option :key="item.value"
                        :label="item.label"
                        :value="item.value"
                        v-for="item in source.orderInquiryType"></el-option>
           </el-select>
         </el-form-item>
+
         <el-form-item label="支付状态">
-          <el-select v-model="search.orderStatus">
-            <el-option value=""
-                       label="全部"></el-option>
+          <el-select v-model="search.orderStatus"
+                     clearable=""
+                     placeholder="全部">
             <el-option :key="'order' + item.value"
                        :label="item.label"
                        :value="item.value"
                        v-for="item in source.orderStatus"></el-option>
           </el-select>
         </el-form-item>
+
         <el-form-item label="订单状态">
-          <el-select v-model="search.inquiryStatus">
-            <el-option value=""
-                       label="全部"></el-option>
+          <el-select v-model="search.inquiryStatus"
+                     clearable=""
+                     placeholder="全部">
             <el-option :key="'inquiry' + item.value"
                        :label="item.label"
                        :value="item.value"
                        v-for="item in source.inquiryStatus"></el-option>
           </el-select>
         </el-form-item>
+
         <el-form-item label="订单编号">
           <el-input placeholder="输入订单编号"
                     v-model="search.orderNo"
@@ -60,6 +64,7 @@
                            :picker-options="pickerOptions">
           </PeaceDatePicker>
         </el-form-item>
+
         <el-form-item class="search-btn">
           <el-button @click="fetch"
                      type="primary">查询</el-button>
@@ -74,30 +79,30 @@
       <peace-table ref="table"
                    class="table"
                    pagination>
-        <peace-table-column label="订单编号"
-                            width="250">
+        <PeaceTableColumn label="订单编号"
+                          width="250">
           <template slot-scope="scope">
             <el-button @click="getOrderInfo(scope.row.inquiry_no)"
                        size="mini"
                        style="white-space:normal;text-align:left;"
                        type="text">{{ scope.row.order_no}}</el-button>
           </template>
-        </peace-table-column>
-        <peace-table-column label="订单应用"
-                            min-width="100"
-                            prop="channel">
-        </peace-table-column>
-        <peace-table-column label="就诊人"
-                            min-width="100"
-                            prop="family_name"></peace-table-column>
-        <peace-table-column label="咨询医生"
-                            min-width="100"
-                            prop="doctor_name"></peace-table-column>
-        <peace-table-column label="机构名称"
-                            min-width="120"
-                            prop="netHospital_name"></peace-table-column>
-        <peace-table-column label="咨询类型"
-                            min-width="120">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="订单应用"
+                          min-width="100"
+                          prop="channel">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="就诊人"
+                          min-width="100"
+                          prop="family_name"></PeaceTableColumn>
+        <PeaceTableColumn label="咨询医生"
+                          min-width="100"
+                          prop="doctor_name"></PeaceTableColumn>
+        <PeaceTableColumn label="机构名称"
+                          min-width="120"
+                          prop="netHospital_name"></PeaceTableColumn>
+        <PeaceTableColumn label="咨询类型"
+                          min-width="120">
           <template slot-scope="scope">
             <div class="private">
               <span class="private-tag"
@@ -105,34 +110,44 @@
               <span>{{ scope.row.inquiry_type | getEnumLable(source.orderInquiryType) }}</span>
             </div>
           </template>
-        </peace-table-column>
-        <peace-table-column label="订单时间"
-                            width="180"
-                            prop="created_time"></peace-table-column>
-        <peace-table-column label="订单金额（元）"
-                            min-width="140"
-                            prop="order_money">
-          <template slot-scope="scope">
-            <span>{{ scope.row.order_money }}</span>
-          </template>
-        </peace-table-column>
-        <peace-table-column label="支付状态"
-                            min-width="100"
-                            prop="order_status">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="下单时间"
+                          width="180"
+                          prop="created_time"></PeaceTableColumn>
+        <PeaceTableColumn label="订单金额（元）"
+                          min-width="140"
+                          prop="totalMoney">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="自费金额（元）"
+                          min-width="140"
+                          prop="orderMoney">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="支付状态"
+                          min-width="100"
+                          prop="order_status">
           <template slot-scope="scope">
             <span>{{ scope.row.order_status | getEnumLable(source.orderStatus) }}</span>
           </template>
-        </peace-table-column>
-        <peace-table-column label="订单状态"
-                            min-width="100"
-                            prop="inquiry_status">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="支付方式"
+                          min-width="160"
+                          prop="payMentType"></PeaceTableColumn>
+        <PeaceTableColumn label="抵扣类型"
+                          min-width="100">
+          <template slot-scope="scope">
+            <span>{{ scope.row.deductionType ||'--' }}</span>
+          </template>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="订单状态"
+                          min-width="100"
+                          prop="inquiry_status">
           <template slot-scope="scope">
             <span>{{ scope.row.inquiry_status | getEnumLable(source.inquiryStatus) }}</span>
           </template>
-        </peace-table-column>
-        <peace-table-column label="操作"
-                            min-width="160"
-                            fixed="right">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="操作"
+                          min-width="160"
+                          fixed="right">
           <template slot-scope="scope">
             <template v-if="[3, 4, 5].includes(scope.row.inquiry_status)">
               <el-button @click="getInquiry(scope.row.inquiry_no)"
@@ -145,7 +160,7 @@
                          type="text">病历</el-button>
             </template>
           </template>
-        </peace-table-column>
+        </PeaceTableColumn>
       </peace-table>
 
     </div>
