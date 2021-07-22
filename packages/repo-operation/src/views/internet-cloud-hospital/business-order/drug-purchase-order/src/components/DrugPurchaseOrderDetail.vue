@@ -100,7 +100,7 @@
              v-bind:style="{'padding-bottom':cancelList.length>0?'0px':'16px'}">
           <div class="flex">
             <div class="order-status-label color-333">订单状态</div>
-            <div class="order-status-content">{{ getOrderStatusText(info) }}</div>
+            <div class="order-status-content">{{ orderStatusText }}</div>
           </div>
           <!-- 取消记录 -->
           <div class="flex"
@@ -124,18 +124,18 @@
           <span>订单编号</span>
           <span>{{ info.orderNo }}</span>
         </div>
-        <div v-if="info.payInfo.payModeTxt&&info.payTime">
-          <span>支付方式</span>
-          <span>{{info.payInfo.paymentTypeTxt? info.payInfo.payModeTxt + '-' + info.payInfo.paymentTypeTxt: info.payInfo.payModeTxt }}</span>
-        </div>
+
         <div>
-          <span>下单时间</span>
+          <span>创建时间</span>
           <span>{{info.purchaseDrugOrderStreams.length > 0?info.purchaseDrugOrderStreams[0].createdTime: info.createdTime }}</span>
         </div>
-        <div>
-          <span>支付时间</span>
-          <span>{{info.purchaseDrugOrderStreams.length > 1?info.purchaseDrugOrderStreams[1].createdTime: info.payTime }}</span>
-        </div>
+        <template v-if="showTrackingNumber">
+          <div v-for="(item,index) in info.expressNo"
+               :key="index">
+            <span>{{index==0?'运单编号':''}}</span>
+            <span>{{item.expressOrg}} {{ item.expressNo }}</span>
+          </div>
+        </template>
         <div v-if="info.divisionId&&info.payTime">
           <span>发票号</span>
           <span>{{ info.divisionId }}</span>
@@ -144,25 +144,24 @@
           <span>抵扣类型</span>
           <span>{{ info.payInfo.deductionTypeTxt }}</span>
         </div>
-        <div v-if="info.payInfo.medicalTreatmentTypetxt">
-          <span>医保类型</span>
-          <span>{{ info.payInfo.medicalTreatmentTypetxt }}</span>
-        </div>
-        <div v-if="info.payInfo.diseasesTxt">
-          <span>病种</span>
-          <span>{{ info.payInfo.diseasesTxt }}</span>
-        </div>
-
-        <template v-if="showTrackingNumber">
-          <div v-for="(item,index) in info.expressNo"
-               :key="index">
-            <span>{{index==0?'运单编号':''}}</span>
-            <span>{{item.expressOrg}} {{ item.expressNo }}</span>
+        <template v-if="info.payInfo.deductionType==='yibaopay'">
+          <div v-if="info.payInfo.medicalTreatmentTypetxt">
+            <span>医保类型</span>
+            <span>{{ info.payInfo.medicalTreatmentTypetxt }}</span>
+          </div>
+          <div v-if="info.payInfo.diseasesTxt">
+            <span>病种</span>
+            <span>{{ info.payInfo.diseasesTxt }}</span>
           </div>
         </template>
+
+        <div v-if="info.payInfo.payModeTxt&&info.payTime">
+          <span>支付方式</span>
+          <span>{{info.payInfo.paymentTypeTxt? info.payInfo.payModeTxt + '-' + info.payInfo.paymentTypeTxt: info.payInfo.payModeTxt }}</span>
+        </div>
         <template v-for="item in info.purchaseDrugOrderStreams">
           <div :key="item.status"
-               v-if="item.status>1">
+               v-if="item.status>0">
             <span>{{ item.timeStatusTxt }}</span>
             <span>{{ item.createdTime }}</span>
           </div>
@@ -192,7 +191,8 @@ export default {
       source: {
         ShippingMethod: [],
         DistributionOrderStatus: [],
-        SelfOrderStatus: []
+        SelfOrderStatus: [],
+        PayModel: []
       }
     }
   },
@@ -222,7 +222,7 @@ export default {
 
     paymentTypesText() {
       if (this.info.payMode) {
-        return this.$options.filters['getEnumLable'](this.info.payMode, Constant.PAY_MODE_STATUS)
+        return this.$options.filters['getEnumLable'](this.info.payMode, this.source.PayModel)
       } else {
         const paymentTypes = this.$options.filters['getPaymentStatus'](this.info.paymentType, Constant.PAYMENT_STATUS)
         let text = '在线支付'
@@ -245,6 +245,13 @@ export default {
         this.info.expressNo.length > 0 &&
         this.info.purchaseDrugOrderStreams.length > 0
       )
+    },
+    orderStatusText() {
+      if (this.info.shippingMethod.toString() === '0') {
+        return this.source.SelfOrderStatus.find((item) => item.value === this.info.callOrderStatus.toString())?.label
+      } else {
+        return this.source.DistributionOrderStatus.find((item) => item.value === this.info.callOrderStatus.toString())?.label
+      }
     }
   },
   filters: {
@@ -265,6 +272,7 @@ export default {
 
   async created() {
     // 获取字典
+    this.source.PayModel = await Peace.identity.dictionary.getList('PayMode')
     // 配送方式
     this.source.ShippingMethod = await Peace.identity.dictionary.getList('ShippingMethod')
 
@@ -273,28 +281,6 @@ export default {
     this.source.SelfOrderStatus = await Peace.identity.dictionary.getList('self_extraction_order_status')
   },
   methods: {
-    getNum(string) {
-      if (isNaN(parseInt(string))) {
-        return string.substring(1)
-      } else {
-        return string
-      }
-    },
-    getOrderStatusText(row) {
-      if (row.shippingMethod.toString() === '0') {
-        return this.source.SelfOrderStatus.find((item) => item.value === row.callOrderStatus.toString())?.label
-      } else {
-        return this.source.DistributionOrderStatus.find((item) => item.value === row.callOrderStatus.toString())?.label
-      }
-    },
-
-    getPaymentStatus(status) {
-      let list = status.split(',')
-      const result = list.map((item) => {
-        return this.$options.filters['getEnumLable'](item, Constant.PAYMENT_STATUS)
-      })
-      return result.join(',')
-    },
     viewRpInfo() {
       const param = {
         ids: this.info.prescribeId || this.info.presIds,
@@ -656,6 +642,7 @@ $border-color: #eaeaea;
     }
   }
   .order-fullinfo {
+    padding-bottom: 0;
     font-size: 12px;
     line-height: 1.5;
     color: $grey-text;
@@ -670,6 +657,7 @@ $border-color: #eaeaea;
       justify-content: flex-start;
       align-items: flex-start;
       width: 50%;
+      padding: 4px 0;
     }
     & > div > span {
       flex: 1;

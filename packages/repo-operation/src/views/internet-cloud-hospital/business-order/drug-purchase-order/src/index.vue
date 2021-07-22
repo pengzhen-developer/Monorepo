@@ -338,6 +338,7 @@ export default {
       const params = { orderNo }
       Service.getPurchases(params).then((res) => {
         this.purchaseDialogVisible = true
+
         this.currentPurchase = Object.assign({}, res.data, {
           presIds: data.prescribeId,
           $index: index
