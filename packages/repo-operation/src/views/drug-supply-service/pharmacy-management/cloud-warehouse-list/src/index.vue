@@ -121,13 +121,14 @@ export default {
   created() {},
 
   methods: {
-    goDetail(code) {
+    goDetail(data) {
       this.visible = true
-      Service.getDetail({ Code: code }).then((res) => {
+      Service.getDetail(data).then((res) => {
         this.systemDict = res.data.CloudStructure
         this.orgDict = res.data.CustomerStructure
         if (res.data.GetCustIn3PartRes !== null) {
           this.warehouseInfo = res.data.GetCustIn3PartRes
+
           this.operationInfo = res.data.OperationInfo
           // 根据当前系统取对应配置
           this.currentSystemForm = this.systemDict.find((item) => item.SystemCode === this.warehouseInfo.SystemCode)

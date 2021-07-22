@@ -51,16 +51,20 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="云仓名称"
-                          prop="CloudName"
+                          prop="Name"
                           min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="所属机构"
                           prop="CustName"
-                          min-width="180px"></PeaceTableColumn>
-        <PeaceTableColumn label="系统名称"
-                          prop="sys_name"
                           min-width="180px">
           <template slot-scope="scope">
-            {{ scope.row.sys_name || '——' }}
+            {{ scope.row.CustName || '——' }}
+          </template>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="系统名称"
+                          prop="SysName"
+                          min-width="180px">
+          <template slot-scope="scope">
+            {{ scope.row.SysName || '——' }}
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="创建时间"
@@ -132,7 +136,7 @@ export default {
     },
 
     showDetail(row) {
-      this.$emit('onShowDetail', row.CustCode)
+      this.$emit('onShowDetail', { CustCode: row.CustCode, Id: row.Id })
     }
   }
 }
