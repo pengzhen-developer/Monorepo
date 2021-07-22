@@ -19,6 +19,8 @@
           </el-option>
         </el-select>
 
+        <span class="q-ml-8 text-red">不在范围</span>
+
         <el-input-number v-model="model.dosageRuleList.eachMinDose"
                          :controls="false"
                          :max="parseFloat(model.dosageRuleList.eachMaxDose)"
@@ -48,6 +50,7 @@
     <div class="flex row items-center"
          v-else>
       <span class="q-mr-8"> {{model.dosageRuleList.dosagetype | filterDictionary(source.DosageType,'--')}}</span>
+      <span class="q-mr-8 text-red">不在范围</span>
       <span class="q-mr-8">{{ model.dosageRuleList.dosagetype === '0'? model.dosageRuleList.eachMinDose : model.dosageRuleList.dailyMinDose }}</span>
       <span class="q-mr-8">至</span>
       <span class="q-mr-8">{{ model.dosageRuleList.dosagetype === '0'? model.dosageRuleList.eachMaxDose : model.dosageRuleList.dailyMaxDose }}</span>
@@ -132,44 +135,20 @@ export default {
     verificationResults() {
       const tmp = this.model.dosageRuleList
       if (tmp.dosagetype === '0') {
-        if (
-          (tmp.eachMinDose || tmp.eachMinDose === 0) &&
-          (tmp.eachMaxDose || tmp.eachMaxDose === 0) &&
-          tmp.unitType &&
-          tmp.doseUnit
-        ) {
+        if ((tmp.eachMinDose || tmp.eachMinDose === 0) && (tmp.eachMaxDose || tmp.eachMaxDose === 0) && tmp.unitType && tmp.doseUnit) {
           return CONSTANT.RULE_VALIDATION_RESULTS.已完成
         } else {
-          if (
-            tmp.eachMinDose ||
-            tmp.eachMinDose === 0 ||
-            tmp.eachMaxDose ||
-            tmp.eachMaxDose === 0 ||
-            tmp.unitType ||
-            tmp.doseUnit
-          ) {
+          if (tmp.eachMinDose || tmp.eachMinDose === 0 || tmp.eachMaxDose || tmp.eachMaxDose === 0 || tmp.unitType || tmp.doseUnit) {
             return CONSTANT.RULE_VALIDATION_RESULTS.未完成
           } else {
             return CONSTANT.RULE_VALIDATION_RESULTS.未开始
           }
         }
       } else {
-        if (
-          (tmp.dailyMinDose || tmp.dailyMinDose === 0) &&
-          (tmp.dailyMaxDose || tmp.dailyMaxDose === 0) &&
-          tmp.unitType &&
-          tmp.doseUnit
-        ) {
+        if ((tmp.dailyMinDose || tmp.dailyMinDose === 0) && (tmp.dailyMaxDose || tmp.dailyMaxDose === 0) && tmp.unitType && tmp.doseUnit) {
           return CONSTANT.RULE_VALIDATION_RESULTS.已完成
         } else {
-          if (
-            tmp.dailyMinDose ||
-            tmp.dailyMinDose === 0 ||
-            tmp.dailyMaxDose ||
-            tmp.dailyMaxDose === 0 ||
-            tmp.unitType ||
-            tmp.doseUnit
-          ) {
+          if (tmp.dailyMinDose || tmp.dailyMinDose === 0 || tmp.dailyMaxDose || tmp.dailyMaxDose === 0 || tmp.unitType || tmp.doseUnit) {
             return CONSTANT.RULE_VALIDATION_RESULTS.未完成
           } else {
             return CONSTANT.RULE_VALIDATION_RESULTS.未开始
