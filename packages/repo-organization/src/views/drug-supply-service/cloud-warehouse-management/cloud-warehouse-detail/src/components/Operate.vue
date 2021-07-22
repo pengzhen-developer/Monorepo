@@ -106,6 +106,7 @@ export default {
       this.saveLoading = true
 
       let params = {
+        Id: this.props.Id,
         InformedConsent: this.InformedConsent
       }
       Service.saveInformedConsentInfo(params)

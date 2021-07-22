@@ -72,12 +72,22 @@
           </el-form-item>
 
         </div>
-        <div class="text-right">
-          <el-button v-on:click="cancelEdit">取消修改</el-button>
-          <el-button type="primary"
-                     v-bind:disabled="saveing"
-                     v-on:click="save">保存</el-button>
-        </div>
+        <template v-if="edit">
+          <div class="text-right">
+            <el-button v-on:click="cancelEdit">取消修改</el-button>
+            <el-button type="primary"
+                       v-bind:disabled="saveing"
+                       v-on:click="save">保存</el-button>
+          </div>
+        </template>
+        <template v-else>
+          <div class="text-right">
+            <el-button v-on:click="cancelDialog">取消</el-button>
+            <el-button type="primary"
+                       v-bind:disabled="saveing"
+                       v-on:click="save">保存</el-button>
+          </div>
+        </template>
       </el-form>
     </template>
   </div>

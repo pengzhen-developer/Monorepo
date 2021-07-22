@@ -126,7 +126,11 @@ export default {
     },
 
     add() {
-      Service.getInfo().then((res) => {
+      // 只获取配置，传无效ID
+      let params = {
+        ID: 0
+      }
+      Service.getInfo(params).then((res) => {
         this.systemDict = res.data.CloudStructure
         this.cloudInfo = Object.assign({}, CLOUD_MODEL)
 

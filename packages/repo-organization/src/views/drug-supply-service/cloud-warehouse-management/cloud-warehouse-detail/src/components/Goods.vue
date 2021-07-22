@@ -153,7 +153,7 @@ export default {
     fetch() {
       this.loading = true
       const fetch = Service.getGoodsList
-      const params = Object({}, this.model, { PharmacyCode: this.props.PharmacyCode })
+      const params = Object.assign({}, this.model, { PharmacyCode: this.props.PharmacyCode })
 
       this.$refs.table.reloadData({ fetch, params }).finally(() => {
         this.loading = false

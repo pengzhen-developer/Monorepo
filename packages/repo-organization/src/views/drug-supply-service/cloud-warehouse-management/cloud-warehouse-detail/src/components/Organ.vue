@@ -162,7 +162,7 @@ export default {
           this.cloudInfo = res.data.GetCustIn3PartRes || Object.assign({}, CLOUD_MODEL)
           this.orgDict = res.data.CustomerStructure
           this.prentCustList = this.cloudInfo.PrentCustList
-          this.systemCode = this.cloudInfo.systemCode
+          this.systemCode = this.cloudInfo.SystemCode
           this.currentOrgForm = this.orgDict.find((item) => item.SystemCode === this.systemCode)
         })
         .finally(() => {
