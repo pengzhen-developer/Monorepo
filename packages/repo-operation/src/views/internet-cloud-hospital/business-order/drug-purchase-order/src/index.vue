@@ -6,19 +6,20 @@
                label-width="auto"
                inline>
         <el-form-item label="机构名称">
-          <el-select v-model="search.orgName">
-            <el-option label="全部"
-                       value=""></el-option>
+          <el-select v-model="search.orgName"
+                     clearable=""
+                     placeholder="全部">
             <el-option :key="index"
                        :label="item.orgName"
                        :value="item.orgName"
                        v-for="(item, index) in orgNameList"></el-option>
           </el-select>
         </el-form-item>
+
         <el-form-item label="药店">
-          <el-select v-model="search.drugstore">
-            <el-option label="全部"
-                       value=""></el-option>
+          <el-select v-model="search.drugstore"
+                     clearable=""
+                     placeholder="全部">
             <el-option :key="index"
                        :label="item.drugStoreName"
                        :value="item.drugStoreName"
@@ -69,10 +70,10 @@
           </template>
         </el-form-item>
 
-        <el-form-item label="订单支付状态">
-          <el-select v-model="search.orderPayStatus">
-            <el-option value=""
-                       label="全部"></el-option>
+        <el-form-item label="支付状态">
+          <el-select v-model="search.orderPayStatus"
+                     clearable=""
+                     placeholder="全部">
             <el-option :key="'order' + item.value"
                        :label="item.label"
                        :value="item.value"
@@ -110,6 +111,10 @@
       </el-form>
     </div>
     <div class="card">
+      <div class="q-mb-lg">
+        <el-button @click="exportExcel"
+                   type="primary">导出</el-button>
+      </div>
       <PeaceTable pagination
                   ref="table">
         <PeaceTableColumn label="订单编号"
@@ -132,15 +137,16 @@
         <PeaceTableColumn label="就诊人"
                           width="100"
                           prop="patientName"></PeaceTableColumn>
-        <PeaceTableColumn label="意向药店"
+        <PeaceTableColumn label="下单药房"
                           min-width="150"
                           prop="drugStore"></PeaceTableColumn>
         <PeaceTableColumn label="订单金额（元）"
                           min-width="140"
+                          prop="totalMoney">
+        </PeaceTableColumn>
+        <PeaceTableColumn label="自费金额（元）"
+                          min-width="140"
                           prop="orderMoney">
-          <template slot-scope="scope">
-            <span>{{ scope.row.orderMoney }}</span>
-          </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="订单状态"
                           min-width="100"
@@ -149,11 +155,20 @@
             <span>{{ getOrderStatusText(scope.row) }}</span>
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn label="订单支付状态"
+        <PeaceTableColumn label="支付状态"
                           min-width="120"
                           prop="orderPayStatus">
           <template slot-scope="scope">
             <span>{{ scope.row.orderPayStatus | getEnumLable(source.orderPayStatus) }}</span>
+          </template>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="支付方式"
+                          min-width="160"
+                          prop="payMentType"></PeaceTableColumn>
+        <PeaceTableColumn label="抵扣类型"
+                          min-width="100">
+          <template slot-scope="scope">
+            <span>{{ scope.row.deductionType ||'--' }}</span>
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="下单时间"
@@ -193,6 +208,16 @@
       <purchase-order-info :info="currentPurchase"
                            @viewPres="viewPres"></purchase-order-info>
     </peace-dialog>
+
+    <!-- 导出 -->
+    <el-dialog :visible.sync="exportDialogVisible"
+               title="订单导出条件"
+               v-if="exportDialogVisible"
+               width="420px">
+      <export-order type="drug"
+                    :query="search"></export-order>
+    </el-dialog>
+
   </div>
 </template>
 <script>
@@ -201,6 +226,7 @@ import Constant from './constant'
 
 import PresInfo from './components/PrescriptionOrderDetail'
 import PurchaseOrderInfo from './components/DrugPurchaseOrderDetail'
+import ExportOrder from './components/ExportOrder'
 
 export default {
   name: 'drug-purchase-order',
@@ -344,7 +370,8 @@ export default {
 
   components: {
     PresInfo,
-    PurchaseOrderInfo
+    PurchaseOrderInfo,
+    ExportOrder
   }
 }
 </script>

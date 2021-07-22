@@ -71,22 +71,22 @@
                 </div>
                 <div class="flex">
                   <span class="red">¥{{ drug.DrugUnitPrice }}</span>
-                  <span class="gary">x{{ drug.DrugQty }}</span>
+                  <span class="gary">x{{ drug.DrugQty }}{{drug.DrugQtyUnit}}</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="flex column total-info">
-            <template v-if="moneyRecord.length>0">
+            <template v-if="info.moneyRecord&&info.moneyRecord.length>0">
               <div class="flex row justify-between"
-                   v-for="(money,index) in moneyRecord"
+                   v-for="(money,index) in info.moneyRecord"
                    :key="index">
                 <div class="text-caption">{{money.name}}</div>
                 <div class="text-caption">{{money.value}}</div>
               </div>
             </template>
             <div class="flex row justify-between">
-              <div class="text-caption color-333">{{ info.payStatus>=3||info.payTime?'实付金额':'应付金额' }}</div>
+              <div class="text-caption color-333">自费金额</div>
               <div class="red text-body1">
                 ¥{{ info.orderMoney | toFixed2() }}
                 <span v-if="info.refundTime"
@@ -124,27 +124,50 @@
           <span>订单编号</span>
           <span>{{ info.orderNo }}</span>
         </div>
-        <div>
+        <div v-if="info.payInfo.payModeTxt&&info.payTime">
           <span>支付方式</span>
-          <span>{{ info.paymentTypeTxt }}</span>
+          <span>{{info.payInfo.paymentTypeTxt? info.payInfo.payModeTxt + '-' + info.payInfo.paymentTypeTxt: info.payInfo.payModeTxt }}</span>
         </div>
-        <div v-if="info.purchaseDrugOrderStreams && info.purchaseDrugOrderStreams.length > 0 && info.shippingMethod === 1 && info.callOrderStatus >= 3 && info.callOrderStatus !== 5 && info.expressNo.length > 0">
-          <span>运单编号</span>
-          <span>{{ expressNoText }}</span>
+        <div>
+          <span>下单时间</span>
+          <span>{{info.purchaseDrugOrderStreams.length > 0?info.purchaseDrugOrderStreams[0].createdTime: info.createdTime }}</span>
         </div>
-        <template v-if="info.purchaseDrugOrderStreams && info.purchaseDrugOrderStreams.length > 0">
-          <div v-for="item in info.purchaseDrugOrderStreams"
-               :key="item.status">
+        <div>
+          <span>支付时间</span>
+          <span>{{info.purchaseDrugOrderStreams.length > 1?info.purchaseDrugOrderStreams[1].createdTime: info.payTime }}</span>
+        </div>
+        <div v-if="info.divisionId&&info.payTime">
+          <span>发票号</span>
+          <span>{{ info.divisionId }}</span>
+        </div>
+        <div v-if="info.payInfo.deductionTypeTxt">
+          <span>抵扣类型</span>
+          <span>{{ info.payInfo.deductionTypeTxt }}</span>
+        </div>
+        <div v-if="info.payInfo.medicalTreatmentTypetxt">
+          <span>医保类型</span>
+          <span>{{ info.payInfo.medicalTreatmentTypetxt }}</span>
+        </div>
+        <div v-if="info.payInfo.diseasesTxt">
+          <span>病种</span>
+          <span>{{ info.payInfo.diseasesTxt }}</span>
+        </div>
+
+        <template v-if="showTrackingNumber">
+          <div v-for="(item,index) in info.expressNo"
+               :key="index">
+            <span>{{index==0?'运单编号':''}}</span>
+            <span>{{item.expressOrg}} {{ item.expressNo }}</span>
+          </div>
+        </template>
+        <template v-for="item in info.purchaseDrugOrderStreams">
+          <div :key="item.status"
+               v-if="item.status>1">
             <span>{{ item.timeStatusTxt }}</span>
             <span>{{ item.createdTime }}</span>
           </div>
         </template>
-        <template v-else>
-          <div v-if="info.payStatus >= 3 || info.payTime">
-            <span>支付时间</span>
-            <span>{{ info.payTime || '--' }}</span>
-          </div>
-        </template>
+
         <div v-if="info.refundTime">
           <span>退款时间</span>
           <span>{{info.refundTime}}</span>
@@ -175,14 +198,6 @@ export default {
   },
 
   computed: {
-    moneyRecord() {
-      //过滤金额为空
-      if (this.info.moneyRecord != null && this.info.moneyRecord.length > 0) {
-        return this.info.moneyRecord.filter((item) => this.getNum(item.value) >= 0)
-      } else {
-        return []
-      }
-    },
     cancelList() {
       let list = []
       list = this.info.cancelList
@@ -221,6 +236,15 @@ export default {
     },
     expressNoText() {
       return this.info.expressNo.map((item) => item.expressNo).join('，')
+    },
+    showTrackingNumber() {
+      return (
+        this.info.shippingMethod === 1 &&
+        this.info.callOrderStatus >= 3 &&
+        this.info.callOrderStatus !== 5 &&
+        this.info.expressNo.length > 0 &&
+        this.info.purchaseDrugOrderStreams.length > 0
+      )
     }
   },
   filters: {
