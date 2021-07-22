@@ -153,7 +153,7 @@
         </div>
       </div>
     </div>
-    <div class="info-block ">
+    <div class="info-block">
       <div class="info-title">订单信息</div>
       <div class="info-block-content">
         <div class="info-row">
@@ -162,62 +162,124 @@
           </div>
           <div class="info-row-content">{{ info.order_no }}</div>
         </div>
+
         <div class="info-row">
           <div class="info-row-label">
-            <span>订单时间</span>
+            <span>下单时间</span>
           </div>
           <div class="info-row-content">{{ info.created_time }}</div>
         </div>
-        <template v-if="info.paymentType">
-          <div class="info-row">
+        <template v-if="info.payInfo">
+          <div class="info-row"
+               v-if="info.payInfo.payModeTxt&&info.payTime">
             <div class="info-row-label">
               <span>支付方式</span>
             </div>
-            <div class="info-row-content">{{ info.paymentType | getEnumLable(source.paymentStatus) }}</div>
+            <div class="info-row-content">{{info.payInfo.paymentTypeTxt?info.payInfo.payModeTxt +'-'+info.payInfo.paymentTypeTxt : info.payInfo.payModeTxt }}</div>
           </div>
-          <div class="info-row">
+          <div class="info-row"
+               v-if="info.payInfo.deductionTypeTxt">
             <div class="info-row-label">
-              <span>支付时间</span>
+              <span>抵扣类型</span>
             </div>
-            <div class="info-row-content">{{ info.payTime }}</div>
+            <div class="info-row-content">{{ info.payInfo.deductionTypeTxt }}</div>
           </div>
+
+          <div class="info-row"
+               v-if="info.payInfo.medicalTreatmentTypetxt">
+            <div class="info-row-label">
+              <span>医保类型</span>
+            </div>
+            <div class="info-row-content">{{ info.payInfo.medicalTreatmentTypetxt }}</div>
+          </div>
+
+          <div class="info-row"
+               v-if="info.payInfo.diseasesTxt">
+            <div class="info-row-label">
+              <span>病种</span>
+            </div>
+            <div class="info-row-content">{{ info.payInfo.diseasesTxt }}</div>
+          </div>
+
+          <div class="info-row"
+               v-if="info.payInfo.servicePackageName">
+            <div class="info-row-label">
+              <span>服务包名称</span>
+            </div>
+            <div class="info-row-content">{{ info.payInfo.servicePackageName }}</div>
+          </div>
+
+          <div class="info-row"
+               v-if="info.payInfo.equitiesName">
+            <div class="info-row-label">
+              <span>服务包权益</span>
+            </div>
+            <div class="info-row-content">{{ info.payInfo.equitiesName }}</div>
+          </div>
+
         </template>
+        <div class="info-row"
+             v-if="info.payTime">
+          <div class="info-row-label">
+            <span>支付时间</span>
+          </div>
+          <div class="info-row-content">{{ info.payTime }}</div>
+        </div>
+        <div class="info-row"
+             v-if="info.payTime&&info.divisionId">
+          <div class="info-row-label">
+            <span>发票号</span>
+          </div>
+          <div class="info-row-content">{{ info.divisionId }}</div>
+        </div>
+        <div class="info-row"
+             v-if="info.backTime">
+          <div class="info-row-label">
+            <span>退诊时间</span>
+          </div>
+          <div class="info-row-content">{{ info.backTime }}</div>
+        </div>
+
+        <div class="info-row"
+             v-if="info.cancelTime">
+          <div class="info-row-label">
+            <span>取消时间</span>
+          </div>
+          <div class="info-row-content">{{ info.cancelTime }}</div>
+        </div>
+
+        <div class="info-row"
+             v-if="info.backEquities">
+          <div class="info-row-label">
+            <span>权益回退</span>
+          </div>
+          <div class="info-row-content">{{ info.backEquities }}</div>
+        </div>
       </div>
       <div class="info-block-content">
+        <template v-if="info.moneyRecord&&info.moneyRecord.length>0">
+          <div class="info-row"
+               v-for="(item,index) in info.moneyRecord"
+               :key="index">
+            <div class="info-row-label">
+              <span>{{item.name}}</span>
+            </div>
+            <div class="info-row-content">{{ item.value }}</div>
+          </div>
+        </template>
         <div class="info-row">
           <div class="info-row-label">
-            <span>订单费用</span>
-          </div>
-          <div class="info-row-content"
-               v-if="info.order_money">¥{{ info.order_money }}</div>
-        </div>
-        <div class="info-row"
-             v-if="info.deductionMoney">
-          <div class="info-row-label">
-            <span>商保权益抵扣</span>
-          </div>
-          <div class="info-row-content"> -¥{{ info.deductionMoney }}</div>
-        </div>
-        <div class="info-row"
-             v-if="info.medicalMoney">
-          <div class="info-row-label">
-            <span>医保抵扣</span>
-          </div>
-          <div class="info-row-content"> {{ medicalMoneyText }}</div>
-        </div>
-        <div class="info-row info-row-price"
-             v-if="!(info.inquiryStatus === 7 || info.inquiryStatus === 8)">
-          <div class="info-row-label">
-            <span>{{moneyText}}</span>
+            <span>自费金额</span>
           </div>
           <div class="info-row-content">
-            <span class="red"
-                  v-if="info.pay_money">¥{{ info.pay_money }}</span>
+
+            <span class="red">￥{{ info.pay_money }}</span>
             <span v-if="info.orderStatus === 5"
                   style="font-size: 12px;">(已退款)</span>
           </div>
         </div>
       </div>
+
     </div>
 
   </div>
@@ -238,28 +300,6 @@ export default {
     }
   },
   computed: {
-    medicalMoneyText() {
-      //accountPay 医保个人 insurePay 医保统筹
-
-      let text = `-¥${(this.info.medicalMoney - 0).toFixed(2)}`
-      if (this.info.accountPay > 0) {
-        text += `【个人账户：¥${this.info.accountPay}】`
-      }
-      if (this.info.insurePay > 0) {
-        text += `【统筹账户：¥${this.info.insurePay}】`
-      }
-      return text
-    },
-    moneyText() {
-      let str = ''
-      if (this.info.orderStatus >= 3 || this.info.payTime != null) {
-        str = '实付金额'
-      } else {
-        str = '应付金额'
-      }
-      return str
-    },
-
     orderLabelColor() {
       let color = '#fff'
       switch (this.info.inquiryStatus) {
@@ -326,46 +366,19 @@ $border-color: #eee;
     color: #778899;
     white-space: nowrap;
     & > span {
-      width: 4.3em;
-      text-align: right;
-      text-align-last: justify;
-      text-align: justify;
-      text-justify: distribute-all-lines;
+      min-width: 4em;
       display: inline-block;
     }
-    &.t-6 > span {
-      width: 6em;
-    }
-    &.t-6 + .info-row-content {
-      width: calc(100% - 7em);
-    }
-    &.t-7 > span {
-      width: 7em;
-    }
-    &.t-7 + .info-row-content {
-      width: calc(100% - 8em);
-    }
-    &:after {
-      content: '：';
-    }
+    // &:after {
+    //   content: '：';
+    // }
   }
   .info-row-content {
-    padding-left: 2px;
-    width: calc(100% - 1em - 4.3em);
-    font-weight: bold;
     word-break: break-all;
     color: #23313f;
     & > img {
       height: 20px;
       display: block;
-    }
-  }
-  &.two-cols {
-    .info-row-label.t-6 + .info-row-content {
-      width: calc(50% - 7em);
-    }
-    .info-row-content {
-      width: calc(50% - 1em - 4.3em);
     }
   }
 }
@@ -430,9 +443,9 @@ $border-color: #eee;
 
   .info-row-content {
     font-weight: normal;
-    padding-left: 30px;
+    padding-left: 20px;
     & > span + span {
-      margin-left: 1em;
+      margin-left: 4px;
     }
   }
 }
@@ -497,6 +510,9 @@ $border-color: #eee;
   margin-top: 10px;
   padding: 5px 15px;
   border-radius: 8px;
+  .info-row-content {
+    padding-left: 20px;
+  }
   .info-row-price {
     padding: 5px 0;
 

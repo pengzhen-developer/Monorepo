@@ -5,42 +5,47 @@
                label-width="auto"
                label-suffix="："
                inline>
+
         <el-form-item label="机构名称">
-          <el-select v-model="search.orgName">
-            <el-option label="全部"
-                       value=""></el-option>
+          <el-select v-model="search.orgName"
+                     clearable=""
+                     placeholder="全部">
             <el-option :key="index"
                        :label="item.orgName"
                        :value="item.orgName"
                        v-for="(item, index) in orgNameList"></el-option>
           </el-select>
         </el-form-item>
+
         <el-form-item label="订单编号">
           <el-input placeholder="输入订单编号"
                     v-model="search.orderNo"
                     clearable
                     style="width:260px;"></el-input>
         </el-form-item>
+
         <el-form-item label="支付状态">
-          <el-select v-model="search.orderStatus">
-            <el-option value=""
-                       label="全部"></el-option>
+          <el-select v-model="search.orderStatus"
+                     clearable=""
+                     placeholder="全部">
             <el-option :key="'order' + item.value"
                        :label="item.label"
                        :value="item.value"
                        v-for="item in source.orderStatus"></el-option>
           </el-select>
         </el-form-item>
+
         <el-form-item label="订单状态">
-          <el-select v-model="search.inquiryStatus">
-            <el-option value=""
-                       label="全部"></el-option>
+          <el-select v-model="search.inquiryStatus"
+                     clearable=""
+                     placeholder="全部">
             <el-option :key="'inquiry' + item.value"
                        :label="item.label"
                        :value="item.value"
                        v-for="item in source.returnVisitStatus"></el-option>
           </el-select>
         </el-form-item>
+
         <el-form-item label="下单日期">
           <PeaceDatePicker v-model="search.time"
                            type="daterange"
@@ -50,6 +55,7 @@
                            :picker-options="pickerOptions">
           </PeaceDatePicker>
         </el-form-item>
+
         <el-form-item class="search-btn">
           <el-button @click="fetch"
                      type="primary">查询</el-button>
@@ -80,7 +86,7 @@
         <peace-table-column label="就诊人"
                             min-width="100"
                             prop="family_name"></peace-table-column>
-        <peace-table-column label="咨询医生"
+        <peace-table-column label="医生姓名"
                             min-width="100"
                             prop="doctor_name"></peace-table-column>
         <peace-table-column label="机构名称"
@@ -96,21 +102,32 @@
             </div>
           </template>
         </peace-table-column>
-        <peace-table-column label="订单时间"
+        <peace-table-column label="下单时间"
                             width="180"
                             prop="created_time"></peace-table-column>
         <peace-table-column label="订单金额（元）"
                             min-width="140"
-                            prop="order_money">
-          <template slot-scope="scope">
-            <span>{{ scope.row.order_money }}</span>
-          </template>
+                            prop="totalMoney">
+        </peace-table-column>
+        <peace-table-column label="自费金额（元）"
+                            min-width="140"
+                            prop="orderMoney">
         </peace-table-column>
         <peace-table-column label="支付状态"
                             min-width="100"
                             prop="order_status">
           <template slot-scope="scope">
             <span>{{ scope.row.order_status | getEnumLable(source.orderStatus) }}</span>
+          </template>
+        </peace-table-column>
+        <peace-table-column label="支付方式"
+                            min-width="160"
+                            prop="payMentType">
+        </peace-table-column>
+        <peace-table-column label="抵扣类型"
+                            min-width="100">
+          <template slot-scope="scope">
+            <span>{{ scope.row.deductionType ||'--' }}</span>
           </template>
         </peace-table-column>
         <peace-table-column label="订单状态"
