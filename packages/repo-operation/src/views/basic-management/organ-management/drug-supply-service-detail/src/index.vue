@@ -28,12 +28,14 @@ import WareHouseInfo from './components/WareHouseInfo'
 import PharmacyList from './components/PharmacyList'
 import PharmacyDetail from './components/PharmacyDetail'
 import CommodityDetail from './components/CommodityDetail'
+import CloudWarehouseList from './components/CloudWarehouseList'
 
 const componentMap = {
   ['WareHouseInfo']: WareHouseInfo,
   ['PharmacyList']: PharmacyList,
   ['PharmacyDetail']: PharmacyDetail,
-  ['CommodityDetail']: CommodityDetail
+  ['CommodityDetail']: CommodityDetail,
+  ['CloudWarehouseList']: CloudWarehouseList
 }
 
 const componentClassMap = {
@@ -41,6 +43,7 @@ const componentClassMap = {
     ['full-height']: true,
     ['bg-white']: true
   },
+  ['CloudWarehouseList']: {},
   ['PharmacyList']: {},
   ['PharmacyDetail']: {
     ['full-height']: true,
@@ -80,7 +83,7 @@ export default {
   },
   created() {
     if (this.role == 3) {
-      this.history.push('WareHouseInfo')
+      this.history.push('CloudWarehouseList')
     } else {
       this.history.push('PharmacyList')
     }

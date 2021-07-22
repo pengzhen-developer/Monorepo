@@ -314,6 +314,7 @@ export default {
           break
         case 4:
           Peace.cache.sessionStorage.set('10534-custcode', params.custCode)
+          Peace.cache.sessionStorage.set('10534-hospitalName', params.hospitalName)
           Peace.cache.sessionStorage.set('10534-role', params.role)
           this.addTab(tab)
           break
