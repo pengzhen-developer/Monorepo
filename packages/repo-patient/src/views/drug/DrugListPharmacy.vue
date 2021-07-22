@@ -256,10 +256,17 @@ export default {
     goDrugOrderBeforePage(item) {
       //冷藏药 需到店自提
       //ColdStorage  0：非冷藏 1：冷藏
-      if (item.ColdStorage == 1 && item.ShippingMethod == 1) {
+      //处方开立单位标记 PackageUnitTag(minUnit:最小单位 packageUnit:包装单位)
+      if ((item.ColdStorage === 1 || item.PackageUnitTag === 'minUnit') && item.ShippingMethod == 1) {
+        let message =
+          item.ColdStorage === 1
+            ? '处方中有需要冷藏储存的药品，需到店自提药品。\n本店暂不支持到店自提。'
+            : item.PackageUnitTag === 'minUnit'
+            ? '处方中含有拆零售卖的药品，仅支持到店自提。\n本店暂不支持到店自提。'
+            : ''
         return Dialog.confirm({
           title: '温馨提示',
-          message: '处方中有需要冷藏储存的药品，需到店自提药品\n本店暂不支持到店自提',
+          message: message,
           confirmButtonText: '知道了',
           showCancelButton: false
         })

@@ -32,7 +32,7 @@
                     v-if="hasPriceDecimal(drug.DrugUnitPrice)">
                 {{drug.DrugUnitPrice | getPriceDecimal}}
               </span>
-              <span class="text-333-60">X{{drug.DrugQty}}</span>
+              <span class="text-333-60">X{{drug.DrugQty}}{{drug.DrugQtyUnit}}</span>
             </div>
           </div>
         </div>

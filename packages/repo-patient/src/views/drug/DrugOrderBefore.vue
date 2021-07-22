@@ -90,8 +90,11 @@
                   <van-image :src="require('@src/assets/images/ic_wenhao.png')"></van-image>
                 </div>
                 <div class="other-price">
-                  <div class="price">￥{{item.Price}}</div>
-                  x{{item.DrugQty}}
+                  <peace-price class="price"
+                               v-bind:price="item.Price"
+                               v-bind:transformOrigin="'right'"
+                               v-bind:size="14"></peace-price>
+                  <span style="margin-left:2px;">x{{item.DrugQty}}{{item.DrugQtyUnit}}</span>
                 </div>
               </div>
             </div>
@@ -99,79 +102,49 @@
           </div>
         </div>
       </div>
-      <div class="module intro">
-        <div class="dl-packet">
-          <div class="dt">支付及配送方式：</div>
-          <div class="dd more"
-               @click="changeShowPopup">{{payName}} - {{page.tabIndex == '0' ? '到店自提': '配送到家'}}</div>
+      <div class="pay-card-wrap">
+        <div class="pay-card">
+          <van-cell title="支付及配送方式"
+                    @click="changeShowPopup">
+            <span>{{payName}} - {{page.tabIndex == '0' ? '到店自提': '配送到家'}}</span>
+            <van-image :src="require('@src/assets/images/ic_right.png')"></van-image>
+          </van-cell>
         </div>
       </div>
       <div class="coldStorageTip"
            v-if="canShowColdStorageTip">处方中有需要冷藏储存的药品，仅支持到店自提</div>
-      <div class="module str">
-        <div class="dl-packet">
-          <div class="dt">药品金额 ：</div>
-          <div class="dd money">￥{{order.TotalAmount.toFixed(2)}}
-          </div>
-        </div>
-        <div class="dl-packet"
-             v-if="page.tabIndex == '1'">
-          <div class="dt money grey-666">配送费 ：</div>
-          <div class="dd money">{{order.OperaShippingFee}}</div>
-        </div>
-        <template v-if="canShowDiscount">
-          <div class="line"></div>
-          <div class="dl-packet">
-            <div class="dt">优惠金额 ：</div>
-            <div class="dd"
-                 :class="{'money':PromotionsCut>0}">{{PromotionsCut}}</div>
-          </div>
-        </template>
+      <div class="coldStorageTip"
+           v-if="canShowPackageUnitTagTip">处方中有拆零售卖的药品，仅支持到店自提</div>
 
-        <template v-if="isInquirySource">
-          <template v-if="cnaShowYibaoByInquiry">
-            <div class="line"></div>
-            <div class="dl-packet">
-              <div class="dt">使用医保卡 ：</div>
-              <div class="dd"
-                   :class="{'money':yibaoChecked||order.MedicalCardNo}"
-                   @click="chooseYibao">{{ order.MedicalCardNo || yibaoText }}</div>
-              <van-icon name="arrow"
-                        v-if="yibaoChecked?false:!order.MedicalCardNo?true:false" />
-            </div>
-            <template v-if="order.medicalTreatmentType">
-              <div class="line"></div>
-              <div class="dl-packet">
-                <div class="dt">医保类型 ：</div>
-                <div class="dd money">{{  yibaoTypeText }}</div>
-              </div>
-            </template>
-          </template>
-        </template>
-        <template v-else>
-          <template v-if="canShowYibao">
-            <div class="line"></div>
-            <div class="dl-packet">
-              <div class="dt">使用医保卡 ：</div>
-              <div class="dd"
-                   :class="{'money':yibaoChecked||order.MedicalCardNo}"
-                   @click="chooseYibao">{{ order.MedicalCardNo || yibaoText }}</div>
+      <div class="pay-card-wrap">
+        <div class="pay-card">
+          <van-cell title="药品金额">
+            <peace-price v-bind:price="order.TotalAmount"
+                         v-bind:transformOrigin="'right'"
+                         v-bind:size="16"></peace-price>
+          </van-cell>
+          <template v-if="page.tabIndex == '1'">
+            <van-cell title="配送费">
+              <span v-if="isNaN(order.OperaShippingFee.substring(1))">{{order.OperaShippingFee}}</span>
+              <peace-price v-bind:price="order.OperaShippingFee.substring(1)"
+                           v-bind:transformOrigin="'right'"
+                           v-bind:size="16"
+                           v-else></peace-price>
 
-            </div>
-            <!-- <div class="line"></div>
-              <div class="dl-packet">
-                <div class="dt">医保类型 ：</div>
-                <div class="dd money">{{  yibaoTypeText }}</div>
-              </div> -->
+            </van-cell>
           </template>
-        </template>
-        <template v-if="canShowShangbao">
-          <div class="line"></div>
-          <div class="dl-packet">
-            <div class="dt">商保权益抵扣 ：</div>
-            <div class="dd">请选择</div>
-          </div>
-        </template>
+        </div>
+
+        <PayCard v-bind:doctorId="order.doctorId"
+                 v-bind:familyId="page.json.familyId"
+                 v-bind:familyName="page.json.familyName"
+                 v-bind:payType="payType"
+                 v-bind:payInfo="payInfo"
+                 v-bind:orderInfo="order"
+                 v-bind:nethospitalId="order.hospitalId"
+                 v-bind:orderType="3"
+                 v-bind:disabled="true"
+                 v-on:update="updatePayInfo"></PayCard>
       </div>
       <div class="tips-bottom">
         {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
@@ -187,11 +160,9 @@
 
     <van-popup v-model="showPopup"
                round
-               closeable
-               :close-icon="colseIcon"
                position="bottom">
       <div class="pop-title">
-        <span>请选择您的支付方式</span>
+        <span>请选择您的支付方式或配送方式</span>
       </div>
       <div class="pop-box">
         <div class="pop-subtitle">配送方式</div>
@@ -207,6 +178,9 @@
         </div>
         <div class="pop-tip"
              v-if="coldStorageError">* 处方中有需要冷藏储存的药品，仅支持到店自提</div>
+
+        <div class="pop-tip"
+             v-if="!coldStorageError&&packageUnitTagError">* 处方中有拆零售卖的药品，仅支持到店自提</div>
       </div>
       <div class="pop-box">
         <div class="pop-subtitle">支付方式</div>
@@ -222,10 +196,16 @@
         </div>
       </div>
 
-      <van-button type="primary"
-                  round
-                  @click="changeShowPopup"
-                  size="large">确认</van-button>
+      <div style="display:flex">
+        <van-button round
+                    class="is__dialog"
+                    @click="showPopup = false">取消</van-button>
+        <van-button round
+                    class="is__dialog"
+                    type="primary"
+                    @click="changeShowPopup">确认</van-button>
+
+      </div>
     </van-popup>
     <!-- 取药知情同意书 -->
     <DrugInformedConsent v-model="informedConsentDialog.visible"
@@ -247,6 +227,7 @@
 </template>
 
 <script>
+import PayCard from '@src/views/components/PayCard.vue'
 import YibaoCaedSelect from '@src/views/components/YibaoCardSelect'
 import DrugInformedConsent from '@src/views/components/DrugInformedConsent'
 import ExpenseDetail from '@src/views/components//ExpenseDetail'
@@ -254,7 +235,7 @@ import peace from '@src/library'
 
 export default {
   name: 'DrugOrderBefore',
-  components: { YibaoCaedSelect, ExpenseDetail, DrugInformedConsent },
+  components: { YibaoCaedSelect, ExpenseDetail, DrugInformedConsent, PayCard },
   data() {
     return {
       payList: [],
@@ -297,7 +278,42 @@ export default {
         visible: false,
         informedConsent: ''
       },
+      //默认选中微信支付 wxpay alipay
+      paymentType: 'wxpay',
+      // 抵扣类型
+      payType: '',
+      // 支付信息
+      payInfo: {
+        orderMoney: 0,
+
+        // 所选医保卡卡号
+        medCardNo: '',
+        // 医保待遇类型
+        medicalTreatmentType: '',
+        // 医保待遇类型名称
+        medicalTreatmentTypeText: '',
+        // 疾病种类
+        diseasesCode: '',
+        // 疾病种类名称
+        diseasesName: '',
+
+        // 所选服务包ID
+        servicePackageId: '',
+        // 所选服务包名称
+        servicePackageName: '',
+        // 所选权益ID
+        patientEquitiesId: '',
+        // 所选权益名称
+        patientEquitiesName: '',
+
+        // H5 商保未开放，暂不考虑
+        // 所选商保ID
+        sbInsuranceId: '',
+        // 所选商保名称
+        sbInsuranceName: ''
+      },
       coldStorageError: false,
+      packageUnitTagError: false,
       enter_time: '',
       isSend: false
     }
@@ -330,6 +346,10 @@ export default {
   computed: {
     canShowColdStorageTip() {
       return this.order?.ColdStorage == 1
+    },
+    //处方开立单位标记(minUnit:最小单位 packageUnit:包装单位)
+    canShowPackageUnitTagTip() {
+      return this.order?.PackageUnitTag === 'minUnit'
     },
     yibaoTypeText() {
       return this.order.diseases ? `${this.order.medicalTreatmentTypeTxt}-${this.order.diseases}` : `${this.order.medicalTreatmentTypeTxt}`
@@ -390,7 +410,7 @@ export default {
         page_address: '/drug/drugOrderBefore',
         business_type: '处方购药',
         order_type: '处方购药',
-        pay_method: this.order.paymentType,
+        pay_method: this.paymentType,
         event_duration: (new Date().getTime() - this.enter_time) / 1000
       }
       peace.service.sensors.confirmOrder(params)
@@ -399,7 +419,7 @@ export default {
       const params = {
         business_type: '处方购药',
         click_object: type === 'apply' ? '提交订单' : '返回',
-        pay_method_on_submit: this.order.paymentType
+        pay_method_on_submit: this.paymentType
       }
       peace.service.sensors.commitOrder(params)
     },
@@ -466,7 +486,6 @@ export default {
       this.yibaoChecked = false
     },
     onSuccess(result) {
-      console.log('onSuccess', result)
       this.yibaoChecked = result.checked
       this.yibaoText = result.yibaoInfo.medCardNo
       this.yibaoInfo = result.yibaoInfo
@@ -538,29 +557,24 @@ export default {
         this.yibaoInfo.medCardNo = this.order.MedicalCardNo
       }
 
-      let paymentType = []
       //支付方式：wxpay（微信） shangbao（商保支付） yibaopay（医保支付）deliverypay（货到付款） shoppay（到店支付）
       //payMode 1 在线支付  2 到店支付  3 货到付款
+      let errMsg = ''
 
-      const price = this.order.TotalAmount
-      switch (this.page.payIndex) {
-        case 1:
-          if (this.shangbaoChecked) {
-            paymentType.push('shangbao')
-          } else if (this.yibaoInfo.medCardNo) {
-            paymentType.push('yibaopay')
-          } else {
-            if (price > 0) {
-              paymentType.push('wxpay')
-            }
+      if (this.payType) {
+        if (!this.payInfo.medCardNo) {
+          errMsg = '请填写医保卡号'
+        } else {
+          if (!this.payInfo.medicalTreatmentType) {
+            errMsg = '请填写医保类型'
+          } else if (this.payInfo.medicalTreatmentType.toString() === '2' && !this.payInfo.diseasesCode) {
+            errMsg = '请填写病种'
           }
-          break
-        case 2:
-          paymentType.push('shoppay')
-          break
-        case 3:
-          paymentType.push('deliverypay')
-          break
+        }
+      }
+      if (errMsg) {
+        peace.util.alert(errMsg)
+        return false
       }
 
       if (!this.hasSubmitOrder) {
@@ -569,8 +583,17 @@ export default {
       }
 
       this.hasSubmitOrder = false
+      if (this.payType === '') {
+        this.payInfo.medCardNo = ''
+        this.payInfo.cardno = ''
+        this.payInfo.diseasesCode = ''
+        this.payInfo.diseasesName = ''
+      }
+      if (this.payType === 'yibaopay') {
+        this.payInfo.cardno = ''
+      }
+
       let params = {
-        paymentType: paymentType.join(','),
         jztClaimNo: this.order.jztClaimNo,
         drugStoreId: this.order.DrugStoreId,
         accessCode: this.order.AccessCode,
@@ -581,10 +604,16 @@ export default {
         receiverAddress: +this.page.tabIndex ? this.userAddr.address : this.order.Detailed,
         receiver: +this.page.tabIndex ? this.userAddr.consignee : this.consigneeInfo.consignee,
         receiverPhone: +this.page.tabIndex ? this.userAddr.mobile : this.consigneeInfo.mobile,
+
         payMode: this.page.payIndex,
-        cardNo: this.page.cardno,
-        medCardNo: this.yibaoInfo.medCardNo
+        deductionType: this.payType,
+        paymentType: this.paymentType,
+        medCardNo: this.payInfo.medCardNo,
+        diseasesCode: this.payInfo.diseasesCode,
+        diseasesName: this.payInfo.diseasesName,
+        cardNo: this.payInfo.cardno
       }
+
       peace.service.patient
         .submitOrder(params)
         .then((res) => {
@@ -600,7 +629,7 @@ export default {
           } else {
             this.dialog.visible = true
 
-            params.payMethod = this.order.paymentType
+            params.payMethod = this.paymentType
             params.businessType = '处方购药'
             params.hospitalName = this.order.netHospitalName
 
@@ -647,6 +676,16 @@ export default {
       } else {
         this.coldStorageError = false
       }
+      //订单中既有冷藏药品，又有拆零药品，仅显示冷藏药品仅支持到店自提的提示
+      if (!this.coldStorageError) {
+        //订单关联处方是否含有按最小单位开具药品数量的药品  选择【配送到家】时，红字提示患者不可选择配送到家，不可选中
+        if (this.canShowPackageUnitTagTip && item.Value == 1) {
+          this.packageUnitTagError = true
+          return
+        } else {
+          this.packageUnitTagError = false
+        }
+      }
       this.json.tabIndex = item.Value
       this.payList = [].concat(item.PayModel)
       this.json.payIndex = this.payList.find((pay) => pay.Visible)?.Value
@@ -692,9 +731,15 @@ export default {
 
         this.NewShippingMethod = peace.util.deepClone(res.data.NewShippingMethod)
         //处方内含有【冷藏】储存的药品 配送方式默认为其选中【到店自提】 支付方式系统默认选中在线支付 未开启在线支付即顺序选中其它支付项
-        if (res.data.ColdStorage == 1) {
+        //订单中含有按最小单位开具药品数量的药品，本单取药方式仅支持【到店自提】
+        if (this.canShowColdStorageTip || this.canShowPackageUnitTagTip) {
           this.page.tabIndex = 0
           this.payList = res.data.NewShippingMethod.find((item) => item.Value == this.page.tabIndex)?.PayModel
+          //如果不支持到店自提，则 payList undefined
+          if (!this.payList) {
+            this.page.tabIndex = 1
+            this.payList = res.data.NewShippingMethod.find((item) => item.Value == this.page.tabIndex)?.PayModel
+          }
         } else {
           this.payList = res.data.NewShippingMethod.find((item) => item.Visible)?.PayModel
         }
@@ -704,6 +749,15 @@ export default {
         this.consigneeInfo.mobile = res.data.tel
 
         this.getPayName()
+
+        //初始化 支付信息 payInfo
+        this.payInfo.medCardNo = this.order.MedicalCardNo
+        this.payInfo.medicalTreatmentType = this.order.medicalTreatmentType
+        this.payInfo.medicalTreatmentTypeText = this.order.medicalTreatmentTypeTxt
+        this.payInfo.diseasesCode = this.order.diseasesCode
+        this.payInfo.diseasesName = this.order.diseasesName
+
+        this.payType = (this.order.source === 4 && this.order.insureTypeCode === 11) || this.order.MedicalCardNo ? 'yibaopay' : ''
       })
     },
 
@@ -713,12 +767,44 @@ export default {
       }
       const params = peace.util.encode({ name: item.DrugName })
       this.$router.push(`/inter/drugInterList/${params}`)
+    },
+
+    // 更新支付信息
+    updatePayInfo(result) {
+      this.payType = result.payType
+      this.paymentType = result.paymentType
+      this.payInfo = result.payInfo
+      this.payInfo.cardno = result.payInfo.sbInsuranceId
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
+.pay-card-wrap {
+  margin-top: 8px;
+  .pay-card {
+    /deep/ .van-cell__title {
+      width: 8em;
+      flex: none;
+      display: flex;
+      align-items: center;
+    }
+    /deep/ .van-cell__value {
+      color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      span {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-align: right;
+      }
+    }
+  }
+}
 .coldStorageTip {
   margin-top: 10px;
   padding-right: 16px;
@@ -734,8 +820,11 @@ export default {
   }
   .pop-title {
     font-size: 18px;
-    font-family: Helvetica;
-    color: rgba(0, 0, 0, 1);
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    line-height: 24px;
+    text-align: center;
   }
   .pop-box {
     margin-top: 25px;
@@ -806,29 +895,14 @@ export default {
 }
 .drug-from {
   background: #f9f9f9;
-  padding: 10px 10px 60px 10px;
+  padding: 0px 0px 60px 0px;
   min-height: 100%;
   > .module {
     border-radius: 3px;
     overflow: hidden;
     margin-top: 10px;
     background-color: #fff;
-    .more {
-      position: relative;
-      &::after {
-        content: '';
-        position: absolute;
-        display: block;
-        top: 50%;
-        transform: translateY(-50%);
-        right: 0px;
-        width: 6px;
-        height: 10px;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-image: url('~@src/assets/images/icons/icon-next.jpg');
-      }
-    }
+
     .line {
       height: 0.5px;
       background: #eee;
@@ -880,7 +954,7 @@ export default {
   }
 }
 .addr-tit {
-  font-size: 14px;
+  font-size: 16px;
   position: relative;
   padding-left: 24px;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -901,7 +975,7 @@ export default {
   background-image: url('~@src/assets/images/icons/addr-tit.jpg');
 }
 .tab-content .addr-p {
-  font-size: 14px;
+  font-size: 16px;
   color: #333;
   font-weight: 600;
   position: relative;
@@ -920,8 +994,8 @@ export default {
 
 .panel-head .head-ico {
   flex: 0 0 auto;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border: 1px solid #e5e5e5;
   display: flex;
   align-items: center;
@@ -948,7 +1022,7 @@ export default {
 .panel-head .head-tit {
   flex: 1;
   color: #333333;
-  font-size: 14px;
+  font-size: 16px;
   padding-left: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1063,7 +1137,7 @@ export default {
 }
 
 .addr-user {
-  font-size: 12px;
+  font-size: 14px;
   color: #666;
   span + span {
     margin-left: 5px;
@@ -1101,13 +1175,7 @@ export default {
 .list-three:last-child {
   border-bottom: 0;
 }
-.list-three .list-other {
-  flex: 0 1 65px;
-  width: 65px;
-  display: flex;
-  flex-direction: column;
-  text-align: right;
-}
+
 .list-other .other-them {
   .van-image {
     width: 12px;

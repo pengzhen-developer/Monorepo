@@ -146,7 +146,8 @@ export default {
       this.trackByCommit('apply')
       this.isSend = true
       const params = {
-        servicePackageId: this.info.servicePackageId
+        servicePackageId: this.info.servicePackageId,
+        paymentType: 'wxpay'
       }
       peace.service.servicePackage.submitOrder(params).then((res) => {
         this.gotoExpenseDetailPage(res.data)

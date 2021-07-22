@@ -9,7 +9,7 @@
     <div class="header">
       填写医保卡号
     </div>
-    <div class="tip-header">互联网医院暂不支持门特医保结算</div>
+    <div class="tip-header"></div>
     <div class="banner-bg">
       <div class="banner-title">天津市人力资源和社会保障局</div>
       <van-image :src="require('@src/assets/images/ic_yibaoka.png')"></van-image>

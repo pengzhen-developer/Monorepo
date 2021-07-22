@@ -2,28 +2,39 @@
   <div>
     <van-cell-group class="group"
                     v-if="loading">
-      <van-cell title="订单金额">
+      <van-cell title="订单金额"
+                v-if="orderType!==3">
         <peace-price v-bind:price="innerPayInfo.orderMoney"
                      v-bind:transformOrigin="'right'"
                      v-bind:size="16"></peace-price>
       </van-cell>
-      <van-cell title="支付方式">
-        <div class="pay-type"
-             v-bind:class="innerPayType === 'wxpay' && 'active'"
-             v-on:click="selectPayType('wxpay')">全自费支付</div>
-        <div class="pay-type"
-             v-if="deduction.length>0"
-             v-bind:class="innerPayType === 'deduction' && 'active'"
-             v-on:click="selectPayType('deduction')">医保/权益抵扣</div>
-      </van-cell>
-
+      <template v-if="!disabled">
+        <van-cell title="支付方式">
+          <div class="pay-type"
+               v-bind:class="innerPayType === 'wxpay' && 'active'"
+               v-on:click="selectPayType('wxpay')">全自费支付</div>
+          <div class="pay-type"
+               v-if="deduction.length>0"
+               v-bind:class="innerPayType === 'deduction' && 'active'"
+               v-on:click="selectPayType('deduction')">医保/权益抵扣</div>
+        </van-cell>
+      </template>
+      <template v-else>
+        <van-cell title="支付方式">
+          <div class="pay-type active"
+               v-if="(innerPayInfo.source===4&&innerPayInfo.insureTypeCode===11)||innerPayInfo.medCardNo">医保/权益抵扣</div>
+          <div class="pay-type active"
+               v-else>全自费支付</div>
+        </van-cell>
+      </template>
       <template v-if="innerPayType === 'wxpay'">
         <van-cell title="支付类型">
           <van-image class="icon-wxpay"
                      :src="require('@src/assets/images/ic_pay_wechat_payment.png')"></van-image>
           <span>微信支付</span>
         </van-cell>
-        <van-cell title="自费金额">
+        <van-cell title="自费金额"
+                  v-if="orderType!==3">
           <peace-price v-bind:price="innerPayInfo.orderMoney"
                        v-bind:transformOrigin="'right'"
                        v-bind:color="'#f2223b'"
@@ -33,18 +44,57 @@
 
       <template v-if="innerPayType === 'deduction'">
         <van-cell title="抵扣类型"
+                  v-if="!disabled"
                   v-on:click="showDeductionDialog">
           <span>{{getDeductionName}}</span>
           <van-image :src="require('@src/assets/images/ic_right.png')"></van-image>
         </van-cell>
+        <van-cell title="抵扣类型"
+                  v-else>
+          <span>{{getDeductionName}}</span>
+        </van-cell>
 
         <!-- 医保 -->
         <template v-if="deductionType === 'yibaopay'">
-          <van-cell title="医保卡号"
-                    v-on:click="openYbDialog">
-            <span :class="!innerPayInfo.medCardNo ? 'disabled-text':''">{{innerPayInfo.medCardNo || '请填写'}}</span>
-            <van-image :src="require('@src/assets/images/ic_right.png')"></van-image>
-          </van-cell>
+          <template v-if="!disabled">
+            <van-cell title="医保卡号"
+                      v-on:click="openYbDialog">
+              <span :class="!innerPayInfo.medCardNo ? 'disabled-text':''">{{innerPayInfo.medCardNo || '请填写'}}</span>
+              <van-image :src="require('@src/assets/images/ic_right.png')"></van-image>
+            </van-cell>
+            <van-cell title="医保类型"
+                      v-on:click="openYbTypeDialog">
+              <span :class="!innerPayInfo.medicalTreatmentTypeText ? 'disabled-text':''">{{innerPayInfo.medicalTreatmentTypeText || '请填写'}}</span>
+              <van-image :src="require('@src/assets/images/ic_right.png')"></van-image>
+            </van-cell>
+            <van-cell title="病种"
+                      v-on:click="openYbMunterDiseaseDialog"
+                      v-if="canShowYbMunterDisease">
+              <span :class="!innerPayInfo.diseasesName ? 'disabled-text':''">{{innerPayInfo.diseasesName || '请填写'}}</span>
+              <van-image :src="require('@src/assets/images/ic_right.png')"></van-image>
+            </van-cell>
+          </template>
+          <template v-else>
+            <van-cell title="医保卡号"
+                      v-on:click="openYbDialog">
+              <span :class="!innerPayInfo.medCardNo ? 'disabled-text':''">{{innerPayInfo.medCardNo || '请填写'}}</span>
+              <van-image :src="require('@src/assets/images/ic_right.png')"
+                         v-if="!orderInfo.MedicalCardNo"></van-image>
+            </van-cell>
+            <van-cell title="医保类型"
+                      v-on:click="openYbTypeDialog">
+              <span :class="!innerPayInfo.medicalTreatmentTypeText ? 'disabled-text':''">{{innerPayInfo.medicalTreatmentTypeText || '请填写'}}</span>
+              <van-image :src="require('@src/assets/images/ic_right.png')"
+                         v-if="!orderInfo.medicalTreatmentType"></van-image>
+            </van-cell>
+            <van-cell title="病种"
+                      v-on:click="openYbMunterDiseaseDialog"
+                      v-if="canShowYbMunterDisease">
+              <span :class="!innerPayInfo.diseasesName ? 'disabled-text':''">{{innerPayInfo.diseasesName || '请填写'}}</span>
+              <van-image :src="require('@src/assets/images/ic_right.png')"
+                         v-if="!orderInfo.diseasesCode"></van-image>
+            </van-cell>
+          </template>
         </template>
 
         <!-- 服务包 -->
@@ -59,7 +109,8 @@
                     title="权益名称">
             <span>{{innerPayInfo.patientEquitiesName}}</span>
           </van-cell>
-          <van-cell title="自费金额">
+          <van-cell title="自费金额"
+                    v-if="orderType!==3">
             <peace-price price="0"
                          v-bind:transformOrigin="'right'"
                          v-bind:color="'#f2223b'"
@@ -76,11 +127,25 @@
                      v-bind:deduction="deduction"
                      v-on:success="selectDeductionType"></SelectDeduction>
 
-    <!-- 医保 -->
+    <!-- 普通医保 -->
     <SelectYibaoCard v-if="showYb"
                      v-model="ybVisible"
                      :info="ybData"
                      @onSuccess="confirmYbInsurance"></SelectYibaoCard>
+
+    <!-- 医保类型 -->
+    <SelectYibaoType v-if="showYb"
+                     v-model="ybTypeVisible"
+                     :medicalTreatmentTypes="medicalTreatmentTypes"
+                     :medicalTreatmentType="innerPayInfo.medicalTreatmentType"
+                     @onSuccess="confirmYbType"></SelectYibaoType>
+
+    <!-- 门特医保 -->
+    <SelectYibaoMunterDisease v-if="showYb"
+                              v-model="ybMunterDiseaseVisible"
+                              :diseases="diseases"
+                              :diseasesCode="innerPayInfo.diseasesCode"
+                              @onSuccess="confirmYbMunterDisease"></SelectYibaoMunterDisease>
 
     <!-- 选择服务包权益 -->
     <SelectServicePackage v-model="spVisible"
@@ -94,12 +159,21 @@
 import peace from '@src/library'
 
 import SelectDeduction from '@src/views/components/SelectDeduction'
+import SelectYibaoType from '@src/views/components/YibaoTypeSelect.vue'
 import SelectYibaoCard from '@src/views/components/YibaoCardSelect'
+import SelectYibaoMunterDisease from '@/views/components/YibaoMunterDiseaseSelect.vue'
 import SelectServicePackage from '@src/views/components/SelectServicePackage'
 
 export default {
   name: 'PayCard',
   props: {
+    //是否可点击切换 支付类型
+    disabled: {
+      type: [Boolean],
+      default() {
+        return false
+      }
+    },
     familyId: {
       type: [String, Number],
       default() {
@@ -132,6 +206,13 @@ export default {
         return {}
       }
     },
+    //订单详情
+    orderInfo: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
     nethospitalId: {
       type: [String, Number],
       default() {
@@ -144,13 +225,6 @@ export default {
         return ''
       }
     },
-    // 抵扣配置
-    // deduction: {
-    //   type: Array,
-    //   default() {
-    //     return []
-    //   }
-    // },
     // 服务包默认权益
     equitiesId: {
       type: String,
@@ -174,11 +248,13 @@ export default {
       }
     }
   },
-  components: { SelectDeduction, SelectYibaoCard, SelectServicePackage },
+  components: { SelectDeduction, SelectYibaoType, SelectYibaoCard, SelectServicePackage, SelectYibaoMunterDisease },
   data() {
     return {
       // 组件内部使用的支付方式 (wxpay:全自费支付 deduction:医保/权益抵扣)
       innerPayType: '',
+      //三方支付方式
+      paymentType: 'wxpay',
       // 抵扣类型
       deductionType: '',
       // 抵扣弹窗
@@ -196,9 +272,9 @@ export default {
         // 医保待遇类型
         medicalTreatmentType: '',
         // 医保待遇类型名称
-        medicalTreatmentTypeName: '',
+        medicalTreatmentTypeText: '',
         // 疾病种类
-        diseases: '',
+        diseasesCode: '',
         // 疾病种类名称
         diseasesName: '',
 
@@ -226,7 +302,15 @@ export default {
       // 是否显示医保类型
       ybTypeVisible: false,
 
+      //是否显示门特
+      ybMunterDiseaseVisible: false,
+
       deduction: [],
+      //医保类型
+      medicalTreatmentTypes: [],
+
+      //门特疾病
+      diseases: [],
 
       // 服务包权益列表
       servicePackageList: [],
@@ -242,9 +326,9 @@ export default {
   watch: {
     payType: {
       handler(payType) {
-        if (payType === 'wxpay') {
+        if (payType === '') {
           this.innerPayType = 'wxpay'
-          // this.deductionType = ''
+          this.deductionType = ''
         } else {
           this.innerPayType = 'deduction'
           this.deductionType = payType
@@ -268,6 +352,9 @@ export default {
     }
   },
   computed: {
+    canShowYbMunterDisease() {
+      return this.innerPayInfo?.medicalTreatmentType?.toString() === '2'
+    },
     canGetDeduction() {
       if (this.doctorId && this.nethospitalId) {
         return true
@@ -296,26 +383,43 @@ export default {
         nethospitalId: this.nethospitalId,
         orderType: this.orderType // 问诊 2复诊 3购药 4挂号 5服务包 6检验挂号订单 7检验单
       }
-      peace.service.inquiry.getPermissionsDeduction(params).then((res) => {
-        this.deduction = res.data || []
+      peace.service.inquiry.getPermissionsDeduction(params).then(async (res) => {
+        const deduction = res.data || []
+        //H5暂不处理商保
+        this.deduction = deduction.filter((item) => item.type !== 'shangbaopay')
+
         // servicePackage 服务包抵扣 yibaopay 医保支付 shangbaopay 商保
         let yibaopay = this.deduction.find((item) => item.type === 'yibaopay')
         let servicePackage = this.deduction.find((item) => item.type === 'servicePackage')
         let shangbaopay = this.deduction.find((item) => item.type === 'shangbaopay')
         if (yibaopay) {
           // 选择医保卡组件获取
-          this.showYb = true
+          await this.geYibaotDicList()
         }
         if (shangbaopay) {
           // 商保配置从父组件传入
         }
         if (servicePackage) {
-          this.getServicePackageList()
+          await this.getServicePackageList()
         } else {
           this.loading = true
         }
       })
     },
+    //获取医保相关信息
+    geYibaotDicList() {
+      const params = {}
+      peace.service.yibao
+        .GetMedicareCardType(params)
+        .then((res) => {
+          this.medicalTreatmentTypes = res.data.medicalTreatmentType
+          this.diseases = res.data.diseases
+        })
+        .finally(() => {
+          this.showYb = true
+        })
+    },
+
     // 获取服务包权益列表
     getServicePackageList() {
       let params = {
@@ -364,60 +468,135 @@ export default {
             this.innerPayType = 'deduction'
             this.deductionType = 'servicePackage'
             this.deductionDialog.payType = 'servicePackage'
-            this.$emit('update', {
-              payType: this.deductionType,
-              payInfo: this.innerPayInfo
-            })
+            this.update()
           }
         })
         .finally(() => {
           this.loading = true
         })
     },
+
     // 选择支付方式
     selectPayType(payType) {
       this.innerPayType = payType
       if (payType === 'deduction') {
         this.deductionType = this.deductionType || this.deduction[0].type
         this.deductionDialog.payType = this.deductionType || this.deduction[0].type
-        this.$emit('update', {
-          payType: this.deductionType,
-          payInfo: this.innerPayInfo
-        })
+        this.update()
       } else {
-        this.$emit('update', {
-          payType: this.innerPayType,
-          payInfo: this.innerPayInfo
-        })
+        //全自费支付 清空抵扣信息
+        this.deductionType = ''
+        this.update()
       }
     },
+
     // 显示抵扣方式弹窗
     showDeductionDialog() {
       this.deductionDialog.show = true
       this.deductionDialog.payType = this.deductionType
     },
+
     // 选择抵扣方式
     selectDeductionType(result) {
       this.deductionType = result
     },
+
     // 打开医保弹窗
     openYbDialog() {
-      this.ybVisible = true
+      if (!this.disabled) {
+        this.ybVisible = true
+      } else {
+        if (!this.orderInfo.MedicalCardNo) {
+          if (this.orderType === 3) {
+            if (this.orderInfo.source === 4 && this.orderInfo.insureTypeCode === 11) {
+              this.ybVisible = true
+            }
+          } else {
+            this.ybVisible = true
+          }
+        } else {
+          this.ybVisible = false
+        }
+      }
     },
+
     // 确定选择医保
     confirmYbInsurance(result) {
       if (result?.yibaoInfo?.medCardNo) {
         this.innerPayInfo.medCardNo = result.yibaoInfo.medCardNo
-        this.$emit('update', {
-          payType: this.deductionType,
-          payInfo: this.innerPayInfo
-        })
+
+        this.update()
       }
     },
+
+    //打开医保类型弹窗
+    openYbTypeDialog() {
+      if (!this.disabled) {
+        this.ybTypeVisible = true
+      } else {
+        if (!this.orderInfo.medicalTreatmentType) {
+          if (this.orderType === 3) {
+            if (this.orderInfo.source === 4 && this.orderInfo.insureTypeCode === 11) {
+              this.ybTypeVisible = true
+            }
+          } else {
+            this.ybTypeVisible = true
+          }
+        } else {
+          this.ybTypeVisible = false
+        }
+      }
+    },
+
+    //确认选择医保类型
+    confirmYbType(result) {
+      if (result?.yibaoInfo?.medicalTreatmentType) {
+        this.innerPayInfo.medicalTreatmentType = result.yibaoInfo.medicalTreatmentType
+        this.innerPayInfo.medicalTreatmentTypeText = result.yibaoInfo.medicalTreatmentTypeText
+
+        if (this.innerPayInfo.medicalTreatmentType === '1') {
+          this.innerPayInfo.diseasesCode = ''
+          this.innerPayInfo.diseasesName = ''
+        }
+
+        this.update()
+      }
+    },
+
+    //打开门特疾病弹窗
+    openYbMunterDiseaseDialog() {
+      if (!this.disabled) {
+        this.ybMunterDiseaseVisible = true
+      } else {
+        if (!this.orderInfo.diseasesCode) {
+          if (this.orderType === 3) {
+            if (this.orderInfo.source === 4 && this.orderInfo.insureTypeCode === 11) {
+              this.ybMunterDiseaseVisible = true
+            }
+          } else {
+            this.ybMunterDiseaseVisible = true
+          }
+        } else {
+          this.ybMunterDiseaseVisible = false
+        }
+      }
+    },
+
+    //确认选择门特疾病
+    confirmYbMunterDisease(result) {
+      if (result?.yibaoInfo?.diseasesCode) {
+        this.innerPayInfo.diseasesCode = result.yibaoInfo.diseasesCode
+        this.innerPayInfo.diseasesName = result.yibaoInfo.diseasesName
+
+        this.update()
+      }
+    },
+
     // 打开服务包弹窗
     openServicePackageDialog() {
       this.spVisible = true
     },
+
     // 确认选择服务包
     confirmServicePackage(result) {
       this.innerPayInfo.servicePackageId = result.servicePackageId
@@ -425,8 +604,14 @@ export default {
       this.innerPayInfo.patientEquitiesId = result.patientEquitiesId
       this.innerPayInfo.patientEquitiesName = result.patientEquitiesName
 
+      this.update()
+    },
+
+    //更新
+    update() {
       this.$emit('update', {
         payType: this.deductionType,
+        paymentType: this.paymentType,
         payInfo: this.innerPayInfo
       })
     }
@@ -437,7 +622,7 @@ export default {
 <style lang="scss" scoped>
 .group {
   /deep/ .van-cell__title {
-    width: 6em;
+    max-width: 6em;
     flex: none;
     display: flex;
     align-items: center;

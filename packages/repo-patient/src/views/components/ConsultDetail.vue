@@ -221,9 +221,9 @@
 
       <!-- 订单收费明细 -->
       <div class="module message"
-           v-if="moneyRecord.length>0">
+           v-if="internalData.orderInfo.moneyRecord&&internalData.orderInfo.moneyRecord.length>0">
         <div class="module-item-content message size-14"
-             v-for="(item,index) in moneyRecord"
+             v-for="(item,index) in internalData.orderInfo.moneyRecord"
              :key="index">
           <div class="module-item-label">{{item.name}}：</div>
           <div class="module-item-value">
@@ -316,12 +316,46 @@
           <div class="module-item-label">订单时间：</div>
           <div class="module-item-value">{{ internalData.orderInfo.orderTime }}</div>
         </div>
-        <template v-if="internalData.orderInfo.paymentType||internalData.orderInfo.servicePackageName">
-          <div class="module-item-content start size-14">
-            <div class="module-item-label">支付方式：</div>
-            <div class="module-item-value">{{paymentTypeText}}</div>
-          </div>
+        <!-- 抵扣-支付 信息 -->
+        <template v-if="internalData.orderInfo.payInfo">
+          <template v-if="internalData.orderInfo.payInfo.deductionTypeTxt">
+            <div class="module-item-content size-14">
+              <div class="module-item-label">抵扣类型：</div>
+              <div class="module-item-value">{{ internalData.orderInfo.payInfo.deductionTypeTxt }}</div>
+            </div>
+          </template>
+          <template v-if="internalData.orderInfo.payInfo.medicalTreatmentTypetxt">
+            <div class="module-item-content size-14">
+              <div class="module-item-label">医保类型：</div>
+              <div class="module-item-value">{{ internalData.orderInfo.payInfo.medicalTreatmentTypetxt }}</div>
+            </div>
+          </template>
+          <template v-if="internalData.orderInfo.payInfo.diseasesTxt">
+            <div class="module-item-content size-14">
+              <div class="module-item-label">病种：</div>
+              <div class="module-item-value">{{ internalData.orderInfo.payInfo.diseasesTxt }}</div>
+            </div>
+          </template>
+          <template v-if="internalData.orderInfo.payInfo.servicePackageName">
+            <div class="module-item-content size-14">
+              <div class="module-item-label">服务包名称：</div>
+              <div class="module-item-value">{{ internalData.orderInfo.payInfo.servicePackageName }}</div>
+            </div>
+          </template>
+          <template v-if="internalData.orderInfo.payInfo.equitiesName">
+            <div class="module-item-content size-14">
+              <div class="module-item-label">服务包权益：</div>
+              <div class="module-item-value">{{ internalData.orderInfo.payInfo.equitiesName }}</div>
+            </div>
+          </template>
+          <template v-if="internalData.orderInfo.payInfo.payModeTxt&&internalData.orderInfo.payTime">
+            <div class="module-item-content size-14">
+              <div class="module-item-label">支付方式：</div>
+              <div class="module-item-value">{{internalData.orderInfo.payInfo.paymentTypeTxt? internalData.orderInfo.payInfo.paymentTypeTxt +' - '+internalData.orderInfo.payInfo.payModeTxt : internalData.orderInfo.payInfo.payModeTxt }}</div>
+            </div>
+          </template>
         </template>
+
         <template v-if="internalData.orderInfo.payTime">
           <div class="module-item-content size-14">
             <div class="module-item-label">支付时间：</div>
@@ -337,6 +371,11 @@
              v-if="internalData.orderInfo.refundTime">
           <div class="module-item-label">退款时间：</div>
           <div class="module-item-value">{{ internalData.orderInfo.refundTime }}</div>
+        </div>
+        <div class="module-item-content size-14"
+             v-if="internalData.orderInfo.divisionId&&internalData.orderInfo.payTime">
+          <div class="module-item-label">发票号：</div>
+          <div class="module-item-value">{{ internalData.orderInfo.divisionId }}</div>
         </div>
       </div>
     </div>
@@ -613,35 +652,18 @@ export default {
     }
   },
   computed: {
-    moneyRecord() {
-      const list = this.internalData?.orderInfo?.moneyRecord || []
-      //医保类型
-      if (list.length > 0 && this.internalData.orderInfo.medicalTreatmentType) {
-        let txt = `${this.internalData.orderInfo.medicalTreatmentTypeTxt}`
-        txt += this.internalData.orderInfo.diseases ? `-${this.internalData.orderInfo.diseases}` : ``
-        list.splice(1, 0, { name: '医保类型', value: txt })
-      }
-
-      return list
-    },
+    // moneyRecord() {
+    //   return this.internalData?.orderInfo?.moneyRecord || []
+    // },
     marginBottom() {
       return this.canShowPayBottom ? '115px' : this.canShowBottom ? '80px' : this.canShowCancelBottom ? '80px' : '0'
     },
-    paymentTypeText() {
-      if (this.internalData.orderInfo.servicePackageName) {
-        return `-(${this.internalData.orderInfo.servicePackageName})`
-      } else {
-        return this.internalData.orderInfo.paymentTypeTxt
-      }
-    },
+
     retrunVisitBlock() {
       return this.internalData?.inquiryInfo?.isAgain.toString() === '1'
     },
     hasReturnVisitInfo() {
       return this.internalData?.illInfo?.confirmIllness
-    },
-    canShowYibao() {
-      return this.internalData?.orderInfo?.medicalMoney
     },
     canShowCancelButton() {
       return this.internalData?.orderInfo?.isShowCancelButton == ENUM.CANCEL_BUTTON_STATUS.显示

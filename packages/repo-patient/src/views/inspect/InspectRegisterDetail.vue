@@ -73,11 +73,45 @@
           <div class="module-item-label">订单时间：</div>
           <div class="module-item-value">{{ model.createdTime | formatDate }}</div>
         </div>
-        <template v-if="model.payStatus > 0">
-          <div class="module-item-content start size-14">
-            <div class="module-item-label">支付方式：</div>
-            <div class="module-item-value">{{model.paymentTypeTxt}}</div>
+        <template v-if="model.payInfo.deductionTypeTxt">
+          <div class="module-item-content size-14">
+            <div class="module-item-label">抵扣类型：</div>
+            <div class="module-item-value">{{ model.payInfo.deductionTypeTxt }}</div>
           </div>
+        </template>
+        <template v-if="model.payInfo.medicalTreatmentTypetxt">
+          <div class="module-item-content size-14">
+            <div class="module-item-label">医保类型：</div>
+            <div class="module-item-value">{{ model.payInfo.medicalTreatmentTypetxt }}</div>
+          </div>
+        </template>
+        <template v-if="model.payInfo.diseasesTxt">
+          <div class="module-item-content size-14">
+            <div class="module-item-label">病种：</div>
+            <div class="module-item-value">{{ model.payInfo.diseasesTxt }}</div>
+          </div>
+        </template>
+        <template v-if="model.payInfo.servicePackageName">
+          <div class="module-item-content size-14">
+            <div class="module-item-label">服务包名称：</div>
+            <div class="module-item-value">{{ model.payInfo.servicePackageName }}</div>
+          </div>
+        </template>
+        <template v-if="model.payInfo.equitiesName">
+          <div class="module-item-content size-14">
+            <div class="module-item-label">服务包权益：</div>
+            <div class="module-item-value">{{ model.payInfo.equitiesName }}</div>
+          </div>
+        </template>
+
+        <template v-if="model.payStatus > 0">
+
+          <template v-if="model.payInfo.payModeTxt">
+            <div class="module-item-content size-14">
+              <div class="module-item-label">支付方式：</div>
+              <div class="module-item-value">{{model.payInfo.paymentTypeTxt? model.payInfo.paymentTypeTxt +' - '+model.payInfo.payModeTxt : internalData.orderInfo.payInfo.payModeTxt }}</div>
+            </div>
+          </template>
           <div class="module-item-content size-14">
             <div class="module-item-label">支付时间：</div>
             <div class="module-item-value">{{ model.payTime | formatDate }}</div>
@@ -188,6 +222,7 @@ import ExpenseDetail from '@src/views/components//ExpenseDetail'
 import ApplyForInvoice from '@src/views/components/ApplyForInvoice'
 
 export default {
+  name: 'InspectRegisterDetail',
   components: {
     DoctorCard,
     FamilyCard,

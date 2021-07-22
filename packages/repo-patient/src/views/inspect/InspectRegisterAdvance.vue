@@ -68,6 +68,7 @@ import PayCard from '@src/views/components/PayCard'
 import ExpenseDetail from '@src/views/components/ExpenseDetail'
 
 export default {
+  name: 'InspectRegisterAdvance',
   components: {
     DoctorCard,
     FamilyCard,
@@ -90,8 +91,10 @@ export default {
       familyInfo: {},
       // 检验单信息
       inspectList: [],
-      // 默认选中微信支付
-      payType: 'wxpay',
+      //默认选中微信支付 wxpay alipay
+      paymentType: 'wxpay',
+      // 抵扣类型
+      payType: '',
       // 支付信息
       payInfo: {
         orderMoney: 0,
@@ -103,7 +106,7 @@ export default {
         // 医保待遇类型名称
         medicalTreatmentTypeName: '',
         // 疾病种类
-        diseases: '',
+        diseasesCode: '',
         // 疾病种类名称
         diseasesName: '',
 
@@ -155,6 +158,7 @@ export default {
     // 更新支付信息
     updatePayInfo(result) {
       this.payType = result.payType
+      this.paymentType = result.paymentType
       this.payInfo = result.payInfo
     },
 
@@ -164,22 +168,25 @@ export default {
     },
 
     submit() {
-      // if (this.payInfo.medCardNo && !this.payInfo.medicalTreatmentType) {
-      //   peace.util.alert('请选择医保类型')
-      //   return false
-      // }
-
       // 检验挂号单只有 微信支付、医保支付
       let errMsg = ''
       switch (this.payType) {
+        case 'servicePackage':
+          errMsg = !this.payInfo.patientEquitiesId ? '请选择服务包' : ''
+          break
         case 'yibaopay':
-          errMsg = !this.payInfo.medCardNo ? '请填写医保卡号' : ''
+          if (!this.payInfo.medCardNo) {
+            errMsg = '请填写医保卡号'
+          } else {
+            if (!this.payInfo.medicalTreatmentType) {
+              errMsg = '请填写医保类型'
+            } else if (this.payInfo.medicalTreatmentType.toString() === '2' && !this.payInfo.diseasesCode) {
+              errMsg = '请填写病种'
+            }
+          }
           break
         case 'shangbaopay':
-          errMsg = !this.payInfo.sbInsuranceId ? '请选择商保权益' : ''
-          break
-        case 'servicePackage':
-          errMsg = !this.payInfo.patientEquitiesId ? '请选择服务包权益' : ''
+          errMsg = !this.payInfo.cardno ? '请选择商保权益' : ''
           break
         default:
           errMsg = ''
@@ -200,7 +207,10 @@ export default {
         checkRecordId: peace.util.decode(this.$route.params.json).checkRecordId,
         medCardNo: this.payType === 'yibaopay' ? this.payInfo.medCardNo : '',
         cardNo: this.payType === 'shangbaopay' ? this.payInfo.sbInsuranceId : '',
-        paymentType: this.payType
+        medicalTreatmentType: this.payType === 'yibaopay' ? this.payInfo.medicalTreatmentType : '',
+        diseasesCode: this.payType === 'yibaopay' ? this.payInfo.diseasesCode : '',
+        diseasesName: this.payType === 'yibaopay' ? this.payInfo.diseasesName : '',
+        paymentType: this.paymentType
       }
 
       peace.service.inquiry

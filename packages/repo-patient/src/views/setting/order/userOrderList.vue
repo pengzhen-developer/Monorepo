@@ -1370,9 +1370,20 @@ export default {
         drug: {
           0:待支付 ; 1:已下单 ;2:已接单 ;3 :已备药/;已发货 4:已自提/;已签收 5:已取消 ;6:已完成
        }
+
+       *检验单
+       checkOrder：{
+         1：待支付 2：已取消 3：已完成 
+       }
+
+       *检验挂号单
+       checkRegisteringOrder{
+          1：待支付 2：已取消 3：预约成功 4：已完成
+       }
     */
 .strip-eye.color-servicePackage-4,
 .strip-eye.color-inquiry-5,
+.strip-eye.color-returnVisit-5,
 .strip-eye.color-drug-6 {
   color: #333333;
 }
@@ -1386,17 +1397,19 @@ export default {
 .strip-eye.color-servicePackage-1,
 .strip-eye.color-drug-0,
 .strip-eye.color-drug-1,
-.strip-eye.color-drug-2 {
+.strip-eye.color-drug-2,
+.strip-eye.color-checkOrder-1,
+.strip-eye.color-checkRegisteringOrder-1 {
   color: #ffa00c;
 }
 
 .strip-eye.color-inquiry-3,
 .strip-eye.color-returnVisit-3,
-.strip-eye.color-returnVisit-5,
 .strip-eye.color-register-3,
 .strip-eye.color-servicePackage-3,
 .strip-eye.color-drug-3,
-.strip-eye.color-drug-4 {
+.strip-eye.color-drug-4,
+.strip-eye.color-checkRegisteringOrder-3 {
   color: #00c6ae;
 }
 /*default*/
@@ -1409,7 +1422,10 @@ export default {
 .strip-eye.color-register-5,
 .strip-eye.color-register-7,
 .strip-eye.color-servicePackage-2,
-.strip-eye.color-drug-5 {
+.strip-eye.color-drug-5， .strip-eye.color-checkOrder-2,
+.strip-eye.color-checkOrder-3,
+.strip-eye.color-checkRegisteringOrder-2,
+.strip-eye.color-checkRegisteringOrder-4 {
   color: rgba(51, 51, 51, 0.6);
 }
 

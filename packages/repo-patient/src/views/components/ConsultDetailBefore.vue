@@ -283,9 +283,10 @@ export default {
         visible: false,
         data: {}
       },
-
-      // 默认选中微信支付
-      payType: 'wxpay',
+      //默认选中微信支付 wxpay alipay
+      paymentType: 'wxpay',
+      // 抵扣类型
+      payType: '',
       // 支付信息
       payInfo: {
         orderMoney: 0,
@@ -295,9 +296,9 @@ export default {
         // 医保待遇类型
         medicalTreatmentType: '',
         // 医保待遇类型名称
-        medicalTreatmentTypeName: '',
+        medicalTreatmentTypeText: '',
         // 疾病种类
-        diseases: '',
+        diseasesCode: '',
         // 疾病种类名称
         diseasesName: '',
 
@@ -412,7 +413,7 @@ export default {
         page_address: '/components/ConsultDetailBefore',
         business_type: this.ENUM.INQUIRY_TXET_MAP_SA[this.params.consultingType],
         order_type: this.ENUM.INQUIRY_TXET_MAP_SA[this.params.consultingType],
-        pay_method: this.ENUM.PAY_TYPE_TEXT[this.payType],
+        pay_method: this.ENUM.PAY_TYPE_TEXT[this.payType ? this.payType : this.paymentType],
         event_duration: (new Date().getTime() - this.enter_time) / 1000
       }
       peace.service.sensors.confirmOrder(params)
@@ -421,7 +422,7 @@ export default {
       const params = {
         business_type: this.ENUM.INQUIRY_TXET_MAP_SA[this.params.consultingType],
         click_object: type === 'apply' ? '提交订单' : '返回',
-        pay_method_on_submit: this.ENUM.PAY_TYPE_TEXT[this.payType]
+        pay_method_on_submit: this.ENUM.PAY_TYPE_TEXT[this.payType ? this.payType : this.paymentType]
       }
       peace.service.sensors.commitOrder(params)
     },
@@ -492,27 +493,35 @@ export default {
     // 更新支付信息
     updatePayInfo(result) {
       this.payType = result.payType
+      this.paymentType = result.paymentType
       this.payInfo = result.payInfo
 
       this.params.patientEquitiesId = result.payInfo.patientEquitiesId
+      this.params.medicalTreatmentType = result.payInfo.medicalTreatmentType
+      this.params.medicalTreatmentTypeText = result.payInfo.medicalTreatmentTypeText
       this.params.medCardNo = result.payInfo.medCardNo
+      this.params.diseasesCode = result.payInfo.diseasesCode
+      this.params.diseasesName = result.payInfo.diseasesName
       this.params.cardno = result.payInfo.sbInsuranceId
     },
 
     apply() {
-      // if (this.payInfo.medCardNo && !this.payInfo.medicalTreatmentType) {
-      //   peace.util.alert('请选择医保类型')
-      //   return false
-      // }
-
       let errMsg = ''
-      // servicePackage 服务包抵扣 yibaopay 医保支付 shangbaopay 商保
+      //deductionType  ==> 医保yibaopay 商保shangbaopay 服务包servicePackage
       switch (this.payType) {
         case 'servicePackage':
           errMsg = !this.params.patientEquitiesId ? '请选择服务包' : ''
           break
         case 'yibaopay':
-          errMsg = !this.params.medCardNo ? '请填写医保卡号' : ''
+          if (!this.params.medCardNo) {
+            errMsg = '请填写医保卡号'
+          } else {
+            if (!this.params.medicalTreatmentType) {
+              errMsg = '请填写医保类型'
+            } else if (this.params.medicalTreatmentType.toString() === '2' && !this.params.diseasesCode) {
+              errMsg = '请填写病种'
+            }
+          }
           break
         case 'shangbaopay':
           errMsg = !this.params.cardno ? '请选择商保权益' : ''
@@ -534,18 +543,22 @@ export default {
 
       let params = peace.util.deepClone(this.params)
 
-      params.paymentType = this.payType
+      params.deductionType = this.payType
 
       // 服务包、医保、商保互斥
       // servicePackage 服务包抵扣 yibaopay 医保支付 shangbaopay 商保
       if (this.payType === 'servicePackage') {
         params.medCardNo = ''
         params.cardno = ''
+        params.diseasesCode = ''
+        params.diseasesName = ''
       }
-      if (this.payType === 'wxpay') {
+      if (this.payType === '') {
         params.medCardNo = ''
         params.cardno = ''
         params.patientEquitiesId = ''
+        params.diseasesCode = ''
+        params.diseasesName = ''
       }
       if (this.payType === 'yibaopay') {
         params.cardno = ''
@@ -554,6 +567,8 @@ export default {
       if (this.payType === 'shangbaopay') {
         params.patientEquitiesId = ''
         params.medCardNo = ''
+        params.diseasesCode = ''
+        params.diseasesName = ''
       }
       this.trackByCommit('apply')
       this.isSend = true

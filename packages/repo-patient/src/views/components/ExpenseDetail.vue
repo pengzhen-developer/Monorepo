@@ -6,6 +6,7 @@
              v-model="show">
 
     <div class="cost">
+      <div class="cost-header">支付</div>
       <div class="cost-content">
         <template v-if="moneyRecord&&moneyRecord.length>1">
           <div class="cost-platform"
@@ -273,6 +274,14 @@ export default {
   min-height: 100%;
   width: 100%;
   position: relative;
+  .cost-header {
+    font-size: 18px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    line-height: 24px;
+    text-align: center;
+  }
   .cost-content {
     display: flex;
     flex-direction: column;

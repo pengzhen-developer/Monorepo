@@ -106,15 +106,21 @@
                 <div class="other-price">
                   <peace-price class="price"
                                v-bind:price="item.DrugUnitPrice"
+                               v-bind:transformOrigin="'right'"
                                v-bind:size="14"></peace-price>
-                  x{{item.DrugQty}}
+                  <span style="margin-left:2px;">x{{item.DrugQty}}{{item.DrugQtyUnit}}</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
+      <div class="module phone"
+           v-if="canShowPhoneBox"
+           @click="callPhone">
+        <van-image :src="require('@src/assets/images/ic_call_default.png')"></van-image>
+        <span>联系客服</span>
+      </div>
       <div class="module intro"
            v-if="moneyRecord.length>1">
         <div class="dl-packet"
@@ -145,7 +151,7 @@
            v-if="canShowPayMoney">
         <div class="dl-packet">
           <div class="dt">
-            {{canShowPayway?'实付金额:':'应付金额:'}}
+            自费金额：
           </div>
           <div class="dd">
             <div class="strong">
@@ -181,11 +187,32 @@
             {{order.shippingMethodTxt}}
           </div>
         </div>
-        <div class="dl-packet">
+
+        <div class="dl-packet"
+             v-if="order.payInfo.deductionTypeTxt">
+          <div class="dt">抵扣类型：</div>
+          <div class="dd">
+            {{ order.payInfo.deductionTypeTxt }}</div>
+        </div>
+        <div class="dl-packet"
+             v-if="order.payInfo.medicalTreatmentTypetxt">
+          <div class="dt">医保类型：</div>
+          <div class="dd">
+            {{ order.payInfo.medicalTreatmentTypetxt }}</div>
+        </div>
+        <div class="dl-packet"
+             v-if="order.payInfo.diseasesTxt">
+          <div class="dt">病种：</div>
+          <div class="dd">
+            {{ order.payInfo.diseasesTxt  }}</div>
+        </div>
+        <div class="dl-packet"
+             v-if="order.payInfo.payModeTxt &&order.payTime">
           <div class="dt">支付方式：</div>
           <div class="dd">
-            {{ order.paymentTypeTxt }}</div>
+            {{ order.payInfo.paymentTypeTxt? order.payInfo.paymentTypeTxt +' - '+order.payInfo.payModeTxt : order.payInfo.payModeTxt  }}</div>
         </div>
+
         <template v-if="showTrackingNumber">
           <div class="dl-packet"
                v-for="(item,index) in order.expressNo"
@@ -212,14 +239,13 @@
           <div class="dd">
             {{ order.refundTime }}</div>
         </div>
+        <div class="dl-packet"
+             v-if="order.divisionId&&order.payTime">
+          <div class="dt">发票号</div>
+          <div class="dd">{{ order.divisionId }}</div>
+        </div>
       </div>
 
-      <div class="module phone"
-           v-if="canShowPhoneBox"
-           @click="callPhone">
-        <van-image :src="require('@src/assets/images/ic_call_default.png')"></van-image>
-        <span>联系客服</span>
-      </div>
       <div class="count-down"
            v-if="canShowCountDown">
         <span>订单 </span>
@@ -918,7 +944,8 @@ export default {
       justify-content: center;
       color: #999;
       font-size: 12px;
-      padding: 10px 15px;
+      padding: 10px 16px;
+      margin-top: -10px;
       .van-image {
         width: 14px;
         height: 14px;
@@ -1200,16 +1227,6 @@ export default {
   background-image: url('~@src/assets/images/icons/arrow-right.jpg');
 }
 
-.list-three .list-other {
-  flex: 0 1 65px;
-  width: 65px;
-  display: flex;
-  flex-direction: column;
-  text-align: right;
-}
-.list-three:last-child {
-  border-bottom-width: 0px;
-}
 .list-other .other-them {
   .van-image {
     width: 12px;
