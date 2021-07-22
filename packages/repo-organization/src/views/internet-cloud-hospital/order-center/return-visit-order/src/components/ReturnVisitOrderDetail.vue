@@ -1,7 +1,7 @@
 <template>
   <div class="order-detail">
 
-    <!-- <div class="doctor">
+    <div class="doctor">
       <div class="doctor-pic">
         <img :src="info.photoDoc"
              alt="医生头像">
@@ -18,22 +18,11 @@
 
       <div class="order-type"
            :style="{ color:orderLabelColor , background: orderLabelBgd }">
-        {{info.inquiryStatus|getEnumLabel(source.ENUM_RETURN_VISIT_STATUS)}
+        {{info.inquiryStatus|getEnumLabel(source.ENUM_RETURN_VISIT_STATUS)}}
       </div>
-    </div> -->
+    </div>
 
     <div class="order-info">
-
-      <div class="panel-box">
-        <div class="panel-head">
-          <div class="panel-title">复诊时间</div>
-        </div>
-        <div class="panel-body">
-          <div class="panel-info">
-            {{ info.appointmentDate }}
-          </div>
-        </div>
-      </div>
 
       <div class="panel-box">
         <div class="panel-head">
@@ -41,20 +30,20 @@
         </div>
         <div class="panel-body">
           <div class="panel-info">
-            <div class="panel-label">姓名</div>
+            <div class="panel-label user">姓名：</div>
             <div class="panel-value">{{info.patient_name}}</div>
           </div>
           <div class="panel-info">
-            <div class="panel-label">性别</div>
+            <div class="panel-label user">性别：</div>
             <div class="panel-value">{{info.sex}}</div>
           </div>
           <div class="panel-info">
-            <div class="panel-label">年龄</div>
+            <div class="panel-label user">年龄：</div>
             <div class="panel-value">{{info.age}}</div>
           </div>
           <div class="panel-info"
                v-if="info.guardianName&&info.guardianSex&&info.guardianAge">
-            <div class="panel-label">监护人</div>
+            <div class="panel-label user">监护人：</div>
             <div class="panel-value">{{ info.guardianName }} |
               {{ info.guardianSex }} |
               {{ info.guardianAge }}</div>
@@ -73,40 +62,6 @@
       </div>
 
       <div class="panel-box"
-           v-if="info.firstOptionList && info.firstOptionList.length > 0">
-        <div class="panel-head">
-          <div class="panel-title">诊疗记录</div>
-        </div>
-        <div class="panel-body">
-          <div class="first-list">
-            <div class="first-item"
-                 v-for="(item, index) in info.firstOptionList"
-                 :key="index">
-
-              <div class="first-time">
-                <div class="first-day">{{item.createdTime.split(' ')[0].substring(5, 10)}}</div>
-                <div class="first-year">{{item.createdTime.split(' ')[0].substring(0, 4)}}</div>
-              </div>
-              <div class="first-content">
-                <div class="first-card">
-                  <div class="first-info">
-                    <img class="first-icon"
-                         :src="require('../assets/images/ic_medical_record.png')">
-                    <div>
-                      <div class="first-title">{{item.title}}</div>
-                      <div class="first-hospital">{{item.hospitalName}} | {{item.deptName}}</div>
-                    </div>
-                  </div>
-                  <div v-if="item.diagnosis"
-                       class="first-diagnosis">{{item.diagnosis || ''}}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel-box"
            v-if="info.confirm_illness||info.image_list.filter(img=>img.type==1).length>0">
         <div class="panel-head">
           <div class="panel-title">复诊信息</div>
@@ -114,7 +69,7 @@
         <div class="panel-body">
           <div class="panel-info"
                v-if="info.image_list.filter(img=>img.type==1).length>0">
-            <div class="panel-label">复诊凭证</div>
+            <div class="panel-label">复诊凭证：</div>
             <div class="panel-value">
               <div class="img-list">
                 <el-image class="preview-img"
@@ -129,12 +84,12 @@
           </div>
           <div class="panel-info"
                v-else>
-            <div class="panel-label">复诊凭证</div>
+            <div class="panel-label">复诊凭证：</div>
             <div class="panel-value">确认遗失</div>
           </div>
           <div class="panel-info"
                v-if="info.confirm_illness">
-            <div class="panel-label">初诊诊断</div>
+            <div class="panel-label">初诊诊断：</div>
             <div class="panel-value">{{ info.confirm_illness }}</div>
           </div>
         </div>
@@ -147,7 +102,7 @@
         </div>
         <div class="panel-body">
           <div class="panel-info">
-            <div class="panel-label">患处图片</div>
+            <div class="panel-label">患处图片：</div>
             <div class="panel-value">
               <div class="img-list">
                 <el-image class="preview-img"
@@ -162,12 +117,12 @@
           </div>
           <div class="panel-info"
                v-if="info.pregnancyText">
-            <div class="panel-label">特殊时期</div>
+            <div class="panel-label">特殊时期：</div>
             <div class="panel-value">{{ info.pregnancyText }}</div>
           </div>
           <div class="panel-info"
                v-if="info.allergic_history">
-            <div class="panel-label">过敏史</div>
+            <div class="panel-label">过敏史：</div>
             <div class="panel-value">{{ info.allergic_history }}</div>
           </div>
         </div>
@@ -179,54 +134,91 @@
         </div>
         <div class="panel-body">
           <div class="panel-info">
-            <div class="panel-label">订单编号</div>
+            <div class="panel-label">订单编号：</div>
             <div class="panel-value">{{ info.order_no }}</div>
           </div>
           <div class="panel-info">
-            <div class="panel-label">订单时间</div>
+            <div class="panel-label">订单时间：</div>
             <div class="panel-value">{{ info.created_time }}</div>
           </div>
-          <template v-if="info.paymentType">
+          <div class="panel-info"
+               v-if="info.orderStatus >= 3 || info.payTime != null">
+            <div class="panel-label">支付方式：</div>
+            <div class="panel-value">{{info.payInfo.payModeTxt}}{{info.payInfo.paymentTypeTxt ? ' - ' +
+						info.payInfo.paymentTypeTxt : ''}}</div>
+          </div>
+          <div class="panel-info"
+               v-if="info.payInfo.deductionTypeTxt">
+            <div class="panel-label">抵扣类型：</div>
+            <div class="panel-value">{{ info.payInfo.deductionTypeTxt }}</div>
+          </div>
+          <template v-if="info.payInfo.deductionType === 'yibaopay'">
             <div class="panel-info">
-              <div class="panel-label">支付方式</div>
-              <div class="panel-value">{{ info.paymentType | getEnumLabel(source.ENUM_PAYMENT) }}</div>
+              <div class="panel-label">医保类型：</div>
+              <div class="panel-value">{{ info.payInfo.medicalTreatmentTypetxt }}</div>
             </div>
+            <div class="panel-info"
+                 v-if="info.payInfo.medicalTreatmentType === 2">
+              <div class="panel-label">病种：</div>
+              <div class="panel-value">{{ info.payInfo.diseasesTxt }}</div>
+            </div>
+          </template>
+          <template v-if="info.payInfo.deductionType === 'servicePackage'">
             <div class="panel-info">
-              <div class="panel-label">支付时间</div>
-              <div class="panel-value">{{ info.created_time }}</div>
+              <div class="panel-label">服务包名称：</div>
+              <div class="panel-value">{{ info.payInfo.servicePackageName }}</div>
+            </div>
+            <div class="panel-info"
+                 v-if="info.payInfo.medicalTreatmentType === 2">
+              <div class="panel-label">权益名称：</div>
+              <div class="panel-value">{{ info.payInfo.equitiesName }}</div>
+            </div>
+          </template>
+          <div class="panel-info"
+               v-if="info.orderStatus >= 3 || info.payTime != null">
+            <div class="panel-label">支付时间：</div>
+            <div class="panel-value">{{ info.created_time }}</div>
+          </div>
+          <div class="panel-info"
+               v-if="info.cancelTime">
+            <div class="panel-label">取消时间：</div>
+            <div class="panel-value">{{ info.cancelTime }}</div>
+          </div>
+          <div class="panel-info"
+               v-if="(info.orderStatus >= 3 || info.payTime != null) && info.divisionId">
+            <div class="panel-label">发票号：</div>
+            <div class="panel-value">{{info.divisionId}}</div>
+          </div>
+          <div class="panel-info"
+               v-if="info.backTime">
+            <div class="panel-label">退诊时间：</div>
+            <div class="panel-value">{{ info.backTime }}</div>
+          </div>
+          <div class="panel-info"
+               v-if="info.refundTime">
+            <div class="panel-label">退款时间：</div>
+            <div class="panel-value">{{ info.refundTime }}</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <template v-if="info.moneyRecord && info.moneyRecord.length > 0">
+            <div class="panel-info"
+                 v-for="item in info.moneyRecord"
+                 v-bind:key="item.name">
+              <div class="panel-label">{{item.name}}：</div>
+              <div class="panel-value">{{ item.value }}</div>
+            </div>
+          </template>
+          <template v-else>
+            <div class="panel-info">
+              <div class="panel-label">订单费用：</div>
+              <div class="panel-value">￥{{ info.totalMoney }}</div>
             </div>
           </template>
 
           <div class="panel-info">
-            <div class="panel-label">订单费用</div>
-            <div class="panel-value"
-                 v-if="info.order_money"> ¥ {{ info.order_money }}</div>
-          </div>
-          <!-- <div class="panel-info">
-            <div class="panel-label">优惠金额</div>
-            <div class="panel-value" v-if="info.discount_money">{{ info.discount_money }}</div>
-          </div> -->
-          <div class="panel-info"
-               v-if="info.deductionMoney">
-            <div class="panel-label"
-                 style="width:104px;">商保权益抵扣</div>
-            <div class="panel-value">-{{ info.deductionMoney }}</div>
-          </div>
-          <template v-if="info.accountPay > 0 || info.insurePay > 0">
-            <div class="panel-info">
-              <div class="panel-label"
-                   style="width: 142px;">医保统筹账户支付</div>
-              <div class="panel-value">- ¥ {{ info.insurePay }}</div>
-            </div>
-            <div class="panel-info">
-              <div class="panel-label"
-                   style="width: 142px;">医保个人账户支付</div>
-              <div class="panel-value">- ¥ {{ info.accountPay }}</div>
-            </div>
-          </template>
-          <div class="panel-info"
-               v-if="!(info.inquiryStatus === 7 || info.inquiryStatus === 8)">
-            <div class="panel-label">{{moneyText}}</div>
+            <div class="panel-label">{{moneyText}}：</div>
             <div class="panel-value">
               <span class="red"
                     v-if="info.pay_money"> ¥ {{ info.pay_money }}</span>
@@ -265,7 +257,12 @@ export default {
   },
   computed: {
     moneyText() {
-      let str = this.info.payTime == '' || this.info.payTime == null ? '应付金额' : '实付金额'
+      let str = ''
+      if (this.info.orderStatus >= 3 || this.info.payTime != null) {
+        str = '实付金额'
+      } else {
+        str = '应付金额'
+      }
       return str
     },
 
@@ -314,6 +311,9 @@ export default {
 .order-detail {
   .doctor {
     position: relative;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e9e9e9;
     &-pic,
     &-info {
       display: inline-block;
@@ -345,7 +345,7 @@ export default {
     .order-type {
       position: absolute;
       top: 20px;
-      right: -20px;
+      right: -16px;
       color: #fff;
       line-height: 1.75;
       padding: 0 20px;
@@ -403,24 +403,16 @@ export default {
         margin-bottom: 0;
       }
       .panel-label {
-        position: relative;
         flex: none;
-        width: 80px;
+        min-width: 76px;
         height: 20px;
-        padding-right: 20px;
+        padding-right: 4px;
         font-size: 14px;
         font-weight: 400;
         color: rgba(0, 0, 0, 0.6);
         line-height: 20px;
-        text-align: justify;
-        text-align-last: justify;
-        &::after {
-          content: '：';
-          position: absolute;
-          top: 0;
-          right: 12px;
-          width: 10px;
-          height: 20px;
+        &.user {
+          min-width: 48px;
         }
       }
       .panel-value {
@@ -499,6 +491,13 @@ export default {
   .red {
     font-weight: 600;
     color: #f56c6c;
+  }
+
+  .divider {
+    margin: 20px auto;
+    width: 100%;
+    height: 1px;
+    border-top: 1px dashed #e9e9e9;
   }
 }
 </style>

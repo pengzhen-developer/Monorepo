@@ -148,12 +148,34 @@
       <el-form inline
                space-none
                label-suffix="：">
-        <div class="row">
-          <div class="col">
+        <div class="flex">
+          <div class="flex-item">
             <el-form-item label="支付方式">
-              <span>{{payInfo.payType||'-'}}</span>
+              <span>{{payMentInfo.payModeTxt}}{{payMentInfo.paymentTypeTxt ? ' - ' + payMentInfo.paymentTypeTxt : ''}}</span>
             </el-form-item>
           </div>
+          <div class="flex-item"
+               v-if="payMentInfo.deductionTypeTxt">
+            <el-form-item label="抵扣类型">
+              <span>{{payMentInfo.deductionTypeTxt}}</span>
+            </el-form-item>
+          </div>
+          <template v-if="payMentInfo.deductionType === 'yibaopay'">
+            <div class="flex-item">
+              <el-form-item label="医保类型">
+                <span>{{payMentInfo.medicalTreatmentTypetxt}}</span>
+              </el-form-item>
+            </div>
+            <div class="flex-item"
+                 v-if="payMentInfo.medicalTreatmentType === 2">
+              <el-form-item label="病种">
+                <span>{{payMentInfo.diseasesTxt}}</span>
+              </el-form-item>
+            </div>
+          </template>
+        </div>
+
+        <div class="row">
           <div class="col">
             <el-form-item label="合计金额">
               <span>{{payInfo.totalMoney||'-'}}</span>
@@ -163,6 +185,8 @@
             <el-form-item label="自费金额">
               <span>{{payInfo.ownMoney||'-'}}</span>
             </el-form-item>
+          </div>
+          <div class="col">
           </div>
         </div>
         <div class="row">
@@ -199,7 +223,8 @@ export default {
       orderInfo: {},
       patientInfo: {},
       payInfo: {},
-      itemInfo: []
+      itemInfo: [],
+      payMentInfo: {}
     }
   },
   mounted() {
@@ -214,6 +239,7 @@ export default {
         this.patientInfo = res.data?.patientInfo ?? {}
         this.payInfo = res.data?.payInfo ?? {}
         this.itemInfo = res.data?.itemInfo ?? []
+        this.payMentInfo = res.data?.payMentInfo ?? {}
       })
     },
     back() {
@@ -244,5 +270,13 @@ p {
   margin-left: 10px;
   font-weight: 600;
   font-size: 16px;
+}
+
+.flex-item {
+  flex: none;
+  width: 33.33%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 </style>

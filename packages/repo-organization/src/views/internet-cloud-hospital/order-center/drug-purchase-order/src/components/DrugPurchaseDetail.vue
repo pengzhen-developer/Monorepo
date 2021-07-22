@@ -50,12 +50,17 @@
             </div>
             <div class="drug-info-item">
               <div class="drug-specification">{{ drug.DrugSpecification }}</div>
-
             </div>
           </div>
           <div class="drug-price">
-            <span class="drug-price-num"> ¥ {{ drug.DrugUnitPrice }}</span>
-            <span class="drug-qty"> x {{ drug.DrugQty }}</span>
+            <div class="coldStorage"
+                 v-bind:style="{'visibility':drug.coldStorage==1?'visible': 'hidden'}">
+              冷藏
+            </div>
+            <div class="flex">
+              <span class="drug-price-num"> ¥ {{ drug.DrugUnitPrice }}</span>
+              <span class="drug-qty"> x {{ drug.DrugQty }}{{drug.DrugQtyUnit}}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -69,35 +74,9 @@
             <div class="money-record-value">{{ item.value }}</div>
           </div>
         </template>
-        <template v-else>
-          <div class="money-record-item">
-            <div class="money-record-label">药品金额</div>
-            <div class="money-record-value"> ¥ {{Number(info.orderMoney).toFixed(2)}}</div>
-          </div>
-          <div class="money-record-item"
-               v-if="!isToStore">
-            <div class="money-record-label">配送费</div>
-            <div class="money-record-value"> ¥ {{Number(info.expressFee).toFixed(2)}}</div>
-          </div>
-          <div class="money-record-item"
-               v-if="info.deductionMoney">
-            <div class="money-record-label">商保抵扣</div>
-            <div class="money-record-value">- ¥ {{Number(info.deductionMoney).toFixed(2)}}</div>
-          </div>
-          <template v-if="info.accountPay > 0 || info.insurePay > 0">
-            <div class="money-record-item">
-              <div class="money-record-label">医保统筹账户支付</div>
-              <div class="money-record-value">- ¥ {{ Number(info.insurePay).toFixed(2) }}</div>
-            </div>
-            <div class="money-record-item">
-              <div class="money-record-label">医保个人账户支付</div>
-              <div class="money-record-value">- ¥ {{ Number(info.accountPay).toFixed(2) }}</div>
-            </div>
-          </template>
-        </template>
       </div>
       <div class="pay-money">
-        <div class="pay-money-label">{{ info.payStatus>=3||info.payTime?'实付金额 :':'应付金额 :' }}</div>
+        <div class="pay-money-label">自费金额</div>
         <div class="pay-money-value">
           <span> ¥ {{ info.orderMoney.toFixed(2) }}</span>
           <span v-if="info.refundTime"
@@ -105,6 +84,23 @@
         </div>
       </div>
       <div class="order-status">订单状态 : {{ orderStatusText }}</div>
+      <div class="cancel-list"
+           v-if="cancelList.length>0">
+        <!-- 取消记录 -->
+        <div class="flex">
+          <div class="cancel-label">取消记录</div>
+          <div class="cancel-content">
+            <el-timeline>
+              <el-timeline-item v-for="(item, index) in cancelList"
+                                :key="index">
+                <div class="title">{{getCancelText(item.cancelStatus)}} {{item.createdTime}}</div>
+                <div class="content"
+                     v-if="item.cancelStatus==1||item.cancelStatus==3">{{item.reason}}</div>
+              </el-timeline-item>
+            </el-timeline>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="order-detail">
@@ -113,13 +109,39 @@
         <div>{{ info.orderNo }}</div>
       </div>
       <div class="order-item">
-        <div class="order-label">支付方式</div>
-        <div>{{ info.paymentTypeTxt }}</div>
+        <div class="order-label">创建时间</div>
+        <div>{{ info.createdTime }}</div>
       </div>
       <div class="order-item"
            v-if="info.purchaseDrugOrderStreams && info.purchaseDrugOrderStreams.length > 0 && info.shippingMethod === 1 && info.callOrderStatus >= 3 && info.callOrderStatus !== 5 && info.expressNo.length > 0">
         <div class="order-label">运单编号</div>
         <div>{{ expressNoText }}</div>
+      </div>
+      <div class="order-item"
+           v-if="info.divisionId && info.payTime">
+        <div class="order-label">发票号</div>
+        <div>{{ info.divisionId }}</div>
+      </div>
+      <div class="order-item"
+           v-if="info.payInfo.deductionTypeTxt">
+        <div class="order-label">抵扣类型</div>
+        <div>{{ info.payInfo.deductionTypeTxt }}</div>
+      </div>
+      <template v-if="info.payInfo.deductionType === 'yibaopay'">
+        <div class="order-item">
+          <div class="order-label">医保类型</div>
+          <div>{{ info.payInfo.medicalTreatmentTypetxt }}</div>
+        </div>
+        <div class="order-item"
+             v-if="info.payInfo.medicalTreatmentType === 2">
+          <div class="order-label">病种</div>
+          <div>{{ info.payInfo.diseasesTxt }}</div>
+        </div>
+      </template>
+      <div class="order-item"
+           v-if="info.payInfo.payModeTxt&&info.payTime">
+        <div class="order-label">支付方式</div>
+        <div>{{info.payInfo.paymentTypeTxt? info.payInfo.payModeTxt + '-' + info.payInfo.paymentTypeTxt: info.payInfo.payModeTxt }}</div>
       </div>
       <template v-if="info.purchaseDrugOrderStreams && info.purchaseDrugOrderStreams.length > 0">
         <div class="order-item"
@@ -191,6 +213,24 @@ export default {
     },
     expressNoText() {
       return this.info.expressNo.map((item) => item.expressNo).join('，')
+    },
+    cancelList() {
+      let list = []
+      list = this.info.cancelList
+      if (list.length > 0) {
+        if (list.length == 1) {
+          //仅用户端取消需添加‘等待审核’节点，供应方取消不需要；
+          //目前运营端不会展示供应方取消的取消时间列表；
+          //故暂时如此处理；
+          //如需展示供应方需调整接口
+          list.unshift({ cancelStatusText: '等待审核', cancelStatus: 0 })
+        } else {
+          list.reverse()
+        }
+        return list
+      } else {
+        return []
+      }
     }
   },
   async created() {
@@ -216,11 +256,35 @@ export default {
         presIds: this.info.prescribeId
       }
       this.$emit('viewPres', param)
+    },
+    //状态-后端定义文案['1'=>'取消申请','2'=>'取消成功','3'=>'取消失败'];
+    //状态-运营端显示文案['1'=>'用户申请取消','2'=>'取消申请 已同意','3'=>'取消申请 已拒绝'];
+    getCancelText(status) {
+      let text = ''
+      switch (status) {
+        case 3:
+          text = '取消申请 已拒绝'
+          break
+        case 2:
+          text = '取消申请 已同意'
+          break
+        case 1:
+          text = '用户申请取消'
+          break
+        default:
+          text = '等待审核'
+          break
+      }
+      return text
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+$text: #333333;
+$grey-text: rgba(51, 51, 51, 0.6);
+$border-color: #eaeaea;
+
 .purchase-detail {
   padding: 0 8px;
 }
@@ -380,6 +444,10 @@ export default {
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
+    .coldStorage {
+      color: #ea3930;
+      text-align: right;
+    }
     .drug-price-num {
       color: #333333;
     }
@@ -439,6 +507,71 @@ export default {
     font-weight: 400;
     color: #333333;
     line-height: 20px;
+  }
+  ::v-deep .cancel-list {
+    padding: 0 16px 16px 16px;
+    > div + div {
+      margin-top: 10px;
+    }
+    .cancel-content {
+      flex: 1;
+    }
+    .cancel-label {
+      min-width: 5em;
+      color: $text;
+      &:after {
+        content: '：';
+      }
+    }
+    .cancel-content {
+      .el-timeline {
+        margin-top: 10px;
+      }
+      .el-timeline-item {
+        padding-bottom: 14px;
+        &:first-child {
+          .el-timeline-item__tail {
+            display: block;
+          }
+        }
+        &:last-child {
+          padding-bottom: 0;
+        }
+      }
+      .el-timeline-item__tail {
+        left: 2px;
+        top: 8px;
+        height: calc(100% - 8px);
+        background: rgba(51, 51, 51, 0.1);
+      }
+      .el-timeline-item__node--normal {
+        left: -1px;
+        width: 8px;
+        height: 8px;
+        background: rgba(51, 51, 51, 0.1);
+      }
+      .el-timeline-item__wrapper {
+        top: -8px;
+        padding-left: 14px;
+      }
+      .el-timeline-item__content {
+        .title {
+          font-size: 14px;
+          font-weight: 400;
+          color: #333333;
+          line-height: 20px;
+        }
+        .content {
+          padding: 0;
+          margin: 0;
+          font-size: 14px;
+          font-weight: 400;
+          color: rgba(51, 51, 51, 0.6);
+          line-height: 20px;
+          background: transparent;
+        }
+      }
+    }
   }
 }
 
