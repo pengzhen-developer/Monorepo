@@ -227,7 +227,10 @@
                             style="margin: 0;">
                 <el-select v-model="row.drugQuantityUnit"
                            style="width: 64px;"
-                           v-on:change="() => changeDrugQuantityUnit(row) && calculateCount(row)">
+                           v-on:change="() => { 
+                                                calculateCount(row) 
+                                                changeDrugQuantityUnit(row)
+                                              }">
                   <el-option v-for="item in row.splitZeroList"
                              v-bind:key="item.packageUnitTag"
                              v-bind:label="item.unit"
