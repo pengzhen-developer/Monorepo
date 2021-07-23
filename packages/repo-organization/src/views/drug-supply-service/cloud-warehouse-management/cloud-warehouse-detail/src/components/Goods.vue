@@ -171,8 +171,8 @@ export default {
         return false
       }
       if (type === 'up') {
-        let hasDown = list.find((item) => item.OnShelves === 0)
-        if (hasDown) {
+        let hasUp = list.find((item) => item.OnShelves === 1)
+        if (hasUp) {
           Peace.util.warning('仅【未上架】商品能进行上架操作，请选择对应的药品状态完成操作')
           return false
         }
@@ -189,8 +189,8 @@ export default {
           this.fetch()
         })
       } else if (type === 'down') {
-        let hasUp = list.find((item) => item.OnShelves === 1)
-        if (hasUp) {
+        let hasDown = list.find((item) => item.OnShelves === 0)
+        if (hasDown) {
           Peace.util.warning('仅【已上架】商品能进行下架操作，请选择对应的药品状态完成操作')
           return false
         }
