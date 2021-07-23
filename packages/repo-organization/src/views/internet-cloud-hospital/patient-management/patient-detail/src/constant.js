@@ -3,6 +3,6 @@ export default {
   ENUM_INQUIRY_TYPE: [
     { value: 'image', label: '图文' },
     { value: 'video', label: '视频' },
-    { value: 'returnVisit', label: '复诊续方' }
+    { value: 'returnVisit', label: '复诊开药' }
   ]
 }

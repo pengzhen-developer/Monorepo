@@ -66,7 +66,7 @@ const formatRecord = (data) => {
 
 export default {
   /**
-   * 检查是否开通复诊续方
+   * 检查是否开通复诊开药
    *
    * @param {*} params
    */

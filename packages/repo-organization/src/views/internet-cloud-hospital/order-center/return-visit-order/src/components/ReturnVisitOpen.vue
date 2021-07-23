@@ -5,7 +5,7 @@
            :src="require('../assets/images/no-open-registered.png')" />
     </div>
     <p class="text">
-      开通复诊续方功能，在此设置医生号源信息，患者可在互联网医院提前复诊预约
+      开通复诊开药功能，在此设置医生号源信息，患者可在互联网医院提前复诊预约
       <br />医院管理员可在此查看医生复诊号源信息与用户预约信息
     </p>
     <el-button @click="open"

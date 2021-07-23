@@ -69,9 +69,9 @@ export default {
         this.serviceList = data.map((item, index) => {
           return Object.assign(item, { order: index + 1 })
         })
-        const obj = data.find((item) => item.serviceName == '复诊续方')
-        if (item.type == 'switch' && item.serviceName == '复诊续方' && obj.isOpen == 1 && item.confirm) {
-          this.$confirm('开启复诊续方服务，需对提供复诊续方服务的医生进行排班，否则患者无法在线预约复诊续方', '提示', {
+        const obj = data.find((item) => item.serviceName == '复诊开药')
+        if (item.type == 'switch' && item.serviceName == '复诊开药' && obj.isOpen == 1 && item.confirm) {
+          this.$confirm('开启复诊开药服务，需对提供复诊开药服务的医生进行排班，否则患者无法在线预约复诊开药', '提示', {
             confirmButtonText: '去排班',
             cancelButtonText: '取消',
             type: 'warning',
