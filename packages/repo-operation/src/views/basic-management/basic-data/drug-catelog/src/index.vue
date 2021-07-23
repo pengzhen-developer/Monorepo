@@ -1,27 +1,48 @@
 <template>
-  <div class="q-pl-20 q-pr-20 q-pt-20">
-    <iframeContainer ref="iframe"
-                     v-bind:src="src"
-                     full-height></iframeContainer>
+  <div class="layout-route">
+    <!-- 列表 -->
+    <DrugList v-on:showDrugDetail="showDrugDetail"></DrugList>
+
+    <!-- 查看详情 -->
+    <peace-dialog :close-on-click-modal="false"
+                  :close-on-press-escape="false"
+                  :visible.sync="detailModelDialog.visible"
+                  title="查看详情"
+                  v-if="detailModelDialog.visible"
+                  append-to-body
+                  width="1000px">
+      <DetailModel v-bind:info="detailModelDialog.data" />
+    </peace-dialog>
+
   </div>
 </template>
 
 <script>
-import iframeContainer from '@src/views/iframe'
+import DrugList from './components/DrugList'
+import DetailModel from './components/DetailModel'
 
 export default {
   name: 'DrugCatelog',
+
   components: {
-    iframeContainer
+    DrugList,
+    DetailModel
   },
 
   data() {
     return {
-      src: ''
+      detailModelDialog: {
+        visible: false,
+        data: ''
+      }
     }
   },
-  created() {
-    this.src = `${process.env.VUE_APP_SITE_OPERATION}DrugData/DrugData`
+
+  methods: {
+    showDrugDetail(data) {
+      this.detailModelDialog.visible = true
+      this.detailModelDialog.data = data
+    }
   }
 }
 </script>
