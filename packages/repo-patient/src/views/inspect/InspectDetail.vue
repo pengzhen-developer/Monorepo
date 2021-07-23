@@ -122,6 +122,11 @@
             <div class="module-item-label">支付时间：</div>
             <div class="module-item-value">{{ model.payTime | formatDate }}</div>
           </div>
+          <div class="module-item-content size-14"
+               v-if="model.divisionId">
+            <div class="module-item-label">发票号：</div>
+            <div class="module-item-value">{{ model.divisionId }}</div>
+          </div>
         </template>
         <div class="module-item-content size-14"
              v-if="model.orderStatus === 2">
