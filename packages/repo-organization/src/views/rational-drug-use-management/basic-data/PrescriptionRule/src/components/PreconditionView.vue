@@ -473,7 +473,10 @@ export default {
         })
       } else {
         //Peace.util.alert(`前置规则 ${item.ceType} 未完成编辑不能保存`)
-        this.visible = false
+        this.$emit('preconditionInfo', {
+          IndexParams: { ...this.IndexParams },
+          data: params
+        })
       }
     },
 
