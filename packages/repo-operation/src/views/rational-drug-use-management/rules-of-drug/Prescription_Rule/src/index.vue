@@ -413,7 +413,7 @@ export default {
     addPreconditionInfo(params) {
       const { IndexParams, data } = params
       this.rules[IndexParams.patientIndex].models[IndexParams.Index].conditionExpressionString.ceList = data
-      this.rules[IndexParams.patientIndex].models[IndexParams.Index].conditionExpressionString.hasPrecondition = true
+      this.rules[IndexParams.patientIndex].models[IndexParams.Index].conditionExpressionString.hasPrecondition = JSON.stringify(data) !== '{}'
       this.dialog.visible = false
     }
   }
