@@ -226,8 +226,17 @@ export default {
 
           Service.updateWarehouseInfo(params)
             .then(() => {
+              Service.getInfo({
+                ID: this.data.Id
+              }).then((res) => {
+                let couldInfo = res.data.GetCustIn3PartRes || Object.assign({}, DEFAULT_MODEL)
+                this.view = true
+                this.viewModel = Object.assign({}, DEFAULT_MODEL, couldInfo)
+                this.model = Object.assign({}, DEFAULT_MODEL, couldInfo)
+              })
+
               Peace.util.success('修改云仓信息成功')
-              this.cancelDialog()
+              this.$emit('onRefresh')
             })
             .finally(() => {
               this.saveing = false
@@ -253,6 +262,7 @@ export default {
         })
       })
     },
+
     cancelDialog() {
       this.$emit('onCloseWare')
     },

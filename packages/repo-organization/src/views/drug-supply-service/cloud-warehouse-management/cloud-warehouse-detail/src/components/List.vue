@@ -51,6 +51,7 @@
                  :title="isEdit?'云仓详情':'新建云仓'">
       <CloudModel v-if="cloudVisible"
                   v-on:onCloseWare="onCloseWare"
+                  v-on:onRefresh="fetch"
                   v-bind:edit="isEdit"
                   v-bind:data="cloudInfo"
                   v-bind:config="systemDict"></CloudModel>

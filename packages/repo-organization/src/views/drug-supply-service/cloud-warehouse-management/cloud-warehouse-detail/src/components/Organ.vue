@@ -171,7 +171,7 @@ export default {
     },
     addOrg() {
       this.orgModel = Object.assign({}, ORGAN_MODEL)
-      this.orgModel.PrentId = this.cloudInfo.ID
+      this.orgModel.PrentId = this.cloudInfo.Id
       this.isEdit = false
       this.orgVisible = true
     },
@@ -218,7 +218,6 @@ p {
   padding: 0;
 }
 .item-content {
-  padding-top: 26px;
   flex-direction: row;
 }
 .child-wrap {
