@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="loaded">
     <div class="form-dl">
       <div class="form-dt">店铺名称：</div>
       <div class="form-dd">{{drugStoreName}}</div>
@@ -37,6 +37,7 @@ export default {
   data() {
     return {
       phaInfo: {},
+      loaded: false,
       imagePreview: {
         visible: false,
         position: 0,
@@ -67,10 +68,20 @@ export default {
     }
   },
   mounted() {
-    const params = peace.util.decode(this.$route.params.json)
-    this.phaInfo = params
+    this.getInfo()
   },
   methods: {
+    getInfo() {
+      const params = peace.util.decode(this.$route.params.json)
+      peace.service.yibao
+        .GtDrugStoreInfo(params)
+        .then((res) => {
+          this.phaInfo = res.data
+        })
+        .finally(() => {
+          this.loaded = true
+        })
+    },
     preview(img) {
       this.imagePreview.visible = true
       // this.imagePreview.position = fileIndex

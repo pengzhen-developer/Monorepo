@@ -698,14 +698,8 @@ export default {
       if (this.isCloudPharmacy) {
         return
       }
-      const json = peace.util.encode({
-        drugStoreName: this.order.drugStoreName,
-        drugStoreLogo: this.order.drugStoreLogo,
-        businessHours: this.order.businessHours,
-        contractTel: this.order.contractTel,
-        storeDetailsImgs: this.order.storeDetailsImgs,
-        storeAddress: this.order.storeAddress
-      })
+
+      const json = peace.util.encode({ accessCode: this.order.accessCode, drugStoreId: this.order.drugStoreId })
       this.$router.push(`/drug/drugPhaHome/${json}`)
     },
     changeInvoiceModel() {

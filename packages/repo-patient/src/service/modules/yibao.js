@@ -126,6 +126,23 @@ export function GetPriceByPayDrug(params) {
     }
   })
 }
+/**
+ * 药店详情
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function GtDrugStoreInfo(params) {
+  const GtDrugStoreInfo = '/client/v1/MedicineOrder/getDrugStoreInfo'
+
+  return peace.http.post(GtDrugStoreInfo, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
+
 export default {
   /**新增医保卡 */
   AddMedicareCard,
@@ -144,5 +161,7 @@ export default {
   /** 复诊选择医保划价 */
   GetPriceByRegistration,
   /** 购药选择医保划价 */
-  GetPriceByPayDrug
+  GetPriceByPayDrug,
+  /** 药店详情   */
+  GtDrugStoreInfo
 }

@@ -528,8 +528,7 @@ export default {
       if (this.CustomerType == '50') {
         return
       }
-      //this.order 包含药店详情信息
-      const json = peace.util.encode(this.order)
+      const json = peace.util.encode({ accessCode: this.order.AccessCode, drugStoreId: this.order.DrugStoreId })
       this.$router.push(`/drug/drugPhaHome/${json}`)
     },
     getDefaultAddress() {
