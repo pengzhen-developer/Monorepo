@@ -179,7 +179,7 @@ export default {
         let params = {
           stocks: list.map((item) => {
             return {
-              Id: item.Id,
+              Id: item.GoodsId,
               OnShelves: 1
             }
           })
@@ -197,7 +197,7 @@ export default {
         let params = {
           stocks: list.map((item) => {
             return {
-              Id: item.Id,
+              Id: item.GoodsId,
               OnShelves: 0
             }
           })
