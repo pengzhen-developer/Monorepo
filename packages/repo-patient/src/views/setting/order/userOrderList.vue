@@ -295,10 +295,11 @@
                   </van-image>
                 </div>
                 <div class="order-item-drug-info-item">
-                  <div class="order-item-drug-info-item-time">{{item.createdTime}}</div>
+                  <!-- <div class="order-item-drug-info-item-time">{{item.createdTime}}</div> -->
+                  <div class="order-item-drug-info-item-time"></div>
                   <div class="order-item-drug-info-item-price"
                        v-bind:class="{'refund':item.refundTime}">
-                    共{{item.totalNumber}}件药品 合计：
+                    共{{item.totalNumber}}件药品 合计:
                     <peace-price v-bind:price="item.orderMoney"
                                  v-bind:size="14"></peace-price>
                   </div>
