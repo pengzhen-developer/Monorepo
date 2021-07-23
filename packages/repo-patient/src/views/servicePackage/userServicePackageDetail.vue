@@ -97,9 +97,9 @@
         <div class="service-item-content-value">{{info.createdTime}}</div>
       </div>
       <div class="service-item-content"
-           v-if="info.payTime">
+           v-if="info.payInfo.payModeTxt&&info.payTime">
         <div class="service-item-content-lable">支付方式：</div>
-        <div class="service-item-content-value">{{info.paymentTypeTxt}}</div>
+        <div class="service-item-content-value">{{info.payInfo.paymentTypeTxt?info.payInfo.payModeTxt  +' - '+ info.payInfo.paymentTypeTxt: info.payInfo.payModeTxt }}</div>
       </div>
       <div class="service-item-content"
            v-if="info.payTime">

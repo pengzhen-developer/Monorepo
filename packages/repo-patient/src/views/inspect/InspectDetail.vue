@@ -115,7 +115,7 @@
           <template v-if="model.payInfo.payModeTxt">
             <div class="module-item-content size-14">
               <div class="module-item-label">支付方式：</div>
-              <div class="module-item-value">{{model.payInfo.paymentTypeTxt? model.payInfo.paymentTypeTxt +' - '+model.payInfo.payModeTxt : internalData.orderInfo.payInfo.payModeTxt }}</div>
+              <div class="module-item-value">{{model.payInfo.paymentTypeTxt?model.payInfo.payModeTxt +' - '+ model.payInfo.paymentTypeTxt : model.payInfo.payModeTxt }}</div>
             </div>
           </template>
           <div class="module-item-content size-14">

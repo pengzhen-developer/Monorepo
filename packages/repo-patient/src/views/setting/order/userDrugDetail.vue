@@ -210,7 +210,7 @@
              v-if="order.payInfo.payModeTxt &&order.payTime">
           <div class="dt">支付方式：</div>
           <div class="dd">
-            {{ order.payInfo.paymentTypeTxt? order.payInfo.paymentTypeTxt +' - '+order.payInfo.payModeTxt : order.payInfo.payModeTxt  }}</div>
+            {{ order.payInfo.paymentTypeTxt?order.payInfo.payModeTxt +' - '+  order.payInfo.paymentTypeTxt : order.payInfo.payModeTxt  }}</div>
         </div>
 
         <template v-if="showTrackingNumber">

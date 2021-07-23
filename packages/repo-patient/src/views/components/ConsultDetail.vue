@@ -351,7 +351,7 @@
           <template v-if="internalData.orderInfo.payInfo.payModeTxt&&internalData.orderInfo.payTime">
             <div class="module-item-content size-14">
               <div class="module-item-label">支付方式：</div>
-              <div class="module-item-value">{{internalData.orderInfo.payInfo.paymentTypeTxt? internalData.orderInfo.payInfo.paymentTypeTxt +' - '+internalData.orderInfo.payInfo.payModeTxt : internalData.orderInfo.payInfo.payModeTxt }}</div>
+              <div class="module-item-value">{{internalData.orderInfo.payInfo.paymentTypeTxt?internalData.orderInfo.payInfo.payModeTxt+' - '+  internalData.orderInfo.payInfo.paymentTypeTxt : internalData.orderInfo.payInfo.payModeTxt }}</div>
             </div>
           </template>
         </template>
