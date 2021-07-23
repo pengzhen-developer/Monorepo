@@ -1,6 +1,6 @@
 <template>
 
-  <van-popup v-model="showModel"
+  <van-popup v-model="show"
              @click-overlay="cancel"
              round
              position="bottom">
@@ -67,10 +67,19 @@ export default {
         }
       },
       immediate: true
+    },
+    showModel: {
+      handler(val) {
+        if (val) {
+          this.show = val
+        }
+      },
+      immediate: true
     }
   },
   data() {
     return {
+      show: false,
       model: {
         diseasesName: '',
         diseasesCode: ''
@@ -92,12 +101,14 @@ export default {
     },
 
     cancel() {
+      this.show = false
       this.$emit('changeSelectYibaoMunterDiseaseDialog', false)
       this.$emit('onCancel')
     },
 
     submit() {
       const yibaoInfo = peace.util.deepClone(this.model)
+      this.show = false
       this.$emit('changeSelectYibaoMunterDiseaseDialog', false)
       this.$emit('onSuccess', { yibaoInfo: yibaoInfo })
     }

@@ -1,6 +1,6 @@
 <template>
 
-  <van-popup v-model="showModel"
+  <van-popup v-model="show"
              @click-overlay="cancel"
              round
              position="bottom">
@@ -63,7 +63,15 @@ export default {
     medicalTreatmentType: {
       handler(val) {
         if (val) {
-          this.selectType(val)
+          this.model.medicalTreatmentType = val
+        }
+      },
+      immediate: true
+    },
+    showModel: {
+      handler(val) {
+        if (val) {
+          this.show = val
         }
       },
       immediate: true
@@ -71,6 +79,7 @@ export default {
   },
   data() {
     return {
+      show: false,
       model: {
         medicalTreatmentType: '',
         medicalTreatmentTypeText: ''
@@ -85,6 +94,7 @@ export default {
       this.model.medicalTreatmentTypeText = type.name
     },
     cancel() {
+      this.show = false
       this.$emit('changeSelectYiBaoTypeDialog', false)
       this.$emit('onCancel')
     },
@@ -95,6 +105,7 @@ export default {
         return false
       }
       const yibaoInfo = peace.util.deepClone(this.model)
+      this.show = false
       this.$emit('changeSelectYiBaoTypeDialog', false)
       this.$emit('onSuccess', { yibaoInfo: yibaoInfo })
     }
