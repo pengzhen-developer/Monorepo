@@ -212,10 +212,10 @@ export default {
     },
     exportOrder() {
       let params = Object.assign({}, this.exportModel, { type: this.type })
-      if (this.type === 'drug' && params.orderStatus === '') {
-        //99 查全部
-        params.orderStatus = 99
-      }
+      // if (this.type === 'drug' && params.orderStatus === '') {
+      //   //99 查全部
+      //   params.orderStatus = 99
+      // }
       Service.checkOrder(params).then(() => {
         Service.exportOrder(params)
       })
