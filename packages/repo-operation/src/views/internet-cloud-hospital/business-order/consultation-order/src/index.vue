@@ -81,7 +81,7 @@
         <PeaceTableColumn label="订单状态"
                           min-width="120">
           <template slot-scope="scope">
-            <span>{{ scope.row.consultStatus | getEnumLable(source.consultationStatus) }}</span>
+            <span>{{ scope.row.consultStatus | getEnumLabel(source.consultationStatus) }}</span>
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn fixed="right"
@@ -134,7 +134,7 @@ export default {
     }
   },
   filters: {
-    getEnumLable: (value, ENUM) => {
+    getEnumLabel: (value, ENUM) => {
       return ENUM.find((item) => item.value == value)?.label
     }
   },

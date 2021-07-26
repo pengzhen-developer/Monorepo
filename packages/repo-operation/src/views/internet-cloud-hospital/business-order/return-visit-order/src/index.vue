@@ -98,7 +98,7 @@
             <div class="private">
               <span class="private-tag"
                     v-if="scope.row.isPrivateDoctor">私</span>
-              <span>{{ scope.row.inquiry_type | getEnumLable(source.orderInquiryType) }}</span>
+              <span>{{ scope.row.inquiry_type | getEnumLabel(source.orderInquiryType) }}</span>
             </div>
           </template>
         </peace-table-column>
@@ -117,7 +117,7 @@
                             min-width="100"
                             prop="order_status">
           <template slot-scope="scope">
-            <span>{{ scope.row.order_status | getEnumLable(source.orderStatus) }}</span>
+            <span>{{ scope.row.order_status | getEnumLabel(source.orderStatus) }}</span>
           </template>
         </peace-table-column>
         <peace-table-column label="支付方式"
@@ -134,7 +134,7 @@
                             min-width="100"
                             prop="inquiry_status">
           <template slot-scope="scope">
-            <span>{{ scope.row.inquiry_status | getEnumLable(source.returnVisitStatus) }}</span>
+            <span>{{ scope.row.inquiry_status | getEnumLabel(source.returnVisitStatus) }}</span>
           </template>
         </peace-table-column>
         <peace-table-column label="操作"
@@ -274,10 +274,9 @@ export default {
       exportDialogVisible: false,
 
       source: {
-        orderStatus: Constant.OEDER_STATUS,
-        orderInquiryType: Constant.ORDER_INQUIRY_TYPE,
-        returnVisitStatus: Constant.RETURN_VISIT_STATUS,
-        inquiryStatus: Constant.INQUIRY_STATUS
+        orderStatus: Constant.ENUM_ORDER_PAY_STATUS,
+        orderInquiryType: Constant.ENUM_INQUIRY_TYPE,
+        returnVisitStatus: Constant.ENUM_RETURN_VISIT_STATUS
       }
     }
   },
@@ -288,7 +287,7 @@ export default {
     }
   },
   filters: {
-    getEnumLable: (value, ENUM) => {
+    getEnumLabel: (value, ENUM) => {
       return ENUM.find((item) => item.value == value)?.label
     }
   },

@@ -1,14 +1,6 @@
 <template>
   <div>
-    <div class="tips"
-         v-if="info.total > 1">
-      <span>共{{ info.total }}张，当前第{{ info.prescribeIndex+1 }}张（{{ info.prescribeIndex+1 }}/{{ info.total }}）</span>
-      <div @click="goToNext()"
-           class="next">
-        <span>下一张</span>
-        <i class="arrow"></i>
-      </div>
-    </div>
+
     <div class="purchase-info">
       <div class="store">
         <div class="store-pic">
@@ -126,7 +118,7 @@
         </div>
 
         <div>
-          <span>创建时间</span>
+          <span>下单时间</span>
           <span>{{info.purchaseDrugOrderStreams.length > 0?info.purchaseDrugOrderStreams[0].createdTime: info.createdTime }}</span>
         </div>
         <template v-if="showTrackingNumber">
@@ -149,7 +141,7 @@
             <span>医保类型</span>
             <span>{{ info.payInfo.medicalTreatmentTypetxt }}</span>
           </div>
-          <div v-if="info.payInfo.diseasesTxt">
+          <div v-if="info.payInfo.diseasesTxt&&info.payInfo.medicalTreatmentType === 2">
             <span>病种</span>
             <span>{{ info.payInfo.diseasesTxt }}</span>
           </div>
@@ -157,7 +149,7 @@
 
         <div v-if="info.payInfo.payModeTxt&&info.payTime">
           <span>支付方式</span>
-          <span>{{info.payInfo.paymentTypeTxt? info.payInfo.payModeTxt + '-' + info.payInfo.paymentTypeTxt: info.payInfo.payModeTxt }}</span>
+          <span>{{info.payInfo.paymentTypeTxt? info.payInfo.payModeTxt + ' - ' + info.payInfo.paymentTypeTxt: info.payInfo.payModeTxt }}</span>
         </div>
         <template v-for="item in info.purchaseDrugOrderStreams">
           <div :key="item.status"
@@ -177,7 +169,7 @@
 
 </template>
 <script>
-import Constant from '../constant'
+import CONSTANT from '../constant'
 export default {
   name: 'drug-purchase-order-info',
   props: {
@@ -187,12 +179,12 @@ export default {
   data() {
     return {
       defaultImage: require('../assets/images/ic_none_drug.png'),
-
       source: {
+        ENUM_PAYMENT: CONSTANT.ENUM_PAYMENT,
         ShippingMethod: [],
         DistributionOrderStatus: [],
         SelfOrderStatus: [],
-        PayModel: []
+        PayMode: []
       }
     }
   },
@@ -222,9 +214,9 @@ export default {
 
     paymentTypesText() {
       if (this.info.payMode) {
-        return this.$options.filters['getEnumLable'](this.info.payMode, this.source.PayModel)
+        return this.$options.filters['getEnumLabel'](this.info.payMode, this.source.PayMode)
       } else {
-        const paymentTypes = this.$options.filters['getPaymentStatus'](this.info.paymentType, Constant.PAYMENT_STATUS)
+        const paymentTypes = this.$options.filters['getPaymentStatus'](this.info.paymentType, CONSTANT.ENUM_PAYMENT)
         let text = '在线支付'
         if (paymentTypes.indexOf('到店支付') != -1) {
           text = '到店支付'
@@ -255,7 +247,7 @@ export default {
     }
   },
   filters: {
-    getEnumLable: (value, ENUM) => {
+    getEnumLabel: (value, ENUM) => {
       return ENUM.find((item) => item.value == value)?.label
     },
     getPaymentStatus: (status, ENUM) => {
@@ -271,10 +263,10 @@ export default {
   },
 
   async created() {
-    // 获取字典
-    this.source.PayModel = await Peace.identity.dictionary.getList('PayMode')
     // 配送方式
     this.source.ShippingMethod = await Peace.identity.dictionary.getList('ShippingMethod')
+    // 获取字典
+    this.source.PayMode = await Peace.identity.dictionary.getList('PayMode')
 
     // 订单状态
     this.source.DistributionOrderStatus = await Peace.identity.dictionary.getList('distribution_order_status')
@@ -289,19 +281,7 @@ export default {
       }
       this.$emit('viewPres', param)
     },
-    goToNext() {
-      if (this.info.prescribeIndex == this.info.total - 1) {
-        this.info.prescribeIndex = 0
-      } else {
-        this.info.prescribeIndex++
-      }
-      const param = {
-        $data: this.info.$data,
-        orderIds: this.info.orderIds,
-        idx: this.info.prescribeIndex
-      }
-      this.$emit('viewPurchase', param)
-    },
+
     //状态-后端定义文案['1'=>'取消申请','2'=>'取消成功','3'=>'取消失败'];
     //状态-运营端显示文案['1'=>'用户申请取消','2'=>'取消申请 已同意','3'=>'取消申请 已拒绝'];
     getCancelText(status) {
@@ -343,7 +323,6 @@ $border-color: #eaeaea;
   line-height: 37px;
   margin: 0 auto 15px;
   color: #333333;
-  // padding: 0 40px;
   padding-left: 40px;
   padding-right: 13px;
   background: rgba(249, 249, 249, 1) url('../assets/images/ic_tixing.png') no-repeat;
@@ -446,7 +425,6 @@ $border-color: #eaeaea;
       vertical-align: top;
     }
     &-label {
-      width: 5em;
       white-space: nowrap;
       color: $grey-text;
       &:after {
@@ -454,8 +432,6 @@ $border-color: #eaeaea;
       }
     }
     &-content {
-      padding-left: 0.5em;
-      width: calc(100% - 5em);
       span + span {
         margin-left: 1em;
       }

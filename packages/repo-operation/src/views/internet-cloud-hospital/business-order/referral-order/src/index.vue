@@ -74,7 +74,7 @@
         <PeaceTableColumn label="流转状态"
                           min-width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.transfer_status | getEnumLable(source.referralStatus) }}</span>
+            <span>{{ scope.row.transfer_status | getEnumLabel(source.referralStatus) }}</span>
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="问诊记录"
@@ -218,7 +218,7 @@ export default {
   },
 
   filters: {
-    getEnumLable: (value, ENUM) => {
+    getEnumLabel: (value, ENUM) => {
       return ENUM.find((item) => item.value == value)?.label
     }
   },

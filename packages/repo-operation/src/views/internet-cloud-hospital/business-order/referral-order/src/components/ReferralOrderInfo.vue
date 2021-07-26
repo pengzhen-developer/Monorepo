@@ -3,7 +3,7 @@
     <div class="order-status">
       <div class="row-title">订单状态：</div>
       <div class="order-status-content">
-        <div>{{ info.transfer_status | getEnumLable(source.referralStatus)  }}</div>
+        <div>{{ info.transfer_status | getEnumLabel(source.referralStatus)  }}</div>
         <div class="spec-row"
              v-if="info.out_check_suggest || info.in_check_suggest">
           <span v-if="parseInt(info.transfer_status) <= 3">{{ info.out_check_suggest }}</span>
@@ -115,7 +115,7 @@ export default {
     }
   },
   filters: {
-    getEnumLable: (value, ENUM) => {
+    getEnumLabel: (value, ENUM) => {
       return ENUM.find((item) => item.value == value)?.label
     }
   }

@@ -107,7 +107,7 @@
             <div class="private">
               <span class="private-tag"
                     v-if="scope.row.isPrivateDoctor">私</span>
-              <span>{{ scope.row.inquiry_type | getEnumLable(source.orderInquiryType) }}</span>
+              <span>{{ scope.row.inquiry_type | getEnumLabel(source.orderInquiryType) }}</span>
             </div>
           </template>
         </PeaceTableColumn>
@@ -126,7 +126,7 @@
                           min-width="100"
                           prop="order_status">
           <template slot-scope="scope">
-            <span>{{ scope.row.order_status | getEnumLable(source.orderStatus) }}</span>
+            <span>{{ scope.row.order_status | getEnumLabel(source.orderStatus) }}</span>
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="支付方式"
@@ -140,16 +140,16 @@
         </PeaceTableColumn>
         <PeaceTableColumn label="订单状态"
                           min-width="100"
-                          prop="inquiry_status">
+                          prop="ENUM_CONSULT_STATUS">
           <template slot-scope="scope">
-            <span>{{ scope.row.inquiry_status | getEnumLable(source.inquiryStatus) }}</span>
+            <span>{{ scope.row.ENUM_CONSULT_STATUS | getEnumLabel(source.inquiryStatus) }}</span>
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="操作"
                           min-width="160"
                           fixed="right">
           <template slot-scope="scope">
-            <template v-if="[3, 4, 5].includes(scope.row.inquiry_status)">
+            <template v-if="[3, 4, 5].includes(scope.row.ENUM_CONSULT_STATUS)">
               <el-button @click="getInquiry(scope.row.inquiry_no)"
                          size="mini"
                          type="text">咨询记录</el-button>
@@ -251,9 +251,9 @@ export default {
       exportDialogVisible: false,
 
       source: {
-        orderInquiryType: Constant.ORDER_INQUIRY_TYPE,
-        orderStatus: Constant.OEDER_STATUS,
-        inquiryStatus: Constant.INQUIRY_STATUS
+        orderInquiryType: Constant.ENUM_INQUIRY_TYPE,
+        orderStatus: Constant.ENUM_CONSULT_STATUS,
+        inquiryStatus: Constant.ENUM_CONSULT_STATUS
       }
     }
   },
@@ -264,7 +264,7 @@ export default {
     }
   },
   filters: {
-    getEnumLable: (value, ENUM) => {
+    getEnumLabel: (value, ENUM) => {
       return ENUM.find((item) => item.value == value)?.label
     }
   },

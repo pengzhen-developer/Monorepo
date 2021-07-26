@@ -159,7 +159,7 @@
                           min-width="120"
                           prop="orderPayStatus">
           <template slot-scope="scope">
-            <span>{{ scope.row.orderPayStatus | getEnumLable(source.orderPayStatus) }}</span>
+            <span>{{ scope.row.orderPayStatus | getEnumLabel(source.orderPayStatus) }}</span>
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="支付方式"
@@ -271,13 +271,13 @@ export default {
         ShippingMethod: [],
         DistributionOrderStatus: [],
         SelfOrderStatus: [],
-        payTypeList: Constant.PAYMENT_STATUS,
-        orderPayStatus: Constant.ORDER_PAY_STATUS
+        payTypeList: Constant.ENUM_PAYMENT,
+        orderPayStatus: Constant.ENUM_ORDER_PAY_STATUS
       }
     }
   },
   filters: {
-    getEnumLable: (value, ENUM) => {
+    getEnumLabel: (value, ENUM) => {
       return ENUM.find((item) => item.value == value)?.label
     }
   },
