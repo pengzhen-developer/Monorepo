@@ -518,7 +518,7 @@ export default {
           } else {
             if (!this.params.medicalTreatmentType) {
               errMsg = '请填写医保类型'
-            } else if (this.params.medicalTreatmentType.toString() === '2' && !this.params.diseasesCode) {
+            } else if (this.params.medicalTreatmentType === 2 && !this.params.diseasesCode) {
               errMsg = '请填写病种'
             }
           }
@@ -563,6 +563,10 @@ export default {
       if (this.payType === 'yibaopay') {
         params.cardno = ''
         params.patientEquitiesId = ''
+        if (params.medicalTreatmentType.toString() === '1') {
+          params.diseasesCode = ''
+          params.diseasesName = ''
+        }
       }
       if (this.payType === 'shangbaopay') {
         params.patientEquitiesId = ''

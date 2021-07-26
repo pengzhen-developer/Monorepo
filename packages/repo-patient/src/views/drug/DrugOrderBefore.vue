@@ -351,9 +351,7 @@ export default {
     canShowPackageUnitTagTip() {
       return this.order?.PackageUnitTag === 'minUnit'
     },
-    yibaoTypeText() {
-      return this.order.diseases ? `${this.order.medicalTreatmentTypeTxt}-${this.order.diseases}` : `${this.order.medicalTreatmentTypeTxt}`
-    },
+
     info() {
       return {
         familyName: this.page?.json?.familyName,
@@ -590,6 +588,10 @@ export default {
       }
       if (this.payType === 'yibaopay') {
         this.payInfo.cardno = ''
+        if (this.payInfo.medicalTreatmentType === 1) {
+          this.payInfo.diseasesCode = ''
+          this.payInfo.diseasesName = ''
+        }
       }
 
       let params = {
