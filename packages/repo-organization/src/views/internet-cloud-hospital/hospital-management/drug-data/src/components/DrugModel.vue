@@ -99,8 +99,13 @@
       </el-form-item>
       <el-form-item label="药品类型："
                     prop="drug_nature">
-        <el-input v-model="drug.drug_nature"
-                  placeholder="请输入"></el-input>
+        <el-select v-model="drug.drug_nature"
+                   placeholder="请选择">
+          <el-option :key="item.label"
+                     :label="item.label"
+                     :value="item.value"
+                     v-for="item in source.ENUM_DRUG_NATURE"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="包装单位："
                     prop="drug_dept">
@@ -266,6 +271,7 @@ export default {
     }
     return {
       source: {
+        ENUM_DRUG_NATURE: CONSTANT.ENUM_DRUG_NATURE,
         ENUM_DRUG_SOURCE: CONSTANT.ENUM_DRUG_SOURCE,
         ENUM_MEDICAL_STATUS: CONSTANT.ENUM_MEDICAL_STATUS,
         ENUM_DRUG_STORAGE: CONSTANT.ENUM_DRUG_STORAGE,

@@ -1,4 +1,11 @@
 export default {
+  // 药品类型
+  ENUM_DRUG_NATURE: [
+    { value: 1, label: '西药' },
+    { value: 2, label: '中药' },
+    { value: 3, label: '中成药' },
+    { value: 4, label: '生物制剂' }
+  ],
   // 药品来源
   ENUM_DRUG_SOURCE: [
     { value: 1, label: '院内目录' },

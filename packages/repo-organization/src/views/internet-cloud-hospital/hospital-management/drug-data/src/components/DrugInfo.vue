@@ -25,6 +25,7 @@ export default {
   data() {
     return {
       source: {
+        ENUM_DRUG_NATURE: CONSTANT.ENUM_DRUG_NATURE,
         ENUM_DRUG_SOURCE: CONSTANT.ENUM_DRUG_SOURCE,
         ENUM_MEDICAL_STATUS: CONSTANT.ENUM_MEDICAL_STATUS,
         ENUM_DRUG_STORAGE: CONSTANT.ENUM_DRUG_STORAGE,
@@ -85,7 +86,7 @@ export default {
         },
         {
           col1: '药品类型',
-          col2: drug.drug_nature,
+          col2: this.getDrugNature(drug.drug_nature),
           col3: '包装单位',
           col4: drug.drug_dept
         },
@@ -105,7 +106,7 @@ export default {
           col1: '推荐用量单位',
           col2: drug.drug_useunit,
           col3: '储存条件',
-          col4: drug.drug_storage
+          col4: this.getDrugStorage(drug.drug_storage)
         },
         {
           col1: '拆零',
@@ -114,6 +115,9 @@ export default {
           col4: ''
         }
       ]
+    },
+    getDrugNature(status) {
+      return this.source.ENUM_DRUG_NATURE.find((item) => item.value == status)?.label
     },
     getMedicalStatus(status) {
       return this.source.ENUM_MEDICAL_STATUS.find((item) => item.value == status)?.label
