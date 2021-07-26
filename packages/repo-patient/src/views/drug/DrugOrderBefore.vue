@@ -114,7 +114,7 @@
       <div class="coldStorageTip"
            v-if="canShowColdStorageTip">处方中有需要冷藏储存的药品，仅支持到店自提</div>
       <div class="coldStorageTip"
-           v-if="canShowPackageUnitTagTip">处方中有拆零售卖的药品，仅支持到店自提</div>
+           v-if="!canShowColdStorageTip&&canShowPackageUnitTagTip">处方中有拆零售卖的药品，仅支持到店自提</div>
 
       <div class="pay-card-wrap">
         <div class="pay-card">
