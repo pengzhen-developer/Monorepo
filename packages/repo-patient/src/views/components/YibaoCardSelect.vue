@@ -84,6 +84,7 @@ export default {
       handler(val) {
         if (val) {
           this.show = val
+          this.getMedicareCardList()
         }
       },
       immediate: true
@@ -173,9 +174,6 @@ export default {
         }
       })
     }
-  },
-  created() {
-    this.getMedicareCardList()
   }
 }
 </script>
