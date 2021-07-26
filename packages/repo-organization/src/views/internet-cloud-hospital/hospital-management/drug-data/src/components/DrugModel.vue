@@ -177,6 +177,17 @@ export default {
         if (this.drugInfo.drugType) {
           this.drug = Object.assign(this.drug, this.drugInfo)
           this.drug.drug_id = this.drugInfo.id
+          if (this.drug.is_disconnect_attr === 'yes') {
+            // 拆零为是时
+            // 包装数量必填
+            this.rules['drug_count'] = [
+              {
+                required: true,
+                message: '请输入包装数量',
+                trigger: 'blur'
+              }
+            ].concat(this.rules['drug_count'])
+          }
         }
       },
       immediate: true
@@ -226,9 +237,30 @@ export default {
     }
     const checkDisconnect = (rule, value, callback) => {
       if (value === 'yes') {
-        if (!this.drug.drug_count) {
-          return callback(new Error('请输入包装数量'))
-        }
+        // 更新包装数量校验
+        this.rules['drug_count'] = [
+          {
+            required: true,
+            message: '请输入包装数量',
+            trigger: 'blur'
+          },
+          {
+            validator: checkDrugCount,
+            trigger: 'blur'
+          }
+        ]
+        // 触发包装数量校验
+        this.$refs.drugModel.validateField('drug_count')
+      } else {
+        // 更新包装数量校验
+        this.rules['drug_count'] = [
+          {
+            validator: checkDrugCount,
+            trigger: 'blur'
+          }
+        ]
+        // 触发包装数量校验
+        this.$refs.drugModel.validateField('drug_count')
       }
       callback()
     }
