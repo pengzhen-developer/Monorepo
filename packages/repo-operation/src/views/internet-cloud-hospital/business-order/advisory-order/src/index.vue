@@ -140,16 +140,16 @@
         </PeaceTableColumn>
         <PeaceTableColumn label="订单状态"
                           min-width="100"
-                          prop="ENUM_CONSULT_STATUS">
+                          prop="inquiry_status">
           <template slot-scope="scope">
-            <span>{{ scope.row.ENUM_CONSULT_STATUS | getEnumLabel(source.inquiryStatus) }}</span>
+            <span>{{ scope.row.inquiry_status | getEnumLabel(source.inquiryStatus) }}</span>
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="操作"
                           min-width="160"
                           fixed="right">
           <template slot-scope="scope">
-            <template v-if="[3, 4, 5].includes(scope.row.ENUM_CONSULT_STATUS)">
+            <template v-if="[3, 4, 5].includes(scope.row.inquiry_status)">
               <el-button @click="getInquiry(scope.row.inquiry_no)"
                          size="mini"
                          type="text">咨询记录</el-button>
@@ -252,7 +252,7 @@ export default {
 
       source: {
         orderInquiryType: Constant.ENUM_INQUIRY_TYPE,
-        orderStatus: Constant.ENUM_CONSULT_STATUS,
+        orderStatus: Constant.ENUM_ORDER_PAY_STATUS,
         inquiryStatus: Constant.ENUM_CONSULT_STATUS
       }
     }
