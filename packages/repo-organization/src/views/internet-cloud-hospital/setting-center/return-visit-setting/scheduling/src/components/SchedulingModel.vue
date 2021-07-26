@@ -283,6 +283,16 @@ export default {
         return `${H.substr(-2)}:${m.substr(-2)}:${s.substr(-2)}`
       }
 
+      if (new Date(this.amStart).getTime() >= new Date(this.amEnd).getTime()) {
+        Peace.util.warning('开始时间需小于结束时间')
+        return false
+      }
+
+      if (new Date(this.pmStart).getTime() >= new Date(this.pmEnd).getTime()) {
+        Peace.util.warning('开始时间需小于结束时间')
+        return false
+      }
+
       // JSON 字符串化
       // 上午
       const amJson = {
