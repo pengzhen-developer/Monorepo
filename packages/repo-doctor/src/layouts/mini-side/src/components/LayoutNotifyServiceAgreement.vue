@@ -1,7 +1,8 @@
 <template>
   <div>
-    <PeaceDialog v-bind:visible="visible"
-                 v-bind:show-close="false">
+    <PeaceDialog ref="LayoutNotifyServiceAgreementDialogRef"
+                 v-bind:visible="visible"
+                 v-bind:modal-append-to-body="false">
       <div class="text-h5 q-mb-sm">{{ title }}</div>
       <div class="q-mb-md">
         <span>最近更新日期：</span>
@@ -67,6 +68,9 @@ export default {
             this.title = res.data.title
             this.content = res.data.content
             this.updatedTime = res.data.updatedTime
+
+            this.$refs.LayoutNotifyServiceAgreementDialogRef.$el.nextElementSibling.style.zIndex = '9998'
+            this.$refs.LayoutNotifyServiceAgreementDialogRef.$el.style.zIndex = '9999'
           })
         }
       })
@@ -87,7 +91,4 @@ export default {
 </script>
 
 <style>
-.serivce-agreement__no-header .el-dialog__header {
-  display: none !important;
-}
 </style>
