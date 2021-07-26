@@ -284,6 +284,12 @@ export default {
         if (valid) {
           this.loading = true
 
+          if (new Date(this.model.bookingStart).getTime() >= new Date(this.model.bookingEnd).getTime()) {
+            Peace.util.warning('开始时间需小于结束时间')
+            this.loading = false
+            return false
+          }
+
           const params = Peace.util.deepClone(this.model)
           params.bookingStart = this.timeFormat(this.model.bookingStart)
           params.bookingEnd = this.timeFormat(this.model.bookingEnd)
