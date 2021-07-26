@@ -18,7 +18,7 @@ export const calcTimeHeader = (data) => {
 
     return Peace.util.formatTime(date, 'MM-DD HH:mm')
   } else {
-    return Peace.util.formatTime(date, 'yyyy-MM-DD HH:mm')
+    return Peace.util.formatTime(date, 'YYYY-MM-DD HH:mm')
   }
 }
 export const isThisYear = (date, now) => {

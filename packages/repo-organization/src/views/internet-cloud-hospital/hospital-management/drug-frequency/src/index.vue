@@ -53,7 +53,7 @@
         <PeaceTableColumn label="用药频次"
                           prop="drugtimesName"></PeaceTableColumn>
         <PeaceTableColumn>
-          <template slot="header">
+          <template v-slot:header>
             <div class="table-heder-frequency">
               <div class="table-heder-frequency-text">系数</div>
               <img v-popover:popover
