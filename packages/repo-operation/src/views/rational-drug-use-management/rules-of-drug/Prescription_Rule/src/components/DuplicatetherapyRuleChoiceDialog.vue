@@ -81,7 +81,7 @@ export default {
       if (Number(type) === 1) {
         this.radio = 0
         this.multipleSelection = this.data
-      } else if (Number(type) === 1) {
+      } else if (Number(type) === 2) {
         this.radio = 1
         this.multipleSelectionOther = this.data
       }
