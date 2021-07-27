@@ -275,9 +275,7 @@ export default {
   methods: {
     viewRpInfo() {
       const param = {
-        ids: this.info.prescribeId || this.info.presIds,
-        idx: 0,
-        current: true
+        presIds: this.info.prescribeId
       }
       this.$emit('viewPres', param)
     },
