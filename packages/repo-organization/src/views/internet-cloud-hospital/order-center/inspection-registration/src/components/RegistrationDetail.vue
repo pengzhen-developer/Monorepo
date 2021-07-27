@@ -106,6 +106,16 @@
                label-suffix="：">
         <div class="flex">
           <div class="flex-item">
+            <el-form-item label="订单编号">
+              <span>{{baseInfo.orderNo}}</span>
+            </el-form-item>
+          </div>
+          <div class="flex-item">
+            <el-form-item label="下单时间">
+              <span>{{baseInfo.createdTime}}</span>
+            </el-form-item>
+          </div>
+          <div class="flex-item">
             <el-form-item label="支付方式">
               <span>{{payMentInfo.payModeTxt}}{{payMentInfo.paymentTypeTxt ? ' - ' + payMentInfo.paymentTypeTxt : ''}}</span>
             </el-form-item>
@@ -129,36 +139,40 @@
               </el-form-item>
             </div>
           </template>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <el-form-item label="合计金额">
-              <span>{{payInfo.totalMoney||'-'}}</span>
+          <div class="flex-item"
+               v-if="baseInfo.payStatus > 0 && baseInfo.divisionId">
+            <el-form-item label="发票号">
+              <span>{{baseInfo.divisionId}}</span>
             </el-form-item>
           </div>
-          <div class="col">
-            <el-form-item label="自费金额">
-              <span>{{payInfo.ownMoney||'-'}}</span>
-            </el-form-item>
-          </div>
-          <div class="col">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <el-form-item label="医保个人支付">
-              <span>{{payInfo.medicalMoney||'-'}}</span>
-            </el-form-item>
-          </div>
-          <div class="col">
-            <el-form-item label="医保统筹支付">
-              <span>{{payInfo.medicalTotalMoney||'-'}}</span>
-            </el-form-item>
-          </div>
-          <div class="col">
+          <div class="flex-item"
+               v-if="baseInfo.payStatus > 0">
             <el-form-item label="支付时间">
-              <span>{{payInfo.payTime||'-'}}</span>
+              <span>{{baseInfo.payTime}}</span>
+            </el-form-item>
+          </div>
+          <div class="flex-item"
+               v-if="baseInfo.cancelTime">
+            <el-form-item label="取消时间">
+              <span>{{baseInfo.cancelTime}}</span>
+            </el-form-item>
+          </div>
+          <div class="flex-item"
+               v-if="baseInfo.refundTime">
+            <el-form-item label="退款时间">
+              <span>{{baseInfo.refundTime}}</span>
+            </el-form-item>
+          </div>
+          <div class="flex-item"
+               v-for="item in moneyRecord"
+               v-bind:key="item.name">
+            <el-form-item :label="item.name">
+              <span>{{item.value}}</span>
+            </el-form-item>
+          </div>
+          <div class="flex-item">
+            <el-form-item label="自费金额">
+              <span>￥{{baseInfo.payStatus >= 1 ? baseInfo.payMoney:baseInfo.orderMoney}}</span>
             </el-form-item>
           </div>
         </div>
@@ -177,6 +191,8 @@ export default {
   },
   data() {
     return {
+      baseInfo: {},
+      moneyRecord: [],
       orderInfo: {},
       patientInfo: {},
       payInfo: {},
@@ -191,6 +207,8 @@ export default {
   methods: {
     getDetail() {
       Service.getRegisteringOrderDetail({ orderNo: this.data }).then((res) => {
+        this.baseInfo = res.data?.baseInfo ?? {}
+        this.moneyRecord = res.data?.moneyRecord ?? []
         this.orderInfo = res.data?.orderInfo ?? {}
         this.patientInfo = res.data?.patientInfo ?? {}
         this.payInfo = res.data?.payInfo ?? {}
