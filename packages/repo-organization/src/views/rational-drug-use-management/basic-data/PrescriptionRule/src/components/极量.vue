@@ -11,7 +11,7 @@
                    :value="item.value">
         </el-option>
       </el-select>
-      <span>超过</span>
+      <span class="text-red">超过</span>
 
       <el-input-number v-model="model.extremeDoseRuleList.maxDose"
                        :controls="false"
@@ -130,5 +130,8 @@ export default {
       border: 0;
     }
   }
+}
+::v-deep .el-input-number .el-input__inner {
+  text-align: left;
 }
 </style>

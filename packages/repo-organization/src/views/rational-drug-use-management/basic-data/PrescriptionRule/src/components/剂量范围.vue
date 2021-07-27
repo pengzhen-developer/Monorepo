@@ -33,7 +33,7 @@
                          :controls="false"
                          :min="parseFloat(model.dosageRuleList.eachMinDose) || 0.00001"
                          :precision="5"
-                         class="q-mr-8 q-ml-8"
+                         class="q-mr-8 q-ml-8 "
                          placeholder="请输入"></el-input-number>
 
         <div class="input-number-style justify-center"
@@ -135,20 +135,44 @@ export default {
     verificationResults() {
       const tmp = this.model.dosageRuleList
       if (tmp.dosagetype === '0') {
-        if ((tmp.eachMinDose || tmp.eachMinDose === 0) && (tmp.eachMaxDose || tmp.eachMaxDose === 0) && tmp.unitType && tmp.doseUnit) {
+        if (
+          (tmp.eachMinDose || tmp.eachMinDose === 0) &&
+          (tmp.eachMaxDose || tmp.eachMaxDose === 0) &&
+          tmp.unitType &&
+          tmp.doseUnit
+        ) {
           return CONSTANT.RULE_VALIDATION_RESULTS.已完成
         } else {
-          if (tmp.eachMinDose || tmp.eachMinDose === 0 || tmp.eachMaxDose || tmp.eachMaxDose === 0 || tmp.unitType || tmp.doseUnit) {
+          if (
+            tmp.eachMinDose ||
+            tmp.eachMinDose === 0 ||
+            tmp.eachMaxDose ||
+            tmp.eachMaxDose === 0 ||
+            tmp.unitType ||
+            tmp.doseUnit
+          ) {
             return CONSTANT.RULE_VALIDATION_RESULTS.未完成
           } else {
             return CONSTANT.RULE_VALIDATION_RESULTS.未开始
           }
         }
       } else {
-        if ((tmp.dailyMinDose || tmp.dailyMinDose === 0) && (tmp.dailyMaxDose || tmp.dailyMaxDose === 0) && tmp.unitType && tmp.doseUnit) {
+        if (
+          (tmp.dailyMinDose || tmp.dailyMinDose === 0) &&
+          (tmp.dailyMaxDose || tmp.dailyMaxDose === 0) &&
+          tmp.unitType &&
+          tmp.doseUnit
+        ) {
           return CONSTANT.RULE_VALIDATION_RESULTS.已完成
         } else {
-          if (tmp.dailyMinDose || tmp.dailyMinDose === 0 || tmp.dailyMaxDose || tmp.dailyMaxDose === 0 || tmp.unitType || tmp.doseUnit) {
+          if (
+            tmp.dailyMinDose ||
+            tmp.dailyMinDose === 0 ||
+            tmp.dailyMaxDose ||
+            tmp.dailyMaxDose === 0 ||
+            tmp.unitType ||
+            tmp.doseUnit
+          ) {
             return CONSTANT.RULE_VALIDATION_RESULTS.未完成
           } else {
             return CONSTANT.RULE_VALIDATION_RESULTS.未开始
@@ -177,5 +201,9 @@ export default {
       border: 0;
     }
   }
+}
+
+::v-deep .el-input-number .el-input__inner {
+  text-align: left;
 }
 </style>

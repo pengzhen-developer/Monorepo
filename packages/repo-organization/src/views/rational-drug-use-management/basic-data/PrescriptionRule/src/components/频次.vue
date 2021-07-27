@@ -2,7 +2,7 @@
   <div class="rule-item__content flex items-center q-pa-sm q-mr-md">
     <div class="flex row items-center"
          v-if="isEditing">
-      <span>不在范围</span>
+      <span class="text-red">不在范围</span>
 
       <div v-on:click="choiceFrequency"
            class="input-number-style justify-center q-ml-8">
@@ -88,11 +88,7 @@ export default {
       }
     }
   },
-  computed: {
-    description() {
-      return `不在范围${this.model.frequencyRuleList.minFrequencyName || '--'}至${this.model.frequencyRuleList.maxFrequencyName || '--'}`
-    }
-  },
+
   methods: {
     choiceFrequency() {
       if (this.drugType === 'platform') {
