@@ -22,7 +22,7 @@
         <div class="col flex row items-center"
              v-on:click="addTag">
           <span v-if="model.routeRuleObj.routeItemList.length === 0"
-                class="text-primary">+点击添加</span>
+                class="text-primary">请选择</span>
           <el-tag v-for="item in model.routeRuleObj.routeItemList"
                   v-bind:key="item.code"
                   class="q-mr-8 q-mb-8"

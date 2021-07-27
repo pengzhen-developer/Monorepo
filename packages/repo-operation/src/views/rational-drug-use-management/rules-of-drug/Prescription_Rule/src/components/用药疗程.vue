@@ -97,4 +97,7 @@ export default {
     }
   }
 }
+::v-deep .el-input-number .el-input__inner {
+  text-align: left;
+}
 </style>
