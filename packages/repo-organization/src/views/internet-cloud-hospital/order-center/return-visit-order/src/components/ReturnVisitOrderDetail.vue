@@ -1,5 +1,5 @@
 <template>
-  <div class="order-detail">
+  <div class="advisory-info">
 
     <div class="doctor">
       <div class="doctor-pic">
@@ -21,251 +21,296 @@
         {{info.inquiryStatus|getEnumLabel(source.ENUM_RETURN_VISIT_STATUS)}}
       </div>
     </div>
+    <div>
 
-    <div class="order-info">
-
-      <div class="panel-box">
-        <div class="panel-head">
-          <div class="panel-title">个人信息</div>
+      <div class="info-block">
+        <div class="info-row">
+          <div class="info-row-label label-title">
+            <span>复诊时间</span>
+          </div>
+          <div class="info-row-content">{{ info.appointmentDate }}</div>
         </div>
-        <div class="panel-body">
-          <div class="panel-info">
-            <div class="panel-label user">姓名：</div>
-            <div class="panel-value">{{info.patient_name}}</div>
+      </div>
+      <div class="info-block">
+        <div class="info-row">
+          <div class="info-row-label label-title">
+            <span>个人信息</span>
           </div>
-          <div class="panel-info">
-            <div class="panel-label user">性别：</div>
-            <div class="panel-value">{{info.sex}}</div>
+          <div class="info-row-content">{{ info.patient_name  +'， '+ info.sex+'，'+info.age}}</div>
+        </div>
+
+        <div class="info-row"
+             v-if="info.guardianName&&info.guardianSex&&info.guardianAge">
+          <div class="info-row-label label-title">
+            <span>监护人</span>
           </div>
-          <div class="panel-info">
-            <div class="panel-label user">年龄：</div>
-            <div class="panel-value">{{info.age}}</div>
-          </div>
-          <div class="panel-info"
-               v-if="info.guardianName&&info.guardianSex&&info.guardianAge">
-            <div class="panel-label user">监护人：</div>
-            <div class="panel-value">{{ info.guardianName }} |
-              {{ info.guardianSex }} |
-              {{ info.guardianAge }}</div>
+          <div class="info-row-content">
+            {{ info.guardianName }} |
+            {{ info.guardianSex }} |
+            {{ info.guardianAge }}
           </div>
         </div>
       </div>
-
-      <div class="panel-box">
-        <div class="panel-head">
-          <div class="panel-title">病情描述</div>
-        </div>
-        <div class="panel-body">
-          <div class="panel-info"
-               style="color: #333333;">{{ info.describe }}</div>
+      <div class="info-block">
+        <div class="info-title">病情描述</div>
+        <div class="info-row-content spec-row">
+          <span>{{ info.describe }}</span>
         </div>
       </div>
-
-      <div class="panel-box"
+      <div class="info-block"
+           v-if="info.firstOptionList&&info.firstOptionList.length>0">
+        <div class="info-title">诊疗记录</div>
+        <div class="row"
+             v-for="item in info.firstOptionList"
+             v-bind:key="item.dataNo">
+          <el-card class="case-bg">
+            <div class="row">
+              <img :src="require('../assets/images/ic_medical_record.png')"
+                   style="with:60px;height:60px" />
+              <div class="case-content">
+                <p class="case-title"><span>{{Peace.util.formatDate(item.createdTime)}}</span><span>{{ item.title }}</span></p>
+                <p>{{item.diagnosis}}</p>
+                <p class="case-subtitle">{{item.hospitalName }} | {{ item.deptName }}</p>
+              </div>
+            </div>
+          </el-card>
+        </div>
+      </div>
+      <div class="info-block"
            v-if="info.confirm_illness||info.image_list.filter(img=>img.type==1).length>0">
-        <div class="panel-head">
-          <div class="panel-title">复诊信息</div>
-        </div>
-        <div class="panel-body">
-          <div class="panel-info"
-               v-if="info.image_list.filter(img=>img.type==1).length>0">
-            <div class="panel-label">复诊凭证：</div>
-            <div class="panel-value">
-              <div class="img-list">
-                <el-image class="preview-img"
-                          :z-index="9999"
-                          v-for="(item, index) in info.image_list.filter(img=>img.type==1)"
-                          :key="'img_' + index"
-                          :src="item.image_path"
-                          :preview-src-list="info.image_list.filter(img=>img.type==1).map(i => i.image_path)">
-                </el-image>
-              </div>
+        <div class="info-title">复诊信息</div>
+        <div class="info-row"
+             v-if="info.image_list.filter(img=>img.type==1).length>0">
+          <div class="info-row-label">
+            <span>复诊凭证</span>
+          </div>
+          <div class="info-row-content">
+            <div class="imgs">
+              <el-image class="preview-img"
+                        :z-index="9999"
+                        :key="'image_'+index"
+                        :src="img.image_path"
+                        :preview-src-list="info.image_list.filter(img=>img.type==1).map(i=>i.image_path)"
+                        v-for="(img, index) in info.image_list.filter(img=>img.type==1)"></el-image>
             </div>
           </div>
-          <div class="panel-info"
-               v-else>
-            <div class="panel-label">复诊凭证：</div>
-            <div class="panel-value">确认遗失</div>
+        </div>
+        <div class="info-row label"
+             v-else>
+          <div class="info-row-label">
+            <span>复诊凭证</span>
           </div>
-          <div class="panel-info"
-               v-if="info.confirm_illness">
-            <div class="panel-label">初诊诊断：</div>
-            <div class="panel-value">{{ info.confirm_illness }}</div>
+          <div class="info-row-content">
+            <span>确认遗失</span>
+          </div>
+        </div>
+        <div class="info-row label"
+             v-if="info.confirm_illness">
+          <div class="info-row-label">
+            <span>初步诊断</span>
+          </div>
+          <div class="info-row-content">
+            <span>{{ info.confirm_illness }}</span>
           </div>
         </div>
       </div>
-
-      <div class="panel-box"
+      <div class="info-block"
            v-if="info.pregnancyText||info.allergic_history||info.image_list.filter(img=>img.type==2).length>0">
-        <div class="panel-head">
-          <div class="panel-title">补充信息</div>
-        </div>
-        <div class="panel-body">
-          <div class="panel-info">
-            <div class="panel-label">患处图片：</div>
-            <div class="panel-value">
-              <div class="img-list">
-                <el-image class="preview-img"
-                          :z-index="9999"
-                          v-for="(item, index) in info.image_list.filter(img=>img.type==2)"
-                          :key="'img_' + index"
-                          :src="item.image_path"
-                          :preview-src-list="info.image_list.filter(img=>img.type==2).map(i => i.image_path)">
-                </el-image>
-              </div>
+        <div class="info-title">补充信息</div>
+        <div class="info-row"
+             v-if="info.image_list.filter(img=>img.type==2).length>0">
+          <div class="info-row-label">
+            <span>患处图片</span>
+          </div>
+          <div class="info-row-content">
+            <div class="imgs">
+              <el-image class="preview-img"
+                        :z-index="9999"
+                        :key="'img_' + index"
+                        :src="img.image_path"
+                        :preview-src-list="info.image_list.filter(img=>img.type==2).map(i=>i.image_path)"
+                        v-for="(img, index) in info.image_list.filter(img=>img.type==2)"></el-image>
             </div>
           </div>
-          <div class="panel-info"
-               v-if="info.pregnancyText">
-            <div class="panel-label">特殊时期：</div>
-            <div class="panel-value">{{ info.pregnancyText }}</div>
+        </div>
+        <div class="info-row"
+             v-if="info.pregnancyText">
+          <div class="info-row-label">
+            <span>特殊时期</span>
           </div>
-          <div class="panel-info"
-               v-if="info.allergic_history">
-            <div class="panel-label">过敏史：</div>
-            <div class="panel-value">{{ info.allergic_history }}</div>
+          <div class="info-row-content">
+            <span>{{ info.pregnancyText }}</span>
+          </div>
+        </div>
+        <div class="info-row"
+             v-if="info.allergic_history">
+          <div class="info-row-label">
+            <span>过敏史</span>
+          </div>
+          <div class="info-row-content">
+            <span>{{ info.allergic_history }}</span>
           </div>
         </div>
       </div>
-
-      <div class="panel-box">
-        <div class="panel-head">
-          <div class="panel-title">订单信息</div>
+    </div>
+    <div class="info-block">
+      <div class="info-title">订单信息</div>
+      <div class="info-block-content">
+        <div class="info-row">
+          <div class="info-row-label">
+            <span>订单编号</span>
+          </div>
+          <div class="info-row-content">{{ info.order_no }}</div>
         </div>
-        <div class="panel-body">
-          <div class="panel-info">
-            <div class="panel-label">订单编号：</div>
-            <div class="panel-value">{{ info.order_no }}</div>
+
+        <div class="info-row">
+          <div class="info-row-label">
+            <span>下单时间</span>
           </div>
-          <div class="panel-info">
-            <div class="panel-label">订单时间：</div>
-            <div class="panel-value">{{ info.created_time }}</div>
-          </div>
-          <div class="panel-info"
+          <div class="info-row-content">{{ info.created_time }}</div>
+        </div>
+        <template v-if="info.payInfo">
+          <div class="info-row"
                v-if="info.orderStatus >= 3 || info.payTime != null">
-            <div class="panel-label">支付方式：</div>
-            <div class="panel-value">{{info.payInfo.payModeTxt}}{{info.payInfo.paymentTypeTxt ? ' - ' +
-						info.payInfo.paymentTypeTxt : ''}}</div>
+            <div class="info-row-label">
+              <span>支付方式</span>
+            </div>
+            <div class="info-row-content">{{info.payInfo.paymentTypeTxt?info.payInfo.payModeTxt +' - '+info.payInfo.paymentTypeTxt : info.payInfo.payModeTxt }}</div>
           </div>
-          <div class="panel-info"
+          <div class="info-row"
                v-if="info.payInfo.deductionTypeTxt">
-            <div class="panel-label">抵扣类型：</div>
-            <div class="panel-value">{{ info.payInfo.deductionTypeTxt }}</div>
+            <div class="info-row-label">
+              <span>抵扣类型</span>
+            </div>
+            <div class="info-row-content">{{ info.payInfo.deductionTypeTxt }}</div>
           </div>
+
           <template v-if="info.payInfo.deductionType === 'yibaopay'">
-            <div class="panel-info">
-              <div class="panel-label">医保类型：</div>
-              <div class="panel-value">{{ info.payInfo.medicalTreatmentTypetxt }}</div>
+            <div class="info-row"
+                 v-if="info.payInfo.medicalTreatmentTypetxt">
+              <div class="info-row-label">
+                <span>医保类型</span>
+              </div>
+              <div class="info-row-content">{{ info.payInfo.medicalTreatmentTypetxt }}</div>
             </div>
-            <div class="panel-info"
-                 v-if="info.payInfo.medicalTreatmentType === 2">
-              <div class="panel-label">病种：</div>
-              <div class="panel-value">{{ info.payInfo.diseasesTxt }}</div>
+
+            <div class="info-row"
+                 v-if="info.payInfo.diseasesTxt&&info.payInfo.medicalTreatmentType === 2">
+              <div class="info-row-label">
+                <span>病种</span>
+              </div>
+              <div class="info-row-content">{{ info.payInfo.diseasesTxt }}</div>
             </div>
           </template>
+
           <template v-if="info.payInfo.deductionType === 'servicePackage'">
-            <div class="panel-info">
-              <div class="panel-label">服务包名称：</div>
-              <div class="panel-value">{{ info.payInfo.servicePackageName }}</div>
+            <div class="info-row"
+                 v-if="info.payInfo.servicePackageName">
+              <div class="info-row-label">
+                <span>服务包名称</span>
+              </div>
+              <div class="info-row-content">{{ info.payInfo.servicePackageName }}</div>
             </div>
-            <div class="panel-info"
-                 v-if="info.payInfo.medicalTreatmentType === 2">
-              <div class="panel-label">权益名称：</div>
-              <div class="panel-value">{{ info.payInfo.equitiesName }}</div>
-            </div>
-          </template>
-          <div class="panel-info"
-               v-if="info.orderStatus >= 3 || info.payTime != null">
-            <div class="panel-label">支付时间：</div>
-            <div class="panel-value">{{ info.created_time }}</div>
-          </div>
-          <div class="panel-info"
-               v-if="info.cancelTime">
-            <div class="panel-label">取消时间：</div>
-            <div class="panel-value">{{ info.cancelTime }}</div>
-          </div>
-          <div class="panel-info"
-               v-if="(info.orderStatus >= 3 || info.payTime != null) && info.divisionId">
-            <div class="panel-label">发票号：</div>
-            <div class="panel-value">{{info.divisionId}}</div>
-          </div>
-          <div class="panel-info"
-               v-if="info.backTime">
-            <div class="panel-label">退诊时间：</div>
-            <div class="panel-value">{{ info.backTime }}</div>
-          </div>
-          <div class="panel-info"
-               v-if="info.refundTime">
-            <div class="panel-label">退款时间：</div>
-            <div class="panel-value">{{ info.refundTime }}</div>
-          </div>
 
-          <div class="divider"></div>
-
-          <template v-if="info.moneyRecord && info.moneyRecord.length > 0">
-            <div class="panel-info"
-                 v-for="item in info.moneyRecord"
-                 v-bind:key="item.name">
-              <div class="panel-label">{{item.name}}：</div>
-              <div class="panel-value">{{ item.value }}</div>
-            </div>
-          </template>
-          <template v-else>
-            <div class="panel-info">
-              <div class="panel-label">订单费用：</div>
-              <div class="panel-value">￥{{ info.totalMoney }}</div>
+            <div class="info-row"
+                 v-if="info.payInfo.equitiesName">
+              <div class="info-row-label">
+                <span>服务包权益</span>
+              </div>
+              <div class="info-row-content">{{ info.payInfo.equitiesName }}</div>
             </div>
           </template>
 
-          <div class="panel-info">
-            <div class="panel-label">{{moneyText}}：</div>
-            <div class="panel-value">
-              <span class="red"
-                    v-if="info.pay_money"> ¥ {{ info.pay_money }}</span>
-              <span v-if="info.orderStatus === 5"> (已退款)</span>
-            </div>
+        </template>
+        <div class="info-row"
+             v-if="info.orderStatus >= 3 || info.payTime != null">
+          <div class="info-row-label">
+            <span>支付时间</span>
           </div>
+          <div class="info-row-content">{{ info.payTime }}</div>
+        </div>
+        <div class="info-row"
+             v-if="info.cancelTime">
+          <div class="info-row-label">
+            <span>取消时间</span>
+          </div>
+          <div class="info-row-content">{{ info.cancelTime }}</div>
+        </div>
+        <div class="info-row"
+             v-if="info.payTime&&info.divisionId">
+          <div class="info-row-label">
+            <span>发票号</span>
+          </div>
+          <div class="info-row-content">{{ info.divisionId }}</div>
+        </div>
+        <div class="info-row"
+             v-if="info.backTime">
+          <div class="info-row-label">
+            <span>退诊时间</span>
+          </div>
+          <div class="info-row-content">{{ info.backTime }}</div>
+        </div>
+        <div class="info-row"
+             v-if="info.refundTime">
+          <div class="info-row-label">
+            <span>退款时间</span>
+          </div>
+          <div class="info-row-content">{{ info.refundTime }}</div>
+        </div>
 
+      </div>
+      <div class="info-block-content">
+        <template v-if="info.moneyRecord&&info.moneyRecord.length>0">
+          <div class="info-row"
+               v-for="(item,index) in info.moneyRecord"
+               :key="index">
+            <div class="info-row-label">
+              <span>{{item.name}}</span>
+            </div>
+            <div class="info-row-content">{{ item.value }}</div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="info-row">
+            <div class="info-row-label">
+              <span>订单费用</span>
+            </div>
+            <div class="info-row-content">￥{{ info.totalMoney }}</div>
+          </div>
+        </template>
+
+        <div class="info-row">
+          <div class="info-row-label">
+            <span>自费金额</span>
+          </div>
+          <div class="info-row-content">
+            <span class="red">￥{{ info.pay_money }}</span>
+            <span v-if="info.orderStatus === 5"
+                  style="font-size: 12px;">(已退款)</span>
+          </div>
         </div>
       </div>
 
     </div>
-
   </div>
 </template>
-
-
 <script>
-import CONSTANT from '../constant'
+import Constant from '../constant'
 export default {
   name: 'ReturnVisitOrderDetail',
   props: {
     info: Object
   },
+
   data() {
     return {
       source: {
-        ENUM_RETURN_VISIT_STATUS: CONSTANT.ENUM_RETURN_VISIT_STATUS,
-        ENUM_PAYMENT: CONSTANT.ENUM_PAYMENT
+        ENUM_RETURN_VISIT_STATUS: Constant.ENUM_RETURN_VISIT_STATUS,
+        ENUM_PAYMENT: Constant.ENUM_PAYMENT
       }
-    }
-  },
-  filters: {
-    getEnumLabel: function(value, ENUM) {
-      return ENUM.find((item) => item.value == value)?.label
     }
   },
   computed: {
-    moneyText() {
-      let str = ''
-      if (this.info.orderStatus >= 3 || this.info.payTime != null) {
-        str = '实付金额'
-      } else {
-        str = '应付金额'
-      }
-      return str
-    },
-
     orderLabelColor() {
       let color = '#fff'
       switch (this.info.inquiryStatus) {
@@ -303,23 +348,63 @@ export default {
       }
       return color
     }
+  },
+  filters: {
+    getEnumLabel: function(value, ENUM) {
+      return ENUM.find((item) => item.value == value)?.label
+    }
   }
 }
 </script>
 
+
+
 <style lang="scss" scoped>
-.order-detail {
+$text: #23313f;
+$grey-text: #778899;
+$border-color: #eee;
+.info-row {
+  font-size: 0;
+  display: flex;
+  .info-row-label,
+  .info-row-content {
+    font-size: 14px;
+    line-height: 28px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .info-row-label {
+    color: #778899;
+    white-space: nowrap;
+    & > span {
+      min-width: 4em;
+      display: inline-block;
+    }
+  }
+  .info-row-content {
+    word-break: break-all;
+    color: #23313f;
+    & > img {
+      height: 20px;
+      display: block;
+    }
+  }
+}
+.advisory-info {
+  color: $text;
+  & > div {
+    padding-top: 15px;
+  }
+
   .doctor {
     position: relative;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #e9e9e9;
-    &-pic,
-    &-info {
+
+    .doctor-pic,
+    .doctor-info {
       display: inline-block;
       vertical-align: middle;
     }
-    &-pic {
+    .doctor-pic {
       margin-right: 10px;
       width: 62px;
       height: 62px;
@@ -331,7 +416,7 @@ export default {
         display: block;
       }
     }
-    &-info {
+    .doctor-info {
       & > span {
         line-height: 24px;
         &.title {
@@ -353,151 +438,141 @@ export default {
       border-radius: 15px 0 0 15px;
     }
   }
+  .label-title {
+    font-size: 16px;
+    color: #333;
+  }
+  .info-row.label {
+    padding-left: 12px;
+  }
 
-  .panel-box {
-    margin-bottom: 20px;
-    border-bottom: 1px solid #e9e9e9;
-    &:last-child {
-      margin-bottom: 0;
-      border-bottom: none;
+  .info-row-content {
+    font-weight: normal;
+    padding-left: 20px;
+    & > span + span {
+      margin-left: 4px;
     }
-    .panel-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 22px;
-      .panel-title {
-        position: relative;
-        padding-left: 12px;
-        font-size: 16px;
-        font-weight: 600;
-        color: #333333;
-        &:before {
-          content: '';
-          position: absolute;
-          top: 4px;
-          left: 0;
-          width: 4px;
-          height: 16px;
-          background-color: var(--q-color-primary);
-          border-radius: 2px;
-        }
-      }
-    }
-    .panel-body {
-      padding-top: 16px;
-      padding-bottom: 16px;
-    }
-    .panel-info {
-      display: flex;
-      justify-content: flex-start;
-      align-items: flex-start;
-      margin-bottom: 8px;
-      white-space: normal;
-      word-wrap: normal;
-      word-break: break-all;
-      font-size: 14px;
-      color: rgba(0, 0, 0, 0.6);
-      line-height: 20px;
-      &:last-child {
-        margin-bottom: 0;
-      }
-      .panel-label {
-        flex: none;
-        min-width: 76px;
-        height: 20px;
-        padding-right: 4px;
-        font-size: 14px;
-        font-weight: 400;
-        color: rgba(0, 0, 0, 0.6);
-        line-height: 20px;
-        &.user {
-          min-width: 48px;
-        }
-      }
-      .panel-value {
-        flex: 1;
-        font-size: 14px;
-        font-weight: 400;
-        color: #333333;
-        line-height: 20px;
-        white-space: normal;
-        word-wrap: normal;
-        word-break: break-all;
-      }
-    }
+  }
+}
+.spec-row {
+  padding: 5px 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  font-size: 13px;
+  width: 100%;
+}
+.el-icon-picture {
+  font-size: 48px;
+  color: #b3d8ff;
+}
+.imgs {
+  padding: 10px 0;
+  .preview-img {
+    width: 57px;
+    height: 57px;
+    text-align: center;
+    display: inline-block;
+    margin-right: 10px;
+  }
+}
+.red {
+  font-size: 16px;
+  color: #f56c6c;
+}
+.info-block {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 5px;
+  > .info-row {
+    padding-left: 15px;
+  }
+  > .row,
+  > .info-block-content,
+  > .info-row-content {
+    margin-left: 12px;
+  }
+}
+.info-title {
+  color: $text;
+  font-size: 16px;
+  line-height: 25px;
+  width: 100%;
+  &::before {
+    display: inline-block;
+    content: '';
+    width: 4px;
+    height: 15px;
+    background: var(--q-color-primary);
+    margin-right: 8px;
+    margin-bottom: -2px;
+    border-radius: 2px;
+  }
+}
+.info-block-content {
+  width: 100%;
+  background: #f5f5f5;
+  margin-top: 10px;
+  padding: 5px 15px;
+  border-radius: 8px;
+  .info-row-content {
+    padding-left: 20px;
+  }
+  .info-row-price {
+    padding: 5px 0;
 
-    .img-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-      align-items: flex-start;
-      .preview-img {
-        flex: none;
-        width: 56px;
-        height: 56px;
-        margin-right: 10px;
-        margin-bottom: 10px;
+    .info-row-content {
+      padding-left: 10px;
+      .red {
+        font-size: 18px;
       }
     }
-
-    .first-list {
-      .first-item {
-        display: flex;
-        justify-content: flex-start;
-        align-items: stretch;
-      }
-      .first-time {
-        position: relative;
-        width: 56px;
-        min-height: 60px;
-        padding-right: 16px;
-        margin-right: 16px;
-        border-right: 1px solid #eeeeee;
-        font-weight: 400;
-        color: #999999;
-        text-align: right;
-        &::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          right: -5px;
-          width: 9px;
-          height: 9px;
-          border-radius: 50px;
-          background-color: var(--q-color-primary);
-        }
-        .first-day {
-          height: 14px;
-          font-size: 14px;
-          line-height: 14px;
-          margin-bottom: 6px;
-        }
-        .first-hour {
-          height: 12px;
-          font-size: 12px;
-          line-height: 12px;
-        }
-      }
-      .first-info {
-        font-size: 14px;
-        font-weight: 400;
-        color: #333333;
-        line-height: 14px;
+    .info-row-label {
+      span {
+        font-size: 18px;
       }
     }
   }
+}
+.info-row {
+  width: 100%;
+  &.half {
+    width: 50%;
+  }
+}
 
-  .red {
-    font-weight: 600;
-    color: #f56c6c;
+.case-bg {
+  border-radius: 4px;
+  background-color: white;
+  width: 320px;
+  margin-top: 15px;
+  .case-content {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    p {
+      width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin: 0;
+    }
   }
 
-  .divider {
-    margin: 20px auto;
-    width: 100%;
-    height: 1px;
-    border-top: 1px dashed #e9e9e9;
+  .case-title {
+    font-size: 16px;
+    color: #333 !important;
+    line-height: 22px;
+    span + span {
+      margin-left: 15px;
+    }
+  }
+
+  .case-subtitle {
+    font-size: 13px;
+    color: #999 !important;
+    line-height: 18px;
   }
 }
 </style>
