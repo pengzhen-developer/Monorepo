@@ -36,7 +36,7 @@
     <div class="fixed-bottom card text-right">
       <el-button v-on:click="back">退出编辑</el-button>
       <el-button type="primary"
-                 v-on:loading="loading"
+                 v-bind:loading="loading"
                  v-on:click="save">保存</el-button>
     </div>
   </div>
