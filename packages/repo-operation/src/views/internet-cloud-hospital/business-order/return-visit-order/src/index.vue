@@ -92,7 +92,7 @@
         <peace-table-column label="机构名称"
                             min-width="180"
                             prop="netHospital_name"></peace-table-column>
-        <peace-table-column label="咨询类型"
+        <!-- <peace-table-column label="咨询类型"
                             min-width="120">
           <template slot-scope="scope">
             <div class="private">
@@ -101,7 +101,7 @@
               <span>{{ scope.row.inquiry_type | getEnumLabel(source.orderInquiryType) }}</span>
             </div>
           </template>
-        </peace-table-column>
+        </peace-table-column> -->
         <peace-table-column label="下单时间"
                             width="180"
                             prop="created_time"></peace-table-column>
