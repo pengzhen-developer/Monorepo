@@ -45,7 +45,7 @@
       <div class="row q-mb-16">
         <div class="col row">
           <p>支付方式：</p>
-          <span>{{info.paymentType}}</span>
+          <span v-if="info.payTime">{{info.paymentType}}</span>
         </div>
         <div class="col row">
           <p>支付金额：</p>
