@@ -125,15 +125,15 @@ export default {
     addTagOther() {
       if (this.model.incompatibilityRuleObj.incompatibilityTargetItemList.length > 0) {
         const type = this.model.incompatibilityRuleObj.incompatibilityTargetItemList[0]?.type
-        if (type === 1) {
+        if (Number(type) === 1) {
           this.dialogOther.data = this.model.incompatibilityRuleObj.incompatibilityTargetItemList.map((item) => {
             return { type: item.type, code: item.code, cnName: item.name }
           })
-        } else if (type === 2) {
+        } else if (Number(type) === 2) {
           this.dialogOther.data = this.model.incompatibilityRuleObj.incompatibilityTargetItemList.map((item) => {
             return { type: item.type, atcCode: item.atcCode, classifyName: item.name }
           })
-        } else if (type === 3) {
+        } else if (Number(type) === 3) {
           this.dialogOther.data = this.model.incompatibilityRuleObj.incompatibilityTargetItemList.map((item) => {
             return { type: item.type, code: item.code, drugName: item.name }
           })
@@ -145,15 +145,15 @@ export default {
     editIndicationOther(data) {
       if (data.length > 0) {
         const type = data[0]?.type
-        if (type === 1) {
+        if (Number(type) === 1) {
           this.model.incompatibilityRuleObj.incompatibilityTargetItemList = data.map((item) => {
             return { type: item.type, code: item.code, name: item.cnName }
           })
-        } else if (type === 2) {
+        } else if (Number(type) === 2) {
           this.model.incompatibilityRuleObj.incompatibilityTargetItemList = data.map((item) => {
             return { type: item.type, atcCode: item.atcCode, name: item.classifyName }
           })
-        } else if (type === 3) {
+        } else if (Number(type) === 3) {
           this.model.incompatibilityRuleObj.incompatibilityTargetItemList = data.map((item) => {
             return { type: item.type, code: item.code, name: item.drugName }
           })

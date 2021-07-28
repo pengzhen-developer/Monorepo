@@ -1,6 +1,7 @@
 <template>
   <div v-loading="loading"
-       class="q-pa-md bg-white row relative-position">
+       class="q-pa-md bg-white row relative-position"
+       style="min-height: 100px;">
 
     <!--    <q-scroll-observer horizontal @scroll="onscroll"></q-scroll-observer>-->
     <div ref="scrollArea"
@@ -88,6 +89,7 @@ import CONSTANT from './constant'
 import PrecoditionInfo from './components/PrecoditionInfo'
 import PreconditionView from './components/PreconditionView'
 import Service from './service/index'
+
 import obPreconditionDic from './observable/ob-precondition-dic'
 
 export default {
@@ -217,7 +219,11 @@ export default {
             // 其中前置条件需要做转换
             if (models) {
               models.map((temp) => {
-                if (temp.conditionExpression && temp.conditionExpression.ceList && temp.conditionExpression.ceList.length > 0) {
+                if (
+                  temp.conditionExpression &&
+                  temp.conditionExpression.ceList &&
+                  temp.conditionExpression.ceList.length > 0
+                ) {
                   let tmp = temp.conditionExpression.ceList ?? []
                   let ceListDic = {}
                   for (let condition of tmp) {
@@ -363,7 +369,7 @@ export default {
 
     onAddRule(rule) {
       const tmp = this.rules.find((item) => item.name === rule.name)
-      return rule.models.push({ ...tmp.model })
+      return rule.models.push(Peace.util.deepClone(tmp.model))
     },
 
     /**
@@ -411,7 +417,8 @@ export default {
     addPreconditionInfo(params) {
       const { IndexParams, data } = params
       this.rules[IndexParams.patientIndex].models[IndexParams.Index].conditionExpressionString.ceList = data
-      this.rules[IndexParams.patientIndex].models[IndexParams.Index].conditionExpressionString.hasPrecondition = JSON.stringify(data) !== '{}'
+      this.rules[IndexParams.patientIndex].models[IndexParams.Index].conditionExpressionString.hasPrecondition =
+        JSON.stringify(data) !== '{}'
       this.dialog.visible = false
     }
   }

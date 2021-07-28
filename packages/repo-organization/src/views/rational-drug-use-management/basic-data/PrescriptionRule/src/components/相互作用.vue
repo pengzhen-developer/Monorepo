@@ -126,11 +126,11 @@ export default {
     addTagOther() {
       if (this.model.ddiRuleObj.ddiContraryItemList.length > 0) {
         const type = this.model.ddiRuleObj.ddiContraryItemList[0]?.type
-        if (type === 1) {
+        if (Number(type) === 1) {
           this.dialogOther.data = this.model.ddiRuleObj.ddiContraryItemList.map((item) => {
             return { type: item.type, code: item.code, cnName: item.name }
           })
-        } else if (type === 2) {
+        } else if (Number(type) === 2) {
           this.dialogOther.data = this.model.ddiRuleObj.ddiContraryItemList.map((item) => {
             return { type: item.type, atcCode: item.atcCode, classifyName: item.name }
           })
@@ -142,11 +142,11 @@ export default {
     editIndicationOther(data) {
       if (data.length > 0) {
         const type = data[0]?.type
-        if (type === 1) {
+        if (Number(type) === 1) {
           this.model.ddiRuleObj.ddiContraryItemList = data.map((item) => {
             return { type: item.type, code: item.code, name: item.cnName }
           })
-        } else if (type === 2) {
+        } else if (Number(type) === 2) {
           this.model.ddiRuleObj.ddiContraryItemList = data.map((item) => {
             return { type: item.type, atcCode: item.atcCode, name: item.classifyName }
           })
