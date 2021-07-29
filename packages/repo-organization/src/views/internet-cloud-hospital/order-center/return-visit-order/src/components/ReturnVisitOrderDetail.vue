@@ -312,13 +312,12 @@ export default {
     }
   },
   computed: {
-    //inquiryStatus  7 预约成功 ，8 预约关闭  --用于机构端，运营端  患者端无此状态
-    //预约成功  不展示自费金额
+    //预约成功 未支付-不展示自费金额
     canShowMoney() {
-      if (this.info.inquiryStatus == 7) {
-        return false
-      } else {
+      if (this.info.appointment_status === 0 || (this.info.appointment_status > 0 && this.info.report_time)) {
         return true
+      } else {
+        return false
       }
     },
     orderLabelColor() {
