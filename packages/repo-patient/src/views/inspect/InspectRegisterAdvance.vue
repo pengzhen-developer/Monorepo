@@ -210,7 +210,8 @@ export default {
         medicalTreatmentType: this.payType === 'yibaopay' ? this.payInfo.medicalTreatmentType : '',
         diseasesCode: this.payType === 'yibaopay' && this.payInfo.medicalTreatmentType === 2 ? this.payInfo.diseasesCode : '',
         diseasesName: this.payType === 'yibaopay' && this.payInfo.medicalTreatmentType === 2 ? this.payInfo.diseasesName : '',
-        paymentType: this.paymentType
+        paymentType: this.paymentType,
+        deductionType: this.payType
       }
 
       peace.service.inquiry
