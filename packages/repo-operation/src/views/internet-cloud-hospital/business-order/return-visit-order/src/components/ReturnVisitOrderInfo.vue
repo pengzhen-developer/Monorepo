@@ -65,7 +65,7 @@
              v-bind:key="item.dataNo">
           <el-card class="case-bg">
             <div class="row">
-              <img :src="require('../assets/images/ic_medical record.png')"
+              <img :src="require('../assets/images/ic_medical_record.png')"
                    style="with:60px;height:60px" />
               <div class="case-content">
                 <p class="case-title"><span>{{Peace.util.formatDate(item.createdTime)}}</span><span>{{ item.title }}</span></p>
@@ -279,7 +279,8 @@
           </div>
         </template>
 
-        <div class="info-row">
+        <div class="info-row"
+             v-if="canShowMoney">
           <div class="info-row-label">
             <span>自费金额</span>
           </div>
@@ -311,6 +312,15 @@ export default {
     }
   },
   computed: {
+    //inquiryStatus  7 预约成功 ，8 预约关闭  --用于机构端，运营端  患者端无此状态
+    //预约成功  不展示自费金额
+    canShowMoney() {
+      if (this.info.inquiryStatus == 7) {
+        return false
+      } else {
+        return true
+      }
+    },
     orderLabelColor() {
       let color = '#fff'
       switch (this.info.inquiryStatus) {
