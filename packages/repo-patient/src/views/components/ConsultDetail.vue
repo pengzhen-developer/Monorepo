@@ -261,8 +261,9 @@
       </div>
 
       <!-- 应付/实付金额  -- 自费支付-->
+
       <div class="module money"
-           v-if="internalData.inquiryInfo.inquiryStatus != ENUM.INQUIRY_STATUS.待支付 &&internalData.inquiryInfo.appointmentStatus!=2">
+           v-if="internalData.inquiryInfo.appointmentStatus===0 ||(internalData.inquiryInfo.appointmentStatus>0&&internalData.inquiryInfo.reportTime)">
         <!-- 取消订单的状态 -->
         <template v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已取消">
           <div class="brief right"
