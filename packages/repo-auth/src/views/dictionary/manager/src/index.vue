@@ -122,10 +122,12 @@
       <el-form ref="dictTypeForm"
                label-width="auto"
                v-bind:model="dictTypeDialog.model"
-               v-bind:rules="dictTypeDialog.rules">
+               v-bind:rules="dictTypeDialog.rules"
+               label-suffix="：">
         <el-form-item label="字典类型"
                       prop="type">
-          <el-input v-model="dictTypeDialog.model.type"
+          <el-input v-bind:disabled="dictTypeDialog.model.id !== null"
+                    v-model="dictTypeDialog.model.type"
                     placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -158,7 +160,8 @@
       <el-form ref="dictItemForm"
                label-width="auto"
                v-bind:model="dictItemDialog.model"
-               v-bind:rules="dictItemDialog.rules">
+               v-bind:rules="dictItemDialog.rules"
+               label-suffix="：">
         <el-form-item label="label"
                       prop="label">
           <el-input v-model="dictItemDialog.model.label"
@@ -218,7 +221,7 @@ export default {
         visible: false,
 
         model: {
-          id: 0,
+          id: null,
           type: '',
           description: '',
           remarks: ''
@@ -297,7 +300,7 @@ export default {
 
     resetDictTypeDialog() {
       this.dictTypeDialog.model = {
-        id: 0,
+        id: null,
         type: '',
         description: '',
         remarks: ''
