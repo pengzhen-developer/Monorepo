@@ -208,8 +208,8 @@ export default {
         medCardNo: this.payType === 'yibaopay' ? this.payInfo.medCardNo : '',
         cardNo: this.payType === 'shangbaopay' ? this.payInfo.sbInsuranceId : '',
         medicalTreatmentType: this.payType === 'yibaopay' ? this.payInfo.medicalTreatmentType : '',
-        diseasesCode: this.payType === 'yibaopay' && this.payInfo.medicalTreatmentType.toString() === '1' ? this.payInfo.diseasesCode : '',
-        diseasesName: this.payType === 'yibaopay' && this.payInfo.medicalTreatmentType.toString() === '1' ? this.payInfo.diseasesName : '',
+        diseasesCode: this.payType === 'yibaopay' && this.payInfo.medicalTreatmentType === 2 ? this.payInfo.diseasesCode : '',
+        diseasesName: this.payType === 'yibaopay' && this.payInfo.medicalTreatmentType === 2 ? this.payInfo.diseasesName : '',
         paymentType: this.paymentType
       }
 
