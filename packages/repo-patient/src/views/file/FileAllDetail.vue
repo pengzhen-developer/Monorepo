@@ -5,28 +5,22 @@
       <div class="file-all-detail-header">
         <div class="header-top">
           <div class="header-top-left">
-            <span style="font-size: 20px; color: #fff; margin: 0 8px 0 0;">
+            <span class="header-top-left-name">
               {{ patientInfo.familyName }}
             </span>
             <van-icon v-if="patientInfo.sex === '男'"
-                      width="13"
-                      height="13"
                       :name="require('@src/assets/images/file/ic_boys_white.png')" />
             <van-icon v-if="patientInfo.sex === '女'"
-                      width="13"
-                      height="13"
                       :name="require('@src/assets/images/file/ic_girls_white.png')" />
-            <span style="font-size: 14px; color: #fff; margin: 0 8px;">
+            <span class="header-top-left-age">
               {{ patientInfo.age }}
             </span>
             <van-tag color="#06B8AE"
                      text-color="#FFFFFF">门诊</van-tag>
           </div>
           <div class="header-top-right">
-            <van-icon width="10"
-                      height="10"
-                      :name="require('@src/assets/images/file/ic_time.png')" />
-            <span style="font-size: 14px; color: #fff; margin: 0 0 0 10px;">
+            <van-icon :name="require('@src/assets/images/file/ic_time.png')" />
+            <span>
               {{ patientInfo.createTime }}
             </span>
           </div>
@@ -34,18 +28,14 @@
         <div class="header-bottom">
           <div class="bg">
             <div class="bg-row">
-              <van-image width="22px"
-                         height="22px"
-                         :src="require('@src/assets/images/file/ic_mechanism_1.png')" />
-              <span style="font-size: 14px; color: #333; margin: 0 0 0 10px;">
+              <van-image :src="require('@src/assets/images/file/ic_mechanism_1.png')" />
+              <span>
                 {{ patientInfo.hospitalName }}
               </span>
             </div>
             <div class="bg-row">
-              <van-image width="22px"
-                         height="22px"
-                         :src="require('@src/assets/images/file/ic_doctor_1.png')" />
-              <span style="font-size: 14px; color: #333; margin: 0 0 0 10px;">
+              <van-image :src="require('@src/assets/images/file/ic_doctor_1.png')" />
+              <span>
                 {{ patientInfo.doctorName }} {{ patientInfo.deptName }}
               </span>
             </div>
@@ -150,6 +140,33 @@ export default {
         display: flex;
         align-items: center;
       }
+      .header-top-left {
+        .header-top-left-name {
+          font-size: 20px;
+          color: #fff;
+          margin: 0 8px 0 0;
+        }
+        .van-icon {
+          width: 13px;
+          height: 13px;
+        }
+        .header-top-left-age {
+          font-size: 14px;
+          color: #fff;
+          margin: 0 8px;
+        }
+      }
+      .header-top-right {
+        .van-icon {
+          width: 10px;
+          height: 10px;
+        }
+        > span {
+          font-size: 14px;
+          color: #fff;
+          margin: 0 0 0 10px;
+        }
+      }
     }
 
     .header-bottom {
@@ -174,6 +191,15 @@ export default {
           align-items: center;
 
           margin: 0 0 10px 0;
+          .van-image {
+            width: 22px;
+            height: 22px;
+          }
+          > span {
+            font-size: 14px;
+            color: #333;
+            margin: 0 0 0 10px;
+          }
         }
       }
     }

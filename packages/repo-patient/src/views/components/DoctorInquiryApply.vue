@@ -26,9 +26,7 @@
              v-for="item in welcomeList"
              :key="item.message">
           <div class="robot">
-            <van-image width="36px"
-                       height="36px"
-                       :src="require('@src/assets/images/ic_robot.png')"></van-image>
+            <van-image :src="require('@src/assets/images/ic_robot.png')"></van-image>
           </div>
           <div class="message in">
             <span v-html="item.message"></span>
@@ -80,7 +78,7 @@
                      @click="viewImage(file, fileIndex)">
               </div>
               <span v-if="canShowChange(index) && fileIndex === item.answer.length - 1"
-                    style="color:#00c6ae;font-size:12px;line-height:normal;margin: 4px 0 0 0;"
+                    class="modify-btn"
                     @click="backQuestion">点击修改</span>
             </div>
           </template>
@@ -97,7 +95,7 @@
                        v-bind:show="true"
                        v-bind:data="item.answer"></component>
             <span v-if="canShowChange(index)"
-                  style="color:#00c6ae;font-size:12px;line-height:normal;margin: 4px 0 0 0;"
+                  class="modify-btn"
                   @click="backQuestion">点击修改</span>
           </div>
           <template v-else>
@@ -107,7 +105,7 @@
                 <span v-html="item.answer"></span>
               </div>
               <span v-if="canShowChange(index)"
-                    style="color:#00c6ae;font-size:12px;line-height:normal;margin: 4px 0 0 0;"
+                    class="modify-btn"
                     @click="backQuestion">点击修改</span>
             </div>
           </template>
@@ -143,15 +141,13 @@
                        justify="space-between">
                 <div style="margin:0 10px 0 0;"
                      v-if="!isFixed">
-                  <van-image width="50"
-                             height="50"
+                  <van-image class="doctor-logo"
                              round
                              :src="doctor.doctorInfo.avartor" />
                 </div>
                 <div style="margin:0 10px 0 0;display:flex;align-items:center;"
                      v-else>
-                  <van-image width="38"
-                             height="38"
+                  <van-image class="doctor-logo fixed"
                              round
                              :src="doctor.doctorInfo.avartor" />
                 </div>
@@ -160,10 +156,10 @@
                          style="flex-direction: column;"
                          v-if="!isFixed">
                   <div>
-                    <span style="color: #333333; font-size: 18px; font-weight: bold;line-height: 1;margin: 0 8px 0 0;">
+                    <span class="doctor-name">
                       {{ doctor.doctorInfo.name }}
                     </span>
-                    <span style="color: #333333; font-size: 14px; ">
+                    <span class="doctor-title">
                       {{ doctor.doctorInfo.doctorTitle }}
                     </span>
                   </div>
@@ -171,7 +167,7 @@
                     <van-image :src="getServiceImage()"
                                width="16px"
                                height="16px"></van-image>
-                    <span style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 12px 0 5px;">
+                    <span class="doctor-service-name">
                       {{ doctor.doctorInfo.serviceName }}
                     </span>
                     <peace-price :price="doctor.doctorInfo.serviceMoney"
@@ -185,15 +181,15 @@
                          style="flex-direction: column;"
                          v-else>
                   <div>
-                    <span style="color: #333333; font-size: 16px; font-weight: bold;line-height: 1; margin: 0 8px 0 0;">
+                    <span class="doctor-name fixed">
                       {{ doctor.doctorInfo.name }}
                     </span>
-                    <span style="color: #666666; font-size: 14px; ">
+                    <span class="doctor-title">
                       {{ doctor.doctorInfo.doctorTitle }}
                     </span>
                   </div>
                   <div style="display:flex;align-items:center;line-height: 1;">
-                    <span style="color: #333333; font-size: 15px; font-weight: bold;  margin: 0 4px 0 0;">
+                    <span class="doctor-service-name fixed">
                       {{ doctor.doctorInfo.serviceName }}
                     </span>
                     <peace-price :price="doctor.doctorInfo.serviceMoney"
@@ -204,7 +200,7 @@
                 </van-row>
               </van-row>
               <div>
-                <van-button style="width: 72px; height: 25px; line-height: 1;box-shadow: -1px 2px 4px 0px rgba(255, 126, 107, 0.5);"
+                <van-button class="inquiry-btn"
                             @click="apply"
                             color="linear-gradient(143deg, #FE7057 0%, #FA9882 100%)"
                             :round="true"
@@ -213,8 +209,7 @@
                   <div slot="default"
                        style="display:flex;align-items:center;">
                     <span>立即问诊</span>
-                    <van-icon name="arrow"
-                              size="10" />
+                    <van-icon name="arrow" />
                   </div>
 
                 </van-button>
@@ -1789,6 +1784,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.modify-btn {
+  color: #00c6ae;
+  font-size: 12px;
+  line-height: normal;
+  margin: 4px 0 0 0;
+}
 .reSelect {
   &.van-dialog.van-button {
     width: 50%;
@@ -1915,6 +1916,10 @@ export default {
 
         .robot {
           margin: 0 0 -8px 4px;
+          .van-image {
+            width: 36px;
+            height: 36px;
+          }
         }
 
         .message {
@@ -1962,6 +1967,48 @@ export default {
           padding: 7.5px 10px;
           border-radius: 0;
           border-top: 1px solid #eee;
+        }
+
+        .doctor-logo {
+          width: 50px;
+          height: 50px;
+          &.fixed {
+            width: 38px;
+            height: 38px;
+          }
+        }
+
+        .doctor-name {
+          color: #333333;
+          font-size: 18px;
+          font-weight: bold;
+          line-height: 1;
+          margin: 0 8px 0 0;
+          &.fixed {
+            font-size: 16px;
+          }
+        }
+        .doctor-title {
+          color: #666666;
+          font-size: 14px;
+        }
+        .doctor-service-name {
+          color: #333333;
+          font-size: 15px;
+          font-weight: bold;
+          margin: 0 12px 0 5px;
+          &.fixed {
+            margin: 0 4px 0 0;
+          }
+        }
+        .inquiry-btn {
+          width: 72px;
+          height: 25px;
+          line-height: 1;
+          box-shadow: -1px 2px 4px 0px rgba(255, 126, 107, 0.5);
+          .van-icon {
+            font-size: 10px;
+          }
         }
       }
 

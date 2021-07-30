@@ -20,8 +20,7 @@
                 <div class="note card health-item"
                      @click="util.goDetail('血压', item)">
                   <div class="health-item-left">
-                    <van-image width="35px"
-                               height="44px"
+                    <van-image class="health-item-left-logo"
                                :src="require('@src/assets/images/file/ic_blood pressure.png')" />
                   </div>
                   <div class="health-item-right">
@@ -46,8 +45,7 @@
                 <div class="note card health-item"
                      @click="util.goDetail('血糖', item)">
                   <div class="health-item-left">
-                    <van-image width="35px"
-                               height="44px"
+                    <van-image class="health-item-left-logo"
                                :src="require('@src/assets/images/file/ic_blood sugar.png')" />
                   </div>
                   <div class="health-item-right">
@@ -68,8 +66,7 @@
                 <div class="note card health-item"
                      @click="util.goDetail('血氧', item)">
                   <div class="health-item-left">
-                    <van-image width="35px"
-                               height="44px"
+                    <van-image class="health-item-left-logo"
                                :src="require('@src/assets/images/file/ic_blood oxygen saturation.png')" />
                   </div>
                   <div class="health-item-right">
@@ -90,8 +87,7 @@
                 <div class="note card health-item"
                      @click="util.goDetail('体脂', item)">
                   <div class="health-item-left">
-                    <van-image width="35px"
-                               height="44px"
+                    <van-image class="health-item-left-logo"
                                :src="require('@src/assets/images/file/ic_body fat.png')" />
                   </div>
                   <div class="health-item-right">
@@ -112,15 +108,14 @@
                 <div class="note card case"
                      @click="util.goDetail('病历', item)">
                   <div class="case-left">
-                    <van-image width="35px"
-                               height="35px"
+                    <van-image class="case-left-logo"
                                :src="require('@src/assets/images/file/ic_medical record.png')" />
                   </div>
                   <div class="case-right">
-                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                    <p class="case-right-title">
                       门诊病历
                     </p>
-                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                    <p class="case-right-message">
                       {{ item.netHospitalName }} | {{ item.netDeptName }}
                     </p>
                   </div>
@@ -131,15 +126,14 @@
                 <div class="note card case"
                      @click="util.goDetail('转诊单', item)">
                   <div class="case-left">
-                    <van-image width="35px"
-                               height="35px"
+                    <van-image class="case-left-logo"
                                :src="require('@src/assets/images/file/ic_zhuanzhen.png')" />
                   </div>
                   <div class="case-right">
-                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                    <p class="case-right-title">
                       转诊单
                     </p>
-                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                    <p class="case-right-message">
                       {{ item.netHospitalName }} | {{ item.netDeptName }}
                     </p>
                   </div>
@@ -150,17 +144,16 @@
                 <div class="note card case"
                      @click="util.goDetail('会诊单', item)">
                   <div class="case-left">
-                    <van-image width="35px"
-                               height="35px"
+                    <van-image class="case-left-logo"
                                :src="require('@src/assets/images/file/ic_huizhen.png')" />
                     <div class="small-dot"
                          v-if="item.isExistRedDot==1"></div>
                   </div>
                   <div class="case-right">
-                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                    <p class="case-right-title">
                       会诊单
                     </p>
-                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                    <p class="case-right-message">
                       {{ item.netHospitalName }} | {{ item.netDeptName }}
                     </p>
                   </div>
@@ -173,17 +166,16 @@
                   <div class="note card case"
                        @click="util.goDetail('检验检查', item)">
                     <div class="case-left">
-                      <van-image width="35px"
-                                 height="35px"
+                      <van-image class="case-left-logo"
                                  :src="require('@src/assets/images/ic_jianyan.png')" />
                       <div class="small-dot"
                            v-if="item.isExistRedDot==1"></div>
                     </div>
                     <div class="case-right">
-                      <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                      <p class="case-right-title">
                         {{item.itemName}}
                       </p>
-                      <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                      <p class="case-right-message">
                         {{ item.netHospitalName }} | {{ item.netDeptName }}
                       </p>
                     </div>
@@ -194,17 +186,16 @@
                   <div class="note card case"
                        @click="util.goDetail('检验检查', item)">
                     <div class="case-left">
-                      <van-image width="35px"
-                                 height="35px"
+                      <van-image class="case-left-logo"
                                  :src="require('@src/assets/images/ic_yinxiang.png')" />
                       <div class="small-dot"
                            v-if="item.isExistRedDot==1"></div>
                     </div>
                     <div class="case-right">
-                      <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                      <p class="case-right-title">
                         {{item.itemName}}
                       </p>
-                      <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                      <p class="case-right-message">
                         {{ item.netHospitalName }} | {{ item.netDeptName }}
                       </p>
                     </div>
@@ -275,18 +266,18 @@ export default {
         p: this.p,
         size: this.size
       }
-      peace.service.health.allHealthList(param).then(res => {
+      peace.service.health.allHealthList(param).then((res) => {
         const temp = {}
 
         // 遍历时间
-        const timeList = new Set(res.data.list.map(item => item.measureTime))
+        const timeList = new Set(res.data.list.map((item) => item.measureTime))
         //拼接familyId
-        res.data.list.map(item => {
+        res.data.list.map((item) => {
           item.familyId = item.familyId || this.familyId
         })
         if (timeList.size) {
-          timeList.forEach(time => {
-            temp[time] = res.data.list.filter(item => item.measureTime === time)
+          timeList.forEach((time) => {
+            temp[time] = res.data.list.filter((item) => item.measureTime === time)
           })
 
           if (typeof this.data == 'undefined') {
@@ -413,6 +404,10 @@ export default {
       width: 50px;
       text-align: left;
       position: relative;
+      .case-left-logo {
+        width: 35px;
+        height: 35px;
+      }
       .small-dot {
         width: 8px;
         height: 8px;
@@ -429,6 +424,16 @@ export default {
       flex-direction: column;
       justify-content: center;
       flex: 1;
+      .case-right-title {
+        font-size: 16px;
+        color: #333333;
+        line-height: 32px;
+      }
+      .case-right-message {
+        font-size: 12px;
+        color: #999999;
+        line-height: 24px;
+      }
     }
   }
 
@@ -439,6 +444,10 @@ export default {
     .health-item-left {
       display: flex;
       width: 50px;
+      .health-item-left-logo {
+        width: 35px;
+        height: 44px;
+      }
     }
     .health-item-right {
       flex: 1;

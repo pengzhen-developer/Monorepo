@@ -21,7 +21,7 @@
                  class="tag checked"
                  plain
                  v-for="item in allFoodAllergy">
-          <span style="font-size: 12px;">{{ item.value }}</span>
+          <span class="tag-span">{{ item.value }}</span>
         </van-tag>
       </div>
 
@@ -33,7 +33,7 @@
                  class="tag"
                  plain
                  v-for="item in allFoodAllergyCommonly">
-          <span style="font-size: 12px;">{{ item.value }}</span>
+          <span class="tag-span">{{ item.value }}</span>
         </van-tag>
       </div>
     </div>
@@ -212,6 +212,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tag-span {
+  font-size: 12px;
+}
 .add-allergic-history {
   height: 100%;
   display: flex;

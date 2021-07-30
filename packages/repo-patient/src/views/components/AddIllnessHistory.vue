@@ -21,7 +21,7 @@
                  class="tag checked"
                  plain
                  v-for="item in confirmIllness">
-          <span style="font-size: 12px;">{{ item.value }}</span>
+          <span class="tag-span">{{ item.value }}</span>
         </van-tag>
       </div>
 
@@ -33,7 +33,7 @@
                  class="tag"
                  plain
                  v-for="item in confirmIllnessCommonly">
-          <span style="font-size: 12px;">{{ item.value }}</span>
+          <span class="tag-span">{{ item.value }}</span>
         </van-tag>
       </div>
       <template v-if="hasSearch">
@@ -46,7 +46,7 @@
                    class="tag"
                    plain
                    v-for="item in confirmIllnessList">
-            <span style="font-size: 12px;">{{ item.value }}</span>
+            <span class="tag-span">{{ item.value }}</span>
           </van-tag>
         </div>
       </template>
@@ -253,6 +253,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tag-span {
+  font-size: 12px;
+}
 .add-illness-history {
   height: 100%;
   display: flex;

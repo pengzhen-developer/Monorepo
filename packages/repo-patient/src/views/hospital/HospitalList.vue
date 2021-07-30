@@ -248,8 +248,8 @@ export default {
   .card-name {
     font-size: 17px;
     font-weight: 600;
-    line-height: 1.1;
-    margin-bottom: 5px;
+    line-height: 1.4;
+    margin-bottom: 4px;
   }
   .mb8 {
     margin-bottom: 8px;

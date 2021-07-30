@@ -20,7 +20,7 @@
                  class="tag checked"
                  plain
                  v-for="item in allFamilyHistory">
-          <span style="font-size: 12px;">{{ item.value }}</span>
+          <span class="tag-span">{{ item.value }}</span>
         </van-tag>
       </div>
 
@@ -32,7 +32,7 @@
                  class="tag"
                  plain
                  v-for="item in allFamilyHistoryCommonly">
-          <span style="font-size: 12px;">{{ item.value }}</span>
+          <span class="tag-span">{{ item.value }}</span>
         </van-tag>
       </div>
     </div>
@@ -208,6 +208,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tag-span {
+  font-size: 12px;
+}
 .add-habit-history {
   height: 100%;
   display: flex;

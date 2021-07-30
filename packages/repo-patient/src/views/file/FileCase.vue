@@ -20,15 +20,14 @@
                 <div class="note card case"
                      @click="util.goDetail('病历', item)">
                   <div class="case-left">
-                    <van-image width="35px"
-                               height="35px"
+                    <van-image class="case-left-logo"
                                :src="require('@src/assets/images/file/ic_medical record.png')" />
                   </div>
                   <div class="case-right">
-                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                    <p class="case-right-title">
                       门诊病历
                     </p>
-                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                    <p class="case-right-meaage">
                       {{ item.netHospitalName }} | {{ item.netDeptName }}
                     </p>
                   </div>
@@ -39,15 +38,14 @@
                 <div class="note card case"
                      @click="util.goDetail('转诊单', item)">
                   <div class="case-left">
-                    <van-image width="35px"
-                               height="35px"
+                    <van-image class="case-left-logo"
                                :src="require('@src/assets/images/file/ic_zhuanzhen.png')" />
                   </div>
                   <div class="case-right">
-                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                    <p class="case-right-title">
                       转诊单
                     </p>
-                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                    <p class="case-right-meaage">
                       {{ item.netHospitalName }} | {{ item.netDeptName }}
                     </p>
                   </div>
@@ -58,18 +56,16 @@
                 <div class="note card case"
                      @click="util.goDetail('会诊单', item)">
                   <div class="case-left">
-                    <van-image width="35px"
-                               height="35px"
-                               class="van-image"
+                    <van-image class="case-left-logo"
                                :src="require('@src/assets/images/file/ic_huizhen.png')" />
                     <div class="small-dot"
                          v-if="item.isExistRedDot==1"></div>
                   </div>
                   <div class="case-right">
-                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                    <p class="case-right-title">
                       会诊单
                     </p>
-                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                    <p class="case-right-meaage">
                       {{ item.netHospitalName }} | {{ item.netDeptName }}
                     </p>
                   </div>
@@ -244,6 +240,10 @@ export default {
       width: 50px;
       text-align: left;
       position: relative;
+      .case-left-logo {
+        width: 35px;
+        height: 35px;
+      }
       .small-dot {
         width: 8px;
         height: 8px;
@@ -260,6 +260,16 @@ export default {
       flex-direction: column;
       justify-content: center;
       flex: 1;
+      .case-right-title {
+        font-size: 16px;
+        color: #333333;
+        line-height: 32px;
+      }
+      .case-right-message {
+        font-size: 12px;
+        color: #999999;
+        line-height: 24px;
+      }
     }
   }
 

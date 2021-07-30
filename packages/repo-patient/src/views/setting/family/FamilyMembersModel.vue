@@ -9,7 +9,6 @@
             <div class="edit"
                  v-if="!isNationExist">
               <van-icon :name="require('@src/assets/images/ic_edit.png')"
-                        size="15px"
                         color="#00C6AE"
                         @click="updataInfo" />
             </div>
@@ -80,7 +79,6 @@
           <div class="delete"
                @click.stop="delYibaoCard(item.id)">
             <van-icon name="delete"
-                      size="15px"
                       color="#fff" />
           </div>
           <van-image :src="require('@src/assets/images/ic_yibao_logo.png')"></van-image>
@@ -1053,11 +1051,14 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(0, 198, 174, 0.06);
+      // background: rgba(0, 198, 174, 0.06);
       position: absolute;
       right: 10px;
       top: 10px;
       border-radius: 50%;
+      .van-icon {
+        font-size: 15px;
+      }
     }
     .id-card-logo {
       width: 105px;
@@ -1164,6 +1165,9 @@ export default {
 
       right: 6px;
       top: 6px;
+      .van-icon {
+        font-size: 15px;
+      }
     }
     .van-image {
       width: 56px;
@@ -1288,7 +1292,12 @@ export default {
   /deep/.van-cell {
     padding-left: 0;
     padding-right: 0;
+    &::after {
+      left: 0;
+      right: 0;
+    }
   }
+
   /deep/.van-field__control:disabled {
     color: #333 !important;
     -webkit-text-fill-color: #333;

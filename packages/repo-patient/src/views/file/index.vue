@@ -26,32 +26,24 @@
               <div class="header flex between">
                 <van-image round
                            v-if="item.sex === '男'"
-                           width="50px"
-                           height="50px"
+                           class="header-logo"
                            :src="require('@src/assets/images/ic_head portrait.png')" />
                 <van-image round
                            v-if="item.sex === '女'"
-                           width="50px"
-                           height="50px"
+                           class="header-logo"
                            :src="require('@src/assets/images/img_head girl.png')" />
-                <div class="flex column flex-1 start between"
-                     style="padding-left:12px;height: 50px;">
-                  <div class="flex "
-                       style="height: 50%;">
-                    <span style="font-size: 20px;line-height:1; margin-right: 10px;color:#0E302D;font-family: PingFangSC-Medium, PingFang SC;font-weight: 500;">{{
-                    item.name
-                  }}</span>
+                <div class="flex column flex-1 start between header-title">
+                  <div class="flex header-name">
+                    <span>{{item.name}}</span>
                     <van-tag color="#F2F2F2"
-                             text-color="#999999"
-                             style="font-size: 12px;border-radius: 4px;">{{ item.relation }}</van-tag>
+                             text-color="#999999">{{ item.relation }}</van-tag>
                   </div>
-                  <div class="flex "
-                       style="margin-top:4px;">
+                  <div class="flex header-age">
                     <van-icon v-if="item.sex === '男'"
                               :name="require('@src/assets/images/file/ic_boys.png')"></van-icon>
                     <van-icon v-if="item.sex === '女'"
                               :name="require('@src/assets/images/file/ic_girls.png')"></van-icon>
-                    <span style="font-size: 14px; margin-left: 10px;color:#999;">{{ item.age }}</span>
+                    <span>{{ item.age }}</span>
                   </div>
                 </div>
 
@@ -60,16 +52,14 @@
                    @click="util.goHealthDetail(item)">
                 <h4>健康信息</h4>
                 <div class="flex between">
-                  <van-progress style="display: inline-block; flex:1;"
-                                color="#5B9EFF"
+                  <van-progress color="#5B9EFF"
                                 track-color="#D7E9FF"
                                 pivot-color="#D7E9FF"
                                 :percentage="Number(item.percentage)"
                                 :show-pivot="false"
                                 stroke-width="8" />
                   <van-tag color="rgba(244,248,255,1)"
-                           text-color="rgba(74,131,247,1)"
-                           style="border:1px solid #4A83F7;width:3em;justify-content: center;margin-left:5px;">
+                           text-color="rgba(74,131,247,1)">
                     {{ item.percentage }}%</van-tag>
                 </div>
               </div>
@@ -328,11 +318,52 @@ export default {
 
         .header {
           padding: 15px 15px 0 15px;
+          .header-logo {
+            width: 50px;
+            height: 50px;
+          }
+          .header-title {
+            padding-left: 12px;
+            height: 50px;
+          }
+          .header-name {
+            height: 50%;
+            > span {
+              font-size: 20px;
+              line-height: 1;
+              margin-right: 10px;
+              color: #0e302d;
+              font-family: PingFangSC-Medium, PingFang SC;
+              font-weight: 500;
+            }
+            .van-tag {
+              font-size: 12px;
+              border-radius: 4px;
+              line-height: 1.4;
+            }
+          }
+          .header-age {
+            margin-top: 4px;
+            > span {
+              font-size: 14px;
+              margin-left: 10px;
+              color: #999;
+            }
+          }
         }
 
         .content {
           padding: 13.5px 15px;
-
+          .van-progress {
+            display: inline-block;
+            flex: 1;
+          }
+          .van-tag {
+            border: 1px solid #4a83f7;
+            width: 3em;
+            justify-content: center;
+            margin-left: 5px;
+          }
           h4 {
             font-size: 13px;
             color: #5b9eff;

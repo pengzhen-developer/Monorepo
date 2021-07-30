@@ -19,8 +19,7 @@
                :key="index">
             <div class="case-card-note-content">
               <div class="case-left">
-                <van-image width="35px"
-                           height="35px"
+                <van-image class="case-left-logo"
                            :src="require('@src/assets/images/file/ic_medical record.png')" />
               </div>
               <div class="case-right">
@@ -218,6 +217,10 @@ export default {
         margin: 15px 16px 15px 14px;
         text-align: left;
         position: relative;
+        .case-left-logo {
+          width: 35px;
+          height: 35px;
+        }
       }
       .case-right {
         display: flex;

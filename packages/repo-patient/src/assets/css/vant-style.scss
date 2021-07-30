@@ -208,3 +208,10 @@ input {
 .van-popup--bottom.van-popup--round {
   border-radius: 16px 16px 0 0;
 }
+
+.van-list__loading {
+  .van-loading__spinner {
+    width: 0.3733rem !important;
+    height: 0.3733rem !important;
+  }
+}

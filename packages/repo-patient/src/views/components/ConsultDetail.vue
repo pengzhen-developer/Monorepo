@@ -629,7 +629,7 @@ export default {
       },
       fromChatRoom: false,
       reportHeight: '0px',
-
+      marginBottom: '0px',
       showInvoiceModel: false,
       refreshTimer: null,
       enter_time: ''
@@ -639,6 +639,17 @@ export default {
     data: {
       handler() {
         this.internalData = this.data
+      },
+      immediate: true
+    },
+    firstLoad: {
+      handler() {
+        this.$nextTick(() => {
+          const element = document.querySelector('.fixedBottom')
+          if (element) {
+            this.marginBottom = element.clientHeight + 'px'
+          }
+        })
       },
       immediate: true
     },
@@ -653,13 +664,6 @@ export default {
     }
   },
   computed: {
-    // moneyRecord() {
-    //   return this.internalData?.orderInfo?.moneyRecord || []
-    // },
-    marginBottom() {
-      return this.canShowPayBottom ? '115px' : this.canShowBottom ? '80px' : this.canShowCancelBottom ? '80px' : '0'
-    },
-
     retrunVisitBlock() {
       return this.internalData?.inquiryInfo?.isAgain.toString() === '1'
     },

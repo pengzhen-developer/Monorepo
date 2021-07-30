@@ -58,11 +58,9 @@
       </template>
 
       <template v-if="sessionsList.length == 0 && serviceRemind.list.length === 0">
-        <div class="no-data"
-             style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
-          <img src="@src/assets/images/ic_no consultation copy@2x.png"
-               style="width: 160px; height: 100px;" />
-          <p style="font-size: 15px; color: #999999;">暂无消息</p>
+        <div class="none-page">
+          <div class="icon icon_none_consult"></div>
+          <div class="none-text">暂无消息</div>
         </div>
       </template>
     </template>

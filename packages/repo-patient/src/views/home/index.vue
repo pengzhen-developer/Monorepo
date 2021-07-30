@@ -219,14 +219,15 @@ export default {
       width: 100%;
       height: 15px;
       div {
-        left: 0;
+        left: 50%;
         top: 0;
         position: absolute;
-        font-size: 22px;
+        font-size: 0.58667rem;
         color: #999;
         font-family: PingFang SC;
-        width: 250%;
+        white-space: nowrap;
         transform: scale(0.5) translate(-50%, -50%);
+        transform-origin: left;
       }
     }
   }

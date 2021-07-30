@@ -50,6 +50,7 @@
         <div class="dt nbsp">费用</div>
         <div class="dd">
           <peace-price v-bind:price="source.unitPrice"
+                       v-bind:transformOrigin="'right'"
                        v-bind:size="14"></peace-price>
           (挂号费)
         </div>
@@ -413,6 +414,7 @@ export default {
   margin-bottom: 70px;
   p {
     color: #333;
+    padding-bottom: 5px;
   }
   ul {
     list-style: none;

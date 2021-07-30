@@ -20,15 +20,14 @@
                 <div class="note card case"
                      @click="util.goDetail('首诊', item)">
                   <div class="case-left">
-                    <van-image width="35px"
-                               height="35px"
+                    <van-image class="case-left-logo"
                                :src="require('@src/assets/images/file/ic_medical record.png')" />
                   </div>
                   <div class="case-right">
-                    <p style="font-size: 16px; color: #333333; line-height: 32px;">
+                    <p sclass="case-right-title">
                       {{item.title}}
                     </p>
-                    <p style="font-size: 12px; color: #999999; line-height: 24px;">
+                    <p class="case-left-message">
                       {{ item.netHospitalName }} | {{ item.netDeptName }}
                     </p>
                   </div>
@@ -201,12 +200,26 @@ export default {
     .case-left {
       width: 50px;
       text-align: left;
+      .case-left-logo {
+        width: 35px;
+        height: 35px;
+      }
     }
     .case-right {
       display: flex;
       flex-direction: column;
       justify-content: center;
       flex: 1;
+      .case-right-title {
+        font-size: 16px;
+        color: #333333;
+        line-height: 32px;
+      }
+      .case-right-message {
+        font-size: 12px;
+        color: #999999;
+        line-height: 24px;
+      }
     }
   }
 

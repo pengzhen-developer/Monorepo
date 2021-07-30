@@ -24,8 +24,7 @@
              v-if="fold">
           <span>查看更多</span>
           <van-image round
-                     width="13px"
-                     height="13px"
+                     class="more-logo"
                      :src="require('@src/assets/images/ic_more.png')"></van-image>
         </div>
         <div class="more"
@@ -33,8 +32,7 @@
              v-if="!fold">
           <span>收起</span>
           <van-image round
-                     width="13px"
-                     height="13px"
+                     class="more-logo"
                      style="transform: rotate(180deg)"
                      :src="require('@src/assets/images/ic_more.png')"></van-image>
         </div>
@@ -155,6 +153,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.more-logo {
+  width: 13px;
+  height: 13px;
+}
 .gray {
   color: rgba(51, 51, 51, 0.6);
   font-size: 14px;

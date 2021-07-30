@@ -5,8 +5,8 @@
        v-bind:class="{'line-through':lineThrough}">
     <span v-bind:style="`lineHeight:${size}px`">{{prefix}}{{originalPrice}}</span>
     <div class="price-result"
-         v-bind:style="`transformOrigin:${transformOrigin};${transformOrigin}:0;color:${color}`">
-      <div v-bind:style="`fontSize:${unitSize}rem;white-space:nowrap;font-weight:normal;`"
+         v-bind:style="`transformOrigin:${transformOrigin};${transformOrigin}:0;color:${color};`">
+      <div v-bind:style="`fontSize:${unitSize}rem;white-space:nowrap;font-weight:normal;letter-spacing: -3px;`"
            class="mb1">{{prefix}}</div>
       <div v-bind:style="`fontSize:${integerSize}rem`">{{originalPrice | getPriceInteger}}</div>
       <div v-bind:style="`fontSize:${decimalSize}rem;font-weight:normal;`"
@@ -141,9 +141,9 @@ export default {
   .price-result {
     position: absolute;
     // right: 0;
-    top: -50%;
+    top: 0;
     z-index: 6;
-    transform: scale(0.5);
+    transform: scale(0.5) translateY(-50%);
     // transform-origin: right;
     display: flex;
     align-items: flex-end;

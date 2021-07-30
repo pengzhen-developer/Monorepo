@@ -97,6 +97,7 @@ export default {
     flex-direction: column;
     align-items: center;
     flex: 0 1 25%;
+    word-break: break-all;
 
     .block-ico {
       width: 28px;

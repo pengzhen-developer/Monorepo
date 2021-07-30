@@ -4,10 +4,9 @@
       <div class="header">
         <div class="header-left">
           <van-image round
-                     width="50px"
-                     height="50px"
                      cover
-                     :src="doctor.doctorInfo.avartor" />
+                     :src="doctor.doctorInfo.avartor"
+                     class="header-left-logo" />
           <div style="margin-left:16px;display: flex;flex-direction:column;justify-content: center;">
             <div>
               <span class="name">{{ doctor.doctorInfo.name }}</span>
@@ -43,8 +42,7 @@
         <!-- 所属机构 -->
         <div class="body-card">
           <div class="row flex">
-            <van-image width="30px"
-                       height="30px"
+            <van-image class="body-card-logo"
                        :src="require('@src/assets/images/ic_mechanism.png')" />
             <h4 class="body-card-title">所属机构</h4>
           </div>
@@ -64,8 +62,7 @@
 
           <div class="row">
             <div class="row flex">
-              <van-image width="32px"
-                         height="32px"
+              <van-image class="body-card-logo"
                          :src="require('@src/assets/images/ic_be good at.png')" />
               <h4 class="body-card-title">专业擅长</h4>
             </div>
@@ -79,8 +76,7 @@
             <van-divider />
 
             <div class="row flex">
-              <van-image width="32px"
-                         height="32px"
+              <van-image class="body-card-logo"
                          :src="require('@src/assets/images/ic_brief introduction.png')" />
               <h4 class="body-card-title">医生简介</h4>
             </div>
@@ -97,8 +93,6 @@
                    class="row flex center">
                 <span style="margin: 0 4px 0 0;">查看更多</span>
                 <van-image round
-                           width="13px"
-                           height="13px"
                            :src="require('@src/assets/images/ic_more.png')"></van-image>
               </div>
               <div @click="showMore"
@@ -106,8 +100,6 @@
                    class="row flex center">
                 <span style="margin: 0 4px 0 0;">收起</span>
                 <van-image round
-                           width="13px"
-                           height="13px"
                            style="transform: rotate(180deg)"
                            :src="require('@src/assets/images/ic_more.png')"></van-image>
               </div>
@@ -120,15 +112,13 @@
              v-if="returnVisitList.length>0">
           <div class="row flex column">
             <div class="row flex">
-              <van-image width="32px"
-                         height="32px"
+              <van-image class="body-card-logo"
                          :src="require('@src/assets/images/ic_consultation.png')" />
               <h4 class="body-card-title">复诊开药</h4>
               <div class=" flex flex-1 end"
                    @click="gotoAppointPage(returnVisitList[0].timeSharing,'more')">
                 <span class="see-more">查看更多</span>
-                <van-image width="13px"
-                           height="13px"
+                <van-image class="more-logo"
                            :src="require('@src/assets/images/ic_more_right.png')" />
               </div>
             </div>
@@ -161,8 +151,7 @@
         <div class="body-card">
           <div class="row flex column">
             <div class="row flex">
-              <van-image width="32px"
-                         height="32px"
+              <van-image class="body-card-logo"
                          :src="require('@src/assets/images/ic_interrogation.png')" />
               <h4 class="body-card-title">在线问诊</h4>
             </div>
@@ -174,15 +163,11 @@
             <!-- 图文问诊-->
             <div class=" row flex column center"
                  @click="showDialog(serviceImageInfo, 'image')">
-              <van-image width="27px"
-                         height="27px"
-                         v-if="serviceImageInfo.status=='1'"
-                         style="margin: 0 10px 0 0;"
+              <van-image v-if="serviceImageInfo.status=='1'"
+                         class="inquiry-logo"
                          :src="require('@src/assets/images/ic_tuwen_open.png')"></van-image>
-              <van-image width="27px"
-                         height="27px"
-                         v-else
-                         style="margin: 0 10px 0 0;"
+              <van-image v-else
+                         class="inquiry-logo"
                          :src="require('@src/assets/images/ic_tuwen.png')"></van-image>
 
               <div class="service-consult-content auto">
@@ -191,10 +176,10 @@
                   <span class="service-consult-content-name">图文问诊</span>
                   <span v-if="serviceImageInfo.status=='1'"
                         class="row flex">
-                    <span class="service-consult-content-fee">
-                      <peace-price class="service-consult-content-fee-sub"
-                                   v-bind:price="serviceImageInfo.price"></peace-price>
-                    </span>
+                    <peace-price v-bind:size="12"
+                                 v-bind:color="'#f2223b'"
+                                 v-bind:transformOrigin="'right'"
+                                 v-bind:price="serviceImageInfo.price"></peace-price>
                     <span class="service-consult-content-unit"> / 次</span>
                   </span>
                   <span v-else
@@ -210,17 +195,11 @@
             <div class=" row flex column center"
                  @click="showDialog(serviceImageInfo, 'video')">
               <!-- 视频问诊尚未开通 -->
-              <van-image round
-                         width="27px"
-                         height="27px"
-                         v-if="serviceVideoInfo.status=='1'"
-                         style="margin: 0 10px 0 0;"
+              <van-image v-if="serviceVideoInfo.status=='1'"
+                         class="inquiry-logo"
                          :src="require('@src/assets/images/ic_video_open.png')"></van-image>
-              <van-image round
-                         width="27px"
-                         height="27px"
-                         v-else
-                         style="margin: 0 10px 0 0;"
+              <van-image v-else
+                         class="inquiry-logo"
                          :src="require('@src/assets/images/ic_video.png')"></van-image>
 
               <div class="service-consult-content auto">
@@ -229,10 +208,10 @@
                   <span class="service-consult-content-name">视频问诊</span>
                   <span v-if="serviceVideoInfo.status=='1'"
                         class="row flex">
-                    <span class="service-consult-content-fee">
-                      <peace-price class="service-consult-content-fee-sub"
-                                   v-bind:price="serviceVideoInfo.price"></peace-price>
-                    </span>
+                    <peace-price v-bind:size="12"
+                                 v-bind:color="'#f2223b'"
+                                 v-bind:transformOrigin="'right'"
+                                 v-bind:price="serviceVideoInfo.price"></peace-price>
                     <span class="service-consult-content-unit"> / 次</span>
                   </span>
                   <span v-else
@@ -248,16 +227,14 @@
              v-if="servicePackage.info">
           <div class="row flex">
             <div class="row flex">
-              <van-image width="32px"
-                         height="32px"
+              <van-image class="body-card-logo"
                          :src="require('@src/assets/images/ic_service.png')" />
               <h4 class="body-card-title">服务包</h4>
               <div class=" flex flex-1 end"
                    @click="gotoServicePageListPage"
                    v-if="servicePackage.total>1">
                 <span class="see-more">查看更多</span>
-                <van-image width="13px"
-                           height="13px"
+                <van-image class="more-logo"
                            :src="require('@src/assets/images/ic_more_right.png')" />
               </div>
             </div>
@@ -273,7 +250,7 @@
                    style="margin: 0;">
                 <div class="service-consult-content-name ellipsis">{{servicePackage.info.servicePackageName}}</div>
                 <div class=" flex">
-                  <peace-price class="service-consult-content-fee"
+                  <peace-price v-bind:color="'#f2223b'"
                                v-bind:transformOrigin="'right'"
                                v-bind:price="servicePackage.info.price"></peace-price>
                   <span class="service-consult-content-unit"> /{{servicePackage.info.effectiveDays}}天</span>
@@ -290,15 +267,13 @@
              v-if="doctor.registerData&&doctor.registerData.length > 0">
           <div class="row flex between">
             <div class="row flex">
-              <van-image width="32px"
-                         height="32px"
+              <van-image class="body-card-logo"
                          :src="require('@src/assets/images/ic_register.png')" />
               <h4 class="body-card-title">挂号服务</h4>
               <div class=" flex flex-1 end"
                    @click="goRegisterList(doctor.registerData[0].timeSharing)">
                 <span class="see-more">查看更多</span>
-                <van-image width="13px"
-                           height="13px"
+                <van-image class="more-logo"
                            :src="require('@src/assets/images/ic_more_right.png')" />
               </div>
             </div>
@@ -330,7 +305,7 @@
                           style="font-size: 13px; margin: 0 10px 0 0;">{{
                     registerItem.sourceLevelType == 1 ? "普通门诊" : "专家门诊"
                   }}</span>
-                    <peace-price class="service-consult-content-fee"
+                    <peace-price v-bind:color="'#f2223b'"
                                  v-bind:size="13"
                                  v-bind:price="registerItem.unitPrice"></peace-price>
                   </div>
@@ -349,8 +324,7 @@
              v-if="doctor.workOnLine || doctor.workUnderLine">
           <div class="row flex">
             <div class="row flex">
-              <van-image width="32px"
-                         height="32px"
+              <van-image class="body-card-logo"
                          :src="require('@src/assets/images/ic_scheduling.png')" />
               <h4 class="body-card-title">医生排班</h4>
             </div>
@@ -461,8 +435,7 @@
              v-if="common&&common.count>0">
           <div class=" flex between">
             <div class=" flex">
-              <van-image width="32px"
-                         height="32px"
+              <van-image class="body-card-logo"
                          :src="require('@src/assets/images/ic_evaluate.png')" />
               <h4 class="body-card-title">{{'患者评价('+common.count+')'}}</h4>
             </div>
@@ -475,20 +448,18 @@
           </div> -->
           </div>
           <div class="flex impress">
-            <span class="primary">患者对我的主要印象：{{common.tags.join(' 、')}}</span>
+            <span class="primary">患者对我的主要印象：{{commonTagText}}</span>
           </div>
           <div class="flex commen"
                v-for="(item,index) in common.lists"
                :key="index">
-            <van-image width="30px"
-                       height="30px"
+            <van-image class="common-logo"
                        :src="item.iconHead" />
             <div class="main">
               <div class="flex between main-top">
                 <div class="name">{{item.familyInfo.name}}</div>
                 <van-rate v-model="item.starLevel"
                           readonly
-                          size="10"
                           :icon="require('@src/assets/images/ic_star_active.png')"
                           :void-icon="require('@src/assets/images/ic_star.png')" />
               </div>
@@ -587,6 +558,15 @@ export default {
       },
       isLoading: true,
       enter_time: ''
+    }
+  },
+  computed: {
+    commonTagText() {
+      if (this.common.tags && Array.isArray(this.common.tags)) {
+        return this.common.tags.join(' 、')
+      } else {
+        return ''
+      }
     }
   },
   activated() {
@@ -945,6 +925,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.more-logo {
+  width: 13px;
+  height: 13px;
+}
+.inquiry-logo {
+  width: 27px;
+  height: 27px;
+  margin: 0 10px 0 0;
+}
+.common-logo {
+  width: 30px;
+  height: 30px;
+}
 .van-button {
   &.full {
     background: rgba(51, 51, 51, 0.05);
@@ -1145,6 +1138,9 @@ export default {
       .name {
         color: #000;
       }
+      /deep/.van-rate__icon {
+        font-size: 12px;
+      }
     }
     .color-666 {
       color: #666;
@@ -1180,7 +1176,10 @@ export default {
       display: flex;
 
       color: #fff;
-
+      .header-left-logo {
+        width: 50px;
+        height: 50px;
+      }
       .name {
         font-weight: bold;
         font-size: 18px;
@@ -1249,7 +1248,10 @@ export default {
       margin: 0 0 16px 0;
       padding: 15px 16px;
       border-radius: 7px;
-
+      .body-card-logo {
+        width: 32px;
+        height: 32px;
+      }
       .row {
         margin: 0 0 5px 0;
         width: 100%;
@@ -1267,7 +1269,7 @@ export default {
           justify-content: center;
         }
         &.service {
-          border-radius: 14px;
+          border-radius: 8px;
           padding: 8px;
           background: #f9f9f9;
           margin: 0 0 10px 0;
@@ -1404,22 +1406,11 @@ export default {
           }
         }
 
-        .service-consult-content-fee {
-          font-weight: bold;
-          color: #f2223b;
-          font-size: 16px;
-          display: flex;
-          align-items: center;
-          .service-consult-content-fee-sub {
-            font-size: 12px;
-            font-weight: normal;
-          }
-        }
-
         .service-consult-content-unit {
           font-size: 12px;
           color: #999;
           white-space: nowrap;
+          line-height: normal;
         }
 
         .service-consult-content-description {
@@ -1437,6 +1428,10 @@ export default {
       .more {
         color: #999999;
         margin: 8px 0 0 0;
+        .van-image {
+          width: 13px;
+          height: 13px;
+        }
       }
     }
   }

@@ -31,11 +31,19 @@ export default {
     return {
       showTxt: false,
       eventType: 'click',
-      position: 'right'
+      position: 'right',
+      offsetWidth: 0
     }
   },
   mounted() {
     this.drag()
+    this.$nextTick(() => {
+      //初始化获取收缩状态下的按钮宽度及设置合适的偏移量
+      var block = document.getElementById('assistive-block')
+      if (block) {
+        this.offsetWidth = block.clientWidth + 6
+      }
+    })
   },
 
   computed: {
@@ -43,12 +51,13 @@ export default {
       return this.position
     }
   },
+
   methods: {
     onClickShadow() {
       var block = document.getElementById('assistive-block')
       this.position = block.offsetLeft == 0 ? 'left' : 'right'
       if (block.offsetLeft != 0) {
-        block.style.left = block.offsetLeft + 34 + 'px'
+        block.style.left = block.offsetLeft + this.offsetWidth + 'px'
       }
       this.showTxt = false
     },
@@ -58,7 +67,7 @@ export default {
       this.eventType = eventType
       if (!this.showTxt) {
         if (block.offsetLeft != 0) {
-          block.style.left = block.offsetLeft - 34 + 'px'
+          block.style.left = block.offsetLeft - this.offsetWidth + 'px'
         }
         if (this.eventType == 'click') {
           this.showTxt = true
@@ -66,7 +75,7 @@ export default {
       } else {
         if (this.eventType == 'click') {
           if (block.offsetLeft != 0) {
-            block.style.left = block.offsetLeft + 34 + 'px'
+            block.style.left = block.offsetLeft + this.offsetWidth + 'px'
           }
           this.$router.push({ path: peace.config.system.homePage })
         }
@@ -124,7 +133,7 @@ export default {
             var endLeft = e.changedTouches[0].pageX
             var endTop = e.changedTouches[0].pageY
             if (endLeft > document.documentElement.clientWidth / 2) {
-              block.style.left = document.documentElement.clientWidth - block.offsetWidth + 34 + 'px'
+              block.style.left = document.documentElement.clientWidth - block.offsetWidth + this.offsetWidth + 'px'
             } else if (endLeft < document.documentElement.clientWidth / 2) {
               block.style.left = '0px'
             }

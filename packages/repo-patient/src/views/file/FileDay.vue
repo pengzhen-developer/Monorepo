@@ -4,8 +4,7 @@
     <div class="card"
          @click="util.goDetail('血压', { ...data.bloodPressureData, familyId , idCard})">
       <div class="card-left">
-        <van-image width="35px"
-                   height="44px"
+        <van-image class="card-left-logo"
                    :src="require('@src/assets/images/file/ic_blood pressure.png')" />
       </div>
       <div class="card-center">
@@ -31,8 +30,7 @@
         </template>
       </div>
       <div class="card-right">
-        <van-image width="24"
-                   heihgt="24"
+        <van-image class="card-right-more"
                    :src="require('@src/assets/images/file/ic_arrow-right.png')">
         </van-image>
       </div>
@@ -42,8 +40,7 @@
     <div class="card"
          @click="util.goDetail('血糖', { ...data.bloodSugarData, familyId , idCard })">
       <div class="card-left">
-        <van-image width="35px"
-                   height="44px"
+        <van-image class="card-left-logo"
                    :src="require('@src/assets/images/file/ic_blood sugar.png')" />
       </div>
       <div class="card-center">
@@ -68,8 +65,7 @@
         </template>
       </div>
       <div class="card-right">
-        <van-image width="24"
-                   heihgt="24"
+        <van-image class="card-right-more"
                    :src="require('@src/assets/images/file/ic_arrow-right.png')">
         </van-image>
       </div>
@@ -79,8 +75,7 @@
     <div class="card"
          @click="util.goDetail('血氧', { ...data.bloodOxyGenData, familyId , idCard })">
       <div class="card-left">
-        <van-image width="35px"
-                   height="44px"
+        <van-image class="card-left-logo"
                    :src="require('@src/assets/images/file/ic_blood oxygen saturation.png')" />
       </div>
       <div class="card-center">
@@ -104,8 +99,7 @@
         </template>
       </div>
       <div class="card-right">
-        <van-image width="24"
-                   heihgt="24"
+        <van-image class="card-right-more"
                    :src="require('@src/assets/images/file/ic_arrow-right.png')">
         </van-image>
       </div>
@@ -115,8 +109,7 @@
     <div class="card"
          @click="util.goDetail('体脂', { ...data.bodyFat, familyId , idCard })">
       <div class="card-left">
-        <van-image width="44px"
-                   height="44px"
+        <van-image class="card-left-logo fat"
                    :src="require('@src/assets/images/file/ic_body fat.png')" />
       </div>
       <div class="card-center">
@@ -140,8 +133,7 @@
         </template>
       </div>
       <div class="card-right">
-        <van-image width="24"
-                   heihgt="24"
+        <van-image class="card-right-more"
                    :src="require('@src/assets/images/file/ic_arrow-right.png')">
         </van-image>
       </div>
@@ -192,13 +184,13 @@ export default {
 
   methods: {
     allHealthList() {
-      peace.service.health.allHealthList({ familyId: this.familyId, type: '2' }).then(res => {
+      peace.service.health.allHealthList({ familyId: this.familyId, type: '2' }).then((res) => {
         const list = res.data.list
 
-        this.data.bloodPressureData = list.find(item => item.healthType === 'bloodPressureData') || {}
-        this.data.bloodSugarData = list.find(item => item.healthType === 'bloodSugarData') || {}
-        this.data.bloodOxyGenData = list.find(item => item.healthType === 'oxyGenData') || {}
-        this.data.bodyFat = list.find(item => item.healthType === 'bodyFat') || {}
+        this.data.bloodPressureData = list.find((item) => item.healthType === 'bloodPressureData') || {}
+        this.data.bloodSugarData = list.find((item) => item.healthType === 'bloodSugarData') || {}
+        this.data.bloodOxyGenData = list.find((item) => item.healthType === 'oxyGenData') || {}
+        this.data.bodyFat = list.find((item) => item.healthType === 'bodyFat') || {}
       })
     }
   }
@@ -223,6 +215,13 @@ export default {
     display: flex;
     justify-content: center;
     width: 80px;
+    .card-left-logo {
+      width: 35px;
+      height: 44px;
+      &.fat {
+        width: 44px;
+      }
+    }
   }
 
   .card-center {
@@ -233,6 +232,10 @@ export default {
     display: flex;
     justify-content: center;
     width: 60px;
+    .card-right-more {
+      width: 24px;
+      height: 24px;
+    }
   }
 
   .card-value {
