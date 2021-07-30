@@ -345,8 +345,8 @@ export default {
   .panel-body {
     display: flex;
     flex-wrap: wrap;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 16px;
+    padding-bottom: 16px;
   }
   .panel-info {
     box-sizing: border-box;
@@ -355,7 +355,7 @@ export default {
     align-items: flex-start;
     width: 50%;
     padding-right: 20px;
-    margin-bottom: 12px;
+    margin-bottom: 4px;
     white-space: normal;
     word-wrap: normal;
     word-break: break-all;

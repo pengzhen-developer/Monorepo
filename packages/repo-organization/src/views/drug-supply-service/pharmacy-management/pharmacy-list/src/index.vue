@@ -16,47 +16,29 @@
       <!--新增、编辑药房 -->
       <div class="bg-white full-height q-pa-lg"
            v-if="editVisible">
-        <el-button type="primary"
-                   plain
-                   class="icon-back"
-                   style="margin-bottom:24px"
-                   v-on:click="back">
-          <div class="q-px-md q-py-sm">
-            <i class="el-icon-arrow-left"></i>
-            <span>返回上一页</span>
-          </div>
-        </el-button>
+        <el-button plain
+                   class="q-mb-24"
+                   icon="el-icon-arrow-left"
+                   v-on:click="back">返回上一页</el-button>
         <EditPharmacy v-on:goBack="back"
                       v-bind:data="id"></EditPharmacy>
       </div>
       <!--药房详情-->
       <div class="bg-white full-height q-pa-lg"
            v-if="detailVisible">
-        <el-button type="primary"
-                   plain
-                   class="icon-back"
-                   style="margin-bottom:24px"
-                   v-on:click="back">
-          <div class="q-px-md q-py-sm">
-            <i class="el-icon-arrow-left"></i>
-            <span>返回上一页</span>
-          </div>
-        </el-button>
+        <el-button plain
+                   class="q-mb-24"
+                   icon="el-icon-arrow-left"
+                   v-on:click="back">返回上一页</el-button>
         <PharmacyDetail v-bind:data="id"></PharmacyDetail>
       </div>
       <!--运营管理-->
       <div class="bg-white full-height q-pa-lg"
            v-if="operationVisible">
-        <el-button type="primary"
-                   plain
-                   class="icon-back"
-                   style="margin-bottom:24px"
-                   v-on:click="back">
-          <div class="q-px-md q-py-sm">
-            <i class="el-icon-arrow-left"></i>
-            <span>返回上一页</span>
-          </div>
-        </el-button>
+        <el-button plain
+                   class="q-mb-24"
+                   icon="el-icon-arrow-left"
+                   v-on:click="back">返回上一页</el-button>
         <OperationManage v-bind:data="CustID"
                          v-on:goBack="back"></OperationManage>
       </div>

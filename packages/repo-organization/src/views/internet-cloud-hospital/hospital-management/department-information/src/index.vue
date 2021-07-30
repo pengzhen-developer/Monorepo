@@ -5,7 +5,7 @@
         <el-button @click="openDraggableDialog()"
                    :disabled="parentDeptList.length==0"
                    type="primary">科室排序</el-button>
-        <el-button @click="openDepartmentDialog()"
+        <el-button @click="openDepartmentDialog('一级')"
                    type="default">新增一级科室</el-button>
 
       </div>
@@ -19,10 +19,10 @@
                           v-for="depart in list">
           <div class="title"
                slot="title">
-            <i @click.stop="openEditDepartmentDialog(depart.id, depart.netdept_name)"
+            <i @click.stop="openEditDepartmentDialog('一级', depart.id, depart.netdept_name)"
                class="el-icon-edit-outline"></i>
             <span> {{ depart.netdept_name }}</span>
-            <el-button @click.stop="openDepartmentDialog(depart.id, depart.netdept_name)"
+            <el-button @click.stop="openDepartmentDialog('二级', depart.id, depart.netdept_name)"
                        class="title-btn"
                        type="text">新增二级科室</el-button>
           </div>
@@ -40,7 +40,7 @@
                  class="child-dept-item"
                  v-for="childDept in depart.children">
               <div class="item-child">
-                <i @click.stop="openEditDepartmentDialog(childDept.id, childDept.netdept_name, depart.id, depart.netdept_name,childDept.his_dept_code)"
+                <i @click.stop="openEditDepartmentDialog('二级', childDept.id, childDept.netdept_name, depart.id, depart.netdept_name,childDept.his_dept_code)"
                    class="el-icon-edit-outline"></i>
                 <span> {{ childDept.netdept_name }}</span>
               </div>
@@ -70,7 +70,7 @@
 
       <PeaceDialog :visible.sync="editDeptDialogVisible"
                    append-to-body
-                   title="编辑科室"
+                   :title="'编辑'+ currentDeptLevel +'科室'"
                    v-if="editDeptDialogVisible"
                    width="300px">
         <OrgDetailsDepartmentModel :departmentId="currentDeptId"
@@ -84,7 +84,7 @@
 
       <PeaceDialog :visible.sync="createDeptDialogVisible"
                    append-to-body
-                   title="新增科室"
+                   :title="'新增'+ currentDeptLevel +'科室'"
                    v-if="createDeptDialogVisible"
                    width="300px">
         <OrgDetailsDepartmentModel :departmentPid="currentDeptPid"
@@ -109,6 +109,7 @@ export default {
       list: [],
       activeName: [],
       parentDeptList: [],
+      currentDeptLevel: '',
       currentDeptId: '',
       currentDeptName: '',
       currentDeptPid: '',
@@ -170,7 +171,8 @@ export default {
         })
     },
     // 打开编辑科室 Dialog
-    openEditDepartmentDialog(id, name, pid, pname, hisDeptCode) {
+    openEditDepartmentDialog(level, id, name, pid, pname, hisDeptCode) {
+      this.currentDeptLevel = level
       this.currentDeptId = id
       this.currentDeptName = name
       this.currentDeptPid = pid || '0'
@@ -192,7 +194,8 @@ export default {
     },
 
     // 打开新增科室 Dialog
-    openDepartmentDialog(pid, pname) {
+    openDepartmentDialog(level, pid, pname) {
+      this.currentDeptLevel = level
       this.currentDeptPid = pid || '0'
       this.currentParentDeptName = pname || ''
       this.createDeptDialogVisible = true

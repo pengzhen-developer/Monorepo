@@ -50,7 +50,7 @@
                           class="area"
                           required>
               <el-col class="input-Width"
-                      style="margin-right:10px;">
+                      style="margin-right:12px;">
                 <el-form-item prop="AreaCode">
                   <region-selector :defaultRegion="defaultRegion"
                                    :defaultText="false"
@@ -135,6 +135,7 @@
                         class="input-Width "></el-input>
             </el-form-item>
             <el-form-item label="配送方式"
+                          class="email"
                           prop="NewDistributionMode">
               <div v-for="item in model.NewDistributionMode"
                    v-bind:key="item.Value">
@@ -552,7 +553,7 @@ export default {
       let format = files.name.substring(files.name.lastIndexOf('.') + 1)
       let reader = new FileReader()
       reader.readAsDataURL(files) //将文件读取为 DataURL,也就是base64编码
-      reader.onload = function (ev) {
+      reader.onload = function(ev) {
         //文件读取成功完成时触发
         let dataURL = ev.target.result //获得文件读取成功后的DataURL,也就是base64编码
         let param = {
