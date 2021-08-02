@@ -117,6 +117,7 @@ export default {
       font-size: 14px;
       color: #333330;
       line-height: 28px;
+      vertical-align: initial;
     }
 
     &.is-active {
