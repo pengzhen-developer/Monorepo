@@ -113,7 +113,7 @@
         <div class="title-left"></div>
         <p class="title">药房图片</p>
       </div>
-      <div class="item-content"
+      <div class="item-content q-pl-14"
            style="margin-left:0">
         <div class="item-child-line">
           <div class="box"

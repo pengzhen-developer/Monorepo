@@ -6,12 +6,11 @@
         <div class="title-left"></div>
         <p class="title">配送服务</p>
       </div>
-      <div class="item-content"
-           style="margin-top:20px">
-        <el-form>
+      <div class="item-content q-mt-20 q-pl-14 q-pt-10">
+        <el-form space-none>
           <el-form-item label="是否收费：">
             <div class="item-child-item">
-              <i class="el-icon-success"></i>
+              <span class="icon-success"></span>
               <div class="item-text-grey"
                    v-if="operateData.Shipping === 1">否</div>
               <div class="item-text-grey"
@@ -22,7 +21,7 @@
           <el-form-item label="收费方式："
                         v-if="operateData.Shipping !== 1">
             <div class="item-child-item">
-              <i class="el-icon-success"></i>
+              <span class="icon-success"></span>
               <div class="item-text-grey"
                    v-if="operateData.ChargeType === 0">在线支付</div>
               <div class="item-text-grey"
@@ -33,7 +32,7 @@
           <el-form-item label="费用计算方式："
                         v-if="operateData.Shipping !== 1">
             <div class="item-child-item">
-              <i class="el-icon-success"></i>
+              <span class="icon-success"></span>
               <div class="item-text-grey"
                    v-if="operateData.CalculationType === 0">
                 固定配送费<span class="item-text-primary">{{operateData.FixedShippingFee}}</span>元
@@ -60,15 +59,15 @@
         <div class="title-left"></div>
         <p class="title">优惠活动</p>
       </div>
-      <div class="item-content">
+      <div class="item-content q-pl-14">
         <div v-if="operateData.Promotions === 0"
              class="item-child">
-          <i class="el-icon-success"></i>
+          <span class="icon-success"></span>
           <div class="item-text-grey">没有优惠活动</div>
         </div>
         <div v-if="operateData.Promotions === 1"
              class="item-child">
-          <i class="el-icon-success"></i>
+          <span class="icon-success"></span>
           <div class="item-text-grey">满减活动，满<span class="item-text-primary">{{operateData.PromotionsFull}}</span>元减<span class="item-text-primary">{{operateData.PromotionsCut}}</span>元</div>
         </div>
       </div>
@@ -82,7 +81,7 @@
         <p class="title">标签设置</p>
       </div>
       <div class="item-content">
-        <div class="item-child">
+        <div class="item-child q-pl-14">
           <el-tag v-for="item in tagList"
                   :key="item"
                   :class="{'item-tag': true, 'item-tag-primary': operateData.Tags.includes(item)}"
@@ -99,7 +98,7 @@
         <div class="title-left"></div>
         <p class="title">取药知情同意书</p>
       </div>
-      <div class="q-mt-md"
+      <div class="q-mt-md q-pl-14"
            style="white-space:pre-wrap;"
            v-html="operateData.InformedConsent">
 
@@ -160,6 +159,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.icon-success {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--q-color-primary);
+  position: relative;
+  &::after {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
 p {
   margin: 0;
   padding: 0;
@@ -201,6 +219,7 @@ p {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  padding-left: 5px;
 }
 .line {
   width: 100%;

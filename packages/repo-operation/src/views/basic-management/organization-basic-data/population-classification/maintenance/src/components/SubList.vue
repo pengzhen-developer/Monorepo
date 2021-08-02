@@ -29,7 +29,8 @@
     <div class="card">
 
       <div class="q-mb-md">
-        <el-button v-on:click="openEditlDialog(info,'add')">新增</el-button>
+        <el-button v-on:click="openEditlDialog(info,'add')"
+                   type="primary">新增</el-button>
       </div>
 
       <PeaceTable ref="table"

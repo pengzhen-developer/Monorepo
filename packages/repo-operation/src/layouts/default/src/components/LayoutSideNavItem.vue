@@ -11,10 +11,13 @@
             <i v-bind:class="`menu-icon ${menu.menuIcon}`"></i>
             <span class="menu-name">{{ menu.menuName }}</span>
           </template>
-
-          <template v-else>
+          <template v-else-if="level === 1">
             <span class="menu-name"
                   v-bind:style="{ 'padding-left': level * 8 + 12 + 'px' }">{{ menu.menuName }}</span>
+          </template>
+          <template v-else>
+            <span class="menu-name"
+                  v-bind:style="{ 'padding-left': level * 10 + 12 + 'px' }">{{ menu.menuName }}</span>
           </template>
 
         </template>
@@ -31,9 +34,13 @@
           <span class="menu-name">{{ menu.menuName }}</span>
         </template>
 
-        <template v-else>
+        <template v-else-if="level === 1">
           <span class="menu-name"
                 v-bind:style="{ 'padding-left': level * 8 + 12 + 'px' }">{{ menu.menuName }}</span>
+        </template>
+        <template v-else>
+          <span class="menu-name"
+                v-bind:style="{ 'padding-left': level * 10 + 12 + 'px' }">{{ menu.menuName }}</span>
         </template>
 
       </el-menu-item>

@@ -727,7 +727,12 @@ export default {
   border-color: #dcdfe6;
   color: #666666;
 }
-
+::v-deep .el-form-item__error {
+  padding-top: 4px;
+}
+::v-deep .el-form-item__label {
+  padding-right: 4px;
+}
 .el-form-item__content {
   span {
     color: #9da4af;
@@ -745,7 +750,7 @@ export default {
   &-item {
     border-bottom: 1px solid #e9e9e9;
     margin-bottom: 24px;
-    padding-right: 100px;
+    padding-right: 50px;
   }
   &-title {
     position: relative;

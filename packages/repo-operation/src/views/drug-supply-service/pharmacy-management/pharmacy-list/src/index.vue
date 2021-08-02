@@ -5,8 +5,7 @@
       <div v-if="detailVisible || operateVisible"
            class="bg-white full-height q-pa-lg">
         <div class="q-mb-lg">
-          <el-button type="primary"
-                     plain
+          <el-button plain
                      v-on:click="back">
             <div>
               <i class="el-icon-arrow-left"></i>

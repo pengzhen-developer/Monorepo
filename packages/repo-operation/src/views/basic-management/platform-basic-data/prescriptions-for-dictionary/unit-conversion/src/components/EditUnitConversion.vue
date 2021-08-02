@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PeaceDialog width="500px"
+    <PeaceDialog width="510px"
                  title="单位转换关系"
                  v-bind:visible.sync="visible">
 
@@ -15,7 +15,7 @@
         <el-form-item label="单位组名称"
                       prop="ucfName">
           <el-input v-model="model.ucfName"
-                    style="width:268px"
+                    style="width:300px"
                     maxlength="50"
                     placeholder="请输入单位组名称"
                     clearable></el-input>
@@ -35,7 +35,7 @@
                       clearable></el-input>
 
             <el-select clearable
-                       style="width:140px"
+                       style="width:172px"
                        filterable
                        class="col-5"
                        v-model.trim="domain.unit"
@@ -48,14 +48,14 @@
               </el-option>
             </el-select>
 
-            <el-image style="width: 32px; height: 32px; margin-left: 8px"
+            <el-image style="width: 32px; height: 32px; margin-left: 8px;"
                       v-bind:src="require('../assets/img/conversion_icon.png')"></el-image>
 
           </div>
 
           <el-button type="text"
                      class="text-grey-999"
-                     style="width:268px; border-radius: 4px; border: 1px solid rgba(51, 51, 51, 0.2);"
+                     style="width:300px; border-radius: 4px; border: 1px solid rgba(51, 51, 51, 0.2);"
                      v-on:click="addDomain">+ 新增</el-button>
 
         </el-form-item>

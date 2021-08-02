@@ -23,7 +23,6 @@
                   pagination>
         <PeaceTableColumn type="index"
                           label="序号"
-                          align="center"
                           width="80px">
           <template slot-scope="{ $index, _self }">
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
