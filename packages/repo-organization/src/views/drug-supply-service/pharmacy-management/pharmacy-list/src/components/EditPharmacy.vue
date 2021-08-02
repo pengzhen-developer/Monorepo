@@ -719,7 +719,7 @@ export default {
 
 .info-btn {
   padding-top: 30px;
-  text-align: center;
+  text-align: left;
   .el-button {
     width: 120px;
     & + .el-button {
