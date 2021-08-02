@@ -6,7 +6,8 @@
                    v-on:click="back">返回上一页</el-button>
       </div>
 
-      <span class="text-weight-medium text-grey-333" style="font-size: 20px;">药品规则编辑</span>
+      <span class="text-weight-medium text-grey-333"
+            style="font-size: 20px;">药品规则编辑</span>
 
       <div class="q-mb-md q-mt-xs">
         <span class="text-weight-medium q-mr-md">{{ drugInfo.drugName }}</span>
@@ -17,29 +18,26 @@
 
     </div>
 
-    <rules-detail :id="drugInfo.drugCscCode" drug-type="platform"></rules-detail>
+    <rules-detail :id="drugInfo.drugCscCode"
+                  drug-type="platform"></rules-detail>
   </div>
 </template>
 
 <script>
-import RulesDetail from "@views/rational-drug-use-management/rules-of-drug/Prescription_Rule/src/RulesDetail";
+import RulesDetail from '@views/rational-drug-use-management/rules-of-drug/Prescription_Rule/src/RulesDetail'
 export default {
-  name: "DrugRuleDetail",
-  components: { RulesDetail  },
+  name: 'DrugRuleDetail',
+  components: { RulesDetail },
   props: {
     drugInfo: {
       required: true,
-      type: Object,
+      type: Object
     }
   },
   data() {
-    return {
-
-    }
+    return {}
   },
-  async mounted() {
-
-  },
+  async mounted() {},
   methods: {
     back() {
       this.$emit('onDetailBack')
@@ -47,9 +45,7 @@ export default {
     ruleModels(data) {
       console.log(data)
     },
-    submit() {
-
-    },
+    submit() {}
   }
 }
 </script>
@@ -62,5 +58,6 @@ export default {
   background: #fff;
   margin-top: 16px;
   padding: 16px;
+  box-shadow: 0px 1px 8px 0px #e0e0e0;
 }
 </style>

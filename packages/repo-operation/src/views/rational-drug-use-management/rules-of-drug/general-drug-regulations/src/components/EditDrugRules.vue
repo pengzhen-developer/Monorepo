@@ -132,5 +132,6 @@ export default {
   align-items: center;
   background: #fff;
   padding: 16px;
+  box-shadow: 0px 1px 8px 0px #e0e0e0;
 }
 </style>
