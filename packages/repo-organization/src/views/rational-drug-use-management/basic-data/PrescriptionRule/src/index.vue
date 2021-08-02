@@ -219,11 +219,7 @@ export default {
             // 其中前置条件需要做转换
             if (models) {
               models.map((temp) => {
-                if (
-                  temp.conditionExpression &&
-                  temp.conditionExpression.ceList &&
-                  temp.conditionExpression.ceList.length > 0
-                ) {
+                if (temp.conditionExpression && temp.conditionExpression.ceList && temp.conditionExpression.ceList.length > 0) {
                   let tmp = temp.conditionExpression.ceList ?? []
                   let ceListDic = {}
                   for (let condition of tmp) {
@@ -417,8 +413,7 @@ export default {
     addPreconditionInfo(params) {
       const { IndexParams, data } = params
       this.rules[IndexParams.patientIndex].models[IndexParams.Index].conditionExpressionString.ceList = data
-      this.rules[IndexParams.patientIndex].models[IndexParams.Index].conditionExpressionString.hasPrecondition =
-        JSON.stringify(data) !== '{}'
+      this.rules[IndexParams.patientIndex].models[IndexParams.Index].conditionExpressionString.hasPrecondition = JSON.stringify(data) !== '{}'
       this.dialog.visible = false
     }
   }
@@ -438,10 +433,10 @@ export default {
 ::v-deep .q-tab {
   min-height: 40px !important;
 
-  .absolute-left {
-    top: 9px;
-    bottom: 9px;
-  }
+  // .absolute-left {
+  //   top: 9px;
+  //   bottom: 9px;
+  // }
 
   .q-tab__label {
     font-weight: 400;

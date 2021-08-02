@@ -244,10 +244,10 @@ export default {
 ::v-deep .q-tab {
   min-height: 40px !important;
 
-  .absolute-left {
-    top: 9px;
-    bottom: 9px;
-  }
+  // .absolute-left {
+  //   top: 9px;
+  //   bottom: 9px;
+  // }
 
   .q-tab__label {
     font-weight: 400;
