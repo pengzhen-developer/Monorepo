@@ -311,7 +311,7 @@ export default {
 
     fetchDrug() {
       const fetch = Service.platformDrugBaseInfo.pageMenstruumProperties
-      const params = { drugName: this.dialogMapping.model.drugName }
+      const params = { drugName: this.dialogMapping.model.drugName, menstruumCode: this.dialogMapping.model.code }
 
       this.$refs.mappingTable.reloadData({ fetch, params })
     },
