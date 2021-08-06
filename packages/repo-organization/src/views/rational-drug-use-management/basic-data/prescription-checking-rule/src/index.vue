@@ -21,20 +21,19 @@
                    name="科室规则"
                    lazy>
       </el-tab-pane>
-      <!-- 管理规则本期未重构，无业务，接口迁移后，无法访问，因此暂时屏蔽 -->
-      <!-- 
+
       <el-tab-pane label="管理规则"
                  name="管理规则"
                  lazy>
-        <IframeView checkNum="管理规则"></IframeView>
-      </el-tab-pane> 
-      -->
+
+      </el-tab-pane>
+
     </el-tabs>
 
     <!-- el-tab-pane 不支持 positon: sticky，因此单独在外层 div 布局 -->
     <DrugRule v-if="checkPos === '药品规则'"></DrugRule>
     <DepartmentRule v-if="checkPos === '科室规则'"></DepartmentRule>
-
+    <management-rules-list v-if="checkPos === '管理规则'"></management-rules-list>
   </div>
 </template>
 
@@ -47,6 +46,7 @@ export default {
 
   components: {
     IframeView,
+    ManagementRulesList: () => import('@src/views/rational-drug-use-management/basic-data/management-rule'),
     DrugRule: () => import('@src/views/rational-drug-use-management/basic-data/drug-rule'),
     DepartmentRule: () => import('@src/views/rational-drug-use-management/basic-data/department-rule')
   },
@@ -57,8 +57,9 @@ export default {
     }
   },
   created() {
-    if (this.$route.query.checkPos) {
-      this.checkPos = this.$route.query.checkPos
+    const index = Number(this.$route.query.checkPos);
+    if (index) {
+      this.checkPos =  ["基础规则","TNA规则", "药品规则","科室规则", "管理规则"][index]
     }
   }
 }

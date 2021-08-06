@@ -114,6 +114,7 @@ export default {
 
   methods: {
     addTag() {
+      this.dialogOther.data = []
       this.dialog.data = this.model.ddiRuleObj.ddiItemList
       this.dialog.visible = true
     },
@@ -124,6 +125,7 @@ export default {
     },
 
     addTagOther() {
+      this.dialogOther.data = []
       if (this.model.ddiRuleObj.ddiContraryItemList.length > 0) {
         const type = this.model.ddiRuleObj.ddiContraryItemList[0]?.type
         if (Number(type) === 1) {
@@ -140,7 +142,7 @@ export default {
     },
 
     editIndicationOther(data) {
-      if (data.length > 0) {
+      if (data && data.length > 0) {
         const type = data[0]?.type
         if (Number(type) === 1) {
           this.model.ddiRuleObj.ddiContraryItemList = data.map((item) => {
@@ -151,8 +153,9 @@ export default {
             return { type: item.type, atcCode: item.atcCode, name: item.classifyName }
           })
         }
+      } else {
+        this.model.ddiRuleObj.ddiContraryItemList = []
       }
-
       this.dialogOther.visible = false
     },
 

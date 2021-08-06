@@ -8,5 +8,5 @@ export default {
     药品规则: '/Engine/Web?uri=drugRuleRepository/organDrugRule/ogranDrugRuleList.html',
     科室规则: '/Engine/Web?uri=drugRuleRepository/organRuleManagement/organRuleManagement.html',
     管理规则: '/Engine/Web?uri=drugRuleRepository/organManageRule/organManageRuleList.html'
-  }
+  },
 }

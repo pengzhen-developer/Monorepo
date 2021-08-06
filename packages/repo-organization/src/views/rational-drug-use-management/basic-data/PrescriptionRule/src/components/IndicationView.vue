@@ -191,11 +191,7 @@ export default {
       table.toggleRowSelection(tmp, false)
     },
     save() {
-      if (this.multipleSelection.length > 0) {
-        this.$emit('onSuccess', this.multipleSelection)
-      } else {
-        Peace.util.warning('请先选择')
-      }
+      this.$emit('onSuccess', this.multipleSelection)
     }
   }
 }

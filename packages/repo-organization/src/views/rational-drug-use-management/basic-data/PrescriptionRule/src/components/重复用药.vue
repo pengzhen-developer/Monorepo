@@ -115,6 +115,7 @@ export default {
 
   methods: {
     addTag() {
+      this.dialog.data = []
       this.dialog.data = this.model.duplicatetherapyRuleObj.dupLists
       this.dialog.visible = true
     },
@@ -124,6 +125,7 @@ export default {
     },
 
     addTagOther() {
+      this.dialogOther.data = []
       if (this.model.duplicatetherapyRuleObj.dupItemList.length > 0) {
         const type = this.model.duplicatetherapyRuleObj.dupItemList[0]?.type
         if (Number(type) === 1) {
@@ -140,7 +142,7 @@ export default {
     },
 
     editIndicationOther(data) {
-      if (data.length > 0) {
+      if (data && data.length > 0) {
         const type = data[0].type
         if (Number(type) === 1) {
           this.model.duplicatetherapyRuleObj.dupItemList = data.map((item) => {
@@ -151,6 +153,8 @@ export default {
             return { type: item.type, atcCode: item.atcCode, name: item.classifyName }
           })
         }
+      } else {
+        this.model.duplicatetherapyRuleObj.dupItemList = []
       }
 
       this.dialogOther.visible = false
