@@ -103,6 +103,9 @@
         <PeaceTableColumn min-width="150px"
                           label="厂家"
                           prop="EnterpriseName"></PeaceTableColumn>
+        <PeaceTableColumn min-width="180px"
+                          label="批准文号"
+                          prop="ApprovalNumber"></PeaceTableColumn>
         <PeaceTableColumn min-width="100px"
                           label="配码状态"
                           prop="MappingStatus"></PeaceTableColumn>
