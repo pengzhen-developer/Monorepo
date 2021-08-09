@@ -2,20 +2,23 @@
   <div class="layout-route">
     <div class="card card-search q-mb-md">
       <el-form inline
-               label-width="100px"
-               label-position="right">
+               label-suffix="："
+               v-on:keyup.enter.native="getList"
+               v-on:submit.native.prevent>
 
-        <el-form-item label="姓名：">
-          <el-input v-model="model.name"
+        <el-form-item label="姓名">
+          <el-input v-model.trim="model.name"
+                    maxlength="50"
                     placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item label="手机号：">
+        <el-form-item label="手机号">
           <el-input v-model="model.tel"
+                    maxlength="50"
                     placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item label="账号状态：">
+        <el-form-item label="账号状态">
           <el-select v-model="model.useStatus"
                      clearable
                      placeholder="请选择">
@@ -26,17 +29,19 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="所在医院：">
-          <el-input v-model="model.hospital"
+        <el-form-item label="所在医院">
+          <el-input v-model.trim="model.hospital"
+                    maxlength="50"
                     placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item label="互联网医院：">
-          <el-input v-model="model.nethospital"
+        <el-form-item label="互联网医院">
+          <el-input v-model.trim="model.nethospital"
+                    maxlength="50"
                     placeholder="请输入"></el-input>
         </el-form-item>
 
-        <el-form-item label="二级科室：">
+        <el-form-item label="二级科室">
           <el-select v-model="model.depNameId"
                      clearable
                      filterable
@@ -48,13 +53,13 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="申请入驻时间：">
+        <el-form-item label="申请入驻时间">
           <peace-date-picker type="daterange"
                              v-model="timeRange"
                              value-format="yyyy-MM-dd"></peace-date-picker>
         </el-form-item>
 
-        <el-form-item label="">
+        <el-form-item>
           <el-button type="primary"
                      @click="getList()">查询</el-button>
         </el-form-item>
