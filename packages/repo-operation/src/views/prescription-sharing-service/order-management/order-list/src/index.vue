@@ -7,34 +7,16 @@
                v-bind:model="model"
                v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent>
-
-        <el-form-item label="订单来源">
-          <el-input v-model="model.Source"
-                    placeholder="请输入订单来源"
-                    clearable></el-input>
-        </el-form-item>
-
         <el-form-item label="订单编号">
           <el-input v-model.trim="model.OrderNumber"
                     placeholder="医院/平台/物流编号"
                     clearable></el-input>
         </el-form-item>
 
-        <el-form-item label="处方类型">
-          <el-select clearable
-                     placeholder="全部"
-                     v-model="model.OrderType">
-            <el-option v-for="item in remoteSource.OrderType"
-                       v-bind:key="item.value"
-                       v-bind:label="item.label"
-                       v-bind:value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="同步日期">
-          <peace-date-picker type="daterange"
-                             value-format="yyyy-MM-dd"
-                             v-model="model.TimeRange"></peace-date-picker>
+        <el-form-item label="订单来源">
+          <el-input v-model="model.Source"
+                    placeholder="请输入订单来源"
+                    clearable></el-input>
         </el-form-item>
 
         <el-form-item label="客户姓名">
@@ -43,14 +25,8 @@
                     clearable></el-input>
         </el-form-item>
 
-        <el-form-item label="手机号码">
-          <el-input v-model="model.Phone"
-                    placeholder="请输入手机号码"
-                    clearable></el-input>
-        </el-form-item>
-
         <el-form-item label="药房">
-          <el-input v-model="model.DrugName"
+          <el-input v-model="model.DrugStoreName"
                     placeholder="请输入药房名称"
                     clearable></el-input>
         </el-form-item>
@@ -78,7 +54,59 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="支付状态">
+        <el-form-item label="同步日期">
+          <peace-date-picker type="daterange"
+                             value-format="yyyy-MM-dd"
+                             v-model="model.TimeRange"></peace-date-picker>
+        </el-form-item>
+
+        <el-form-item label="疾病诊断">
+          <el-input v-model="model.DiagnosisResults"
+                    placeholder="请输入"
+                    clearable></el-input>
+        </el-form-item>
+
+        <el-form-item label="科别">
+          <el-input v-model="model.MedicalDepartmentName"
+                    placeholder="请输入"
+                    clearable></el-input>
+        </el-form-item>
+
+        <el-form-item label="药品名称">
+          <el-input v-model="model.DrugName"
+                    placeholder="请输入"
+                    clearable></el-input>
+        </el-form-item>
+
+        <el-form-item label="医师姓名">
+          <el-input v-model="model.DoctorName"
+                    placeholder="请输入"
+                    clearable></el-input>
+        </el-form-item>
+
+        <el-form-item label="快递单号">
+          <el-input v-model="model.PickUpCode"
+                    placeholder="请输入"
+                    clearable></el-input>
+        </el-form-item>
+
+        <!-- <el-form-item label="手机号码">
+          <el-input v-model="model.Phone"
+                    placeholder="请输入手机号码"
+                    clearable></el-input>
+        </el-form-item> -->
+        <!-- <el-form-item label="处方类型">
+          <el-select clearable
+                     placeholder="全部"
+                     v-model="model.OrderType">
+            <el-option v-for="item in remoteSource.OrderType"
+                       v-bind:key="item.value"
+                       v-bind:label="item.label"
+                       v-bind:value="item.value"></el-option>
+          </el-select>
+        </el-form-item> -->
+
+        <!-- <el-form-item label="支付状态">
           <el-select clearable
                      placeholder="全部"
                      v-model="model.PayStatus">
@@ -87,7 +115,7 @@
                        v-bind:label="item.label"
                        v-bind:value="item.value"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item>
           <el-button type="primary"
@@ -349,11 +377,16 @@ export default {
   data() {
     return {
       model: {
+        DiagnosisResults: '',
+        MedicalDepartmentName: '',
+        DrugName: '',
+        DoctorName: '',
+        PickUpCode: '',
         Source: '',
         OrderNumber: '',
         OrderType: '',
         OrderStatus: '',
-        DrugName: '',
+        DrugStoreName: '',
         CustName: '',
         Phone: '',
         StartTime: '',
@@ -416,9 +449,9 @@ export default {
   },
 
   async mounted() {
-    this.remoteSource.OrderType = await peace.identity.dictionary.getList('OrderType')
+    // this.remoteSource.OrderType = await peace.identity.dictionary.getList('OrderType')
     this.remoteSource.ShippingMethod = await peace.identity.dictionary.getList('ShippingMethod')
-    this.remoteSource.PayStatus = await peace.identity.dictionary.getList('PayStatus')
+    // this.remoteSource.PayStatus = await peace.identity.dictionary.getList('PayStatus')
     this.remoteSource.SelfOrderStatus = await peace.identity.dictionary.getList('SelfOrderStatus')
     this.remoteSource.DistributionOrderStatus = await peace.identity.dictionary.getList('DistributionOrderStatus')
     this.settingDialog.data.Code = (await peace.identity.dictionary.getList('SmsRemind')).find((item) => item.value == 'Code').label
