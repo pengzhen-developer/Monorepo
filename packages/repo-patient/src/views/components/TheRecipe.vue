@@ -11,21 +11,17 @@
         <div class="prescript-no">
           <span class="prescript-btn"
                 @click="seeOriginalPrescription"
-                v-if="dialog.data.pngUrl">原始处方</span>
-          No.{{internalData.prescriptionNo}}
+                v-if="dialog.data.pngUrl"><span>原始处方</span></span>
+          <span class="prescript-no-text"><span>No.{{internalData.prescriptionNo}}</span></span>
         </div>
         <div class="prescript-head">{{internalData.medicalInstitutionName}}</div>
         <div class="prescript-h4">处方笺</div>
         <div class="prescript-line">
-          <div class="span"
-               style="width: 50%; text-align: left;">
-            <span>病历号：</span>
-            <span>{{internalData.caseNo}}</span>
+          <div class="span">
+            <span>病历号：{{internalData.caseNo}}</span>
           </div>
-          <div class="span"
-               style="width: 50%; text-align: right;">
-            <span>开具时间：</span>
-            <span>{{internalData.prescriptionTime}} </span>
+          <div class="span">
+            <span>开具时间：{{internalData.prescriptionTime}}</span>
           </div>
         </div>
         <div class="prescript-table dotted-line-before">
@@ -111,13 +107,13 @@
       </div>
       <!--医生签名-->
       <div class="outline module">
-        <div class="namelist-dl npd">
+        <div class="namelist-dl mb4">
           <div class="dt justify"><span>医师</span> ：</div>
           <div class="dd">
             {{internalData.doctorName}}
           </div>
         </div>
-        <div class="namelist-dl npd">
+        <div class="namelist-dl mb4">
           <div class="dt">审核药师：</div>
           <div class="dd">
             {{internalData.prescriptionPharmacistName}}
@@ -132,7 +128,14 @@
           <div class="dd"></div>
         </div>
       </div>
-      <div class="bt">注意：本处方24小时有效，处方失效后不可作为购药凭证购药。仅限通过平台认证的药店配送，自行下载处方或截屏购药不具有效力。</div>
+      <div class="bt"
+           v-if="canShowMoreTip"
+           v-html="'注：1.服药期间如有不适，请立即停止使用并前往线下医院进一步检查治疗；\n 2.仅限通过平台认证的药店配送，自行下载处方购药不具有效力，为确保用药安全，24小时内处方有效；'"></div>
+      <div class="bt"
+           v-else
+           v-html="'注：1.仅限通过平台认证的药店配送，自行下载处方购药不具有效力，为确保用药安全，24小时内处方有效；'">
+
+      </div>
 
       <div class="bottom"
            v-if="canShowBottomBlock">
@@ -196,6 +199,7 @@ const PrescriptionStatus = {
   已作废: 4,
   已通过: 5
 }
+
 export default {
   props: {
     data: {
@@ -222,6 +226,9 @@ export default {
     }
   },
   computed: {
+    canShowMoreTip() {
+      return this.internalData?.prescriptionStatus?.key == PrescriptionStatus.已通过 || this.internalData.prescription == PrescriptionStatus.已通过
+    },
     //如果状态为已作废，提示‘该处方已作废被回收，请查看其他处方’
     prescriptionHasVoided() {
       return this.internalData?.prescriptionStatus?.key == this.PrescriptionStatus.已作废 ||
@@ -371,78 +378,123 @@ export default {
 }
 .prescript {
   background: #fff;
-  padding: 5px 15px;
-  margin-bottom: 7.5px;
+  padding: 5px 16px;
+  margin-bottom: 8px;
 }
 .prescript-no {
   display: flex;
   align-items: center;
 }
 .prescript-btn {
-  padding: 0 4px;
-  border-radius: 14px;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  color: #999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: normal;
+  width: 48px;
+  height: 16px;
+  border-radius: 8px;
+  border: 1px solid #979797;
+  color: rgba(51, 51, 51, 0.6);
   font-size: 10px;
-  margin-right: 4px;
+  position: relative;
+  margin-right: 8px;
+  span {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    font-size: 0.53333rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    transform: scale(0.5) translate(-50%, -50%);
+    transform-origin: left;
+    white-space: nowrap;
+    line-height: normal;
+  }
 }
-.prescript .prescript-no,
+.prescript-no-text {
+  font-size: 10px;
+  position: relative;
+  flex: 1;
+  height: 14px;
+  color: rgba(51, 51, 51, 0.6);
+  span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 0.53333rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    transform: scale(0.5) translate(0, -50%);
+    transform-origin: left;
+    white-space: nowrap;
+    line-height: normal;
+  }
+}
 .prescript .prescript-line {
-  color: #999;
-  font-size: 11px;
-  line-height: 15px;
+  color: rgba(51, 51, 51, 0.6);
 }
 .prescript .prescript-line {
   display: flex;
   justify-content: space-around;
 }
 .prescript-line .span {
-  flex: 1 1 auto;
-  width: 40%;
+  width: 50%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 10px;
+  position: relative;
+  height: 12px;
+  &:last-child {
+    span {
+      left: auto;
+      right: 0;
+      transform-origin: right;
+    }
+  }
+  span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 0.53333rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    transform: scale(0.5) translate(0, -50%);
+    transform-origin: left;
+    white-space: nowrap;
+    line-height: normal;
+  }
 }
 .prescript .prescript-head {
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: 18px;
+  line-height: 24px;
   margin-top: 8px;
   text-align: center;
 }
 .prescript .prescript-h4 {
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: bold;
   text-align: center;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  line-height: 24px;
 }
 .prescript .prescript-table {
   display: flex;
   text-align: center;
-  padding-top: 10px;
-  margin-top: 10px;
+  padding-top: 8px;
+  margin-top: 7px;
+  justify-content: space-between;
 }
 .prescript-table .th {
-  flex: 1;
-  font-size: 13px;
-  color: #999;
+  font-size: 14px;
+  color: rgba(51, 51, 51, 0.6);
 }
 .prescript-table .td {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 15px;
-  color: #000;
-  padding: 3px;
+  font-size: 16px;
+  color: #333;
+  padding: 2px;
 }
 </style>
 
 <style lang="scss" scoped>
 .the-recipe {
-  background: #f5f5f5;
+  background: rgba(51, 51, 51, 0.05);
   position: relative;
   overflow: auto;
   height: 100%;
@@ -475,12 +527,12 @@ export default {
 
   .prescript.icon-status::after {
     content: '';
-    right: 5px;
-    top: 15px;
+    right: 16px;
+    top: 28px;
     display: block;
     position: absolute;
-    width: 98px;
-    height: 98px;
+    width: 64px;
+    height: 64px;
     background-size: cover;
   }
 
@@ -512,9 +564,8 @@ export default {
   }
 
   .outline {
-    margin: 0 0 7.5px 0;
-    padding-left: 18px;
-    padding-right: 18px;
+    margin: 0 0 8px 0;
+    padding: 0 16px;
   }
   .outline .outline-header {
     margin: 10px 0;
@@ -522,9 +573,10 @@ export default {
   .outline .outline-body {
     margin-top: 10px;
     margin-right: 0;
-    padding: 15px 0;
-    border-top: 1px solid #dedede;
+    padding: 12px 0;
+    border-top: 1px solid rgba(51, 51, 51, 0.05);
     overflow: hidden;
+    font-size: 16px;
     &.drug {
       padding: 0;
       margin: 0;
@@ -534,7 +586,7 @@ export default {
     }
   }
   .outline-tit {
-    color: #666;
+    color: rgba(51, 51, 51, 0.6);
     &.outline-weight {
       display: flex;
       align-items: center;
@@ -550,21 +602,21 @@ export default {
   .inline {
     display: block;
     word-wrap: break-word;
-    &.color-000 {
-      color: #000;
-    }
   }
   .inline-flex {
     word-break: break-all;
     padding-right: 5px;
     span {
+      font-size: 16px;
       margin-right: 20px;
     }
   }
   .bt {
-    padding: 0 15px 8px 30px;
-    font-size: 11px;
-    color: #999;
+    padding: 0 16px 8px 16px;
+    font-size: 12px;
+    color: rgba(51, 51, 51, 0.4);
+    white-space: pre-wrap;
+    font-family: PingFangSC-Regular, PingFang SC;
   }
 
   .column-2 {
@@ -572,7 +624,7 @@ export default {
     color: #000;
     font-size: 15px;
     margin-top: 1px;
-    padding: 10px 0 10px 15px;
+    padding: 10px 0;
     position: relative;
     &:last-child {
       &:after {
@@ -590,9 +642,11 @@ export default {
     display: flex;
     justify-content: space-between;
     &.unit {
-      width: 50px;
+      min-width: 50px;
       white-space: nowrap;
       display: block;
+      font-size: 16px;
+      text-align: right;
     }
   }
   .column-left .inline .span {
@@ -606,8 +660,8 @@ export default {
     padding-right: 15px;
   }
   .column-left .small {
-    color: #999;
-    font-size: 13px;
+    color: rgba(51, 51, 51, 0.6);
+    font-size: 14px;
     padding-top: 5px;
   }
   .column-2 .column-right {
@@ -617,36 +671,29 @@ export default {
   }
 
   .module {
-    padding: 5px 30px;
-    box-sizing: border-box;
-
+    padding: 12px 30px;
     display: flex;
     flex-wrap: wrap;
-    -webkit-flex-wrap: wrap;
-    -webkit-box-lines: multiple;
-    -moz-flex-wrap: wrap;
   }
   .namelist-dl {
-    font-size: 13px;
-    color: #999;
+    font-size: 16px;
+    line-height: 24px;
+
     width: 50%;
     display: flex;
   }
   .namelist-dl .dt {
-    flex: 0 0 auto;
-    width: 65px;
+    color: rgba(51, 51, 51, 0.6);
   }
   .namelist-dl .dd {
-    flex: 1 1 auto;
-    width: 65px;
-    color: #000;
+    color: #333333;
   }
   .namelist-dl .dd img {
     width: 45px;
     height: 17px;
   }
-  .npd {
-    padding-bottom: 0;
+  .mb4 {
+    margin-bottom: 4px;
   }
   .justify {
     display: flex;

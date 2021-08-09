@@ -123,8 +123,6 @@
             <span class="justify row-dd"><span>医师</span> ：</span>
             <span class="row-img">
               {{data.list[current].doctorName}}
-              <!-- <img :src="data.list[current].doctorSignImage"
-                   v-if="data.list[current].doctorSignImage" /> -->
             </span>
           </div>
           <div class="flex"
@@ -132,8 +130,6 @@
             <span class="row-dd">审核药师：</span>
             <span class="row-img">
               {{data.list[current].prescriptionPharmacistName}}
-              <!-- <img :src="data.list[current].prescriptionSign"
-                   v-if="data.list[current].prescriptionSign" /> -->
             </span>
           </div>
         </div>
@@ -152,7 +148,11 @@
       </div>
 
       <div class="footer">
-        <span>注意：本处方24小时有效，处方失效后不可作为购药凭证购药。仅限通过平台认证的药店配送，自行下载处方或截屏购药不具有效力。</span>
+        <div v-if="canShowMoreTip(data.list[current])"
+             v-html="'注：1.服药期间如有不适，请立即停止使用并前往线下医院进一步检查治疗；\n 2.仅限通过平台认证的药店配送，自行下载处方购药不具有效力，为确保用药安全，24小时内处方有效；'"></div>
+        <div v-else
+             v-html="'注：1.仅限通过平台认证的药店配送，自行下载处方购药不具有效力，为确保用药安全，24小时内处方有效；'">
+        </div>
       </div>
     </template>
   </div>
@@ -185,6 +185,9 @@ export default {
   },
 
   methods: {
+    canShowMoreTip(item) {
+      return item?.prescriptionStatus?.key == 5 || item.prescription == 5
+    },
     next() {
       if (this.current + 1 >= this.data.total) {
         this.current = 0
@@ -346,9 +349,10 @@ export default {
 
   .footer {
     padding: 0 20px 10px 20px;
-    font-size: 11px;
-    color: #999999;
-    text-align: left;
+    font-size: 12px;
+    color: rgba(51, 51, 51, 0.4);
+    white-space: pre-wrap;
+    font-family: PingFangSC-Regular, PingFang SC;
   }
 }
 </style>
