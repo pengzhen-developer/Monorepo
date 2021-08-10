@@ -341,24 +341,19 @@ export default {
       const json = peace.util.encode({
         netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
         deptId: item.id,
-        deptName: item.netdeptName,
-        type: 'departDoctorList',
-        serviceType: 'inquiry'
+        deptName: item.netdeptName
       })
-      this.$router.push(`/components/doctorList/${json}`)
+      this.$router.push(`/components/doctorListOrganization/${json}`)
     },
 
     goStarDoctor() {
       this.trackByClick('医生更多', '医生')
 
       const json = peace.util.encode({
-        netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
-        type: 'starDoctorList',
-        Date: new Date(),
-        serviceType: 'inquiry'
+        netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId
       })
 
-      this.$router.push(`/components/doctorList/${json}`)
+      this.$router.push(`/components/doctorListOrganization/${json}`)
     },
 
     goHospitalNoticeDetail() {
@@ -428,9 +423,10 @@ export default {
                 json = peace.util.encode({
                   netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
                   serviceType: 'inquiry',
+                  inquiryType: 'image,video',
                   Date: new Date()
                 })
-                this.$router.push(`/components/doctorList/${json}`)
+                this.$router.push(`/components/doctorListOrganization/${json}`)
               }
             })
         } else {
@@ -467,9 +463,10 @@ export default {
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
             serviceType: 'inquiry',
+            inquiryType: 'image,video',
             Date: new Date()
           })
-          this.$router.push(`/components/doctorList/${json}`)
+          this.$router.push(`/components/doctorListOrganization/${json}`)
           break
         // 复诊开药
         case 4:

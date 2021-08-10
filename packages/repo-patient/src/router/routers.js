@@ -644,6 +644,20 @@ const routers = [
     },
     component: () => import('@src/views/components/DoctorList.vue')
   },
+  // 机构医生列表
+  {
+    path: '/components/doctorListOrganization/:json',
+    name: '/components/doctorListOrganization',
+    meta: {
+      auth: false,
+      navbar: {
+        title: '医生列表',
+        back: true
+      }
+    },
+    component: () => import('@src/views/components/DoctorListOrganization.vue')
+  },
+
   // 消息列表
   {
     path: '/components/messageList/:json',

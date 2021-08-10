@@ -38,7 +38,11 @@ export function getBookingDoctor(params) {
 export function getNetHospitalDoctorList(params) {
   const getNetHospitalDoctorList = 'client/v1/Doctor/getNetHospitalDoctorList'
 
-  return peace.http.post(getNetHospitalDoctorList, params)
+  return peace.http.post(getNetHospitalDoctorList, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
 }
 
 /**
