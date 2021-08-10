@@ -98,11 +98,11 @@ export default {
     getPlatformUnitDicPageForDose() {
       Service.getPlatformUnitDicPage({ type: 'dose', size: 500 }).then((res) => {
         this.optionsForDose = res.data.records
-        if (this.radio === 0 && !this.multipleSelection && this.optionsForDose.length > 0) {
-          this.multipleSelection = this.optionsForDose[0].name
-        } else if (this.radio === 1 && !this.multipleSelectionOther && this.optionsForDose.length > 0) {
-          this.multipleSelectionOther = this.optionsForDose[0].name
-        }
+        // if (this.radio === 0 && !this.multipleSelection && this.optionsForDose.length > 0) {
+        //   this.multipleSelection = this.optionsForDose[0].name
+        // } else if (this.radio === 1 && !this.multipleSelectionOther && this.optionsForDose.length > 0) {
+        //   this.multipleSelectionOther = this.optionsForDose[0].name
+        // }
       })
     },
     getPlatformUnitDicPageForPack() {

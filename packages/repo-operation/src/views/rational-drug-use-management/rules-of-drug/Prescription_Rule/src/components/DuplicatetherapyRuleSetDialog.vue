@@ -118,31 +118,23 @@ export default {
     },
     save() {
       if (this.radio === 0) {
-        if (this.multipleSelection.length > 0) {
-          const ddiItemList = this.multipleSelection.map((res) => {
-            return {
-              type: 1,
-              code: this.options.find((item) => item.code == res).code,
-              name: this.options.find((item) => item.code == res).cnName
-            }
-          })
-          this.$emit('onSuccess', ddiItemList)
-        } else {
-          Peace.util.warning('请选择药品成分')
-        }
+        const ddiItemList = this.multipleSelection.map((res) => {
+          return {
+            type: 1,
+            code: this.options.find((item) => item.code == res).code,
+            name: this.options.find((item) => item.code == res).cnName
+          }
+        })
+        this.$emit('onSuccess', ddiItemList)
       } else {
-        if (this.multipleSelectionOther.length > 0) {
-          const ddiContraryItemList = this.multipleSelectionOther.map((res) => {
-            return {
-              type: 2,
-              atcCode: this.optionsOther.find((item) => item.atcCode == res).atcCode,
-              name: this.optionsOther.find((item) => item.atcCode == res).classifyName
-            }
-          })
-          this.$emit('onSuccess', ddiContraryItemList)
-        } else {
-          Peace.util.warning('请选择药品成分类别')
-        }
+        const ddiContraryItemList = this.multipleSelectionOther.map((res) => {
+          return {
+            type: 2,
+            atcCode: this.optionsOther.find((item) => item.atcCode == res).atcCode,
+            name: this.optionsOther.find((item) => item.atcCode == res).classifyName
+          }
+        })
+        this.$emit('onSuccess', ddiContraryItemList)
       }
     }
   }

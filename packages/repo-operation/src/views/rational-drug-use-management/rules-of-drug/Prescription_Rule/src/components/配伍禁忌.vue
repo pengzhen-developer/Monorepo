@@ -114,6 +114,7 @@ export default {
 
   methods: {
     addTag() {
+      this.dialog.data = []
       this.dialog.data = this.model.incompatibilityRuleObj.incompatibilitySourceItemList
       this.dialog.visible = true
     },
@@ -123,6 +124,7 @@ export default {
     },
 
     addTagOther() {
+      this.dialogOther.data = []
       if (this.model.incompatibilityRuleObj.incompatibilityTargetItemList.length > 0) {
         const type = this.model.incompatibilityRuleObj.incompatibilityTargetItemList[0]?.type
         if (Number(type) === 1) {
@@ -143,7 +145,7 @@ export default {
     },
 
     editIndicationOther(data) {
-      if (data.length > 0) {
+      if (data && data.length > 0) {
         const type = data[0]?.type
         if (Number(type) === 1) {
           this.model.incompatibilityRuleObj.incompatibilityTargetItemList = data.map((item) => {
@@ -158,6 +160,8 @@ export default {
             return { type: item.type, code: item.code, name: item.drugName }
           })
         }
+      } else {
+        this.model.incompatibilityRuleObj.incompatibilityTargetItemList = []
       }
       this.dialogOther.visible = false
     },

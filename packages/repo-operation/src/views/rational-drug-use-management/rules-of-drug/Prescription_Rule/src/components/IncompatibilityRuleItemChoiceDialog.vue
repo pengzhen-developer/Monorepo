@@ -196,32 +196,20 @@ export default {
     },
     save() {
       if (this.radio === 0) {
-        if (this.multipleSelection.length > 0) {
-          this.multipleSelection.map((res) => {
-            res.type = 1
-          })
-          this.$emit('onSuccess', this.multipleSelection)
-        } else {
-          Peace.util.warning('请选择成分')
-        }
+        this.multipleSelection.map((res) => {
+          res.type = 1
+        })
+        this.$emit('onSuccess', this.multipleSelection)
       } else if (this.radio === 1) {
-        if (this.multipleSelectionOther.length > 0) {
-          this.multipleSelectionOther.map((res) => {
-            res.type = 2
-          })
-          this.$emit('onSuccess', this.multipleSelectionOther)
-        } else {
-          Peace.util.warning('请选择成分类别')
-        }
+        this.multipleSelectionOther.map((res) => {
+          res.type = 2
+        })
+        this.$emit('onSuccess', this.multipleSelectionOther)
       } else {
-        if (this.multipleSelectionSolvent.length > 0) {
-          this.multipleSelectionSolvent.map((res) => {
-            res.type = 3
-          })
-          this.$emit('onSuccess', this.multipleSelectionSolvent)
-        } else {
-          Peace.util.warning('请选择溶媒')
-        }
+        this.multipleSelectionSolvent.map((res) => {
+          res.type = 3
+        })
+        this.$emit('onSuccess', this.multipleSelectionSolvent)
       }
     }
   }
