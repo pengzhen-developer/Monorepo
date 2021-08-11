@@ -1,22 +1,18 @@
 export default {
-  ENUM_CIRCULATE: [
-    { value: '-1', label: '全部' },
-    { value: '0', label: '院内药品' },
-    { value: '1', label: '外流药品' }
-  ],
-
-  ENUM_MATCH_CODE: [
-    { value: '', label: '全部' },
-    { value: '0', label: '尚未配码' },
-    { value: '10', label: '配码失败' },
-    { value: '20', label: '配码成功' }
-  ],
-
-  ENUM_REVIEW_STATUS: [
-    { value: '', label: '全部' },
-    { value: '0', label: '待审核' },
-    { value: '10', label: '已驳回' },
-    { value: '20', label: '已通过' },
-    { value: '30', label: '待维护' }
+  /**
+   * 规则字典三级菜单
+   *
+   * */
+  menuList: [
+    { id: '0', title: '给药途径', type: 'component', url: 'DrugChannel' },
+    { id: '1', title: '给药频次', type: 'component', url: 'DrugFrequency' },
+    { id: '2', title: '诊断维护', type: 'component', url: 'DiseaseMaintain' },
+    { id: '3', title: 'ICD', type: 'component', url: 'ICD' },
+    { id: '4', title: '药品包装信息', type: 'component', url: 'DrugPackagingInformation' },
+    { id: '5', title: '过敏维护', type: 'component', url: 'AllergyMaintain' },
+    { id: '6', title: '人群维护', type: 'component', url: 'PopulationMaintain' },
+    { id: '7', title: '年龄维护', type: 'iframe', url: '/Engine/Web?uri=dictionary/organDictionary/ageInfoList/ageInfoDataList.html' },
+    { id: '8', title: '检验维护', type: 'iframe', url: '/Engine/Web?uri=dictionary/organDictionary/checkItemList/checkItemList.html' },
+    { id: '9', title: 'TNA药品', type: 'iframe', url: '/Engine/Web?uri=dictionary/organDictionary/TANDrugList/TANDrugList.html' }
   ]
 }

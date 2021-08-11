@@ -1,47 +1,91 @@
 <template>
   <div class="layout-route">
+    <div class="flex">
+      <el-tabs class="full-width"
+               type="card"
+               v-model="active"
+               v-on:tab-click="handleClick">
+        <el-tab-pane v-for="menu in menuList"
+                     v-bind:key="menu.id"
+                     v-bind:name="menu.id"
+                     v-bind:label="menu.title">
+        </el-tab-pane>
+      </el-tabs>
+      <iframeContainer v-if="type === 'iframe'"
+                       class="bg-white q-pa-md"
+                       ref="iframe"
+                       v-bind:src="src"
+                       v-bind:full-height="true"></iframeContainer>
+      <div v-if="type === 'component'"
+           class="full-width bg-white ">
+        <component v-bind:is="src"></component>
+      </div>
 
-    <el-tabs type="card"
-             v-model="checkPos">
-      <el-tab-pane label="给药途径"
-                   lazy>
-        <ToDrugChannel></ToDrugChannel>
-      </el-tab-pane>
-      <el-tab-pane label="用药频次"
-                   lazy>
-        <ToDrugFrequency></ToDrugFrequency>
-      </el-tab-pane>
-      <el-tab-pane label="药品单位"
-                   lazy>
-        <DrugUnit></DrugUnit>
-      </el-tab-pane>
-      <!-- <el-tab-pane label="ICD"
-                   lazy>
-        <ICD10></ICD10>
-      </el-tab-pane> -->
-    </el-tabs>
-
+    </div>
   </div>
 </template>
 
-
 <script>
-import ToDrugChannel from './components/ToDrugChannel'
-import ToDrugFrequency from './components/ToDrugFrequency'
-import DrugUnit from './components/DrugUnit'
-// import ICD10 from './components/ICD10'
+import CONSTANT from './constant'
+import iframeContainer from '@src/views/iframe'
+import DrugPackagingInformation from './components/drug-packaging-information'
+import DiseaseMaintain from './components/disease-maintain'
+import AllergyMaintain from './components/allergy-maintain'
+import PopulationMaintain from './components/population-maintain'
+import ICD from './components/ICD'
+import DrugChannel from './components/drug-channel'
+import DrugFrequency from './components/drug-frequency'
+
+//import { dom } from 'quasar'
 
 export default {
-  name: 'DictionaryManagement',
+  name: 'RuleDictionary',
   components: {
-    ToDrugChannel,
-    ToDrugFrequency,
-    DrugUnit
-    // ICD10
+    iframeContainer,
+    DrugPackagingInformation,
+    DiseaseMaintain,
+    AllergyMaintain,
+    PopulationMaintain,
+    ICD,
+    DrugChannel,
+    DrugFrequency
   },
+
   data() {
     return {
-      checkPos: '0'
+      menuList: CONSTANT.menuList,
+      active: '',
+      type: '',
+      src: ''
+    }
+  },
+  created() {
+    this.active = '0'
+    this.type = this.menuList[Number(this.active)].type
+    if (this.type === 'component') {
+      this.src = this.menuList[Number(this.active)].url
+    } else {
+      this.src = process.env.VUE_APP_SITE_PRESCRIPTION + this.menuList[Number(this.active)].url
+    }
+  },
+  // mounted() {
+  //   this.$nextTick(function() {
+  //     // dom.offset 是 quasar 提供的工具类
+  //     // 自行了解相关 api 文档
+  //     const offset = dom.offset(this.$refs.iframe.$el)
+
+  //     // iframe 铺满全屏
+  //     this.$refs.iframe.$el.style.height = `${document.body.clientHeight - offset?.top - 20}px`
+  //   })
+  // },
+  methods: {
+    handleClick() {
+      this.type = this.menuList[Number(this.active)].type
+      if (this.type === 'component') {
+        this.src = this.menuList[Number(this.active)].url
+      } else {
+        this.src = process.env.VUE_APP_SITE_PRESCRIPTION + this.menuList[Number(this.active)].url
+      }
     }
   }
 }
