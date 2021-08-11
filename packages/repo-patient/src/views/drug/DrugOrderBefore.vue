@@ -656,7 +656,15 @@ export default {
           }
         })
         .catch((res) => {
-          if (res.data.code == '205') {
+          //处方作废提示
+          if (res.data.code == '202') {
+            return Dialog.confirm({
+              title: '提示',
+              message: res.data.msg,
+              confirmButtonText: '确定',
+              showCancelButton: false
+            })
+          } else if (res.data.code == '205') {
             return Dialog.confirm({
               title: '提示',
               message: res.data.msg,
