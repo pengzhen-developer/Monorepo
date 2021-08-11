@@ -4,11 +4,14 @@
                        :drugInfo="drugInfo"
                        :visitingTime="visitingTime"
                        @onClickDetail="onClickDetail"></MessageRecipeCard>
-    <PeaceDialog :visible.sync="recipeDetail.visible"
+
+    <PeaceDialog append-to-body
+                 title="处方详情"
                  v-if="recipeDetail.visible"
-                 append-to-body
-                 title="处方详情">
-      <RecipeDetail v-bind:data="recipeDetail.data"></RecipeDetail>
+                 v-bind:visible.sync="recipeDetail.visible">
+      <RecipeDetail v-bind:data="recipeDetail.data"
+                    v-on:accept="() => { recipeDetail.visible = false }"
+                    v-on:reject="() => { recipeDetail.visible = false }"></RecipeDetail>
     </PeaceDialog>
   </div>
 </template>
@@ -49,12 +52,14 @@ export default {
   },
   methods: {
     onClickDetail() {
+      this.recipeDetail.visible = true
+      this.recipeDetail.data = {}
+
       const params = {
         inquiry_no: this.message.content.data.inquiryInfo.inquiryNo,
         prescriptionId: this.message.content.data.recipeInfo.recipeId
       }
       Peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
-        this.recipeDetail.visible = true
         this.recipeDetail.data = res.data
       })
     }

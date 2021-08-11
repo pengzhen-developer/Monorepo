@@ -63,21 +63,21 @@
                           width="120">
           <template slot-scope="scope">
             <el-button type="text"
-                       v-if="scope.row.prescription_status === '质疑中'"
-                       v-on:click="change(scope.row)">修改处方</el-button>
-            <el-button type="text"
-                       v-else
                        v-on:click="showDetail(scope.row)">查看详情</el-button>
           </template>
         </PeaceTableColumn>
       </PeaceTable>
     </div>
 
-    <PeaceDialog v-bind:visible.sync="dialog.visible"
-                 append-to-body
-                 title="处方详情">
-      <RecipeDetail v-bind:data="dialog.data"></RecipeDetail>
+    <PeaceDialog append-to-body
+                 title="处方详情"
+                 v-if="dialog.visible"
+                 v-bind:visible.sync="dialog.visible">
+      <RecipeDetail v-on:accept="() => { dialog.visible = false; get() }"
+                    v-on:reject="() => { dialog.visible = false; get() }"
+                    v-bind:data="dialog.data"></RecipeDetail>
     </PeaceDialog>
+
   </div>
 </template>
 
@@ -173,21 +173,13 @@ export default {
       this.$refs.table.loadData({ fetch, params })
     },
 
-    change(row) {
-      const currentMenu = this.provideGetTab('PrescriptionDoubt')
-      currentMenu.menuRoute = '/record/prescription-doubt/' + row.id
-
-      // 跳转当前路由
-      this.provideAddTab(currentMenu)
-    },
-
     showDetail(row) {
       this.dialog.visible = true
-      this.dialog.data = {}
 
       const params = {
         prescriptionId: row.id
       }
+
       Peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
         this.dialog.data = res.data
       })

@@ -93,7 +93,8 @@
         <div class="row">
           <div class="col">
             <el-form-item label="过敏史：">
-              <span>{{ caseInfo.allergy_history || '无' }}</span>
+              <QuickSelectAllergyHistory class="full-width"
+                                         v-model="model.allergyHistoryList"></QuickSelectAllergyHistory>
             </el-form-item>
           </div>
         </div>
@@ -176,18 +177,23 @@ import Service from './service'
 import Type from '@src/type'
 import RecipeAudit from './RecipeAudit'
 import DrugSelect from '@src/views/components/drug/DrugSelect'
-import QuickSelectDiagnose from '@src/views/components/quick-select/src/components/QuickSelectDiagnose'
+import { QuickSelectAllergyHistory, QuickSelectDiagnose } from '@src/views/components/quick-select/index'
 
 export default {
   components: {
     QuickSelectDiagnose,
+    QuickSelectAllergyHistory,
+
     RecipeAudit,
     DrugSelect
   },
 
   props: {
     // 会话对象
-    session: Object
+    session: Object,
+
+    // 缓存键，处理【问诊】、【复诊】、【面诊】、【会诊】等场景下的处方缓存
+    cacheKey: String
   },
 
   data() {
@@ -204,6 +210,8 @@ export default {
         height: undefined,
         // 诊断
         diagnoseList: [],
+        // 过敏史
+        allergyHistoryList: [{ code: 'empty', name: '无' }],
         // 处方类型：院内、外延
         prescriptionTag: undefined,
         // 处方药品
@@ -266,13 +274,34 @@ export default {
     }
   },
 
-  created() {
+  async created() {
     // 验证是否建档
     // 北辰医院非建档用户，无法开具院内处方
-    this.checkIsBuilding()
+    await this.checkIsBuilding()
 
     // 带入病历信息
-    this.getCase()
+    await this.getCase()
+
+    // 带入缓存信息
+    if (this.cacheKey && Peace.cache.sessionStorage.get(this.cacheKey)) {
+      this.resetDataFromCache()
+    }
+  },
+
+  destroyed() {
+    if (this.removeCache) {
+      this.cacheKey && Peace.cache.sessionStorage.remove(this.cacheKey)
+    } else {
+      const recipeCache = {
+        weight: this.model.weight,
+        height: this.model.height,
+        diagnoseList: this.model.diagnoseList,
+        allergyHistoryList: this.model.allergyHistoryList,
+        drugList: this.model.drugList
+      }
+
+      this.cacheKey && Peace.cache.sessionStorage.set(this.cacheKey, recipeCache)
+    }
   },
 
   methods: {
@@ -295,9 +324,23 @@ export default {
           })
         }
 
+        this.model.allergyHistoryList = res.data.allergyHistoryList
         this.model.diagnoseList = res.data.diagnoseList
         this.caseInfo = res.data
       })
+    },
+
+    resetDataFromCache() {
+      const recipeCache = this.cacheKey && Peace.cache.sessionStorage.get(this.cacheKey)
+
+      if (recipeCache) {
+        this.model.weight = recipeCache.weight
+        this.model.height = recipeCache.height
+        this.model.drugList = recipeCache.drugList
+
+        this.model.allergyHistoryList = recipeCache.allergyHistoryList
+        this.model.diagnoseList = recipeCache.diagnoseList
+      }
     },
 
     // 北辰医院流程
@@ -316,8 +359,6 @@ export default {
             // 未建档，默认选择外延处方
             this.isBuilding = false
             this.model.prescriptionTag = 2
-
-            console.log('checkIsBuilding' + this.model.prescriptionTag)
           }
         })
       }
@@ -390,6 +431,7 @@ export default {
               // 系统验证成功，发送处方成功
               else {
                 Peace.util.success(res.msg)
+                this.removeCache = true
 
                 this.$emit('close')
               }
@@ -459,6 +501,7 @@ export default {
       Service.confirmSend(params)
         .then((res) => {
           Peace.util.success(res.msg)
+          this.removeCache = true
 
           this.$emit('close')
         })

@@ -7,19 +7,38 @@
       <source v-bind:src="require('@public/static/mp3/inquiry_notify_receiver.mp3')"
               type="audio/mp3">
     </audio>
+
+    <PeaceDialog append-to-body
+                 title="处方详情"
+                 v-if="recipeDetail.visible"
+                 v-bind:visible.sync="recipeDetail.visible">
+      <RecipeDetail v-bind:data="recipeDetail.data"
+                    v-on:accept="() => { recipeDetail.visible = false }"
+                    v-on:reject="() => { recipeDetail.visible = false }"></RecipeDetail>
+    </PeaceDialog>
   </div>
 </template>
 
 
 <script>
 import Service from './../service'
+import RecipeDetail from '@src/views/components/recipe/RecipeDetail'
 
 export default {
   inject: ['provideGetTab', 'provideAddTab'],
 
+  components: {
+    RecipeDetail
+  },
+
   data() {
     return {
-      orderVoiceRemind: undefined
+      orderVoiceRemind: undefined,
+
+      recipeDetail: {
+        visible: false,
+        data: {}
+      }
     }
   },
 
@@ -76,13 +95,14 @@ export default {
       }
 
       message.onAccept = () => {
-        message.onReject()
+        const params = {
+          prescriptionId: notifyObject.content.prescriptionId
+        }
 
-        const currentMenu = this.provideGetTab('PrescriptionDoubt')
-        currentMenu.menuRoute = '/record/prescription-doubt/' + notifyObject.content.prescriptionId
-
-        // 跳转当前路由
-        this.provideAddTab(currentMenu)
+        Peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
+          this.recipeDetail.visible = true
+          this.recipeDetail.data = res.data
+        })
       }
 
       message.onReject = () => {

@@ -52,8 +52,7 @@
       <el-row>
         <el-form-item label="过敏史："
                       prop="allergyHistoryList">
-          <QuickSelectAllergyHistory allow-create
-                                     class="full-width"
+          <QuickSelectAllergyHistory class="full-width"
                                      v-model="model.allergyHistoryList"></QuickSelectAllergyHistory>
         </el-form-item>
       </el-row>

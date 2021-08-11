@@ -46,19 +46,23 @@
                         min-width="180px"></PeaceTableColumn>
     </PeaceTable>
 
-    <PeaceDialog :visible.sync="dialog.visible"
-                 append-to-body
-                 title="处方详情">
-      <RecipeDetail :data="dialog.data"></RecipeDetail>
+    <PeaceDialog append-to-body
+                 title="处方详情"
+                 v-if="dialog.visible"
+                 v-bind:visible.sync="dialog.visible">
+      <RecipeDetail v-on:accept="() => { dialog.visible = false; reFetch() }"
+                    v-on:reject="() => { dialog.visible = false; reFetch() }"
+                    v-bind:data="dialog.data"></RecipeDetail>
     </PeaceDialog>
-
   </div>
 
 </template>
 
 <script>
 import { mutations, store } from './../store'
+import Service from '../service/index'
 import RecipeDetail from '@src/views/components/recipe/RecipeDetail'
+
 export default {
   inject: ['provideGetTab', 'provideAddTab'],
 
@@ -76,16 +80,33 @@ export default {
   },
 
   computed: {
-    recipeList() {
-      return store.patientRecipeList
+    storePatient() {
+      return store.activePatient
     },
 
     patientInfo() {
       return store.activePatient
+    },
+
+    recipeList() {
+      return store.patientRecipeList
     }
   },
 
   methods: {
+    reFetch() {
+      if (Peace.validate.isEmpty(this.storePatient?.patientNo)) {
+        return
+      }
+
+      const params = {
+        patientNo: this.storePatient.patientNo
+      }
+      Service.getRecipeList(params).then((res) => {
+        mutations.setPatientRecipeList(res.data.list)
+      })
+    },
+
     sendRecipe() {
       mutations.setShowWriteRecipe(true)
     },
@@ -106,6 +127,7 @@ export default {
       const params = {
         prescriptionId: row.prescriptionId
       }
+
       Peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
         this.dialog.data = res.data
       })

@@ -119,7 +119,6 @@ export default {
     },
 
     submit() {
-      debugger
       let items = []
       for (let item of [...this.checked]) {
         items.push({

@@ -185,7 +185,7 @@ export default {
 }
 
 .info-row {
-  margin-top: 4px;
+  margin-top: 8px;
   font-size: 0;
   display: flex;
   &-label,

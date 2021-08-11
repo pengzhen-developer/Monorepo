@@ -92,8 +92,7 @@
                           v-bind:show-message="false"
                           label="过敏史：">
               <div class="row">
-                <QuickSelectAllergyHistory allow-create
-                                           class="col"
+                <QuickSelectAllergyHistory class="col"
                                            v-model="model.allergyHistoryList"></QuickSelectAllergyHistory>
               </div>
             </el-form-item>
