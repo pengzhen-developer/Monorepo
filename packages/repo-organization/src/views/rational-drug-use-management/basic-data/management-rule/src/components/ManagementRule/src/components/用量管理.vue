@@ -47,7 +47,7 @@
       <div class="flex row items-center q-ml-8">
         <el-select v-model="model.timePeriod"
                    placeholder="请选择"
-                   style="width: 50px;">
+                   style="width: 60px;">
           <el-option v-for="item in periodType"
                      :key="item.value"
                      :label="item.label"
@@ -58,7 +58,7 @@
       <div class="flex row items-center q-ml-8">
         <el-select v-model="model.operator"
                    placeholder="请选择"
-                   style="width: 90px;">
+                   style="width: 100px;">
           <el-option v-for="item in compareList"
                      :key="item.value"
                      :label="item.label"
