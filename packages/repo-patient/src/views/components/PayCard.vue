@@ -511,7 +511,7 @@ export default {
       } else {
         if (!this.orderInfo.MedicalCardNo) {
           if (this.orderType === 3) {
-            if (this.orderInfo.source === 4 && this.orderInfo.insureTypeCode === 11) {
+            if (this.orderInfo.source === 4 && (this.orderInfo.insureTypeCode === 11 || this.orderInfo.insureTypeCode === 12)) {
               this.ybVisible = true
             }
           } else {
@@ -539,7 +539,7 @@ export default {
       } else {
         if (!this.orderInfo.medicalTreatmentType) {
           if (this.orderType === 3) {
-            if (this.orderInfo.source === 4 && this.orderInfo.insureTypeCode === 11) {
+            if (this.orderInfo.source === 4 && (this.orderInfo.insureTypeCode === 11 || this.orderInfo.insureTypeCode === 12)) {
               this.ybTypeVisible = true
             }
           } else {
@@ -573,7 +573,7 @@ export default {
       } else {
         if (!this.orderInfo.diseasesCode) {
           if (this.orderType === 3) {
-            if (this.orderInfo.source === 4 && this.orderInfo.insureTypeCode === 11) {
+            if (this.orderInfo.source === 4 && (this.orderInfo.insureTypeCode === 11 || this.orderInfo.insureTypeCode === 12)) {
               this.ybMunterDiseaseVisible = true
             }
           } else {

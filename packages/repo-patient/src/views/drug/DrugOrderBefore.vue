@@ -509,7 +509,7 @@ export default {
     chooseYibao() {
       // source 处方来源：1 复诊  2 会诊 3 面诊 4 问诊 5 转诊
       if (this.isInquirySource) {
-        // insureTypeCode 0自费 11医保
+        // insureTypeCode 0自费 11医保 12门特
         if (this.order.insureTypeCode === 11 && !this.order.MedicalCardNo) {
           this.showCard = true
         }
@@ -805,8 +805,9 @@ export default {
         this.payInfo.medicalTreatmentTypeText = this.order.medicalTreatmentTypeTxt
         this.payInfo.diseasesCode = this.order.diseasesCode
         this.payInfo.diseasesName = this.order.diseasesName
-
-        this.payType = (this.order.source === 4 && this.order.insureTypeCode === 11) || this.order.MedicalCardNo ? 'yibaopay' : ''
+        //insureTypeCode 0自费 11医保 12门特
+        this.payType =
+          (this.order.source === 4 && (this.order.insureTypeCode === 11 || this.order.insureTypeCode === 12)) || this.order.MedicalCardNo ? 'yibaopay' : ''
 
         this.getOrganizationTelephone()
       })
