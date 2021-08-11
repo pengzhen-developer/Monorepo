@@ -203,9 +203,15 @@
     </van-image-preview>
 
     <!-- 确认支付弹框 -->
-    <ExpenseDetail v-model="dialog.visible"
-                   :info="dialog.data"></ExpenseDetail>
-
+    <template>
+      <ExpenseDetail v-model="dialog.visible"
+                     :info="dialog.data"></ExpenseDetail>
+    </template>
+    <!-- 电话弹框 -->
+    <template>
+      <CallPhone v-model="phoneDialog.visible"
+                 :phone="phoneDialog.data.phone"></CallPhone>
+    </template>
   </div>
 </template>
 
@@ -213,6 +219,7 @@
 import PayCard from '@src/views/components/PayCard.vue'
 import ExpenseDetail from '@src/views/components/ExpenseDetail'
 import InquiryStageMark from '@src/views/components/InquiryStageMark'
+import CallPhone from '@src/views/components/CallPhone'
 
 import peace from '@src/library'
 
@@ -256,7 +263,8 @@ export default {
     [Dialog.Component.name]: Dialog.Component,
     PayCard,
     ExpenseDetail,
-    InquiryStageMark
+    InquiryStageMark,
+    CallPhone
   },
   props: {
     data: {
@@ -282,6 +290,12 @@ export default {
       dialog: {
         visible: false,
         data: {}
+      },
+      phoneDialog: {
+        visible: false,
+        data: {
+          phone: ''
+        }
       },
       //默认选中微信支付 wxpay alipay
       paymentType: 'wxpay',
@@ -315,7 +329,8 @@ export default {
         // 所选商保ID
         sbInsuranceId: '',
         // 所选商保名称
-        sbInsuranceName: ''
+        sbInsuranceName: '',
+        serviceTel: ''
       },
       enter_time: '',
       isSend: false
@@ -444,6 +459,7 @@ export default {
         .then((res) => {
           this.doctorInfo = res.data.doctorInfo
           this.familyInfo = res.data.familyInfo
+          this.getOrganizationTelephone()
         })
         .finally(() => {
           this.loading = false
@@ -635,15 +651,20 @@ export default {
               title: '提示',
               message: res.data.msg,
               confirmButtonText: '确定',
-              showCancelButton: false
-            }).then(() => {
-              /**
-               *  2021-07-06
-               *  V1.12.0 逻辑改了，先划价，再生成订单 ； 故只弹提示，不跳转详情
-               *
-               * */
-              // this.goToConsultDetail(res.data.data)
+              cancelButtonText: '联系客服'
             })
+              .then(() => {
+                /**
+                 *  2021-07-06
+                 *  V1.12.0 逻辑改了，先划价，再生成订单 ； 故只弹提示，不跳转详情
+                 *
+                 * */
+                // this.goToConsultDetail(res.data.data)
+              })
+              .catch(() => {
+                //医保卡不可用 请联系客服
+                this.callPhone()
+              })
           } else {
             peace.util.alert(res.data.msg)
           }
@@ -651,6 +672,19 @@ export default {
         .finally(() => {
           this.sending = false
         })
+    },
+    callPhone() {
+      this.phoneDialog.visible = true
+    },
+    //获取机构客服电话
+    getOrganizationTelephone() {
+      const params = {
+        hosoitalId: this.doctorInfo.nethospitalId || peace.cache.get(peace.type.SYSTEM.NETHOSPITALID)
+      }
+      peace.service.hospital.getOrganizationTelephone(params).then((res) => {
+        this.payInfo.serviceTel = res.data.serviceTel
+        this.phoneDialog.data.phone = res.data.serviceTel
+      })
     },
     goToMessage(data) {
       const params = peace.util.encode({

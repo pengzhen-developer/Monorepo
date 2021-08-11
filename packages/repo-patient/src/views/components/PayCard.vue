@@ -131,6 +131,7 @@
     <SelectYibaoCard v-if="showYb"
                      v-model="ybVisible"
                      :info="ybData"
+                     :serviceTel="innerPayInfo.serviceTel"
                      @onSuccess="confirmYbInsurance"></SelectYibaoCard>
 
     <!-- 医保类型 -->
@@ -291,7 +292,9 @@ export default {
         // 所选商保ID
         sbInsuranceId: '',
         // 所选商保名称
-        sbInsuranceName: ''
+        sbInsuranceName: '',
+
+        serviceTel: ''
       },
 
       // 是否显示医保

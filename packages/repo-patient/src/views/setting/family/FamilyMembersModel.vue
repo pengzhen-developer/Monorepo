@@ -115,6 +115,7 @@
       <YibaoCardAdd v-model="showCard"
                     :familyInfo="model"
                     :cardInfo="currentYibaoCard"
+                    :serviceTel="serviceTel"
                     @onSuccess="onSuccess"></YibaoCardAdd>
     </template>
     <!-- 添加家人 -->
@@ -429,7 +430,9 @@ export default {
       childInfo: {},
       canShowSelf: true,
       loading: false,
-      hasClick: false
+      hasClick: false,
+
+      serviceTel: ''
     }
   },
 
@@ -515,9 +518,18 @@ export default {
     if (json.canShowSelf) {
       this.canShowSelf = json.canShowSelf == 1 ? true : false
     }
+    this.getOrganizationTelephone()
   },
 
   methods: {
+    getOrganizationTelephone() {
+      const params = {
+        hosoitalId: peace.cache.get(peace.type.SYSTEM.NETHOSPITALID) || ''
+      }
+      peace.service.hospital.getOrganizationTelephone(params).then((res) => {
+        this.serviceTel = res.data.serviceTel
+      })
+    },
     checkName() {
       this.error.name = !this.model.name ? '姓名不能为空' : ''
     },

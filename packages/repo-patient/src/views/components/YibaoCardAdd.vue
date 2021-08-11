@@ -31,13 +31,24 @@
                 :disabled="loading"
                 :loading="loading"
                 size="large">保存</van-button>
+
+    <!-- 电话弹框 -->
+    <template>
+      <CallPhone v-model="phoneDialog.visible"
+                 :phone="phoneDialog.data.phone"></CallPhone>
+    </template>
+
   </van-popup>
 </template>
 
 <script>
 import peace from '@src/library'
+import CallPhone from '@src/views/components/CallPhone'
+
+import { Dialog } from 'vant'
 export default {
   name: 'AddYiBaoCard',
+  components: { [Dialog.Component.name]: Dialog.Component, CallPhone },
   model: {
     prop: 'showCard',
     event: 'changeFlag'
@@ -53,6 +64,10 @@ export default {
     },
     cardInfo: {
       type: Object,
+      required: false
+    },
+    serviceTel: {
+      type: String,
       required: false
     }
   },
@@ -71,7 +86,13 @@ export default {
     return {
       medCardNo: '',
       show: false,
-      loading: false
+      loading: false,
+      phoneDialog: {
+        visible: false,
+        data: {
+          phone: ''
+        }
+      }
     }
   },
   watch: {
@@ -108,11 +129,28 @@ export default {
         }
       } catch (error) {
         console.log('error', error)
+        if (error.data.code === 205) {
+          Dialog.confirm({
+            title: '提示',
+            message: error.data.msg,
+            confirmButtonText: '确定',
+            cancelButtonText: '联系客服'
+          })
+            .then(() => {})
+            .catch(() => {
+              //医保卡不可用 请联系客服
+              this.callPhone()
+            })
+        }
         return
       }
       this.$emit('onSuccess', true)
       this.changeFlag()
       this.loading = false
+    },
+    callPhone() {
+      this.phoneDialog.visible = true
+      this.phoneDialog.data.phone = this.serviceTel
     },
     addCard() {
       const params = {

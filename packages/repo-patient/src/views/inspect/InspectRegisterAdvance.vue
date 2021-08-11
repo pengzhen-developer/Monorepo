@@ -49,9 +49,16 @@
       </div>
 
       <!-- 确认支付弹框 -->
-      <ExpenseDetail v-model="payDialog.visible"
-                     @changeFlag="changeFlag"
-                     :info="payDialog.data"></ExpenseDetail>
+      <template>
+        <ExpenseDetail v-model="payDialog.visible"
+                       @changeFlag="changeFlag"
+                       :info="payDialog.data"></ExpenseDetail>
+      </template>
+      <!-- 电话弹框 -->
+      <template>
+        <CallPhone v-model="phoneDialog.visible"
+                   :phone="phoneDialog.data.phone"></CallPhone>
+      </template>
 
     </div>
   </div>
@@ -66,6 +73,7 @@ import FamilyCard from './components/FamilyCard'
 import InspectCard from './components/InspectCard'
 import PayCard from '@src/views/components/PayCard'
 import ExpenseDetail from '@src/views/components/ExpenseDetail'
+import CallPhone from '@src/views/components/CallPhone'
 
 export default {
   name: 'InspectRegisterAdvance',
@@ -75,6 +83,7 @@ export default {
     InspectCard,
     PayCard,
     ExpenseDetail,
+    CallPhone,
     [Dialog.Component.name]: Dialog.Component
   },
 
@@ -123,7 +132,9 @@ export default {
         // 所选商保ID
         sbInsuranceId: '',
         // 所选商保名称
-        sbInsuranceName: ''
+        sbInsuranceName: '',
+
+        serviceTel: ''
       },
 
       // 支付弹窗
@@ -149,6 +160,8 @@ export default {
           this.familyInfo = res.data?.familyInfo || {}
           this.inspectList = res.data?.comboList || []
           this.payInfo.orderMoney = res.data?.totalMoney || 0
+
+          this.getOrganizationTelephone()
         })
         .finally(() => {
           this.loading.get = false
@@ -166,7 +179,19 @@ export default {
       this.payDialog.visible = false
       this.getDetail()
     },
-
+    callPhone() {
+      this.phoneDialog.visible = true
+    },
+    //获取机构客服电话
+    getOrganizationTelephone() {
+      const params = {
+        hosoitalId: this.model.doctorInfo.nethospitalId
+      }
+      peace.service.hospital.getOrganizationTelephone(params).then((res) => {
+        this.payInfo.serviceTel = res.data.serviceTel
+        this.phoneDialog.data.phone = res.data.serviceTel
+      })
+    },
     submit() {
       // 检验挂号单只有 微信支付、医保支付
       let errMsg = ''
@@ -225,6 +250,23 @@ export default {
           }
           this.payDialog.data = json
           this.payDialog.visible = true
+        })
+        .catch((res) => {
+          if (res.data.code == '205') {
+            return Dialog.confirm({
+              title: '提示',
+              message: res.data.msg,
+              confirmButtonText: '确定',
+              cancelButtonText: '联系客服'
+            })
+              .then(() => {})
+              .catch(() => {
+                //医保卡不可用 请联系客服
+                this.callPhone()
+              })
+          } else {
+            peace.util.alert(res.data.msg)
+          }
         })
         .finally(() => {
           this.loading.submit = false

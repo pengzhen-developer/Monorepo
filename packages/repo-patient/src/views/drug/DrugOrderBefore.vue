@@ -221,8 +221,15 @@
 
     </template>
     <!-- 确认支付弹框 -->
-    <ExpenseDetail v-model="dialog.visible"
-                   :info="dialog.data"></ExpenseDetail>
+    <template>
+      <ExpenseDetail v-model="dialog.visible"
+                     :info="dialog.data"></ExpenseDetail>
+    </template>
+    <!-- 电话弹框 -->
+    <template>
+      <CallPhone v-model="phoneDialog.visible"
+                 :phone="phoneDialog.data.phone"></CallPhone>
+    </template>
   </div>
 </template>
 
@@ -231,11 +238,14 @@ import PayCard from '@src/views/components/PayCard.vue'
 import YibaoCaedSelect from '@src/views/components/YibaoCardSelect'
 import DrugInformedConsent from '@src/views/components/DrugInformedConsent'
 import ExpenseDetail from '@src/views/components//ExpenseDetail'
+import CallPhone from '@src/views/components/CallPhone'
+
 import peace from '@src/library'
 
+import { Dialog } from 'vant'
 export default {
   name: 'DrugOrderBefore',
-  components: { YibaoCaedSelect, ExpenseDetail, DrugInformedConsent, PayCard },
+  components: { [Dialog.Component.name]: Dialog.Component, YibaoCaedSelect, ExpenseDetail, DrugInformedConsent, PayCard, CallPhone },
   data() {
     return {
       payList: [],
@@ -274,6 +284,12 @@ export default {
         visible: false,
         data: {}
       },
+      phoneDialog: {
+        visible: false,
+        data: {
+          phone: ''
+        }
+      },
       informedConsentDialog: {
         visible: false,
         informedConsent: ''
@@ -310,7 +326,9 @@ export default {
         // 所选商保ID
         sbInsuranceId: '',
         // 所选商保名称
-        sbInsuranceName: ''
+        sbInsuranceName: '',
+
+        serviceTel: ''
       },
       coldStorageError: false,
       packageUnitTagError: false,
@@ -637,9 +655,39 @@ export default {
             this.dialog.data = params
           }
         })
+        .catch((res) => {
+          if (res.data.code == '205') {
+            return Dialog.confirm({
+              title: '提示',
+              message: res.data.msg,
+              confirmButtonText: '确定',
+              cancelButtonText: '联系客服'
+            })
+              .then(() => {})
+              .catch(() => {
+                //医保卡不可用 请联系客服
+                this.callPhone()
+              })
+          } else {
+            peace.util.alert(res.data.msg)
+          }
+        })
         .finally(() => {
           this.hasSubmitOrder = true
         })
+    },
+    callPhone() {
+      this.phoneDialog.visible = true
+    },
+    //获取机构客服电话
+    getOrganizationTelephone() {
+      const params = {
+        hosoitalId: this.order.hospitalId
+      }
+      peace.service.hospital.getOrganizationTelephone(params).then((res) => {
+        this.payInfo.serviceTel = res.data.serviceTel
+        this.phoneDialog.data.phone = res.data.serviceTel
+      })
     },
     payCallback() {
       let orderId = ''
@@ -759,6 +807,8 @@ export default {
         this.payInfo.diseasesName = this.order.diseasesName
 
         this.payType = (this.order.source === 4 && this.order.insureTypeCode === 11) || this.order.MedicalCardNo ? 'yibaopay' : ''
+
+        this.getOrganizationTelephone()
       })
     },
 

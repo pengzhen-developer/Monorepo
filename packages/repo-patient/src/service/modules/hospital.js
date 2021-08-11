@@ -89,7 +89,25 @@ export function getBookingDept(params) {
     }
   })
 }
+
+/**
+ * 查询机构客服电话
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getOrganizationTelephone(params) {
+  const url = 'client/v1/nethospital/detail'
+
+  return peace.http.post(url, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
 export default {
+  getOrganizationTelephone, //获取客服电话
   getNethospitalList, // 医院列表 [取单业务]
 
   getHospitalInfo, // 医院详情

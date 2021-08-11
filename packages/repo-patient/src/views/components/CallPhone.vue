@@ -2,7 +2,8 @@
   <!-- 电话弹框 -->
   <van-popup v-model="show"
              @click-overlay="change"
-             position="center">
+             position="center"
+             class="phone">
     <div class="tel--content">
       <div class="tel--item">客服电话</div>
       <div class="tel--item">{{phone}}</div>
@@ -49,32 +50,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.van-popup {
-  width: 80%;
-  .tel--content {
-    padding: 25px 16px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
-  .tel-footer {
-    height: 50px;
-    border-top: 1px solid #ddd;
-    display: flex;
-    width: 100%;
-    .tel--footer {
-      flex: 1;
+.phone {
+  &.van-popup {
+    width: 80%;
+    padding: 0;
+    .tel--content {
+      padding: 25px 16px 20px;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
+    }
+    .tel-footer {
+      height: 50px;
+      border-top: 1px solid #ddd;
+      display: flex;
+      width: 100%;
+      .tel--footer {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-      > a {
-        color: $primary;
-      }
-      &:first-child {
-        border-right: 1px solid #ddd;
-        color: #999;
+        > a {
+          color: $primary;
+        }
+        &:first-child {
+          border-right: 1px solid #ddd;
+          color: #999;
+        }
       }
     }
   }

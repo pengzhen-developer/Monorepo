@@ -34,13 +34,23 @@
                   :disabled="loading"
                   :loading="loading">确认</van-button>
     </div>
+
+    <!-- 电话弹框 -->
+    <template>
+      <CallPhone v-model="phoneDialog.visible"
+                 :phone="phoneDialog.data.phone"></CallPhone>
+    </template>
   </van-popup>
 </template>
 
 <script>
 import peace from '@src/library'
+import CallPhone from '@src/views/components/CallPhone'
+
+import { Dialog } from 'vant'
 export default {
   name: 'YiBaoCardSelect',
+  components: { [Dialog.Component.name]: Dialog.Component, CallPhone },
   model: {
     prop: 'showCard',
     event: 'changeFlag'
@@ -53,6 +63,10 @@ export default {
     info: {
       type: Object,
       required: true
+    },
+    serviceTel: {
+      type: String,
+      required: false
     }
   },
   computed: {
@@ -76,6 +90,12 @@ export default {
         totalAmount: '0',
         poolingFundAmount: '0',
         personalAccountAmount: '0'
+      },
+      phoneDialog: {
+        visible: false,
+        data: {
+          phone: ''
+        }
       }
     }
   },
@@ -121,6 +141,19 @@ export default {
         }
       } catch (error) {
         console.log('error', error)
+        if (error.data.code === 205) {
+          Dialog.confirm({
+            title: '提示',
+            message: error.data.msg,
+            confirmButtonText: '确定',
+            cancelButtonText: '联系客服'
+          })
+            .then(() => {})
+            .catch(() => {
+              //医保卡不可用 请联系客服
+              this.callPhone()
+            })
+        }
         return
       }
       this.yibaoInfo = {
@@ -130,6 +163,10 @@ export default {
       this.$emit('onSuccess', { checked: true, yibaoInfo: this.yibaoInfo })
       this.changeFlag()
       this.loading = false
+    },
+    callPhone() {
+      this.phoneDialog.visible = true
+      this.phoneDialog.data.phone = this.serviceTel
     },
     //添加医保卡
     addCard() {
