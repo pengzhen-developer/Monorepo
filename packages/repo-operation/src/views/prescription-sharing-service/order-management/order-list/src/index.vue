@@ -15,19 +15,19 @@
 
         <el-form-item label="订单来源">
           <el-input v-model="model.Source"
-                    placeholder="请输入订单来源"
+                    placeholder="请输入"
                     clearable></el-input>
         </el-form-item>
 
         <el-form-item label="客户姓名">
           <el-input v-model="model.CustName"
-                    placeholder="请输入客户姓名"
+                    placeholder="请输入"
                     clearable></el-input>
         </el-form-item>
 
         <el-form-item label="药房">
           <el-input v-model="model.DrugStoreName"
-                    placeholder="请输入药房名称"
+                    placeholder="请输入"
                     clearable></el-input>
         </el-form-item>
 
