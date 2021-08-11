@@ -2,20 +2,23 @@
   <div class="fit">
     <!-- 消息组件 -->
     <!-- 消息组件位于其它组件的底部，当业务组件激活时，使用 'fixed-none' 样式使之不可见 -->
-    <div class="fit flex column" v-bind:class="{ 'fixed-none': componentInstance }">
-      <q-scroll-area class="content" ref="scrollArea" v-bind:thumb-style="thumbStyle">
-        <el-alert
-          show-icon
-          type="warning"
-          style="height: 44px; position: -webkit-sticky; position: sticky; top: 0; z-index: 10"
-          v-if="session.content.inquiryInfo.isUseServicePackage"
-          v-bind:closable="false"
-        >
-          <div slot="title" class="absolute full-height full-width q-pr-xl">
+    <div class="fit flex column"
+         v-bind:class="{ 'fixed-none': componentInstance }">
+      <q-scroll-area class="content"
+                     ref="scrollArea"
+                     v-bind:thumb-style="thumbStyle">
+        <el-alert show-icon
+                  type="warning"
+                  style="height: 44px; position: -webkit-sticky; position: sticky; top: 0; z-index: 10"
+                  v-if="session.content.inquiryInfo.isUseServicePackage"
+                  v-bind:closable="false">
+          <div slot="title"
+               class="absolute full-height full-width q-pr-xl">
             <div class="relative-position full-height full-width">
               <div class="flex items-center justify-between full-height">
                 <span>患者是服务包权益用户，可提供开处方服务</span>
-                <span v-on:click="gotoFaceToFace" class="text-warning cursor-pointer">去开方 <i class="el-icon-arrow-right"></i></span>
+                <span v-on:click="gotoFaceToFace"
+                      class="text-warning cursor-pointer">去开方 <i class="el-icon-arrow-right"></i></span>
               </div>
             </div>
           </div>
@@ -29,9 +32,13 @@
     </div>
 
     <!-- 业务组件 ： 发病历 / 发处方 -->
-    <div class="fit flex column" v-if="componentInstance">
-      <q-scroll-area class="content" v-bind:thumb-style="thumbStyle">
-        <Component v-bind:is="componentInstance" v-bind:session="session" v-on:close="close"> </Component>
+    <div class="fit flex column"
+         v-if="componentInstance">
+      <q-scroll-area class="content"
+                     v-bind:thumb-style="thumbStyle">
+        <Component v-bind:is="componentInstance"
+                   v-bind:session="session"
+                   v-on:close="close"> </Component>
       </q-scroll-area>
     </div>
   </div>
@@ -140,7 +147,7 @@ export default {
 }
 
 .fixed-none {
-  position: absolute;
+  position: fixed;
   left: -99999px;
   visibility: hidden;
 }
