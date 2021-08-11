@@ -10,7 +10,7 @@
       </div>
     </el-alert>
 
-    <div class="q-pa-lg col overflow-auto">
+    <div class="col q-pa-lg q-mb-md overflow-auto">
       <el-input v-model="filterText"
                 clearable
                 placeholder="输入关键字进行过滤"></el-input>
@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <div class="footer justify-center flex">
+    <div class="footer flex justify-center q-mb-md">
       <el-button v-on:click="close">取消</el-button>
       <el-button type="primary"
                  v-bind:disabled="checked.length === 0"
@@ -70,7 +70,7 @@ export default {
 
   async created() {
     this.$nextTick(() => {
-      this.$el.style.height = document.body.clientHeight - this.$el.offsetHeight - 20 + 'px'
+      this.$el.style.height = document.body.clientHeight - this.$el.getBoundingClientRect().top - 20 + 'px'
     })
 
     this.data = await this.loadData()
