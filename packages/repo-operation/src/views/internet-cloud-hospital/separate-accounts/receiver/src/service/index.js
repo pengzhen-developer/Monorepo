@@ -4,7 +4,7 @@ export default {
    * @param {*} params
    */
   getSubMchList(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/getSubMchList'
+    const apiPath = 'nethospital/operate/wechat_account/getSubMchList'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)
@@ -15,7 +15,7 @@ export default {
    * @param {*} params
    */
   getOrganizationList(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/getOrganizationList'
+    const apiPath = 'nethospital/operate/wechat_account/getOrganizationList'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)
@@ -26,7 +26,7 @@ export default {
    * @param {*} params
    */
   addSubMch(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/addSubMch'
+    const apiPath = 'nethospital/operate/wechat_account/addSubMch'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)
@@ -36,7 +36,7 @@ export default {
    * @param {*} params
    */
   updateSubMch(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/updateSubMch'
+    const apiPath = 'nethospital/operate/wechat_account/updateSubMch'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)
@@ -45,7 +45,7 @@ export default {
    * 删除子商户号信息
    */
   delSubMch(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/delSubMch'
+    const apiPath = 'nethospital/operate/wechat_account/delSubMch'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)
@@ -56,7 +56,7 @@ export default {
    * @param {*} params
    */
   receiverManage(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/receiverManage'
+    const apiPath = 'nethospital/operate/wechat_account/receiverManage'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)
@@ -66,7 +66,7 @@ export default {
    * @param {*} params
    */
   addReceiver(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/addReceiver'
+    const apiPath = 'nethospital/operate/wechat_account/addReceiver'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)
@@ -76,7 +76,7 @@ export default {
    * @param {*} params
    */
   delReceiver(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/delReceiver'
+    const apiPath = 'nethospital/operate/wechat_account/delReceiver'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)
@@ -86,7 +86,7 @@ export default {
    * @param {*} params
    */
   getMchByCustCode(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/getMchByCustCode'
+    const apiPath = 'nethospital/operate/wechat_account/getMchByCustCode'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)

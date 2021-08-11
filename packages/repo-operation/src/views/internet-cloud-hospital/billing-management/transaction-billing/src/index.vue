@@ -74,7 +74,11 @@
                           min-width="120px"></PeaceTableColumn>
         <PeaceTableColumn label="订单类型"
                           min-width="100px"
-                          prop="orderTypeTxt"></PeaceTableColumn>
+                          prop="orderType">
+          <template slot-scope="scope">
+            {{ scope.row.orderType | filterDictionaryFuzzy(source.orderType)}}
+          </template>
+        </PeaceTableColumn>
         <PeaceTableColumn label="订单状态"
                           min-width="100px"
                           prop="orderStatusTxt"></PeaceTableColumn>
@@ -295,7 +299,7 @@ export default {
   },
 
   async mounted() {
-    this.source.orderType = await Peace.identity.dictionary.getList('order_service_type')
+    this.source.orderType = await Peace.identity.dictionary.getList('service_order_type')
     this.$nextTick().then(() => {
       this.fetch()
     })

@@ -60,8 +60,8 @@
             <el-select v-model="rule.orderType"
                        @change="selectOrderType">
               <el-option v-for="(item,index) in orderType"
-                         :label="item.value"
-                         :value="item.key"
+                         :label="item.label"
+                         :value="item.value"
                          :key="index"></el-option>
             </el-select>
           </el-form-item>
@@ -159,7 +159,8 @@ import Util from '../util/utils'
 export default {
   name: 'SeparateRuleModel',
   props: {
-    info: Object
+    info: Object,
+    orderTypes: Array
   },
   data() {
     return {
@@ -205,15 +206,22 @@ export default {
           }
         ]
       },
-      profitsharingRuleListBefore: []
+      profitsharingRuleListBefore: [],
+      source: {
+        orderType: []
+      }
     }
   },
   computed: {
     orderType() {
-      if (this.model.serviceType == 1) {
-        return Constant.orderType.filter((item) => item.value != '购药订单')
+      if (this.source.orderType.length > 0) {
+        if (this.model.serviceType == 1) {
+          return this.source.orderType.filter((item) => item.value != '3')
+        } else {
+          return this.source.orderType.filter((item) => item.value == '3')
+        }
       } else {
-        return Constant.orderType.filter((item) => item.value == '购药订单')
+        return []
       }
     },
 
@@ -237,12 +245,13 @@ export default {
     } else {
       this.model = Object.assign({}, this.model, this.info)
     }
-
+    this.source.orderType = this.orderTypes
     this.profitsharingRuleListBefore = Peace.util.deepClone(this.model.profitsharingRule)
     Constant.serviceTypes.map((item) => {
       this.getOrganizationList(item.key)
     })
   },
+
   methods: {
     changeIsProfitsharing(item, index) {
       if (item.accounts.length == 0 && item.isProfitsharing == 1) {

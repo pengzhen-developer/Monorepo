@@ -37,13 +37,12 @@
         </peace-table-column>
         <peace-table-column min-width="140px"
                             label="服务类型"
-                            prop="serviceType">
-          <template slot-scope="scope">
-            {{ serviceTyprText(scope.row.serviceType) }} </template>
+                            prop="serviceTypeStr">
         </peace-table-column>
         <peace-table-column min-width="180px"
                             label="已配置订单类型"
-                            prop="orderTypeStr"></peace-table-column>
+                            prop="orderTypeStr">
+        </peace-table-column>
         <peace-table-column min-width="180px"
                             label="创建时间"
                             prop="createdTime"></peace-table-column>
@@ -77,6 +76,7 @@
                   v-bind:visible.sync="modelDialog.visible"
                   :title="modelDialog.type=='add'?'新增机构规则':'编辑机构规则'">
       <SeparateRuleModel v-bind:info='modelDialog.info'
+                         v-bind:orderTypes="source.orderType"
                          v-if="modelDialog.visible"
                          v-on:onSucess="onSucess"
                          v-on:onCancel="onCancel"></SeparateRuleModel>
@@ -89,6 +89,7 @@
                   v-bind:visible.sync="detailDialog.visible"
                   title="机构规则详情">
       <SeparateRuleDetail v-bind:info='detailDialog.info'
+                          v-bind:orderTypes="source.orderType"
                           v-on:onSucess="onSucess"
                           v-on:onCancel="onCancel"></SeparateRuleDetail>
     </peace-dialog>
@@ -123,18 +124,21 @@ export default {
         visible: false,
         info: {},
         type: false
+      },
+      source: {
+        orderType: []
       }
     }
   },
-  mounted() {
+  async mounted() {
+    const orderTypes = await Peace.identity.dictionary.getList('service_order_type')
+    orderTypes.forEach((item) => (item.value = parseInt(item.value)))
+    this.source.orderType = Peace.util.deepClone(orderTypes)
     this.$nextTick().then(() => {
       this.get()
     })
   },
   methods: {
-    serviceTyprText(key) {
-      return Constant.serviceTypes.find((item) => item.key == key).value
-    },
     get() {
       const fetch = Service.getProfitsharingRuleList
       const params = this.model

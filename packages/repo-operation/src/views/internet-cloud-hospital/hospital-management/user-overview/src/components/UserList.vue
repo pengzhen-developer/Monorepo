@@ -102,7 +102,7 @@
                     title="家人信息"
                     v-if="familyDialogVisible"
                     append-to-body
-                    width="800px">
+                    width="1000px">
         <FamilyDetails :id="currentId" />
       </peace-dialog>
       <peace-dialog :close-on-click-modal="false"
@@ -111,7 +111,7 @@
                     title="处方信息"
                     v-if="presDialogVisible"
                     append-to-body
-                    width="800px">
+                    width="1000px">
         <PresDetails :id="currentId" />
       </peace-dialog>
       <peace-dialog :close-on-click-modal="false"
@@ -120,7 +120,7 @@
                     title="问诊信息"
                     v-if="inquiryDialogVisible"
                     append-to-body
-                    width="800px">
+                    width="1000px">
         <InquiryDetails :id="currentId" />
       </peace-dialog>
 
@@ -130,7 +130,7 @@
                     title="服务包信息"
                     v-if="serviceDialogVisible"
                     append-to-body
-                    width="800px">
+                    width="1000px">
         <ServiceDetails :id="currentId" />
       </peace-dialog>
     </div>

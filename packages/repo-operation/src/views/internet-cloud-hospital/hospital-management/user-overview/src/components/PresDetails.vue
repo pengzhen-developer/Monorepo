@@ -11,12 +11,12 @@
                 class="table"
                 size="small">
       <PeaceTableColumn label="处方编号"
-                        min-width="145"
+                        min-width="150"
                         prop="prescriptionNo"></PeaceTableColumn>
       <PeaceTableColumn label="医生"
                         prop="doctorName"></PeaceTableColumn>
       <PeaceTableColumn label="医疗机构"
-                        min-width="160"
+                        min-width="150"
                         prop="hospitalName"></PeaceTableColumn>
       <PeaceTableColumn label="科室"
                         min-width="100"
@@ -28,10 +28,10 @@
                         min-width="145"
                         prop="familyIdCard"></PeaceTableColumn>
       <PeaceTableColumn label="处方状态"
-                        min-width="100"
+                        min-width="90"
                         prop="prescriptionStatus"></PeaceTableColumn>
       <PeaceTableColumn label="处方开具时间"
-                        min-width="145"
+                        min-width="160"
                         prop="createdTime"></PeaceTableColumn>
     </PeaceTable>
     <el-pagination :current-page.sync="pageNumber"

@@ -5,7 +5,7 @@ export default {
    * @param {*} params
    */
   addProfitsharingRule(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/addProfitsharingRule'
+    const apiPath = 'nethospital/operate/wechat_account/addProfitsharingRule'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)
@@ -16,7 +16,7 @@ export default {
    * @param {*} params
    */
   editProfitsharingRule(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/editProfitsharingRule'
+    const apiPath = 'nethospital/operate/wechat_account/editProfitsharingRule'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)
@@ -27,7 +27,7 @@ export default {
    * @param {*} params
    */
   getOrganizationList(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/getOrganizationList'
+    const apiPath = 'nethospital/operate/wechat_account/getOrganizationList'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)
@@ -38,7 +38,7 @@ export default {
    * @param {*} params
    */
   getReceiverList(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/receiverList'
+    const apiPath = 'nethospital/operate/wechat_account/receiverList'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)
@@ -49,7 +49,7 @@ export default {
    * @param {*} params
    */
   getProfitsharingRuleList(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/profitsharingRuleList'
+    const apiPath = 'nethospital/operate/wechat_account/profitsharingRuleList'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)
@@ -60,7 +60,7 @@ export default {
    * @param {*} params
    */
   delProfitsharingRule(params) {
-    const apiPath = 'nethospital/operate/WechatAccount/delProfitsharingRule'
+    const apiPath = 'nethospital/operate/wechat_account/delProfitsharingRule'
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
     const requestApi = serverPath
     return Peace.http.post(requestApi, params)

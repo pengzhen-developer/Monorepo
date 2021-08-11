@@ -22,7 +22,7 @@
                         prop="age"></PeaceTableColumn>
       <PeaceTableColumn label="订单类型">
         <template slot-scope="scope">
-          <div>{{ scope.row.inquiryType | filterDictionary(source.inquiryType) }}</div>
+          <div>{{ scope.row.orderType | filterDictionaryFuzzy(source.orderType) }}</div>
         </template>
       </PeaceTableColumn>
       <PeaceTableColumn label="订单金额（元）"
@@ -36,7 +36,7 @@
         </template>
       </PeaceTableColumn>
       <PeaceTableColumn label="订单时间"
-                        min-width="145"
+                        min-width="180"
                         prop="orderTime"></PeaceTableColumn>
     </PeaceTable>
     <el-pagination :current-page.sync="pageNumber"
@@ -64,7 +64,8 @@ export default {
       sumMoney: 0,
       source: {
         inquiryType: Constant.INQIRY_TYPE,
-        orderStatus: Constant.ORDER_STATUS
+        orderStatus: Constant.ORDER_STATUS,
+        orderType: []
       }
     }
   },
@@ -83,7 +84,10 @@ export default {
       })
     }
   },
-  created() {
+  async mounted() {
+    const orderTypes = await Peace.identity.dictionary.getList('service_order_type')
+    orderTypes.forEach((item) => (item.value = parseInt(item.value)))
+    this.source.orderType = Peace.util.deepClone(orderTypes)
     this.getInquirys()
   }
 }

@@ -176,7 +176,6 @@
 
 <script>
 import Service from '../service'
-import Constant from '../contant'
 export default {
   name: 'receiver-detail',
   props: {
@@ -210,7 +209,7 @@ export default {
       subMch: [],
       source: {
         subMchName: [],
-        orderTypes: Constant.orderType
+        orderTypes: []
       },
       rules: {
         organizationName: [{ required: true, message: '请选择所属机构', trigger: 'change' }]
@@ -245,7 +244,9 @@ export default {
   },
   async created() {
     this.source.subMchName = await Peace.identity.dictionary.getList('wx_sbnc')
-
+    const orderTypes = await Peace.identity.dictionary.getList('service_order_type')
+    orderTypes.forEach((item) => (item.value = parseInt(item.value)))
+    this.source.orderTypes = Peace.util.deepClone(orderTypes)
     this.getMchByCustCode()
   },
 

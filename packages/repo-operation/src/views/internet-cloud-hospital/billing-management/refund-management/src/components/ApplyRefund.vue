@@ -1,5 +1,12 @@
 <template>
   <div class="apply-refund-style">
+    <div class="tip-card">
+      <div class="title">退款注意事项：</div>
+      <div class="q-mb-4">1、已完成对账结算的订单尽量避免在线退款，否则将会影响历史账单；</div>
+      <div class="q-mb-4">2、与医院his进行交互的订单尽量避免在线退款，否则将会出现智药云支付状态与医院订单支付状态账单不一致的情况；</div>
+      <div class="q-mb-4">3、订单自费金额为0时，不支持发起退款；</div>
+      <div>4、订单退款后，仅支付状态会更新，订单状态不会变化；</div>
+    </div>
     <el-form inline
              ref="searchForm"
              label-suffix="："
@@ -29,39 +36,78 @@
         <!--  订单详情      -->
         <div class="result-table-style">
 
-          <div>
-            <span>订单编号：</span>
-            <span class="text-grey-999">{{result.orderNo || '——'}}</span>
+          <div class="result-table-card">
+            <div>
+              <span class="text-grey-999 q-mr-24">订单编号</span>
+              <span>{{result.orderNo || '——'}}</span>
+            </div>
+
+            <div>
+              <span class="text-grey-999 q-mr-24">订单类型</span>
+              <span>{{result.orderType | filterDictionaryFuzzy(source.orderType,'——') }}</span>
+            </div>
+
+            <div>
+              <span class="text-grey-999 q-mr-24">下单时间</span>
+              <span>{{result.createdTime || '——'}}</span>
+            </div>
+            <template v-if="result.appointmentStatus === 0 || result.appointmentStatus >0&&result.reportTime">
+              <div>
+                <span class="text-grey-999 q-mr-24">支付方式</span>
+                <span>{{  result.payInfo.paymentTypeTxt?result.payInfo.payModeTxt + ' - ' +result.payInfo.paymentTypeTxt :  result.payInfo.payModeTxt }}</span>
+              </div>
+
+              <div v-if="result.payInfo.deductionTypeTxt">
+                <span class="text-grey-999 q-mr-24">抵扣类型</span>
+                <span>{{  result.payInfo.deductionTypeTxt }}</span>
+              </div>
+              <template v-if="result.payInfo.deductionType === 'yibaopay'">
+                <div v-if="result.payInfo.medicalTreatmentTypetxt">
+                  <span class="text-grey-999 q-mr-24">医保类型</span>
+                  <span>{{  result.payInfo.medicalTreatmentTypetxt }}</span>
+                </div>
+                <div v-if="result.payInfo.diseasesTxt && result.payInfo.medicalTreatmentType === 2">
+                  <span class="text-grey-999 q-mr-24">病种</span>
+                  <span>{{  result.payInfo.diseasesTxt }}</span>
+                </div>
+              </template>
+
+              <template v-if="result.payInfo.deductionType === 'servicePackage'">
+                <div v-if="result.payInfo.servicePackageName">
+                  <span class="text-grey-999 q-mr-24">服务包名称</span>
+                  <span>{{  result.payInfo.servicePackageName }}</span>
+                </div>
+                <div v-if="result.payInfo.equitiesName">
+                  <span class="text-grey-999 q-mr-24">服务包权益</span>
+                  <span>{{  result.payInfo.equitiesName }}</span>
+                </div>
+              </template>
+            </template>
+            <div>
+              <span class="text-grey-999 q-mr-24">订单状态</span>
+              <span>{{result.orderStatusTxt || '——'}}</span>
+            </div>
+
+            <div>
+              <span class="text-grey-999 q-mr-24">支付状态</span>
+              <span>{{result.payStatusTxt || '——'}}</span>
+            </div>
+
+            <div v-if="result.completionTime">
+              <span class="text-grey-999 q-mr-24">完单时间</span>
+              <span>{{result.completionTime || '——'}}</span>
+            </div>
           </div>
 
-          <div>
-            <span>订单类型：</span>
-            <span class="text-grey-999">{{result.orderTypeTxt || '——'}}</span>
-          </div>
-
-          <div>
-            <span>订单金额：</span>
-            <span class="text-grey-999">{{result.orderMoney || '——'}}</span>
-          </div>
-
-          <div>
-            <span>下单时间：</span>
-            <span class="text-grey-999">{{result.createdTime || '——'}}</span>
-          </div>
-
-          <div>
-            <span>订单状态：</span>
-            <span class="text-grey-999">{{result.orderStatusTxt || '——'}}</span>
-          </div>
-
-          <div>
-            <span>支付状态：</span>
-            <span class="text-grey-999">{{result.payStatusTxt || '——'}}</span>
-          </div>
-
-          <div>
-            <span>完单时间：</span>
-            <span class="text-grey-999">{{result.completionTime || '——'}}</span>
+          <div class="result-table-card">
+            <div>
+              <span class="text-grey-999 q-mr-24">订单费用</span>
+              <span>{{result.totalMoney?'￥'+ result.totalMoney: '——'}}</span>
+            </div>
+            <div>
+              <span class="text-grey-999 q-mr-24">自费金额</span>
+              <span class="red-color">{{result.orderMoney ?'￥'+ result.orderMoney: '——'}}</span>
+            </div>
           </div>
         </div>
 
@@ -80,12 +126,14 @@
                       type="textarea"
                       maxlength="200"
                       placeholder="请输入"
-                      style="width:320px;"
+                      style="width:390px;"
                       v-bind:rows="3"></el-input>
           </el-form-item>
 
           <el-form-item label="">
             <el-button type="primary"
+                       size="medium"
+                       style="width:100%;"
                        v-bind:loading="applyModel.loading"
                        v-on:click="apply">申请退款
             </el-button>
@@ -108,7 +156,8 @@
       </div>
 
       <!-- 用来展示空态页 -->
-      <PeaceTable v-if="showEmptyView"></PeaceTable>
+      <PeaceTable v-if="showEmptyView"
+                  emptyText="未查到符合条件的订单！"></PeaceTable>
     </div>
 
   </div>
@@ -134,7 +183,7 @@ export default {
 
       // 订单详情
       result: undefined,
-
+      canShowApplyRefund: false,
       // 用来标记空态页展示状态
       hasSearch: false,
 
@@ -144,29 +193,34 @@ export default {
 
       applyRules: {
         remark: [{ required: true, message: '请输入退款备注', trigger: 'blur' }]
+      },
+
+      source: {
+        orderType: []
       }
     }
   },
 
   computed: {
+    showEmptyView() {
+      return this.hasSearch && !this.result
+    }
+  },
+
+  async mounted() {
+    this.source.orderType = await Peace.identity.dictionary.getList('service_order_type')
+  },
+  methods: {
     // 可以申请退款
     canApplyRefund() {
       // refundOrderStatus: 1：退款中 2：退款异常 3已退款 4退款关闭 , (undefined | null) 未退过款
       // 可退款的条件：
       // 1. this.result.completionTime != undefined
       // 2. refundOrderStatus 的值为以下 [undefined, 2退款异常, 4退款关闭]
-      return (
+      this.canShowApplyRefund =
         !Peace.validate.isEmpty(this.result.completionTime) &&
         (Peace.validate.isEmpty(this.result.refundOrderStatus) || [2, 4].includes(this.result.refundOrderStatus))
-      )
     },
-
-    showEmptyView() {
-      return this.hasSearch && !this.result
-    }
-  },
-
-  methods: {
     fetch() {
       this.$refs.searchForm.validate((valid) => {
         if (valid) {
@@ -190,6 +244,7 @@ export default {
       Service.searchOrder(orderNo)
         .then((res) => {
           this.result = res.data
+          this.canApplyRefund()
         })
         .catch(() => {
           this.result = undefined
@@ -221,7 +276,11 @@ export default {
       this.applyModel.loading = true
       Service.applyRefund(params)
         .then(() => {
-          this.fetch()
+          //提交成功后，toast提示操作成功，回到初始页面
+          Peace.util.alert('操作成功')
+          this.result = undefined
+          this.hasSearch = false
+          this.searchModel.orderNo = ''
         })
         .finally(() => {
           this.applyModel.loading = false
@@ -240,16 +299,37 @@ export default {
 }
 
 .apply-refund-style {
-  padding: 14px 24px 24px;
+  padding: 9px 24px 24px;
 }
-
+.red-color {
+  color: #ea3930;
+}
+.tip-card {
+  background: var(--q-color-primary-light-1);
+  padding: 16px;
+  border-radius: 4px;
+  margin-bottom: 24px;
+  .title {
+    color: #ea3930;
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+}
+.el-form {
+  width: 480px;
+}
 .result-table-style {
-  padding: 0 16px;
-  width: 481px;
-  border: 1px solid rgba(#333, 0.1);
-
-  & div {
-    margin: 8px 0;
+  width: 480px;
+  // border: 1px solid rgba(#333, 0.1);
+  .result-table-card {
+    & div {
+      margin: 4px 0;
+    }
+    padding: 8px 16px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    margin-bottom: 12px;
   }
 }
 

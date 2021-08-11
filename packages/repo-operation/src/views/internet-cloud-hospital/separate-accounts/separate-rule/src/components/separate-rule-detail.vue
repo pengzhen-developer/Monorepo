@@ -51,25 +51,30 @@
 </template>
 
 <script>
-import Contant from '../contant'
 import Util from '../util/utils'
 export default {
   name: 'SeparateRuleDetail',
   props: {
-    info: Object
+    info: Object,
+    orderTypes: Array
   },
   data() {
     return {
       toChinaNum: Util.toChinesNum,
-      detail: {}
+      detail: {},
+      source: {
+        orderType: []
+      }
     }
   },
   created() {
     this.detail = Object.assign({}, this.detail, this.info)
+    this.source.orderType = this.orderTypes
   },
+
   methods: {
     orderTypeText(orderType) {
-      return Contant.orderType.find((item) => item.key == orderType).value
+      return this.source.orderType.find((item) => item.value == orderType).label
     }
   }
 }
