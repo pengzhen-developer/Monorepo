@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="search">
+    <div class="search"
+         :class="{'no-border':show}">
       <!-- <div class="search-row">
       <van-field v-model="model.name"
                  label="文本"
@@ -29,8 +30,8 @@
                  get-container=".popup-container"
                  @close="close"
                  position="top"
-                 :overlay-style="{top:searchHeight  +'px'}"
-                 :style="{top:searchHeight  +'px',minHeight:'10%',maxHeight:'80%'}">
+                 :overlay-style="{top:searchHeight   +'px'}"
+                 :style="{top:searchHeight   +'px',minHeight:'10%',maxHeight:'80%'}">
         <!-- 科室选择 -->
         <div v-show="type==='department'">
           <van-tree-select height="386"
@@ -207,6 +208,7 @@ export default {
       this.list[this.active].textSelected = item.label
       //综合排序 单选 选中后立即查询一次
       this.$emit('updateSelect', this.model)
+      this.show = false
     },
     selectScreent(index, idx) {
       const item = this.screenList[index]
@@ -290,6 +292,7 @@ export default {
       }
       //科室选择 单选 选中二级科室后立即查询一次
       this.$emit('updateSelect', this.model)
+      this.show = false
     },
     getDeptList() {
       let items = []
@@ -372,6 +375,9 @@ export default {
   background: #fff;
   z-index: 6666;
   border-bottom: 1px solid #e3e3e3;
+  &.no-border {
+    border-bottom: 1px solid #fff;
+  }
   .search-row {
     height: 36px;
     display: flex;
@@ -497,7 +503,6 @@ export default {
     height: 48px;
     > div {
       flex: 1;
-      font-weight: bold;
       position: relative;
       display: flex;
       align-items: center;
