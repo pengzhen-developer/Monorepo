@@ -666,7 +666,7 @@ export default {
             })
           } else if (res.data.code == '205') {
             return Dialog.confirm({
-              title: '提示',
+              title: '温馨提示',
               message: res.data.msg,
               confirmButtonText: '确定',
               cancelButtonText: '联系客服'
