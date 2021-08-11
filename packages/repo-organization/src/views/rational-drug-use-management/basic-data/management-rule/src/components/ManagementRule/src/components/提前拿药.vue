@@ -7,7 +7,7 @@
         <el-select v-model="model.prescriptionCode"
                    placeholder="请选择"
                    style="width: 150px;">
-          <el-option v-for="item in source.PrescriptionTypeRule"
+          <el-option v-for="item in prescriptionTypeList"
                      :key="item.value"
                      :label="item.label"
                      :value="item.value">
@@ -20,7 +20,7 @@
         <el-select v-model="model.operator"
                    placeholder="请选择"
                    style="width: 100px;">
-          <el-option v-for="item in source.Compare"
+          <el-option v-for="item in compareList"
                      :key="item.value"
                      :label="item.label"
                      :value="item.value">
@@ -39,9 +39,9 @@
     </div>
     <div class="flex col  items-center"
          v-else>
-      <span>{{model.prescriptionCode | filterDictionary(source.PrescriptionTypeRule,'--')}}</span>
-      <span class="q-ml-16">剩余用药时长</span>
-      <span class="q-ml-8">{{model.operator | filterDictionary(source.Compare,'--')}}</span>
+      <span>{{model.prescriptionCode | filterDictionary(prescriptionTypeList,'--')}}</span>
+      <span class="q-ml-8">剩余用药时长</span>
+      <span class="q-ml-8  text-red">{{model.operator | filterDictionary(compareList,'--')}}</span>
       <span class="q-ml-8">{{model.quantity}}</span>
       <span class="q-ml-8">天时，开具处方</span>
     </div>
@@ -71,9 +71,9 @@ export default {
     }
   },
 
-  async mounted() {
-    this.source.PrescriptionTypeRule = await Peace.identity.dictionary.getList('prescription_type_rule')
-    this.source.Compare = await Peace.identity.dictionary.getList('compare')
+  computed: {
+    compareList: () => obPreconditionDic.state.compareList,
+    prescriptionTypeList: () => obPreconditionDic.state.prescriptionTypeList
   },
 
   methods: {

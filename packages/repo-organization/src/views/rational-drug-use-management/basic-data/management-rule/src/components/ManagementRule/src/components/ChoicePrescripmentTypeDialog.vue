@@ -37,11 +37,11 @@
                          v-on:change="e => handleCheckedItemChange(e, scope.row)"><span></span></el-checkbox>
           </template>
         </peace-table-column>
-        <peace-table-column label="处方类型编码"
+        <peace-table-column label="类型编码"
                             min-width="120px"
                             prop="code">
         </peace-table-column>
-        <peace-table-column label="处方类型名称"
+        <peace-table-column label="类型名称"
                             min-width="120px"
                             prop="name">
         </peace-table-column>
