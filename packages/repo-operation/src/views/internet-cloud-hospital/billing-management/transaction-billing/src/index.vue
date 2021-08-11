@@ -321,17 +321,17 @@ export default {
 
     showDetail(row) {
       // 咨询订单
-      if (row.orderType === 'inquiry') {
+      if (row.orderType === 1) {
         this.getInquiryOrderInfo(row.inquiryNo)
       }
       // 复诊订单
-      else if (row.orderType === 'returnVisit') {
+      else if (row.orderType === 2) {
         this.getReturnVisitOrderInfo(row.inquiryNo)
       }
       // 购药订单
-      else if (row.orderType === 'drug') {
+      else if (row.orderType === 3) {
         this.getPurchaseOrder(row.orderNo)
-      } else if (row.orderType === 'servicePackage') {
+      } else if (row.orderType === 5) {
         this.getServicePackageOrder(row.orderNo)
       }
     },
