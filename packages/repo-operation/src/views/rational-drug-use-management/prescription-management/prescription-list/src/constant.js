@@ -7,7 +7,8 @@ export default {
     通过: 'OK',
     禁用: 'D',
     慎用: 'R',
-    提示: 'I'
+    提示: 'I',
+    转码失败: 'FAIL'
   },
   /**
    * 系统审核结果类型-map
@@ -17,7 +18,8 @@ export default {
     { label: '禁用', value: 'D', color: 'rgb(237, 64, 20)' },
     { label: '慎用', value: 'R', color: 'rgb(240, 152, 21)' },
     { label: '提示', value: 'I', color: 'rgb(45, 183, 245)' },
-    { label: '暂无结果', value: 'ERR', color: 'rgb(153, 153, 153)' }
+    { label: '暂无结果', value: 'ERR', color: 'rgb(153, 153, 153)' },
+    { label: '转码失败', value: 'FAIL', color: 'rgb(153, 153, 153)' }
   ],
   /**
    * 处方状态
