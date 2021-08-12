@@ -128,6 +128,7 @@ export default {
     this.model.serviceType = params.serviceType
     this.model.inquiryType = params.inquiryType
     this.model.deptId = params.deptId
+    this.model.childDeptId = params.childDeptId
   },
 
   methods: {

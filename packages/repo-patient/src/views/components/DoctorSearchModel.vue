@@ -339,10 +339,13 @@ export default {
         //从科室进入医生列表
         if (this.model.deptId) {
           this.mainActiveIndex = this.departmentList.findIndex((item) => item.id === this.model.deptId)
-          this.activeId = this.departmentList[this.mainActiveIndex].children.find((item) => item.text === '全部').id
+          this.activeId = this.model.childDeptId || this.departmentList[this.mainActiveIndex].children.find((item) => item.text === '全部').id
           this.list[0].isSelect = true
-          this.list[0].textSelected = this.departmentList[this.mainActiveIndex].text
+
           this.list[0].textSelecting = this.departmentList[this.mainActiveIndex].text
+          this.list[0].textSelected = this.model.childDeptId
+            ? this.departmentList[this.mainActiveIndex].children?.find((item) => item.id == this.activeId)?.text
+            : this.list[0].textSelecting
         } else {
           this.mainActiveIndex = 0
           this.activeId = this.departmentList[this.mainActiveIndex].children.find((item) => item.text === '全部').id

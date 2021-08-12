@@ -131,6 +131,7 @@ export default {
       }
     },
     onItemClick(data) {
+      console.log('data', data)
       this.activeId = data.id
       this.goDoctorListPage({
         // 问诊入参
@@ -145,13 +146,15 @@ export default {
     },
     goDoctorListPage(obj) {
       if (this.params.id == 'consult') {
+        let index = this.mainActiveIndex || 0
+        let deptId = this.items[index].id
         obj.netHospitalId = this.params.netHospitalId
-        obj.type = 'departDoctorList'
-        obj.serviceType = 'inquiry'
+        obj.deptId = deptId
+        obj.childDeptId = deptId == this.activeId ? '' : this.activeId
         let json = peace.util.encode(obj)
 
-        // 问诊入口
-        this.$router.push(`/components/doctorList/${json}`)
+        //问诊入口
+        this.$router.push(`/components/doctorListOrganization/${json}`)
         return
       }
       if (this.params.id == 'appointment') {
@@ -192,6 +195,12 @@ export default {
 .content {
   height: 100%;
   overflow: hidden;
+}
+.van-tree-select__nav {
+  background: #f6f6f6;
+}
+.van-tree-select__nav-item {
+  padding-right: 12px;
 }
 .van-sidebar-item--select {
   border-color: $-color--primary;
