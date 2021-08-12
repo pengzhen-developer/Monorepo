@@ -38,6 +38,7 @@
                      v-bind:thumb-style="thumbStyle">
         <Component v-bind:is="componentInstance"
                    v-bind:session="session"
+                   v-bind:cacheKey="session.content.inquiryInfo.inquiryNo"
                    v-on:close="close"> </Component>
       </q-scroll-area>
     </div>
