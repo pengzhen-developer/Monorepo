@@ -59,11 +59,8 @@
 
       <div class="input"
            v-if="canShowInput">
-        <van-field :autosize="{ maxHeight: 78, minHeight: 35 }"
-                   @focus="hideTools"
+        <van-field @focus="hideTools"
                    ref="chatroom"
-                   rows="1"
-                   type="textarea"
                    v-model.trim="message"
                    v-on:keyup.enter.stop="sendMessageText">
           <van-icon @click="showTools"
@@ -705,11 +702,12 @@ export default {
 </style>
 <style lang="scss" scoped>
 .message-list-chat-room .input .van-field /deep/.van-field__control {
-  line-height: 20px;
   padding: 7px 8px;
   border-radius: 3px;
   border: 1px solid #d2d2d2;
   background-color: #fff;
+  height: 36px;
+  line-height: 34px;
 }
 .message-list-chat-room .header {
   background: #fff;
