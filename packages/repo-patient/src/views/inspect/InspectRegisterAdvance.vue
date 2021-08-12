@@ -141,6 +141,13 @@ export default {
       payDialog: {
         visible: false,
         data: {}
+      },
+
+      phoneDialog: {
+        visible: false,
+        data: {
+          phone: ''
+        }
       }
     }
   },
