@@ -386,12 +386,18 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 32px;
     .search-item {
-      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-
+      flex: 1;
+      &:first-child {
+        justify-content: flex-start;
+      }
+      &:last-child {
+        justify-content: flex-end;
+      }
       &.active {
         color: $primary;
       }
@@ -399,6 +405,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+
         span {
           max-width: 5em;
           overflow: hidden;
