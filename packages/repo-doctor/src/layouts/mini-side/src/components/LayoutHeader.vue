@@ -240,7 +240,7 @@ export default {
     }
   }
 
-  /deep/ .header-right {
+  ::v-deep .header-right {
     display: flex;
 
     .el-badge {

@@ -533,7 +533,7 @@ export default {
     color: #c1c1c1;
   }
 
-  /deep/ .receive-dialog {
+  ::v-deep .receive-dialog {
     .character-dashad {
       margin: 15px 0;
       border-top: 1px dashed #bfbfbf;

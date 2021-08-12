@@ -156,7 +156,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/ .tag {
+::v-deep .tag {
   border: 0;
   margin: 0 5px 5px 0;
 }

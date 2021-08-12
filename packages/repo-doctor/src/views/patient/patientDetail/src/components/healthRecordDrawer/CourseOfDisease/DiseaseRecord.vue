@@ -497,7 +497,7 @@ export default {
       transition: all 0.4s;
     }
 
-    /deep/ .list {
+    ::v-deep .list {
       margin: 0;
     }
   }

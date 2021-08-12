@@ -868,7 +868,7 @@ export default {
 
 <style lang="scss" scoped>
 .video {
-  /deep/ .el-dialog__wrapper {
+  ::v-deep .el-dialog__wrapper {
     position: unset !important;
 
     .el-dialog {

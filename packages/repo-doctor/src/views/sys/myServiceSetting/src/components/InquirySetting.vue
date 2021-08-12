@@ -217,11 +217,11 @@ export default {
   transform: scaleY(0.2);
 }
 
-/deep/ .q-field__control {
+::v-deep .q-field__control {
   height: 24px;
 }
 
-/deep/ .q-field__suffix {
+::v-deep .q-field__suffix {
   line-height: 1;
   padding: 5px;
 }

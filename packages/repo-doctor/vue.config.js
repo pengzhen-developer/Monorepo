@@ -49,6 +49,7 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
+        implementation: require('sass'),
         // @/ is an alias to src/
         // so this assumes you have a file named `css/variables.scss`
         data: `@import "@src/assets/css/variable.scss";`

@@ -373,7 +373,7 @@ export default {
   .item {
     margin: 0 5px 0 0;
 
-    /deep/ .el-input__inner:focus {
+    ::v-deep .el-input__inner:focus {
       box-shadow: none;
     }
 
@@ -386,7 +386,7 @@ export default {
       border-bottom: 1px solid #d6d6d6;
       border-left: none;
 
-      /deep/ .el-input__inner {
+      ::v-deep .el-input__inner {
         border: none;
         padding: 0 10px;
       }

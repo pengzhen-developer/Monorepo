@@ -296,11 +296,11 @@ $--control-height: 200px;
 }
 
 .over-dialog {
-  /deep/ .el-dialog__header {
+  ::v-deep .el-dialog__header {
     display: none;
   }
 
-  /deep/ .el-dialog__body {
+  ::v-deep .el-dialog__body {
     padding: 20px;
   }
 }

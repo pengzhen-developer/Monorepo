@@ -228,7 +228,7 @@ export default {
   text-align: center;
 }
 .is-editor {
-  /deep/ img {
+  ::v-deep img {
     max-width: 100% !important;
   }
 }

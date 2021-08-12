@@ -143,7 +143,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/ .el-tree-node__children {
+::v-deep .el-tree-node__children {
   pointer-events: none;
   cursor: default;
   padding-left: 20px;
@@ -155,7 +155,7 @@ export default {
   }
 }
 
-/deep/ .el-checkbox .el-checkbox__inner {
+::v-deep .el-checkbox .el-checkbox__inner {
   display: inline-block;
 }
 </style>

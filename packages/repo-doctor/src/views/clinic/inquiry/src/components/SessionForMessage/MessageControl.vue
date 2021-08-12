@@ -455,11 +455,11 @@ export default {
 
 <style lang="scss" scoped>
 .no-header {
-  /deep/ .el-dialog__header {
+  ::v-deep .el-dialog__header {
     display: none;
   }
 
-  /deep/ .el-dialog__body {
+  ::v-deep .el-dialog__body {
     padding: 20px;
   }
 }
@@ -472,7 +472,7 @@ export default {
   .content {
     height: 100%;
 
-    /deep/ .q-editor__toolbars-container {
+    ::v-deep .q-editor__toolbars-container {
       height: 32px;
       border-top: 1px solid #fbfbfb;
 
@@ -487,7 +487,7 @@ export default {
       }
     }
 
-    /deep/ .q-editor__content {
+    ::v-deep .q-editor__content {
       flex: 1;
       width: 100%;
       padding: 0 0 10px 0;
@@ -498,11 +498,11 @@ export default {
       }
     }
 
-    /deep/ .el-upload-list__item {
+    ::v-deep .el-upload-list__item {
       display: none;
     }
 
-    /deep/ .session-detail-input {
+    ::v-deep .session-detail-input {
       .el-textarea {
         height: 100%;
       }

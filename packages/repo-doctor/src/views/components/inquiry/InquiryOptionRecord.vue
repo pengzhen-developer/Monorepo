@@ -78,11 +78,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/ .el-timeline-item__content {
+::v-deep .el-timeline-item__content {
   position: relative;
 }
 
-/deep/ .el-timeline-item__timestamp {
+::v-deep .el-timeline-item__timestamp {
   font-size: 14px;
   font-weight: 600;
   color: rgba(51, 51, 51, 1);

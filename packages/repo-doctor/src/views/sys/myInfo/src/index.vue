@@ -291,7 +291,7 @@ export default {
 
 .about {
   .el-form {
-    /deep/ .el-upload-list--picture-card .el-upload-list__item {
+    ::v-deep .el-upload-list--picture-card .el-upload-list__item {
       display: inline-flex;
       justify-content: center;
       align-items: center;
@@ -306,7 +306,7 @@ export default {
     .upload {
       display: inline-block;
 
-      /deep/ .el-upload-list {
+      ::v-deep .el-upload-list {
         display: none;
       }
 
@@ -320,12 +320,12 @@ export default {
 
     .upload-list {
       &.hideUploadIcon {
-        /deep/ .el-upload--picture-card {
+        ::v-deep .el-upload--picture-card {
           display: none;
         }
       }
 
-      /deep/ .el-upload-list--picture-card {
+      ::v-deep .el-upload-list--picture-card {
         display: inline-flex;
       }
     }

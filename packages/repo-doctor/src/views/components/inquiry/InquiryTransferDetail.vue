@@ -313,7 +313,7 @@ export default {
       }
     }
 
-    /deep/ .el-form-item--mini.el-form-item {
+    ::v-deep .el-form-item--mini.el-form-item {
       margin: 0;
 
       .el-form-item__content {
@@ -323,7 +323,7 @@ export default {
       }
     }
 
-    /deep/ .el-form-item--mini .el-form-item__label {
+    ::v-deep .el-form-item--mini .el-form-item__label {
       &::after {
         content: '：';
       }
@@ -339,8 +339,8 @@ export default {
       padding: 0 4px 0 0;
     }
 
-    /deep/ .el-form-item--mini .el-form-item__label,
-    /deep/ .el-form-item--mini .el-form-item__content {
+    ::v-deep .el-form-item--mini .el-form-item__label,
+    ::v-deep .el-form-item--mini .el-form-item__content {
       line-height: 24px;
     }
   }

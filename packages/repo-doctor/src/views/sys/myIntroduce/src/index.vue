@@ -97,7 +97,7 @@ export default {
 
 <style lang="scss" scoped>
 .el-form {
-  /deep/ .el-textarea {
+  ::v-deep .el-textarea {
     width: 500px;
   }
 

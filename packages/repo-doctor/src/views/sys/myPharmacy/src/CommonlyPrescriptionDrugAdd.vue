@@ -229,7 +229,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/ .el-checkbox__inner {
+::v-deep .el-checkbox__inner {
   border-radius: 50%;
 }
 </style>

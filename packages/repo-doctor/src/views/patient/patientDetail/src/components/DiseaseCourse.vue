@@ -134,7 +134,7 @@ export default {
     }
   }
 
-  /deep/ .el-form-item__label {
+  ::v-deep .el-form-item__label {
     width: 4.5rem;
     text-align-last: justify;
     text-align: justify;

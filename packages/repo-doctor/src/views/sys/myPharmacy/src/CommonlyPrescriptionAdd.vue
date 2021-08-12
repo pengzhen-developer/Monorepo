@@ -399,7 +399,7 @@ export default {
   }
 }
 
-/deep/ .el-input.is-disabled .el-input__inner {
+::v-deep .el-input.is-disabled .el-input__inner {
   color: #000;
 }
 

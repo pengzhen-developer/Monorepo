@@ -302,7 +302,7 @@ export default {
 
 
 <style lang="scss">
-/deep/ .el-message-box--center .el-message-box__status {
+::v-deep .el-message-box--center .el-message-box__status {
   padding-right: 15px;
   padding-top: 2px;
 }
@@ -320,8 +320,8 @@ export default {
 }
 
 .consultaltion-doctor {
-  /deep/ .el-form-item--mini .el-form-item__label,
-  /deep/ .el-form-item--mini .el-form-item__content {
+  ::v-deep .el-form-item--mini .el-form-item__label,
+  ::v-deep .el-form-item--mini .el-form-item__content {
     line-height: 40px;
   }
 

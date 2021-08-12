@@ -61,7 +61,7 @@ export default {
 //   font-size: 20px;
 //   margin-bottom: 10px;
 // }
-// .content /deep/ img {
+// .content ::v-deep img {
 //   max-width: 100%;
 //   font-size: 14px;
 // }

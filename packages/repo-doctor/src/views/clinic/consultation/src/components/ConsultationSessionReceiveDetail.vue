@@ -266,7 +266,7 @@ export default {
   .el-timeline {
     padding: 0;
 
-    /deep/.el-timeline-item__node--normal {
+    ::v-deep.el-timeline-item__node--normal {
       left: 2px;
       width: 6px;
       height: 6px;

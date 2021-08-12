@@ -170,7 +170,7 @@ export default {
   margin-left: 34px;
 }
 
-/deep/ .el-drawer {
+::v-deep .el-drawer {
   outline: none;
 }
 
@@ -180,7 +180,7 @@ export default {
   background: rgba(0, 0, 0, 0.3);
   border-radius: 4px;
 
-  /deep/ .el-drawer__header {
+  ::v-deep .el-drawer__header {
     margin-bottom: 20px;
 
     .el-drawer__close-btn {
@@ -188,7 +188,7 @@ export default {
     }
   }
 
-  /deep/ .el-drawer__body {
+  ::v-deep .el-drawer__body {
     height: calc(100% - 66px);
   }
 }

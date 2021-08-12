@@ -71,15 +71,15 @@ export default {
     border-top: none;
   }
 
-  /deep/ .el-collapse-item__header {
+  ::v-deep .el-collapse-item__header {
     border-bottom: 1px solid #f2f2f2;
   }
 
-  /deep/ .el-icon-arrow-right {
+  ::v-deep .el-icon-arrow-right {
     display: none;
   }
 
-  /deep/ .el-collapse-item__wrap {
+  ::v-deep .el-collapse-item__wrap {
     border-bottom: none;
   }
 }
