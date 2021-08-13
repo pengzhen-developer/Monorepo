@@ -295,7 +295,19 @@ export default {
       this.getNationList()
     }
   },
+  created() {
+    $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY_GUARDIAN, this.addFamilyGuardianCallback)
+  },
+  destroyed() {
+    $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY_GUARDIAN)
+  },
   methods: {
+    addFamilyCallback(res) {
+      //新增我的家人
+      if (res.success) {
+        this.getFamilyList()
+      }
+    },
     //选择就诊人 (家人)
     selcetMyFamily(item, index) {
       if (this.checkId == index) {
@@ -312,7 +324,7 @@ export default {
       if (this.familyList && this.familyList.length >= 4) {
         return peace.util.alert('您最多可添加 4 位家人')
       }
-      let json = peace.util.encode({ type: 'add' })
+      let json = peace.util.encode({ type: 'add', emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY_GUARDIAN })
       this.$router.push(`/setting/familyMember/${json}`)
     },
     changeFlag(flag) {
