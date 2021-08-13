@@ -359,9 +359,17 @@ export default {
     }
   },
 
+  watch: {
+    data: {
+      handler() {
+        this.model.prescriptionId = this.data.prescriptionId
+      },
+      immediate: true
+    }
+  },
+
   async created() {
     this.source.prescriptionStatus = await Peace.identity.dictionary.getList('prescription_state')
-    this.model.prescriptionId = this.data.prescriptionId
   },
 
   methods: {
