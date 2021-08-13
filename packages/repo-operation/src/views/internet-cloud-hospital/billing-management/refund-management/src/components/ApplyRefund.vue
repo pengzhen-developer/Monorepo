@@ -38,74 +38,74 @@
 
           <div class="result-table-card">
             <div>
-              <span class="text-grey-999 q-mr-24">订单编号</span>
+              <span class="text-grey-999">订单编号</span>
               <span>{{result.orderNo || '——'}}</span>
             </div>
 
             <div>
-              <span class="text-grey-999 q-mr-24">订单类型</span>
+              <span class="text-grey-999">订单类型</span>
               <span>{{result.orderType | filterDictionaryFuzzy(source.orderType,'——') }}</span>
             </div>
 
             <div>
-              <span class="text-grey-999 q-mr-24">下单时间</span>
+              <span class="text-grey-999">下单时间</span>
               <span>{{result.createdTime || '——'}}</span>
             </div>
-            <template v-if="result.appointmentStatus === 0 || result.appointmentStatus >0&&result.reportTime">
+            <template v-if="canShowPayInfo">
               <div>
-                <span class="text-grey-999 q-mr-24">支付方式</span>
+                <span class="text-grey-999">支付方式</span>
                 <span>{{  result.payInfo.paymentTypeTxt?result.payInfo.payModeTxt + ' - ' +result.payInfo.paymentTypeTxt :  result.payInfo.payModeTxt }}</span>
               </div>
 
               <div v-if="result.payInfo.deductionTypeTxt">
-                <span class="text-grey-999 q-mr-24">抵扣类型</span>
+                <span class="text-grey-999">抵扣类型</span>
                 <span>{{  result.payInfo.deductionTypeTxt }}</span>
               </div>
               <template v-if="result.payInfo.deductionType === 'yibaopay'">
                 <div v-if="result.payInfo.medicalTreatmentTypetxt">
-                  <span class="text-grey-999 q-mr-24">医保类型</span>
+                  <span class="text-grey-999">医保类型</span>
                   <span>{{  result.payInfo.medicalTreatmentTypetxt }}</span>
                 </div>
                 <div v-if="result.payInfo.diseasesTxt && result.payInfo.medicalTreatmentType === 2">
-                  <span class="text-grey-999 q-mr-24">病种</span>
+                  <span class="text-grey-999">病种</span>
                   <span>{{  result.payInfo.diseasesTxt }}</span>
                 </div>
               </template>
 
               <template v-if="result.payInfo.deductionType === 'servicePackage'">
                 <div v-if="result.payInfo.servicePackageName">
-                  <span class="text-grey-999 q-mr-24">服务包名称</span>
+                  <span class="text-grey-999">服务包名称</span>
                   <span>{{  result.payInfo.servicePackageName }}</span>
                 </div>
                 <div v-if="result.payInfo.equitiesName">
-                  <span class="text-grey-999 q-mr-24">服务包权益</span>
+                  <span class="text-grey-999">服务包权益</span>
                   <span>{{  result.payInfo.equitiesName }}</span>
                 </div>
               </template>
             </template>
             <div>
-              <span class="text-grey-999 q-mr-24">订单状态</span>
+              <span class="text-grey-999">订单状态</span>
               <span>{{result.orderStatusTxt || '——'}}</span>
             </div>
 
             <div>
-              <span class="text-grey-999 q-mr-24">支付状态</span>
+              <span class="text-grey-999">支付状态</span>
               <span>{{result.payStatusTxt || '——'}}</span>
             </div>
 
             <div v-if="result.completionTime">
-              <span class="text-grey-999 q-mr-24">完单时间</span>
+              <span class="text-grey-999">完单时间</span>
               <span>{{result.completionTime || '——'}}</span>
             </div>
           </div>
 
           <div class="result-table-card">
             <div>
-              <span class="text-grey-999 q-mr-24">订单费用</span>
+              <span class="text-grey-999">订单费用</span>
               <span>{{result.totalMoney?'￥'+ result.totalMoney: '——'}}</span>
             </div>
             <div>
-              <span class="text-grey-999 q-mr-24">自费金额</span>
+              <span class="text-grey-999">自费金额</span>
               <span class="red-color">{{result.orderMoney ?'￥'+ result.orderMoney: '——'}}</span>
             </div>
           </div>
@@ -202,6 +202,9 @@ export default {
   },
 
   computed: {
+    canShowPayInfo() {
+      return this.result.appointmentStatus === undefined || this.result.appointmentStatus === 0 || (this.result.appointmentStatus > 0 && this.result.reportTime)
+    },
     showEmptyView() {
       return this.hasSearch && !this.result
     }
@@ -325,6 +328,15 @@ export default {
   .result-table-card {
     & div {
       margin: 4px 0;
+      display: flex;
+      align-items: center;
+      span {
+        display: block;
+        &:first-child {
+          min-width: 4.4em;
+          margin-right: 1em;
+        }
+      }
     }
     padding: 8px 16px;
     background: #f5f5f5;
