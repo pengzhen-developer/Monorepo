@@ -264,47 +264,16 @@
 
       <div class="module money"
            v-if="internalData.inquiryInfo.appointmentStatus===0 ||(internalData.inquiryInfo.appointmentStatus>0&&internalData.inquiryInfo.reportTime)">
-        <!-- 取消订单的状态 -->
-        <template v-if="internalData.inquiryInfo.inquiryStatus == ENUM.INQUIRY_STATUS.已取消">
-          <div class="brief right"
-               v-if="internalData.orderInfo.payMoney == 0">
-            <template v-if="internalData.orderInfo.orderMoney == 0">
-              自费支付：
-            </template>
-            <template v-else>
-              自费支付：
-            </template>
-            <div class="money">
-              <peace-price v-bind:price="internalData.orderInfo.orderMoney"
-                           v-bind:transformOrigin="'right'"
-                           v-bind:size="16"></peace-price>
-            </div>
+        <div class="brief right">
+          自费支付：
+          <div class="money">
+            <span v-if="internalData.orderInfo.refundTime"
+                  style="margin-right:-20px;">（已退款）</span>
+            <peace-price v-bind:price="money"
+                         v-bind:transformOrigin="'right'"
+                         v-bind:size="16"></peace-price>
           </div>
-          <div class="brief right"
-               v-else>
-            自费支付：
-            <div class="money">
-              <span v-if="internalData.orderInfo.refundTime "
-                    style="margin-right:-20px;">（已退款）</span>
-              <peace-price v-bind:price="internalData.orderInfo.payMoney"
-                           v-bind:transformOrigin="'right'"
-                           v-bind:size="16"></peace-price>
-
-            </div>
-          </div>
-        </template>
-        <template v-else>
-          <div class="brief right">
-            自费支付：
-            <div class="money">
-              <span v-if="internalData.orderInfo.refundTime"
-                    style="margin-right:-20px;">（已退款）</span>
-              <peace-price v-bind:price="internalData.orderInfo.payMoney"
-                           v-bind:transformOrigin="'right'"
-                           v-bind:size="16"></peace-price>
-            </div>
-          </div>
-        </template>
+        </div>
       </div>
 
       <!--订单操作时间轴-->
@@ -664,6 +633,9 @@ export default {
     }
   },
   computed: {
+    money() {
+      return this.internalData?.orderInfo?.payStatus > 0 ? this.internalData?.orderInfo?.payMoney : this.internalData?.orderInfo?.orderMoney
+    },
     retrunVisitBlock() {
       return this.internalData?.inquiryInfo?.isAgain.toString() === '1'
     },
