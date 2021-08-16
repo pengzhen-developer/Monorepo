@@ -378,6 +378,14 @@
         </div>
       </transition>
     </div>
+
+    <!-- loading  -->
+    <div class="shadow"
+         v-if="loading">
+      <van-loading type="spinner"
+                   class="loading"
+                   color="#999" />
+    </div>
   </div>
 </template>
 
@@ -688,7 +696,9 @@ export default {
 
       toPage: '',
 
-      enter_time: ''
+      enter_time: '',
+
+      loading: false
     }
   },
 
@@ -1315,11 +1325,25 @@ export default {
       })
     },
     async answer() {
+      if (this.loading) {
+        return
+      }
+      this.loading = true
       let result = await this.setAnswer(arguments)
+      const field = this.current.field
+
       if (result) {
         this.beginNextQuestion()
 
         this.resetCurrentQuestion()
+      }
+
+      if (field === this.ANSWER_FIELD.FAMILY) {
+        setTimeout(() => {
+          this.loading = false
+        }, 300)
+      } else {
+        this.loading = false
       }
     },
 
@@ -1818,6 +1842,26 @@ export default {
   font-size: 16px;
   height: 100%;
   background: #f5f5f5;
+  position: relative;
+
+  .shadow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.3);
+    .loading {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      z-index: 101;
+      transform: translate(-50%, 50%);
+    }
+  }
 
   /deep/ .van-image-preview__index {
     top: 24px;
