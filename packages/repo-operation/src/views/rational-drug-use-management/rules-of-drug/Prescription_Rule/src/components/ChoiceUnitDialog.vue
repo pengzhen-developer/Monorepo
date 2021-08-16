@@ -81,10 +81,8 @@ export default {
     if (this.data?.doseUnit) {
       if (Number(this.data.unitType) === 1) {
         this.radio = 0
-        this.multipleSelection = this.data.doseUnit
       } else if (Number(this.data.unitType) === 2) {
         this.radio = 1
-        this.multipleSelectionOther = this.data.doseUnit
       }
     }
   },
@@ -98,6 +96,9 @@ export default {
     getPlatformUnitDicPageForDose() {
       Service.getPlatformUnitDicPage({ type: 'dose', size: 500 }).then((res) => {
         this.optionsForDose = res.data.records
+        if (Number(this.data.unitType) === 1) {
+          this.multipleSelection = this.data.doseUnit
+        }
         // if (this.radio === 0 && !this.multipleSelection && this.optionsForDose.length > 0) {
         //   this.multipleSelection = this.optionsForDose[0].name
         // } else if (this.radio === 1 && !this.multipleSelectionOther && this.optionsForDose.length > 0) {
@@ -108,6 +109,9 @@ export default {
     getPlatformUnitDicPageForPack() {
       Service.getPlatformUnitDicPage({ type: 'package', size: 500 }).then((res) => {
         this.optionsForPack = res.data.records
+        if (Number(this.data.unitType) === 2) {
+          this.multipleSelectionOther = this.data.doseUnit
+        }
       })
     },
     cancel() {
