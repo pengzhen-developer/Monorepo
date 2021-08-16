@@ -451,7 +451,7 @@ export default {
   async mounted() {
     // this.remoteSource.OrderType = await peace.identity.dictionary.getList('OrderType')
     this.remoteSource.ShippingMethod = await peace.identity.dictionary.getList('ShippingMethod')
-    // this.remoteSource.PayStatus = await peace.identity.dictionary.getList('PayStatus')
+    this.remoteSource.PayStatus = await peace.identity.dictionary.getList('PayStatus')
     this.remoteSource.SelfOrderStatus = await peace.identity.dictionary.getList('SelfOrderStatus')
     this.remoteSource.DistributionOrderStatus = await peace.identity.dictionary.getList('DistributionOrderStatus')
     this.settingDialog.data.Code = (await peace.identity.dictionary.getList('SmsRemind')).find((item) => item.value == 'Code').label
