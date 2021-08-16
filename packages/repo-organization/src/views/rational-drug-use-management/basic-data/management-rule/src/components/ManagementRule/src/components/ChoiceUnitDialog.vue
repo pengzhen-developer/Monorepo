@@ -81,10 +81,8 @@ export default {
     if (this.data?.code && this.data?.name) {
       if (Number(this.data.unitType) === 1) {
         this.radio = 0
-        this.multipleSelection = this.data
       } else if (Number(this.data.unitType) === 2) {
         this.radio = 1
-        this.multipleSelectionOther = this.data
       }
     }
   },
@@ -98,11 +96,17 @@ export default {
     getPlatformUnitDicPageForDose() {
       Service.getPlatformUnitDicPage({ type: 'dose', size: 500 }).then((res) => {
         this.optionsForDose = res.data.records
+        if (Number(this.data.unitType) === 1) {
+          this.multipleSelection = this.data
+        }
       })
     },
     getPlatformUnitDicPageForPack() {
       Service.getPlatformUnitDicPage({ type: 'package', size: 500 }).then((res) => {
         this.optionsForPack = res.data.records
+        if (Number(this.data.unitType) === 2) {
+          this.multipleSelectionOther = this.data
+        }
       })
     },
     cancel() {
