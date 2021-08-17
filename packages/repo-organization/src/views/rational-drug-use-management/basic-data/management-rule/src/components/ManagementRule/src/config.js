@@ -4,7 +4,7 @@ export default [
     key: 'drugQuantityLimitRuleList',
     name: '用量管理',
     model: {
-      enumType: '0', //类型
+      enumType: '1', //类型
       dqlrDoctorLists: [],
       dqlrDrugLists: [],
       operator: '>',
@@ -33,7 +33,7 @@ export default [
     key: 'drugAmountLimitRuleList',
     name: '金额管理',
     model: {
-      enumType: '0', //类型
+      enumType: '1', //类型
       dalrDoctorLists: [],
       dalrDrugLists: [],
       operator: '>',
@@ -45,7 +45,7 @@ export default [
     },
     models: [
       {
-        enumType: '0', //类型
+        enumType: '1', //类型
         dalrDoctorLists: [],
         dalrDrugLists: [],
         operator: '>',
@@ -62,7 +62,7 @@ export default [
     key: 'drugKindLimitRuleList',
     name: '用药管理',
     model: {
-      enumType: '0', //类型
+      enumType: '1', //类型
       dklrDoctorLists: [],
       dklrDrugLists: [],
       whetherType: 'yes',
@@ -72,7 +72,7 @@ export default [
     },
     models: [
       {
-        enumType: '0', //类型
+        enumType: '1', //类型
         dklrDoctorLists: [],
         dklrDrugLists: [],
         whetherType: 'yes',
