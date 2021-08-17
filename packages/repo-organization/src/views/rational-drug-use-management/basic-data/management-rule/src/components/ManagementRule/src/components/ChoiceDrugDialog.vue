@@ -149,7 +149,7 @@ export default {
   created() {
     if (this.model && this.model.length > 0) {
       this.multipleSelection = this.model.map((item) => {
-        return { drugCode: item.code, drugName: item.name }
+        return { drugCode: item.code, drugName: item.name, drugStandardCode: item.standardCode }
       })
     }
     this.$nextTick(() => {
@@ -231,7 +231,7 @@ export default {
 
     save() {
       const map = this.multipleSelection.map((item) => {
-        return { code: item.drugCode, name: item.drugName }
+        return { code: item.drugCode, name: item.drugName, standardCode: item.drugStandardCode }
       })
       this.$emit('onSuccess', map)
     }
