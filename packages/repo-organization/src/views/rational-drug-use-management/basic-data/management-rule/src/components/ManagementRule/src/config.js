@@ -16,7 +16,7 @@ export default [
     },
     models: [
       {
-        enumType: '0', //类型
+        enumType: '1', //类型
         dqlrDoctorLists: [],
         dqlrDrugLists: [],
         operator: '>',

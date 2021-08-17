@@ -220,16 +220,16 @@ export default {
 
   methods: {
     addTagForType() {
-      if (this.model.enumType === '0') {
+      if (this.model.enumType === '1') {
         this.dialogDoctor.data = [...this.model.dqlrDoctorLists]
         this.dialogDoctor.visible = true
-      } else if (this.model.enumType === '1') {
+      } else if (this.model.enumType === '2') {
         this.dialogDoctorTitle.data = [...this.model.dqlrDoctorLists]
         this.dialogDoctorTitle.visible = true
-      } else if (this.model.enumType === '2') {
+      } else if (this.model.enumType === '3') {
         this.dialogDept.data = [...this.model.dqlrDoctorLists]
         this.dialogDept.visible = true
-      } else if (this.model.enumType === '3') {
+      } else if (this.model.enumType === '4') {
         this.dialogPrescripmentType.data = [...this.model.dqlrDoctorLists]
         this.dialogPrescripmentType.visible = true
       } else {
@@ -239,13 +239,13 @@ export default {
     //选择类型成功
     choiceTypeSuccess(res) {
       this.model.dqlrDoctorLists = res
-      if (this.model.enumType === '0') {
+      if (this.model.enumType === '1') {
         this.dialogDoctor.visible = false
-      } else if (this.model.enumType === '1') {
-        this.dialogDoctorTitle.visible = false
       } else if (this.model.enumType === '2') {
-        this.dialogDept.visible = false
+        this.dialogDoctorTitle.visible = false
       } else if (this.model.enumType === '3') {
+        this.dialogDept.visible = false
+      } else if (this.model.enumType === '4') {
         this.dialogPrescripmentType.visible = false
       }
     },
