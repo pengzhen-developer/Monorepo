@@ -63,13 +63,13 @@
             <div>单次用量</div>
             <div>{{BasicInformation.SingleDose}}</div>
             <div>商品类型</div>
-            <div>{{BasicInformation.MedicineType}}</div>
+            <div>{{BasicInformation.ProductTypes| formatDictionary(source.ProductTypes,'')}}</div>
           </div>
           <div class="flex ">
             <div>药品类型</div>
-            <div>{{BasicInformation.ProductTypes}}</div>
+            <div>{{BasicInformation.MedicineType| formatDictionary(source.MedicineType,'')}}</div>
             <div>处方药属性</div>
-            <div>{{BasicInformation.PreDrugProperties}}</div>
+            <div>{{BasicInformation.PreDrugProperties| formatDictionary(source.PreDrugProperties,'')}}</div>
           </div>
           <div class="flex ">
             <div>中文生产厂家</div>
@@ -220,14 +220,28 @@ export default {
           }
         ],
         AntiLevel: [],
-        listDrugAttrEnum: []
+        listDrugAttrEnum: [],
+        MedicineType: [],
+        ProductTypes: [],
+        PreDrugProperties: []
       }
     }
   },
+  filters: {
+    formatDictionary(value, source, format = '') {
+      if (!Peace.validate.isEmpty(value)) {
+        return source.find((item) => item.value.toString() === value.toString())?.label
+      }
 
+      return format
+    }
+  },
   async created() {
     this.getDictionary()
     this.source.AntiLevel = await Peace.identity.dictionary.getList('antiLevel')
+    this.source.MedicineType = await Peace.identity.dictionary.getList('medicine_type')
+    this.source.ProductTypes = await Peace.identity.dictionary.getList('product_type')
+    this.source.PreDrugProperties = await Peace.identity.dictionary.getList('prescription_drug_properties')
   },
 
   mounted() {
