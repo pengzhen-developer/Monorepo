@@ -423,7 +423,7 @@ export default {
                 json = peace.util.encode({
                   netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
                   serviceType: 'inquiry',
-                  inquiryType: 'image,video',
+                  inquiryType: 'image',
                   Date: new Date()
                 })
                 this.$router.push(`/components/doctorListOrganization/${json}`)
@@ -463,7 +463,7 @@ export default {
           json = peace.util.encode({
             netHospitalId: this.hospitalInfo.nethospitalInfo.netHospitalId,
             serviceType: 'inquiry',
-            inquiryType: 'image,video',
+            inquiryType: 'image',
             Date: new Date()
           })
           this.$router.push(`/components/doctorListOrganization/${json}`)

@@ -108,11 +108,7 @@ export default {
         { text: '综合排序', textSelected: '', textSelecting: '', type: 'comprehensive', isSelect: false, isOpen: false },
         { text: '筛选', textSelected: '', textSelecting: '', type: 'screen', isSelect: false, isOpen: false }
       ],
-      comprehensiveList: [
-        { value: 'comprehensive', label: '综合排序' },
-        { value: 'visitsNum', label: '问诊量' },
-        { value: 'feedback', label: '好评率' }
-      ],
+      comprehensiveList: [{ value: 'comprehensive', label: '综合排序' }, { value: 'visitsNum', label: '问诊量' }, { value: 'feedback', label: '好评率' }],
       screenList: [
         {
           title: '问诊类型',
@@ -357,7 +353,7 @@ export default {
           const index = this.screenList.findIndex((item) => item.type === 'inquiryType')
           const info = this.screenList.find((item) => item.type === 'inquiryType')
           info.list.forEach((temp) => {
-            if (temp.inquiryType === 'image' || temp.inquiryType === 'video') {
+            if (temp.inquiryType === 'image') {
               temp.seleced = true
             }
           })
