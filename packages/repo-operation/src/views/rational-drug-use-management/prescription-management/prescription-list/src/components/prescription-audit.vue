@@ -2,58 +2,84 @@
 
 <template>
   <div>
-    <div class="header q-pl-16">系统审方结果</div>
-    <div class="q-mb-lg q-mt-sm q-pl-20 q-pt-24 flex items-center"
-         v-bind:style="{'color':getSystemAuditResultsTextColor()}">
+    <el-empty v-if="propsError"
+              description="请检查Props"></el-empty>
+    <div v-loading="loading"
+         style="min-height: 300px">
+      <div class="q-mb-lg q-mt-sm q-pl-20 q-pt-24 flex items-center"
+           v-bind:style="{'color':getSystemAuditResultsTextColor()}">
 
-      <el-image style="width: 30px; height: 30px;"
-                v-bind:src="getIcon()"></el-image>
+        <el-image style="width: 30px; height: 30px;"
+                  v-bind:src="getIcon()"></el-image>
 
-      <span class="text-h5 text-weight-bold q-ml-md">
-        {{ data.actionMsg }}
-      </span>
+        <span class="text-h5 text-weight-bold q-ml-md">
+          {{ rulestData.actionMsg }}
+        </span>
 
-    </div>
-
-    <div class="card q-mb-md q-mx-sm"
-         v-for="(checkItem,index) in data.resultMsgs"
-         v-bind:key="index">
-      <div class="flex items-center text-weight-bold q-py-md q-px-lg bg-grey-2">
-        <div v-bind:style="{'background':getSystemAuditResultsTextColor(checkItem.actionCode)}"
-             class="relative-position"
-             style="width: 4px; height: 16px; left: -24px"></div>
-        <span class="q-mr-md text-subtitle2 text-weight-bolder">{{ checkItem.title }}</span>
-        <span v-bind:style="{'background':getSystemAuditResultsTextColor(checkItem.actionCode)}"
-              class="text-white text-caption q-py-none q-px-sm">{{ checkItem.actionName }}</span>
       </div>
 
-      <div class="content q-px-lg q-py-md"
-           v-for="actionItem in checkItem.list"
-           v-bind:key="actionItem.id">
-        <div class="row">
-          <div class="col-2 text-weight-bold text-justify"
-               style="min-width:4.4em ;padding-right:0.4em ;">{{ actionItem.ruleMsg }}</div>
-          <div class="col-1 text-weight-bold"
-               style="min-width:2.2em ;"
-               v-bind:style="{'color':getSystemAuditResultsTextColor(actionItem.actionCode)}">{{ actionItem.actionMsg }}</div>
-          <div class="col q-pl-sm"
-               style="word-break: break-all;">{{ actionItem.ruleMsgText }}</div>
+      <div class="card q-mb-md q-mx-sm"
+           v-for="(checkItem,index) in rulestData.resultMsgs"
+           v-bind:key="index">
+        <div class="flex items-center text-weight-bold q-py-md q-px-lg bg-grey-2">
+          <div v-bind:style="{'background':getSystemAuditResultsTextColor(checkItem.actionCode)}"
+               class="relative-position"
+               style="width: 4px; height: 16px; left: -24px"></div>
+          <span class="q-mr-md text-subtitle2 text-weight-bolder">{{ checkItem.title }}</span>
+          <span v-bind:style="{'background':getSystemAuditResultsTextColor(checkItem.actionCode)}"
+                class="text-white text-caption q-py-none q-px-sm">{{ checkItem.actionName }}</span>
+        </div>
+
+        <div class="content q-px-lg q-py-md"
+             v-for="actionItem in checkItem.list"
+             v-bind:key="actionItem.id">
+          <div class="row">
+            <div class="col-2 text-weight-bold text-justify"
+                 style="min-width:4.4em ;padding-right:0.4em ;">{{ actionItem.ruleMsg }}</div>
+            <div class="col-1 text-weight-bold"
+                 style="min-width:2.2em ;"
+                 v-bind:style="{'color':getSystemAuditResultsTextColor(actionItem.actionCode)}">{{ actionItem.actionMsg }}</div>
+            <div class="col q-pl-sm"
+                 style="word-break: break-all;">{{ actionItem.ruleMsgText }}</div>
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
 import CONSTANT from '../constant'
-
+import Service from '../service'
 export default {
   name: 'PrescriptionAudit',
   props: {
-    data: Object
+    data: {
+      type: Object,
+      required: false
+    },
+    id: {
+      type: String,
+      required: false
+    }
   },
+
+  created() {
+    if (!Peace.validate.isEmpty(this.id)) {
+      this.getResultInfo()
+    } else if (this.data && Object.keys(this.data).length > 0) {
+      this.rulestData = Object.assign({}, this.data)
+    } else {
+      this.propsError = true
+    }
+  },
+
   data() {
     return {
+      propsError: false,
+      loading: false,
+      rulestData: {},
       source: {
         //系统审核结果背景色
         ADIUT_THEME_MAP: CONSTANT.ADIUT_THEME_MAP,
@@ -63,15 +89,28 @@ export default {
   },
   methods: {
     getIcon() {
-      if (this.data?.actionCode) {
-        return require(`../assets/img/system_audit_status_big_${this.data?.actionCode}.png`)
+      if (this.rulestData?.actionCode) {
+        return require(`../assets/img/system_audit_status_big_${this.rulestData?.actionCode}.png`)
       } else {
         return ''
       }
     },
     //系统审方color
-    getSystemAuditResultsTextColor(code = this.data?.actionCode) {
+    getSystemAuditResultsTextColor(code = this.rulestData?.actionCode) {
       return this.source.SYSTEM_AUDIT_RESULTS_DETAIL_TYPE_MAP.find((item) => item.value === code)?.color
+    },
+    getResultInfo() {
+      this.loading = true
+      Service.getActionDetail({ jztClaimNo: this.id })
+        .then((result) => {
+          this.rulestData = result.data
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     }
   }
 }

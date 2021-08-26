@@ -311,9 +311,20 @@ import prescriptionDetails from './components/prescription-details'
 
 export default {
   name: 'PrescriptionList',
+  inject: ['provideAddTab', 'provideGetTab'],
   components: {
     prescriptionDetails
   },
+
+  computed: {
+    addTab() {
+      return this.provideAddTab
+    },
+    getTab() {
+      return this.provideGetTab
+    }
+  },
+
   data() {
     return {
       model: {
@@ -491,8 +502,10 @@ export default {
     },
     //处方详情
     detail(row) {
-      this.dialog.data.jztClaimNo = row.jztClaimNo
-      this.dialog.visible = true
+      const tab = Peace.util.deepClone(this.getTab('PrescriptionRecord'))
+      Peace.cache.sessionStorage.set('358-jztClaimNo', row.jztClaimNo)
+      tab.menuName = '处方记录'
+      this.addTab(tab)
     },
     //关闭详情回到列表
     goback() {

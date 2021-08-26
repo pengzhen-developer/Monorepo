@@ -63,7 +63,10 @@ export default {
               fontSize: 12
             },
             formatter: (value) => {
-              return value.split('-').splice(1, 2).join('-')
+              return value
+                .split('-')
+                .splice(1, 2)
+                .join('-')
             }
           },
           //改变坐标轴和文本的样式
@@ -87,7 +90,7 @@ export default {
             showMaxLabel: false
           },
           splitNumber: 2,
-          max: function (value) {
+          max: function(value) {
             return value.max * 1.3
           },
           //改变坐标轴和文本的样式
@@ -109,7 +112,7 @@ export default {
         },
         tooltip: {
           trigger: 'item',
-          formatter: function (params) {
+          formatter: function(params) {
             const val = params.data
             return val.value
           }

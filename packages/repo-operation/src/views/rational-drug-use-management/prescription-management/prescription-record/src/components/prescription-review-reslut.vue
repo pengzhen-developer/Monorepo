@@ -2,9 +2,11 @@
   <div class="layout-route flex">
 
     <el-radio-group v-model="active"
+                    v-on:change="handleChange"
                     class="q-mt-10 q-mb-34 q-ml-auto q-mr-auto">
       <el-radio-button :label="tab.value"
                        v-for="(tab,index) in tabs"
+                       :disabled="index === 3 && !seeClientCardCode"
                        :key="index">{{tab.label}}</el-radio-button>
 
     </el-radio-group>
@@ -14,9 +16,26 @@
       <prescription-check-recode v-bind:id="jztClaimNo"></prescription-check-recode>
     </div>
     <!-- 系统审方结果 -->
-    <div class="card result full-width"
+    <div class="full-width"
          v-show="active===1">
       <PrescriptionAudit v-bind:id="jztClaimNo"></PrescriptionAudit>
+    </div>
+
+    <div v-show="showCheckImage"
+         class="fullscreen cursor-pointer"
+         style="position: fixed; backgroundColor: white">
+
+      <el-image class="full-width full-height"
+                fit="contain"
+                v-bind:src="require('../assets/img/check_recode_img.png')">
+      </el-image>
+
+      <el-button v-on:click="closeImage"
+                 class="absolute-top-right q-mr-20 q-mt-20"
+                 type="text">
+        <el-image v-bind:src="require('../assets/img/bigImage_close_icon.png')">
+        </el-image>
+      </el-button>
     </div>
   </div>
 </template>
@@ -30,6 +49,10 @@ export default {
     jztClaimNo: {
       type: String,
       required: true
+    },
+    seeClientCardCode: {
+      type: String,
+      required: false
     }
   },
   components: {
@@ -44,16 +67,36 @@ export default {
         { label: '查看检验或检查单', value: 2, checked: false },
         { label: '历史用药', value: 3, checked: false }
       ],
-      active: 0
+      active: 0,
+      showCheckImage: false
     }
   },
   methods: {
-    changeTab(value, index) {
-      if (this.active !== value) {
-        this.active = value
-        this.tabs.map((item) => (item.checked = false))
-        this.tabs[index].checked = true
+    handleChange(value) {
+      switch (value) {
+        case 2:
+          /// 查看检验单
+          this.showCheckImage = true
+          this.active = 1
+          break
+        case 3:
+          this.active = 1
+          this.openHistoryDrugView()
+          break
+        default:
+          break
       }
+    },
+    async openHistoryDrugView() {
+      const auth = await Peace.identity.auth.getAuth()
+      const token = auth.access_token
+      /// 历史用药
+      window.open(
+        `${process.env.VUE_APP_SITE_PRESCRIPTION}Engine/WebParams?uri=medicationHistory/viewHistoricalRecipe.html?id=${this.seeClientCardCode}&token=${token}`
+      )
+    },
+    closeImage() {
+      this.showCheckImage = false
     }
   }
 }

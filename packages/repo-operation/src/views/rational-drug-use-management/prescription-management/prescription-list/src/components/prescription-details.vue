@@ -18,8 +18,7 @@
         </div>
         <!-- 审方结果-审方记录 -->
         <div class="pre-content right">
-          <PrescriptionReviewReslut v-bind:actionDetail="actionDetail"
-                                    v-bind:prescriptionLog="prescriptionLog"></PrescriptionReviewReslut>
+          <PrescriptionReviewReslut v-bind:jztClaimNo="info.jztClaimNo"></PrescriptionReviewReslut>
         </div>
       </div>
     </div>
@@ -40,9 +39,7 @@ export default {
 
   data() {
     return {
-      prescriptionInfo: {},
-      prescriptionLog: {},
-      actionDetail: {}
+      prescriptionInfo: {}
     }
   },
   watch: {
@@ -50,8 +47,6 @@ export default {
       handler(val) {
         const jztClaimNo = val.jztClaimNo
         this.getPrescriptionInfo(jztClaimNo)
-        this.getPrescriptionLog(jztClaimNo)
-        this.getActionDetail(jztClaimNo)
       },
       immediate: true
     }
@@ -64,18 +59,6 @@ export default {
     getPrescriptionInfo(jztClaimNo) {
       Service.getPrescriptionInfo({ jztClaimNo }).then((res) => {
         this.prescriptionInfo = Object.assign({}, res.data)
-      })
-    },
-    //审方记录
-    getPrescriptionLog(jztClaimNo) {
-      Service.getPrescriptionLog({ jztClaimNo }).then((res) => {
-        this.prescriptionLog = Object.assign({}, res.data)
-      })
-    },
-    //系统审方结果
-    getActionDetail(jztClaimNo) {
-      Service.getActionDetail({ jztClaimNo }).then((res) => {
-        this.actionDetail = Object.assign({}, res.data)
       })
     }
   }
