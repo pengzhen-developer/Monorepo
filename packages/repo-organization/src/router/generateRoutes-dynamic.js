@@ -56,7 +56,13 @@ const getDynamicRoutes = (accountMenu) => {
           path: '/layout',
           name: 'Layout',
           component: () => import(`@src/layouts/default`),
-          children: []
+          children: [
+            {
+              path: '/aaa',
+              name: 'CallLog',
+              component: () => import('@/src/views/rational-drug-use-management/intelligent-prescription-checking/call-log')
+            }
+          ]
         }
       ]
     }
