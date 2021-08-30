@@ -287,8 +287,19 @@ import Util from '@src/util'
 import Service from './service'
 export default {
   name: 'PrescriptionCenter',
+
+  inject: ['provideAddTab', 'provideGetTab'],
+
   components: {},
 
+  computed: {
+    addTab() {
+      return this.provideAddTab
+    },
+    getTab() {
+      return this.provideGetTab
+    }
+  },
   data() {
     return {
       dialog: {
@@ -401,9 +412,13 @@ export default {
     },
     //查看详情
     detail(row) {
-      const name = '查看处方'
-      const query = { JZTClaimNo: row.jztClaimNo }
-      this.$router.push({ name, query })
+      // const name = '查看处方'
+      // const query = { JZTClaimNo: row.jztClaimNo }
+      // this.$router.push({ name, query })
+      const tab = Peace.util.deepClone(this.getTab('PrescriptionRecord'))
+      Peace.cache.sessionStorage.set('358-jztClaimNo', row.jztClaimNo)
+      tab.menuName = '处方记录'
+      this.addTab(tab)
     },
     //查看原始处方
     showImage(row) {
