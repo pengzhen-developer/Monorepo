@@ -7,7 +7,7 @@
       <el-image style="width: 30px; height: 30px;"
                 v-bind:src="getIcon()"></el-image>
       <span class="text-h5 text-weight-bold q-ml-md">
-        {{ data.auditResult }}
+        {{ data.actionMsg }}
       </span>
     </div>
 
@@ -47,7 +47,11 @@ const adiutThemeMap = {
   ['OK']: 'primary',
   ['I']: 'info',
   ['R']: 'warning',
-  ['D']: 'negative'
+  ['D']: 'negative',
+  /** 失败 */
+  ['FAIL']: 'negative',
+  /** 服务调用失败 */
+  ['SERVER_ERR']: 'negative'
 }
 
 export default {
@@ -57,10 +61,10 @@ export default {
 
   methods: {
     getIcon() {
-      return require(`./assets/img/ic_${this.data?.auditCode}@2x.png`)
+      return require(`./assets/img/ic_${this.data?.actionCode}@2x.png`)
     },
 
-    getTextThemeClass(code = this.data?.auditCode) {
+    getTextThemeClass(code = this.data?.actionCode) {
       const theme = adiutThemeMap[code]
 
       return {
@@ -68,7 +72,7 @@ export default {
       }
     },
 
-    getBackgroudThemeClass(code = this.data?.auditCode) {
+    getBackgroudThemeClass(code = this.data?.actionCode) {
       const theme = adiutThemeMap[code]
 
       return {

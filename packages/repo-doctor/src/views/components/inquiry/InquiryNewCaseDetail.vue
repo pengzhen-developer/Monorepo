@@ -122,9 +122,9 @@
           <div class="flex justify-between items-end q-mb-xs">
             <span class="text-h6 text-weight-bolder">Rp</span>
             <div class="flex items-baseline"
-                 v-if="canShowAudit(item.PrescriptionAudit.auditCode)"
-                 v-bind:class="getThemeClass(item.PrescriptionAudit.auditCode)">
-              <span class="text-subtitle1 text-weight-bold q-mr-sm">{{ item.PrescriptionAudit.auditResult }}</span>
+                 v-if="canShowAudit(item.prescriptionAuditResult.actionCode)"
+                 v-bind:class="getThemeClass(item.prescriptionAuditResult.actionCode)">
+              <span class="text-subtitle1 text-weight-bold q-mr-sm">{{ item.prescriptionAuditResult.actionMsg }}</span>
               <i v-on:click="showAudit(item)"
                  class="text-subtitle2 cursor-pointer el-icon-question"
                  style="line-height: none;"></i>
@@ -211,7 +211,11 @@ const adiutThemeMap = {
   /** 慎用 */
   ['R']: 'warning',
   /** 禁用 */
-  ['D']: 'negative'
+  ['D']: 'negative',
+  /** 失败 */
+  ['FAIL']: 'negative',
+  /** 服务调用失败 */
+  ['SERVER_ERR']: 'negative'
 }
 
 import NoData from '@src/views/components/NoData'
@@ -245,7 +249,7 @@ export default {
   methods: {
     /** 是否显示前置审方按钮 */
     canShowAudit(code) {
-      const showAduitMap = ['I', 'R', 'D']
+      const showAduitMap = ['I', 'R', 'D', 'FAIL', 'SERVER_ERR']
       return showAduitMap.includes(code)
     },
 
@@ -259,7 +263,7 @@ export default {
 
     showAudit(item) {
       this.audit.visible = true
-      this.audit.data = item.PrescriptionAudit
+      this.audit.data = item.prescriptionAuditResult
     },
 
     goToNext() {

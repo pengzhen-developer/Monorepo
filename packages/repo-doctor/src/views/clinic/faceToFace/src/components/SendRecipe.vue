@@ -192,7 +192,7 @@
 import { mutations, store } from './../store'
 import Service from './../service/index'
 
-import RecipeAudit from '@src/views/components/recipe/RecipeAudit'
+import RecipeAudit from '@src/views/components/prescription-record/src/components/prescription-audit'
 import DrugSelect from '@src/views/components/drug/DrugSelect'
 import QuickSelectAllergyHistory from '@src/views/components/quick-select/src/components/QuickSelectAllergyHistory'
 import QuickSelectDiagnose from '@src/views/components/quick-select/src/components/QuickSelectDiagnose'

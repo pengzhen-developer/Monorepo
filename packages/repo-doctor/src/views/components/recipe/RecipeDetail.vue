@@ -114,7 +114,7 @@
                  v-if="canShowAudit"
                  v-on:click="showAudit"
                  v-bind:class="getThemeClass()">
-              <span class="text-subtitle1 text-weight-bold q-mr-sm">{{ data.PrescriptionAudit.auditResult }}</span>
+              <span class="text-subtitle1 text-weight-bold q-mr-sm">{{ data.prescriptionAuditResult.actionMsg }}</span>
               <i class="text-subtitle2 el-icon-question"
                  style="line-height: none;"></i>
             </div>
@@ -299,7 +299,8 @@
 <script>
 import Service from './service'
 
-import RecipeAudit from './RecipeAudit'
+import RecipeAudit from '@src/views/components/prescription-record/src/components/prescription-audit'
+
 import ImgViewer from './components/ImageViewer'
 
 const adiutThemeMap = {
@@ -310,7 +311,11 @@ const adiutThemeMap = {
   /** 慎用 */
   ['R']: 'warning',
   /** 禁用 */
-  ['D']: 'negative'
+  ['D']: 'negative',
+  /** 失败 */
+  ['FAIL']: 'negative',
+  /** 服务调用失败 */
+  ['SERVER_ERR']: 'negative'
 }
 
 export default {
@@ -349,13 +354,13 @@ export default {
   computed: {
     /** 前置审方审核数据 */
     audit() {
-      return this.data?.PrescriptionAudit
+      return this.data?.prescriptionAuditResult
     },
 
     /** 是否显示前置审方按钮 */
     canShowAudit() {
-      const showAduitMap = ['I', 'R', 'D']
-      return showAduitMap.includes(this.audit?.auditCode)
+      const showAduitMap = ['I', 'R', 'D', 'FAIL', 'SERVER_ERR']
+      return showAduitMap.includes(this.audit?.actionCode)
     }
   },
 
@@ -379,7 +384,7 @@ export default {
       this.confirmVisible = false
     },
 
-    getThemeClass(code = this.audit?.auditCode) {
+    getThemeClass(code = this.audit?.actionCode) {
       const theme = adiutThemeMap[code]
 
       return {
