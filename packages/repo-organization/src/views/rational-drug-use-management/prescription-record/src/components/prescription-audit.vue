@@ -44,16 +44,16 @@
             <!-- <span class="text-grey-6"> 50mg*6袋 </span> -->
           </div>
 
-          <div class="content q-pr-18 q-py-md"
+          <div class="content q-pl-10 q-pr-18 q-py-md"
                v-for="actionItem in checkItem.list"
                v-bind:key="actionItem.id">
 
-            <div class="q-pl-10 row items-center q-mb-sm">
+            <div class="row items-center q-mb-sm">
               <div v-if="actionItem.ruleTypeText"
                    class="text-weight-Medium text-subtitle1 q-mr-sm">【{{actionItem.ruleTypeText}}】</div>
 
               <div v-if="actionItem.ruleMsg"
-                   class="text-weight-Medium text-subtitle1 q-mr-md">{{actionItem.ruleMsg}}</div>
+                   class="q-ml-8 text-weight-Medium text-subtitle1 q-mr-md">{{actionItem.ruleMsg}}</div>
 
               <span v-if="actionItem.resultType == 3"
                     class="union-tag-style">
@@ -66,7 +66,7 @@
               </span>
             </div>
 
-            <div class="q-pl-18 text-grey-666"
+            <div class="q-ml-8 text-grey-666"
                  style="word-break: break-all">{{ actionItem.ruleMsgText }}</div>
 
           </div>
