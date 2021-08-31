@@ -3,7 +3,8 @@
     <div class="full-height column">
       <div class="flex full-width col">
         <!-- 处方详情 -->
-        <div class="pre-content left">
+        <div class="pre-content left"
+             v-loading="loading">
           <PrescriptionDetail v-bind:prescriptionInfo="prescriptionInfo"></PrescriptionDetail>
         </div>
         <!-- 审方结果-审方记录 -->
@@ -29,7 +30,8 @@ export default {
   data() {
     return {
       jztClaimNo: undefined,
-      prescriptionInfo: {}
+      prescriptionInfo: {},
+      loading: false
     }
   },
   created() {
@@ -45,9 +47,14 @@ export default {
     },
     //处方信息
     getPrescriptionInfo(jztClaimNo) {
-      Service.getPrescriptionInfo({ jztClaimNo }).then((res) => {
-        this.prescriptionInfo = Object.assign({}, res.data)
-      })
+      this.loading = true
+      Service.getPrescriptionInfo({ jztClaimNo })
+        .then((res) => {
+          this.prescriptionInfo = Object.assign({}, res.data)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     }
   }
 }

@@ -131,24 +131,36 @@ export default {
 
   methods: {
     transFormData(data) {
-      const tmp = {}
-      for (const item of data.resultMsgs) {
-        if (tmp[item.productName]) {
-          tmp[item.productName].push(item)
-        } else {
-          tmp[item.productName] = [].concat([item])
-        }
-      }
-      const tmpArray = []
-      for (const key in tmp) {
-        tmpArray.push({
-          title: key,
-          list: tmp[key]
-        })
-      }
+      let tmpData = data.resultMsgs ?? []
 
-      data.transFormArray = tmpArray
-      this.checkedResult = data
+      if (tmpData && Peace.util.isArray(tmpData) && tmpData.length > 0) {
+        tmpData = tmpData.filter((item) => item.actionCode === 'FAIL')
+        if (tmpData.length === 0) {
+          tmpData = data.resultMsgs
+        }
+
+        const tmp = {}
+        for (const item of tmpData) {
+          if (tmp[item.productName]) {
+            tmp[item.productName].push(item)
+          } else {
+            tmp[item.productName] = [].concat([item])
+          }
+        }
+        const tmpArray = []
+        for (const key in tmp) {
+          tmpArray.push({
+            title: key,
+            list: tmp[key]
+          })
+        }
+
+        data.transFormArray = tmpArray
+        this.checkedResult = data
+      } else {
+        data.transFormArray = []
+        this.checkedResult = data
+      }
     },
     resultTipsText(items) {
       let text = ''

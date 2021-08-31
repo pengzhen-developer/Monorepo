@@ -21,14 +21,21 @@
       <PrescriptionAudit v-bind:id="jztClaimNo"></PrescriptionAudit>
     </div>
 
-    <div v-show="showCheckImage">
+    <div v-show="showCheckImage"
+         class="fullscreen cursor-pointer"
+         style="position: fixed; backgroundColor: white">
 
-      <el-image class="fullscreen cursor-pointer"
-                style="position: fixed; backgroundColor: white"
-                v-on:click="closeImage"
+      <el-image class="full-width full-height"
+                fit="contain"
                 v-bind:src="require('../assets/img/check_recode_img.png')">
-
       </el-image>
+
+      <el-button v-on:click="closeImage"
+                 class="absolute-top-right q-mr-20 q-mt-20"
+                 type="text">
+        <el-image v-bind:src="require('../assets/img/bigImage_close_icon.png')">
+        </el-image>
+      </el-button>
     </div>
   </div>
 </template>
