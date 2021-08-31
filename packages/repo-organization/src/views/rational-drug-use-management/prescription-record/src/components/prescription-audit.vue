@@ -158,8 +158,9 @@ export default {
       return text
     },
     getIcon() {
-      if (this.checkedResult?.actionCode) {
-        return require(`../assets/img/system_audit_status_result_${this.checkedResult?.actionCode}.png`)
+      const code = this.checkedResult?.actionCode
+      if (code && ['D', 'I', 'R', 'OK', 'FAIL', 'SERVER_ERR', 'ERR'].includes(code)) {
+        return require(`../assets/img/system_audit_status_result_${code}.png`)
       } else {
         return ''
       }

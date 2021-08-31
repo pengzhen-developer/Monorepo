@@ -6,6 +6,7 @@
                     class="q-mt-10 q-mb-34 q-ml-auto q-mr-auto">
       <el-radio-button :label="tab.value"
                        v-for="(tab,index) in tabs"
+                       :disabled="index === 3 && !seeClientCardCode"
                        :key="index">{{tab.label}}</el-radio-button>
 
     </el-radio-group>
@@ -19,6 +20,16 @@
          v-show="active===1">
       <PrescriptionAudit v-bind:id="jztClaimNo"></PrescriptionAudit>
     </div>
+
+    <div v-show="showCheckImage">
+
+      <el-image class="fullscreen cursor-pointer"
+                style="position: fixed; backgroundColor: white"
+                v-on:click="closeImage"
+                v-bind:src="require('../assets/img/check_recode_img.png')">
+
+      </el-image>
+    </div>
   </div>
 </template>
 
@@ -31,6 +42,10 @@ export default {
     jztClaimNo: {
       type: String,
       required: true
+    },
+    seeClientCardCode: {
+      type: String,
+      required: false
     }
   },
   components: {
@@ -45,24 +60,36 @@ export default {
         { label: '查看检验或检查单', value: 2, checked: false },
         { label: '历史用药', value: 3, checked: false }
       ],
-      active: 0
+      active: 0,
+      showCheckImage: false
     }
   },
   methods: {
     handleChange(value) {
-      console.log(value)
       switch (value) {
         case 2:
           /// 查看检验单
-          window.open('https://www.baidu.com')
+          this.showCheckImage = true
+          this.active = 1
           break
         case 3:
-          /// 历史用药
-          window.open('https://www.google.com')
+          this.active = 1
+          this.openHistoryDrugView()
           break
         default:
           break
       }
+    },
+    async openHistoryDrugView() {
+      const auth = await Peace.identity.auth.getAuth()
+      const token = auth.access_token
+      /// 历史用药
+      window.open(
+        `${process.env.VUE_APP_SITE_PRESCRIPTION}Engine/WebParams?uri=medicationHistory/viewHistoricalRecipe.html?id=${this.seeClientCardCode}&token=${token}`
+      )
+    },
+    closeImage() {
+      this.showCheckImage = false
     }
   }
 }

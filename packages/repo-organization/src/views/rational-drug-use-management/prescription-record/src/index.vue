@@ -8,7 +8,8 @@
         </div>
         <!-- 审方结果-审方记录 -->
         <div class="pre-content right">
-          <PrescriptionReviewReslut v-bind:jztClaimNo="jztClaimNo"></PrescriptionReviewReslut>
+          <PrescriptionReviewReslut v-bind:jztClaimNo="jztClaimNo"
+                                    v-bind:seeClientCardCode="prescriptionInfo.ClientCardCode"></PrescriptionReviewReslut>
         </div>
       </div>
     </div>
