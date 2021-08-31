@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="info-title q-mb-12">调用记录</div>
     <el-form space-none
              label-suffix="："
@@ -7,28 +7,28 @@
              label-position="right">
       <div class="q-mb-36">
         <el-form-item label="处方来源">
-          <span>ff吩咐给</span>
+          <span>{{callInfo.prescriptionSource}}</span>
         </el-form-item>
 
         <el-form-item label="原始处方编号">
-          <span>ff</span>
+          <span>{{callInfo.hisEpCode}}</span>
         </el-form-item>
 
         <el-form-item label="平台处方编号">
-          <span>ff</span>
+          <span>{{callInfo.jztClaimNo}}</span>
         </el-form-item>
 
         <el-form-item label="调用时间">
-          <span>rrr</span>
+          <span>{{callInfo.createTime}}</span>
         </el-form-item>
 
-        <el-form-item label="审核结果">
-          <span>fff</span>
+        <el-form-item label="调用结果">
+          <span v-bind:class="callInfo.invokeResult=='成功'?'mainColor':'failColor'">{{callInfo.invokeResult}}</span>
         </el-form-item>
 
         <el-form-item label="审方结果">
           <div class="row items-center">
-            <span>审方失败</span>
+            <span v-bind:class="callInfo.checkResult=='审方失败'?'failColor':''">{{callInfo.checkResult || '--' }}</span>
             <el-button class="q-ml-10"
                        v-on:click="viewDetail">查看详情</el-button>
           </div>
@@ -48,17 +48,32 @@
           <span>{{ prescriptionInfo.MedicalDepartmentName }}</span>
         </el-form-item>
         <el-form-item label="患者信息">
-          <span>{{prescriptionInfo.PatientName +"  "+ prescriptionInfo.PatientGender +"  "+ prescriptionInfo.Age   }}</span>
+          <div>
+            <span>{{prescriptionInfo.PatientName}}</span>
+            <span class="q-ml-10"
+                  v-if="prescriptionInfo.PatientGender">{{prescriptionInfo.PatientGender}}</span>
+            <span class="q-ml-10"
+                  v-if="prescriptionInfo.Age">{{prescriptionInfo.Age}}</span>
+          </div>
         </el-form-item>
         <el-form-item label="诊断">
-          <span>{{ getDiagnosisInfos(prescriptionInfo.DiagnosisInfos)   }}</span>
+          <span>{{ getDiagnosisInfos(DiagnosisInfos) }}</span>
         </el-form-item>
         <el-form-item label="药品详情">
           <div v-for="drug in  prescriptionInfo.DrugList"
                v-bind:key="drug.DrugCode">
-            <div>{{ drug.DrugName  + drug.DrugSpecifications +drug.DrugQty+drug.DrugQtyUnit }}</div>
-            <div class="text-color"> 每次{{ drug.OnceDose}}{{ drug.OnceUnit }}，
-              {{ drug.MedicationFrequency }}, {{ drug.DrugRoute }}, {{ drug.medicaDays ? "，" + drug.medicaDays + "天" : "" }}</div>
+            <div>
+              <span>{{ drug.DrugName}}</span>
+              <span class="q-ml-10"
+                    v-if="drug.DrugSpecifications">{{ drug.DrugSpecifications||""}}</span>
+              <span class="q-ml-10">{{drug.DrugQty||""}}{{drug.DrugQtyUnit||""}}</span>
+            </div>
+            <div class="text-color">
+              <span>{{drug.OnceDose?"每次" + drug.OnceDose : ""}}{{drug.OnceUnit? drug.OnceUnit : ""}}</span>
+              <span>{{drug.MedicationFrequency?",  " + drug.MedicationFrequency : "" }}</span>
+              <span>{{drug.DrugRoute?",    " + drug.DrugRoute : "" }}</span>
+              <span>{{ drug.medicaDays ? ",    " + drug.medicaDays + "天" : "" }}</span>
+            </div>
           </div>
         </el-form-item>
       </div>
@@ -71,39 +86,65 @@
                   v-if="modelVisible.visible"
                   append-to-body
                   width="576px">
-      <v></v>
+      <PrescriptionAudit v-bind:id="this.data.jztClaimNo"></PrescriptionAudit>
     </peace-dialog>
   </div>
 </template>
 
 <script>
-import v from './v'
+import PrescriptionAudit from '@views/rational-drug-use-management/prescription-record/src/components/prescription-audit'
 import Service from '../service'
 export default {
-  components: { v },
+  components: { PrescriptionAudit },
+  props: {
+    data: Object
+  },
   data() {
     return {
       prescriptionInfo: {},
+      callInfo: {},
       modelVisible: {
         visible: false
+      },
+      DiagnosisInfos: [],
+      hasCallInfo: false,
+      hasPrescription: false
+    }
+  },
+  computed: {
+    loading() {
+      if (this.hasCallInfo && this.hasPrescription) {
+        return false
       }
+      return true
     }
   },
   mounted() {
     this.$nextTick().then(() => {
+      this.getCallInfo()
       this.getPrescriptionInfo()
     })
   },
   methods: {
+    //调用信息
+    getCallInfo() {
+      Service.getInvokeLogById({ id: this.data.id }).then((res) => {
+        this.hasCallInfo = true
+        this.callInfo = res.data
+        this.jztClaimNo = res.data.jztClaimNo
+      })
+    },
     //处方信息
     getPrescriptionInfo() {
-      Service.getPrescriptionInfo({ jztClaimNo: 'NA1CKJ-202108301054330885-2021083033267916' }).then((res) => {
+      Service.getPrescriptionInfo({ jztClaimNo: this.data.jztClaimNo }).then((res) => {
+        this.hasPrescription = true
         this.prescriptionInfo = res.data
+        this.DiagnosisInfos = res.data.DiagnosisInfos
       })
     },
     getDiagnosisInfos(data) {
-      if (data.DiagnosisInfos.length > 0) {
-        data.DiagnosisInfos.map((item) => item.DiagnosisName).join('，')
+      if (data.length > 0) {
+        return data.map((item) => item.DiagnosisName).join('，')
       }
     },
     viewDetail() {
@@ -136,5 +177,11 @@ export default {
 }
 .text-color {
   color: rgba(51, 51, 51, 0.6);
+}
+.mainColor {
+  color: #3099a6;
+}
+.failColor {
+  color: #ea3930;
 }
 </style>

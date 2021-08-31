@@ -11,17 +11,9 @@
           <el-input v-model.trim="model.hisEpCode"
                     placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="处方来源：">
-          <el-select v-model="model.prescriptionSource"
-                     placeholder="不限"
-                     clearable>
-            <el-option label="不限"
-                       value></el-option>
-            <el-option v-for="(value, label) in source.SOURCE_STATUS"
-                       v-bind:key="value"
-                       v-bind:label="label"
-                       v-bind:value="value"></el-option>
-          </el-select>
+        <el-form-item label="开方应用：">
+          <el-input v-model.trim="model.preAppName"
+                    placeholder="请输入"></el-input>
         </el-form-item>
 
         <el-form-item label="调用结果：">
@@ -75,12 +67,15 @@
           </template>
         </el-table-column>
 
-        <el-table-column min-width="180px"
+        <el-table-column min-width="220px"
                          label="平台处方编号"
                          prop="jztClaimNo"></el-table-column>
-        <el-table-column min-width="160px"
-                         label="原始处方编号"
-                         prop="hisEpCode"></el-table-column>
+        <el-table-column min-width="140px"
+                         label="原始处方编号">
+          <template slot-scope="scope">
+            {{scope.row.hisEpCode ||  '--' }}
+          </template>
+        </el-table-column>
         <el-table-column min-width="100px"
                          label="开方应用">
           <template slot-scope="scope">
@@ -88,16 +83,23 @@
           </template>
         </el-table-column>
 
-        <el-table-column min-width="90px"
+        <el-table-column min-width="160px"
                          label="调用时间"
                          prop="createTime"></el-table-column>
         <el-table-column min-width="90px"
                          label="调用结果"
-                         prop="invokeResult"></el-table-column>
+                         prop="invokeResult">
+          <template slot-scope="scope">
+            {{scope.row.invokeResult ||  '--' }}
+          </template>
+        </el-table-column>
         <el-table-column min-width="90px"
-                         label="审方结果"
-                         prop="checkResult"></el-table-column>
-        <el-table-column min-width="80px"
+                         label="审方结果">
+          <template slot-scope="scope">
+            {{scope.row.checkResult ||  '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column min-width="100px"
                          align="center"
                          fixed="right"
                          label="操作">
@@ -117,7 +119,7 @@
                   v-if="modelVisible.visible"
                   append-to-body
                   width="576px">
-      <CallDetail></CallDetail>
+      <CallDetail v-bind:data="modelVisible.data"></CallDetail>
     </peace-dialog>
 
   </div>
@@ -143,13 +145,14 @@ export default {
       model: {
         startTime: '',
         endTime: '',
-        prescriptionSource: '',
+        preAppName: '',
         hisEpCode: '',
         checkResult: '',
         invokeResult: ''
       },
       modelVisible: {
-        visible: false
+        visible: false,
+        data: {}
       }
     }
   },
@@ -183,7 +186,11 @@ export default {
         this.statistic = res.data
       })
     },
-    detail() {
+    detail(row) {
+      this.modelVisible.data = {
+        id: row.id,
+        jztClaimNo: row.jztClaimNo
+      }
       this.modelVisible.visible = true
     }
   }

@@ -37,7 +37,25 @@ export default {
     })
   },
   /**
-   * 获处方信息
+   * 查看详情
+   *
+   * @param {*} params
+   */
+  getInvokeLogById(params) {
+    const isMock = false
+
+    const apiPath = 'quake/log/getInvokeLogById'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.get(requestApi, { params }).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 获取处方信息
    * @param { string } jztClaimNo 平台处方编号
    * @returns { Object }
    */

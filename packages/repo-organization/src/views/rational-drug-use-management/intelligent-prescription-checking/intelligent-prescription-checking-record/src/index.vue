@@ -97,7 +97,7 @@
         <el-table-column min-width="100px"
                          label="开方应用">
           <template slot-scope="scope">
-            {{scope.row.preApplyName ||  '--' }}
+            {{scope.row.preAppName ||  '--' }}
           </template>
         </el-table-column>
         <el-table-column min-width="160px"
