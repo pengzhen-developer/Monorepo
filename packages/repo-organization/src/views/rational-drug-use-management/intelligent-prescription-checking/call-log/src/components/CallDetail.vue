@@ -49,10 +49,11 @@
         </el-form-item>
         <el-form-item label="患者信息">
           <div>
-            <span>{{prescriptionInfo.PatientName}}</span>
-            <span class="q-ml-10"
+            <span class="q-mr-10"
+                  v-if="prescriptionInfo.PatientName">{{prescriptionInfo.PatientName}}</span>
+            <span class="q-mr-10"
                   v-if="prescriptionInfo.PatientGender">{{prescriptionInfo.PatientGender}}</span>
-            <span class="q-ml-10"
+            <span class="q-mr-10"
                   v-if="prescriptionInfo.Age">{{prescriptionInfo.Age}}</span>
           </div>
         </el-form-item>
@@ -63,10 +64,11 @@
           <div v-for="drug in  prescriptionInfo.DrugList"
                v-bind:key="drug.DrugCode">
             <div>
-              <span>{{ drug.DrugName}}</span>
-              <span class="q-ml-10"
-                    v-if="drug.DrugSpecifications">{{ drug.DrugSpecifications||""}}</span>
-              <span class="q-ml-10">{{drug.DrugQty||""}}{{drug.DrugQtyUnit||""}}</span>
+              <span v-if="drug.DrugName"
+                    class="q-mr-10">{{ drug.DrugName}}</span>
+              <span class="q-mr-10"
+                    v-if="drug.DrugSpecifications">{{ drug.DrugSpecifications}}</span>
+              <span class="q-mr-10">{{drug.DrugQty||""}}{{drug.DrugQtyUnit||""}}</span>
             </div>
             <div class="text-color">
               <span>{{drug.OnceDose?"每次" + drug.OnceDose : ""}}{{drug.OnceUnit? drug.OnceUnit : ""}}</span>
@@ -131,7 +133,6 @@ export default {
       Service.getInvokeLogById({ id: this.data.id }).then((res) => {
         this.hasCallInfo = true
         this.callInfo = res.data
-        this.jztClaimNo = res.data.jztClaimNo
       })
     },
     //处方信息
@@ -144,7 +145,7 @@ export default {
     },
     getDiagnosisInfos(data) {
       if (data.length > 0) {
-        return data.map((item) => item.DiagnosisName).join('，')
+        return data.map((item) => item.DiagnosisName).join(',')
       }
     },
     viewDetail() {
