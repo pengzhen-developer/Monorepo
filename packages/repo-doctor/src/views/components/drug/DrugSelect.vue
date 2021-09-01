@@ -106,7 +106,7 @@
                                    v-bind:id="`row-${$index}-component`"
                                    v-bind:min="0.001"
                                    v-model="row.singleDose"></el-input-number>
-                  <span class="text-caption ellipsis text-grey-7 q-mx-xs"
+                  <span class="text-caption ellipsis text-grey-666 q-mx-xs"
                         style="max-width: 50px;"
                         v-bind:title="row.drugUnit">{{ row.drugUnit }}</span>
                 </div>
@@ -269,21 +269,21 @@
         <div class="flex q-py-sm el-autocomplete-drug-item"
              v-bind:class="{ disabled: item.drugStock === 0 }">
           <div class="col q-mr-md ellipsis">
-            <span class="text-subtitle2"
+            <span class="text-subtitle2 text-grey-333"
                   v-bind:title="item.drugName">{{ item.drugName }}</span>
           </div>
           <div class="q-mr-md ellipsis"
                style="width: 120px;">
-            <span class="text-grey-6 text-caption"
+            <span class="text-grey-333 text-caption"
                   v-bind:title="item.specification">{{ item.specification }}</span>
           </div>
           <div class="col q-mr-md ellipsis">
-            <span class="text-grey-6 text-caption"
+            <span class="text-grey-333 text-caption"
                   v-bind:title="item.companyName">{{ item.companyName }}</span>
           </div>
           <div style="width: 60px;">
             <span v-if="item.drugStock === 0"
-                  class="text-subtitle2 text-grey-6">暂无库存</span>
+                  class="text-subtitle2 text-grey-333">暂无库存</span>
           </div>
         </div>
       </template>
@@ -521,7 +521,7 @@ export default {
         })
     },
 
-    selectDrugList(drug) {
+    async selectDrugList(drug) {
       const drugObject = Peace.util.deepClone(drug)
 
       // 是否库存为 0
@@ -535,12 +535,29 @@ export default {
 
       // 选择药品时，单次剂量不能带入
       drugObject.singleDose = undefined
+
+      //获取药品推荐数据并赋值
+      await this.getRecommendDrugInfo(drugObject)
+
       // 添加到药品列表
       this.value.push(drugObject)
-
       // 交互性优化，选中药品后，焦点第一个需要输入的 input
       this.$nextTick(() => {
         this.$el.querySelector(`#row-${this.value.length - 1}-component input`)?.focus()
+      })
+    },
+
+    async getRecommendDrugInfo(drugObject) {
+      const params = {
+        drugId: drugObject.drugId
+      }
+      await Service.getRecommendDrugInfo(params).then((res) => {
+        const infoBean = res.data.info
+        drugObject.singleDose = infoBean.drugUseValue || undefined
+        drugObject.drugFrequency = infoBean.recommendFrequency || undefined
+        drugObject.drugFrequencyId = infoBean.recommendFrequencyId || undefined
+        drugObject.drugRoute = infoBean.recommendRoute || undefined
+        drugObject.drugRouteId = infoBean.recommendRouteId || undefined
       })
     },
 

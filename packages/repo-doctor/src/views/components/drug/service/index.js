@@ -111,5 +111,24 @@ export default {
     return Peace.http.get(requestApi, { params }).then((res) => {
       return res
     })
+  },
+
+  /**
+   * 获取药品推荐信息
+   *
+   * @param {*} params
+   */
+  getRecommendDrugInfo(params) {
+    const isMock = false
+
+    const apiPath = 'client/v1/Prescribeprescrip/getRecommendDrugInfo'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
   }
 }
