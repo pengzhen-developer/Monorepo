@@ -149,6 +149,7 @@
                  title="系统审方结果"
                  v-bind:visible.sync="auditDialog.visible"
                  v-loading="sending"
+                 v-if="auditDialog.visible"
                  element-loading-text="拼命加载中"
                  element-loading-background="rgba(0, 0, 0, 0.4)">
       <RecipeAudit v-bind:data="auditDialog.data"></RecipeAudit>
@@ -367,9 +368,10 @@ export default {
               }
               // 前置审方
               else if (res.data.isAdopt === false) {
-                this.auditDialog.visible = true
+                this.auditDialog.data = {}
                 this.auditDialog.data = res.data.result
                 this.auditDialog.prescriptionNo = res.data.result.prescriptionNo
+                this.auditDialog.visible = true
               }
               // 系统验证成功，发送处方成功
               else {

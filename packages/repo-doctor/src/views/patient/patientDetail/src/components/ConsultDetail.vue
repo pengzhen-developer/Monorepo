@@ -236,6 +236,7 @@
     <PeaceDialog title="系统审方结果"
                  v-bind:visible.sync="audit.visible"
                  absolute-center
+                 v-if="audit.visible"
                  append-to-body>
       <RecipeAudit v-bind:data="audit.data"></RecipeAudit>
     </PeaceDialog>
@@ -258,7 +259,7 @@ const adiutThemeMap = {
 }
 
 import NoData from '@src/views/components/NoData'
-import RecipeAudit from '@src/views/components/recipe/RecipeAudit'
+import RecipeAudit from '@src/views/components/prescription-record/src/components/prescription-audit'
 import get from 'lodash/get'
 export default {
   name: 'ConsultDetail',

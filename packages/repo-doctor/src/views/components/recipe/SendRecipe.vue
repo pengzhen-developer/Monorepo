@@ -131,6 +131,7 @@
                  v-bind:visible.sync="auditDialog.visible"
                  v-loading="sending"
                  element-loading-text="拼命加载中"
+                 v-if="auditDialog.visible"
                  element-loading-background="rgba(0, 0, 0, 0.4)">
       <RecipeAudit v-bind:data="auditDialog.data"></RecipeAudit>
 
@@ -175,7 +176,7 @@
 <script>
 import Service from './service'
 import Type from '@src/type'
-import RecipeAudit from './RecipeAudit'
+import RecipeAudit from '@src/views/components/prescription-record/src/components/prescription-audit'
 import DrugSelect from '@src/views/components/drug/DrugSelect'
 import { QuickSelectAllergyHistory, QuickSelectDiagnose } from '@src/views/components/quick-select/index'
 
