@@ -104,7 +104,7 @@
                          width="55">
         </el-table-column>
         <PeaceTableColumn label="药品编号"
-                          width="150"
+                          width="160"
                           prop="drug_number"></PeaceTableColumn>
         <PeaceTableColumn label="药品通用名称"
                           min-width="160"
@@ -125,9 +125,9 @@
             <div> {{scope.row.drug_unitPrice || '--'}} </div>
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn label="批准文号"
+        <!-- <PeaceTableColumn label="批准文号"
                           min-width="180"
-                          prop="license_number"></PeaceTableColumn>
+                          prop="license_number"></PeaceTableColumn> -->
         <PeaceTableColumn label="拆零"
                           width="100"
                           prop="is_disconnect_attr">
@@ -142,6 +142,28 @@
             <div> {{scope.row.source | getEnumLabel(source.ENUM_DRUG_SOURCE)}} </div>
           </template>
         </PeaceTableColumn>
+        <PeaceTableColumn label="推荐用量数值"
+                          min-width="120"
+                          prop="drug_usevalue">
+          <template slot-scope="scope">
+            {{scope.row.drug_usevalue||"——"}}
+          </template>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="推荐给药途径"
+                          min-width="120"
+                          prop="recommendRoute">
+          <template slot-scope="scope">
+            {{scope.row.recommendRoute||"——"}}
+          </template>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="推荐给药频次"
+                          min-width="120"
+                          prop="recommendFrequency">
+          <template slot-scope="scope">
+            {{scope.row.recommendFrequency||"——"}}
+          </template>
+        </PeaceTableColumn>
+
         <PeaceTableColumn label="使用状态"
                           width="110"
                           prop="status">
@@ -156,7 +178,7 @@
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="更新时间"
-                          min-width="160"
+                          min-width="170"
                           prop="updated_time"></PeaceTableColumn>
         <PeaceTableColumn fixed="right"
                           header-align="left"
@@ -190,7 +212,7 @@
                  title="药品"
                  v-if="addDialogVisible"
                  append-to-body
-                 width="750px">
+                 width="800px">
       <div class="el-dialog__title"
            slot="title">
         <span>{{currentDrug.drugType=='update'? '修改药品':'添加药品'}}</span>

@@ -88,5 +88,35 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
+  },
+  /**
+   * 药品数据查询给药频次
+   *
+   * @param {*} params
+   */
+  getDrugFrequencyList(params) {
+    const isMock = false
+    const apiPath = 'nethospital/hospital/v1/Drugtimes/getDrugFrequencyList'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+    const requestApi = isMock ? mockPath : serverPath
+    return Peace.http.get(requestApi, { params }).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 药品数据查询给药途径
+   *
+   * @param {*} params
+   */
+  getDrugRouteList(params) {
+    const isMock = false
+    const apiPath = 'nethospital/hospital/v1/Drugway/getDrugRouteList'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+    const requestApi = isMock ? mockPath : serverPath
+    return Peace.http.get(requestApi, { params }).then((res) => {
+      return res
+    })
   }
 }

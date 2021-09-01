@@ -117,25 +117,47 @@
         <el-input v-model="drug.drug_count"
                   placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item label="给药途径："
-                    prop="drug_useway">
-        <el-input v-model="drug.drug_useway"
-                  placeholder="请输入"></el-input>
+
+      <el-form-item label="推荐给药途径："
+                    prop="recommendRouteId">
+        <el-select v-model="drug.recommendRouteId"
+                   clearable
+                   placeholder="请选择">
+          <el-option :key="item.recommendRouteId"
+                     :label="item.recommendRoute"
+                     :value="item.recommendRouteId"
+                     v-for="item in source.ENUM_DRUG_USWAY"></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="给药频次："
-                    prop="drug_times">
-        <el-input v-model="drug.drug_times"
-                  placeholder="请输入"></el-input>
+
+      <el-form-item label="推荐给药频次："
+                    prop="recommendFrequencyId">
+        <el-select v-model="drug.recommendFrequencyId"
+                   clearable
+                   placeholder="请选择">
+          <el-option :key="item.recommendFrequencyId"
+                     :label="item.recommendFrequency"
+                     :value="item.recommendFrequencyId"
+                     v-for="item in source.ENUM_DRUG_TIMES"></el-option>
+        </el-select>
       </el-form-item>
+
       <el-form-item label="推荐用量数值："
                     prop="drug_usevalue">
         <el-input v-model="drug.drug_usevalue"
+                  maxlength="10"
                   placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item label="推荐用量单位："
-                    prop="drug_useunit">
-        <el-input v-model="drug.drug_useunit"
-                  placeholder="请输入"></el-input>
+
+      <el-form-item label="推荐用量单位类型：">
+        <el-select v-model="drug.drugUnitType"
+                   clearable
+                   placeholder="请选择">
+          <el-option :key="item.label"
+                     :label="item.label"
+                     :value="item.value"
+                     v-for="item in source.ENUM_DRUG_UNIT_TYPE"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="储存条件："
                     prop="drug_storage">
@@ -181,6 +203,8 @@ export default {
       handler() {
         if (this.drugInfo.drugType) {
           this.drug = Object.assign(this.drug, this.drugInfo)
+          this.drug.recommendRouteId = ''
+          this.drug.recommendFrequencyId = ''
           this.drug.drug_id = this.drugInfo.id
           if (this.drug.is_disconnect_attr === 'yes') {
             // 拆零为是时
@@ -275,7 +299,10 @@ export default {
         ENUM_DRUG_SOURCE: CONSTANT.ENUM_DRUG_SOURCE,
         ENUM_MEDICAL_STATUS: CONSTANT.ENUM_MEDICAL_STATUS,
         ENUM_DRUG_STORAGE: CONSTANT.ENUM_DRUG_STORAGE,
-        ENUM_DISCONNECT: CONSTANT.ENUM_DISCONNECT
+        ENUM_DISCONNECT: CONSTANT.ENUM_DISCONNECT,
+        ENUM_DRUG_UNIT_TYPE: [], //推荐用量单位类型字典
+        ENUM_DRUG_USWAY: [], //给药途径字典
+        ENUM_DRUG_TIMES: [] //给药频次字典
       },
       drug: {
         drug_id: '',
@@ -301,7 +328,10 @@ export default {
         drug_unitPrice: '',
         is_medical: 2,
         drug_storage: 1,
-        is_disconnect_attr: ''
+        is_disconnect_attr: '',
+        recommendRouteId: '',
+        recommendFrequencyId: '',
+        drugUnitType: ''
       },
       rules: {
         drug_number: [
@@ -397,6 +427,13 @@ export default {
       }
     }
   },
+
+  async mounted() {
+    this.source.ENUM_DRUG_UNIT_TYPE = await Peace.identity.dictionary.getList('drug_unit_type')
+    this.getDrugFrequencyList()
+    this.getDrugRouteList()
+  },
+
   methods: {
     cancel() {
       this.$emit('close')
@@ -434,6 +471,26 @@ export default {
             this.$emit('error', err)
           }
         })
+    },
+    getDrugFrequencyList() {
+      Service.getDrugFrequencyList({}).then((res) => {
+        this.source.ENUM_DRUG_TIMES = res.data
+        if (
+          this.source.ENUM_DRUG_TIMES.map((item) => item.recommendFrequencyId).includes(
+            this.drugInfo.recommendFrequencyId
+          )
+        ) {
+          this.drug.recommendFrequencyId = this.drugInfo.recommendFrequencyId
+        }
+      })
+    },
+    getDrugRouteList() {
+      Service.getDrugRouteList({}).then((res) => {
+        this.source.ENUM_DRUG_USWAY = res.data
+        if (this.source.ENUM_DRUG_USWAY.map((item) => item.recommendRouteId).includes(this.drugInfo.recommendRouteId)) {
+          this.drug.recommendRouteId = this.drugInfo.recommendRouteId
+        }
+      })
     }
   }
 }

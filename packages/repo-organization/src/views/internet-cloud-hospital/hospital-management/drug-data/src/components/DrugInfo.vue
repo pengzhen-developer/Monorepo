@@ -29,14 +29,18 @@ export default {
         ENUM_DRUG_SOURCE: CONSTANT.ENUM_DRUG_SOURCE,
         ENUM_MEDICAL_STATUS: CONSTANT.ENUM_MEDICAL_STATUS,
         ENUM_DRUG_STORAGE: CONSTANT.ENUM_DRUG_STORAGE,
-        ENUM_DISCONNECT: CONSTANT.ENUM_DISCONNECT
+        ENUM_DISCONNECT: CONSTANT.ENUM_DISCONNECT,
+        ENUM_DRUG_UNIT_TYPE: []
       },
       drugInfo: []
     }
   },
-  created() {
+
+  async mounted() {
+    this.source.ENUM_DRUG_UNIT_TYPE = await Peace.identity.dictionary.getList('drug_unit_type')
     this.drugInfo = this.getData()
   },
+
   methods: {
     getData() {
       const drug = this.drug
@@ -93,18 +97,18 @@ export default {
         {
           col1: '包装数量',
           col2: drug.drug_count,
-          col3: '给药途径',
-          col4: drug.drug_useway
+          col3: '推荐给药途径',
+          col4: drug.recommendRoute
         },
         {
-          col1: '给药频次',
-          col2: drug.drug_times,
+          col1: '推荐给药频次',
+          col2: drug.recommendFrequency,
           col3: '推荐用量数值',
           col4: drug.drug_usevalue
         },
         {
-          col1: '推荐用量单位',
-          col2: drug.drug_useunit,
+          col1: '推荐用量单位类型',
+          col2: this.getDrugUnitType(drug.drugUnitType),
           col3: '储存条件',
           col4: this.getDrugStorage(drug.drug_storage)
         },
@@ -130,6 +134,9 @@ export default {
     },
     getDisconnect(disconnect) {
       return this.source.ENUM_DISCONNECT.find((item) => item.value == disconnect)?.label
+    },
+    getDrugUnitType(drugUnitType) {
+      return this.source.ENUM_DRUG_UNIT_TYPE.find((item) => item.value == drugUnitType)?.label
     }
   }
 }
