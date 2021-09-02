@@ -6,8 +6,8 @@
              label-width="auto"
              label-position="right">
       <div class="q-mb-36">
-        <el-form-item label="处方来源">
-          <span>{{callInfo.prescriptionSource}}</span>
+        <el-form-item label="开方应用">
+          <span>{{callInfo.preAppName}}</span>
         </el-form-item>
 
         <el-form-item label="原始处方编号">

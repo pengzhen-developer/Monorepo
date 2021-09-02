@@ -85,7 +85,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column width="110px"
+        <el-table-column min-width="120px"
                          label="智能审方结果"
                          align="center"
                          prop="examineResult">
