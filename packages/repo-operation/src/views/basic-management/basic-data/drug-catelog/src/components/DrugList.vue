@@ -50,6 +50,9 @@
         <PeaceTableColumn label="平台药品编码"
                           prop="DrugStandardCode"
                           min-width="180px"></PeaceTableColumn>
+        <PeaceTableColumn label="主数据ID"
+                          prop="MainDataID"
+                          min-width="130px"></PeaceTableColumn>
         <PeaceTableColumn label="药品名称"
                           prop="ProductName"
                           min-width="180px"></PeaceTableColumn>
