@@ -106,7 +106,7 @@ export default {
     text-align: center;
     font-size: 15px;
   }
-  /deep/.van-swipe__indicators {
+  v-deep.van-swipe__indicators {
     bottom: 44px;
   }
 }

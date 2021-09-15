@@ -197,7 +197,7 @@ export default {
   .file-blood-detail-content {
     flex: 1;
 
-    /deep/ .van-field__control {
+    v-deep .van-field__control {
       text-align: right;
       color: #969799;
     }

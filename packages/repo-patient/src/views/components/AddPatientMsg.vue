@@ -646,7 +646,7 @@ export default {
         right: 0;
         width: 35px;
         height: 29px;
-        background-image: url('~@/assets/images/ic_checked.png');
+        background-image: url('~@src/assets/images/ic_checked.png');
         background-size: cover;
       }
     }
@@ -723,11 +723,11 @@ export default {
   justify-content: space-between;
 }
 
-/deep/ .van-field__control {
+v-deep .van-field__control {
   text-align: right;
 }
 
-/deep/ .van-cell__title {
+v-deep .van-cell__title {
   width: auto;
   span {
     position: relative;

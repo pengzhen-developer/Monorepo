@@ -1,5 +1,3 @@
-import Peace from '@src/library'
-
 export default {
   /**
    * 从服务端获取数据

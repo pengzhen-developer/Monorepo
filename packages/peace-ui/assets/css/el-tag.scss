@@ -1,0 +1,7 @@
+.el-tag {
+  &:not(.element-ui-default) {
+    &.el-tag--mini {
+      padding: 0 8px;
+    }
+  }
+}

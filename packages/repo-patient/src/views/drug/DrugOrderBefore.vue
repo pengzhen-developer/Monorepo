@@ -844,13 +844,13 @@ export default {
 .pay-card-wrap {
   margin-top: 8px;
   .pay-card {
-    /deep/ .van-cell__title {
+    v-deep .van-cell__title {
       width: 8em;
       flex: none;
       display: flex;
       align-items: center;
     }
-    /deep/ .van-cell__value {
+    v-deep .van-cell__value {
       color: #333;
       display: flex;
       align-items: center;
@@ -874,7 +874,7 @@ export default {
 }
 .van-popup {
   padding: 23px 15px 15px 15px;
-  /deep/.van-popup__close-icon--top-right {
+  v-deep.van-popup__close-icon--top-right {
     top: 23px;
     right: 16px;
   }
@@ -1207,12 +1207,12 @@ export default {
     &::after {
       border: 0;
     }
-    /deep/.van-field__control {
+    v-deep.van-field__control {
       width: 82px;
       color: #666;
     }
-    /deep/.van-field__label,
-    /deep/.van-field__value {
+    v-deep.van-field__label,
+    v-deep.van-field__value {
       color: #666;
       font-size: 12px;
     }

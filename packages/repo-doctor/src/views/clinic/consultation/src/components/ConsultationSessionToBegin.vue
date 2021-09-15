@@ -3,7 +3,7 @@
     <div class="consultation-content">
       <div class="consultation-status">
         <div class="clock">
-          <img src="~@/assets/images/inquiry/ic_daojishi_green@2x.png">
+          <img src="~@src/assets/images/inquiry/ic_daojishi_green@2x.png">
         </div>
 
         <div class="count-down">

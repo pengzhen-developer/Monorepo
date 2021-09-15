@@ -1,0 +1,134 @@
+.el-steps {
+  &:not(.element-ui-default) {
+    .el-step__title {
+      font-size: 14px;
+    }
+
+    .el-step__title.is-wait.is-wait,
+    .el-step__description.is-wait {
+      color: rgba(51, 51, 51, 0.6);
+    }
+
+    &.el-steps--simple {
+      padding: 0;
+      background: none;
+
+      .el-step__head {
+        padding-right: 8px;
+      }
+
+      .el-step__head.is-process {
+        .el-step__icon {
+          background: $--color-primary;
+          color: $--color-white;
+          border-color: transparent;
+        }
+      }
+
+      .el-step__main {
+        display: flex;
+        align-items: center;
+
+        .el-step__title.is-process {
+          font-weight: 500;
+          color: $--color-text-primary;
+        }
+
+        .el-step__title.is-success {
+          color: $--color-text-primary;
+        }
+      }
+
+      .el-step__icon {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+
+        &.is-text {
+          border: 1px solid;
+        }
+      }
+
+      .el-step__arrow {
+        margin: 0 16px;
+        height: 1px;
+        background: $--border-color-base;
+
+        &::before {
+          content: none;
+        }
+        &::after {
+          content: none;
+        }
+      }
+
+      .el-step__title.is-finish ~ .el-step__arrow,
+      .el-step__title.is-error ~ .el-step__arrow,
+      .el-step__title.is-success ~ .el-step__arrow {
+        background: $--color-primary;
+      }
+    }
+
+    &.el-steps--vertical {
+      padding: 0;
+      background: none;
+
+      .el-step__head {
+        &.is-process .el-step__icon {
+          background: $--color-primary;
+          color: $--color-white;
+          border-color: transparent;
+        }
+
+        &.is-finish .el-step__line-inner,
+        &.is-error .el-step__line-inner,
+        &.is-success .el-step__line-inner {
+          border-width: 1px !important;
+          height: 100% !important;
+          transition: none !important;
+        }
+      }
+
+      .el-step__main {
+        display: flex;
+        align-items: flex-start;
+        padding: 4px 0 0 16px;
+
+        .el-step__title.is-process {
+          font-weight: 500;
+          color: $--color-text-primary;
+        }
+
+        .el-step__title.is-success {
+          color: $--color-text-primary;
+        }
+      }
+
+      .el-step__description {
+        margin-top: 4px;
+      }
+
+      .el-step__line {
+        width: 1px;
+        left: 16px;
+        top: 40px;
+        bottom: 8px;
+
+        .el-step__line-inner {
+          border: unset;
+          border-left: 1px solid;
+        }
+      }
+
+      .el-step__icon {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+
+        &.is-text {
+          border: 1px solid;
+        }
+      }
+    }
+  }
+}

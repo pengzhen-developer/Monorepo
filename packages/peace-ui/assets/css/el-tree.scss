@@ -1,0 +1,23 @@
+.el-tree {
+  &:not(.element-ui-default) {
+    border: 1px solid #eeeeee;
+    border-bottom: none;
+
+    &.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+      background-color: #f0f7ff;
+    }
+
+    .el-tree-node__content {
+      padding: 8px 0;
+      line-height: 24px;
+      height: initial;
+      border-bottom: 1px solid #eeeeee;
+    }
+
+    > .el-tree-node > .el-tree-node__content {
+      background-color: #fafafa;
+      font-weight: 500;
+      color: #333333;
+    }
+  }
+}

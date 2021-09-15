@@ -73,11 +73,4 @@ export default async ({ configuration }) => {
 
   // 基于配置生成 stylesheet, 写入 document.head
   generateStylesheet(configuration)
-
-  console.log(
-    `%c ${'Styles'} %c N/A %c`,
-    'background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff',
-    'background:#41b883 ; padding: 1px; border-radius: 3px;  color: #fff',
-    'background:transparent'
-  )
 }

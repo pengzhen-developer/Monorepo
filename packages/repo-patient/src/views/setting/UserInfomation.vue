@@ -3,7 +3,7 @@
     <van-cell-group>
       <van-cell title="头像">
         <template>
-          <van-image :src="require('@/assets/images/ic_personal.png')"
+          <van-image :src="require('@src/assets/images/ic_personal.png')"
                      style="width: 50px;height: 50px;border-radius:50%;overflow: hidden;" />
         </template>
       </van-cell>
@@ -136,13 +136,13 @@ export default {
       }
     }
   }
-  /deep/.van-hairline--top-bottom::after {
+  v-deep.van-hairline--top-bottom::after {
     height: 0;
   }
 
   .footer {
     padding: 12px 16px;
-    /deep/.van-button__content {
+    v-deep.van-button__content {
       color: #666;
     }
   }

@@ -40,7 +40,7 @@
             接诊后可以在“消息”中查看回复
           </div>
           <img class="wait-img"
-               src="~@/assets/images/ic_wait_message.png" />
+               src="~@src/assets/images/ic_wait_message.png" />
         </div>
       </div>
       <!--医生名片-->
@@ -1124,11 +1124,11 @@ export default {
   }
 }
 //大图预览
-/deep/ .van-image-preview__index {
+v-deep .van-image-preview__index {
   top: 24px;
 }
 
-/deep/ .van-image-preview__cover {
+v-deep .van-image-preview__cover {
   position: absolute;
   top: 24px;
   left: 24px;

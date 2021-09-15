@@ -156,7 +156,7 @@ export default {
   display: flex;
   flex-direction: column;
 
-  /deep/ .van-notice-bar__wrap {
+  v-deep .van-notice-bar__wrap {
     display: flex;
     justify-content: center;
   }
@@ -164,7 +164,7 @@ export default {
   .layout-content {
     flex: 1;
 
-    /deep/ .van-uploader__wrapper {
+    v-deep .van-uploader__wrapper {
       width: 100%;
       padding: 10px;
       display: flex;

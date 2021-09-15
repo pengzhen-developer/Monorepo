@@ -91,7 +91,7 @@ export default {
 }
 .service-item {
   padding: 16px;
-  background-image: url('~@/assets/images/ic_service_list_bg.png');
+  background-image: url('~@src/assets/images/ic_service_list_bg.png');
   background-size: 100% 100%;
   width: 100%;
   height: 108px;

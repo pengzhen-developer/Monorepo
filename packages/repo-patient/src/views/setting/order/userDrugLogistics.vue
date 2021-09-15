@@ -325,26 +325,26 @@ export default {
 .van-tabs {
   margin-bottom: 12px;
   height: 28px;
-  /deep/.van-tab {
+  v-deep.van-tab {
     width: 20%;
     flex: none;
     color: rgba(51, 51, 51, 0.4);
     font-size: 16px;
   }
 
-  /deep/.van-tabs__line {
+  v-deep.van-tabs__line {
     bottom: 0;
   }
-  /deep/.van-tabs__nav {
+  v-deep.van-tabs__nav {
     justify-content: center;
     height: 28px;
     padding: 0 11px;
   }
 
-  /deep/.van-tab--active {
+  v-deep.van-tab--active {
     color: $primary;
   }
-  /deep/ .van-tabs__line {
+  v-deep .van-tabs__line {
     background: $primary;
     border-radius: 1px;
     height: 2px;

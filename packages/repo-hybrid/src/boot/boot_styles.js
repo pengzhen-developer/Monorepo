@@ -47,11 +47,4 @@ export default async ({ configuration }) => {
 
   // 异步引入全局 css
   require(`@src/assets/css/Fix.Quasar.scss`)
-
-  console.log(
-    `%c ${'Styles'} %c N/A %c`,
-    'background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff',
-    'background:#41b883 ; padding: 1px; border-radius: 3px;  color: #fff',
-    'background:transparent'
-  )
 }

@@ -1,0 +1,92 @@
+.el-alert {
+  &:not(.element-ui-default) {
+    display: flex;
+    align-items: center;
+
+    padding: 10px 16px;
+    border-radius: 0;
+
+    &.el-alert--info.is-light {
+      border: 1px solid #acdbe1;
+      color: $--color-primary;
+    }
+    &.el-alert--success.is-light {
+      border: 1px solid #acdbe1;
+    }
+    &.el-alert--warning.is-light {
+      border: 1px solid #ffd99e;
+    }
+    &.el-alert--error.is-light {
+      border: 1px solid #ffb0ac;
+    }
+
+    .el-alert__icon {
+      margin: 0 8px 0 0;
+    }
+
+    .el-alert__content {
+      padding: 0;
+
+      .el-alert__title {
+        display: flex;
+        align-items: center;
+
+        font-size: 14px;
+        line-height: 22px;
+        color: #333333ff;
+      }
+
+      .el-alert__description {
+        font-size: 14px;
+        line-height: 22px;
+        color: #33333399;
+        margin: 0;
+      }
+
+      .el-alert__title + .el-alert__description {
+        margin: 8px 0 0;
+      }
+
+      .el-alert__closebtn {
+        top: 14px;
+        right: 16px;
+        font-size: 14px;
+      }
+    }
+
+    .is-big {
+      position: absolute;
+      top: 14px;
+      font-size: 16px;
+    }
+
+    .is-big + .el-alert__content {
+      margin: 0 0 0 24px;
+
+      .el-alert__title {
+        font-size: 16px;
+        color: #333333ff;
+      }
+
+      .el-alert__closebtn {
+        top: 14px;
+        right: 16px;
+        font-size: 14px;
+      }
+    }
+
+    .el-alert__title + .el-alert__description {
+      margin: 8px 0 6px 0;
+    }
+
+    .el-alert__content > *:first-child:nth-last-child(3) {
+      font-size: 16px;
+    }
+
+    .el-alert__description + .el-alert__closebtn {
+      top: 14px;
+      right: 16px;
+      font-size: 14px;
+    }
+  }
+}

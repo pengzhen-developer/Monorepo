@@ -1,0 +1,26 @@
+/* Global style */
+@import './global.scss';
+
+/* Change Detault Theme */
+@import './element-ui-fix.scss';
+
+/* Component Style */
+@import './el-alert.scss';
+@import './el-checkbox.scss';
+@import './el-radio.scss';
+@import './el-message.scss';
+@import './el-form.scss';
+@import './el-image.scss';
+@import './el-input.scss';
+@import './el-select.scss';
+@import './el-button.scss';
+@import './el-table.scss';
+@import './el-pagination';
+@import './el-tabs.scss';
+@import './el-dialog.scss';
+@import './el-tree.scss';
+@import './el-tag.scss';
+@import './el-editor.scss';
+@import './el-menu.scss';
+@import './el-steps.scss';
+@import './el-popper.scss';

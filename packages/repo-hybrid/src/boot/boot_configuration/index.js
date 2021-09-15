@@ -29,75 +29,7 @@ export default {
      * layout nav 导航配置
      *
      */
-    layoutNavMenu: [
-      {
-        id: '1',
-        parentId: null,
-        menuRoute: null,
-        menuRouteName: null,
-        menuName: '用户管理',
-        menuPath: null,
-        menuIcon: 'AcUnit',
-        iconType: 'Material Icons'
-      },
-
-      {
-        id: '1-1',
-        parentId: '1',
-        menuRouteName: 'home/dashboard',
-        menuRoute: 'home/dashboard',
-        menuName: '账号管理',
-        menuPath: 'views/home/dashboard',
-        menuIcon: 'AcUnit',
-        iconType: 'Material Icons',
-        closable: true
-      },
-      {
-        id: '1-2',
-        parentId: '1',
-        menuRouteName: 'not-found',
-        menuRoute: 'not-found',
-        menuName: '机构管理',
-        menuPath: '',
-        menuIcon: 'AcUnit',
-        iconType: 'Material Icons',
-        closable: true
-      },
-
-      {
-        id: '2',
-        parentId: null,
-        menuRouteName: null,
-        menuRoute: null,
-        menuName: '审核管理',
-        menuPath: null,
-        menuIcon: 'el-icon-location',
-        iconType: 'Element-UI Icons',
-        closable: true
-      },
-      {
-        id: '2-1',
-        parentId: '2',
-        menuRouteName: 'not-found',
-        menuRoute: 'not-found',
-        menuName: '资质认证',
-        menuPath: '',
-        menuIcon: 'AcUnit',
-        iconType: 'Material Icons',
-        closable: true
-      },
-      {
-        id: '2-2',
-        parentId: '2',
-        menuRouteName: 'not-found',
-        menuRoute: 'not-found',
-        menuName: '服务开通',
-        menuPath: '',
-        menuIcon: 'AcUnit',
-        iconType: 'Material Icons',
-        closable: true
-      }
-    ],
+    layoutNavMenu: [],
 
     /**
      * hybrid nav 导航配置

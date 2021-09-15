@@ -141,14 +141,14 @@ export default {
     margin-right: 10px;
   }
 }
-/deep/ .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {
+v-deep .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {
   color: #666;
   text-align: right;
   &::placeholder {
     color: #ccc;
   }
 }
-/deep/ .form.form-for-family > .van-cell:not(:last-child)::after {
+v-deep .form.form-for-family > .van-cell:not(:last-child)::after {
   right: 10px !important;
 }
 </style>

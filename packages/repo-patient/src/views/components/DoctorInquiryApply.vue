@@ -1822,7 +1822,7 @@ export default {
     border-radius: 5px;
   }
 }
-/deep/.van-field__body {
+v-deep.van-field__body {
   input::-webkit-input-placeholder {
     /*WebKit browsers*/
     font-size: 15px;
@@ -1863,11 +1863,11 @@ export default {
     }
   }
 
-  /deep/ .van-image-preview__index {
+  v-deep .van-image-preview__index {
     top: 24px;
   }
 
-  /deep/ .van-image-preview__cover {
+  v-deep .van-image-preview__cover {
     position: absolute;
     top: 24px;
     left: 24px;
@@ -2114,7 +2114,7 @@ export default {
         }
       }
 
-      /deep/ .layout-footer-content {
+      v-deep .layout-footer-content {
         padding: 16px 20px;
         background: #fff;
         box-shadow: 0px 0px 13px 8px rgba(0, 0, 0, 0.04);

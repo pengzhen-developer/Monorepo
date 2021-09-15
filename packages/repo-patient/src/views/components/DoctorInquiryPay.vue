@@ -204,7 +204,7 @@ export default {
           width: 28px;
           height: 28px;
           display: inline-block;
-          background: url('~@/assets/images/ic_wechat payment.png') no-repeat;
+          background: url('~@src/assets/images/ic_wechat payment.png') no-repeat;
           background-size: 100%;
           vertical-align: middle;
           margin-right: 8px;
@@ -214,7 +214,7 @@ export default {
         width: 21px;
         height: 21px;
         display: inline-block;
-        background: url('~@/assets/images/ic_choose.png') no-repeat;
+        background: url('~@src/assets/images/ic_choose.png') no-repeat;
         background-size: 100%;
         vertical-align: middle;
       }

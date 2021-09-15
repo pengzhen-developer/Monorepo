@@ -200,12 +200,12 @@ export default {
         color: #fff;
 
         &.normal {
-          background-image: url('~@/assets/images/file/bg_img_normal.png');
+          background-image: url('~@src/assets/images/file/bg_img_normal.png');
           background-repeat: no-repeat;
           background-size: 100% 100%;
         }
         &.unnormal {
-          background-image: url('~@/assets/images/file/bg_img_unnormal.png');
+          background-image: url('~@src/assets/images/file/bg_img_unnormal.png');
           background-repeat: no-repeat;
           background-size: 100% 100%;
         }

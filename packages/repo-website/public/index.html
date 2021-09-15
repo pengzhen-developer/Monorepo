@@ -1,59 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title></title>
+  </head>
 
-  <title></title>
-</head>
+  <body>
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
 
-<body>
-  <noscript>
-    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-  </noscript>
-  <div id="app"></div>
-  <!-- built files will be auto injected -->
+    <!-- Vendor CSS Files -->
+    <link
+      href="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/icofont/icofont.min.css" rel="stylesheet" />
+    <link
+      href="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/boxicons/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/animate.css/animate.min.css"
+      rel="stylesheet"
+    />
+    <link href="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/venobox/venobox.css" rel="stylesheet" />
+    <link
+      href="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/owl.carousel/assets/owl.carousel.min.css"
+      rel="stylesheet"
+    />
+    <link href="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/aos/aos.css" rel="stylesheet" />
 
-  <!-- Vendor CSS Files -->
-  <link href="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/icofont/icofont.min.css" rel="stylesheet">
-  <link href="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/animate.css/animate.min.css" rel="stylesheet">
-  <link href="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/venobox/venobox.css" rel="stylesheet">
-  <link href="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
-  <link href="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/aos/aos.css" rel="stylesheet">
+    <!-- Vendor JS Files -->
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/jquery/jquery.min.js"></script>
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/jquery.easing/jquery.easing.min.js"></script>
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/php-email-form/validate.js"></script>
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/jquery-sticky/jquery.sticky.js"></script>
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/venobox/venobox.min.js"></script>
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/waypoints/jquery.waypoints.min.js"></script>
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/counterup/counterup.min.js"></script>
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/owl.carousel/owl.carousel.min.js"></script>
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/aos/aos.js"></script>
 
-  <!-- Vendor JS Files -->
-  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/jquery/jquery.min.js"></script>
-  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/jquery.easing/jquery.easing.min.js"></script>
-  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/php-email-form/validate.js"></script>
-  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/jquery-sticky/jquery.sticky.js"></script>
-  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/venobox/venobox.min.js"></script>
-  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/waypoints/jquery.waypoints.min.js"></script>
-  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/counterup/counterup.min.js"></script>
-  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/owl.carousel/owl.carousel.min.js"></script>
-  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="<%= process.env.NODE_ENV === 'production' ? process.env.VUE_APP_RELEASE_FLODER_PATH : '/' %>vendor/aos/aos.js"></script>
-
-  <!-- 开发环境 -->
-  <% if (process.env.NODE_ENV==='development' ) { %>
+    <!-- 开发环境 -->
+    <% if (process.env.NODE_ENV==='development' ) { %>
     <script src="https://static.holoalpha.com/libs/vue/2.6.12/vue.js"></script>
     <script src="https://static.holoalpha.com/libs/vuex/3.1.2/vuex.min.js"></script>
     <script src="https://static.holoalpha.com/libs/vue-router/3.1.3/vue-router.min.js"></script>
     <script src="https://static.holoalpha.com/libs/element-ui/2.15.0/index.js"></script>
     <% } %>
 
-      <!-- 生产环境 -->
-      <% if (process.env.NODE_ENV==='production' ) { %>
-        <script src="https://static.holoalpha.com/libs/vue/2.6.12/vue.min.js"></script>
-        <script src="https://static.holoalpha.com/libs/vuex/3.1.2/vuex.min.js"></script>
-        <script src="https://static.holoalpha.com/libs/vue-router/3.1.3/vue-router.min.js"></script>
-        <script src="https://static.holoalpha.com/libs/element-ui/2.15.0/index.js"></script>
-        <% } %>
-</body>
-
+    <!-- 生产环境 -->
+    <% if (process.env.NODE_ENV==='production' ) { %>
+    <script src="https://static.holoalpha.com/libs/vue/2.6.12/vue.min.js"></script>
+    <script src="https://static.holoalpha.com/libs/vuex/3.1.2/vuex.min.js"></script>
+    <script src="https://static.holoalpha.com/libs/vue-router/3.1.3/vue-router.min.js"></script>
+    <script src="https://static.holoalpha.com/libs/element-ui/2.15.0/index.js"></script>
+    <% } %>
+  </body>
 </html>

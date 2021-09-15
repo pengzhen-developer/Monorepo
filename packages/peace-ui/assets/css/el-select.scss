@@ -1,0 +1,27 @@
+.el-select {
+  &:not(.element-ui-default) {
+    .el-tag {
+      &.el-tag--mini {
+        border-color: transparent !important;
+        padding: 0 16px 0 8px;
+        line-height: 18px;
+      }
+
+      .el-tag__close {
+        color: #fff !important;
+      }
+    }
+
+    .el-tag.el-tag--info .el-input.is-focus .el-input__inner {
+      box-shadow: $--box-shadow-primary;
+    }
+  }
+}
+
+.el-select-dropdown {
+  &:not(.element-ui-default) {
+    .el-select-dropdown__item.selected {
+      background: #f4fafb;
+    }
+  }
+}

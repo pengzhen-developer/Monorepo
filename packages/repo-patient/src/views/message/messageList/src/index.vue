@@ -701,7 +701,7 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
-.message-list-chat-room .input .van-field /deep/.van-field__control {
+.message-list-chat-room .input .van-field v-deep.van-field__control {
   padding: 7px 8px;
   border-radius: 3px;
   border: 1px solid #d2d2d2;

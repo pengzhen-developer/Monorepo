@@ -595,7 +595,7 @@ export default {
   box-shadow: 2px 2px 4px 0px rgba(204, 204, 204, 0.5), -1px 1px 10px 0px rgba(221, 221, 221, 0.5);
 }
 .message-header {
-  background-image: url('~@/assets/images/bg-img.png');
+  background-image: url('~@src/assets/images/bg-img.png');
   background-size: cover;
   display: flex;
   align-items: center;

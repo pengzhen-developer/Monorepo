@@ -124,7 +124,7 @@ export default {
     min-height: 180px;
     height: 180px;
 
-    background-image: url('~@/assets/images/bg-2.png');
+    background-image: url('~@src/assets/images/bg-2.png');
     background-repeat: no-repeat;
     background-size: 100% 180px;
 
@@ -182,7 +182,7 @@ export default {
         height: 100%;
         padding: 20px 15px;
 
-        background-image: url('~@/assets/images/bg-2-1.png');
+        background-image: url('~@src/assets/images/bg-2-1.png');
         background-repeat: no-repeat;
         background-size: 100% 100px;
 
@@ -209,7 +209,7 @@ export default {
     // flex: 1;
     // overflow: auto;
 
-    /deep/ .van-tabs {
+    v-deep .van-tabs {
       display: flex;
       flex-direction: column;
 

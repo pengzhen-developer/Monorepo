@@ -162,7 +162,7 @@ import peace from '@src/library'
 import SelectDeduction from '@src/views/components/SelectDeduction'
 import SelectYibaoType from '@src/views/components/YibaoTypeSelect.vue'
 import SelectYibaoCard from '@src/views/components/YibaoCardSelect'
-import SelectYibaoMunterDisease from '@/views/components/YibaoMunterDiseaseSelect.vue'
+import SelectYibaoMunterDisease from '@src/views/components/YibaoMunterDiseaseSelect.vue'
 import SelectServicePackage from '@src/views/components/SelectServicePackage'
 
 export default {
@@ -624,13 +624,13 @@ export default {
 
 <style lang="scss" scoped>
 .group {
-  /deep/ .van-cell__title {
+  v-deep .van-cell__title {
     max-width: 6em;
     flex: none;
     display: flex;
     align-items: center;
   }
-  /deep/ .van-cell__value {
+  v-deep .van-cell__value {
     color: #333;
     display: flex;
     align-items: center;
@@ -644,11 +644,11 @@ export default {
     }
   }
   .equity {
-    /deep/ .van-cell__title {
+    v-deep .van-cell__title {
       font-size: 14px;
       color: #858585;
     }
-    /deep/ .van-cell__value {
+    v-deep .van-cell__value {
       font-size: 14px;
       color: #858585;
     }

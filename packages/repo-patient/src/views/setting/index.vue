@@ -5,7 +5,7 @@
       <div class="user-img">
         <img class="img-avatar"
              mode="cover"
-             src="~@/assets/images/ic_personal.png" />
+             src="~@src/assets/images/ic_personal.png" />
       </div>
       <div class="user-info">
         <div class="user-name">
@@ -180,7 +180,7 @@ export default {
 /*user-card*/
 .user-card {
   height: 128px;
-  background-image: url('~@/assets/images/setting/ic_bg_img.png');
+  background-image: url('~@src/assets/images/setting/ic_bg_img.png');
   background-size: 100% 100%;
   padding: 16px;
   font-size: 17px;

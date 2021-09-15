@@ -62,7 +62,7 @@ export default {
     doSomething() {
       return new Promise((resolve) => {
         // 最小等待时间
-        const MINIMUM_WAITING_TIME = 1500
+        const MINIMUM_WAITING_TIME = 300
         // 开始处理时间
         const BEGIN_TIME = performance.now()
 

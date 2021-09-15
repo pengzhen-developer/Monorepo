@@ -60,7 +60,7 @@ export default {
       params.p = this.page
       params.size = this.size
 
-      peace.service.health.historyLists(params).then(res => {
+      peace.service.health.historyLists(params).then((res) => {
         this.list = this.list.concat(res.data.list)
 
         // 加载状态结束
@@ -94,7 +94,7 @@ export default {
   }
 }
 
-/deep/ .van-cell__title {
+v-deep .van-cell__title {
   flex: 2;
 }
 </style>

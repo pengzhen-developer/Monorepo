@@ -78,11 +78,4 @@ export default async ({ configuration }) => {
       document.body.style.zoom = window.screen.width / 1440
     }
   }
-
-  console.log(
-    `%c ${'Styles'} %c N/A %c`,
-    'background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff',
-    'background:#41b883 ; padding: 1px; border-radius: 3px;  color: #fff',
-    'background:transparent'
-  )
 }

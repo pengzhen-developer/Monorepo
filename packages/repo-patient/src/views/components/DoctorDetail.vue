@@ -1112,7 +1112,7 @@ export default {
   &::before {
     position: absolute;
     content: ' ';
-    background-image: url('~@/assets/images/xingji.png');
+    background-image: url('~@src/assets/images/xingji.png');
     background-size: cover;
     width: 15px;
     height: 14px;
@@ -1138,7 +1138,7 @@ export default {
       .name {
         color: #000;
       }
-      /deep/.van-rate__icon {
+      v-deep.van-rate__icon {
         font-size: 12px;
       }
     }
@@ -1162,7 +1162,7 @@ export default {
     min-height: 105px;
     height: 105px;
 
-    background-image: url('~@/assets/images/bg-1.png');
+    background-image: url('~@src/assets/images/bg-1.png');
     background-repeat: no-repeat;
     background-size: 100% 105px;
 
@@ -1436,7 +1436,7 @@ export default {
     }
   }
 
-  /deep/ .van-tabs {
+  v-deep .van-tabs {
     .van-tabs__line {
       background-color: #00c6ae;
       width: 25px !important;

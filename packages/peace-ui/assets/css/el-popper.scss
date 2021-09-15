@@ -1,0 +1,217 @@
+/* Element Select Dropdown
+ -------------------------- */
+.el-select-dropdown {
+  &:not(.element-ui-default) {
+    &.is-multiple.peace-multiple-select {
+      .el-select-dropdown__item:after {
+        content: '';
+      }
+      .el-select-dropdown__item.selected:after {
+        content: '';
+      }
+
+      /* 参考el-checkbox实现checkbox样式 */
+      .el-select-dropdown__item .checkbox {
+        display: inline-block;
+        position: relative;
+        border: 1px solid #dcdfe6;
+        border-radius: 2px;
+        box-sizing: border-box;
+        width: 14px;
+        height: 14px;
+        background-color: #fff;
+        z-index: 1;
+        transition: border-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46), background-color 0.25s cubic-bezier(0.71, -0.46, 0.29, 1.46);
+      }
+      .el-select-dropdown__item.selected .checkbox {
+        background-color: #409eff;
+        border-color: #409eff;
+      }
+
+      /* 参考el-select多选对号样式实现checkbox中对号的样式 */
+      .el-select-dropdown__item.selected .checkbox::after {
+        position: absolute;
+        top: -10px;
+        font-family: element-icons;
+        content: '\e6da';
+        font-size: 12px;
+        font-weight: 700;
+        -webkit-font-smoothing: antialiased;
+        color: #fff;
+      }
+
+      /* 设置置灰内容样式 */
+      .el-select-dropdown__item.selected.is-disabled .checkbox {
+        background-color: #f2f6fc;
+        border-color: #dcdfe6;
+      }
+      .el-select-dropdown__item.selected.is-disabled .checkbox::after {
+        color: #c0c4cc;
+      }
+      .el-select-dropdown__item.selected.is-disabled .label-name-box {
+        color: #c0c4cc;
+        font-weight: 400;
+      }
+    }
+
+    &.el-popper[x-placement^='top'] {
+      margin-bottom: 4px;
+    }
+
+    &.el-popper[x-placement^='bottom'] {
+      margin-top: 4px;
+    }
+
+    .el-select-dropdown__item {
+      height: 32px;
+      line-height: 32px;
+      padding: 0 12px;
+
+      &.selected {
+        font-weight: normal;
+      }
+    }
+
+    .popper__arrow {
+      display: none;
+    }
+  }
+}
+
+/* Element Autocomplete Suggestion
+ -------------------------- */
+.el-autocomplete-suggestion {
+  &:not(.element-ui-default) {
+    &.el-popper[x-placement^='top'] {
+      margin-bottom: 4px;
+    }
+
+    &.el-popper[x-placement^='bottom'] {
+      margin-top: 4px;
+    }
+
+    .popper__arrow {
+      display: none;
+    }
+  }
+}
+
+/* Element - Message Box
+ -------------------------- */
+.el-message-box {
+  &:not(.element-ui-default) {
+    padding: 0;
+
+    &.el-message-box--center {
+      .el-message-box__header {
+        display: flex;
+
+        .el-message-box__title {
+          width: 100%;
+
+          display: flex;
+          justify-content: center;
+        }
+      }
+
+      .el-message-box__status {
+        position: unset;
+      }
+    }
+
+    .el-message-box__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 16px;
+
+      .el-message-box__title {
+        color: rgba(0, 0, 0, 0.85);
+      }
+
+      .el-message-box__headerbtn {
+        font-size: 16px;
+        position: unset;
+
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .el-message-box__content {
+      padding: 16px;
+
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    .el-message-box__btns {
+      padding: 16px;
+
+      button:nth-child(2) {
+        margin-left: 16px;
+      }
+    }
+  }
+}
+
+/* Element - Date Picker Panel
+ -------------------------- */
+.el-picker-panel {
+  &:not(.element-ui-default) {
+    &.el-popper[x-placement^='top'] {
+      margin-bottom: 4px;
+    }
+
+    &.el-popper[x-placement^='bottom'] {
+      margin-top: 4px;
+    }
+
+    .popper__arrow {
+      display: none;
+    }
+  }
+}
+
+/* Element - Time Picker Panel
+ -------------------------- */
+.el-time-panel {
+  &:not(.element-ui-default) {
+    &.el-popper[x-placement^='top'] {
+      margin-bottom: 4px;
+    }
+
+    &.el-popper[x-placement^='bottom'] {
+      margin-top: 4px;
+    }
+
+    .popper__arrow {
+      display: none;
+    }
+  }
+}
+
+/* Element - Tooltip Panel
+ -------------------------- */
+.el-tooltip__popper {
+  &:not(.element-ui-default) {
+    &.is-light {
+      background: #fff;
+      border: 1px solid #fff;
+      box-shadow: 0px 2px 8px 0px rgba(200, 201, 204, 0.5);
+    }
+
+    &.el-tooltip__popper.is-light[x-placement^='top'] .popper__arrow {
+      border-top-color: #fff;
+    }
+    &.el-tooltip__popper.is-light[x-placement^='right'] .popper__arrow {
+      border-right-color: #fff;
+    }
+    &.el-tooltip__popper.is-light[x-placement^='bottom'] .popper__arrow {
+      border-bottom-color: #fff;
+    }
+    &.el-tooltip__popper.is-light[x-placement^='left'] .popper__arrow {
+      border-left-color: #fff;
+    }
+  }
+}

@@ -377,7 +377,7 @@ export default {
     flex: 1;
     overflow: auto;
 
-    /deep/ .van-tabs {
+    v-deep .van-tabs {
       display: flex;
       flex-direction: column;
 
@@ -406,7 +406,7 @@ export default {
       }
     }
 
-    /deep/ [class*='van-hairline']::after {
+    v-deep [class*='van-hairline']::after {
       display: none;
     }
   }

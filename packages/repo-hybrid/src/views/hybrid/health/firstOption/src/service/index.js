@@ -1,4 +1,3 @@
-import Peace from '@src/library'
 import Util from '@src/util'
 
 // iOS: 'iOS',

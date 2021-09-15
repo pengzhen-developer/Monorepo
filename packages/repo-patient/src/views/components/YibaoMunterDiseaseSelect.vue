@@ -145,11 +145,11 @@ export default {
         left: 0;
         right: 0;
       }
-      /deep/.van-cell__left-icon {
+      v-deep.van-cell__left-icon {
         margin-right: 8px;
         font-size: 24px;
       }
-      /deep/.van-radio__icon {
+      v-deep.van-radio__icon {
         font-size: 24px;
       }
     }

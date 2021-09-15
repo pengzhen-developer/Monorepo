@@ -15,42 +15,55 @@ module.exports = {
 
   // https://cli.vuejs.org/config/#chainwebpack
   chainWebpack: (config) => {
-    // 移除 prefetch 插件
+    // 移除 prefetch、preload 插件
     config.plugins.delete('prefetch')
     config.plugins.delete('preload')
-    config.plugin('provide').use(webpack.ProvidePlugin, [
-      {
-        ['window.Quill']: 'quill/dist/quill.js',
-        ['Quill']: 'quill/dist/quill.js'
-      }
-    ])
 
     // 设置别名
     config.resolve.alias
       .set('@', path.join(__dirname, ''))
-      .set('@public', path.join(__dirname, 'public'))
       .set('@src', path.join(__dirname, 'src'))
-      .set('@library', path.join(__dirname, 'src/library'))
+      .set('@public', path.join(__dirname, 'public'))
       .set('@views', path.join(__dirname, 'src/views'))
+      .set('@library', path.join(__dirname, 'src/library'))
+      .set('@service', path.join(__dirname, 'src/service'))
   },
 
   // https://cli.vuejs.org/zh/config/#configurewebpack
   configureWebpack: (config) => {
     // externals 请参考 https://webpack.docschina.org/configuration/externals/
+    // externals 配置后，import 将不会被 webpack 编译
+    // 相关资源可以通过 CDN 服务器从 index.html 引入, 避免 vendors 过大
     config.externals = {
       ['vue']: 'Vue',
       ['vuex']: 'Vuex',
       ['vue-router']: 'VueRouter',
       ['element-ui']: 'ELEMENT'
     }
+
+    // plugins 请参考 https://webpack.docschina.org/configuration/plugins/
+    config.plugins.push(
+      new webpack.ProvidePlugin({
+        ['window.Quill']: 'quill/dist/quill.js',
+        ['Quill']: 'quill/dist/quill.js'
+      })
+    )
   },
-  devServer: {},
+
   css: {
     loaderOptions: {
       sass: {
         // @src/ is an alias to src/
         // so this assumes you have a file named `css/variables.scss`
         // data: `@import "@src/assets/css/variable.scss";`
+
+        // If this option is set to true, Sass won’t print warnings that are caused by dependencies.
+        // A “dependency” is defined as any file that’s loaded through a load path or an importer.
+        // Stylesheets that are imported relative to the entrypoint are not considered dependencies.
+
+        // This is useful for silencing deprecation warnings that you can’t fix on your own.
+        // However, please also notify your dependencies of the deprecations so that they can get fixed as soon as possible!
+        quietDeps: true
       }
     }
   },
@@ -65,5 +78,10 @@ module.exports = {
       rtlSupport: false
     }
   },
+
+  /**
+   * THIS IS GENERATED AUTOMATICALLY.
+   * DO NOT EDIT.
+   */
   transpileDependencies: ['quasar']
 }

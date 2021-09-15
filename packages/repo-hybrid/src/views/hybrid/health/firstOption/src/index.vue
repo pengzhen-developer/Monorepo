@@ -92,7 +92,7 @@ import Service from './service/index'
 export default {
   data() {
     return {
-      detail: undefined
+      detail: {}
     }
   },
 

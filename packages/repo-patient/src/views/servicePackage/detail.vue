@@ -163,7 +163,7 @@ export default {
   line-height: 20px;
 }
 .header {
-  background-image: url('~@/assets/images/ic_service_detail_header_bg.png');
+  background-image: url('~@src/assets/images/ic_service_detail_header_bg.png');
   background-size: 100% 100%;
   width: 100%;
   height: 112px;

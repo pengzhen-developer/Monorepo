@@ -111,7 +111,7 @@ export default {
       padding-bottom: 0;
     }
     .packs-header {
-      background-image: url('~@/assets/images/ic_packs_bg.png');
+      background-image: url('~@src/assets/images/ic_packs_bg.png');
       background-size: 100% 100%;
       margin-left: 8px;
       width: 327px;
@@ -141,7 +141,7 @@ export default {
       }
     }
     .packs-content {
-      background-image: url('~@/assets/images/ic_packs_bg_2.png');
+      background-image: url('~@src/assets/images/ic_packs_bg_2.png');
       background-size: 100% 100%;
       height: 171px;
       width: 363px;

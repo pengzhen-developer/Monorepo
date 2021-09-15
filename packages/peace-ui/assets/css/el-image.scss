@@ -1,0 +1,5 @@
+.el-image-viewer__wrapper {
+  &:not(.element-ui-default) {
+    z-index: 9999 !important;
+  }
+}

@@ -1,0 +1,27 @@
+.el-button {
+  &:not(.element-ui-default) {
+    &:not(.el-button--text) {
+      min-width: 88px;
+    }
+
+    &.el-button--default:not(.el-button--primary):not(.el-button--success):not(.el-button--warning):not(.el-button--danger) {
+      color: rgba(51, 51, 51, 0.6);
+    }
+
+    &.is-circle {
+      min-width: auto;
+    }
+
+    &.el-button--text {
+      border: 0;
+    }
+
+    + .el-button {
+      margin-left: 16px;
+    }
+  }
+}
+
+.el-button-group > .el-button + .el-button {
+  margin-left: 0;
+}

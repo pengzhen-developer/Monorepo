@@ -3,7 +3,7 @@
     <div class="section-header"></div>
     <div class="q-mx-md q-my-sm"
          v-for="(inspection, index) in bloodRoutine.resultItems"
-         :key="inspection.toString()">
+         :key="index.toString()">
       <InspectionIndexCell v-bind:inspection="inspection"
                            v-bind:show-separator="index < bloodRoutine.resultItems.length - 1">
       </InspectionIndexCell>
@@ -12,8 +12,7 @@
     <div class="q-mx-md">
       <div class="check-cell">
         <span class="row-3 label text-grey-333">检查医生</span>
-        <span
-              class="text-right col-grow text-grey-666 label">{{ bloodRoutine.inspectionPerson }}</span>
+        <span class="text-right col-grow text-grey-666 label">{{ bloodRoutine.inspectionPerson }}</span>
       </div>
       <div class="separator-line" />
       <div class="check-cell">

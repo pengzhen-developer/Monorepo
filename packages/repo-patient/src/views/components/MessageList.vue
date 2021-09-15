@@ -38,7 +38,7 @@
                    v-if="getMessageFlow(message) === 'out'">
                 <!-- <img class="img-avatar"
                      mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" /> -->
+                     src="~@src/assets/images/ic_head portrait.png" /> -->
                 <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
 
               </div>
@@ -77,10 +77,10 @@
                     {{ patientInfo.familyAge }}
                   </span>
                   <img v-if="message.content.data.inquiryOrderInfo.isAgain === '1'"
-                       src="~@/assets/images/ic_fz.png"
+                       src="~@src/assets/images/ic_fz.png"
                        class="fz" />
                   <img v-else
-                       src="~@/assets/images/ic_cz.png"
+                       src="~@src/assets/images/ic_cz.png"
                        class="fz" />
                 </div>
                 <div class="message-content">
@@ -106,7 +106,7 @@
                    v-if="getMessageFlow(message) === 'out'">
                 <!-- <img class="img-avatar"
                      mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" /> -->
+                     src="~@src/assets/images/ic_head portrait.png" /> -->
                 <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
               </div>
             </div>
@@ -180,7 +180,7 @@
                    v-if="getMessageFlow(message) === 'out'">
                 <!-- <img class="img-avatar"
                      mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" /> -->
+                     src="~@src/assets/images/ic_head portrait.png" /> -->
                 <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
               </div>
 
@@ -249,7 +249,7 @@
                    v-if="getMessageFlow(message) === 'out'">
                 <!-- <img class="img-avatar"
                      mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" /> -->
+                     src="~@src/assets/images/ic_head portrait.png" /> -->
                 <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
               </div>
 
@@ -303,7 +303,7 @@
                    v-if="getMessageFlow(message) === 'out'">
                 <!-- <img class="img-avatar"
                      mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" /> -->
+                     src="~@src/assets/images/ic_head portrait.png" /> -->
                 <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
               </div>
             </div>
@@ -360,7 +360,7 @@
                    v-if="getMessageFlow(message) === 'out'">
                 <!-- <img class="img-avatar"
                      mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" /> -->
+                     src="~@src/assets/images/ic_head portrait.png" /> -->
                 <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
               </div>
             </div>
@@ -413,7 +413,7 @@
                    v-if="getMessageFlow(message) === 'out'">
                 <!-- <img class="img-avatar"
                      mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" /> -->
+                     src="~@src/assets/images/ic_head portrait.png" /> -->
                 <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
               </div>
 
@@ -474,7 +474,7 @@
                    v-if="getMessageFlow(message) === 'out'">
                 <!-- <img class="img-avatar"
                      mode="cover"
-                     src="~@/assets/images/ic_head portrait.png" /> -->
+                     src="~@src/assets/images/ic_head portrait.png" /> -->
                 <div class="img-name">{{getFamilyName(patientInfo && patientInfo.familyName)}}</div>
               </div>
             </div>
@@ -1217,11 +1217,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/ .van-image-preview__index {
+v-deep .van-image-preview__index {
   top: 24px;
 }
 
-/deep/ .van-image-preview__cover {
+v-deep .van-image-preview__cover {
   position: absolute;
   top: 24px;
   left: 24px;
@@ -1584,7 +1584,7 @@ export default {
       background-color: #f7f7f7;
       padding: 16px;
     }
-    /deep/.van-field__button {
+    v-deep.van-field__button {
       padding-left: 10px;
       .van-button {
         height: 38px;
@@ -1592,12 +1592,12 @@ export default {
         font-size: 16px;
       }
     }
-    /deep/.van-field__left-icon {
+    v-deep.van-field__left-icon {
       display: flex;
       justify-content: center;
       margin-right: 10px;
     }
-    /deep/.van-field__control {
+    v-deep.van-field__control {
       line-height: 20px;
       padding: 7px 8px;
       border-radius: 3px;

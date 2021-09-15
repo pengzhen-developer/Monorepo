@@ -1283,13 +1283,13 @@ export default {
     }
   }
 }
-/deep/ .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {
+v-deep .form.form-for-family > .van-cell > .van-cell__value > .van-field__body > .van-field__control {
   text-align: right;
   // &::placeholder {
   //   color: #ccc;
   // }
 }
-/deep/.form-for-family .require .van-cell__title > span::after {
+v-deep.form-for-family .require .van-cell__title > span::after {
   content: '*';
   width: 5px;
   color: #f00;
@@ -1301,7 +1301,7 @@ export default {
 
 .popup-info {
   padding: 50px 16px 10px;
-  /deep/.van-cell {
+  v-deep.van-cell {
     padding-left: 0;
     padding-right: 0;
     &::after {
@@ -1310,7 +1310,7 @@ export default {
     }
   }
 
-  /deep/.van-field__control:disabled {
+  v-deep.van-field__control:disabled {
     color: #333 !important;
     -webkit-text-fill-color: #333;
   }
@@ -1368,11 +1368,11 @@ export default {
       font-weight: 400;
       color: #333333;
       line-height: 24px;
-      /deep/.van-field__label {
+      v-deep.van-field__label {
         width: 6em;
         flex: unset;
       }
-      /deep/.van-field__control {
+      v-deep.van-field__control {
         text-align: right;
       }
     }
@@ -1404,14 +1404,14 @@ export default {
   }
 }
 
-/deep/.van-cell__value--alone {
+v-deep.van-cell__value--alone {
   overflow: visible;
   .van-field__error-message {
     transform: translateX(16px);
   }
 }
 
-/deep/.van-cell__title {
+v-deep.van-cell__title {
   display: flex;
   align-items: center;
 }

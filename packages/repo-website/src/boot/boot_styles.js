@@ -46,11 +46,4 @@ export default async ({ configuration }) => {
 
   // 将 <style> 元素加到页面中
   document.head.appendChild(style)
-
-  console.log(
-    `%c ${'Styles'} %c N/A %c`,
-    'background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff',
-    'background:#41b883 ; padding: 1px; border-radius: 3px;  color: #fff',
-    'background:transparent'
-  )
 }

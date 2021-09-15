@@ -52,7 +52,7 @@ export default {
   methods: {
     getList() {
       this.p++
-      peace.service.group.commentLists({ doctorId: this.doctorId, p: this.p, size: this.size }).then(res => {
+      peace.service.group.commentLists({ doctorId: this.doctorId, p: this.p, size: this.size }).then((res) => {
         this.list = this.list.concat(res.data.lists)
         if (this.p * this.size >= res.data.count) {
           this.finished = true
@@ -98,7 +98,7 @@ export default {
   &::before {
     position: absolute;
     content: ' ';
-    background-image: url('~@/assets/images/xingji.png');
+    background-image: url('~@src/assets/images/xingji.png');
     background-size: cover;
     width: 15px;
     height: 14px;

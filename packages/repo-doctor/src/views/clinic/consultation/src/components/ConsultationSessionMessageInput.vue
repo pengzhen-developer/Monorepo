@@ -6,7 +6,7 @@
                  type="text"
                  v-show="$store.getters['consultation/consultInfo'].receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
                          $store.getters['consultation/consultInfo'].consultStatus === Peace.type.CONSULTATION.CONSULTATION_STATUS.等待会诊">
-        <img src="~@/assets/images/inquiry/chat_ic_invite doctors.png" />邀请医生
+        <img src="~@src/assets/images/inquiry/chat_ic_invite doctors.png" />邀请医生
       </el-button>
 
       <el-button @click="sendCase"
@@ -32,7 +32,7 @@
       <!-- 期望时间之后, 发起方医生和受邀方医生能够发起视频 -->
       <el-button @click="sendVideo"
                  type="text">
-        <img src="~@/assets/images/inquiry/chat_icon_video.png" />视频通话
+        <img src="~@src/assets/images/inquiry/chat_icon_video.png" />视频通话
       </el-button>
 
       <!-- 会诊生效后, 受邀方医生能够填写会诊小结, 用于结束会诊 -->
@@ -40,7 +40,7 @@
                  type="text"
                  v-show="$store.getters['consultation/consultInfo'].receiveDoctor.find(item => item.doctorId === $store.state.user.userInfo.list.docInfo.doctor_id) && 
                          Peace.consultationComponent.getIntervalStatus(this.$store.state.consultation.session) === Peace.type.CONSULTATION.CONSULTATION_STATUS_EXTEND.会诊中">
-        <img src="~@/assets/images/inquiry/chat_icon_medical.png" />会诊小结
+        <img src="~@src/assets/images/inquiry/chat_icon_medical.png" />会诊小结
       </el-button>
     </div>
 

@@ -295,7 +295,7 @@ export default {
   padding: 13px;
   text-align: center;
 }
-/deep/.van-sticky--fixed {
+v-deep.van-sticky--fixed {
   background-color: #fff;
   background-color: #fff;
   border-bottom: 4px solid #f9f9f9;

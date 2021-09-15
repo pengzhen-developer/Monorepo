@@ -903,10 +903,10 @@ export default {
       margin: 0 10px;
 
       &.hang_up {
-        background-image: url('~@/assets/images/inquiry/btn_hang_up@2x.png');
+        background-image: url('~@src/assets/images/inquiry/btn_hang_up@2x.png');
       }
       &.answer {
-        background-image: url('~@/assets/images/inquiry/btn_answer@2x.png');
+        background-image: url('~@src/assets/images/inquiry/btn_answer@2x.png');
       }
     }
   }

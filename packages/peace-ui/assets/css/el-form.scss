@@ -1,0 +1,97 @@
+$SPACE: view 8, none 0, xs 4, sm 8, md 16, lg 24, xl 48;
+
+.el-form {
+  &:not(.element-ui-default) {
+    @each $name, $value in $SPACE {
+      &[space-#{$name}] {
+        .el-form-item {
+          margin-bottom: #{$value}px;
+        }
+      }
+    }
+
+    .el-form-item {
+      margin-bottom: 24px;
+
+      @each $name, $value in $SPACE {
+        &[space-#{$name}] {
+          margin-bottom: #{$value}px;
+
+          .el-form-item__content,
+          .el-form-item__label {
+            line-height: 32px;
+          }
+        }
+
+        /* 详情页展示，默认行高 20px */
+        &[space-view] {
+          .el-form-item__content,
+          .el-form-item__label {
+            line-height: 20px;
+          }
+        }
+      }
+    }
+
+    &.el-form--inline {
+      > .el-form-item {
+        > .el-form-item__content > .el-input {
+          width: $--form-component-width-base;
+        }
+
+        > .el-form-item__content > .el-select {
+          width: $--form-component-width-base;
+        }
+
+        > .el-form-item__content > .el-autocomplete {
+          width: $--form-component-width-base;
+        }
+
+        margin-right: 24px;
+      }
+    }
+
+    &[space-view] {
+      .el-form-item__content,
+      .el-form-item__label {
+        line-height: 20px;
+      }
+    }
+
+    .el-form-item__label {
+      color: $--color-text-base;
+      line-height: 32px;
+      padding: 0 2px 0 0;
+    }
+    .el-form-item__content {
+      color: $--color-text-base;
+      line-height: 32px;
+      padding: 0;
+    }
+
+    .el-form-item__label-wrap .el-form-item__label {
+      display: inline-block;
+      float: inherit;
+    }
+
+    .el-form-item__error {
+      padding: 4px 0;
+    }
+
+    .el-checkbox-group {
+      display: inline-block;
+      line-height: 1;
+      vertical-align: middle;
+
+      .el-checkbox {
+        line-height: 1;
+        outline: 0;
+        white-space: nowrap;
+
+        .el-checkbox__label {
+          line-height: 1;
+        }
+      }
+    }
+  }
+}

@@ -1,12 +1,7 @@
 /**
- * Quasar Library
- * See: https://quasar.dev/
- **/
-
-/**
  * ElementUI 作为 main UI，全量加载即可
  *
- * 要实现按需加载，请参考:
+ * 要实现按需加载，请参考（无法动态改变主题）:
  *
  * step 1, Add dependencies
  *         ``` bash
@@ -25,16 +20,10 @@
  */
 
 import ElementUI from 'element-ui'
+import PeaceUI from 'peace-ui'
+import 'peace-ui/assets/css/index.scss'
 
-export default ({ Vue, configuration }) => {
-  require(`./boot_theme/elementUI/${configuration.theme.primary}/theme/index.css`)
-
+export default ({ Vue }) => {
   Vue.use(ElementUI, { size: 'mini' })
-
-  console.log(
-    `%c ${'ElementUI'} %c ${ElementUI.version} %c`,
-    'background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff',
-    'background:#41b883 ; padding: 1px; border-radius: 3px;  color: #fff',
-    'background:transparent'
-  )
+  Vue.use(PeaceUI)
 }

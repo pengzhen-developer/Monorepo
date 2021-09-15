@@ -47,11 +47,4 @@ export default ({ Vue, configuration }) => {
       }
     }
   })
-
-  console.log(
-    `%c ${'Quasar'} %c ${Quasar.version} %c`,
-    'background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff',
-    'background:#41b883 ; padding: 1px; border-radius: 3px;  color: #fff',
-    'background:transparent'
-  )
 }

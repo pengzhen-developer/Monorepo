@@ -1,14 +1,6 @@
 // 配置请参考 https://cli.vuejs.org/config/#global-cli-config
 
 const path = require('path')
-// webpack plugins
-const ZopfliPlugin = require('zopfli-webpack-plugin') // zopfli lib Gzip 压缩
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin // 分析
-const { GenerateSW } = require('workbox-webpack-plugin')
-
-const IS_EXPORT_REPORT = process.env.npm_config_report || false // 打包分析: npm run build --report
-
-const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i
 
 module.exports = {
   // https://cli.vuejs.org/config/#vue-config-js
@@ -22,65 +14,44 @@ module.exports = {
 
   // https://cli.vuejs.org/config/#chainwebpack
   chainWebpack: (config) => {
-    // 移除 prefetch preload 插件
+    // 移除 prefetch、preload 插件
     config.plugins.delete('prefetch')
     config.plugins.delete('preload')
 
     config.resolve.alias
-      .set('@public', path.join(__dirname, 'public'))
+      .set('@', path.join(__dirname, ''))
       .set('@src', path.join(__dirname, 'src'))
+      .set('@public', path.join(__dirname, 'public'))
       .set('@views', path.join(__dirname, 'src/views'))
+      .set('@library', path.join(__dirname, 'src/library'))
       .set('@service', path.join(__dirname, 'src/service'))
   },
 
   // https://cli.vuejs.org/zh/config/#configurewebpack
   configureWebpack: (config) => {
     // externals 请参考 https://webpack.docschina.org/configuration/externals/
+    // externals 配置后，import 将不会被 webpack 编译
+    // 相关资源可以通过 CDN 服务器从 index.html 引入, 避免 vendors 过大
     config.externals = {
       '/public/static/IM/NIM_Web_NIM_v6.5.5': 'NIM',
       '/public/static/IM/NIM_Web_WebRTC_v6.5.5': 'WebRTC'
     }
+  },
 
-    // 静态配置放在这里
-    const plugins = [
-      new GenerateSW({
-        clientsClaim: true,
-        skipWaiting: true
-      })
-    ]
-    // 编译时 run build
-    if (process.env.NODE_ENV === 'production') {
-      plugins.push(
-        new ZopfliPlugin({
-          asset: '[path].gz[query]',
-          algorithm: 'zopfli',
-          test: productionGzipExtensions,
-          threshold: 10240,
-          minRatio: 0.8
-        })
-      )
-      if (IS_EXPORT_REPORT) {
-        plugins.push(
-          new BundleAnalyzerPlugin({
-            analyzerMode: 'static',
-            reportFilename: 'bundle-report.html',
-            openAnalyzer: false
-          })
-        )
-      }
-    }
-    config.plugins = [...config.plugins, ...plugins]
-  },
-  devServer: {
-    disableHostCheck: true
-  },
-  //增加vue.config.js文件配置css
   css: {
     loaderOptions: {
       sass: {
         // @src/ is an alias to src/
         // so this assumes you have a file named `css/variables.scss`
-        data: `@import "@src/assets/css/variable.scss";`
+        data: `@import "@src/assets/css/variable.scss";`,
+
+        // If this option is set to true, Sass won’t print warnings that are caused by dependencies.
+        // A “dependency” is defined as any file that’s loaded through a load path or an importer.
+        // Stylesheets that are imported relative to the entrypoint are not considered dependencies.
+
+        // This is useful for silencing deprecation warnings that you can’t fix on your own.
+        // However, please also notify your dependencies of the deprecations so that they can get fixed as soon as possible!
+        quietDeps: true
       },
 
       less: {
@@ -101,5 +72,22 @@ module.exports = {
         ]
       }
     }
-  }
+  },
+
+  /**
+   * THIS IS GENERATED AUTOMATICALLY.
+   * DO NOT EDIT.
+   */
+  pluginOptions: {
+    quasar: {
+      importStrategy: 'kebab',
+      rtlSupport: false
+    }
+  },
+
+  /**
+   * THIS IS GENERATED AUTOMATICALLY.
+   * DO NOT EDIT.
+   */
+  transpileDependencies: ['quasar']
 }

@@ -1,0 +1,29 @@
+.el-pagination {
+  &:not(.element-ui-default) {
+    font-weight: 500;
+
+    button,
+    span:not([class*='suffix']),
+    .el-pager li {
+      height: 32px;
+      line-height: 32px;
+    }
+
+    &.is-background .btn-next,
+    &.is-background .btn-prev,
+    &.is-background .el-pager li {
+      background-color: $--color-white;
+      border: 1px solid $--border-color-base;
+      min-width: 32px;
+    }
+
+    &.is-background .el-pager li:not(.disabled).active {
+      background-color: $--color-primary;
+      border: 1px solid $--color-primary;
+    }
+
+    .el-input__inner {
+      text-align: left;
+    }
+  }
+}

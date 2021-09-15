@@ -380,7 +380,7 @@ export default {
       color: rgba(0, 198, 174, 1);
       line-height: 16px;
       padding: 6px 22px 0px 55px;
-      background: rgba(240, 252, 250, 1) url('~@/assets/images/ic_notice.png') no-repeat;
+      background: rgba(240, 252, 250, 1) url('~@src/assets/images/ic_notice.png') no-repeat;
       background-size: 17px 17px;
       background-position: 15px 14px;
     }

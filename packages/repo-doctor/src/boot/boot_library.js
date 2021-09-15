@@ -1,6 +1,6 @@
 // import library plugin
-import { version, name } from './../../package.json'
-import PeaceLibrary from '@jk998/library'
+import { name, version } from '@/package.json'
+import PeaceLibrary from 'peace-library'
 
 import Util from '@src/util'
 

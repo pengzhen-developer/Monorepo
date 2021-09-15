@@ -1,0 +1,44 @@
+.el-message {
+  &:not(.element-ui-default) {
+    border-radius: 0;
+    padding: 10px 16px;
+
+    &.el-message--info {
+      border: 1px solid #acdbe1ff;
+
+      .el-message__icon {
+        color: $--color-primary;
+      }
+    }
+
+    &.el-message--success {
+      background: $--message-background-color;
+      border: 1px solid #acdbe1ff;
+
+      .el-message__icon {
+        color: $--color-primary;
+      }
+    }
+
+    &.el-message--warning {
+      border: 1px solid #ffd99eff;
+
+      .el-message__icon {
+        color: $--color-warning;
+      }
+    }
+
+    &.el-message--error {
+      border: 1px solid #ffb0acff;
+
+      .el-message__icon {
+        color: $--color-danger;
+      }
+    }
+
+    .el-message__content {
+      line-height: 24px;
+      color: #333333cc;
+    }
+  }
+}

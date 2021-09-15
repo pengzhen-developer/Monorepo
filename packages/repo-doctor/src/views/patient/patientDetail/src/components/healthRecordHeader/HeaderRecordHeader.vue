@@ -1,9 +1,9 @@
 <template>
   <div class="health-record-header">
     <div class="header-left">
-      <img src="~@/assets/images/female.png"
+      <img src="~@src/assets/images/female.png"
            v-if="internalData.familyInfo.sex === '女'" />
-      <img src="~@/assets/images/male.png"
+      <img src="~@src/assets/images/male.png"
            v-else />
     </div>
     <div class="header-right">
