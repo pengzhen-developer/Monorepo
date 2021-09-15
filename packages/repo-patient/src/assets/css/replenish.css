@@ -1,0 +1,81 @@
+/********************* 点划线    start*********************************/
+.dotted-line-before {
+  position: relative;
+  width: 100%;
+}
+.dotted-line-before::before {
+  width: 100%;
+  position: absolute;
+  top: -1px;
+  left: 0;
+  content: '';
+  height: 0px;
+  border-top: 3px dashed #bfbfbf;
+  transform: scaleY(0.25);
+}
+
+.dotted-line-after {
+  position: relative;
+  width: 100%;
+}
+.dotted-line-after::after {
+  width: 100%;
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  content: '';
+  height: 0px;
+  border-top: 4px dashed #bfbfbf;
+  transform: scaleY(0.25);
+}
+
+/********************* 点划线    end*********************************/
+
+/*********************  flex   start*********************************/
+.base-flex {
+  display: flex;
+  align-items: center;
+}
+.base-flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.base-flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.base-flex-column {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.base-flex-column-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.base-flex-column-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.base-flex-1 {
+  flex: 1;
+}
+.base-flex-none {
+  flex: none;
+}
+/*********************  flex   end*********************************/
+
+/***  fontsize<=12px 部分安卓机垂直不居中 建议使用flex布局 + line-height: normal;  start****/
+.base-size-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: normal;
+}
+/***  fontsize<=12px 部分安卓机垂直不居中 建议使用flex布局 + line-height: normal;  end****/

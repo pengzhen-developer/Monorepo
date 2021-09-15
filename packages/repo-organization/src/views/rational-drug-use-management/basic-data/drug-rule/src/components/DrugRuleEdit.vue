@@ -1,0 +1,140 @@
+<template>
+  <div class="layout-route">
+    <el-alert type="warning"
+              title="本机构所有本位码相同的药品将共用此机构药品规则，多人同时编辑将会出现新版本覆盖旧版本的情况。"
+              show-icon=""
+              v-bind:closable="false"></el-alert>
+
+    <div class="flex justify-between items-end card q-mb-md">
+      <div>
+        <div class="q-mb-md">
+          <el-button icon="el-icon-arrow-left"
+                     v-on:click="back">返回上一页</el-button>
+        </div>
+
+        <div class="text-subtitle1 text-weight-bold q-mb-sm">
+          <span class="text-grey-333">机构药品规则编辑</span>
+        </div>
+
+        <div class="flex text-grey-333 ">
+          <div class="q-mr-md text-weight-bold">{{ data.productName }}</div>
+          <div class="q-mr-md">{{ data.dosageFormName }}</div>
+          <div class="q-mr-md">{{ data.drugSpecifications }}</div>
+          <div class="q-mr-md">{{ data.enterpriseName }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card"
+         style="margin-bottom: 72px">
+      <DrugRule ref="ruleView"
+                style="padding: 0;"
+                v-bind:id="data.drugStandardCode"
+                v-bind:drugType="'org'"></DrugRule>
+    </div>
+
+    <div class="fixed-bottom card text-right">
+      <el-button v-on:click="back">退出编辑</el-button>
+      <el-button type="primary"
+                 v-bind:loading="loading"
+                 v-on:click="save">保存</el-button>
+    </div>
+  </div>
+</template>
+
+<script>
+import Service from './../service'
+
+export default {
+  props: {
+    data: Object,
+    visible: Boolean
+  },
+
+  components: {
+    DrugRule: () => import('@src/views/rational-drug-use-management/basic-data/PrescriptionRule')
+  },
+
+  data() {
+    return {
+      loading: false
+    }
+  },
+
+  computed: {
+    internalVisible: {
+      get() {
+        return this.visible
+      },
+
+      set(value) {
+        this.$emit('update:visible', value)
+      }
+    }
+  },
+
+  methods: {
+    back() {
+      this.internalVisible = false
+
+      this.$emit('fetch')
+    },
+
+    save() {
+      this.$refs.ruleView.validate().then((data) => {
+        this.loading = true
+
+        Service.saveRules({
+          drugCscCode: this.data.drugStandardCode,
+          drugName: this.data.productName,
+          manufactory: this.data.enterpriseName,
+          custDrugsCode: this.data.custDrugsCode,
+          drugType: 'org',
+          submitReview: 0,
+          rules: data
+        })
+          .then(() => {
+            Peace.util.success('保存成功')
+            this.loading = false
+            this.$refs.ruleView.loading = false
+            this.back()
+          })
+          .catch(() => {
+            this.loading = false
+            this.$refs.ruleView.loading = false
+          })
+      })
+    },
+
+    audit() {
+      this.$refs.ruleView.validate().then((data) => {
+        this.loading = true
+        Service.saveRules({
+          drugCscCode: this.data.drugStandardCode,
+          drugName: this.data.productName,
+          manufactory: this.data.enterpriseName,
+          drugType: 'org',
+          submitReview: 1,
+          rules: data
+        })
+          .then(() => {
+            Peace.util.success('提交审核成功')
+            this.loading = false
+            this.$refs.ruleView.loading = false
+            this.back()
+          })
+          .catch(() => {
+            this.loading = false
+            this.$refs.ruleView.loading = false
+          })
+      })
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.layout-route {
+  padding: 0 !important;
+}
+</style>

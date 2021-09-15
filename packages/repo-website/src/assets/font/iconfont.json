@@ -1,0 +1,135 @@
+{
+  "id": "1945938",
+  "name": "智药云官网",
+  "font_family": "zyy-icon",
+  "css_prefix_text": "zyy-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "16614079",
+      "name": "显示密码",
+      "font_class": "xianshimima1",
+      "unicode": "e677",
+      "unicode_decimal": 58999
+    },
+    {
+      "icon_id": "16601274",
+      "name": "隐藏密码",
+      "font_class": "yincangmima",
+      "unicode": "e675",
+      "unicode_decimal": 58997
+    },
+    {
+      "icon_id": "16601275",
+      "name": "显示密码",
+      "font_class": "xianshimima",
+      "unicode": "e676",
+      "unicode_decimal": 58998
+    },
+    {
+      "icon_id": "16497573",
+      "name": "邮箱地址",
+      "font_class": "youxiangdizhi",
+      "unicode": "e673",
+      "unicode_decimal": 58995
+    },
+    {
+      "icon_id": "16497574",
+      "name": "联系方式",
+      "font_class": "lianxifangshi",
+      "unicode": "e674",
+      "unicode_decimal": 58996
+    },
+    {
+      "icon_id": "16497500",
+      "name": "验证码",
+      "font_class": "yanzhengma",
+      "unicode": "e66e",
+      "unicode_decimal": 58990
+    },
+    {
+      "icon_id": "16497501",
+      "name": "密码",
+      "font_class": "mima",
+      "unicode": "e66f",
+      "unicode_decimal": 58991
+    },
+    {
+      "icon_id": "16497502",
+      "name": "邮箱",
+      "font_class": "youxiang",
+      "unicode": "e670",
+      "unicode_decimal": 58992
+    },
+    {
+      "icon_id": "16497503",
+      "name": "账号",
+      "font_class": "zhanghao",
+      "unicode": "e671",
+      "unicode_decimal": 58993
+    },
+    {
+      "icon_id": "16497504",
+      "name": "手机",
+      "font_class": "shouji",
+      "unicode": "e672",
+      "unicode_decimal": 58994
+    },
+    {
+      "icon_id": "16201287",
+      "name": "修改",
+      "font_class": "xiugai",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
+      "icon_id": "15936424",
+      "name": "我是医生",
+      "font_class": "icon_yisheng",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "15936126",
+      "name": "我是药师",
+      "font_class": "icon_yaoshi",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "15934248",
+      "name": "箭头（右）",
+      "font_class": "icon_arrowRight2",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
+      "icon_id": "15934209",
+      "name": "箭头（左）",
+      "font_class": "icon_arrowLeft2",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "15934150",
+      "name": "药品供应",
+      "font_class": "icon_ypgy1",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "15934151",
+      "name": "合作医疗机构",
+      "font_class": "icon_hzyljg",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "15934085",
+      "name": "订单量",
+      "font_class": "icon_order",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    }
+  ]
+}

@@ -1,0 +1,200 @@
+<template>
+  <div class="health-record-header">
+    <div class="header-left">
+      <img src="~@/assets/images/female.png"
+           v-if="internalData.familyInfo.sex === '女'" />
+      <img src="~@/assets/images/male.png"
+           v-else />
+    </div>
+    <div class="header-right">
+      <div class="card">
+        <div class="title">基本信息</div>
+        <div class="content">
+          <el-row>
+            <el-col :span="6">
+              <label class="label">姓名</label>
+              <span>：</span>
+              <span :title="internalData.familyInfo.name"
+                    class="value">{{ internalData.familyInfo.name }}</span>
+            </el-col>
+            <el-col :span="6">
+              <label class="label">性别</label>
+              <span>：</span>
+              <span :title="internalData.familyInfo.sex"
+                    class="value">{{ internalData.familyInfo.sex }}</span>
+            </el-col>
+            <el-col :span="5">
+              <label class="label">年龄</label>
+              <span>：</span>
+              <span :title="internalData.familyInfo.age"
+                    class="value">{{ internalData.familyInfo.age }}</span>
+            </el-col>
+            <el-col :span="7">
+              <label class="label">联系电话</label>
+              <span>：</span>
+              <span :title="internalData.familyInfo.tels"
+                    class="value">{{ internalData.familyInfo.tels }}</span>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <label class="label">标签</label>
+              <span>：</span>
+              <span v-if="internalData.familyInfo.diagnoseInfo && internalData.familyInfo.diagnoseInfo.length">
+                <el-tag :key="item"
+                        size="medium"
+                        style="margin: 0 5px 10px 0; border: 0;"
+                        type="info"
+                        v-for="item in internalData.familyInfo.diagnoseInfo">{{ item }}</el-tag>
+              </span>
+              <span v-else>
+                -
+              </span>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="title">健康信息</div>
+        <div class="content">
+          <el-row>
+            <el-col :span="12">
+              <label class="label">婚姻状态</label>
+              <span>：</span>
+              <span :title="internalData.personalInfo.maritalStatus"
+                    class="value">{{ internalData.personalInfo.maritalStatus||"-" }}</span>
+            </el-col>
+            <el-col :span="12">
+              <label class="label">生育状态</label>
+              <span>：</span>
+              <span :title="internalData.personalInfo.fertilityStatus"
+                    class="value">{{ internalData.personalInfo.fertilityStatus||"-" }}</span>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <label class="label label-7">手术或外伤</label>
+              <span>：</span>
+              <span :title="internalData.personalInfo.surgeryTrauma"
+                    class="value">{{ internalData.personalInfo.surgeryTrauma||"-" }}</span>
+            </el-col>
+            <el-col :span="12">
+              <label class="label">家族病史</label>
+              <span>：</span>
+              <span :title="internalData.personalInfo.familyHistory"
+                    class="value">{{ internalData.personalInfo.familyHistory||"-" }}</span>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <label class="label">药物过敏</label>
+              <span>：</span>
+              <span :title="internalData.personalInfo.drugAllergy"
+                    class="value">{{ internalData.personalInfo.drugAllergy||"-" }}</span>
+            </el-col>
+            <el-col :span="12">
+              <label class="label label-7">食物/接触物过敏：</label>
+              <span :title="internalData.personalInfo.foodAllergy"
+                    class="value">{{ internalData.personalInfo.foodAllergy||"-" }}</span>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <label class="label">个人习惯</label>
+              <span>：</span>
+              <span :title="internalData.personalInfo.personalHabit"
+                    class="value">{{ internalData.personalInfo.personalHabit||"-" }}</span>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    internalData: undefined
+  },
+  data() {
+    return {
+      collspace: true
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.health-record-header {
+  display: flex;
+
+  .header-left {
+    width: 140px;
+    min-width: 140px;
+
+    img {
+      width: 105px;
+      height: 126px;
+    }
+  }
+
+  .header-right {
+    flex: 1;
+
+    label {
+      display: inline-block;
+      color: rgba(96, 98, 102, 1);
+
+      &.label-7,
+      &.label-8 {
+        width: auto;
+      }
+    }
+
+    .el-col {
+      display: flex;
+    }
+
+    .value {
+      margin: 0 0 0 5px;
+      color: rgba(96, 98, 102, 1);
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .card {
+      display: flex;
+      margin: 0 0 10px 0;
+
+      .title {
+        width: 100px;
+        color: #000;
+        font-weight: 600;
+
+        &::before {
+          content: ' ';
+          display: inline-block;
+          position: relative;
+          top: 2px;
+          width: 4px;
+          height: 14px;
+          margin: 0 15px 0 0;
+          background: $--color-primary;
+          border-radius: 4px;
+        }
+      }
+      .content {
+        flex: 1;
+
+        .el-row {
+          margin: 0 0 10px 0;
+        }
+      }
+    }
+  }
+}
+</style>

@@ -1,0 +1,71 @@
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #f2f2f2;
+  margin: 24px 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h4,
+h4,
+h5,
+h6,
+p,
+a {
+  margin: 0;
+  padding: 0;
+}
+
+.layout-route {
+  padding: 16px;
+
+  .card {
+    background: #fff;
+    padding: 24px;
+
+    &.card-search {
+      padding: 24px 24px 4px 24px;
+    }
+  }
+}
+
+.el-loading-mask.is-fullscreen {
+  cursor: wait;
+}
+
+.el-icon-male {
+  color: #3890ff;
+}
+.el-icon-female {
+  color: #f56c6c;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: transparent;
+  margin: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(144, 147, 153, 0.5);
+  min-height: 8px;
+  min-width: 150px;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:vertical:hover {
+  width: 12px;
+  height: 12px;
+  background: rgba(144, 147, 153, 0.9);
+}
+
+::-webkit-scrollbar-thumb:horizontal:hover {
+  background: rgba(144, 147, 153, 0.9);
+}

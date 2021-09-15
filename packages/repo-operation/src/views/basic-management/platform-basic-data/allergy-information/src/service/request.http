@@ -1,0 +1,9 @@
+POST http://10.4.9.193:9501/platformHumanClass/page
+Content-Type: application/json
+
+{
+  "current":"1",
+  "size":"10"
+}
+
+###

@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "integer"
+    },
+    "success": {
+      "type": "boolean"
+    },
+    "msg": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "tel": {
+          "type": "string"
+        },
+        "eDate": {
+          "type": "string"
+        },
+        "sDate": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "username", "tel", "eDate", "sDate", "token"]
+    }
+  },
+  "required": ["code", "success", "msg", "data"]
+}

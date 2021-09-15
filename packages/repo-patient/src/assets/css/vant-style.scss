@@ -1,0 +1,217 @@
+/*picker 选中*/
+.van-picker__frame {
+  border-top: 1px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;
+}
+.van-picker__confirm,
+.van-picker__confirm:active {
+  color: $primary;
+}
+.van-dialog__confirm,
+.van-dialog__confirm:active {
+  color: $primary;
+}
+.van-tag--plain::before {
+  border: none;
+}
+.van-sidebar-item--select::before {
+  background: transparent;
+  display: block;
+  width: 0;
+  height: 0;
+  left: 12px;
+  border-width: 4px;
+  border-style: solid;
+  border-color: transparent transparent transparent $primary;
+}
+.van-tree-select__nav-item {
+  padding: 16px 28px;
+}
+//vant image 默认加载失败图片不展示
+.van-icon-photo::before,
+.van-icon-photo-fail::before {
+  content: '';
+}
+.error--image.van-image {
+  width: 100%;
+  height: 100%;
+}
+//van-field
+.van-cell,
+.van-field {
+  color: #333;
+  font-size: 16px;
+  line-height: 16px;
+}
+.van-field__label,
+.van-field__control {
+  color: #333;
+}
+.van-field__control::placeholder {
+  color: #333;
+  opacity: 0.4;
+}
+//van-field  标红 放在label后面  .is__require 必填项标红  .is__error错误信息展示
+.van-cell.is__require .van-cell__title > span::after {
+  content: '*';
+  width: 0.13333rem;
+  color: #ff3a30;
+  font-size: 0.37333rem;
+  margin-left: 0.08rem;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+//
+.van-cell.is__error {
+  padding-bottom: 2px;
+}
+.van-cell.is__error::after {
+  border-bottom: 1px solid #ff3a30;
+}
+.van-cell {
+  padding: 12px 16px;
+}
+.van-field__error-message {
+  text-align: right;
+  height: 16px;
+  font-size: 12px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ff3a30;
+  line-height: 16px;
+}
+
+.van-cell::after {
+  border-bottom-color: $-color--line;
+  left: 16px;
+  right: 16px;
+  transform: none;
+}
+
+.van-cell:last-child::after,
+.van-cell--borderless::after {
+  display: block;
+}
+.van-cell.noborder:last-child::after,
+.van-cell--borderless.noborder::after {
+  display: none;
+}
+
+.van-search .van-cell:last-child::after {
+  display: none;
+}
+
+//.van-button--large   large width: 100%; magin:0 16px;
+.van-button--large.full {
+  width: calc(100% - 32px);
+  margin: 0 16px;
+}
+
+//input  搜索icon
+.van-icon.van-icon-search {
+  color: #c7c7c7;
+}
+
+//van-button 文字垂直居中
+.van-button__content {
+  line-height: normal;
+}
+//蒙层fixed 层级默认666
+.van-overlay {
+  z-index: 666;
+}
+
+//.van-dialog
+.van-dialog {
+  border-radius: 8px;
+}
+.van-dialog__header {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 20px;
+  padding-top: 20px;
+}
+.van-dialog__message {
+  padding: 16px;
+}
+.van-dialog__message.van-dialog__message--has-title {
+  color: #333;
+  font-size: 16px;
+  line-height: 24px;
+}
+.van-dialog__footer .van-dialog__cancel {
+  color: rgba(51, 51, 51, 0.4);
+  font-size: 16px;
+}
+.van-hairline--top::after {
+  border-color: #f5f5f5;
+}
+/** 
+*css去除ios中input和textarea的阴影
+*/
+textarea,
+input {
+  -webkit-appearance: none; /*去除系统默认的样式*/
+}
+/**
+*修改光标颜色
+*/
+textarea,
+input {
+  color: #000; /*其实改color的时候，文字颜色和光标颜色都变了*/
+  caret-color: $primary; /*只改光标颜色*/
+}
+
+//ui  ---  van-button  弹框按钮  .is__dialog  .van-button--primary(确定)
+.van-button {
+  &.is__dialog {
+    flex: 1;
+    border: none;
+    background: rgba(51, 51, 51, 0.05);
+    font-size: 16px;
+    height: 48px;
+    &.van-button--primary {
+      color: $primary;
+      font-size: 18px;
+    }
+
+    & + .van-button {
+      margin-left: 8.53%;
+    }
+  }
+
+  //小按钮
+  &.is__small {
+    border: none;
+    background: rgba(51, 51, 51, 0.05);
+    font-size: 14px;
+    width: 88px;
+    height: 32px;
+    &.van-button--primary {
+      color: #fff;
+      background-color: $primary;
+    }
+
+    & + .van-button {
+      margin-left: 8px;
+    }
+  }
+}
+
+.van-overlay {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.van-popup--bottom {
+  box-shadow: 0px 0px 8px 0px rgba(51, 51, 51, 0.16);
+}
+.van-popup--bottom.van-popup--round {
+  border-radius: 16px 16px 0 0;
+}
+
+.van-list__loading {
+  .van-loading__spinner {
+    width: 0.3733rem !important;
+    height: 0.3733rem !important;
+  }
+}
