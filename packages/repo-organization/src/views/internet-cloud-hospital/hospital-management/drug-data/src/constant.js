@@ -31,5 +31,10 @@ export default {
   ENUM_DISCONNECT: [
     { value: 'yes', label: '是' },
     { value: 'no', label: '否' }
+  ],
+  //是否是OTC药品
+  ENUM_OTC_DRUG: [
+    { value: 1, label: '是' },
+    { value: 2, label: '否' }
   ]
 }

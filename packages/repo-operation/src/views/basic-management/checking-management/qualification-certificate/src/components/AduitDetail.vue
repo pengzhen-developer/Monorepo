@@ -38,7 +38,7 @@
                 <span>{{ detail.hosInfo.socialCreditCode }}</span>
               </el-form-item>
               <el-form-item v-if="detail.hosInfo.licenseNumber"
-                            label="医疗机构职业许可证登记号">
+                            label="医疗机构执业许可证登记号">
                 <span>{{ detail.hosInfo.licenseNumber }}</span>
               </el-form-item>
               <el-form-item label="详细地址">
@@ -174,7 +174,7 @@
                 <span>{{ detail.hosInfo.socialCreditCode }}</span>
               </el-form-item>
               <el-form-item v-if="detail.hosInfo.licenseNumber"
-                            label="医疗机构职业许可证登记号">
+                            label="医疗机构执业许可证登记号">
                 <span>{{ detail.hosInfo.licenseNumber }}</span>
               </el-form-item>
               <el-form-item label="详细地址">

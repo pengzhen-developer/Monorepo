@@ -28,7 +28,7 @@
                     :maxlength="18"
                     placeholder="请输入医疗机构统一社会信用代码"></el-input>
         </el-form-item>
-        <el-form-item label="医疗机构职业许可证登记号："
+        <el-form-item label="医疗机构执业许可证登记号："
                       v-if="role==1"
                       prop="licenseNumber">
           <el-input v-model.trim="modal.licenseNumber"
@@ -288,13 +288,13 @@ export default {
         licenseNumber: [
           {
             required: true,
-            message: '请输入医疗机构职业许可证登记号',
+            message: '请输入医疗机构执业许可证登记号',
             trigger: 'blur'
           },
           {
             min: 1,
             max: 30,
-            message: '医疗机构职业许可证登记号最大输入30个字符',
+            message: '医疗机构执业许可证登记号最大输入30个字符',
             trigger: 'blur'
           }
         ],

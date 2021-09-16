@@ -39,7 +39,7 @@
                         maxlength="18"
                         show-word-limit></el-input>
             </el-form-item>
-            <el-form-item label="医疗机构职业许可证登记号"
+            <el-form-item label="医疗机构执业许可证登记号"
                           prop="licenseNumber"
                           v-if="model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构 || model.role === ''">
               <el-input v-model.trim="model.licenseNumber"
@@ -320,7 +320,7 @@ export default {
         role: '', // 机构类型
         hospitalName: '', // 机构名称
         socialCreditCode: '', // 统一社会信用代码
-        licenseNumber: '', // 医疗机构职业许可证登记号
+        licenseNumber: '', // 医疗机构执业许可证登记号
         hospitalLabel: '', // 医院属性
         hospitalTypeLabel: '', // 医院类型
         province: '', //  省
@@ -375,13 +375,13 @@ export default {
         licenseNumber: [
           {
             required: true,
-            message: '请输入医疗机构职业许可证登记号',
+            message: '请输入医疗机构执业许可证登记号',
             trigger: 'blur'
           },
           {
             min: 1,
             max: 30,
-            message: '医疗机构职业许可证登记号最大输入30个字符',
+            message: '医疗机构执业许可证登记号最大输入30个字符',
             trigger: 'blur'
           }
         ],
@@ -473,7 +473,10 @@ export default {
       if (!this.model.accountId) {
         switch (newVal) {
           case CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构:
-            if (oldVal === CONSTANT.ENUM_ORGANIZATION_TYPE.店配机构 || oldVal === CONSTANT.ENUM_ORGANIZATION_TYPE.仓配机构) {
+            if (
+              oldVal === CONSTANT.ENUM_ORGANIZATION_TYPE.店配机构 ||
+              oldVal === CONSTANT.ENUM_ORGANIZATION_TYPE.仓配机构
+            ) {
               this.resetForm(CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构)
             }
             break
@@ -602,7 +605,12 @@ export default {
 
     // 校验上传文件
     beforeUpload(file) {
-      let isJPG = file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/bmp' || file.type === 'image/png' || file.type === 'image/gif'
+      let isJPG =
+        file.type === 'image/jpg' ||
+        file.type === 'image/jpeg' ||
+        file.type === 'image/bmp' ||
+        file.type === 'image/png' ||
+        file.type === 'image/gif'
       const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {

@@ -30,6 +30,7 @@ export default {
         ENUM_MEDICAL_STATUS: CONSTANT.ENUM_MEDICAL_STATUS,
         ENUM_DRUG_STORAGE: CONSTANT.ENUM_DRUG_STORAGE,
         ENUM_DISCONNECT: CONSTANT.ENUM_DISCONNECT,
+        ENUM_OTC_DRUG: CONSTANT.ENUM_OTC_DRUG,
         ENUM_DRUG_UNIT_TYPE: []
       },
       drugInfo: []
@@ -115,6 +116,12 @@ export default {
         {
           col1: '拆零',
           col2: this.getDisconnect(drug.is_disconnect_attr),
+          col3: 'OTC药品',
+          col4: this.getOtcDurgType(drug.otcDrug)
+        },
+        {
+          col1: '药品医保编码',
+          col2: drug.drugMedicalCode,
           col3: '',
           col4: ''
         }
@@ -137,6 +144,9 @@ export default {
     },
     getDrugUnitType(drugUnitType) {
       return this.source.ENUM_DRUG_UNIT_TYPE.find((item) => item.value == drugUnitType)?.label
+    },
+    getOtcDurgType(otcDrug) {
+      return this.source.ENUM_OTC_DRUG.find((item) => item.value == otcDrug)?.label
     }
   }
 }

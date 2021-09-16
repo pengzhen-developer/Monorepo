@@ -55,7 +55,7 @@
           </div>
           <div class="item-child"
                v-if="hosInfo.licenseNumber">
-            <p class="child-key">医疗机构职业许可证登记号</p>
+            <p class="child-key">医疗机构执业许可证登记号</p>
             <p>：</p>
             <p class="child-value">{{ hosInfo.licenseNumber }}</p>
           </div>
@@ -125,7 +125,12 @@ export default {
   },
   computed: {
     canShowCertificate() {
-      return this.hosInfo?.license || this.hosInfo?.structureLicense || this.hosInfo?.certificate || this.hosInfo?.hospitalLicense ? true : false
+      return this.hosInfo?.license ||
+        this.hosInfo?.structureLicense ||
+        this.hosInfo?.certificate ||
+        this.hosInfo?.hospitalLicense
+        ? true
+        : false
     }
   },
   methods: {

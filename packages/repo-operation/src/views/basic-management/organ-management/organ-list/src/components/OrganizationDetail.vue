@@ -23,7 +23,7 @@
               <span>{{ data.socialCreditCode }}</span>
             </el-form-item>
             <el-form-item v-if="data.role == CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构"
-                          label="医疗机构职业许可证登记号"
+                          label="医疗机构执业许可证登记号"
                           label-width="210px">
               <span>{{ data.licenseNumber }}</span>
             </el-form-item>

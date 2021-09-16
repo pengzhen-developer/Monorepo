@@ -15,7 +15,7 @@
         </div>
         <div class="order-type"
              :class="!isToStore&&'to-home'">{{info.shippingMethodTxt}}</div>
-        <div class="order-type store"> {{paymentTypesText}} </div>
+        <div class="order-type store"> {{info.payInfo.payModeTxt}} </div>
 
       </div>
       <div class="address">
@@ -212,20 +212,20 @@ export default {
       return !this.info.shippingMethod
     },
 
-    paymentTypesText() {
-      if (this.info.payMode) {
-        return this.$options.filters['getEnumLabel'](this.info.payMode, this.source.PayMode)
-      } else {
-        const paymentTypes = this.$options.filters['getPaymentStatus'](this.info.paymentType, CONSTANT.ENUM_PAYMENT)
-        let text = '在线支付'
-        if (paymentTypes.indexOf('到店支付') != -1) {
-          text = '到店支付'
-        } else if (paymentTypes.indexOf('货到付款') != -1) {
-          text = '货到付款'
-        }
-        return text
-      }
-    },
+    // paymentTypesText() {
+    //   if (this.info.payMode) {
+    //     return this.$options.filters['getEnumLabel'](this.info.payMode, this.source.PayMode)
+    //   } else {
+    //     const paymentTypes = this.$options.filters['getPaymentStatus'](this.info.paymentType, CONSTANT.ENUM_PAYMENT)
+    //     let text = '在线支付'
+    //     if (paymentTypes.indexOf('到店支付') != -1) {
+    //       text = '到店支付'
+    //     } else if (paymentTypes.indexOf('货到付款') != -1) {
+    //       text = '货到付款'
+    //     }
+    //     return text
+    //   }
+    // },
     expressNoText() {
       return this.info.expressNo.map((item) => item.expressNo).join('，')
     },
@@ -242,7 +242,8 @@ export default {
       if (this.info.shippingMethod.toString() === '0') {
         return this.source.SelfOrderStatus.find((item) => item.value === this.info.callOrderStatus.toString())?.label
       } else {
-        return this.source.DistributionOrderStatus.find((item) => item.value === this.info.callOrderStatus.toString())?.label
+        return this.source.DistributionOrderStatus.find((item) => item.value === this.info.callOrderStatus.toString())
+          ?.label
       }
     }
   },

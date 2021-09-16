@@ -180,6 +180,26 @@
                      v-for="item in source.ENUM_DISCONNECT"></el-option>
         </el-select>
       </el-form-item>
+
+      <el-form-item label="OTC药品："
+                    prop="otcDrug">
+        <el-select v-model="drug.otcDrug"
+                   clearable
+                   placeholder="请选择">
+          <el-option :key="item.label"
+                     :label="item.label"
+                     :value="item.value"
+                     v-for="item in source.ENUM_OTC_DRUG"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="药品医保编码："
+                    prop="drugMedicalCode">
+        <el-input v-model="drug.drugMedicalCode"
+                  maxlength="30"
+                  placeholder="请输入"></el-input>
+      </el-form-item>
+
       <el-form-item style="width: 100%;margin: 32px 0 16px 0;text-align: right;">
         <el-button @click="cancel"
                    type="default">取消</el-button>
@@ -300,6 +320,7 @@ export default {
         ENUM_MEDICAL_STATUS: CONSTANT.ENUM_MEDICAL_STATUS,
         ENUM_DRUG_STORAGE: CONSTANT.ENUM_DRUG_STORAGE,
         ENUM_DISCONNECT: CONSTANT.ENUM_DISCONNECT,
+        ENUM_OTC_DRUG: CONSTANT.ENUM_OTC_DRUG,
         ENUM_DRUG_UNIT_TYPE: [], //推荐用量单位类型字典
         ENUM_DRUG_USWAY: [], //给药途径字典
         ENUM_DRUG_TIMES: [] //给药频次字典
@@ -331,7 +352,9 @@ export default {
         is_disconnect_attr: '',
         recommendRouteId: '',
         recommendFrequencyId: '',
-        drugUnitType: ''
+        drugUnitType: '',
+        otcDrug: '',
+        drugMedicalCode: ''
       },
       rules: {
         drug_number: [

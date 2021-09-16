@@ -11,6 +11,7 @@
       <div class="flex row items-center">
         <el-select v-model="model.dosageRuleList.dosagetype"
                    placeholder="请选择"
+                   @change="typeChange"
                    style="width: 100px;">
           <el-option v-for="item in source.DosageType"
                      :key="item.value"
@@ -25,7 +26,16 @@
                          :controls="false"
                          :max="parseFloat(model.dosageRuleList.eachMaxDose)"
                          :min="0.00001"
+                         v-if="model.dosageRuleList.dosagetype === '0'"
                          :precision="5"
+                         class="q-mr-8 q-ml-8"
+                         placeholder="请输入"></el-input-number>
+        <el-input-number v-model="model.dosageRuleList.dailyMinDose"
+                         :controls="false"
+                         :max="parseFloat(model.dosageRuleList.dailyMaxDose)"
+                         :min="0.00001"
+                         :precision="5"
+                         v-else
                          class="q-mr-8 q-ml-8"
                          placeholder="请输入"></el-input-number>
         <span>至</span>
@@ -33,6 +43,14 @@
                          :controls="false"
                          :min="parseFloat(model.dosageRuleList.eachMinDose) || 0.00001"
                          :precision="5"
+                         v-if="model.dosageRuleList.dosagetype === '0'"
+                         class="q-mr-8 q-ml-8 "
+                         placeholder="请输入"></el-input-number>
+        <el-input-number v-model="model.dosageRuleList.dailyMaxDose"
+                         :controls="false"
+                         :min="parseFloat(model.dosageRuleList.dailyMinDose) || 0.00001"
+                         :precision="5"
+                         v-else
                          class="q-mr-8 q-ml-8 "
                          placeholder="请输入"></el-input-number>
 
@@ -105,21 +123,6 @@ export default {
     this.source.DosageType = await Peace.identity.dictionary.getList('dosage_type')
   },
 
-  watch: {
-    'model.dosageRuleList.eachMinDose'(timeRange) {
-      this.model.dosageRuleList.dailyMinDose = timeRange
-    },
-    'model.dosageRuleList.eachMaxDose'(timeRange) {
-      this.model.dosageRuleList.dailyMaxDose = timeRange
-    },
-    'model.dosageRuleList.dailyMinDose'(timeRange) {
-      this.model.dosageRuleList.eachMinDose = timeRange
-    },
-    'model.dosageRuleList.dailyMaxDose'(timeRange) {
-      this.model.dosageRuleList.eachMaxDose = timeRange
-    }
-  },
-
   methods: {
     addUnit() {
       this.dialog.data = this.model.dosageRuleList
@@ -132,23 +135,66 @@ export default {
       this.dialog.visible = false
     },
 
+    typeChange(value) {
+      console.log(this.model.dosageRuleList.dailyMinDose, this.model.dosageRuleList.eachMinDose)
+      if (Number(value) === 0) {
+        if (this.model.dosageRuleList.dailyMinDose) {
+          this.model.dosageRuleList.eachMinDose = this.model.dosageRuleList.dailyMinDose
+        }
+        if (this.model.dosageRuleList.dailyMaxDose) {
+          this.model.dosageRuleList.eachMaxDose = this.model.dosageRuleList.dailyMaxDose
+        }
+      } else if (Number(value) === 1) {
+        if (this.model.dosageRuleList.eachMinDose) {
+          this.model.dosageRuleList.dailyMinDose = this.model.dosageRuleList.eachMinDose
+        }
+        if (this.model.dosageRuleList.eachMaxDose) {
+          this.model.dosageRuleList.dailyMaxDose = this.model.dosageRuleList.eachMaxDose
+        }
+      }
+    },
+
     verificationResults() {
       const tmp = this.model.dosageRuleList
       if (tmp.dosagetype === '0') {
-        if ((tmp.eachMinDose || tmp.eachMinDose === 0) && (tmp.eachMaxDose || tmp.eachMaxDose === 0) && tmp.unitType && tmp.doseUnit) {
+        if (
+          (tmp.eachMinDose || tmp.eachMinDose === 0) &&
+          (tmp.eachMaxDose || tmp.eachMaxDose === 0) &&
+          tmp.unitType &&
+          tmp.doseUnit
+        ) {
           return CONSTANT.RULE_VALIDATION_RESULTS.已完成
         } else {
-          if (tmp.eachMinDose || tmp.eachMinDose === 0 || tmp.eachMaxDose || tmp.eachMaxDose === 0 || tmp.unitType || tmp.doseUnit) {
+          if (
+            tmp.eachMinDose ||
+            tmp.eachMinDose === 0 ||
+            tmp.eachMaxDose ||
+            tmp.eachMaxDose === 0 ||
+            tmp.unitType ||
+            tmp.doseUnit
+          ) {
             return CONSTANT.RULE_VALIDATION_RESULTS.未完成
           } else {
             return CONSTANT.RULE_VALIDATION_RESULTS.未开始
           }
         }
       } else {
-        if ((tmp.dailyMinDose || tmp.dailyMinDose === 0) && (tmp.dailyMaxDose || tmp.dailyMaxDose === 0) && tmp.unitType && tmp.doseUnit) {
+        if (
+          (tmp.dailyMinDose || tmp.dailyMinDose === 0) &&
+          (tmp.dailyMaxDose || tmp.dailyMaxDose === 0) &&
+          tmp.unitType &&
+          tmp.doseUnit
+        ) {
           return CONSTANT.RULE_VALIDATION_RESULTS.已完成
         } else {
-          if (tmp.dailyMinDose || tmp.dailyMinDose === 0 || tmp.dailyMaxDose || tmp.dailyMaxDose === 0 || tmp.unitType || tmp.doseUnit) {
+          if (
+            tmp.dailyMinDose ||
+            tmp.dailyMinDose === 0 ||
+            tmp.dailyMaxDose ||
+            tmp.dailyMaxDose === 0 ||
+            tmp.unitType ||
+            tmp.doseUnit
+          ) {
             return CONSTANT.RULE_VALIDATION_RESULTS.未完成
           } else {
             return CONSTANT.RULE_VALIDATION_RESULTS.未开始
