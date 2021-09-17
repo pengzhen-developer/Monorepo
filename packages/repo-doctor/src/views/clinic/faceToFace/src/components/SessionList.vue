@@ -1,18 +1,19 @@
 <template>
   <SessionListContainer active="faceToFace">
     <div class="q-ma-8">
-      <el-select
-        class="col full-width"
-        remote
-        filterable
-        clearable
-        v-model="search"
-        placeholder="请输入患者名字"
-        v-bind:remote-method="querySearchAsync"
-        @focus="querySearchAsync('')"
-        @change="handleSelect"
-      >
-        <el-option v-bind:key="item.patientNo" v-bind:label="item.text" v-bind:value="item.patientNo" v-for="item in searchPatientList">
+      <el-select class="col full-width"
+                 remote
+                 filterable
+                 clearable
+                 v-model="search"
+                 placeholder="请输入患者名字"
+                 v-bind:remote-method="querySearchAsync"
+                 @focus="querySearchAsync('')"
+                 @change="handleSelect">
+        <el-option v-bind:key="item.patientNo"
+                   v-bind:label="item.text"
+                   v-bind:value="item.patientNo"
+                   v-for="item in searchPatientList">
           <div class="flex items-center autocomplete-item">
             <span class="q-mr-10 text-bold"> {{ item.name }} </span>
             <span class="q-mr-10 text-bold"> {{ item.sex }} </span>
@@ -24,34 +25,37 @@
 
     <div class="flex column content">
       <template v-if="patientList.length">
-        <q-scroll-area class="col" id="scrollView" v-bind:thumb-style="thumbStyle">
-          <SessionListItem
-            v-for="patient in patientList"
-            v-bind:key="patient.patientNo"
-            v-on:click.native="selectPatient(patient)"
-            v-bind:active="patient.patientNo === storePatient.patientNo"
-            v-bind:patient="patient"
-          ></SessionListItem>
+        <q-scroll-area class="col"
+                       id="scrollView"
+                       v-bind:thumb-style="thumbStyle">
+          <SessionListItem v-for="patient in patientList"
+                           v-bind:key="patient.patientNo"
+                           v-on:click.native="selectPatient(patient)"
+                           v-bind:active="patient.patientNo === storePatient.patientNo"
+                           v-bind:patient="patient"></SessionListItem>
         </q-scroll-area>
       </template>
 
       <template v-else>
         <div class="col flex column justify-center items-center">
-          <img class="q-mb-md" src="~@src/assets/images/inquiry/ic_no one.png" />
+          <img class="q-mb-md"
+               src="~@src/assets/images/inquiry/ic_no one.png"
+               alt="" />
           <span class="text-grey-5">暂无会话</span>
         </div>
       </template>
     </div>
 
-    <PeaceDialog
-      :visible.sync="addPatientDialog.visible"
-      v-if="addPatientDialog.visible"
-      :before-close="closeMenu"
-      append-to-body
-      width="420px"
-      title="添加患者"
-    >
-      <AddPatient ref="checkInput" v-on:closeMenu="closeMenu" v-on:sendRecipe="sendRecipe"> </AddPatient>
+    <PeaceDialog append-to-body
+                 width="420px"
+                 title="添加就诊人"
+                 v-if="addPatientDialog.visible"
+                 :before-close="handleClose"
+                 :visible.sync="addPatientDialog.visible">
+      <AddPatient ref="checkInput"
+                  type="faceToFace"
+                  v-on:handleClose="handleClose"
+                  v-on:success="sendRecipe"> </AddPatient>
     </PeaceDialog>
   </SessionListContainer>
 </template>
@@ -59,7 +63,7 @@
 <script>
 import SessionListItem from './SessionListItem'
 import SessionListContainer from '@src/views/clinic/components/SessionListContainer'
-import AddPatient from './AddPatient'
+import AddPatient from '@src/views/patient/myPatient/src/components/AddPatient.vue'
 import Service from '../service/index'
 import { mutations, store } from '../store'
 
@@ -225,11 +229,12 @@ export default {
     },
 
     // 关闭添加患者界面
-    closeMenu() {
+    handleClose() {
       const tmp = this.$refs.checkInput.isShouldSave()
       if (tmp) {
         this.$confirm('关闭后将不保存当前内容，是否关闭？')
           .then(() => {
+            this.$refs.checkInput.$refs.ruleForm.resetFields()
             this.hiddenPatient()
           })
           .catch(() => {})
@@ -262,7 +267,7 @@ export default {
 
     handleSelect(patientNo) {
       if (!Peace.validate.isEmpty(patientNo)) {
-        const item = this.searchPatientList.find((element) => element.patientNo == patientNo)
+        const item = this.searchPatientList.find((element) => element.patientNo === patientNo)
         mutations.setActivePatient(item)
       }
     },

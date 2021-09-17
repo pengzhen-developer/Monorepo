@@ -239,7 +239,7 @@ export function getNationList() {
  * @returns
  */
 export function addPatient(params) {
-  const addPatient = 'client/v1/patient/addData'
+  const addPatient = '/client/face/prescription/patient/addMyPatient'
 
   return Peace.http.post(addPatient, params)
 }

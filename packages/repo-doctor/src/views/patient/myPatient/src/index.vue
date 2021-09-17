@@ -1,6 +1,5 @@
 <template>
   <div class="layout-route">
-
     <div class="card card-search q-mb-md">
       <el-form inline
                label-width="auto"
@@ -41,7 +40,7 @@
                           type="index"
                           width="80px">
           <template slot-scope="{ $index, _self }">
-            {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
+            {{ (_self.Pagination.internalCurrentPage - 1) * _self.Pagination.internalPageSize + $index + 1 }}
           </template>
         </PeaceTableColumn>
 
@@ -72,7 +71,6 @@
           <template slot-scope="scope">
             <span>{{ getSourceStr(scope.row.source) }}</span>
           </template>
-
         </PeaceTableColumn>
 
         <PeaceTableColumn label="操作">
@@ -82,17 +80,17 @@
           </template>
         </PeaceTableColumn>
       </PeaceTable>
-
     </div>
 
-    <PeaceDialog :before-close="handleClose"
-                 :visible.sync="addPatientDialog.visible"
-                 width="387px"
-                 title="添加患者">
+    <PeaceDialog append-to-body
+                 width="420px"
+                 title="添加就诊人"
+                 :before-close="handleClose"
+                 :visible.sync="addPatientDialog.visible">
       <AddPatient ref="checkInput"
-                  @handleClose="handleClose"
-                  v-on:updateList="updateList">
-      </AddPatient>
+                  type="patientAdmin"
+                  v-on:handleClose="handleClose"
+                  v-on:success="updateList"> </AddPatient>
     </PeaceDialog>
   </div>
 </template>
@@ -185,5 +183,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
