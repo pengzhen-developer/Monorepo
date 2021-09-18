@@ -42,12 +42,12 @@
              :class="{'message-layout-content-case':item.field === ANSWER_FIELD.SELECT_CASE}">
           <div class="message-layout left"
                v-if="item.question&&item.field === ANSWER_FIELD.SELECT_CASE">
-
             <component v-bind:is="item.component"
                        class="message in select"
-                       v-bind:data="caseList"
-                       v-bind:canShowDialog="!isAcceptNotHasFirstOptionRecord"
-                       v-on:answer="answer"></component>
+                       v-bind:limit="5"
+                       v-model="hasAnswer"
+                       v-bind:data="firstOptionList"
+                       v-on:selectCase="selectCaseCallBack"></component>
           </div>
 
           <div class="message-layout left"
@@ -57,7 +57,7 @@
             </div>
           </div>
           <!-- 上传图片 -->
-          <template v-if="(item.field === ANSWER_FIELD.ATTACHMENT ||item.field === ANSWER_FIELD.SELECT_CASE)&& Array.isArray(item.answer)">
+          <template v-if="item.field === ANSWER_FIELD.ATTACHMENT && Array.isArray(item.answer)">
             <van-image-preview v-model="imagePreview.visible"
                                :start-position="imagePreview.position"
                                :images="item.answer.map(file => file.path)">
@@ -83,20 +83,24 @@
             </div>
           </template>
           <!-- 选择病历 -->
+
           <div class="message-layout right"
-               v-else-if="item.answer&&item.field === ANSWER_FIELD.SELECT_CASE">
+               v-else-if="item.field === ANSWER_FIELD.SELECT_CASE">
+
             <div class="message out"
-                 v-if="selectCase==false">
+                 v-if="selectCase === false">
               <span v-html="item.answer"></span>
             </div>
-            <component class="message out"
-                       v-if="selectCase==true"
-                       v-bind:is="item.component"
+
+            <component v-bind:is="item.component"
+                       class="message out"
+                       v-if="selectCase === true"
                        v-bind:show="true"
                        v-bind:data="item.answer"></component>
+
             <span v-if="canShowChange(index)"
                   class="modify-btn"
-                  @click="backQuestion">点击修改</span>
+                  @click="backQuestion(item.field)">点击修改</span>
           </div>
           <template v-else>
             <div class="message-layout right"
@@ -280,6 +284,18 @@
                           :throttleTime="1000"
                           @click="answer('')">添加新的就诊人</peace-button>
           </template>
+          <!-- 选择历史处方记录-->
+          <template v-if="current.field === ANSWER_FIELD.ATTACHMENT">
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          @click="answer(false)">以上都不是</peace-button>
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          type="primary"
+                          @click="answer(true)">确定</peace-button>
+          </template>
 
           <!-- 附件与确认遗失 -->
           <template v-if="current.field === ANSWER_FIELD.ATTACHMENT">
@@ -313,7 +329,17 @@
           </template>
 
           <!-- 选择病历 -->
-
+          <template v-if="current.field === ANSWER_FIELD.SELECT_CASE">
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          @click="answer(false)">以上都不是</peace-button>
+            <peace-button round
+                          throttle
+                          :throttleTime="1000"
+                          type="primary"
+                          @click="answer(true)">确定</peace-button>
+          </template>
         </div>
       </transition>
       <transition name="van-slide-up"
@@ -611,8 +637,12 @@ export default {
       },
       // 首诊记录
       firstOptionList: [],
-      //病历列表
-      caseList: [],
+      //选择的病历
+      case: {
+        caseInfo: {},
+        dataNo: ''
+      },
+      hasAnswer: false,
       // 附件
       attachment: [],
 
@@ -975,7 +1005,12 @@ export default {
         }
       })
     },
-
+    selectCaseCallBack(result) {
+      if (result) {
+        this.case.caseInfo = [].concat(result.caseInfo)
+        this.case.dataNo = result.recordNo
+      }
+    },
     addFamilyCallback(res) {
       //新增我的家人
       if (res.success) {
@@ -1102,17 +1137,7 @@ export default {
         if (res.data == null || !res.data.firstOptionList || res.data.firstOptionList.length == 0) {
           return false
         } else {
-          let list = res.data.firstOptionList
-          const temp = {}
-          // 遍历时间
-          const timeList = new Set(list.map((item) => item.createdTime.toDate().formatDate('yyyy-MM-dd')))
-          if (timeList.size) {
-            timeList.forEach((time) => {
-              temp[time] = list.filter((item) => item.createdTime.toDate().formatDate('yyyy-MM-dd') === time)
-            })
-          }
-          this.firstOptionList = list
-          this.caseList = temp
+          this.firstOptionList = res.data.firstOptionList
           return true
         }
       })
@@ -1211,7 +1236,7 @@ export default {
       })
     },
 
-    backQuestion() {
+    backQuestion(field) {
       const length = this.questionDone != null ? 1 : 2
 
       const nextQuestionIndex = this.questionPath[this.questionPath.length - length] || 0
@@ -1222,6 +1247,14 @@ export default {
       this.questionPath.splice(this.questionPath.length - length, length)
       this.questionIndex = nextQuestionIndex
       this.illnessDescribe = ''
+
+      if (field === this.ANSWER_FIELD.SELECT_CASE) {
+        this.selectCase = null
+        this.case.caseInfo = null
+        this.case.dataNo = ''
+        this.hasAnswer = false
+      }
+
       this.$nextTick(function() {
         this.beginQuestion(nextQuestionIndex)
       })
@@ -1418,6 +1451,8 @@ export default {
             this.supplementaryList.map((item) => (item.hasAnswer = false))
             this.chatList = []
             this.selectCase = null
+            this.case.caseInfo = null
+            this.case.dataNo = ''
             //更换家人-先选择第一个家人的病历，然后撤回 重选家人 需重置问题列表
             if (this.model.serviceType === 'returnVisit') {
               this.questionList = [].concat(FUZHEN_QUESTION_LIST)
@@ -1472,10 +1507,22 @@ export default {
         }
         //选择病历
       } else if (this.current.field === this.ANSWER_FIELD.SELECT_CASE) {
-        answer = params[0] || params[1]
-        this.model.recordNo = !params[0] ? '' : params[1]
-        this.model.caseInfo = params[0]
-        this.selectCase = !params[0] ? false : true
+        const result = params[0]
+
+        if (result && !this.case.dataNo) {
+          Dialog.confirm({
+            title: '提示',
+            message: '请选择本次复诊的就诊记录',
+            confirmButtonText: '确认'
+          })
+          return false
+        }
+
+        this.selectCase = result
+        this.model.caseInfo = result ? this.case.caseInfo : ''
+        this.model.recordNo = result ? this.case.dataNo : ''
+        answer = this.selectCase ? this.model.caseInfo : '以上都不是'
+        this.hasAnswer = true
         if (this.selectCase) {
           this.questionList = [].concat(FUZHEN_HAS_HIS_QUESTION_LIST)
         } else {
@@ -1822,7 +1869,7 @@ export default {
     border-radius: 5px;
   }
 }
-v-deep.van-field__body {
+::v-deep.van-field__body {
   input::-webkit-input-placeholder {
     /*WebKit browsers*/
     font-size: 15px;
@@ -1838,7 +1885,7 @@ v-deep.van-field__body {
     font-size: 15px;
   }
 }
-.inquriy {
+::v-deep .inquriy {
   font-size: 16px;
   height: 100%;
   background: #f5f5f5;
@@ -1863,11 +1910,11 @@ v-deep.van-field__body {
     }
   }
 
-  v-deep .van-image-preview__index {
+  .van-image-preview__index {
     top: 24px;
   }
 
-  v-deep .van-image-preview__cover {
+  .van-image-preview__cover {
     position: absolute;
     top: 24px;
     left: 24px;
@@ -2114,7 +2161,7 @@ v-deep.van-field__body {
         }
       }
 
-      v-deep .layout-footer-content {
+      .layout-footer-content {
         padding: 16px 20px;
         background: #fff;
         box-shadow: 0px 0px 13px 8px rgba(0, 0, 0, 0.04);
@@ -2181,7 +2228,13 @@ v-deep.van-field__body {
         }
 
         &.selectCase {
-          padding: 0;
+          padding: 20px;
+          text-align: center;
+          .van-button {
+            min-width: 98px;
+            font-size: 16px;
+            margin: 0 15px 0 0;
+          }
         }
       }
     }

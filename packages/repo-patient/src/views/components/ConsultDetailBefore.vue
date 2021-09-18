@@ -341,7 +341,16 @@ export default {
       return this.ENUM.WOMAN_TYPE_TEXT_MAP[this.params.isPregnancy]
     },
     caseInfo() {
-      return this.params.caseInfo
+      const list = this.params.caseInfo
+      const temp = {}
+      // 遍历时间
+      const timeList = new Set(list.map((item) => item.createdTime.toDate().formatDate('yyyy-MM-dd')))
+      if (timeList.size) {
+        timeList.forEach((time) => {
+          temp[time] = list.filter((item) => item.createdTime.toDate().formatDate('yyyy-MM-dd') === time)
+        })
+      }
+      return temp
     },
     info() {
       return {
@@ -832,11 +841,11 @@ export default {
   }
 }
 
-v-deep .van-image-preview__index {
+::v-deep .van-image-preview__index {
   top: 24px;
 }
 
-v-deep .van-image-preview__cover {
+::v-deep .van-image-preview__cover {
   position: absolute;
   top: 24px;
   left: 24px;

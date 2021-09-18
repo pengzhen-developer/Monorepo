@@ -27,7 +27,7 @@
                v-else>全自费支付</div>
         </van-cell>
       </template>
-      <template v-if="innerPayType === 'wxpay'">
+      <template v-if="innerPayType === 'wxpay' && paymentMethod === 'online'">
         <van-cell title="支付类型">
           <van-image class="icon-wxpay"
                      :src="require('@src/assets/images/ic_pay_wechat_payment.png')"></van-image>
@@ -168,6 +168,18 @@ import SelectServicePackage from '@src/views/components/SelectServicePackage'
 export default {
   name: 'PayCard',
   props: {
+    /**
+     * 是否显示微信支付
+     * 注：到店付款，全自费支付场景下，不展示微信支付
+     *   可取值 online  offline
+     * */
+
+    paymentMethod: {
+      type: [String],
+      default() {
+        return 'online'
+      }
+    },
     //是否可点击切换 支付类型
     disabled: {
       type: [Boolean],
@@ -327,6 +339,13 @@ export default {
     }
   },
   watch: {
+    type: {
+      handler(type) {
+        this.paymentType = type === 'online' ? this.paymentType : ''
+        this.update()
+      },
+      immediate: true
+    },
     payType: {
       handler(payType) {
         if (payType === '') {
@@ -485,10 +504,12 @@ export default {
       if (payType === 'deduction') {
         this.deductionType = this.deductionType || this.deduction[0].type
         this.deductionDialog.payType = this.deductionType || this.deduction[0].type
+        this.paymentType = this.paymentMethod === 'online' ? 'wxpay' : ''
         this.update()
       } else {
         //全自费支付 清空抵扣信息
         this.deductionType = ''
+        this.paymentType = this.paymentMethod === 'online' ? this.paymentType : ''
         this.update()
       }
     },
@@ -623,14 +644,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.group {
-  v-deep .van-cell__title {
+::v-deep .group {
+  .van-cell__title {
     max-width: 6em;
     flex: none;
     display: flex;
     align-items: center;
   }
-  v-deep .van-cell__value {
+  .van-cell__value {
     color: #333;
     display: flex;
     align-items: center;
@@ -644,11 +665,11 @@ export default {
     }
   }
   .equity {
-    v-deep .van-cell__title {
+    .van-cell__title {
       font-size: 14px;
       color: #858585;
     }
-    v-deep .van-cell__value {
+    .van-cell__value {
       font-size: 14px;
       color: #858585;
     }

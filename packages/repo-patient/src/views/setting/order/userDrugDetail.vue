@@ -154,7 +154,10 @@
             自费金额：
           </div>
           <div class="dd">
-            <div class="strong">
+            <div class="strong"
+                 v-if="canShowSpecialAmount">—</div>
+            <div class="strong"
+                 v-else>
               <span class="refunded"
                     style="margin-right:-14px;"
                     v-if="order.paymentType !== ENUM.PAYMENT_TYPE.医保支付&&order.refundTime">（已退款）</span>
@@ -501,6 +504,10 @@ export default {
   },
 
   computed: {
+    //到店付款 且 医保支付 无法获取 自费金额 显示 ‘ —— ’
+    canShowSpecialAmount() {
+      return this.order?.payInfo?.payMode === 2 && this.order?.payInfo?.medicalTreatmentTypetxt ? true : false
+    },
     moneyRecord() {
       let list = this.order.moneyRecord
       if (list.length > 0 && this.order.medicalTreatmentType) {

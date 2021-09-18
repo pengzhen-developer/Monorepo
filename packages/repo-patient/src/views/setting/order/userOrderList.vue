@@ -1385,6 +1385,7 @@ export default {
 .strip-eye.color-servicePackage-4,
 .strip-eye.color-inquiry-5,
 .strip-eye.color-returnVisit-5,
+.strip-eye.color-drug-4,
 .strip-eye.color-drug-6 {
   color: #333333;
 }
@@ -1397,8 +1398,6 @@ export default {
 .strip-eye.color-register-6,
 .strip-eye.color-servicePackage-1,
 .strip-eye.color-drug-0,
-.strip-eye.color-drug-1,
-.strip-eye.color-drug-2,
 .strip-eye.color-checkOrder-1,
 .strip-eye.color-checkRegisteringOrder-1 {
   color: #ffa00c;
@@ -1408,8 +1407,9 @@ export default {
 .strip-eye.color-returnVisit-3,
 .strip-eye.color-register-3,
 .strip-eye.color-servicePackage-3,
+.strip-eye.color-drug-1,
+.strip-eye.color-drug-2,
 .strip-eye.color-drug-3,
-.strip-eye.color-drug-4,
 .strip-eye.color-checkRegisteringOrder-3 {
   color: #00c6ae;
 }
@@ -1423,7 +1423,8 @@ export default {
 .strip-eye.color-register-5,
 .strip-eye.color-register-7,
 .strip-eye.color-servicePackage-2,
-.strip-eye.color-drug-5， .strip-eye.color-checkOrder-2,
+.strip-eye.color-drug-5,
+.strip-eye.color-checkOrder-2,
 .strip-eye.color-checkOrder-3,
 .strip-eye.color-checkRegisteringOrder-2,
 .strip-eye.color-checkRegisteringOrder-4 {

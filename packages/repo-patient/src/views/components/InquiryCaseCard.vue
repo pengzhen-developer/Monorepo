@@ -4,7 +4,7 @@
          v-if="!show">请选择您本次复诊的病历</div>
     <div class="select-body">
       <div class="case-card"
-           v-for="(value, key) in data"
+           v-for="(value, key) in caseData"
            :key="key">
         <div class="case-card-time"
              :class="{'show':show}">
@@ -14,7 +14,7 @@
         <div class="case-box">
           <div class="case-card-note"
                :class="{'active':item.dataNo==recordNo&&!hasAnswer}"
-               @click="select(item,key)"
+               @click="select(item)"
                v-for="(item,index) in value"
                :key="index">
             <div class="case-card-note-content">
@@ -41,16 +41,12 @@
       </div>
     </div>
     <div class="select-footer"
-         v-if="!hasAnswer&&!show">
-      <peace-button round
-                    throttle
-                    :throttleTime="1000"
-                    @click="answer(false)">以上都不是</peace-button>
-      <peace-button round
-                    throttle
-                    :throttleTime="1000"
-                    type="primary"
-                    @click="answer(true)">确定</peace-button>
+         v-if="showMore&&!show">
+      <div @click="changeShowMoreBtn">
+        <span>查看更多</span>
+        <van-icon name="arrow-down"
+                  color="858585" />
+      </div>
     </div>
   </div>
 </template>
@@ -61,18 +57,29 @@ import { Dialog } from 'vant'
 
 export default {
   name: 'SelectCaseCard',
+  model: {
+    prop: 'hasAnswer',
+    event: 'change'
+  },
   props: {
-    data: Object,
+    data: Array,
     show: {
       type: Boolean,
       default: () => {
         return false
       }
     },
-    canShowDialog: {
+    hasAnswer: {
       type: Boolean,
       default: () => {
         return false
+      }
+    },
+
+    limit: {
+      type: Number,
+      default: () => {
+        return 0
       }
     }
   },
@@ -82,48 +89,41 @@ export default {
   data() {
     return {
       recordNo: '',
-      hasAnswer: false,
-      caseInfo: {}
+      caseInfo: null,
+      caseData: {},
+      showMore: false
     }
   },
+  mounted() {
+    this.showMore = !this.limit ? false : this.data.length > this.limit ? true : false
+    this.getCaseList()
+  },
+
   methods: {
-    answer(flag) {
-      const data = flag ? this.caseInfo : ''
-      if (!flag) {
-        // if (this.canShowDialog) {
-        //   Dialog.confirm({
-        //     title: '提示',
-        //     message: '复诊患者必须选择本次复诊的病历，不选病历将无法进行复诊',
-        //     confirmButtonText: '确认不选'
-        //   })
-        //     .then(() => {
-        //       this.hasAnswer = true
-        //       this.$emit('answer', data, '以上都不是')
-        //     })
-        //     .catch(() => {})
-        // } else {
-        this.hasAnswer = true
-        this.$emit('answer', data, '以上都不是')
-        // }
-      } else {
-        if (!this.recordNo) {
-          Dialog.confirm({
-            title: '提示',
-            message: '请选择本次复诊的就诊记录',
-            confirmButtonText: '确认'
-          })
-          return
-        }
-        this.hasAnswer = true
-        this.$emit('answer', data, this.recordNo)
-      }
+    changeShowMoreBtn() {
+      this.showMore = false
+      this.getCaseList()
     },
-    select(data, key) {
+    getCaseList() {
+      const list = this.showMore ? this.data.slice(0, this.limit) : this.data
+      const temp = {}
+      // 遍历时间
+      const timeList = new Set(list.map((item) => item.createdTime.toDate().formatDate('yyyy-MM-dd')))
+      if (timeList.size) {
+        timeList.forEach((time) => {
+          temp[time] = list.filter((item) => item.createdTime.toDate().formatDate('yyyy-MM-dd') === time)
+        })
+      }
+      this.caseData = temp
+    },
+
+    select(data) {
       if (this.hasAnswer || this.show) {
         return
       }
       this.recordNo = data.dataNo
-      this.caseInfo = Object.assign({}, { [key]: [data] })
+      this.caseInfo = [data]
+      this.$emit('selectCase', { caseInfo: this.caseInfo, recordNo: this.recordNo })
     },
     gotoCaseDetail(dataNo) {
       if (this.hasAnswer) {
@@ -273,7 +273,20 @@ export default {
 .select-footer {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 18px 12px 6px;
+  justify-content: center;
+  padding: 12px 12px 0;
+  margin-top: 20px;
+  border-top: 1px solid rgba(51, 51, 51, 0.1);
+
+  div {
+    color: #858585;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span {
+      margin-right: 4px;
+    }
+  }
 }
 </style>

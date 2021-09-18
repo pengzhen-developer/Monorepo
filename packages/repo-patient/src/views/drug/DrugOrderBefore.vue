@@ -135,7 +135,8 @@
           </template>
         </div>
 
-        <PayCard v-bind:doctorId="order.doctorId"
+        <PayCard v-bind:paymentMethod="paymentMethod"
+                 v-bind:doctorId="order.doctorId"
                  v-bind:familyId="page.json.familyId"
                  v-bind:familyName="page.json.familyName"
                  v-bind:payType="payType"
@@ -143,8 +144,9 @@
                  v-bind:orderInfo="order"
                  v-bind:nethospitalId="order.hospitalId"
                  v-bind:orderType="3"
-                 v-bind:disabled="true"
+                 v-bind:disabled="this.order.source===3?false:true"
                  v-on:update="updatePayInfo"></PayCard>
+        <!-- //source===3 面诊开方 需用户主动选择支付类型-->
       </div>
       <div class="tips-bottom">
         {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
@@ -362,6 +364,16 @@ export default {
     this.getPhaOrder()
   },
   computed: {
+    //支付方式 - 线上online 线下offline
+    //到店自提&&到店付款  offline
+    // payMode 1 在线支付  2 到店支付  3 货到付款
+    paymentMethod() {
+      if (this.page.payIndex == 2 && this.page.tabIndex == 0) {
+        return 'offline'
+      } else {
+        return 'online'
+      }
+    },
     canShowColdStorageTip() {
       return this.order?.ColdStorage == 1
     },
@@ -440,6 +452,7 @@ export default {
       peace.service.sensors.commitOrder(params)
     },
     openInformedConsentModel() {
+      console.log('paymentType', this.paymentType)
       if (!peace.validate.pattern.mobile.test(this.consigneeInfo.mobile)) {
         return peace.util.alert('请输入正确的手机号')
       }
@@ -627,6 +640,7 @@ export default {
         payMode: this.page.payIndex,
         deductionType: this.payType,
         paymentType: this.paymentType,
+        medicalTreatmentType: this.payInfo.medicalTreatmentType,
         medCardNo: this.payInfo.medCardNo,
         diseasesCode: this.payInfo.diseasesCode,
         diseasesName: this.payInfo.diseasesName,
@@ -835,22 +849,23 @@ export default {
       this.paymentType = result.paymentType
       this.payInfo = result.payInfo
       this.payInfo.cardno = result.payInfo.sbInsuranceId
+      console.log('result', result)
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-.pay-card-wrap {
+::v-deep .pay-card-wrap {
   margin-top: 8px;
   .pay-card {
-    v-deep .van-cell__title {
+    .van-cell__title {
       width: 8em;
       flex: none;
       display: flex;
       align-items: center;
     }
-    v-deep .van-cell__value {
+    .van-cell__value {
       color: #333;
       display: flex;
       align-items: center;
@@ -872,9 +887,9 @@ export default {
   color: #00c6ae;
   font-size: 12px;
 }
-.van-popup {
+::v-deep .van-popup {
   padding: 23px 15px 15px 15px;
-  v-deep.van-popup__close-icon--top-right {
+  .van-popup__close-icon--top-right {
     top: 23px;
     right: 16px;
   }
@@ -1196,7 +1211,7 @@ export default {
   position: relative;
 }
 
-.addr-user {
+::v-deep .addr-user {
   font-size: 14px;
   color: #666;
   span + span {
@@ -1207,12 +1222,12 @@ export default {
     &::after {
       border: 0;
     }
-    v-deep.van-field__control {
+    .van-field__control {
       width: 82px;
       color: #666;
     }
-    v-deep.van-field__label,
-    v-deep.van-field__value {
+    .van-field__label,
+    .van-field__value {
       color: #666;
       font-size: 12px;
     }
