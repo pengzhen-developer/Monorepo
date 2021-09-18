@@ -199,7 +199,7 @@ export default {
 .page {
   height: 100%;
 }
-v-deep.van-info {
+::v-deep.van-info {
   top: 50%;
   right: -10px;
   border: 0;
@@ -207,7 +207,7 @@ v-deep.van-info {
   width: 8px;
   height: 8px;
 }
-v-deep.van-info--dot {
+::v-deep.van-info--dot {
   display: block;
   background-color: #f2223b;
 }
@@ -271,7 +271,7 @@ v-deep.van-info--dot {
     // flex: 1;
     // overflow: auto;
 
-    v-deep .van-tabs {
+    ::v-deep .van-tabs {
       display: flex;
       flex-direction: column;
 

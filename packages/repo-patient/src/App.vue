@@ -269,13 +269,13 @@ export default {
 
 <style lang="scss" scoped>
 .layout,
-v-deep .van-pull-refresh,
-v-deep .van-pull-refresh__track {
+::v-deep .van-pull-refresh,
+::v-deep .van-pull-refresh__track {
   height: 100%;
   display: flex;
   flex-direction: column;
 
-  v-deep .van-tabbar {
+  ::v-deep .van-tabbar {
     border-top: 1px solid #eeeeee;
 
     [class*='van-hairline']::after {
@@ -283,7 +283,7 @@ v-deep .van-pull-refresh__track {
     }
   }
 
-  v-deep .van-tabbar--fixed {
+  ::v-deep .van-tabbar--fixed {
     position: unset;
     bottom: 0;
     left: 0;

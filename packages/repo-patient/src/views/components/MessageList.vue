@@ -1217,11 +1217,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-v-deep .van-image-preview__index {
+::v-deep .van-image-preview__index {
   top: 24px;
 }
 
-v-deep .van-image-preview__cover {
+::v-deep .van-image-preview__cover {
   position: absolute;
   top: 24px;
   left: 24px;
@@ -1573,7 +1573,7 @@ v-deep .van-image-preview__cover {
     }
   }
 
-  .input {
+  ::v-deep .input {
     min-height: 68px;
     position: relative;
     bottom: 0;
@@ -1584,7 +1584,7 @@ v-deep .van-image-preview__cover {
       background-color: #f7f7f7;
       padding: 16px;
     }
-    v-deep.van-field__button {
+    .van-field__button {
       padding-left: 10px;
       .van-button {
         height: 38px;
@@ -1592,12 +1592,12 @@ v-deep .van-image-preview__cover {
         font-size: 16px;
       }
     }
-    v-deep.van-field__left-icon {
+    .van-field__left-icon {
       display: flex;
       justify-content: center;
       margin-right: 10px;
     }
-    v-deep.van-field__control {
+    .van-field__control {
       line-height: 20px;
       padding: 7px 8px;
       border-radius: 3px;

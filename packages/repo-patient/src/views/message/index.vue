@@ -273,7 +273,7 @@ export default {
         text-overflow: ellipsis;
         white-space: nowrap;
         display: block;
-        v-deep.blue {
+        ::v-deep .blue {
           color: #999999;
         }
       }

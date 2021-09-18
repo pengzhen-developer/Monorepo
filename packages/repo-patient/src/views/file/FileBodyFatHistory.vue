@@ -84,7 +84,7 @@ export default {
   }
 }
 
-v-deep .van-cell__title {
+::v-deep .van-cell__title {
   flex: 2;
 }
 </style>

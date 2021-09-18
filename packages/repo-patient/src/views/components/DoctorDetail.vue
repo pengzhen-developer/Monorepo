@@ -1138,7 +1138,7 @@ export default {
       .name {
         color: #000;
       }
-      v-deep.van-rate__icon {
+      ::v-deep .van-rate__icon {
         font-size: 12px;
       }
     }
@@ -1436,9 +1436,8 @@ export default {
     }
   }
 
-  v-deep .van-tabs {
+  ::v-deep .van-tabs {
     .van-tabs__line {
-      background-color: #00c6ae;
       width: 25px !important;
     }
 

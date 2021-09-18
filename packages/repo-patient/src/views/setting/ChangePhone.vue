@@ -207,11 +207,11 @@ export default {
       margin-top: 194px;
     }
   }
-  v-deep.van-field__clear {
+  ::v-deep .van-field__clear {
     color: #dedede;
   }
-  v-deep.van-field__control,
-  v-deep.van-field__label {
+  ::v-deep .van-field__control,
+  ::v-deep .van-field__label {
     font-size: 15px;
     color: #000;
   }

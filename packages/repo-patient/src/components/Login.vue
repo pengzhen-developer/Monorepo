@@ -263,7 +263,7 @@ export default {
     color: $primary !important;
     font-size: 13px;
   }
-  v-deep .van-cell {
+  ::v-deep .van-cell {
     height: 50px;
     padding: 0;
     align-items: center;
@@ -273,10 +273,10 @@ export default {
       width: 100%;
     }
   }
-  v-deep .van-cell__value {
+  ::v-deep .van-cell__value {
     font-size: 17px;
   }
-  v-deep .van-button--disabled {
+  ::v-deep .van-button--disabled {
     opacity: 0.4;
   }
 }

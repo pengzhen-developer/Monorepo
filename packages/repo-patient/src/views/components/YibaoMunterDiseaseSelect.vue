@@ -136,7 +136,7 @@ export default {
     height: 240px;
     padding: 0 40px;
     overflow: auto;
-    .van-cell {
+    ::v-deep .van-cell {
       padding-left: 0;
       padding-right: 0;
       font-size: 16px;
@@ -145,11 +145,11 @@ export default {
         left: 0;
         right: 0;
       }
-      v-deep.van-cell__left-icon {
+      .van-cell__left-icon {
         margin-right: 8px;
         font-size: 24px;
       }
-      v-deep.van-radio__icon {
+      .van-radio__icon {
         font-size: 24px;
       }
     }

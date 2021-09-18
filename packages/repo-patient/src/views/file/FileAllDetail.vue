@@ -113,7 +113,7 @@ export default {
 .page {
   height: 100%;
 }
-.file-all-detail {
+::v-deep .file-all-detail {
   // height: 100%;
   background: #fff;
 
@@ -209,7 +209,7 @@ export default {
     // flex: 1;
     // overflow: auto;
 
-    v-deep .van-tabs {
+    .van-tabs {
       display: flex;
       flex-direction: column;
 
@@ -218,9 +218,7 @@ export default {
       .van-tab--active {
         color: $primary;
       }
-      .van-tabs__line {
-        background-color: $primary;
-      }
+
       .van-tabs__wrap {
         height: 44px;
       }

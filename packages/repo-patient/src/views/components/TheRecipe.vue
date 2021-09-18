@@ -676,8 +676,8 @@ export default {
     flex-wrap: wrap;
   }
   .namelist-dl {
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 13px;
+    line-height: 20px;
 
     width: 50%;
     display: flex;

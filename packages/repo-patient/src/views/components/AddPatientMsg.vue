@@ -723,11 +723,11 @@ export default {
   justify-content: space-between;
 }
 
-v-deep .van-field__control {
+::v-deep .van-field__control {
   text-align: right;
 }
 
-v-deep .van-cell__title {
+::v-deep .van-cell__title {
   width: auto;
   span {
     position: relative;

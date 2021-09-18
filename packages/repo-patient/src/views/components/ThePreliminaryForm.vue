@@ -325,11 +325,11 @@ export default {
     }
   }
 }
-v-deep .van-image-preview__index {
+::v-deep .van-image-preview__index {
   top: 24px;
 }
 
-v-deep .van-image-preview__cover {
+::v-deep .van-image-preview__cover {
   position: absolute;
   top: 24px;
   left: 24px;

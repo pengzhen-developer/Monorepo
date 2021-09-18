@@ -227,7 +227,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@src/views/style/style.css';
-v-deep.van-cell__value {
+::v-deep .van-cell__value {
   display: flex;
 }
 .banner {

@@ -136,13 +136,13 @@ export default {
       }
     }
   }
-  v-deep.van-hairline--top-bottom::after {
+  ::v-deep .van-hairline--top-bottom::after {
     height: 0;
   }
 
   .footer {
     padding: 12px 16px;
-    v-deep.van-button__content {
+    ::v-deep .van-button__content {
       color: #666;
     }
   }

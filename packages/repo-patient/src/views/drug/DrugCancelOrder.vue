@@ -190,21 +190,21 @@ export default {
 </script>
 <style lang="scss">
 .money-dialog {
-  v-deep.van-dialog__header {
+  ::v-deep .van-dialog__header {
     font-size: 20px;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: bold;
     color: #333333;
     line-height: 28px;
   }
-  v-deep.van-dialog__message {
+  ::v-deep .van-dialog__message {
     font-size: 16px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.85);
     line-height: 24px;
   }
-  v-deep.van-button__text {
+  ::v-deep .van-button__text {
     font-size: 18px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;

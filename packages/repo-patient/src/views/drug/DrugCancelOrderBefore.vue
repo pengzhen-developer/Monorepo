@@ -218,21 +218,21 @@ export default {
 </script>
 <style lang="scss">
 .money-dialog {
-  v-deep.van-dialog__header {
+  ::v-deep .van-dialog__header {
     font-size: 20px;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: bold;
     color: #333333;
     line-height: 28px;
   }
-  v-deep.van-dialog__message {
+  ::v-deep.van-dialog__message {
     font-size: 16px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.85);
     line-height: 24px;
   }
-  v-deep.van-button__text {
+  ::v-deep.van-button__text {
     font-size: 18px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
@@ -353,7 +353,7 @@ export default {
   }
 }
 
-v-deep.van-field {
+::v-deep.van-field {
   &.textarea {
     flex-wrap: wrap;
     &::after {
@@ -363,19 +363,19 @@ v-deep.van-field {
       width: 100%;
       margin: 0 0 11px 0;
     }
-    .van-field__value {
+    ::v-deep .van-field__value {
       width: 100%;
       background: rgba(51, 51, 51, 0.05);
       border-radius: 8px;
       padding: 8px;
       line-height: 24px;
       font-size: 16px;
-      v-deeptextarea {
+      textarea {
         word-break: break-all;
         position: relative;
         z-index: 20;
       }
-      v-deep.van-field__word-limit {
+      .van-field__word-limit {
         position: relative;
         .van-field__word-num {
           position: absolute;

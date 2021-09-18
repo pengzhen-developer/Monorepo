@@ -110,7 +110,7 @@ export default {
     margin-bottom: 20px;
     text-align: center;
   }
-  .content {
+  ::v-deep .content {
     min-height: 180px;
     max-height: 400px;
     overflow: auto;
@@ -123,11 +123,11 @@ export default {
         left: 0;
         right: 0;
       }
-      v-deep.van-cell__left-icon {
+      .van-cell__left-icon {
         margin-right: 8px;
         font-size: 24px;
       }
-      v-deep.van-radio__icon {
+      .van-radio__icon {
         font-size: 24px;
       }
     }

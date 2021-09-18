@@ -36,6 +36,11 @@
   width: 100%;
   height: 100%;
 }
+//van-tabs
+.van-tabs .van-tabs__line {
+  background-color: $primary;
+}
+
 //van-field
 .van-cell,
 .van-field {
