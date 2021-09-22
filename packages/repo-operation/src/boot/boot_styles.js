@@ -13,6 +13,7 @@ const hexToRGBA = function hexToRgbA(hex, opacity) {
 
 const createStyleConfig = (configuration) => {
   const styleConfig = new Map([
+    ['primary', hexToRGBA(configuration.theme.primary, 1)],
     ['primary-light-1', hexToRGBA(configuration.theme.primary, 0.1)],
     ['primary-light-2', hexToRGBA(configuration.theme.primary, 0.2)],
     ['primary-light-3', hexToRGBA(configuration.theme.primary, 0.3)],
