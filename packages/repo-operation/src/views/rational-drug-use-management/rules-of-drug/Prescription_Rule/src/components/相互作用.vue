@@ -162,7 +162,7 @@ export default {
     verificationResults() {
       const tmp = this.model.ddiRuleObj
       if (tmp.ddiItemList.length > 0 && tmp.ddiContraryItemList.length > 0) {
-        return CONSTANT.RULE_VALIDATION_RESULTS.已完成
+        return CONSTANT.RULE_VALIDATION_RESULTS.忽略
       } else {
         if (tmp.ddiItemList.length > 0 || tmp.ddiContraryItemList.length > 0) {
           return CONSTANT.RULE_VALIDATION_RESULTS.未完成

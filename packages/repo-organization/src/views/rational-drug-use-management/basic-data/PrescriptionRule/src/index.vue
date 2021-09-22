@@ -285,7 +285,12 @@ export default {
        * 其中【 `子规则`  `规则提示信息` 】为必填项； `前置规则` 为非必填 （⚠️ 前置规则校验在外部，所以前置条件只需判断是否填写）
        */
 
-      this.rules.forEach((rules) => {
+      // key: 'ddiRuleItemList',
+      // key: 'duplicatetherapyRuleItemList',
+      // 过滤 相互作用 | 重复用药
+      const tmpResult = this.rules.filter((item) => item.key !== 'ddiRuleItemList' && item.key !== 'duplicatetherapyRuleItemList')
+
+      tmpResult.forEach((rules) => {
         // 遍历17个规则数组
         for (let i = 0; i < rules.models.length; i++) {
           // 获取规则的ref，子规则校验在各自子组件对外暴露的 verificationResults 方法
