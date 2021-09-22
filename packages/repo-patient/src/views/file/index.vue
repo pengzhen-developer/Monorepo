@@ -373,11 +373,11 @@ export default {
     }
   }
 
-  ::v-deep .file-famliy-detail {
+  .file-famliy-detail {
     flex: 1;
     overflow: auto;
 
-    .van-tabs {
+    ::v-deep .van-tabs {
       display: flex;
       flex-direction: column;
 
@@ -405,7 +405,7 @@ export default {
       }
     }
 
-    [class*='van-hairline']::after {
+    ::v-deep [class*='van-hairline']::after {
       display: none;
     }
   }

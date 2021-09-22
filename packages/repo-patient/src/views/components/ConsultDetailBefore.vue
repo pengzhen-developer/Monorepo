@@ -342,6 +342,9 @@ export default {
     },
     caseInfo() {
       const list = this.params.caseInfo
+      if (!Array.isArray(list)) {
+        return undefined
+      }
       const temp = {}
       // 遍历时间
       const timeList = new Set(list.map((item) => item.createdTime.toDate().formatDate('yyyy-MM-dd')))

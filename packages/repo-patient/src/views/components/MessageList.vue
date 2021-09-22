@@ -1573,7 +1573,7 @@ export default {
     }
   }
 
-  ::v-deep .input {
+  .input {
     min-height: 68px;
     position: relative;
     bottom: 0;
@@ -1584,7 +1584,7 @@ export default {
       background-color: #f7f7f7;
       padding: 16px;
     }
-    .van-field__button {
+    ::v-deep .van-field__button {
       padding-left: 10px;
       .van-button {
         height: 38px;
@@ -1592,12 +1592,12 @@ export default {
         font-size: 16px;
       }
     }
-    .van-field__left-icon {
+    ::v-deep .van-field__left-icon {
       display: flex;
       justify-content: center;
       margin-right: 10px;
     }
-    .van-field__control {
+    ::v-deep .van-field__control {
       line-height: 20px;
       padding: 7px 8px;
       border-radius: 3px;

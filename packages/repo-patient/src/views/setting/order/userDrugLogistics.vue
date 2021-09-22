@@ -322,29 +322,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .van-tabs {
+.van-tabs {
   margin-bottom: 12px;
   height: 28px;
-  .van-tab {
+  ::v-deep.van-tab {
     width: 20%;
     flex: none;
     color: rgba(51, 51, 51, 0.4);
     font-size: 16px;
   }
 
-  .van-tabs__line {
+  ::v-deep .van-tabs__line {
     bottom: 0;
   }
-  .van-tabs__nav {
+  ::v-deep .van-tabs__nav {
     justify-content: center;
     height: 28px;
     padding: 0 11px;
   }
 
-  .van-tab--active {
+  ::v-deep .van-tab--active {
     color: $primary;
   }
-  .van-tabs__line {
+  ::v-deep .van-tabs__line {
     border-radius: 1px;
     height: 2px;
     width: 68px;

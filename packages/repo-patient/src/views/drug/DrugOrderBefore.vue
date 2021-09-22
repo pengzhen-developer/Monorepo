@@ -856,16 +856,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
-::v-deep .pay-card-wrap {
+.pay-card-wrap {
   margin-top: 8px;
   .pay-card {
-    .van-cell__title {
+    ::v-deep .van-cell__title {
       width: 8em;
       flex: none;
       display: flex;
       align-items: center;
     }
-    .van-cell__value {
+    ::v-deep .van-cell__value {
       color: #333;
       display: flex;
       align-items: center;
@@ -887,9 +887,9 @@ export default {
   color: #00c6ae;
   font-size: 12px;
 }
-::v-deep .van-popup {
+.van-popup {
   padding: 23px 15px 15px 15px;
-  .van-popup__close-icon--top-right {
+  ::v-deep .van-popup__close-icon--top-right {
     top: 23px;
     right: 16px;
   }
@@ -1211,7 +1211,7 @@ export default {
   position: relative;
 }
 
-::v-deep .addr-user {
+.addr-user {
   font-size: 14px;
   color: #666;
   span + span {
@@ -1222,12 +1222,12 @@ export default {
     &::after {
       border: 0;
     }
-    .van-field__control {
+    ::v-deep .van-field__control {
       width: 82px;
       color: #666;
     }
-    .van-field__label,
-    .van-field__value {
+    ::v-deep .van-field__label,
+    ::v-deep .van-field__value {
       color: #666;
       font-size: 12px;
     }

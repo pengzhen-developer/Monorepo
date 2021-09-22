@@ -644,14 +644,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .group {
-  .van-cell__title {
+.group {
+  ::v-deep .van-cell__title {
     max-width: 6em;
     flex: none;
     display: flex;
     align-items: center;
   }
-  .van-cell__value {
+  ::v-deep .van-cell__value {
     color: #333;
     display: flex;
     align-items: center;
@@ -665,11 +665,11 @@ export default {
     }
   }
   .equity {
-    .van-cell__title {
+    ::v-deep .van-cell__title {
       font-size: 14px;
       color: #858585;
     }
-    .van-cell__value {
+    ::v-deep .van-cell__value {
       font-size: 14px;
       color: #858585;
     }

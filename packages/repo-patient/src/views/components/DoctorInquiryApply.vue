@@ -284,18 +284,6 @@
                           :throttleTime="1000"
                           @click="answer('')">添加新的就诊人</peace-button>
           </template>
-          <!-- 选择历史处方记录-->
-          <template v-if="current.field === ANSWER_FIELD.ATTACHMENT">
-            <peace-button round
-                          throttle
-                          :throttleTime="1000"
-                          @click="answer(false)">以上都不是</peace-button>
-            <peace-button round
-                          throttle
-                          :throttleTime="1000"
-                          type="primary"
-                          @click="answer(true)">确定</peace-button>
-          </template>
 
           <!-- 附件与确认遗失 -->
           <template v-if="current.field === ANSWER_FIELD.ATTACHMENT">
@@ -1885,7 +1873,7 @@ export default {
     font-size: 15px;
   }
 }
-::v-deep .inquriy {
+.inquriy {
   font-size: 16px;
   height: 100%;
   background: #f5f5f5;
@@ -1910,11 +1898,11 @@ export default {
     }
   }
 
-  .van-image-preview__index {
+  ::v-deep .van-image-preview__index {
     top: 24px;
   }
 
-  .van-image-preview__cover {
+  ::v-deep .van-image-preview__cover {
     position: absolute;
     top: 24px;
     left: 24px;
@@ -2161,7 +2149,7 @@ export default {
         }
       }
 
-      .layout-footer-content {
+      ::v-deep .layout-footer-content {
         padding: 16px 20px;
         background: #fff;
         box-shadow: 0px 0px 13px 8px rgba(0, 0, 0, 0.04);
