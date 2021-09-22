@@ -24,6 +24,7 @@ import PeaceUI from 'peace-ui'
 import 'peace-ui/assets/css/index.scss'
 import Fragment from 'vue-fragment'
 import Viewer from 'v-viewer'
+import 'viewerjs/dist/viewer.css'
 
 export default ({ Vue }) => {
   Vue.use(ElementUI, { size: 'mini' })
