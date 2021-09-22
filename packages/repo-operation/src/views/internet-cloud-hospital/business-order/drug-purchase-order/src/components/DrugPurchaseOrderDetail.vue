@@ -79,10 +79,15 @@
             </template>
             <div class="flex row justify-between">
               <div class="text-caption color-333">自费金额</div>
-              <div class="red text-body1">
+              <div class="red text-body1"
+                   v-if="typeof(info.orderMoney)== 'number' ">
                 ¥{{ info.orderMoney | toFixed2() }}
                 <span v-if="info.refundTime"
                       class="gary">(已退款)</span>
+              </div>
+              <div class="red text-body1"
+                   v-else>
+                --
               </div>
             </div>
           </div>
