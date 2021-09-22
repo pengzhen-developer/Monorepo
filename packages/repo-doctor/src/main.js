@@ -7,7 +7,6 @@
  */
 
 import Boot from './boot'
-import './quasar'
 
 const install = async () => {
   const vueAppInstance = await Boot.install()

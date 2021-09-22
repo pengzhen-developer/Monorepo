@@ -13,7 +13,6 @@ const hexToRGBA = function hexToRgbA(hex, opacity) {
 
 const createStyleConfig = (configuration) => {
   const styleConfig = new Map([
-    ['primary', hexToRGBA(configuration.theme.primary, 1)],
     ['primary-light-1', hexToRGBA(configuration.theme.primary, 0.1)],
     ['primary-light-2', hexToRGBA(configuration.theme.primary, 0.2)],
     ['primary-light-3', hexToRGBA(configuration.theme.primary, 0.3)],
@@ -52,7 +51,7 @@ const generateStylesheet = (configuration) => {
     document.body.style.setProperty('--q-color-' + key, value)
 
     // 设定全局样式
-    const styleSheetNode = `.text-${key}{ color: ${value}; }.bg-${key}{ color: ${value}; }`
+    const styleSheetNode = `.text-${key}{ color: ${value}; }.bg-${key}{ background-color: ${value}; }`
 
     // 写入 TextNode
     const styleSheetTextNode = document.createTextNode(styleSheetNode)

@@ -16,7 +16,6 @@ const hexToRGBA = function hexToRgbA(hex, opacity) {
 
 export default async ({ configuration }) => {
   const styleConfig = new Map([
-    ['primary', hexToRGBA(configuration.theme.primary, 1)],
     ['primary-light-1', hexToRGBA(configuration.theme.primary, 0.1)],
     ['primary-light-2', hexToRGBA(configuration.theme.primary, 0.2)],
     ['primary-light-3', hexToRGBA(configuration.theme.primary, 0.3)],
@@ -38,7 +37,7 @@ export default async ({ configuration }) => {
 
   for (let [key, value] of styleConfig) {
     document.body.style.setProperty('--q-color-' + key, value)
-    const styleSheetNode = `.text-${key}{ color: ${value}; }.bg-${key}{ color: ${value}; }`
+    const styleSheetNode = `.text-${key}{ color: ${value}; }.bg-${key}{ background-color: ${value}; }`
     const styleSheetTextNode = document.createTextNode(styleSheetNode)
     style.appendChild(styleSheetTextNode)
   }
