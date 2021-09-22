@@ -64,8 +64,7 @@
                              clearable></peace-date-picker>
         </el-form-item>
 
-        <el-form-item label="民族"
-                      prop="nation">
+        <el-form-item label="民族">
           <span slot="label">民族：</span>
           <el-select filterable
                      label="民族"
@@ -242,7 +241,7 @@ export default {
           { validator: validateIdCard, message: '请输入正确的身份证号', trigger: 'blur' }
         ],
         idCards: [{ validator: validateIdCard, trigger: 'blur' }],
-        nation: [{ required: true, message: '请选择民族', trigger: 'blur' }],
+        // nation: [{ required: true, message: '请选择民族', trigger: 'blur' }],
         sex: [{ required: true, message: '请输选择性别', trigger: 'blur' }],
         birthday: [{ required: true, message: '请选择生日', trigger: 'blur' }],
         tel: [
@@ -256,13 +255,7 @@ export default {
         ],
         pickerOptionsDate: {
           disabledDate(time) {
-            return (
-              time.getTime() >
-              new Date()
-                .formatDate('yyyy-MM-dd 00:00:00')
-                .toDate()
-                .getTime()
-            )
+            return time.getTime() > new Date().formatDate('yyyy-MM-dd 00:00:00').toDate().getTime()
           }
         }
       }
