@@ -15,7 +15,9 @@
           <rule-items v-bind:key="`${rule.key}_RuleItems_${patientIndex}`"
                       class="flex q-mb-sm q-ml-lg relative-position"
                       v-bind:is-editing="false"
-                      v-bind:name="rule.name">
+                      v-bind:name="rule.name"
+                      v-on:checkInteractionRules="onCheckInteractionRules"
+                      v-on:checkSpecialRules="onCheckSpecialRules">
 
             <RuleItem v-for="(item, index) in rule.models"
                       class="flex column"
@@ -83,6 +85,24 @@
       </div>
     </div>
 
+    <PeaceDialog :close-on-click-modal="false"
+                 :close-on-press-escape="false"
+                 :visible.sync="ddiRuleModelDialog.visible"
+                 title="平台通用相互作用规则"
+                 v-if="ddiRuleModelDialog.visible"
+                 append-to-body
+                 width="926px">
+      <GlobalDdiRuleModel />
+    </PeaceDialog>
+    <PeaceDialog :close-on-click-modal="false"
+                 :close-on-press-escape="false"
+                 :visible.sync="dupRuleModelDialog.visible"
+                 title="特殊重复用药规则"
+                 v-if="dupRuleModelDialog.visible"
+                 append-to-body
+                 width="926px">
+      <GlobaldupRuleModel />
+    </PeaceDialog>
   </div>
 </template>
 
@@ -91,6 +111,8 @@ import rules from './config'
 import Service from './service/index'
 import PrecoditionInfo from './components/PrecoditionInfo'
 import obPreconditionDic from './observable/ob-precondition-dic'
+import GlobalDdiRuleModel from './components/GlobalDdiRuleModel'
+import GlobalDupRuleModel from './components/GlobalDupRuleModel'
 
 export default {
   name: 'RulesDetail',
@@ -121,7 +143,9 @@ export default {
     PromptLevel: () => import('./packages/PromptLevel'),
     PromptMessage: () => import('./packages/PromptMessage'),
     ValidateMessage: () => import('./packages/ValidateMessage'),
-    PrecoditionInfo
+    PrecoditionInfo,
+    GlobalDdiRuleModel,
+    GlobalDupRuleModel
   },
 
   data() {
@@ -130,7 +154,13 @@ export default {
       rules: [],
       loading: false,
       // 导航栏当前Index
-      tabSelectedIndex: 0
+      tabSelectedIndex: 0,
+      ddiRuleModelDialog: {
+        visible: false
+      },
+      dupRuleModelDialog: {
+        visible: false
+      }
     }
   },
 
@@ -182,6 +212,12 @@ export default {
             }
           }
 
+          /// ⚠️：审方V2.0.4 版本要求特殊处理 默认要展示 相互作用 | 重复用药
+          ///  -----------
+          transformRules['ddiRuleItemList'] = orginRules['ddiRuleItemList']
+          transformRules['duplicatetherapyRuleItemList'] = orginRules['duplicatetherapyRuleItemList']
+          ///  -----------
+
           const rulesModel = transformRules
           // 1、从config的通用 `数据模型数组` 中筛选出 `编辑过` 的数据
           const tmp = Peace.util.deepClone(rules).filter((item) => item.key in rulesModel)
@@ -214,6 +250,14 @@ export default {
         .finally(() => {
           this.loading = false
         })
+    },
+    // 查看相互作用规则
+    onCheckInteractionRules() {
+      this.ddiRuleModelDialog.visible = true
+    },
+    // 查看特殊规则
+    onCheckSpecialRules() {
+      this.dupRuleModelDialog.visible = true
     }
   }
 }

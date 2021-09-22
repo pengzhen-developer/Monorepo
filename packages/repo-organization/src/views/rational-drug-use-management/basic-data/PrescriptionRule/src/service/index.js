@@ -278,5 +278,69 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
+  },
+  /**
+   * 相互作用规则列表
+   * @param params
+   * @returns {*}
+   */
+  getDdiRuleList(params) {
+    const isMock = false
+
+    const apiPath = 'quake/unionCheckPrescription/getDdiRuleList'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.get(requestApi, { params }).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 查看相互作用规则详情
+   * @param params
+   */
+  getDdiRuleInfoById(params) {
+    const isMock = false
+    const apiPath = 'quake/unionCheckPrescription/getDdiRuleInfoById'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
+    const requestApi = isMock ? mockPath : serverPath
+    return Peace.http.get(requestApi, { params }).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 重复用药规则列表
+   * @param params
+   * @returns {*}
+   */
+  getDupRuleList(params) {
+    const isMock = false
+
+    const apiPath = 'quake/unionCheckPrescription/getDupRuleList'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.get(requestApi, { params }).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 查看重复用药规则详情
+   * @param params
+   */
+  getDupRuleInfoById(params) {
+    const isMock = false
+    const apiPath = 'quake/unionCheckPrescription/getDupRuleInfoById'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
+    const requestApi = isMock ? mockPath : serverPath
+    return Peace.http.get(requestApi, { params }).then((res) => {
+      return res
+    })
   }
 }

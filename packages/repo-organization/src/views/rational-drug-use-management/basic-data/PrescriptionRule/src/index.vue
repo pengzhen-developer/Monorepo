@@ -14,7 +14,9 @@
         <rule-items v-bind:key="`${rule.key}_RuleItems_${patientIndex}`"
                     class="flex q-mb-sm q-ml-lg relative-position"
                     v-bind:name="rule.name"
-                    v-on:addRule="onAddRule(rule)">
+                    v-on:addRule="onAddRule(rule)"
+                    v-on:checkInteractionRules="onCheckInteractionRules"
+                    v-on:checkSpecialRules="onCheckSpecialRules">
 
           <RuleItem v-for="(item, index) in rule.models"
                     v-bind:key="`${rule.key}_RuleItems_${patientIndex}_${index}`"
@@ -80,6 +82,25 @@
                        v-bind:model="dialog.data"
                        v-bind:drug-type="drugType"
                        v-on:preconditionInfo="addPreconditionInfo"></precondition-view>
+
+    <PeaceDialog :close-on-click-modal="false"
+                 :close-on-press-escape="false"
+                 :visible.sync="ddiRuleModelDialog.visible"
+                 title="平台通用相互作用规则"
+                 v-if="ddiRuleModelDialog.visible"
+                 append-to-body
+                 width="926px">
+      <GlobalDdiRuleModel />
+    </PeaceDialog>
+    <PeaceDialog :close-on-click-modal="false"
+                 :close-on-press-escape="false"
+                 :visible.sync="dupRuleModelDialog.visible"
+                 title="特殊重复用药规则"
+                 v-if="dupRuleModelDialog.visible"
+                 append-to-body
+                 width="926px">
+      <GlobalDupRuleModel />
+    </PeaceDialog>
   </div>
 </template>
 
@@ -88,6 +109,8 @@ import rules from './config'
 import CONSTANT from './constant'
 import PrecoditionInfo from './components/PrecoditionInfo'
 import PreconditionView from './components/PreconditionView'
+import GlobalDdiRuleModel from './components/GlobalDdiRuleModel'
+import GlobalDupRuleModel from './components/GlobalDupRuleModel'
 import Service from './service/index'
 
 import obPreconditionDic from './observable/ob-precondition-dic'
@@ -121,7 +144,9 @@ export default {
     PromptMessage: () => import('./packages/PromptMessage'),
     ValidateMessage: () => import('./packages/ValidateMessage'),
     PreconditionView,
-    PrecoditionInfo
+    PrecoditionInfo,
+    GlobalDdiRuleModel,
+    GlobalDupRuleModel
   },
 
   data() {
@@ -142,7 +167,12 @@ export default {
           Index: undefined
         }
       },
-
+      ddiRuleModelDialog: {
+        visible: false
+      },
+      dupRuleModelDialog: {
+        visible: false
+      },
       // q-scroll-area scrollBar 样式
       thumbStyle: {
         right: '0px',
@@ -366,6 +396,14 @@ export default {
     onAddRule(rule) {
       const tmp = this.rules.find((item) => item.name === rule.name)
       return rule.models.push(Peace.util.deepClone(tmp.model))
+    },
+    // 查看相互作用规则
+    onCheckInteractionRules() {
+      this.ddiRuleModelDialog.visible = true
+    },
+    // 查看特殊规则
+    onCheckSpecialRules() {
+      this.dupRuleModelDialog.visible = true
     },
 
     /**

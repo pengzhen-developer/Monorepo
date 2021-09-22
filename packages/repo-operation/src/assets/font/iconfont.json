@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "24243073",
+      "name": "成分规则",
+      "font_class": "chengfenguize2",
+      "unicode": "e6ab",
+      "unicode_decimal": 59051
+    },
+    {
+      "icon_id": "24239588",
+      "name": "cdss对接",
+      "font_class": "cdssduijie",
+      "unicode": "e6a8",
+      "unicode_decimal": 59048
+    },
+    {
+      "icon_id": "22956686",
+      "name": "旋转",
+      "font_class": "xuanzhuan-copy",
+      "unicode": "e6a7",
+      "unicode_decimal": 59047
+    },
+    {
+      "icon_id": "22955197",
+      "name": "旋转",
+      "font_class": "xuanzhuan",
+      "unicode": "e6a6",
+      "unicode_decimal": 59046
+    },
+    {
       "icon_id": "22658549",
       "name": "药品规则",
       "font_class": "yaopinguize",

@@ -1,8 +1,8 @@
 @font-face {
   font-family: "zyy-icon"; /* Project id 1924446 */
-  src: url('iconfont.woff2?t=1626404353133') format('woff2'),
-       url('iconfont.woff?t=1626404353133') format('woff'),
-       url('iconfont.ttf?t=1626404353133') format('truetype');
+  src: url('iconfont.woff2?t=1631179749121') format('woff2'),
+       url('iconfont.woff?t=1631179749121') format('woff'),
+       url('iconfont.ttf?t=1631179749121') format('truetype');
 }
 
 .zyy-icon {
@@ -11,6 +11,22 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.zyy-chengfenguize2:before {
+  content: "\e6ab";
+}
+
+.zyy-cdssduijie:before {
+  content: "\e6a8";
+}
+
+.zyy-xuanzhuan-copy:before {
+  content: "\e6a7";
+}
+
+.zyy-xuanzhuan:before {
+  content: "\e6a6";
 }
 
 .zyy-yaopinguize:before {

@@ -8,7 +8,8 @@ export default {
     禁用: 'D',
     慎用: 'R',
     提示: 'I',
-    审方失败: 'FAIL'
+    审方失败: 'FAIL',
+    服务调用失败: 'SERVER_ERR'
   },
   /**
    * 系统审核结果类型-map
