@@ -101,7 +101,7 @@
                  v-if="dupRuleModelDialog.visible"
                  append-to-body
                  width="926px">
-      <GlobaldupRuleModel />
+      <GlobalDupRuleModel />
     </PeaceDialog>
   </div>
 </template>

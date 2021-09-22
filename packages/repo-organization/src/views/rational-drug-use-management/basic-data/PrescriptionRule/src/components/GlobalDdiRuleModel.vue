@@ -69,6 +69,9 @@ export default {
   },
   data() {
     return {
+      model: {
+        isDelete: 'no'
+      },
       source: {
         warningLevel: []
       },
@@ -89,7 +92,8 @@ export default {
   methods: {
     fetch() {
       const fetch = Service.getDdiRuleList
-      this.$refs.table.reloadData({ fetch })
+      const params = Peace.util.deepClone(this.model)
+      this.$refs.table.reloadData({ fetch, params })
     },
     toDetail(row) {
       this.detailModelDialog.visible = true
