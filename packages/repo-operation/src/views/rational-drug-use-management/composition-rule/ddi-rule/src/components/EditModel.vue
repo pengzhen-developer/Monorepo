@@ -291,4 +291,10 @@ export default {
   padding: 0 12px;
   cursor: pointer;
 }
+::v-deep input::placeholder {
+  color: rgba(51, 51, 51, 0.6);
+}
+::v-deep textarea::placeholder {
+  color: rgba(51, 51, 51, 0.6);
+}
 </style>

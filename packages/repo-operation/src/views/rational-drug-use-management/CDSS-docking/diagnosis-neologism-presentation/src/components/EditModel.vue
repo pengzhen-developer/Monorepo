@@ -9,7 +9,7 @@
       <el-form-item label="ICD版本">
         <peace-select v-model="icdVersionSelected"
                       style="width: 100%;"
-                      placeholder="全部"
+                      placeholder="请选择"
                       value-key="icdVersion">
           <el-option v-for="item in icdVersionList"
                      v-bind:key="item.icdVersion"
@@ -50,7 +50,7 @@
         <peace-select v-model="organSelected"
                       style="width: 100%;"
                       value-key="code"
-                      placeholder="全部">
+                      placeholder="请选择">
           <el-option v-for="item in organList"
                      v-bind:key="item.code"
                      v-bind:label="item.name"

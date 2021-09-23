@@ -3,7 +3,7 @@
     <div class="full-width bg-white">
       <div class="title-style">
         <div class="rule-title">特殊重复用药规则</div>
-        <div>给药途径相同，药品成分或药品成分类别存在以下配置搭配时，即判断为重复用药。<span style="color:#999">通用重复用药规则：给药途径相同，药品成分或药品成分类别第四级ATC编码相同时，即判断为重复用药</span></div>
+        <div style="color:rgba(51,51,51,0.80)">给药途径相同，药品成分或药品成分类别存在以下配置搭配时，即判断为重复用药。通用重复用药规则：给药途径相同，药品成分或药品成分类别第四级ATC编码相同时，即判断为重复用药</div>
       </div>
       <div style="borderTop:16px solid #f5f5f5;"></div>
       <div class="card-style">
@@ -205,7 +205,7 @@ export default {
 <style lang="scss" scoped>
 .title-style {
   background: #fff;
-  padding: 24px 16px;
+  padding: 24px 32px;
 }
 .rule-title {
   font-size: 20px;
@@ -214,7 +214,7 @@ export default {
 }
 .card-style {
   background: #fff;
-  padding: 24px;
+  padding: 24px 32px;
 }
 .table-status {
   display: flex;

@@ -3,7 +3,7 @@
     <div class="full-width bg-white">
       <div class="title-style">
         <div class="rule-title">通用相互作用规则</div>
-        <div>相互作用规则为成分与成分之间的相互作用。药品维护了成分信息之后 ,可依据通用相互作用规则进行审查</div>
+        <div style="color:rgba(51,51,51,0.80)">相互作用规则为成分与成分之间的相互作用。药品维护了成分信息之后 ,可依据通用相互作用规则进行审查</div>
       </div>
       <div style="borderTop:16px solid #f5f5f5;"></div>
       <div class="card-style">
@@ -205,7 +205,7 @@ export default {
 <style lang="scss" scoped>
 .title-style {
   background: #fff;
-  padding: 24px 16px;
+  padding: 24px 32px;
 }
 .rule-title {
   font-size: 20px;
@@ -214,7 +214,7 @@ export default {
 }
 .card-style {
   background: #fff;
-  padding: 24px;
+  padding: 24px 32px;
 }
 .table-status {
   display: flex;

@@ -1,5 +1,5 @@
 <template>
-  <div class="q-ma-md  flex column justify-center">
+  <div class="q-mx-md  q-mt-md  flex column justify-center">
 
     <el-radio-group v-model="radio"
                     class="flex column">
