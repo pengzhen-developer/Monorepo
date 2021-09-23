@@ -210,7 +210,7 @@
             {{ order.payInfo.diseasesTxt  }}</div>
         </div>
         <div class="dl-packet"
-             v-if="order.payInfo.payModeTxt &&order.payTime">
+             v-if="order.payStatus >= ENUM.PAY_STASUS.已付款 || order.payTime">
           <div class="dt">支付方式：</div>
           <div class="dd">
             {{ order.payInfo.paymentTypeTxt?order.payInfo.payModeTxt +' - '+  order.payInfo.paymentTypeTxt : order.payInfo.payModeTxt  }}</div>
