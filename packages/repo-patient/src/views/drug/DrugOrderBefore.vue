@@ -104,7 +104,8 @@
       </div>
       <div class="pay-card-wrap">
         <div class="pay-card">
-          <van-cell title="支付及配送方式"
+          <van-cell center
+                    title="支付及配送方式"
                     @click="changeShowPopup">
             <span>{{payName}} - {{page.tabIndex == '0' ? '到店自提': '配送到家'}}</span>
             <van-image :src="require('@src/assets/images/ic_right.png')"></van-image>
@@ -871,6 +872,7 @@ export default {
       align-items: center;
       justify-content: flex-end;
       span {
+        line-height: 1;
         max-width: 200px;
         overflow: hidden;
         text-overflow: ellipsis;
