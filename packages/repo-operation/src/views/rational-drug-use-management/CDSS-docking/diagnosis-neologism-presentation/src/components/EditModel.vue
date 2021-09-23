@@ -38,7 +38,7 @@
                       :remote-method="getSuggestWord"
                       filterable
                       value-key="diseaseCode"
-                      placeholder="请选择">
+                      placeholder="请输入">
           <el-option v-for="item in suggestWordList"
                      v-bind:key="item.diseaseCode"
                      v-bind:label="item.diseaseName"
@@ -49,7 +49,8 @@
       <el-form-item label="所属机构">
         <peace-select v-model="organSelected"
                       style="width: 100%;"
-                      value-key="code">
+                      value-key="code"
+                      placeholder="全部">
           <el-option v-for="item in organList"
                      v-bind:key="item.code"
                      v-bind:label="item.name"
