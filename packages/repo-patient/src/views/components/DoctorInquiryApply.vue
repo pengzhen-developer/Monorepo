@@ -1123,6 +1123,7 @@ export default {
       }
       return peace.service.yibao.GetFirstOptionList(params).then((res) => {
         if (res.data == null || !res.data.firstOptionList || res.data.firstOptionList.length == 0) {
+          this.firstOptionList = []
           return false
         } else {
           this.firstOptionList = res.data.firstOptionList
