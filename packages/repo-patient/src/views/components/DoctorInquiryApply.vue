@@ -46,8 +46,11 @@
                        class="message in select"
                        v-bind:limit="5"
                        v-model="hasAnswer"
+                       v-bind:withdraw="withdraw"
+                       v-bind:withdrawStatus="withdrawStatus"
                        v-bind:data="firstOptionList"
-                       v-on:selectCase="selectCaseCallBack"></component>
+                       v-on:selectCase="selectCaseCallBack"
+                       v-on:onChangeStatus="onChangeStatus"></component>
           </div>
 
           <div class="message-layout left"
@@ -630,6 +633,8 @@ export default {
         caseInfo: {},
         dataNo: ''
       },
+      withdraw: false,
+      withdrawStatus: true,
       hasAnswer: false,
       // 附件
       attachment: [],
@@ -704,10 +709,6 @@ export default {
       isFixed: false,
       selectFamilyStatus: false,
 
-      debounceParam: {
-        wait: 1000,
-        start: ''
-      },
       selectCase: null,
       isFirstOptionRecord: null,
       isAcceptNotHasFirstOptionRecord: null,
@@ -999,6 +1000,9 @@ export default {
         this.case.dataNo = result.recordNo
       }
     },
+    onChangeStatus(status) {
+      this.withdrawStatus = status
+    },
     addFamilyCallback(res) {
       //新增我的家人
       if (res.success) {
@@ -1242,6 +1246,9 @@ export default {
         this.case.caseInfo = null
         this.case.dataNo = ''
         this.hasAnswer = false
+        this.withdraw = true
+      } else {
+        this.withdraw = false
       }
 
       this.$nextTick(function() {
@@ -1512,6 +1519,7 @@ export default {
         this.model.recordNo = result ? this.case.dataNo : ''
         answer = this.selectCase ? this.model.caseInfo : '以上都不是'
         this.hasAnswer = true
+        this.withdraw = false
         if (this.selectCase) {
           this.questionList = [].concat(FUZHEN_HAS_HIS_QUESTION_LIST)
         } else {

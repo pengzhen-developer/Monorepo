@@ -81,6 +81,19 @@ export default {
       default: () => {
         return 0
       }
+    },
+
+    withdraw: {
+      type: Boolean,
+      default: () => {
+        return false
+      }
+    },
+    withdrawStatus: {
+      type: Boolean,
+      default: () => {
+        return true
+      }
     }
   },
   components: {
@@ -94,8 +107,15 @@ export default {
       showMore: false
     }
   },
+
   mounted() {
     this.showMore = !this.limit ? false : this.data.length > this.limit ? true : false
+    this.$emit('onChangeStatus', this.showMore)
+
+    if (this.withdraw) {
+      this.showMore = this.withdrawStatus
+    }
+
     this.getCaseList()
   },
 
@@ -103,6 +123,7 @@ export default {
     changeShowMoreBtn() {
       this.showMore = false
       this.getCaseList()
+      this.$emit('onChangeStatus', this.showMore)
     },
     getCaseList() {
       const list = this.showMore ? this.data.slice(0, this.limit) : this.data
