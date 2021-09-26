@@ -180,8 +180,8 @@
                 style="width: 80px">-￥{{ model.SbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}</span>
         </div>
         <div class="q-mb-sm">
-          <span class="text-subtitle1">{{ model.IsPay == '0' ? '实付金额' : 
-                                          model.IsPay == '1' ? '应付金额' : 
+          <span class="text-subtitle1">{{ model.IsPay == '0' ? '应付金额' : 
+                                          model.IsPay == '1' ? '实付金额' : 
                                           model.IsPay == '2' ? '实付金额' : '' }}</span>
           <span>：</span>
           <span class="inline-block text-right text-subtitle1 text-red text-weight-bold"

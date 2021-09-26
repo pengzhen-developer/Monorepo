@@ -212,8 +212,8 @@
                     商保抵扣 -￥{{ scope.row.SbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}
                   </span>
                   <span class="text-weight-bold text-subtitle1">
-                    {{ scope.row.IsPay == '0' ? '实付金额' :
-                       scope.row.IsPay == '1' ? '应付金额' :
+                    {{ scope.row.IsPay == '0' ? '应付金额' :
+                       scope.row.IsPay == '1' ? '实付金额' :
                        scope.row.IsPay == '2' ? '实付金额' : '' }} ￥{{ scope.row.PayAmount }}
                   </span>
                 </div>
