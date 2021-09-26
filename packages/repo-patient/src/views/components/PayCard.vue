@@ -205,6 +205,12 @@ export default {
         return ''
       }
     },
+    custCode: {
+      type: [String, Number],
+      default() {
+        return ''
+      }
+    },
     // 支付方式
     payType: {
       type: String,
@@ -403,6 +409,7 @@ export default {
       const params = {
         doctorId: this.doctorId,
         nethospitalId: this.nethospitalId,
+        custCode: this.custCode,
         orderType: this.orderType // 问诊 2复诊 3购药 4挂号 5服务包 6检验挂号订单 7检验单
       }
       peace.service.inquiry.getPermissionsDeduction(params).then(async (res) => {

@@ -135,10 +135,11 @@
             </van-cell>
           </template>
         </div>
-
+        <!-- //inHospital  1院内，2院外 -->
         <PayCard v-bind:paymentMethod="paymentMethod"
                  v-bind:doctorId="order.doctorId"
                  v-bind:familyId="page.json.familyId"
+                 v-bind:custCode="order.inHospital==2?order.AccessCode:''"
                  v-bind:familyName="page.json.familyName"
                  v-bind:payType="payType"
                  v-bind:payInfo="payInfo"
