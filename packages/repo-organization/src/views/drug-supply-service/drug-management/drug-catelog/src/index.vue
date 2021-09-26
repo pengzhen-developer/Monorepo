@@ -87,53 +87,57 @@
 
       <PeaceTable ref="table"
                   style="width: 100%"
-                  pagination
-                  max-height="600">
+                  pagination>
         <el-table-column prop="CustDrugsCode"
-                         width="120px"
+                         min-width="120px"
                          label="药品编码">
         </el-table-column>
         <el-table-column prop="ProductName"
+                         min-width="120px"
                          label="药品名称">
         </el-table-column>
         <el-table-column prop="DrugSpecifications"
-                         align="center"
-                         label="药品规格">
+                         label="药品规格"
+                         min-width="120px">
         </el-table-column>
         <el-table-column prop="EnterpriseName"
-                         label="生产厂家">
+                         label="生产厂家"
+                         min-width="180px">
         </el-table-column>
         <el-table-column label="剂型"
-                         align="center">
+                         min-width="120px">
           <template slot-scope="scope">
             {{ scope.row.DrugDosageForm ? scope.row.DrugDosageForm : "——"  }}
           </template>
         </el-table-column>
-        <el-table-column align="center"
-                         label="包装单位">
+        <el-table-column label="包装单位"
+                         min-width="120px">
           <template slot-scope="scope">
             {{ scope.row.PackUnit ? scope.row.PackUnit : "——"  }}
           </template>
         </el-table-column>
-        <el-table-column label="批准文号">
+        <el-table-column label="批准文号"
+                         min-width="120px">
           <template slot-scope="scope">
             {{ scope.row.ApprovalNumber ? scope.row.ApprovalNumber : "——"  }}
           </template>
         </el-table-column>
 
         <el-table-column prop="CreateTime"
-                         label="创建时间">
+                         label="创建时间"
+                         min-width="180px">
         </el-table-column>
 
-        <el-table-column label="更新时间">
+        <el-table-column label="更新时间"
+                         min-width="180px">
           <template slot-scope="scope">
             {{ scope.row.LastModifyTime ? scope.row.LastModifyTime : "——"  }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center"
-                         fixed="right"
-                         label="操作">
+        <el-table-column fixed="right"
+                         label="操作"
+                         width="160px">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="openChangeImageDialog(scope.row)">图片维护</el-button>

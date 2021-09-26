@@ -3,6 +3,7 @@
     <div class="card card-search q-mb-md">
       <el-form inline
                label-width="auto"
+               label-suffix="："
                v-bind:model="model"
                v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent>
@@ -70,7 +71,6 @@
                    ref="table">
         <el-table-column prop="OrderId"
                          label="订单编号"
-                         align="center"
                          min-width="180px">
           <template slot-scope="scope">
             <el-button type="text"
@@ -79,26 +79,21 @@
         </el-table-column>
         <el-table-column prop="UserName"
                          label="客户姓名"
-                         align="center"
                          min-width="120px"></el-table-column>
 
         <el-table-column prop="TotalAmoun"
                          label="订单总额"
-                         align="center"
                          min-width="120px"></el-table-column>
 
         <el-table-column prop="CreateTime"
                          label="同步时间"
-                         align="center"
                          min-width="180px"></el-table-column>
 
         <el-table-column prop="DrugStoreName"
                          label="药房"
-                         align="center"
                          min-width="160px"></el-table-column>
 
         <el-table-column label="取货方式"
-                         align="center"
                          min-width="120px">
 
           <template slot-scope="scope">
@@ -107,7 +102,6 @@
         </el-table-column>
 
         <el-table-column label="支付状态"
-                         align="center"
                          min-width="120px">
           <template slot-scope="scope">
             <span>{{ scope.row.IsPay | filterDictionary(remoteSource.PayStatus, '--') }}</span>
@@ -115,7 +109,6 @@
         </el-table-column>
 
         <el-table-column label="订单状态"
-                         align="center"
                          min-width="120px">
           <template slot-scope="scope">
             <span>{{ scope.row.OrderStatusStr || '--' }}</span>
@@ -123,7 +116,6 @@
         </el-table-column>
 
         <el-table-column label="操作"
-                         align="center"
                          width="120px"
                          fixed="right">
           <template slot-scope="scope">

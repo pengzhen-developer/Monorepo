@@ -17,12 +17,12 @@
           <div class="col-4">
             <span class="label-text">订单状态</span>
             <span class="label-text">：</span>
-            <span class="label-value">{{ data.OrderStatus | formatDictionary(source.OrderStatus) }}</span>
+            <span class="label-value">{{ data.OrderStatus | filterDictionaryFuzzy(source.OrderStatus) }}</span>
           </div>
           <div class="col-4">
             <span class="label-text">流转状态</span>
             <span class="label-text">：</span>
-            <span class="label-value">{{ data.SendWarehouseStatus | formatDictionary(source.SendWarehouseStatus) }}</span>
+            <span class="label-value">{{ data.SendWarehouseStatus | filterDictionaryFuzzy(source.SendWarehouseStatus) }}</span>
           </div>
         </div>
 
@@ -66,7 +66,7 @@
           <div class="col-4">
             <span class="label-text">取货方式</span>
             <span class="label-text">：</span>
-            <span class="label-value">{{ data.ShippingMethod | formatDictionary(source.ShippingMethod) }}</span>
+            <span class="label-value">{{ data.ShippingMethod | filterDictionaryFuzzy(source.ShippingMethod) }}</span>
           </div>
 
         </div>
@@ -177,12 +177,12 @@
           <div class="col-4">
             <span class="label-text">支付方式</span>
             <span class="label-text">：</span>
-            <span class="label-value">{{ data.PayMode | formatDictionary(source.PayMode) }}</span>
+            <span class="label-value">{{ data.PayMode | filterDictionaryFuzzy(source.PayMode) }}</span>
           </div>
           <div class="col-4">
             <span class="label-text">支付状态</span>
             <span class="label-text">：</span>
-            <span class="label-value">{{ data.IsPay ? '已支付' : '未支付' }}</span>
+            <span class="label-value">{{ data.IsPay | filterDictionaryFuzzy(source.PayStatus) }}</span>
           </div>
           <div class="col-4">
             <span class="label-text">支付时间</span>
@@ -445,6 +445,7 @@ export default {
       item.value = parseInt(item.value)
     })
     this.source.SendWarehouseStatus = await Peace.identity.dictionary.getList('SendWarehouseStatus')
+    this.source.PayStatus = await Peace.identity.dictionary.getList('PayStatus')
   },
   data() {
     return {
@@ -475,7 +476,8 @@ export default {
         SendWarehouseStatus: [],
         PayMode: [],
 
-        OrderType: []
+        OrderType: [],
+        PayStatus: []
       }
     }
   },
@@ -495,14 +497,6 @@ export default {
   },
 
   filters: {
-    formatDictionary(value, source, format = '') {
-      if (!Peace.validate.isEmpty(value)) {
-        return source.find((item) => item.value.toString() === value.toString())?.label
-      }
-
-      return format
-    },
-
     formatCurrency(value) {
       /* eslint-disable no-useless-escape */
       value = value.toString().replace(/\$|\,/g, '')

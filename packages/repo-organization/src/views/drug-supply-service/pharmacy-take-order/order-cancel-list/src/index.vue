@@ -58,12 +58,10 @@
     <div class="card">
 
       <PeaceTable ref="table"
-                  style="width: 100%"
-                  pagination
-                  max-height="600">
+                  pagination>
 
         <PeaceTableColumn label="订单编号"
-                          min-width="180">
+                          min-width="180px">
           <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="showCancelDetail(scope.row)">
@@ -73,24 +71,22 @@
         </PeaceTableColumn>
 
         <PeaceTableColumn prop="OrderAmount"
-                          header-align="right"
-                          align="right"
-                          min-width="120"
+                          min-width="100px"
                           label="订单总额">
         </PeaceTableColumn>
 
-        <PeaceTableColumn min-width="180"
-                          prop="MedicalInstitutionName"
-                          label="订单来源">
+        <PeaceTableColumn prop="MedicalInstitutionName"
+                          label="订单来源"
+                          min-width="180px">
         </PeaceTableColumn>
 
         <PeaceTableColumn label="订单状态"
-                          min-width="120"
-                          prop="OrderStatusStr">
+                          prop="OrderStatusStr"
+                          min-width="120px">
         </PeaceTableColumn>
 
         <PeaceTableColumn label="取消状态"
-                          min-width="120">
+                          min-width="120px">
           <template slot-scope="scope">
             <div :class="{operatingColor : isPending(scope.row.Result)}">
               {{ (scope.row.Result).toString() | filterDictionary(source.OrderChangeResult, '--') }}
@@ -98,34 +94,34 @@
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn min-width="180"
-                          prop="DrugStoreName"
-                          label="药房">
+        <PeaceTableColumn prop="DrugStoreName"
+                          label="药房"
+                          min-width="180px">
         </PeaceTableColumn>
 
         <PeaceTableColumn prop="CreateTime"
                           label="申请取消时间"
-                          width="160">
+                          width="180px">
         </PeaceTableColumn>
 
         <PeaceTableColumn label="操作时间"
-                          width="160">
+                          width="180px">
           <template slot-scope="scope">
             {{ scope.row.OperatingTime ? scope.row.OperatingTime : "——"  }}
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn min-width="180"
-                          :show-overflow-tooltip="true"
-                          label="备注">
+        <PeaceTableColumn label="备注"
+                          min-width="180px"
+                          v-bind:show-overflow-tooltip="true">
           <template slot-scope="scope">
             {{ scope.row.Remarks ? scope.row.Remarks : "——"  }}
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn min-width="100px"
-                          fixed="right"
-                          label="操作">
+        <PeaceTableColumn fixed="right"
+                          label="操作"
+                          width="140px">
           <template slot-scope="scope">
             <el-button type="text"
                        v-if="isPending(scope.row.Result)"

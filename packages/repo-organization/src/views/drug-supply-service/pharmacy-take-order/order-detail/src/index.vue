@@ -16,15 +16,15 @@
             <div class="q-mb-md">
               <span class="text-grey-333">订单类型</span>
               <span>：</span>
-              <span class="text-grey-666 q-mr-lg">{{ model.ShippingMethod | formatDictionary(source.ShippingMethod) }}</span>
+              <span class="text-grey-666 q-mr-lg">{{ model.ShippingMethod | filterDictionaryFuzzy(source.ShippingMethod) }}</span>
 
               <span class="text-grey-333">支付方式</span>
               <span>：</span>
-              <span class="text-grey-666">{{ model.PayMode | formatDictionary(source.PayMode) }}</span>
+              <span class="text-grey-666">{{ model.PayMode | filterDictionaryFuzzy(source.PayMode) }}</span>
             </div>
 
             <div class="q-mb-md">
-              <span class="text-h6 text-weight-bold">{{ model.OrderStatus | formatDictionary(source.OrderStatus) }}</span>
+              <span class="text-h6 text-weight-bold">{{ model.OrderStatus | filterDictionaryFuzzy(source.OrderStatus) }}</span>
               <span class="q-ml-lg"
                     v-if="showPickUpCode()">
                 <span>取件码：</span>
@@ -94,7 +94,7 @@
             <div class="q-mb-sm">
               <span class="text-grey-333">支付状态</span>
               <span>：</span>
-              <span class="text-grey-666 q-mr-lg">{{ model.IsPay ? '已支付' : '未支付' }}</span>
+              <span class="text-grey-666 q-mr-lg">{{ model.IsPay | filterDictionaryFuzzy(source.PayStatus) }}</span>
             </div>
             <div class="q-mb-sm">
               <span class="text-grey-333">支付时间</span>
@@ -180,7 +180,9 @@
                 style="width: 80px">-￥{{ model.SbDetails.reduce((accumulator, currentValue) => accumulator + currentValue.Amount ,0) | formatCurrency }}</span>
         </div>
         <div class="q-mb-sm">
-          <span class="text-subtitle1">{{ model.IsPay ? '实付金额' : '应付金额' }}</span>
+          <span class="text-subtitle1">{{ model.IsPay == '0' ? '实付金额' : 
+                                          model.IsPay == '1' ? '应付金额' : 
+                                          model.IsPay == '2' ? '实付金额' : '' }}</span>
           <span>：</span>
           <span class="inline-block text-right text-subtitle1 text-red text-weight-bold"
                 style="width: 80px">￥{{ model.PayAmount }}</span>
@@ -252,12 +254,6 @@ export default {
   },
 
   filters: {
-    formatDictionary(value, source) {
-      if (!Peace.validate.isEmpty(value)) {
-        return source.find((item) => item.value.toString() === value.toString())?.label
-      }
-    },
-
     formatCurrency(value) {
       /* eslint-disable no-useless-escape */
       value = value.toString().replace(/\$|\,/g, '')
@@ -299,7 +295,8 @@ export default {
         ],
         // 订单状态 => 见 watch 'model.ShippingMethod'
         OrderStatus: [],
-        PayMode: []
+        PayMode: [],
+        PayStatus: []
       }
     }
   },
@@ -335,6 +332,8 @@ export default {
 
   async created() {
     this.source.PayMode = await Peace.identity.dictionary.getList('PayMode')
+    this.source.PayStatus = await Peace.identity.dictionary.getList('PayStatus')
+
     this.fetch()
   },
 

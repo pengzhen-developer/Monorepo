@@ -164,7 +164,7 @@
                           width="120px">
 
           <template slot-scope="scope">
-            <span>{{ scope.row.ShippingMethod| filterDictionary(remoteSource.ShippingMethod, '-') }}</span>
+            <span>{{ scope.row.ShippingMethod| filterDictionaryFuzzy(remoteSource.ShippingMethod, '-') }}</span>
           </template>
         </PeaceTableColumn>
 
@@ -178,7 +178,7 @@
         <PeaceTableColumn label="支付状态"
                           width="120px">
           <template slot-scope="scope">
-            <span>{{ scope.row.IsPay | filterDictionary(remoteSource.PayStatus, '-') }}</span>
+            <span>{{ scope.row.IsPay | filterDictionaryFuzzy(remoteSource.PayStatus) }}</span>
           </template>
         </PeaceTableColumn>
 

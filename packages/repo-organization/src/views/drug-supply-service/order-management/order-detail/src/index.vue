@@ -1,5 +1,6 @@
 <template>
-  <div class="relative">
+  <div class="relative"
+       style="position: relative;">
     <div class="absolute flex items-center justify-center"
          style="right: 20px;
                 width: 108px;
@@ -9,7 +10,7 @@
          plain
          type="primary">
       <span class="text-body2 text-primary text-weight-medium">
-        {{ data.OrderStatus | formatDictionary(source.OrderStatus) }}
+        {{ data.OrderStatus | filterDictionaryFuzzy(source.OrderStatus) }}
       </span>
     </div>
 
@@ -42,7 +43,7 @@
           <div class="col-6">
             <span>取货方式</span>
             <span>：</span>
-            <span class="text-grey-6">{{ data.ShippingMethod | formatDictionary(source.ShippingMethod) }}</span>
+            <span class="text-grey-6">{{ data.ShippingMethod | filterDictionaryFuzzy(source.ShippingMethod) }}</span>
           </div>
         </div>
 
@@ -129,12 +130,12 @@
           <div class="col-4">
             <span class="em-5-justify">支付方式</span>
             <span>：</span>
-            <span class="text-grey-6">{{ data.PayMode | formatDictionary(source.PayMode) }}</span>
+            <span class="text-grey-6">{{ data.PayMode | filterDictionaryFuzzy(source.PayMode) }}</span>
           </div>
           <div class="col-4">
             <span class="em-5-justify">支付状态</span>
             <span>：</span>
-            <span class="text-grey-6">{{ data.IsPay ? '已支付' : '未支付' }}</span>
+            <span class="text-grey-6">{{ data.IsPay | filterDictionaryFuzzy(source.PayStatus) }}</span>
           </div>
           <div class="col-4">
             <span class="em-5-justify">支付时间</span>
@@ -360,14 +361,6 @@ export default {
   },
 
   filters: {
-    formatDictionary(value, source, format = '') {
-      if (!Peace.validate.isEmpty(value)) {
-        return source.find((item) => item.value.toString() === value.toString())?.label
-      }
-
-      return format
-    },
-
     formatCurrency(value) {
       /* eslint-disable no-useless-escape */
       value = value.toString().replace(/\$|\,/g, '')
@@ -405,7 +398,8 @@ export default {
         // 订单状态 => 见 watch 'data.ShippingMethod'
         OrderStatus: [],
         PayMode: [],
-        OrderType: []
+        OrderType: [],
+        PayStatus: []
       }
     }
   },
@@ -432,6 +426,7 @@ export default {
     })
 
     this.source.PayMode = await Peace.identity.dictionary.getList('PayMode')
+    this.source.PayStatus = await Peace.identity.dictionary.getList('PayStatus')
   },
   methods: {
     showLogisticsInfo(data) {
