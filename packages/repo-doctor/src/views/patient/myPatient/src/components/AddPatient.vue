@@ -135,10 +135,11 @@ export default {
   },
   data() {
     const validateIdCard = (rule, value, callback) => {
-      if (Peace.validate.isEmpty(value)) {
+      const idCard = this.ruleForm.idCard
+      if (Peace.validate.isEmpty(idCard)) {
         callback()
       } else {
-        if (Peace.validate.isIDCard(value)) {
+        if (Peace.validate.isIDCard(idCard)) {
           callback()
         } else {
           callback(new Error('请输入正确的身份证号！'))
@@ -165,7 +166,7 @@ export default {
         name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
         idCard: [
           { required: true, message: '请输入身份证号', trigger: 'blur' },
-          { validator: validateIdCard, message: '请输入正确的身份证号', trigger: 'blur' }
+          { validator: validateIdCard, message: '请输入正确的身份证号!', trigger: 'blur' }
         ],
         idCards: [{ validator: validateIdCard, trigger: 'blur' }],
         // nation: [{ required: true, message: '请选择民族', trigger: 'blur' }],
@@ -209,6 +210,18 @@ export default {
             this.ruleForm.birthday = val.substr(6, 4) + '-' + val.substr(10, 2) + '-' + val.substr(12, 2)
           }
         }
+      }
+    },
+
+    showGuardianInfoView: function(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.$refs.ruleForm.validateField('idCards')
+        })
+      } else {
+        this.$nextTick(() => {
+          this.$refs.ruleForm.clearValidate('idCards')
+        })
       }
     }
   },
