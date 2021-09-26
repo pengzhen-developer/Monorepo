@@ -345,13 +345,6 @@ export default {
     }
   },
   watch: {
-    type: {
-      handler(type) {
-        this.paymentType = type === 'online' ? this.paymentType : ''
-        this.update()
-      },
-      immediate: true
-    },
     payType: {
       handler(payType) {
         if (payType === '') {
@@ -511,12 +504,11 @@ export default {
       if (payType === 'deduction') {
         this.deductionType = this.deductionType || this.deduction[0].type
         this.deductionDialog.payType = this.deductionType || this.deduction[0].type
-        this.paymentType = this.paymentMethod === 'online' ? 'wxpay' : ''
+        this.paymentType = 'wxpay'
         this.update()
       } else {
         //全自费支付 清空抵扣信息
         this.deductionType = ''
-        this.paymentType = this.paymentMethod === 'online' ? this.paymentType : ''
         this.update()
       }
     },

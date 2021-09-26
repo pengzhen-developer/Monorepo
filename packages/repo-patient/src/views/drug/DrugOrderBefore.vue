@@ -473,6 +473,29 @@ export default {
         peace.util.alert('请添加收货地址')
         return
       }
+      if (this.order.MedicalCardNo && this.page.payIndex === 1) {
+        this.yibaoInfo.medCardNo = this.order.MedicalCardNo
+      }
+
+      //支付方式：wxpay（微信） shangbao（商保支付） yibaopay（医保支付）deliverypay（货到付款） shoppay（到店支付）
+      //payMode 1 在线支付  2 到店支付  3 货到付款
+      let errMsg = ''
+
+      if (this.payType) {
+        if (!this.payInfo.medCardNo) {
+          errMsg = '请填写医保卡号'
+        } else {
+          if (!this.payInfo.medicalTreatmentType) {
+            errMsg = '请填写医保类型'
+          } else if (this.payInfo.medicalTreatmentType.toString() === '2' && !this.payInfo.diseasesCode) {
+            errMsg = '请填写病种'
+          }
+        }
+      }
+      if (errMsg) {
+        peace.util.alert(errMsg)
+        return false
+      }
       this.trackByCommit('apply')
       this.isSend = true
       peace.service.patient
@@ -587,30 +610,6 @@ export default {
     },
 
     submitOrder() {
-      if (this.order.MedicalCardNo && this.page.payIndex === 1) {
-        this.yibaoInfo.medCardNo = this.order.MedicalCardNo
-      }
-
-      //支付方式：wxpay（微信） shangbao（商保支付） yibaopay（医保支付）deliverypay（货到付款） shoppay（到店支付）
-      //payMode 1 在线支付  2 到店支付  3 货到付款
-      let errMsg = ''
-
-      if (this.payType) {
-        if (!this.payInfo.medCardNo) {
-          errMsg = '请填写医保卡号'
-        } else {
-          if (!this.payInfo.medicalTreatmentType) {
-            errMsg = '请填写医保类型'
-          } else if (this.payInfo.medicalTreatmentType.toString() === '2' && !this.payInfo.diseasesCode) {
-            errMsg = '请填写病种'
-          }
-        }
-      }
-      if (errMsg) {
-        peace.util.alert(errMsg)
-        return false
-      }
-
       if (!this.hasSubmitOrder) {
         peace.util.alert('请勿重复提交')
         return
@@ -645,14 +644,13 @@ export default {
 
         payMode: this.page.payIndex,
         deductionType: this.payType,
-        paymentType: this.paymentType,
+        paymentType: this.page.payIndex == 2 && this.page.tabIndex == 0 ? '' : this.paymentType,
         medicalTreatmentType: this.payInfo.medicalTreatmentType,
         medCardNo: this.payInfo.medCardNo,
         diseasesCode: this.payInfo.diseasesCode,
         diseasesName: this.payInfo.diseasesName,
         cardNo: this.payInfo.cardno
       }
-
       peace.service.patient
         .submitOrder(params)
         .then((res) => {
@@ -855,7 +853,6 @@ export default {
       this.paymentType = result.paymentType
       this.payInfo = result.payInfo
       this.payInfo.cardno = result.payInfo.sbInsuranceId
-      console.log('result', result)
     }
   }
 }
