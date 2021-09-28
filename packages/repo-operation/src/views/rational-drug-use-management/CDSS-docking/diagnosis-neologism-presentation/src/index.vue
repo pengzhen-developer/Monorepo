@@ -75,15 +75,15 @@
         <PeaceTableColumn label="操作"
                           fixed="right"
                           align="left"
-                          width="150px">
+                          width="110px">
           <template slot-scope="scope">
             <el-button class="q-px-none"
                        type="text"
                        v-on:click="toDetail(scope.row)">查看详情</el-button>
-            <el-button class="q-px-none"
+            <!-- <el-button class="q-px-none"
                        type="text"
                        v-on:click="edit(scope.row,'edit')"
-                       v-if="scope.row.wordStatus=='0'||scope.row.wordStatus=='1'">修改</el-button>
+                       v-if="scope.row.wordStatus=='0'||scope.row.wordStatus=='1'">修改</el-button> -->
           </template>
         </PeaceTableColumn>
       </PeaceTable>
