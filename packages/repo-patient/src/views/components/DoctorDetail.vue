@@ -439,37 +439,33 @@
                          :src="require('@src/assets/images/ic_evaluate.png')" />
               <h4 class="body-card-title">{{'患者评价('+common.count+')'}}</h4>
             </div>
-            <!-- <div class=" flex"
-               @click="common.count>0&&seeMoreComment()">
-            <span class="see-more">查看详情</span>
-            <van-image width="10.5px"
-                       height="10.5px"
-                       :src="require('@src/assets/images/ic_more_right.png')" />
-          </div> -->
           </div>
           <div class="flex impress">
             <span class="primary">患者对我的主要印象：{{commonTagText}}</span>
           </div>
-          <div class="flex commen"
-               v-for="(item,index) in common.lists"
-               :key="index">
-            <van-image class="common-logo"
-                       :src="item.iconHead" />
-            <div class="main">
-              <div class="flex between main-top">
-                <div class="name">{{item.familyInfo.name}}</div>
-                <van-rate v-model="item.starLevel"
-                          readonly
-                          :icon="require('@src/assets/images/ic_star_active.png')"
-                          :void-icon="require('@src/assets/images/ic_star.png')" />
+          <van-list v-model="loading"
+                    :finished="finished"
+                    @load="getCommentList">
+            <div class="flex commen"
+                 v-for="(item,index) in common.lists"
+                 :key="index">
+              <van-image class="common-logo"
+                         :src="item.iconHead" />
+              <div class="main">
+                <div class="flex between main-top">
+                  <div class="name">{{item.familyInfo.name}}</div>
+                  <van-rate v-model="item.starLevel"
+                            readonly
+                            :icon="require('@src/assets/images/ic_star_active.png')"
+                            :void-icon="require('@src/assets/images/ic_star.png')" />
+                </div>
+                <div class="main-middle color-666">
+                  {{item.content}}
+                </div>
+                <div class="main-time color-999">{{item.createdTime}}</div>
               </div>
-              <div class="main-middle color-666">
-                {{item.content}}
-              </div>
-              <div class="main-time color-999">{{item.createdTime}}</div>
             </div>
-          </div>
-
+          </van-list>
         </div>
       </div>
     </template>
@@ -543,7 +539,11 @@ export default {
         4: '半年',
         5: '年'
       },
-      common: {},
+      common: {
+        lists: [],
+        tags: [],
+        count: 0
+      },
       showFamily: false, //判断是否弹出弹框
       isEwm: 0,
       dialog: {
@@ -557,7 +557,12 @@ export default {
         info: null
       },
       isLoading: true,
-      enter_time: ''
+      enter_time: '',
+
+      p: 0,
+      size: 20,
+      finished: false,
+      loading: false
     }
   },
   computed: {
@@ -765,7 +770,7 @@ export default {
             }, 500)
           }
           this.doctor = res.data
-          this.getCommentList()
+          this.getCommentList(type)
           this.getServiceList()
           let obj = {
             url: '',
@@ -908,10 +913,27 @@ export default {
         this.servicePackage.info = res.data.list[0]
       })
     },
-    getCommentList() {
-      // , p: 1, size: 3
-      peace.service.group.commentLists({ doctorId: this.doctor.doctorInfo.doctorId }).then((res) => {
-        this.common = res.data
+    getCommentList(type) {
+      if (type == 'refuresh') {
+        this.p = 0
+      }
+      this.p++
+      const params = {
+        doctorId: this.doctor.doctorInfo.doctorId,
+        p: this.p,
+        size: this.size
+      }
+      peace.service.group.commentLists(params).then((res) => {
+        let list = res.data.lists || []
+
+        this.common.tags = res.data.tags || []
+        this.common.count = res.data.count
+        this.common.lists = this.common.lists.concat(list)
+
+        this.loading = false
+        if (this.p * this.size >= res.data.count) {
+          this.finished = true
+        }
       })
     },
     seeMoreComment() {
