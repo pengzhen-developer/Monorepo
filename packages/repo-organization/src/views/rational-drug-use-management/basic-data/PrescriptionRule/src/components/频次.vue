@@ -95,6 +95,7 @@ export default {
         this.dialog.data = {
           coefficient: this.model.frequencyRuleList.minFrequency,
           name: this.model.frequencyRuleList.minFrequencyName,
+          code: this.model.frequencyRuleList.minFrequencyCode,
           otherCoefficient: this.model.frequencyRuleList.maxFrequency
         }
         this.dialog.type = 0
@@ -103,6 +104,7 @@ export default {
         this.dialogThree.data = {
           coefficient: this.model.frequencyRuleList.minFrequency,
           name: this.model.frequencyRuleList.minFrequencyName,
+          code: this.model.frequencyRuleList.minFrequencyCode,
           otherCoefficient: this.model.frequencyRuleList.maxFrequency
         }
         this.dialogThree.type = 0
@@ -114,6 +116,7 @@ export default {
         this.dialog.data = {
           coefficient: this.model.frequencyRuleList.maxFrequency,
           name: this.model.frequencyRuleList.maxFrequencyName,
+          code: this.model.frequencyRuleList.maxFrequencyCode,
           otherCoefficient: this.model.frequencyRuleList.minFrequency
         }
         this.dialog.type = 1
@@ -122,6 +125,7 @@ export default {
         this.dialogThree.data = {
           coefficient: this.model.frequencyRuleList.maxFrequency,
           name: this.model.frequencyRuleList.maxFrequencyName,
+          code: this.model.frequencyRuleList.maxFrequencyCode,
           otherCoefficient: this.model.frequencyRuleList.minFrequency
         }
         this.dialogThree.type = 1
@@ -132,9 +136,11 @@ export default {
       if (data.type === 0) {
         this.model.frequencyRuleList.minFrequency = data.coefficient
         this.model.frequencyRuleList.minFrequencyName = data.name
+        this.model.frequencyRuleList.minFrequencyCode = data.code
       } else if (data.type === 1) {
         this.model.frequencyRuleList.maxFrequency = data.coefficient
         this.model.frequencyRuleList.maxFrequencyName = data.name
+        this.model.frequencyRuleList.maxFrequencyCode = data.code
       }
       if (this.drugType === 'platform') {
         this.dialog.visible = false
@@ -145,10 +151,24 @@ export default {
 
     verificationResults() {
       const tmp = this.model.frequencyRuleList
-      if (tmp.minFrequency && tmp.minFrequencyName && tmp.maxFrequency && tmp.maxFrequencyName) {
+      if (
+        tmp.minFrequency &&
+        tmp.minFrequencyName &&
+        tmp.maxFrequency &&
+        tmp.maxFrequencyName &&
+        tmp.minFrequencyCode &&
+        tmp.maxFrequencyCode
+      ) {
         return CONSTANT.RULE_VALIDATION_RESULTS.已完成
       } else {
-        if (tmp.minFrequency || tmp.minFrequencyName || tmp.maxFrequency || tmp.maxFrequencyName) {
+        if (
+          tmp.minFrequency ||
+          tmp.minFrequencyName ||
+          tmp.maxFrequency ||
+          tmp.maxFrequencyName ||
+          tmp.minFrequencyCode ||
+          tmp.maxFrequencyCode
+        ) {
           return CONSTANT.RULE_VALIDATION_RESULTS.未完成
         } else {
           return CONSTANT.RULE_VALIDATION_RESULTS.未开始

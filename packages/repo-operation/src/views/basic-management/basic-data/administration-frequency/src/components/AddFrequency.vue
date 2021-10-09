@@ -11,40 +11,54 @@
                v-on:keyup.enter.native="validateForm">
 
         <el-form-item label="频次名称："
-                      prop="icd10Code">
-          <el-input v-model="model.icd10Code"
+                      prop="name">
+          <el-input v-model="model.name"
                     placeholder="请输入"
                     maxlength="50"
                     clearable></el-input>
         </el-form-item>
 
         <el-form-item label="频次名称缩写：">
-          <el-input v-model="model.extCode"
+          <el-input v-model="model.abbreviation"
                     placeholder="请输入"
                     maxlength="50"
                     clearable></el-input>
         </el-form-item>
 
-        <el-form-item label="服用频次：">
-          <el-input v-model="model.name"
-                    placeholder="请输入"
-                    maxlength="50"
-                    clearable></el-input>
-          <span class="unit">次</span>
+        <el-form-item label="服用频次："
+                      prop="frequency">
+          <div class="item-text">
+            <el-input-number v-model="model.frequency"
+                             class="flex col"
+                             placeholder="请输入"
+                             maxlength="50"
+                             controls-position="right"
+                             :min="1"
+                             :max="99999"
+                             clearable></el-input-number>
+            <span class="unit">次</span>
+          </div>
+
         </el-form-item>
 
-        <el-form-item label="服用间隔：">
-
-          <el-input v-model="model.name"
-                    placeholder="请输入"
-                    maxlength="50"
-                    clearable></el-input>
-          <span class="unit">天</span>
+        <el-form-item label="服用间隔："
+                      prop="duration">
+          <div class="item-text">
+            <el-input-number v-model="model.duration"
+                             class="flex col"
+                             placeholder="请输入"
+                             maxlength="50"
+                             controls-position="right"
+                             :min="1"
+                             :max="99999"
+                             clearable></el-input-number>
+            <span class="unit">天</span>
+          </div>
         </el-form-item>
 
         <el-form-item label="备注：">
 
-          <el-input v-model="model.name"
+          <el-input v-model="model.remarks"
                     placeholder="请输入"
                     maxlength="50"
                     clearable></el-input>
@@ -55,7 +69,6 @@
                      v-on:click="cancel">取消</el-button>
           <el-button type="primary"
                      class="btn"
-                     v-bind:loading="isLoading"
                      v-on:click="validateForm">保存</el-button>
 
         </el-form-item>
@@ -74,6 +87,10 @@ export default {
       required: true,
       type: Boolean
     },
+    data: {
+      require: false,
+      type: Object
+    },
     isEdit: {
       required: true,
       type: Boolean
@@ -82,32 +99,21 @@ export default {
 
   data() {
     return {
-      isLoading: false,
-      remoteLoading: false,
       visible: this.value,
       model: {
-        icd10Code: undefined,
-        extCode: undefined,
-        name: undefined,
-        leavel: undefined,
-        parentNode: undefined
-      },
-      source: {
-        levelList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-        parentNodeCodes: []
+        id: '',
+        name: '',
+        abbreviation: '',
+        frequency: 1,
+        duration: 1,
+        remarks: ''
       },
       rules: {
-        icd10Code: [{ required: true, message: '请输入主要编码', trigger: 'blur' }],
-        name: [{ required: true, message: '请输入疾病名称', trigger: 'blur' }],
-        leavel: [{ required: true, message: '请选择级别', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入频次名称', trigger: 'blur' }],
+        frequency: [{ required: true, message: '请输入服用频次', trigger: 'blur' }],
+        duration: [{ required: true, message: '请输入服用间隔', trigger: 'blur' }]
       }
     }
-  },
-
-  mounted() {
-    this.$nextTick().then(() => {
-      this.getRemoteList()
-    })
   },
 
   watch: {
@@ -120,10 +126,15 @@ export default {
     }
   },
 
+  mounted() {
+    this.model = Object.assign({}, this.model, this.data)
+  },
+
   methods: {
     cancel() {
       this.visible = false
     },
+
     validateForm() {
       this.$refs.form.validate((valid) => {
         if (valid) {
@@ -131,37 +142,27 @@ export default {
         }
       })
     },
+
     submitForm() {
-      const params = Object.assign({}, this.model)
-      this.isLoading = true
-      Service.addData(params)
-        .then((res) => {
-          Peace.util.success(res.message)
-          this.visible = false
-          this.$emit('refresh')
-        })
-        .finally(() => (this.isLoading = false))
-    },
-    getRemoteList(query) {
-      this.remoteLoading = true
-      Service.getPatientList(query)
-        .then((res) => {
-          this.source.parentNodeCodes = res.data
-        })
-        .finally(() => (this.remoteLoading = false))
+      Service.addOrModifyDrugFrequency(this.model).then(() => {
+        this.visible = false
+        this.$emit('refresh')
+      })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-form-item__content {
+.item-text {
   display: flex;
-}
-
-.unit {
-  color: #333;
-  padding: 0px 10px;
+  ::v-deep .el-form-item__content {
+    display: flex;
+  }
+  .unit {
+    color: #333;
+    padding: 0px 10px;
+  }
 }
 
 .el-form-item {

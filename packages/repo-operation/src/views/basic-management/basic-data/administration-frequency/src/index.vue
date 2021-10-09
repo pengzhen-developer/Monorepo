@@ -10,12 +10,12 @@
 
         <el-form-item label="系统编码">
           <peace-input placeholder="请输入"
-                       v-model.trim="model.DrugStandardCode"></peace-input>
+                       v-model.trim="model.code"></peace-input>
         </el-form-item>
 
         <el-form-item label="给药频次">
           <peace-input placeholder="请输入"
-                       v-model.trim="model.ProductName"></peace-input>
+                       v-model.trim="model.name"></peace-input>
         </el-form-item>
 
         <el-form-item>
@@ -34,32 +34,32 @@
                   pagination>
 
         <PeaceTableColumn label="系统编码"
-                          prop="DrugStandardCode"
-                          min-width="130px"></PeaceTableColumn>
+                          prop="code"
+                          min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="频次名称"
-                          prop="ProductName"
+                          prop="name"
                           min-width="180px"></PeaceTableColumn>
 
         <PeaceTableColumn label="缩写"
-                          prop="DrugSpecifications"
-                          min-width="120px"></PeaceTableColumn>
+                          prop="abbreviation"
+                          min-width="150px"></PeaceTableColumn>
         <PeaceTableColumn label="服用频次"
-                          prop="EnterpriseChineseName"
-                          min-width="200px"></PeaceTableColumn>
+                          prop="frequency"
+                          min-width="150px"></PeaceTableColumn>
 
         <PeaceTableColumn label="服用间隔"
-                          prop="packaging_specifications"
-                          min-width="120px"></PeaceTableColumn>
+                          prop="duration"
+                          min-width="150px"></PeaceTableColumn>
         <PeaceTableColumn label="备注"
-                          prop="ApprovalNo"
-                          min-width="180px"></PeaceTableColumn>
+                          prop="remarks"
+                          min-width="200px"></PeaceTableColumn>
 
         <PeaceTableColumn fixed="right"
                           label="操作"
                           width="90px;">
           <template slot-scope="scope">
             <el-button type="text"
-                       v-on:click="showDrugDetail(scope.row)">修改</el-button>
+                       v-on:click="edit(scope.row)">修改</el-button>
           </template>
         </PeaceTableColumn>
       </PeaceTable>
@@ -68,6 +68,7 @@
     <AddFrequency v-model="addDialog.visible"
                   v-if="addDialog.visible"
                   v-bind:isEdit="addDialog.isEdit"
+                  v-bind:data="addDialog.data"
                   v-on:refresh="fetch"></AddFrequency>
 
   </div>
@@ -75,6 +76,7 @@
 
 <script>
 import AddFrequency from './components/AddFrequency'
+import Service from './service'
 
 export default {
   name: 'AdministrationFrequency',
@@ -83,7 +85,10 @@ export default {
 
   data() {
     return {
-      model: {},
+      model: {
+        name: '',
+        code: ''
+      },
       addDialog: {
         visible: false,
         isEdit: false,
@@ -91,10 +96,28 @@ export default {
       }
     }
   },
-
+  mounted() {
+    this.$nextTick().then(() => {
+      this.fetch()
+    })
+  },
   methods: {
+    fetch() {
+      const fetch = Service.getPlatformUseDrugFrequencyPage
+      const params = Peace.util.deepClone(this.model)
+      this.$refs.table.reloadData({ fetch, params }).then((res) => {
+        return res
+      })
+    },
+
     add() {
+      this.addDialog.data = {}
       this.addDialog.isEdit = false
+      this.addDialog.visible = true
+    },
+    edit(res) {
+      this.addDialog.data = res
+      this.addDialog.isEdit = true
       this.addDialog.visible = true
     }
   }

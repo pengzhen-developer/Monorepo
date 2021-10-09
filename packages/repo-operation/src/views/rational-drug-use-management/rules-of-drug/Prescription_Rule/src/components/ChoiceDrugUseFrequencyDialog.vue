@@ -22,8 +22,8 @@
         <peace-table-column width="50px">
           <template slot-scope="scope">
             <el-radio name="radio"
-                      v-bind:label="scope.row.name"
-                      v-bind:value="multipleSelection.name"><span></span></el-radio>
+                      v-bind:label="scope.row.code"
+                      v-bind:value="multipleSelection.code"><span></span></el-radio>
           </template>
         </peace-table-column>
         <peace-table-column label="频次编码"
@@ -140,12 +140,18 @@ export default {
         return
       }
       if (this.model.otherCoefficient) {
-        if (Number(this.joinType) === 0 && parseFloat(this.multipleSelection.coefficient) > parseFloat(this.model.otherCoefficient)) {
+        if (
+          Number(this.joinType) === 0 &&
+          parseFloat(this.multipleSelection.coefficient) > parseFloat(this.model.otherCoefficient)
+        ) {
           Peace.util.warning('最小频次系数不得大于最大频次系数')
           return
         }
 
-        if (Number(this.joinType) === 1 && parseFloat(this.multipleSelection.coefficient) < parseFloat(this.model.otherCoefficient)) {
+        if (
+          Number(this.joinType) === 1 &&
+          parseFloat(this.multipleSelection.coefficient) < parseFloat(this.model.otherCoefficient)
+        ) {
           Peace.util.warning('最大频次系数不得小于最小频次系数')
           return
         }
