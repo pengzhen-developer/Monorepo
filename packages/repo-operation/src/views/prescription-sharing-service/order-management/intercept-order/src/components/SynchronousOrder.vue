@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form ref="form"
-             label-width="100px"
+             label-width="130px"
              label-position="right">
       <el-form-item label="是否分单："
                     required>
@@ -12,12 +12,61 @@
           <el-radio v-bind:label="false">否</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-alert v-if="!model.isSplitOrder"
-                type="warning"
-                class="q-mb-16"
-                show-icon
-                title="温馨提示：进行同步操作前，请先确认供应方库存充足，否则同步后若库存不足可能会被供应方拦截订单">
-      </el-alert>
+
+      <div v-if="!model.isSplitOrder">
+
+        <el-form-item label="是否更改编码："
+                      required>
+          <el-radio-group v-model="model.isChangeNo">
+            <el-radio v-bind:label="
+                        true">是</el-radio>
+            <el-radio v-bind:label="false">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <div v-if="model.isChangeNo">
+          <el-form-item label-width="20px">
+            <el-table :data="tableData"
+                      style="width: 100%">
+              <el-table-column type="index"
+                               fixed
+                               label="序号"
+                               width="60"></el-table-column>
+              <el-table-column prop="name"
+                               label="药品名称"
+                               width="120">
+              </el-table-column>
+              <el-table-column prop="date"
+                               label="原药品编码"
+                               width="150">
+              </el-table-column>
+              <el-table-column label="新药品编码">
+                <template>
+                  <el-input v-model="address"
+                            maxlength="50"
+                            placeholder=""></el-input>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-form-item>
+        </div>
+
+        <el-alert v-if=" !model.isChangeNo"
+                  type="warning"
+                  class="q-mb-16"
+                  show-icon
+                  :closable="false"
+                  title="温馨提示：进行同步操作前，请先确认供应方库存充足，否则将影响发货进度">
+        </el-alert>
+        <el-alert v-if="model.isChangeNo"
+                  type="warning"
+                  class="q-mb-16"
+                  show-icon
+                  :closable="false"
+                  title="温馨提示：进行同步操作前，请确保新药品编码的正确性，否则将导致下游同步失败，该操作不可逆">
+        </el-alert>
+      </div>
+
       <div v-else>
         <el-form-item label="分单数量：">
           <el-select style="width:112px"
@@ -95,9 +144,37 @@ export default {
   },
   data() {
     return {
+      tableData: [
+        {
+          date: '100000022336655',
+          name: '阿莫西林',
+          address: ''
+        },
+        {
+          date: '100000022336655',
+          name: '阿莫西林',
+          address: ''
+        },
+        {
+          date: '100000022336655',
+          name: '阿莫西林',
+          address: ''
+        },
+        {
+          date: '100000022336655',
+          name: '阿莫西林',
+          address: ''
+        },
+        {
+          date: '100000022336655',
+          name: '阿莫西林',
+          address: ''
+        }
+      ],
       model: {
         orderId: this.orderId,
         isSplitOrder: true,
+        isChangeNo: false,
         splitOrderNumber: 2,
         splitOrderModes: []
       },
@@ -166,7 +243,8 @@ export default {
           let storeSumResult = []
           params.splitOrderModes.forEach((item) => {
             var storeSum = 0
-            item.drugDicts[index].SoldNumber = item.drugDicts[index].SoldNumber >= 0 ? item.drugDicts[index].SoldNumber : 0
+            item.drugDicts[index].SoldNumber =
+              item.drugDicts[index].SoldNumber >= 0 ? item.drugDicts[index].SoldNumber : 0
             writeSum += item.drugDicts[index].SoldNumber
             item.drugDicts.forEach((drug) => {
               drug.SoldNumber = drug.SoldNumber >= 0 ? drug.SoldNumber : 0

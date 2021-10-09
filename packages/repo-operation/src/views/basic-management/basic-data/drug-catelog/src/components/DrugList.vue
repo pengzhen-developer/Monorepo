@@ -7,7 +7,7 @@
                v-on:submit.native.prevent
                v-bind:model="model"
                label-width="auto">
-        <el-form-item label="平台药品编码">
+        <el-form-item label="主数据ID">
           <peace-input placeholder="请输入"
                        v-model.trim="model.DrugStandardCode"></peace-input>
         </el-form-item>
@@ -47,11 +47,9 @@
     <div class="card">
       <PeaceTable ref="table"
                   pagination>
-        <PeaceTableColumn label="平台药品编码"
-                          prop="DrugStandardCode"
-                          min-width="180px"></PeaceTableColumn>
+
         <PeaceTableColumn label="主数据ID"
-                          prop="MainDataID"
+                          prop="DrugStandardCode"
                           min-width="130px"></PeaceTableColumn>
         <PeaceTableColumn label="药品名称"
                           prop="ProductName"

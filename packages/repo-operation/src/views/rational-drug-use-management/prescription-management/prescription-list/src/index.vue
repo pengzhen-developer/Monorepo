@@ -306,8 +306,8 @@
 
 <script>
 import Service from './service'
-import CONSTANT from './constant'
-import prescriptionDetails from './components/prescription-details'
+import CONSTANT from '@views/rational-drug-use-management/prescription-management/prescription-record/src/constant'
+import prescriptionDetails from '@views/rational-drug-use-management/prescription-management/prescription-record/src/components/prescription-detail'
 
 export default {
   name: 'PrescriptionList',

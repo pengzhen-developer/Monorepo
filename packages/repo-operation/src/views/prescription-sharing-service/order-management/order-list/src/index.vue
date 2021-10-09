@@ -128,7 +128,10 @@
     <div class="card">
       <div class="q-mb-lg">
         <el-button type="primary"
-                   v-on:click="exportFile">导出</el-button>
+                   v-on:click="exportFile">导出订单详情</el-button>
+        <el-button type="primary"
+                   class="q-ml-md"
+                   v-on:click="exportDeliveryFile">导出发货详情</el-button>
         <el-button class="q-ml-md"
                    v-on:click="showSetting">异常提醒设置</el-button>
       </div>
@@ -454,7 +457,9 @@ export default {
     this.remoteSource.PayStatus = await peace.identity.dictionary.getList('PayStatus')
     this.remoteSource.SelfOrderStatus = await peace.identity.dictionary.getList('SelfOrderStatus')
     this.remoteSource.DistributionOrderStatus = await peace.identity.dictionary.getList('DistributionOrderStatus')
-    this.settingDialog.data.Code = (await peace.identity.dictionary.getList('SmsRemind')).find((item) => item.value == 'Code').label
+    this.settingDialog.data.Code = (await peace.identity.dictionary.getList('SmsRemind')).find(
+      (item) => item.value == 'Code'
+    ).label
     this.$nextTick().then(() => {
       this.fetch()
     })
@@ -473,7 +478,8 @@ export default {
         // DistributionOrderStatus  配送订单状态    1
         // SelfOrderStatus  自提订单状态  0
         this.model.OrderStatus = ''
-        this.remoteSource.OrderStatus = this.model.OrderMethod == 0 ? this.remoteSource.SelfOrderStatus : this.remoteSource.DistributionOrderStatus
+        this.remoteSource.OrderStatus =
+          this.model.OrderMethod == 0 ? this.remoteSource.SelfOrderStatus : this.remoteSource.DistributionOrderStatus
       }
     }
   },
@@ -501,6 +507,14 @@ export default {
     },
     exportFile() {
       Service.exportFile({ ...this.model })
+    },
+
+    exportDeliveryFile() {
+      if (!this.model.Source || !this.model.StartTime || !this.model.EndTime) {
+        Peace.util.warning('需选择订单来源与同步日期才能正常导出')
+        return
+      }
+      Service.exportDeliveryFile({ ...this.model })
     },
 
     showCancelDetail(row) {

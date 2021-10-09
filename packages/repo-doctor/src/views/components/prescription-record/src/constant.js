@@ -8,7 +8,8 @@ export default {
     禁用: 'D',
     慎用: 'R',
     提示: 'I',
-    转码失败: 'FAIL'
+    暂无结果: 'FAIL',
+    服务调用失败: 'SERVER_ERR'
   },
   /**
    * 系统审核结果类型-map
@@ -19,26 +20,91 @@ export default {
     { label: '慎用', value: 'R', color: '#F09815' },
     { label: '提示', value: 'I', color: '#3099A6' },
     { label: '服务调用失败', value: 'SERVER_ERR', color: '#C40202' },
-    { label: '审方失败', value: 'FAIL', color: '#C40202' }
+    { label: '暂无结果', value: 'FAIL', color: '#ADADAD' }
   ],
 
   /**
    * 审方记录
    */
   PRESCRIPTION_CHECK_RESULT: {
-    R: { label: '慎用', color: 'rgba(240, 152, 21, 1)', borderColor: 'rgba(240, 152, 21, 1)', bgColor: 'rgba(240, 152, 21, 0.1)' },
-    ERR: { label: '暂无结果', color: 'rgba(51, 51, 51, 0.2)', borderColor: 'rgba(51, 51, 51, 0.6)', bgColor: 'rgba(240, 152, 21, 0.1)' },
-    OK: { label: '通过', color: 'rgba(48, 153, 166, 1)', borderColor: 'rgba(48, 153, 166, 1)', bgColor: 'rgba(48, 153, 166, 0.1)' },
-    I: { label: '提示', color: 'rgba(240, 152, 21, 1)', borderColor: 'rgba(240, 152, 21, 1)', bgColor: 'rgba(240, 152, 21, 0.1)' },
-    D: { label: '禁用', color: 'rgba(196, 2, 2, 1)', borderColor: 'rgba(196, 2, 2, 1)', bgColor: 'rgba(196, 2, 2, 0.1)' },
-    FAIL: { label: '审方失败', color: 'rgba(196, 2, 2, 1)', borderColor: 'rgba(196, 2, 2, 1)', bgColor: 'rgba(196, 2, 2, 0.1)' },
-    SERVER_ERR: { label: '服务调用失败', color: 'rgba(196, 2, 2, 1)', borderColor: 'rgba(196, 2, 2, 1)', bgColor: 'rgba(196, 2, 2, 0.1)' },
-    '1': { label: '双签提交', color: 'rgba(240, 152, 21, 1)', borderColor: 'rgba(240, 152, 21, 1)', bgColor: 'rgba(240, 152, 21, 0.1)' },
-    '2': { label: '质疑', color: 'rgba(196, 2, 2, 1)', borderColor: 'rgba(196, 2, 2, 1)', bgColor: 'rgba(196, 2, 2, 0.1)' },
-    '3': { label: '未通过', color: 'rgba(240, 152, 21, 1)', borderColor: 'rgba(240, 152, 21, 1)', bgColor: 'rgba(240, 152, 21, 0.1)' },
-    '4': { label: '已作废', color: 'rgba(51, 51, 51, 0.2)', borderColor: 'rgba(51, 51, 51, 0.6)', bgColor: 'rgba(240, 152, 21, 0.1)' },
-    '5': { label: '通过', color: 'rgba(48, 153, 166, 1)', borderColor: 'rgba(48, 153, 166, 1)', bgColor: 'rgba(48, 153, 166, 0.1)' },
-    '9': { label: '已失效', color: 'rgba(51, 51, 51, 0.2)', borderColor: 'rgba(51, 51, 51, 0.6)', bgColor: 'rgba(240, 152, 21, 0.1)' }
+    R: {
+      label: '慎用',
+      color: 'rgba(240, 152, 21, 1)',
+      borderColor: 'rgba(240, 152, 21, 1)',
+      bgColor: 'rgba(240, 152, 21, 0.1)'
+    },
+    ERR: {
+      label: '暂无结果',
+      color: 'rgba(51, 51, 51, 0.2)',
+      borderColor: 'rgba(51, 51, 51, 0.6)',
+      bgColor: 'rgba(240, 152, 21, 0.1)'
+    },
+    OK: {
+      label: '通过',
+      color: 'rgba(48, 153, 166, 1)',
+      borderColor: 'rgba(48, 153, 166, 1)',
+      bgColor: 'rgba(48, 153, 166, 0.1)'
+    },
+    I: {
+      label: '提示',
+      color: 'rgba(240, 152, 21, 1)',
+      borderColor: 'rgba(240, 152, 21, 1)',
+      bgColor: 'rgba(240, 152, 21, 0.1)'
+    },
+    D: {
+      label: '禁用',
+      color: 'rgba(196, 2, 2, 1)',
+      borderColor: 'rgba(196, 2, 2, 1)',
+      bgColor: 'rgba(196, 2, 2, 0.1)'
+    },
+    FAIL: {
+      label: '暂无结果',
+      color: 'rgba(51, 51, 51, 0.6)',
+      borderColor: 'rgba(51, 51, 51, 0.2)',
+      bgColor: 'rgba(51, 51, 51, 0.05)'
+    },
+    SERVER_ERR: {
+      label: '服务调用失败',
+      color: 'rgba(196, 2, 2, 1)',
+      borderColor: 'rgba(196, 2, 2, 1)',
+      bgColor: 'rgba(196, 2, 2, 0.1)'
+    },
+    '1': {
+      label: '双签提交',
+      color: 'rgba(240, 152, 21, 1)',
+      borderColor: 'rgba(240, 152, 21, 1)',
+      bgColor: 'rgba(240, 152, 21, 0.1)'
+    },
+    '2': {
+      label: '质疑',
+      color: 'rgba(196, 2, 2, 1)',
+      borderColor: 'rgba(196, 2, 2, 1)',
+      bgColor: 'rgba(196, 2, 2, 0.1)'
+    },
+    '3': {
+      label: '未通过',
+      color: 'rgba(240, 152, 21, 1)',
+      borderColor: 'rgba(240, 152, 21, 1)',
+      bgColor: 'rgba(240, 152, 21, 0.1)'
+    },
+    '4': {
+      label: '已作废',
+      color: 'rgba(51, 51, 51, 0.2)',
+      borderColor: 'rgba(51, 51, 51, 0.6)',
+      bgColor: 'rgba(240, 152, 21, 0.1)'
+    },
+    '5': {
+      label: '通过',
+      color: 'rgba(48, 153, 166, 1)',
+      borderColor: 'rgba(48, 153, 166, 1)',
+      bgColor: 'rgba(48, 153, 166, 0.1)'
+    },
+    '9': {
+      label: '已失效',
+      color: 'rgba(51, 51, 51, 0.2)',
+      borderColor: 'rgba(51, 51, 51, 0.6)',
+      bgColor: 'rgba(240, 152, 21, 0.1)'
+    }
   },
 
   /**
@@ -123,6 +189,8 @@ export default {
     ['I']: 'info',
     ['R']: 'warning',
     ['D']: 'negative',
-    ['ERR']: 'grey'
+    ['ERR']: 'grey',
+    ['FAIL']: 'grey',
+    ['SERVER_ERR']: 'negative'
   }
 }

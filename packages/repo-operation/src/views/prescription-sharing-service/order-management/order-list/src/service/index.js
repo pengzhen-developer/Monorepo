@@ -137,5 +137,19 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
+  },
+
+  exportDeliveryFile(params) {
+    const isMock = false
+
+    const apiPath = 'psd/Excel/OOrderShippingDetails'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.download(requestApi, params, 'post').then((res) => {
+      return res
+    })
   }
 }

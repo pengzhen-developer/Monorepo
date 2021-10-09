@@ -368,10 +368,16 @@ export default {
               }
               // 前置审方
               else if (res.data.isAdopt === false) {
-                this.auditDialog.data = {}
-                this.auditDialog.data = res.data.result
-                this.auditDialog.prescriptionNo = res.data.result.prescriptionNo
-                this.auditDialog.visible = true
+                //前置审方如果状态是失败也继续发送
+                if ('FAIL' === res.data.result?.actionCode || 'SERVER_ERR' === res.data.result?.actionCode) {
+                  this.auditDialog.data = res.data.result
+                  this.auditDialog.prescriptionNo = res.data.result.prescriptionNo
+                  this.sendConfirm()
+                } else {
+                  this.auditDialog.visible = true
+                  this.auditDialog.data = res.data.result
+                  this.auditDialog.prescriptionNo = res.data.result.prescriptionNo
+                }
               }
               // 系统验证成功，发送处方成功
               else {
@@ -391,7 +397,10 @@ export default {
         const date1 = Peace.dayjs()
         const date2 = Peace.dayjs(this.baseInfo.patientInfo.birthday)
 
-        if (date1.diff(date2, 'year') < 14 && (Peace.validate.isEmpty(this.model.weight) || Peace.validate.isEmpty(this.model.height))) {
+        if (
+          date1.diff(date2, 'year') < 14 &&
+          (Peace.validate.isEmpty(this.model.weight) || Peace.validate.isEmpty(this.model.height))
+        ) {
           return Peace.util.confirm(
             '当前患者未满14周岁，处方未填写身高体重信息，如不填写将会影响审方结果。是否直接发送处方？',
             '提示',

@@ -49,7 +49,7 @@
                     clearable></el-input>
         </el-form-item>
 
-        <el-form-item label="平台药品编码">
+        <el-form-item label="主数据ID">
           <el-input v-model.trim="model.DrugStandardCode"
                     placeholder="请输入"
                     clearable></el-input>
@@ -89,7 +89,7 @@
                           label="药品编码"
                           prop="CustDrugsCode"></PeaceTableColumn>
         <PeaceTableColumn min-width="150px"
-                          label="平台药品编码"
+                          label="主数据ID"
                           prop="DrugStandardCode"></PeaceTableColumn>
         <PeaceTableColumn min-width="120px"
                           label="药品名称"

@@ -4,6 +4,54 @@
       <div class="title-style">
         <div class="rule-title">通用相互作用规则</div>
         <div style="color:rgba(51,51,51,0.80)">相互作用规则为成分与成分之间的相互作用。药品维护了成分信息之后 ,可依据通用相互作用规则进行审查</div>
+        <div class="q-mt-lg">
+
+          <el-form inline
+                   label-suffix="："
+                   v-on:keyup.enter.native="fetch"
+                   v-on:submit.native.prevent
+                   v-bind:model="model"
+                   size="mini"
+                   label-width="auto">
+
+            <el-form-item label="成分/成分类别名称">
+              <peace-input placeholder="请输入"
+                           v-model.trim="model.name"></peace-input>
+            </el-form-item>
+
+            <el-form-item label="提示级别">
+              <el-select v-model="model.warningLevel"
+                         clearable
+                         placeholder="全部">
+                <el-option v-for="item in source.warningLevel"
+                           v-bind:key="item.label"
+                           v-bind:label="item.label"
+                           v-bind:value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="提示内容">
+              <peace-input placeholder="请输入"
+                           v-model.trim="model.description"></peace-input>
+            </el-form-item>
+
+            <el-form-item label="状态">
+              <el-select v-model="model.isDelete"
+                         clearable
+                         placeholder="全部">
+                <el-option v-for="item in source.isDelete"
+                           v-bind:key="item.label"
+                           v-bind:label="item.label"
+                           v-bind:value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button v-on:click="fetch"
+                         type="primary">查询</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
       </div>
       <div style="borderTop:16px solid #f5f5f5;"></div>
       <div class="card-style">
@@ -120,6 +168,7 @@ import Service from './service/index'
 import EditModel from './components/EditModel'
 import GeneralRuleLog from './components/GeneralRuleLog'
 import DetailModel from './components/DetailModel'
+import constant from './constant'
 export default {
   name: 'DdiRule',
   components: {
@@ -129,8 +178,15 @@ export default {
   },
   data() {
     return {
+      model: {
+        name: '',
+        description: '',
+        warningLevel: '',
+        isDelete: ''
+      },
       source: {
-        warningLevel: []
+        warningLevel: [],
+        isDelete: []
       },
       editModelDialog: {
         visible: false,
@@ -149,6 +205,7 @@ export default {
   },
   async created() {
     this.source.warningLevel = await Peace.identity.dictionary.getList('warning_level')
+    this.source.isDelete = constant.ENUM_IS_OPEN
   },
   mounted() {
     this.$nextTick().then(() => {
@@ -158,7 +215,10 @@ export default {
   methods: {
     fetch() {
       const fetch = Service.getDdiRuleList
-      this.$refs.table.reloadData({ fetch })
+      const params = Peace.util.deepClone(this.model)
+      this.$refs.table.reloadData({ fetch, params }).then((res) => {
+        return res
+      })
     },
     openEditlDialog(info, type) {
       this.editModelDialog.visible = true
@@ -174,7 +234,10 @@ export default {
       this.detailModelDialog.data = row
     },
     changeStatus(row) {
-      const message = row.isDelete === 'no' ? '启用后该规则将进行审查，是否确定启用该规则？' : '禁用后该规则将不再审查，是否确定禁用该规则？'
+      const message =
+        row.isDelete === 'no'
+          ? '启用后该规则将进行审查，是否确定启用该规则？'
+          : '禁用后该规则将不再审查，是否确定禁用该规则？'
 
       this.$confirm(message, '提示', { closeOnClickModal: false })
         .then(() => {

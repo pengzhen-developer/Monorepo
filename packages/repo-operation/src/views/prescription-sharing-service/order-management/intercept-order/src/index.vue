@@ -152,7 +152,7 @@
     </PeaceDialog>
 
     <PeaceDialog title="同步订单"
-                 width="641px"
+                 width="800px"
                  center
                  v-if="syncOrderDialog.visible"
                  v-bind:visible.sync="syncOrderDialog.visible">
@@ -260,7 +260,8 @@ export default {
         // DistributionOrderStatus  配送订单状态    1
         // SelfOrderStatus  自提订单状态  0
         this.model.OrderStatus = ''
-        this.remoteSource.OrderStatus = this.model.ShippingMethod == 0 ? this.remoteSource.SelfOrderStatus : this.remoteSource.DistributionOrderStatus
+        this.remoteSource.OrderStatus =
+          this.model.ShippingMethod == 0 ? this.remoteSource.SelfOrderStatus : this.remoteSource.DistributionOrderStatus
       }
     }
   },

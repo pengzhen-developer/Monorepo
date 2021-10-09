@@ -49,7 +49,7 @@ const adiutThemeMap = {
   ['R']: 'warning',
   ['D']: 'negative',
   /** 失败 */
-  ['FAIL']: 'negative',
+  ['FAIL']: 'grey',
   /** 服务调用失败 */
   ['SERVER_ERR']: 'negative'
 }
