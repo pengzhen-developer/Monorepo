@@ -8,7 +8,17 @@ export const store = Vue.observable({
   // 显示开具处方
   showWriteRecipe: false,
   // 添加患者动作
-  showAddPatient: false
+  showAddPatient: false,
+
+  //显示面诊挂号患者详情
+  showRegisterPatient: false,
+  //当前选择的挂号的患者
+  activeRegisterPatient: {},
+
+  //需要添加的患者数据
+  shouldAddPatient: {},
+  //去开处方的患者
+  gotoMakeRecipePatient: {}
 })
 
 export const mutations = {
@@ -26,5 +36,19 @@ export const mutations = {
 
   setShowAddPatient(show) {
     store.showAddPatient = show
+  },
+
+  setShowRegisterPatient(show) {
+    store.showRegisterPatient = show
+  },
+
+  setShouldAddPatient(objc) {
+    store.shouldAddPatient = objc
+  },
+  setActiveRegisterPatient(objc) {
+    store.activeRegisterPatient = objc
+  },
+  setGotoMakeRecipePatient(objc) {
+    store.gotoMakeRecipePatient = objc
   }
 }

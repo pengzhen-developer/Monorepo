@@ -86,11 +86,15 @@ export default {
     },
 
     payTypeText() {
-      return Object.keys(Type.INQUIRY.INQUIRY_PAY_TYPE).find((key) => Type.INQUIRY.INQUIRY_PAY_TYPE[key] === this.inquiryInfo?.paymentType)
+      return Object.keys(Type.INQUIRY.INQUIRY_PAY_TYPE).find(
+        (key) => Type.INQUIRY.INQUIRY_PAY_TYPE[key] === this.inquiryInfo?.paymentType
+      )
     },
 
     inquiryTypeText() {
-      return Object.keys(Type.INQUIRY.INQUIRY_TYPE).find((key) => Type.INQUIRY.INQUIRY_TYPE[key] === this.inquiryInfo?.inquiryType)
+      return Object.keys(Type.INQUIRY.INQUIRY_TYPE).find(
+        (key) => Type.INQUIRY.INQUIRY_TYPE[key] === this.inquiryInfo?.inquiryType
+      )
     },
 
     inquiryTypeImage() {
@@ -104,7 +108,9 @@ export default {
     },
 
     inquiryStatusText() {
-      return Object.keys(Type.INQUIRY.INQUIRY_STATUS).find((key) => Type.INQUIRY.INQUIRY_STATUS[key] === this.inquiryInfo?.inquiryStatus)
+      return Object.keys(Type.INQUIRY.INQUIRY_STATUS).find(
+        (key) => Type.INQUIRY.INQUIRY_STATUS[key] === this.inquiryInfo?.inquiryStatus
+      )
     },
 
     inquiryStatusTextStyle() {

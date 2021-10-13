@@ -58,9 +58,18 @@
                           prop="manufactory"></PeaceTableColumn>
         <PeaceTableColumn label="操作"
                           width="120px">
-          <template slot-scope="scope">
+          <!-- <template slot-scope="scope">
             <el-button type="text"
                        v-on:click="add(scope.row)">创建科室规则</el-button>
+          </template> -->
+          <template slot-scope="scope">
+            <el-button type="text"
+                       v-if="scope.row.drugCscCode"
+                       v-on:click="add(scope.row)">创建科室规则</el-button>
+            <el-button type="text"
+                       disabled
+                       v-else
+                       v-on:click="add(scope.row)">禁用</el-button>
           </template>
         </PeaceTableColumn>
       </PeaceTable>

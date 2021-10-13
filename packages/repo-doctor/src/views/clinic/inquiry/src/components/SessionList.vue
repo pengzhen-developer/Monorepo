@@ -59,7 +59,9 @@ export default {
     storeSessions() {
       const sessions = this.$store.state.inquiry?.sessions ?? []
       const filterSessions = sessions.filter(
-        (session) => session?.content?.inquiryInfo?.inquiryType === 'image' || session?.content?.inquiryInfo?.inquiryType === 'video'
+        (session) =>
+          session?.content?.inquiryInfo?.inquiryType === 'image' ||
+          session?.content?.inquiryInfo?.inquiryType === 'video'
       )
 
       return filterSessions

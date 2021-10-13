@@ -19,13 +19,6 @@
             <span class="text-subtitle1">{{ item.title }}</span>
           </div>
 
-          <el-button type="text"
-                     v-if="showAddButton(item)"
-                     v-on:click="addPatient">
-            <i style="font-size: 20px;"
-               class="el-icon-circle-plus"></i>
-          </el-button>
-
         </div>
         <div class="flex column full-height">
           <slot></slot>
@@ -36,8 +29,6 @@
 
 </template>
 <script>
-import { mutations } from '../faceToFace/src/store'
-
 export default {
   props: {
     active: {
@@ -101,14 +92,6 @@ export default {
       this.activeName = this.active
 
       this.$router.push(item.routePath)
-    },
-
-    showAddButton(item) {
-      return item.name == 'faceToFace'
-    },
-
-    addPatient() {
-      mutations.setShowAddPatient(true)
     }
   }
 }

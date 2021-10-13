@@ -108,6 +108,7 @@ export default {
     },
 
     sendRecipe() {
+      mutations.setGotoMakeRecipePatient(this.patientInfo)
       mutations.setShowWriteRecipe(true)
     },
 

@@ -128,9 +128,16 @@ export default {
       validator(value) {
         return ['faceToFace', 'patientAdmin'].includes(value)
       }
+    },
+    patientData: {
+      type: Object
     }
   },
   created() {
+    if (this.patientData) {
+      this.ruleForm = this.patientData
+    }
+
     this.getNational()
   },
   data() {

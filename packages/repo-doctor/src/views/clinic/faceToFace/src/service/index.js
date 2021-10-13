@@ -167,5 +167,41 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
+  },
+
+  /**
+   * 获取面诊患者挂号列表
+   *
+   */
+  getRegisterPatientList() {
+    const isMock = false
+
+    const apiPath = 'client/face/prescription/patient/getRegList'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, {}).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 获取面诊挂号患者的数据详情
+   *
+   */
+  getRegisterPatientRegDetail(params) {
+    const isMock = false
+
+    const apiPath = 'client/face/prescription/patient/getRegDetail'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
   }
 }

@@ -114,11 +114,11 @@
                           fixed="right">
           <template slot-scope="scope">
             <el-button type="text"
-                       v-if="scope.row.mappingExamineStatus === '20'"
+                       v-if="scope.row.mappingExamineStatus === '20' && scope.row.drugStandardCode"
                        v-on:click="edit(scope.row)">编辑药品规则</el-button>
             <el-button type="text"
                        disabled
-                       v-if="scope.row.mappingExamineStatus !== '20'"
+                       v-else
                        v-on:click="edit(scope.row)">禁用</el-button>
           </template>
         </PeaceTableColumn>

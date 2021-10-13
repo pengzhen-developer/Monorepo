@@ -267,7 +267,7 @@ export default {
     },
 
     patientInfo() {
-      return store.activePatient
+      return store.gotoMakeRecipePatient
     }
   },
 
