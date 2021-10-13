@@ -7,7 +7,8 @@
               class="bg-primary text-white"
               v-bind:style="{ height: $q.screen.gt.sm ? '80px' : '60px' }">
       <q-toolbar class="full-height q-pl-none">
-        <div class="layout-logo full-height text-white q-pt-sm"
+        <!-- q-pt-sm -->
+        <div class="layout-logo full-height text-white "
              v-bind:style="{
                              ['width']: drawer.width + 'px',
                              ['min-width']: drawer.width + 'px',
