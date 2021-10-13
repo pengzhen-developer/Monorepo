@@ -32,17 +32,17 @@
                                fixed
                                label="序号"
                                width="60"></el-table-column>
-              <el-table-column prop="name"
+              <el-table-column prop="DrugName"
                                label="药品名称"
                                width="120">
               </el-table-column>
-              <el-table-column prop="date"
+              <el-table-column prop="DrugCode"
                                label="原药品编码"
                                width="150">
               </el-table-column>
               <el-table-column label="新药品编码">
-                <template>
-                  <el-input v-model="address"
+                <template slot-scope="scope">
+                  <el-input v-model="scope.row.TDrugCode"
                             maxlength="50"
                             placeholder=""></el-input>
                 </template>
@@ -144,33 +144,7 @@ export default {
   },
   data() {
     return {
-      tableData: [
-        {
-          date: '100000022336655',
-          name: '阿莫西林',
-          address: ''
-        },
-        {
-          date: '100000022336655',
-          name: '阿莫西林',
-          address: ''
-        },
-        {
-          date: '100000022336655',
-          name: '阿莫西林',
-          address: ''
-        },
-        {
-          date: '100000022336655',
-          name: '阿莫西林',
-          address: ''
-        },
-        {
-          date: '100000022336655',
-          name: '阿莫西林',
-          address: ''
-        }
-      ],
+      tableData: [],
       model: {
         orderId: this.orderId,
         isSplitOrder: true,
@@ -201,6 +175,7 @@ export default {
         this.fetch(2)
       }
     })
+    this.GetOrderDetaile()
   },
   methods: {
     fetch(num) {
@@ -217,6 +192,27 @@ export default {
     },
     // 同步订单
     syncOrder() {
+      if (this.model.isChangeNo) {
+        //更改编码提交
+        const isCanInput = this.tableData.some((item) => item.TDrugCode)
+        if (isCanInput) {
+          const params = { OrderId: this.orderId, DrugList: this.tableData }
+          this.isLoading = true
+          Service.SynOrderIntercept(params)
+            .then((res) => {
+              Peace.util.success(res.msg)
+              this.isLoading = false
+              this.$emit('refresh')
+              this.$emit('close')
+            })
+            .catch(() => {
+              this.isLoading = false
+            })
+        } else {
+          Peace.util.warning('新编码不能为空，至少需填写一个')
+        }
+        return
+      }
       const params = Peace.util.deepClone(this.model)
       if (params.isSplitOrder) {
         const isAll = params.splitOrderModes.filter((item) => item.Code === '').length > 0
@@ -289,6 +285,13 @@ export default {
     },
     selectDrugStore(Code, index, list) {
       this.model.splitOrderModes[index].Name = list.find((temp) => temp.Code == Code)?.Name
+    },
+
+    GetOrderDetaile() {
+      const params = { orderId: this.orderId }
+      Service.GetOrderDetaile(params).then((res) => {
+        this.tableData = res.data.list
+      })
     }
   }
 }

@@ -155,5 +155,45 @@ export default {
     return Peace.http.download(requestApi, params, 'post').then((res) => {
       return res
     })
+  },
+
+  /**
+   * 拦截订单-同步订单-获取药品列表
+   *
+   * @param {*} params
+   * @returns {Object}
+   */
+  GetOrderDetaile(params) {
+    const isMock = false
+
+    const apiPath = 'psd/Order/GetOrderDetaile'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.get(requestApi, { params }).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 拦拦截订单-同步订单-更改编码提交
+   *
+   * @param {*} params
+   * @returns {Object}
+   */
+  SynOrderIntercept(params) {
+    const isMock = false
+
+    const apiPath = 'psd/Order/SynOrderIntercept'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
   }
 }
