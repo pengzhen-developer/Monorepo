@@ -2,10 +2,9 @@
   <el-header height="64px">
     <div class="left"
          @click="backHome">
-      <el-image style="width: 160px; height: 40px;"
+      <el-image style="width: 160px; height: 46px;"
                 :src="require('@src/assets/img/logo_white.png')">
       </el-image>
-      <span>智药云平台</span>
     </div>
 
     <div class="right">

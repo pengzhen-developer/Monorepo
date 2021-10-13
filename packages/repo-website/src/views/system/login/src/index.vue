@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="container-bottom">
-      Copyright &copy; 2020 九州通智药云平台出品
+      Copyright &copy; 2020 九州通幂药云平台出品
     </div>
   </div>
 </template>

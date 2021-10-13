@@ -160,9 +160,7 @@ export default {
             trigger: 'blur'
           }
         ]
-      },
-
-      logoImage: require('@src/assets/img/logo_white.png')
+      }
     }
   },
 

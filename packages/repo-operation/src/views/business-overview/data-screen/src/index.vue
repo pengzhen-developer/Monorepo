@@ -8,7 +8,7 @@
     <div class="flex column full-width full-height q-pa-sm q-px-md">
 
       <div class="screen-header q-pa-md">
-        <div class="text-center screen-title gradient-title">智药云数据大屏</div>
+        <div class="text-center screen-title gradient-title">幂药云数据大屏</div>
       </div>
 
       <div class="col">

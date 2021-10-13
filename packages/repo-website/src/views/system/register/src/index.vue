@@ -157,7 +157,7 @@
             <div class="terms">
               <span>同意以下条款</span>
               <span class="terms-item"
-                    v-on:click="goTerms">《智药云平台网站服务条款》</span>
+                    v-on:click="goTerms">《幂药云平台网站服务条款》</span>
               <span class="terms-item"
                     v-on:click="goPrivacy">《隐私权政策》</span>
             </div>
@@ -175,7 +175,7 @@
       </div>
     </div>
     <div class="container-bottom">
-      Copyright &copy; 2020 九州通智药云平台出品
+      Copyright &copy; 2020 九州通幂药云平台出品
     </div>
   </div>
 </template>

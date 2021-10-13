@@ -4,7 +4,7 @@ export default {
    *
    */
   application: {
-    title: '智药云'
+    title: '幂药云'
   },
 
   /**

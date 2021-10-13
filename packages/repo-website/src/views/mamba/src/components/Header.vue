@@ -4,7 +4,7 @@
 
       <div class="logo float-left">
         <a href="#">
-          <el-image style="width: 160px; height: 40px;"
+          <el-image style="width: 160px; height: 46px;"
                     :src="require('@src/assets/img/logo.png')">
           </el-image>
         </a>

@@ -65,7 +65,7 @@ export default {
   data() {
     return {
       username: '',
-      title1: '智药云解决方案',
+      title1: '幂药云解决方案',
       title2: window.configuration.application.title
     }
   },

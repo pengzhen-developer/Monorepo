@@ -33,7 +33,7 @@ function getSensors() {
   })
   sensors.registerPage({
     platform_type: 'H5', // 平台类型
-    app_name: '智药云H5', // 应用名称
+    app_name: '幂药云H5', // 应用名称
     login_id: userId, // 用户ID
     is_login: userId ? true : false, // 是否为登录状态
     // app_id: '业务端的ID', //业务端的ID

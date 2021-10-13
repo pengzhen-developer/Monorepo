@@ -4,7 +4,7 @@
               class="q-mb-16"
               v-bind:closable="false">
       <div>1、仅支持对流向配置设置了集团ERP云仓的医疗机构进行配置，添加医疗机构前请先核实是否已设置好云仓，否则将无法显示药品供应方；</div>
-      <div>2、完成配置价格类型后，医疗机构通过接口查询智药云商品价格时，可查询类型将即时生效。</div>
+      <div>2、完成配置价格类型后，医疗机构通过接口查询幂药云商品价格时，可查询类型将即时生效。</div>
     </el-alert>
     <div class="card card-search q-mb-md">
       <el-form inline
