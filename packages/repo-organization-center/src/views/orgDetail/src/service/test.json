@@ -1,0 +1,460 @@
+{
+  "code": 200,
+  "success": true,
+  "data": {
+    "currentDate": {
+      "institutionInfovo": {
+        "hospitalTypeName": "www医院3",
+        "hospitalLevelName": "三2级甲等2",
+        "fromTypeName": "全民",
+        "servicerTypeName": "社会",
+        "institutionWayName": "政府办非营利性3",
+        "relationTypeName": "省、自治区、直辖市属",
+        "provinceCode": "dolore",
+        "businessLicensePic": "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fitbbs%2F1308%2F16%2Fc8%2F24543062_1376637153786.jpg&refer=http%3A%2F%2Fimg.pconline.com.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1636512325&t=63055d4c0202dff1ba4f6bfcbb44c802",
+        "address": "湖北省武汉市洪山区卓刀泉南路116号2楼3室",
+        "tel": "027-87670138（白天）    027-87670078（午间、夜间、节假日）",
+        "relationTypeCode": "id sint",
+        "provinceName": "qui nisi laboris",
+        "servicerTypeCode": "minim",
+        "longitude": "laborum ex dolore ut",
+        "areaCode": "mollit sed irure dolore",
+        "bussinessSpace": "fugiat sit proident nostrud aliqua",
+        "institutionWeb": "http://www.hbch.com.cn/",
+        "isShareHosptial": "nostrud tempor",
+        "areaName": "aute",
+        "fromTypeCode": "sunt in dolore ad id",
+        "socialNo": "YLJG10000000000001AKDKIQIDA",
+        "isNetHosptial": "nulla consectetur adipisicing est",
+        "cityCode": "ad ipsum elit",
+        "latitude": "nulla",
+        "institutionDescribe": "10湖北省肿瘤医院（湖北省肿瘤研究所）、华中科技大学同济医学院附属肿瘤医院创建于1973年，是湖北省卫生健康委直属的集预防、医疗、康复、科研、教学于一体的大型三级甲等肿瘤专科医院，是美国巴菲特癌症中心姊妹医院、湖北省癌症中心、湖北省肿瘤防办依托单位，牵头湖北省肿瘤医学质量控制中心工作。医院设有国家药物临床试验基地、博士后流动站、湖北省、武汉市医保定点医院、新型农村合作医疗定点医院、商业保险定点医院。医院学科门类齐全，编制病床2000张，现有31个临床科室（病区）、11个医技科室、10个基础与临床相结合的研究室。医院2013年被评为肿瘤科国家临床重点专科，国家疑难病症诊治能力提升工程项目医院。普外科（胃肠外科、肝胆胰科、乳腺科、头颈科）、放射科、病理科、超声科均为省级临床重点专科。放射治疗科、肿瘤内科、头颈外科、乳腺科、胸外科、胃肠外科、泌尿外科、肝胆胰外科、妇瘤科、中西医结合科等优势学科在国内外享有较高声誉。在武汉市委、市政府提出打造中部医疗服务中心的专科评审中，医院肿瘤学科、肿瘤放射治疗学科被评为国家级重点学科。",
+        "practiceLincensePic": "asd",
+        "institutionCode": "YLJG10000000000001",
+        "otherLincesePic": "https://i.loli.net/2021/10/11/t2VzfqLQMPIm7y5.jpg,https://i.loli.net/2021/10/11/8n6Piv7OJctwR35.jpg,https://i.loli.net/2021/10/11/ycOrZsM36qpafbw.jpg",
+        "hospitalLevelCode": "officia",
+        "institutionWayCode": "ipsum sit adipisicing culpa",
+        "netHospitalLicensePic": "https://img2.baidu.com/it/u=2828643212,4192800318&fm=26&fmt=auto",
+        "isShareShop": "mollit",
+        "cityName": "Duis irure velit",
+        "institutionName": "nulla consequat",
+        "hospitalTypeCode": "ullamco exercitation nisi",
+        "doctorTeamIntroduce": "est nostrud in dolore quis",
+        "carWay": "公交 - 乘坐公交596路终点 738、723、618、586、556、625、66、15路（方家咀站/卓刀泉南路站下车前行300米即到）\n地铁 - 乘坐2号线，广埠屯站B出口转乘公交596路终点站",
+        "serviceLicenceNo": "YLJG10000000000001",
+        "channelSourceName": "智药云",
+        "auditerType": "save",
+        "updateTime": "2021-09-01 17:21:56"
+      },
+      "epartmenes": [
+        {
+          "id": 123123,
+          "departmentName": "国家级",
+          "child": [
+            {
+              "id": 12,
+              "departmentName": "三级甲等医院"
+            },
+            {
+              "id": 13,
+              "departmentName": "肿瘤科国家临床重点专科"
+            },
+            {
+              "id": 14,
+              "departmentName": "国家药物临床试验基地"
+            },
+            {
+              "id": 15,
+              "departmentName": "全国市、县级医院常见肿瘤规范化诊疗指导医院"
+            },
+            {
+              "id": 16,
+              "departmentName": "国家中医药管理局十二五中医重点专科建设培育单位"
+            },
+            {
+              "id": 17,
+              "departmentName": "全国综合医院中医药工作示范单位"
+            },
+            {
+              "id": 18,
+              "departmentName": "全国青年文明号（肿瘤内科）"
+            },
+            {
+              "id": 19,
+              "departmentName": "全国工人先锋号（胃肠泌尿外科）"
+            }
+          ]
+        },
+        {
+          "id": 1231,
+          "departmentName": "省级",
+          "child": [
+            {
+              "id": 121,
+              "departmentName": "三级甲等医院"
+            },
+            {
+              "id": 131,
+              "departmentName": "肿瘤科国家临床重点专科"
+            },
+            {
+              "id": 141,
+              "departmentName": "国家药物临床试验基地"
+            },
+            {
+              "id": 151,
+              "departmentName": "全国市、县级医院常见肿瘤规范化诊疗指导医院"
+            },
+            {
+              "id": 161,
+              "departmentName": "国家中医药管理局十二五中医重点专科建设培育单位"
+            },
+            {
+              "id": 171,
+              "departmentName": "全国综合医院中医药工作示范单位"
+            },
+            {
+              "id": 181,
+              "departmentName": "全国青年文明号（肿瘤内科）"
+            },
+            {
+              "id": 191,
+              "departmentName": "全国工人先锋号（胃肠泌尿外科）"
+            }
+          ]
+        }
+      ],
+      "institutionHonorvo": [
+        {
+          "institutionId": 12,
+          "honorWord": "放疗中心",
+          "child": [
+            {
+              "institutionId": 121,
+              "honorWord": "头颈肿瘤放疗I"
+            },
+            {
+              "institutionId": 122,
+              "honorWord": "头颈肿瘤放疗II"
+            },
+            {
+              "institutionId": 123,
+              "honorWord": "头颈肿瘤放疗III"
+            },
+            {
+              "institutionId": 124,
+              "honorWord": "胸部肿瘤放疗I"
+            },
+            {
+              "institutionId": 125,
+              "honorWord": "腹部肿瘤放疗II（乳腺癌、淋巴瘤）"
+            },
+            {
+              "institutionId": 126,
+              "honorWord": "腹部肿瘤放疗II（乳腺癌、淋巴瘤）"
+            },
+            {
+              "institutionId": 127,
+              "honorWord": "胸部肿瘤放疗II"
+            }
+          ]
+        },
+        {
+          "institutionId": 13,
+          "honorWord": "肿瘤外科",
+          "child": [
+            {
+              "institutionId": 121,
+              "honorWord": "头颈肿瘤放疗I"
+            },
+            {
+              "institutionId": 122,
+              "honorWord": "头颈肿瘤放疗II"
+            },
+            {
+              "institutionId": 123,
+              "honorWord": "头颈肿瘤放疗III"
+            },
+            {
+              "institutionId": 124,
+              "honorWord": "胸部肿瘤放疗I"
+            },
+            {
+              "institutionId": 125,
+              "honorWord": "腹部肿瘤放疗II（乳腺癌、淋巴瘤）"
+            },
+            {
+              "institutionId": 126,
+              "honorWord": "腹部肿瘤放疗II（乳腺癌、淋巴瘤）"
+            },
+            {
+              "institutionId": 127,
+              "honorWord": "胸部肿瘤放疗II"
+            }
+          ]
+        },
+        {
+          "institutionId": 14,
+          "honorWord": "肿瘤内科",
+          "child": [
+            {
+              "institutionId": 121,
+              "honorWord": "头颈肿瘤放疗I"
+            },
+            {
+              "institutionId": 122,
+              "honorWord": "头颈肿瘤放疗II"
+            },
+            {
+              "institutionId": 123,
+              "honorWord": "头颈肿瘤放疗III"
+            },
+            {
+              "institutionId": 124,
+              "honorWord": "胸部肿瘤放疗I"
+            },
+            {
+              "institutionId": 125,
+              "honorWord": "腹部肿瘤放疗II（乳腺癌、淋巴瘤）"
+            },
+            {
+              "institutionId": 126,
+              "honorWord": "腹部肿瘤放疗II（乳腺癌、淋巴瘤）"
+            },
+            {
+              "institutionId": 127,
+              "honorWord": "胸部肿瘤放疗II"
+            }
+          ]
+        }
+      ]
+    },
+    "currentDate": {
+      "institutionInfovo": {
+        "hospitalTypeName": "医院",
+        "hospitalLevelName": "三级甲等",
+        "fromTypeName": "全民",
+        "servicerTypeName": "社会",
+        "institutionWayName": "政府办非营利性",
+        "relationTypeName": "省、自治区、直辖市属",
+        "provinceCode": "dolore",
+        "businessLicensePic": "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fitbbs%2F1308%2F16%2Fc8%2F24543062_1376637153786.jpg&refer=http%3A%2F%2Fimg.pconline.com.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1636512325&t=63055d4c0202dff1ba4f6bfcbb44c802",
+        "address": "湖北省武汉市洪山区卓刀泉南路116号2楼3室",
+        "tel": "027-87670138（白天）    027-87670078（午间、夜间、节假日）",
+        "relationTypeCode": "id sint",
+        "provinceName": "qui nisi laboris",
+        "servicerTypeCode": "minim",
+        "longitude": "laborum ex dolore ut",
+        "areaCode": "mollit sed irure dolore",
+        "bussinessSpace": "fugiat sit proident nostrud aliqua",
+        "institutionWeb": "http://www.hbch.com.cn/",
+        "isShareHosptial": "nostrud tempor",
+        "areaName": "aute",
+        "fromTypeCode": "sunt in dolore ad id",
+        "socialNo": "YLJG10000000000001AKDKIQIDA",
+        "isNetHosptial": "nulla consectetur adipisicing est",
+        "cityCode": "ad ipsum elit",
+        "latitude": "nulla",
+        "institutionDescribe": "湖北省肿瘤医院（湖北省肿瘤研究所）、华中科技大学同济医学院附属肿瘤医院创建于1973年，是湖北省卫生健康委直属的集预防、医疗、康复、科研、教学于一体的大型三级甲等肿瘤专科医院，是美国巴菲特癌症中心姊妹医院、湖北省癌症中心、湖北省肿瘤防办依托单位，牵头湖北省肿瘤医学质量控制中心工作。医院设有国家药物临床试验基地、博士后流动站、湖北省、武汉市医保定点医院、新型农村合作医疗定点医院、商业保险定点医院。医院学科门类齐全，编制病床2000张，现有31个临床科室（病区）、11个医技科室、10个基础与临床相结合的研究室。医院2013年被评为肿瘤科国家临床重点专科，国家疑难病症诊治能力提升工程项目医院。普外科（胃肠外科、肝胆胰科、乳腺科、头颈科）、放射科、病理科、超声科均为省级临床重点专科。放射治疗科、肿瘤内科、头颈外科、乳腺科、胸外科、胃肠外科、泌尿外科、肝胆胰外科、妇瘤科、中西医结合科等优势学科在国内外享有较高声誉。在武汉市委、市政府提出打造中部医疗服务中心的专科评审中，医院肿瘤学科、肿瘤放射治疗学科被评为国家级重点学科。",
+        "practiceLincensePic": "https://img2.baidu.com/it/u=1357720467,2636512316&fm=26&fmt=auto",
+        "institutionCode": "YLJG10000000000001",
+        "otherLincesePic": "https://i.loli.net/2021/10/11/t2VzfqLQMPIm7y5.jpg,https://i.loli.net/2021/10/11/8n6Piv7OJctwR35.jpg,https://i.loli.net/2021/10/11/ycOrZsM36qpafbw.jpg",
+        "hospitalLevelCode": "officia",
+        "institutionWayCode": "ipsum sit adipisicing culpa",
+        "netHospitalLicensePic": "https://img2.baidu.com/it/u=2828643212,4192800318&fm=26&fmt=auto",
+        "isShareShop": "mollit",
+        "cityName": "Duis irure velit",
+        "institutionName": "nulla consequat",
+        "hospitalTypeCode": "ullamco exercitation nisi",
+        "doctorTeamIntroduce": "est nostrud in dolore quis",
+        "carWay": "公交 - 乘坐公交596路终点 738、723、618、586、556、625、66、15路（方家咀站/卓刀泉南路站下车前行300米即到）\n地铁 - 乘坐2号线，广埠屯站B出口转乘公交596路终点站",
+        "serviceLicenceNo": "YLJG10000000000001",
+        "channelSourceName": "智药云",
+        "auditerType": "save",
+        "updateTime": "2021-09-01 17:21:56"
+      },
+      "epartmenes": [
+        {
+          "id": 12312,
+          "departmentName": "国家级",
+          "child": [
+            {
+              "id": 12,
+              "departmentName": "三级甲等医院"
+            },
+            {
+              "id": 13,
+              "departmentName": "肿瘤科国家临床重点专科"
+            },
+            {
+              "id": 14,
+              "departmentName": "国家药物临床试验基地"
+            },
+            {
+              "id": 15,
+              "departmentName": "全国市、县级医院常见肿瘤规范化诊疗指导医院"
+            },
+            {
+              "id": 16,
+              "departmentName": "国家中医药管理局十二五中医重点专科建设培育单位"
+            },
+            {
+              "id": 17,
+              "departmentName": "全国综合医院中医药工作示范单位"
+            },
+            {
+              "id": 18,
+              "departmentName": "全国青年文明号（肿瘤内科）"
+            },
+            {
+              "id": 19,
+              "departmentName": "全国工人先锋号（胃肠泌尿外科）"
+            }
+          ]
+        },
+        {
+          "id": 1231,
+          "departmentName": "省级",
+          "child": [
+            {
+              "id": 121,
+              "departmentName": "三级甲等医院"
+            },
+            {
+              "id": 131,
+              "departmentName": "肿瘤科国家临床重点专科"
+            },
+            {
+              "id": 141,
+              "departmentName": "国家药物临床试验基地"
+            },
+            {
+              "id": 151,
+              "departmentName": "全国市、县级医院常见肿瘤规范化诊疗指导医院"
+            },
+            {
+              "id": 161,
+              "departmentName": "国家中医药管理局十二五中医重点专科建设培育单位"
+            },
+            {
+              "id": 171,
+              "departmentName": "全国综合医院中医药工作示范单位"
+            },
+            {
+              "id": 181,
+              "departmentName": "全国青年文明号（肿瘤内科）"
+            },
+            {
+              "id": 191,
+              "departmentName": "全国工人先锋号（胃肠泌尿外科）"
+            }
+          ]
+        }
+      ],
+      "institutionHonorvo": [
+        {
+          "institutionId": 12,
+          "honorWord": "放疗中心",
+          "child": [
+            {
+              "institutionId": 121,
+              "honorWord": "头颈肿瘤放疗I"
+            },
+            {
+              "institutionId": 122,
+              "honorWord": "头颈肿瘤放疗II"
+            },
+            {
+              "institutionId": 123,
+              "honorWord": "头颈肿瘤放疗III"
+            },
+            {
+              "institutionId": 124,
+              "honorWord": "胸部肿瘤放疗I"
+            },
+            {
+              "institutionId": 125,
+              "honorWord": "腹部肿瘤放疗II（乳腺癌、淋巴瘤）"
+            },
+            {
+              "institutionId": 126,
+              "honorWord": "腹部肿瘤放疗II（乳腺癌、淋巴瘤）"
+            },
+            {
+              "institutionId": 127,
+              "honorWord": "胸部肿瘤放疗II"
+            }
+          ]
+        },
+        {
+          "institutionId": 13,
+          "honorWord": "肿瘤外科",
+          "child": [
+            {
+              "institutionId": 121,
+              "honorWord": "头颈肿瘤放疗I"
+            },
+            {
+              "institutionId": 122,
+              "honorWord": "头颈肿瘤放疗II"
+            },
+            {
+              "institutionId": 123,
+              "honorWord": "头颈肿瘤放疗III"
+            },
+            {
+              "institutionId": 124,
+              "honorWord": "胸部肿瘤放疗I"
+            },
+            {
+              "institutionId": 125,
+              "honorWord": "腹部肿瘤放疗II（乳腺癌、淋巴瘤）"
+            },
+            {
+              "institutionId": 126,
+              "honorWord": "腹部肿瘤放疗II（乳腺癌、淋巴瘤）"
+            },
+            {
+              "institutionId": 127,
+              "honorWord": "胸部肿瘤放疗II"
+            }
+          ]
+        },
+        {
+          "institutionId": 14,
+          "honorWord": "肿瘤内科",
+          "child": [
+            {
+              "institutionId": 121,
+              "honorWord": "头颈肿瘤放疗I"
+            },
+            {
+              "institutionId": 122,
+              "honorWord": "头颈肿瘤放疗II"
+            },
+            {
+              "institutionId": 123,
+              "honorWord": "头颈肿瘤放疗III"
+            },
+            {
+              "institutionId": 124,
+              "honorWord": "胸部肿瘤放疗I"
+            },
+            {
+              "institutionId": 125,
+              "honorWord": "腹部肿瘤放疗II（乳腺癌、淋巴瘤）"
+            },
+            {
+              "institutionId": 126,
+              "honorWord": "腹部肿瘤放疗II（乳腺癌、淋巴瘤）"
+            },
+            {
+              "institutionId": 127,
+              "honorWord": "胸部肿瘤放疗II"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+POST http://10.4.9.193:9504/institutionInfo/queryPage
+Content-Type: application/json
+
+{
+  "institutionName": ""
+}

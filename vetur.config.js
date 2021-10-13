@@ -12,6 +12,7 @@ module.exports = {
     './packages/repo-hybrid',
     './packages/repo-operation',
     './packages/repo-organization',
+    './packages/repo-organization-center',
     './packages/repo-patient',
     './packages/repo-pharmacist',
     './packages/repo-website'
