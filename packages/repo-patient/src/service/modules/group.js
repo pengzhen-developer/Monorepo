@@ -159,7 +159,11 @@ export function commentLists(params) {
 export function addData(params) {
   const addData = 'wap/v1/HealthPatient/addData'
 
-  return peace.http.post(addData, params)
+  return peace.http.post(addData, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
 }
 
 /**

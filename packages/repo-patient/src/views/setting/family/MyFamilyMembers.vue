@@ -69,6 +69,7 @@ export default {
     return {
       // isFromHospital: null,
       cardList: [],
+      hasGuardian: false,
       members: [],
       loaded: false,
       dialog: {
@@ -101,6 +102,10 @@ export default {
       peace.service.patient.getMyFamilyList().then((res) => {
         if (res.data.length > 0) {
           res.data.map((item) => {
+            //已有家人为监护人（》=18岁），若当前用户下家人无大于18岁家人，则不展示选择家人按钮【>】
+            if (this.getAgeByBirthday(item.birthday) >= 18) {
+              this.hasGuardian = true
+            }
             if (item.sex === '1') {
               item.sex = '男'
             } else if (item.sex === '0') {
@@ -112,7 +117,21 @@ export default {
         this.loaded = true
       })
     },
-
+    getAgeByBirthday(time) {
+      if (typeof time !== 'string') {
+        return 0
+      }
+      //时间字符串里，必须是“/”
+      let birthday = time.replaceAll('-', '/')
+      let birthDate = new Date(birthday)
+      let nowDateTime = new Date()
+      let age = nowDateTime.getFullYear() - birthDate.getFullYear()
+      //再考虑月、天的因素;.getMonth()获取的是从0开始的，这里进行比较，不需要加1
+      if (nowDateTime.getMonth() < birthDate.getMonth() || (nowDateTime.getMonth() == birthDate.getMonth() && nowDateTime.getDate() < birthDate.getDate())) {
+        age--
+      }
+      return age
+    },
     onComplete() {
       if (this.$route.params.back) {
         this.$router.go(-1)
@@ -144,7 +163,7 @@ export default {
         return peace.util.alert('您最多可添加 4 位家人')
       }
       let canShowSelf = this.members && !this.members.find((item) => item.relation === '本人') ? 1 : 2
-      let json = peace.util.encode({ type: 'add', canShowSelf: canShowSelf })
+      let json = peace.util.encode({ type: 'add', canShowSelf: canShowSelf, hasGuardian: this.hasGuardian })
       this.$router.push(`/setting/familyMember/${json}`)
     }
   }
@@ -193,13 +212,17 @@ export default {
       display: inline-block;
     }
     .custom-title {
-      min-width: 60px;
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       flex: 0 1 auto;
+      margin-right: 18px;
     }
     .custom-age {
-      margin-left: 24px;
-      margin-right: 10px;
-      min-width: 40px;
+      margin-left: 18px;
+      margin-right: 18px;
+      white-space: nowrap;
       flex: 0 1 auto;
     }
   }

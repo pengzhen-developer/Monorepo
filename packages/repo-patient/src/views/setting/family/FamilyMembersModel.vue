@@ -122,125 +122,20 @@
     <template v-if="from == 'add'||from == 'addGuardian'">
       <div class="add-tip">国家卫健委要求，就医行为必须实名登记</div>
       <div class="form form-for-family">
-        <van-field label="姓名"
-                   class="is__require"
-                   :class="{'is__error':error.name}"
-                   placeholder="请输入"
-                   :error-message="error.name"
-                   v-model="model.name"
-                   @blur="checkName" />
-        <van-field label="身份证号"
-                   class="is__require"
-                   :class="{'is__error':error.idcard}"
-                   placeholder="请输入"
-                   :error-message="error.idcard"
-                   v-model="model.idcard"
-                   @blur="checkIdCard" />
-        <van-field @click="showPopupRelation"
-                   label="关系"
-                   class="is__require"
-                   :class="{'is__error':error.relation}"
-                   placeholder="请选择"
-                   readonly
-                   right-icon="arrow"
-                   :error-message="error.relation"
-                   v-model="model.relation" />
-        <van-field @click="showPopupSex"
-                   label="性别"
-                   :class="{'is__error':error.sex}"
-                   placeholder="请选择"
-                   readonly
-                   right-icon="arrow"
-                   :error-message="error.sex"
-                   v-model="model.sex"
-                   @blur="checkSex" />
-        <van-field @click="showPopupBirthday"
-                   label="生日"
-                   :class="{'is__error':error.birthday}"
-                   placeholder="请选择"
-                   readonly
-                   right-icon="arrow"
-                   :error-message="error.birthday"
-                   v-model="model.birthday"
-                   @blur="checkBirthday" />
-        <van-field @click="showPopupNations"
-                   label="民族"
-                   placeholder="请选择"
-                   readonly
-                   right-icon="arrow"
-                   v-model="model.nationName" />
-
-        <van-cell-group v-if="canShowGardian">
-          <van-row style="height:10px;background:#f9f9f9;width:calc(100% + 30px );margin:0 -15px;">
-          </van-row>
-          <van-cell :class="{'is__error':error.gardian}"
-                    is-link
-                    @click="goToGardian"
-                    v-if="age!= null && age < this.ageLimit">
-            <div class="relative">
-              <div>就诊人未满6岁，请填写监护人信息</div>
-              <div class="van-field__error-message"
-                   v-if="error.gardian">{{error.gardian}}</div>
-            </div>
-          </van-cell>
-          <van-cell title="监护人姓名"
-                    :value="gardianName"
-                    v-if="gardianName" />
-          <van-cell title="监护人身份证号"
-                    :value="gardianId"
-                    v-if="gardianId" />
-        </van-cell-group>
-        <peace-dialog :visible.sync="showAllergicHistory">
-          <AddAllergicHistory @onSave="showAllergicHistory = false"
-                              v-model="model.allergic_history"></AddAllergicHistory>
-        </peace-dialog>
-        <peace-dialog :visible.sync="showFoodAllergy">
-          <AddFoodAllergy @onSave="showFoodAllergy = false"
-                          v-model="model.foodAllergy"></AddFoodAllergy>
-        </peace-dialog>
-
-        <peace-dialog :title="gDialog.title"
-                      :visible.sync="gDialog.visible"
-                      @update:visible="checkGardian">
-          <GuardianList :data="gDialog.data"
-                        @setGardianInfo="setGardianInfo" />
-        </peace-dialog>
+        <PatientAdd :hasGuardian="hasGuardian"
+                    :canShowSelf="canShowSelf"
+                    ref="add"
+                    @update="updateModel"></PatientAdd>
       </div>
       <div class="bottom">
         <van-button @click="submit"
                     :disabled="!canSubmit"
+                    :loading="hasClick"
                     size="large"
                     round
                     type="primary">保存</van-button>
       </div>
     </template>
-
-    <!-- 关系 -->
-    <van-popup position="bottom"
-               v-model="showRelation">
-      <van-picker :columns="relations"
-                  @cancel="closeAllPopup('relations')"
-                  @confirm="setRelation"
-                  show-toolbar />
-    </van-popup>
-    <!-- 性别 -->
-    <van-popup position="bottom"
-               v-model="showSex">
-      <van-picker :columns="sexs"
-                  @cancel="closeAllPopup"
-                  @confirm="setSex"
-                  show-toolbar />
-    </van-popup>
-    <!-- 生日 -->
-    <van-popup position="bottom"
-               v-model="showBirthday">
-      <van-datetime-picker :max-date="maxDate"
-                           :min-date="minDate"
-                           @cancel="showBirthday = false"
-                           @confirm="selectTime"
-                           type="date"
-                           v-model="currentDate" />
-    </van-popup>
 
     <!-- 民族 -->
     <van-popup position="bottom"
@@ -315,47 +210,20 @@
                     type="primary">保存</van-button>
       </div>
     </van-popup>
-    <!-- 修改身份证  cancelAgain-->
-    <van-popup position="bottom"
-               @click-overlay="cancelAgain"
-               round
-               class="popup-card"
-               v-model="idcardDialog.visible">
-      <div class="header">提示</div>
-      <div class="content">
-        <div class="title">请核对您填写的身份证号</div>
-        <van-field label="身份证号"
-                   :class="{'is__error':idcardDialog.error.idcard}"
-                   placeholder="请输入"
-                   :error-message="idcardDialog.error.idcard"
-                   v-model="idcardDialog.model.idcard"
-                   @blur="checkIdCardAgain" />
-      </div>
-      <div class="footer">
-        <van-button round
-                    @click="cancelAgain">取消</van-button>
-        <van-button round
-                    @click="confirmAgain">确定</van-button>
-      </div>
-    </van-popup>
+
   </div>
 </template>
 <script>
 import peace from '@src/library'
 
-import AddAllergicHistory from '@src/views/components/AddAllergicHistory'
-import AddFoodAllergy from '@src/views/components/AddFoodAllergy'
-import GuardianList from './GuardianList'
 import YibaoCardAdd from '@src/views/components/YibaoCardAdd'
-
+import PatientAdd from '@src/views/components/PatientAdd.vue'
 import { Dialog } from 'vant'
 
 export default {
   components: {
-    GuardianList,
-    AddAllergicHistory,
-    AddFoodAllergy,
-    YibaoCardAdd
+    YibaoCardAdd,
+    PatientAdd
   },
 
   data() {
@@ -378,7 +246,8 @@ export default {
         foodAllergy: '',
         nationCode: '',
         nationName: '',
-        isReconfirm: 0
+        isReconfirm: '',
+        isReconfirmGuardian: ''
       },
       error: {
         name: '',
@@ -395,7 +264,8 @@ export default {
         },
         model: {
           idcard: '',
-          name: ''
+          name: '',
+          type: ''
         }
       },
       familyId: '',
@@ -420,15 +290,11 @@ export default {
       currentDate: new Date(),
       maxDate: new Date(),
       nationsMap: [],
-      showAllergicHistory: false,
-      showFoodAllergy: false,
-      showRelation: false,
-      showSex: false,
-      showBirthday: false,
       showNations: false,
       addGardian: false,
       childInfo: {},
       canShowSelf: true,
+      hasGuardian: false,
       loading: false,
       hasClick: false,
 
@@ -444,24 +310,37 @@ export default {
       return this.yibaoCardList.length > 0
     },
     canShowGardian() {
-      return !this.addGardian && this.from != 'addGuardian' && (this.gardianSet || (this.age != null && this.age <= this.ageLimit))
+      return !this.addGardian && this.from != 'addGuardian' && (this.gardianSet || (this.age != null && this.age < this.ageLimit))
+    },
+    needIdCard() {
+      //小于6岁 身份证非必填
+      return this.age != null && this.age < this.ageLimit ? false : true
     },
     canSubmit() {
       let result = false
 
-      if (this.model.name && this.model.idcard && this.model.relation && this.model.sex && this.model.birthday) {
-        result = true
+      if (this.needIdCard) {
+        if (this.model.name && this.model.idcard && this.model.relation && this.model.sex && this.model.birthday && peace.validate.idCard(this.model.idcard)) {
+          result = true
+        } else {
+          result = false
+        }
       } else {
-        result = false
+        if (
+          this.model.name &&
+          this.model.relation &&
+          this.model.sex &&
+          this.model.birthday &&
+          this.model.guardianName &&
+          this.model.guardianIdCard &&
+          peace.validate.idCard(this.model.guardianIdCard)
+        ) {
+          result = true
+        } else {
+          result = false
+        }
       }
-      // if (this.from == 'addGuardian' || this.addGardian) {
-      //   let gardianAge = this.getAgeByIdCard(this.model.idcard)
-      //   if (gardianAge < 18) {
-      //     result = false
-      //   } else {
-      //     result = true
-      //   }
-      // }
+
       return result
     }
   },
@@ -471,16 +350,29 @@ export default {
     'model.idcard'(val) {
       if (peace.validate.idCard(val)) {
         if (val.length == 15) {
-          this.model.sexKey = val.toString().charAt(14) % 2
-          this.model.sex = this.model.sexKey ? '男' : '女'
-          this.model.birthday = '19' + val.substr(6, 2) + '-' + val.substr(8, 2) + '-' + val.substr(10, 2)
+          if (!this.model.sex) {
+            let sexKey = val.toString().charAt(14) % 2
+            this.model.sex = sexKey ? '男' : '女'
+          }
+          if (!this.model.birthday) {
+            this.model.birthday = '19' + val.substr(6, 2) + '-' + val.substr(8, 2) + '-' + val.substr(10, 2)
+          }
         }
         if (val.length == 18) {
-          this.model.sexKey = val.toString().charAt(16) % 2
-          this.model.sex = this.model.sexKey ? '男' : '女'
-          this.model.birthday = val.substr(6, 4) + '-' + val.substr(10, 2) + '-' + val.substr(12, 2)
+          if (!this.model.sex) {
+            let sexKey = val.toString().charAt(16) % 2
+            this.model.sex = sexKey ? '男' : '女'
+          }
+          if (!this.model.birthday) {
+            this.model.birthday = val.substr(6, 4) + '-' + val.substr(10, 2) + '-' + val.substr(12, 2)
+          }
         }
         this.age = this.getAgeByIdCard(val)
+      }
+    },
+    'model.birthday'(val) {
+      if (val) {
+        this.age = this.getAgeByBirthday(val)
       }
     },
 
@@ -518,10 +410,19 @@ export default {
     if (json.canShowSelf) {
       this.canShowSelf = json.canShowSelf == 1 ? true : false
     }
+    if (json.hasGuardian) {
+      this.hasGuardian = json.hasGuardian
+    }
     this.getOrganizationTelephone()
   },
 
   methods: {
+    updateModel(result) {
+      this.model = Object.assign({}, this.model, result.model)
+
+      this.gardianName = this.model.guardianName
+      this.gardianId = this.model.guardianIdCard
+    },
     getOrganizationTelephone() {
       const params = {
         hosoitalId: peace.cache.get(peace.type.SYSTEM.NETHOSPITALID) || ''
@@ -530,9 +431,7 @@ export default {
         this.serviceTel = res.data.serviceTel
       })
     },
-    checkName() {
-      this.error.name = !this.model.name ? '姓名不能为空' : ''
-    },
+
     checkIdCardAgain() {
       if (!this.idcardDialog.model.idcard) {
         this.idcardDialog.error.idcard = '身份证号不能为空'
@@ -563,31 +462,7 @@ export default {
         }
       }
     },
-    checkRelation() {
-      this.error.relation = !this.model.relation ? '请选择关系' : ''
-    },
-    checkSex() {
-      // this.error.sex = !this.model.sex ? '请选择性别' : ''
-    },
-    checkBirthday() {
-      // this.error.birthday = !this.model.birthday ? '请选择出生日期' : ''
-    },
-    checkGardian() {
-      if (this.addGardian) {
-        let gardianAge = this.getAgeByIdCard(this.model.idcard)
-        if (gardianAge < 18) {
-          this.error.gardian = '监护人年龄不得小于18岁'
-        } else {
-          this.error.gardian = ''
-        }
-      } else {
-        if (this.age != null && this.age <= this.ageLimit && this.gardianName == '' && this.gardianId == '') {
-          this.error.gardian = '请选择监护人'
-        } else {
-          this.error.gardian = ''
-        }
-      }
-    },
+
     updataInfo() {
       this.showUpdateInfo = true
       this.currentYibaoCard = {}
@@ -652,43 +527,6 @@ export default {
       })
     },
 
-    setGardianInfo(item) {
-      if (item.idCard) {
-        this.gardianId = item.idCard
-        this.gardianName = item.name
-        this.gardianSet = true
-        this.checkGardian()
-      } else {
-        //新增监护人信息
-
-        //如果被监护人选择‘本人’则新增监护人不显示‘本人’
-        if (this.model.relation == '本人') {
-          this.canShowSelf = false
-        }
-
-        this.addGardian = true
-        this.age = null
-
-        this.model = {
-          name: '',
-          idcard: '',
-          relation: '',
-          sex: '',
-          birthday: '',
-          allergic_history: '',
-          foodAllergy: '',
-          nationCode: '',
-          nationName: '',
-          isReconfirm: 0
-        }
-
-        this.gardianId = ''
-        this.gardianName = ''
-        this.gardianSet = false
-      }
-
-      this.gDialog.visible = false
-    },
     getAgeByIdCard(identityCard) {
       this.gardianSet = false
       var len = (identityCard + '').length
@@ -712,6 +550,21 @@ export default {
       var birthDate = new Date(strBirthday)
       var nowDateTime = new Date()
       var age = nowDateTime.getFullYear() - birthDate.getFullYear()
+      //再考虑月、天的因素;.getMonth()获取的是从0开始的，这里进行比较，不需要加1
+      if (nowDateTime.getMonth() < birthDate.getMonth() || (nowDateTime.getMonth() == birthDate.getMonth() && nowDateTime.getDate() < birthDate.getDate())) {
+        age--
+      }
+      return age
+    },
+    getAgeByBirthday(time) {
+      if (typeof time !== 'string') {
+        return 0
+      }
+      //时间字符串里，必须是“/”
+      let birthday = time.replaceAll('-', '/')
+      let birthDate = new Date(birthday)
+      let nowDateTime = new Date()
+      let age = nowDateTime.getFullYear() - birthDate.getFullYear()
       //再考虑月、天的因素;.getMonth()获取的是从0开始的，这里进行比较，不需要加1
       if (nowDateTime.getMonth() < birthDate.getMonth() || (nowDateTime.getMonth() == birthDate.getMonth() && nowDateTime.getDate() < birthDate.getDate())) {
         age--
@@ -769,61 +622,24 @@ export default {
       })
       this.$router.push(`/setting/cardDetail/${json}`)
     },
-    selectTime(value) {
-      this.showBirthday = false
-      this.model.birthday = value.formatDate()
-    },
 
-    setRelation(val) {
-      this.model.relation = val
-      this.closeAllPopup('relations')
-    },
-
-    setSex(val) {
-      this.model.sex = val
-      this.closeAllPopup()
-    },
     setNations(val) {
       let code = this.getNationCodeByName(val)
       this.model.nationCode = code
       this.model.nationName = val
       this.closeAllPopup()
     },
-    showPopupRelation() {
-      this.showRelation = true
-    },
-
-    showPopupSex() {
-      this.showSex = true
-    },
-
-    showPopupBirthday() {
-      this.showBirthday = true
-    },
 
     showPopupNations() {
       this.showNations = true
     },
     // 关闭所有弹出层
-    closeAllPopup(type = '') {
-      if (type == 'relations') {
-        this.checkRelation()
-      }
-      this.showRelation = false
-      this.showSex = false
-      this.showBirthday = false
+    closeAllPopup() {
       this.showNations = false
     },
 
     // 保存
-    submit() {
-      this.checkName()
-      this.checkIdCard()
-      this.checkRelation()
-      this.checkSex()
-      this.checkBirthday()
-      this.checkGardian()
-
+    async submit() {
       if (!this.canSubmit) {
         return
       }
@@ -859,12 +675,61 @@ export default {
           this.perfectInfo()
         }
       } else {
-        // 添加家人情况
-        if (this.model.isReconfirm == 0) {
-          this.checkFamilyIdCard()
-        } else {
-          this.saveFamily()
+        if (!this.model.name) {
+          return peace.util.alert('姓名不能为空')
         }
+        if (!this.model.idcard && this.needIdCard) {
+          return peace.util.alert('身份证不能为空')
+        }
+        if (!this.model.relation) {
+          return peace.util.alert('请选择关系')
+        }
+        if (!this.model.sex) {
+          return peace.util.alert('请选择性别')
+        }
+        if (!this.model.birthday) {
+          return peace.util.alert('请选择生日')
+        }
+        // if (!this.model.nationName) {
+        //   return peace.util.alert('请选择民族')
+        // }
+        if (this.canShowGuardian) {
+          if (!this.model.guardianName) {
+            return peace.util.alert('监护人姓名不能为空')
+          }
+          if (!this.model.guardianIdCard) {
+            return peace.util.alert('监护人身份证不能为空')
+          }
+        }
+        // 添加家人情况
+        if (this.model.idcard && this.model.isReconfirm === '') {
+          // 第一次二要素检验
+          const params = {
+            idCard: this.model.idcard,
+            name: this.model.name,
+            type: 'self'
+          }
+          const result = await this.$refs.add.checkFamilyIdCard(params)
+          if (!result) {
+            this.hasClick = false
+            return
+          }
+        }
+
+        if (this.model.guardianIdCard && this.model.isReconfirmGuardian === '') {
+          const params = {
+            idCard: this.model.guardianIdCard,
+            name: this.model.guardianName,
+            type: 'guardian'
+          }
+          const result = await this.$refs.add.checkFamilyIdCard(params)
+          if (!result) {
+            this.hasClick = false
+            return
+          }
+        }
+
+        this.saveFamily()
       }
     },
     saveFamily() {
@@ -903,7 +768,7 @@ export default {
               peace.service.IM.initNIMS({ type: 'add', ...res.data })
               this.familyId = res.data.accid
               if (params.emit) {
-                $peace.$emit(params.emit, res)
+                $peace.$emit(params.emit, { res, status: true, familyInfo: { familyId: res.data.accid, name: this.model.name } })
                 this.$router.go(-1)
               } else {
                 this.getFamilyInfo({ id: res.data.accid, source: 2 })
@@ -970,69 +835,6 @@ export default {
           this.$router.go(-1)
         })
       })
-    },
-    checkFamilyIdCard() {
-      const params = {
-        idCard: this.model.idcard,
-        name: this.model.name
-      }
-      peace.service.patient
-        .CheckFamilyIdCard(params)
-        .then((res) => {
-          //1：正常  2：库中无此身份证号码
-          this.model.isReconfirm = res.data?.status == 2 ? 1 : 0
-          if (res.data.status == 2) {
-            this.idcardDialog.visible = true
-            this.idcardDialog.model.idcard = this.model.idcard
-            this.idcardDialog.model.name = this.model.name
-          } else {
-            this.saveFamily()
-          }
-        })
-        .catch((err) => {
-          if (err.data.code == '202') {
-            this.error.idcard = err.data.msg
-          } else {
-            peace.util.alert(err.data.msg)
-          }
-        })
-        .finally(() => {
-          this.hasClick = false
-        })
-    },
-    //身份证二次检验-确认
-    confirmAgain() {
-      if (!this.checkIdCardAgain()) {
-        return
-      }
-      const params = {
-        idCard: this.idcardDialog.model.idcard,
-        name: this.idcardDialog.model.name
-      }
-      peace.service.patient
-        .CheckFamilyIdCard(params)
-        .then((res) => {
-          //1：正常  2：库中无此身份证号码
-          this.model.isReconfirm = res.data?.status == 2 ? 1 : 0
-          this.model.idcard = this.idcardDialog.model.idcard
-          this.idcardDialog.visible = false
-          this.saveFamily()
-        })
-        .catch((err) => {
-          if (err.data.code == '202') {
-            this.idcardDialog.error.idcard = err.data.msg
-          } else {
-            peace.util.alert(err.data.msg)
-          }
-        })
-        .finally(() => {
-          this.hasClick = false
-        })
-    },
-    //身份证二次检验-取消
-    cancelAgain() {
-      this.model.isReconfirm = 0
-      this.idcardDialog.visible = false
     }
   }
 }

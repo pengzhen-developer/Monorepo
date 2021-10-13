@@ -27,11 +27,11 @@
         </van-cell>
       </div>
 
-      <div class="bottom">
+      <!-- <div class="bottom">
         <van-button @click="setGardianInfo({})"
                     round
                     type="primary">新增监护人</van-button>
-      </div>
+      </div> -->
 
     </template>
     <template v-if="loaded&&guardianList.length == 0">

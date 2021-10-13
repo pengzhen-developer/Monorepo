@@ -1241,6 +1241,15 @@ const routers = [
     },
     component: () => import('@src/views/components/CommentList.vue')
   },
+  /** 患者报到 */
+  {
+    path: '/components/PatientReport/:json',
+    name: '/components/PatientReport',
+    meta: {
+      auth: false
+    },
+    component: () => import('@src/views/components/PatientReport.vue')
+  },
   /** 诊疗记录 */
   {
     path: '/components/FirstVisitList/:json',

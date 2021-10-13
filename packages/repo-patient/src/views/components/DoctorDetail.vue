@@ -470,13 +470,6 @@
       </div>
     </template>
 
-    <!-- 就诊人信息 -->
-    <template>
-      <AddPatientMsg :doctor="doctor.doctorInfo"
-                     :showFamily.sync="showFamily"
-                     type='doctorDetail'
-                     @changeFlag="changeFlag"></AddPatientMsg>
-    </template>
     <!-- 医生账号禁用 -->
     <template v-if="!doctorStatus">
       <div class="none-page-doctor">
@@ -492,7 +485,10 @@
     <template v-if="isLoading">
       <van-row type="flex"
                justify="center"
+               align="center"
                style="height:100vh;">
+        <van-loading type="spinner"
+                     size="20" />
       </van-row>
 
     </template>
@@ -506,7 +502,6 @@
 </template>
 
 <script>
-import AddPatientMsg from '@src/views/components/AddPatientMsg'
 import UserServiceNotice from '@src/views/components/UserServiceNotice'
 import peace from '@src/library'
 import Vue from 'vue'
@@ -514,7 +509,7 @@ import { Dialog, Rate } from 'vant'
 
 Vue.use(Rate)
 export default {
-  components: { AddPatientMsg, UserServiceNotice },
+  components: { UserServiceNotice },
   data() {
     return {
       fold: true,
@@ -582,6 +577,7 @@ export default {
       //通过分享进入医生首页 获取分享标识isEwm字段并存在缓存中
       this.isEwm = peace.util.decode(this.$route.params.json).isEwm ? 1 : 0
       if (peace.util.decode(this.$route.params.json).isEwm) {
+        peace.cache.set(peace.type.SYSTEM.EWM_STATUS, 'begin')
         peace.cache.set(peace.type.SYSTEM.IS_EWM, this.isEwm)
         peace.cache.set(peace.type.SYSTEM.EWM_INFO, {
           ewmScene: 'doctorQrcode',
@@ -589,6 +585,7 @@ export default {
         })
       }
     }
+
     this.getDoctorInfo()
     if (!this.hasLogin() && this.isEwm) {
       this.goLogin()
@@ -640,6 +637,7 @@ export default {
         this.getWapDoctorInfo()
       }
     },
+
     //复诊开药查看更多
     gotoAppointPage(time, type) {
       this.trackByClcik(type === 'more' ? '复诊续方查看更多' : '复诊续方预约', '服务区')
@@ -762,16 +760,30 @@ export default {
             })
           }
 
-          let isAddPatient = res.data.doctorInfo.isAddPatient //是否添加就诊人
-
-          if (this.hasLogin() && this.isEwm && !isAddPatient) {
-            setTimeout(() => {
-              this.showFamily = true
-            }, 500)
-          }
           this.doctor = res.data
           this.getCommentList(type)
           this.getServiceList()
+          //医生主页-扫码
+
+          let status = peace.cache.get(peace.type.SYSTEM.EWM_STATUS)
+          if (this.hasLogin() && this.isEwm) {
+            if (status === 'begin') {
+              this.shareDoctor()
+              peace.cache.set(peace.type.SYSTEM.EWM_STATUS, 'ongoing')
+              const json = peace.util.encode({
+                doctorInfo: this.doctor.doctorInfo
+              })
+              this.$router.push({ path: `/components/PatientReport/${json}` })
+            } else if (status === 'completed') {
+              peace.util.alert('报到成功')
+              peace.cache.remove(peace.type.SYSTEM.IS_EWM)
+              peace.cache.remove(peace.type.SYSTEM.EWM_INFO)
+            } else if (status === 'ongoing') {
+              peace.cache.remove(peace.type.SYSTEM.IS_EWM)
+              peace.cache.remove(peace.type.SYSTEM.EWM_INFO)
+            }
+          }
+          //医生主页-分享
           let obj = {
             url: '',
             title: this.doctor.doctorInfo.name + ' ' + this.doctor.doctorInfo.doctorTitle,
@@ -791,14 +803,17 @@ export default {
       this.trackByClcik('展开', '基础资料')
     },
 
-    shareDoctor(doctorInfo) {
+    shareDoctor() {
       const params = {
-        doctorId: doctorInfo.doctorId,
+        doctorId: this.doctor.doctorInfo.doctorId,
         link: 3
       }
-
+      //关注后不让取消
+      if (this.doctor.doctorInfo.attentionStatus) {
+        return
+      }
       peace.service.patient.attention(params).then(() => {
-        doctorInfo.attentionStatus = true
+        this.doctor.doctorInfo.attentionStatus = true
 
         this.trackByClcik('关注', '基础资料')
       })

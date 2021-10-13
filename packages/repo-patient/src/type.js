@@ -40,6 +40,8 @@ export const SYSTEM = {
 
   // 是否扫码进入
   IS_EWM: 'h5.isEwm',
+  //扫码操作状态
+  EWM_STATUS: 'h5.ewmStatus',
   //  医生分享信息
   EWM_INFO: 'h5.ewmInfo'
 }
