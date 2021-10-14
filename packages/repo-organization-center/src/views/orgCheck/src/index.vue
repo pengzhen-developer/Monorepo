@@ -26,8 +26,7 @@
               <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionName"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionName"
                          label="机构名称"/>
-              <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionCode"
-                         :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionCode"
+              <info-item :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionCode"
                          label="机构编码"/>
               <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.serviceLicenceNo"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.serviceLicenceNo"
