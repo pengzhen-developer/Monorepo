@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" class="layout-card full-height overflow-auto">
+  <div v-loading="loading" class="layout-card">
 
     <empty v-if="isError" description="抱歉，请求错误请稍后再试">
       <el-button type="primary" v-on:click="back">返回</el-button>
@@ -8,6 +8,7 @@
     <div v-else>
 
       <div v-if="newInstitutionInfoAuditDetails.institutionInfoAuditVO">
+
         <div class="bg-white">
 
           <div class="q-pl-md q-pt-24">
@@ -25,10 +26,10 @@
               <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionName"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionName"
                          label="机构名称"/>
-              <info-item :preValue="newInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionCode"
+              <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionCode"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionCode"
                          label="机构编码"/>
-              <info-item :preValue="newInstitutionInfoAuditDetails.institutionInfoAuditVO.serviceLicenceNo"
+              <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.serviceLicenceNo"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.serviceLicenceNo"
                          label="执业许可证登记号"/>
             </div>
@@ -69,13 +70,21 @@
                          label="地址"/>
             </div>
 
-            <div class="row col q-mb-12">
+            <div class="row col q-mb-12" v-if="showNetHospitalInfo">
               <info-item :preValue="oldNetHospital"
                          :value="netHospital"
                          label="是否分院"/>
               <info-item :preValue="oldShareHosptial"
                          :value="shareHosptial"
                          label="是否互联网医院"/>
+              <div class="col"></div>
+            </div>
+
+            <div class="row col q-mb-12" v-if="showHasShop">
+              <info-item :preValue="oldHasShop"
+                         :value="hasShop"
+                         label="是否门店"/>
+              <div class="col"></div>
               <div class="col"></div>
             </div>
 
@@ -149,7 +158,6 @@
 
         </div>
 
-
         <div class="bg-white q-mt-md" v-if="newInstitutionInfoAuditDetails.institutionInfoAuditVO.auditStatus !== 'report'">
 
           <div class="header">
@@ -168,7 +176,7 @@
                          label="审核时间"/>
             </div>
 
-            <div class="row col q-mb-12">
+            <div class="row col q-mb-12" v-if="newInstitutionInfoAuditDetails.institutionInfoAuditVO.remark">
               <info-item :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.remark"
                          label="备      注"/>
             </div>
@@ -182,14 +190,14 @@
       <div v-if="newInstitutionInfoAuditDetails.institutionInfoAuditVO && newInstitutionInfoAuditDetails.institutionInfoAuditVO.auditStatus === 'report'"
            class="bg-white q-my-md q-py-md q-pr-md">
         <el-form ref="form" :model="form" :rules="rules" label-width="90px">
-          <el-form-item label="审核结果：">
+          <el-form-item label="审核结果：" prop="auditStatus">
             <el-radio-group v-model="form.auditStatus">
               <el-radio label="通过"></el-radio>
               <el-radio label="不通过"></el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="备      注：" prop="remark">
-            <el-input v-model="form.remark" :rows="4" resize="none" type="textarea"></el-input>
+          <el-form-item label="备      注：" prop="remark" v-if="form.auditStatus !== '通过'">
+            <el-input v-model="form.remark" :rows="4" resize="none" type="textarea" maxlength="500" show-word-limit></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" v-on:click="onSubmit" v-bind:loading="submitLoading">确定</el-button>
@@ -210,7 +218,7 @@ import InfoItem from '@src/components/orgDetail/InfoItem.vue'
 import ImageItem from "@src/components/orgDetail/ImageItem"
 import HonorInfoItem from "@src/components/orgDetail/HonorInfoItem"
 import SpecialInfoItem from "@src/components/orgDetail/SpecialInfoItem"
-
+const shopStoreIds = ['P', 'P1', 'P4', 'P9', 'P110', 'P120', 'P300', 'P410', 'P420', 'P430', 'P440', 'P490', 'P500', 'P600']
 export default {
   name: 'orgCheck',
   props: {
@@ -242,13 +250,16 @@ export default {
         institutionHonorAuditVOList: []
       },
       form: {
-        auditStatus: '通过',
+        auditStatus: '',
         remark: undefined,
       },
       rules: {
         remark: [
           {required: true, message: '请输入备注', trigger: 'blur'},
-        ]
+        ],
+        auditStatus: [
+          { required: true, message: '请选择活动资源', trigger: 'change' }
+        ],
       },
       loading: false,
       submitLoading: false,
@@ -308,6 +319,42 @@ export default {
       }
     },
 
+    showNetHospitalInfo() {
+      const typeCode = this.newInstitutionInfoAuditDetails.institutionInfoAuditVO?.hospitalTypeCode ?? ""
+      if (Peace.validate.isEmpty(typeCode)) {
+        return false
+      } else {
+        return typeCode.startsWith("A")
+      }
+
+    },
+
+    showHasShop() {
+      const typeCode = this.newInstitutionInfoAuditDetails.institutionInfoAuditVO?.hospitalTypeCode ?? ""
+      if (Peace.validate.isEmpty(typeCode)) {
+        return false
+      } else {
+        return shopStoreIds.some((item) => item === typeCode)
+      }
+
+    },
+
+    hasShop() {
+      if (Peace.validate.isEmpty(this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareShop)) {
+        return ''
+      } else {
+        return this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareShop ? '是' : '否'
+      }
+    },
+
+    oldHasShop() {
+      if (Peace.validate.isEmpty(this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareShop)) {
+        return ''
+      } else {
+        return this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareShop ? '是' : '否'
+      }
+    },
+
     netHospital() {
       if (Peace.validate.isEmpty(this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.isNetHosptial)) {
         return ''
@@ -353,9 +400,8 @@ export default {
         this.oldInstitutionInfoAuditDetails.institutionDepartmentAuditVOList = res.data?.oldInstitutionInfoDetail?.institutionDepartmentAuditVOList ?? []
         this.oldInstitutionInfoAuditDetails.institutionHonorAuditVOList = res.data?.oldInstitutionInfoDetail?.institutionHonorAuditVOList ?? []
 
-      }).catch((err) => {
+      }).catch(() => {
         this.isError = true
-        console.log(err)
       }).finally(() => {
         this.loading = false
       })
@@ -373,9 +419,10 @@ export default {
 
       const params = {
         id:  this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.auditId,
-        remark: this.form.remark,
+        remark: this.form.auditStatus === "通过" ? undefined : this.form.remark,
         auditStatus: this.form.auditStatus === "通过" ? 'success' : 'fail'
       }
+
       this.submitLoading = true
       Service.checkOrg(params).then(() => {
         this.$emit('refresh')

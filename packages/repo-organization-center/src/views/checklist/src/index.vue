@@ -1,6 +1,7 @@
 <template>
 
-  <div class="full-height">
+  <div class="full-height overflow-auto">
+
     <div v-show="!orgDetailOptions.show" class="layout-route">
       <div class="card card-search q-mb-md">
 
@@ -30,6 +31,7 @@
                          v-bind:label="item.label"
                          v-bind:value="item.value"></el-option>
             </PeaceSelect>
+
 
           </el-form-item>
 
@@ -112,7 +114,7 @@
 
           <PeaceTableColumn label="审核人"
                             min-width="100"
-                            prop="auditerId"></PeaceTableColumn>
+                            prop="auditerName"></PeaceTableColumn>
           <PeaceTableColumn label="操作"
                             min-width="100">
             <template slot-scope="scope">
@@ -139,7 +141,6 @@
 <script>
 import Service from './service'
 import orgCheck from '@src/views/orgCheck'
-
 export default {
   name: 'checkList',
   components: {
@@ -167,10 +168,6 @@ export default {
       },
     }
   },
-  created() {
-
-  },
-
   async mounted() {
     this.source.auditTypeList = await Peace.identity.dictionary.getList('auditer_type')
     this.source.auditStatusList = await Peace.identity.dictionary.getList('audit_status')

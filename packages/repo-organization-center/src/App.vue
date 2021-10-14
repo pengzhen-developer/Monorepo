@@ -9,14 +9,13 @@
 export default {
   created() {
     const token = this.getCookie('ut')
-    Peace.http.defaults.headers.common['ut'] = Peace.validate.isEmpty(token) ? '' : token
+    Peace.http.defaults.headers.common['ut'] = Peace.validate.isEmpty(token) ? 'c01b7ff5bd1b4805aeaa3c0324307ca3' : token
   },
   methods: {
     //获取cookie
     getCookie: function (cname) {
       const name = cname + "=";
       const ca = document.cookie.split(';');
-      console.log("获取cookie,现在循环")
       for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
         console.log(c)

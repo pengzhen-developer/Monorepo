@@ -1,7 +1,7 @@
 <template>
   <div class="row col info-item">
     <span :class="{ active: isDiff,  'label': true }">机构荣誉</span>
-    <div class="full-width column">
+    <div class="full-width">
       <div class="col honor-layout" v-for="item in value" v-bind:key="item.honorWord">
 
         <div class="honor-title q-mb-12" type="primary">
@@ -39,7 +39,30 @@ export default {
       if ((JSON.stringify([]) === JSON.stringify(this.preValue))) {
         return false
       }
-      return !(JSON.stringify(this.value) === JSON.stringify(this.preValue))
+
+      const tmp = this.value.map((item) => {
+        let tmp = item.institutionHonorVOList ?? []
+        let tmpArray = tmp.map((i) => {
+          return {name: i.honorWord}
+        })
+        return {
+          name: item.honorWord,
+          child: tmpArray
+        }
+      })
+
+      const oldTmp = this.preValue.map((item) => {
+        let tmp = item.institutionHonorVOList ?? []
+        let tmpArray = tmp.map((i) => {
+          return {name: i.honorWord}
+        })
+        return {
+          name: item.honorWord,
+          child: tmpArray
+        }
+      })
+
+      return (JSON.stringify(tmp) !== JSON.stringify(oldTmp))
     }
   }
 }

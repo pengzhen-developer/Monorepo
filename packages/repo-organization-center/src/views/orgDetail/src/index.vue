@@ -1,5 +1,13 @@
 <template>
-  <div class="layout-card full-height overflow-auto" v-loading="loading">
+  <div class="layout-card full-height" v-loading="loading">
+
+
+    <empty v-if="isError" description="抱歉，请求错误请稍后再试">
+      <el-button type="primary" v-on:click="back">返回</el-button>
+    </empty>
+
+    <div v-else>
+
     <div v-if="currentDate.institutionInfoAuditVO">
 
       <div class="bg-white">
@@ -27,34 +35,44 @@
             <info-item label="统一社会信用代码"
                        :value="currentDate.institutionInfoAuditVO.socialNo" />
             <info-item label="机构类型"
-                       :value="currentDate.institutionInfoAuditVO.institutionTypeCode" />
+                       :value="currentDate.institutionInfoAuditVO.institutionTypeName" />
             <info-item label="医院类型"
-                       :value="currentDate.institutionInfoAuditVO.hospitalTypeCode" />
+                       :value="currentDate.institutionInfoAuditVO.hospitalTypeName" />
           </div>
 
           <div class="row col q-mb-12">
             <info-item label="医院等级"
-                       :value="currentDate.institutionInfoAuditVO.hospitalLevelCode" />
+                       :value="currentDate.institutionInfoAuditVO.hospitalLevelName" />
             <info-item label="所有制形式"
-                       :value="currentDate.institutionInfoAuditVO.fromTypeCode" />
+                       :value="currentDate.institutionInfoAuditVO.fromTypeName" />
             <info-item label="服务对象"
-                       :value="currentDate.institutionInfoAuditVO.servicerTypeCode" />
+                       :value="currentDate.institutionInfoAuditVO.servicerTypeName" />
           </div>
 
           <div class="row col q-mb-12">
             <info-item label="机构性质"
-                       :value="currentDate.institutionInfoAuditVO.institutionWayCode" />
+                       :value="currentDate.institutionInfoAuditVO.institutionWayName" />
             <info-item label="录属关系"
                        :value="currentDate.institutionInfoAuditVO.relationTypeName" />
             <info-item label="地址"
                        :value="currentDate.institutionInfoAuditVO.address" />
           </div>
 
-          <div class="row col q-mb-12">
-            <info-item label="是否分院"
-                       :value="shareHosptial" />
-            <info-item label="是否互联网医院"
-                       :value="netHospital" />
+          <div class="row col q-mb-12" v-if="showNetHospitalInfo">
+            <info-item :preValue="oldNetHospital"
+                       :value="netHospital"
+                       label="是否分院"/>
+            <info-item :preValue="oldShareHosptial"
+                       :value="shareHosptial"
+                       label="是否互联网医院"/>
+            <div class="col"></div>
+          </div>
+
+          <div class="row col q-mb-12" v-if="showHasShop">
+            <info-item :preValue="oldHasShop"
+                       :value="hasShop"
+                       label="是否门店"/>
+            <div class="col"></div>
             <div class="col"></div>
           </div>
 
@@ -99,6 +117,7 @@
 
     </div>
 
+    </div>
   </div>
 </template>
 
@@ -108,6 +127,7 @@ import InfoItem from '@src/components/orgDetail/InfoItem.vue'
 import ImageItem from "@src/components/orgDetail/ImageItem";
 import HonorInfoItem from "@src/components/orgDetail/HonorInfoItem";
 import SpecialInfoItem from "@src/components/orgDetail/SpecialInfoItem";
+const shopStoreIds = ['P', 'P1', 'P4', 'P9', 'P110', 'P120', 'P300', 'P410', 'P420', 'P430', 'P440', 'P490', 'P500', 'P600']
 export default {
   name: 'orgDetail',
   props: {
@@ -132,7 +152,8 @@ export default {
         institutionDepartmentAuditVOList: undefined,
         institutionHonorAuditVOList: undefined
       },
-      loading: false
+      loading: false,
+      isError: false
     }
   },
   computed: {
@@ -168,7 +189,42 @@ export default {
       } else {
         return this.currentDate.institutionInfoAuditVO.isShareHosptial ? '是' : '否'
       }
-    }
+    },
+    showNetHospitalInfo() {
+      const typeCode = this.newInstitutionInfoAuditDetails.institutionInfoAuditVO?.hospitalTypeCode ?? ""
+      if (Peace.validate.isEmpty(typeCode)) {
+        return false
+      } else {
+        return typeCode.startsWith("A")
+      }
+
+    },
+
+    showHasShop() {
+      const typeCode = this.newInstitutionInfoAuditDetails.institutionInfoAuditVO?.hospitalTypeCode ?? ""
+      if (Peace.validate.isEmpty(typeCode)) {
+        return false
+      } else {
+        return shopStoreIds.some(typeCode)
+      }
+
+    },
+
+    hasShop() {
+      if (Peace.validate.isEmpty(this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareShop)) {
+        return ''
+      } else {
+        return this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareShop ? '是' : '否'
+      }
+    },
+
+    oldHasShop() {
+      if (Peace.validate.isEmpty(this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareShop)) {
+        return ''
+      } else {
+        return this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareShop ? '是' : '否'
+      }
+    },
   },
   methods: {
     fetch() {
@@ -176,8 +232,8 @@ export default {
       const params = {institutionCode: this.orgCode}
       Service.getOrgDetail(params).then((res) => {
         this.currentDate = res.data.currentDate
-      }).catch((err) => {
-        console.log(err)
+      }).catch(() => {
+        this.isError = true
       }).finally(() => {
           this.loading = false
       })

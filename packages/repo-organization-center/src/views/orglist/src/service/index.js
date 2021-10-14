@@ -38,6 +38,27 @@ export default {
   },
 
   /**
+   * 获取字典接口
+   *
+   * @param {*} params
+   */
+  queryDictCascade(params) {
+    const isMock = false
+
+    const apiPath = 'institutionInfo/queryDictCascade'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+
+
+  /**
    * 获取关联应用字典接口
    *
    */

@@ -1,5 +1,5 @@
 <template>
-  <div class="full-height">
+  <div class="full-height overflow-auto">
     <div v-show="!orgDetailOptions.show" class="layout-route">
 
       <div class="card card-search q-mb-md">
@@ -21,15 +21,7 @@
 
           <el-form-item label="机构类型">
 
-            <PeaceSelect clearable
-                         filterable
-                         placeholder="全部"
-                         v-model="model.institutionTypeCode">
-              <el-option v-for="item in source.typeList"
-                         v-bind:key="item.code"
-                         v-bind:label="item.name"
-                         v-bind:value="item.code"></el-option>
-            </PeaceSelect>
+            <el-cascader style="width: 210px" v-model="model.institutionTypeCode" :props="props" :show-all-levels="false" clearable></el-cascader>
 
           </el-form-item>
 
@@ -87,7 +79,7 @@
                             min-width="140"
                             prop="institutionName"></PeaceTableColumn>
           <PeaceTableColumn label="机构类型"
-                            min-width="80"
+                            min-width="100"
                             prop="institutionTypeName"></PeaceTableColumn>
           <PeaceTableColumn label="机构性质"
                             width="140"
@@ -139,6 +131,20 @@ export default {
         endTime: undefined,
         applicationCode: undefined
       },
+      props: {
+        lazy: true,
+        async lazyLoad(node, resolve) {
+          const {level, value} = node;
+          const tmp = await Service.queryDictCascade({codeTableName: 'D0312004', parentRangeCode: value})
+          const nodes = tmp.data ?? []
+          const data = nodes.map((item) => ({
+            value: item.code,
+            label: item.name,
+            leaf: level >= 2
+          }))
+          resolve(data)
+        }
+      },
       source: {
         typeList: [],
         xinZhiList: [],
@@ -149,10 +155,6 @@ export default {
         orgCode: undefined,
       },
     }
-  },
-
-  created() {
-    this.fetch()
   },
 
   watch: {
@@ -171,11 +173,20 @@ export default {
     this.source.typeList = typeList.data ?? []
     this.source.xinZhiList = xinZhiList.data ?? []
     this.source.applicationList = applicationList.data ?? []
+
+    this.$nextTick().then(() => {
+      this.fetch()
+    })
   },
 
   methods: {
     fetch() {
-      const params = Object.assign(this.model)
+      const params = Peace.util.deepClone(this.model)
+      if (params.institutionTypeCode && Array.isArray(params.institutionTypeCode) && params.institutionTypeCode.length === 2) {
+        params.institutionTypeCode = params[2]
+      } else {
+        params.institutionTypeCode = undefined
+      }
       const fetch = Service.getOrgList
       this.$refs.table.reloadData({ fetch, params }).then((res) => {
         console.log(res.data)
