@@ -204,7 +204,7 @@ export default {
     .header-line {
       width: 4px;
       height: 16px;
-      background: #1890ff;
+      background: var(--q-color-primary);
       border-radius: 2px;
     }
 

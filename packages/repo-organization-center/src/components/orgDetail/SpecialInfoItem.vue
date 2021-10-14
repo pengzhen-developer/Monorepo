@@ -54,9 +54,9 @@ export default {
   line-height: 22px;
 }
 
-.honor-layout:not(:first-child) {
-  margin-top: 24px;
-}
+//.honor-layout:not(:first-child) {
+//  margin-top: 24px;
+//}
 
 .label {
   font-size: 14px;

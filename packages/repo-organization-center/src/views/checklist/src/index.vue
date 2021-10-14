@@ -84,7 +84,7 @@
                     pagination
                     style="width: 100%">
           <PeaceTableColumn label="机构名称"
-                            min-width="140"
+                            min-width="120"
                             prop="institutionName"/>
 
           <PeaceTableColumn label="审核类型"
@@ -95,12 +95,12 @@
           </PeaceTableColumn>
 
           <PeaceTableColumn label="提交时间"
-                            min-width="160"
+                            min-width="120"
                             prop="updateTime"/>
 
           <PeaceTableColumn label="应用来源"
                             prop="channelSourceName"
-                            width="120"/>
+                            width="140"/>
 
           <PeaceTableColumn label="审核状态"
                             min-width="100"
@@ -234,7 +234,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-pagination.is-background .el-pager li:not(.disabled).active {
-  background-color: #1890ff !important;
-}
+//::v-deep .el-pagination.is-background .el-pager li:not(.disabled).active {
+//  background-color: #1890ff !important;
+//}
 </style>

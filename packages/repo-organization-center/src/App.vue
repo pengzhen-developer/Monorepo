@@ -9,7 +9,7 @@
 export default {
   created() {
     const token = this.getCookie('ut')
-    Peace.http.defaults.headers.common['ut'] = Peace.validate.isEmpty(token) ? '96b7558d01804655a3401e26cfed7e01' : token
+    Peace.http.defaults.headers.common['ut'] = Peace.validate.isEmpty(token) ? '' : token
   },
   methods: {
     //获取cookie

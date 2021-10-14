@@ -208,7 +208,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-pagination.is-background .el-pager li:not(.disabled).active {
-  background-color: #1890ff !important;
-}
+//::v-deep .el-pagination.is-background .el-pager li:not(.disabled).active {
+//  background-color: #1890ff !important;
+//}
 </style>

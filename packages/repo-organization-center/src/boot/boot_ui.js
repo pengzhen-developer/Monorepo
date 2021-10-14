@@ -21,11 +21,12 @@
 
 import ElementUI from 'element-ui'
 import PeaceUI from 'peace-ui'
+import 'peace-ui/assets/css/index.scss'
 
-export default ({ Vue ,configuration}) => {
+export default ({ Vue }) => {
   Vue.use(ElementUI, { size: 'mini' })
   Vue.use(PeaceUI)
 
-  require(`peace-ui/assets/css/index.scss`)
-  require(`./boot_theme/elementUI/${configuration.theme.primary}/theme/index.css`)
+  // require(`peace-ui/assets/css/index.scss`)
+  // require(`./boot_theme/elementUI/${configuration.theme.primary}/theme/index.css`)
 }
