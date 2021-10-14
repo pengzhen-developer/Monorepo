@@ -76,8 +76,8 @@ export default {
   position: absolute;
   top: 33px;
   left: 0;
-  width: 200px;
-  height: 49px;
+  width: 157px;
+  height: 50px;
   z-index: 2;
 }
 
@@ -86,6 +86,7 @@ export default {
   top: 0;
   width: 100%;
   height: 61.77vh;
+  // height: 410px;
   z-index: 1;
 }
 
@@ -103,6 +104,7 @@ export default {
   left: 30px;
   right: 30px;
   height: 122px;
+  width: calc(100% - 64px);
   z-index: 4;
 }
 
@@ -114,6 +116,7 @@ export default {
   right: 16px;
   bottom: 24px;
   height: 48px;
+  width: calc(100% - 32px);
   transition: all 0.6s;
 }
 
