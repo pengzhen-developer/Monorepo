@@ -203,7 +203,7 @@ export default {
       if (Peace.validate.isEmpty(typeCode)) {
         return false
       } else {
-        return shopStoreIds.some(typeCode)
+        return shopStoreIds.some((item) => item === typeCode)
       }
 
     },
