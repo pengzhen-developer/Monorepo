@@ -4,33 +4,34 @@
 
       <div class="card card-search q-mb-md">
 
-        <el-form v-bind:model="model"
-                 inline="inline"
-                 label-width="auto"
-                 v-on:submit.native.prevent
-                 v-on:keyup.enter.native="fetch"
+        <el-form inline="inline"
                  label-suffix="："
-                 size="mini">
+                 label-width="auto"
+                 size="mini"
+                 v-bind:model="model"
+                 v-on:submit.native.prevent
+                 v-on:keyup.enter.native="fetch">
 
           <el-form-item label="机构名称">
             <PeaceInput v-model.trim="model.institutionName"
-                        maxlength="50"
                         clearable
+                        maxlength="50"
                         placeholder="请输入"></PeaceInput>
           </el-form-item>
 
           <el-form-item label="机构类型">
 
-            <el-cascader style="width: 210px" v-model="model.institutionTypeCode" :props="props" :show-all-levels="false" clearable></el-cascader>
+            <el-cascader v-model="model.institutionTypeCode" :props="props" :show-all-levels="false"
+                         clearable style="width: 210px"></el-cascader>
 
           </el-form-item>
 
           <el-form-item label="机构性质">
 
-            <PeaceSelect clearable
+            <PeaceSelect v-model="model.institutionWayCode"
+                         clearable
                          filterable
-                         placeholder="全部"
-                         v-model="model.institutionWayCode">
+                         placeholder="全部">
               <el-option v-for="item in source.xinZhiList"
                          v-bind:key="item.code"
                          v-bind:label="item.name"
@@ -40,19 +41,19 @@
           </el-form-item>
 
           <el-form-item label="更新时间">
-            <PeaceDatePicker type="daterange"
-                             v-model="updateTime"
-                             value-format="yyyy-MM-dd"
+            <PeaceDatePicker v-model="updateTime"
+                             end-placeholder="结束时间"
                              start-placeholder="开始时间"
-                             end-placeholder="结束时间"></PeaceDatePicker>
+                             type="daterange"
+                             value-format="yyyy-MM-dd"></PeaceDatePicker>
           </el-form-item>
 
           <el-form-item label="关联应用">
 
-            <PeaceSelect clearable
+            <PeaceSelect v-model="model.applicationCode"
+                         clearable
                          filterable
-                         placeholder="全部"
-                         v-model="model.applicationCode">
+                         placeholder="全部">
               <el-option v-for="item in source.applicationList"
                          v-bind:key="item.channelSourceCode"
                          v-bind:label="item.channelSourceName"
@@ -64,7 +65,8 @@
           <el-form-item>
             <el-button v-on:click="reset">重置</el-button>
             <el-button type="primary"
-                       v-on:click="fetch">查询</el-button>
+                       v-on:click="fetch">查询
+            </el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -72,8 +74,8 @@
       <div class="card">
 
         <PeaceTable ref="table"
-                    style="width: 100%"
-                    pagination>
+                    pagination
+                    style="width: 100%">
 
           <PeaceTableColumn label="机构名称"
                             min-width="140"
@@ -82,11 +84,11 @@
                             min-width="100"
                             prop="institutionTypeName"></PeaceTableColumn>
           <PeaceTableColumn label="机构性质"
-                            width="140"
-                            prop="institutionWay"></PeaceTableColumn>
+                            prop="institutionWayName"
+                            width="140"></PeaceTableColumn>
           <PeaceTableColumn label="关联应用"
                             min-width="140"
-                            prop="channelSourceName"></PeaceTableColumn>
+                            prop="applicationName"></PeaceTableColumn>
           <PeaceTableColumn label="最后更新时间"
                             min-width="160"
                             prop="updateTime"></PeaceTableColumn>
@@ -97,7 +99,8 @@
                             min-width="100">
             <template slot-scope="scope">
               <el-button type="text"
-                         v-on:click="showDetail(scope.row)">查看详情</el-button>
+                         v-on:click="showDetail(scope.row)">查看详情
+              </el-button>
             </template>
           </PeaceTableColumn>
 
@@ -107,7 +110,8 @@
 
     </div>
 
-    <org-detail v-if="orgDetailOptions.show && orgDetailOptions.orgCode" v-bind:orgCode="orgDetailOptions.orgCode" v-on:close="close"></org-detail>
+    <org-detail v-if="orgDetailOptions.show && orgDetailOptions.orgCode" v-bind:orgCode="orgDetailOptions.orgCode"
+                v-on:close="close"></org-detail>
 
   </div>
 </template>
@@ -115,6 +119,7 @@
 <script>
 import Service from './service'
 import orgDetail from '@src/views/orgDetail'
+
 export default {
   name: 'orgList',
   components: {
@@ -170,8 +175,8 @@ export default {
       this.fetch()
     })
 
-    const typeList = await Service.getDictionary({ codeTableName: 'D0312004' })
-    const xinZhiList = await Service.getDictionary({ codeTableName: 'D0312016' })
+    const typeList = await Service.getDictionary({codeTableName: 'D0312004'})
+    const xinZhiList = await Service.getDictionary({codeTableName: 'D0312016'})
     const applicationList = await Service.getApplicationDictionary()
 
     this.source.typeList = typeList.data ?? []
@@ -189,7 +194,7 @@ export default {
         params.institutionTypeCode = undefined
       }
       const fetch = Service.getOrgList
-      this.$refs.table.reloadData({ fetch, params }).then((res) => {
+      this.$refs.table.reloadData({fetch, params}).then((res) => {
         console.log(res.data)
       })
     },
