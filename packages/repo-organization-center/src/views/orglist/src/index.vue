@@ -188,8 +188,9 @@ export default {
   methods: {
     fetch() {
       const params = Peace.util.deepClone(this.model)
-      if (params.institutionTypeCode && Array.isArray(params.institutionTypeCode) && params.institutionTypeCode.length === 2) {
-        params.institutionTypeCode = params[2]
+      const institutionTypeCode = this.model.institutionTypeCode
+      if (institutionTypeCode && Array.isArray(institutionTypeCode) && institutionTypeCode.length === 3) {
+        params.institutionTypeCode = institutionTypeCode[2]
       } else {
         params.institutionTypeCode = undefined
       }
