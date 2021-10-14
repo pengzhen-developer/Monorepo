@@ -69,8 +69,7 @@
           </div>
 
           <div class="row col q-mb-12" v-if="showHasShop">
-            <info-item :preValue="oldHasShop"
-                       :value="hasShop"
+            <info-item :value="hasShop"
                        label="是否门店"/>
             <div class="col"></div>
             <div class="col"></div>
@@ -191,7 +190,7 @@ export default {
       }
     },
     showNetHospitalInfo() {
-      const typeCode = this.newInstitutionInfoAuditDetails.institutionInfoAuditVO?.hospitalTypeCode ?? ""
+      const typeCode = this.currentDate.institutionInfoAuditVO?.hospitalTypeCode ?? ""
       if (Peace.validate.isEmpty(typeCode)) {
         return false
       } else {
@@ -199,9 +198,8 @@ export default {
       }
 
     },
-
     showHasShop() {
-      const typeCode = this.newInstitutionInfoAuditDetails.institutionInfoAuditVO?.hospitalTypeCode ?? ""
+      const typeCode = this.currentDate.institutionInfoAuditVO?.hospitalTypeCode ?? ""
       if (Peace.validate.isEmpty(typeCode)) {
         return false
       } else {
@@ -211,18 +209,10 @@ export default {
     },
 
     hasShop() {
-      if (Peace.validate.isEmpty(this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareShop)) {
+      if (Peace.validate.isEmpty(this.currentDate.institutionInfoAuditVO.isShareShop)) {
         return ''
       } else {
-        return this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareShop ? '是' : '否'
-      }
-    },
-
-    oldHasShop() {
-      if (Peace.validate.isEmpty(this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareShop)) {
-        return ''
-      } else {
-        return this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareShop ? '是' : '否'
+        return this.currentDate.institutionInfoAuditVO.isShareShop ? '是' : '否'
       }
     },
   },

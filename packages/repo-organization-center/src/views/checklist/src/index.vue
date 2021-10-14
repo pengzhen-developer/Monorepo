@@ -98,7 +98,7 @@
 
           <PeaceTableColumn label="提交时间"
                             min-width="120"
-                            prop="updateTime"/>
+                            prop="checkTime"/>
 
           <PeaceTableColumn label="应用来源"
                             prop="channelSourceName"
