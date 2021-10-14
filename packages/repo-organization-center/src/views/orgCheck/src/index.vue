@@ -70,11 +70,11 @@
             </div>
 
             <div class="row col q-mb-12">
-              <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareHosptial"
-                         :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareHosptial"
+              <info-item :preValue="oldNetHospital"
+                         :value="netHospital"
                          label="是否分院"/>
-              <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.isNetHosptial"
-                         :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.isNetHosptial"
+              <info-item :preValue="oldShareHosptial"
+                         :value="shareHosptial"
                          label="是否互联网医院"/>
               <div class="col"></div>
             </div>
@@ -289,7 +289,6 @@ export default {
     },
 
     preImageData() {
-
       const {
         practiceLincensePic,
         netHospitalLicensePic,
@@ -297,13 +296,46 @@ export default {
         otherLincesePic
       } = this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO
 
+      if (Peace.validate.isEmpty(practiceLincensePic) && Peace.validate.isEmpty(netHospitalLicensePic) && Peace.validate.isEmpty(businessLicensePic) && Peace.validate.isEmpty(otherLincesePic)) {
+        return undefined
+      }
+
       return {
         practiceLincensePic: practiceLincensePic ?? undefined,
         netHospitalLicensePic: netHospitalLicensePic ?? undefined,
         businessLicensePic: businessLicensePic ?? undefined,
         otherLincesePic: otherLincesePic ?? undefined
       }
+    },
 
+    netHospital() {
+      if (Peace.validate.isEmpty(this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.isNetHosptial)) {
+        return ''
+      } else {
+        return this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.isNetHosptial ? '是' : '否'
+      }
+    },
+    shareHosptial() {
+      if (Peace.validate.isEmpty(this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareHosptial)) {
+        return ''
+      } else {
+        return this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareHosptial ? '是' : '否'
+      }
+    },
+
+    oldNetHospital() {
+      if (Peace.validate.isEmpty(this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO.isNetHosptial)) {
+        return ''
+      } else {
+        return this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO.isNetHosptial ? '是' : '否'
+      }
+    },
+    oldShareHosptial() {
+      if (Peace.validate.isEmpty(this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareHosptial)) {
+        return ''
+      } else {
+        return this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareHosptial ? '是' : '否'
+      }
     }
 
   },
@@ -340,7 +372,7 @@ export default {
     submit() {
 
       const params = {
-        auditId:  this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.auditId,
+        id:  this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.auditId,
         remark: this.form.remark,
         auditStatus: this.form.auditStatus === "通过" ? 'success' : 'fail'
       }

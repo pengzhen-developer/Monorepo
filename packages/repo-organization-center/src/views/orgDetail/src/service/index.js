@@ -5,9 +5,9 @@ export default {
    * @param {*} params
    */
   getOrgDetail(params) {
-    const isMock = true
+    const isMock = false;
 
-    const apiPath = 'institution/queryDetail'
+    const apiPath = 'institutionInfo/queryDetail'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 

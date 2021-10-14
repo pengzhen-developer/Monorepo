@@ -1,12 +1,12 @@
 <template>
   <div class="layout-card full-height overflow-auto" v-loading="loading">
-    <div v-if="currentDate.institutionInfovo">
-
-      <div class="q-pl-md q-pt-24">
-        <el-button  v-on:click="back">返回上一页</el-button>
-      </div>
+    <div v-if="currentDate.institutionInfoAuditVO">
 
       <div class="bg-white">
+
+        <div class="q-pl-md q-pt-24">
+          <el-button  v-on:click="back">返回上一页</el-button>
+        </div>
 
         <div class="header">
           <div class="header-line q-mr-sm"> </div>
@@ -16,49 +16,49 @@
         <div class="q-ma-md q-pb-md">
           <div class="row col q-mb-12">
             <info-item label="机构名称"
-                       :value="currentDate.institutionInfovo.institutionName" />
+                       :value="currentDate.institutionInfoAuditVO.institutionName" />
             <info-item label="机构编码"
-                       :value="currentDate.institutionInfovo.institutionCode" />
+                       :value="currentDate.institutionInfoAuditVO.institutionCode" />
             <info-item label="执业许可证登记号"
-                       :value="currentDate.institutionInfovo.serviceLicenceNo" />
+                       :value="currentDate.institutionInfoAuditVO.serviceLicenceNo" />
           </div>
 
           <div class="row col q-mb-12">
             <info-item label="统一社会信用代码"
-                       :value="currentDate.institutionInfovo.socialNo" />
+                       :value="currentDate.institutionInfoAuditVO.socialNo" />
             <info-item label="机构类型"
-                       :value="currentDate.institutionInfovo.institutionTypeCode" />
+                       :value="currentDate.institutionInfoAuditVO.institutionTypeCode" />
             <info-item label="医院类型"
-                       :value="currentDate.institutionInfovo.hospitalTypeCode" />
+                       :value="currentDate.institutionInfoAuditVO.hospitalTypeCode" />
           </div>
 
           <div class="row col q-mb-12">
             <info-item label="医院等级"
-                       :value="currentDate.institutionInfovo.hospitalLevelCode" />
+                       :value="currentDate.institutionInfoAuditVO.hospitalLevelCode" />
             <info-item label="所有制形式"
-                       :value="currentDate.institutionInfovo.fromTypeCode" />
+                       :value="currentDate.institutionInfoAuditVO.fromTypeCode" />
             <info-item label="服务对象"
-                       :value="currentDate.institutionInfovo.servicerTypeCode" />
+                       :value="currentDate.institutionInfoAuditVO.servicerTypeCode" />
           </div>
 
           <div class="row col q-mb-12">
             <info-item label="机构性质"
-                       :value="currentDate.institutionInfovo.institutionWayCode" />
+                       :value="currentDate.institutionInfoAuditVO.institutionWayCode" />
             <info-item label="录属关系"
-                       :value="currentDate.institutionInfovo.relationTypeName" />
+                       :value="currentDate.institutionInfoAuditVO.relationTypeName" />
             <info-item label="地址"
-                       :value="currentDate.institutionInfovo.address" />
+                       :value="currentDate.institutionInfoAuditVO.address" />
           </div>
 
           <div class="row col q-mb-12">
             <info-item label="是否分院"
-                       :value="currentDate.institutionInfovo.isShareHosptial" />
+                       :value="shareHosptial" />
             <info-item label="是否互联网医院"
-                       :value="currentDate.institutionInfovo.isNetHosptial" />
+                       :value="netHospital" />
             <div class="col"></div>
           </div>
 
-          <image-item :value="imageData"/>
+          <image-item v-if="imageData" :value="imageData"/>
 
         </div>
 
@@ -76,22 +76,22 @@
 
           <info-item label="机构简介"
                      class="q-mb-12"
-                     :value="currentDate.institutionInfovo.institutionDescribe" />
+                     :value="currentDate.institutionInfoAuditVO.institutionDescribe" />
           <info-item label="机构官网"
                      class="q-mb-12"
-                     :value="currentDate.institutionInfovo.institutionWeb" />
+                     :value="currentDate.institutionInfoAuditVO.institutionWeb" />
 
           <info-item label="联系电话"
                      class="q-mb-12"
-                     :value="currentDate.institutionInfovo.tel" />
+                     :value="currentDate.institutionInfoAuditVO.tel" />
 
           <info-item label="乘车路线"
                      class="q-mb-12"
-                     :value="currentDate.institutionInfovo.carWay" />
+                     :value="currentDate.institutionInfoAuditVO.carWay" />
 
-          <honor-info-item v-if="currentDate.epartmenes" class="q-mt-24" :value="currentDate.epartmenes"></honor-info-item>
+          <honor-info-item v-if="currentDate.institutionHonorAuditVOList" class="q-mt-24" :value="currentDate.institutionHonorAuditVOList"></honor-info-item>
 
-          <special-info-item v-if="currentDate.institutionHonorvo" class="q-mt-24" :value="currentDate.institutionHonorvo"></special-info-item>
+          <special-info-item v-if="currentDate.institutionDepartmentAuditVOList" class="q-mt-24" :value="currentDate.institutionDepartmentAuditVOList"></special-info-item>
 
         </div>
 
@@ -128,21 +128,45 @@ export default {
   data() {
     return {
       currentDate: {
-        institutionInfovo: undefined,
-        epartmenes: undefined,
-        institutionHonorvo: undefined
+        institutionInfoAuditVO: undefined,
+        institutionDepartmentAuditVOList: undefined,
+        institutionHonorAuditVOList: undefined
       },
       loading: false
     }
   },
   computed: {
     imageData() {
-      const {practiceLincensePic, netHospitalLicensePic, businessLicensePic, otherLincesePic} = this.currentDate.institutionInfovo
+      const {
+        practiceLincensePic,
+        netHospitalLicensePic,
+        businessLicensePic,
+        otherLincesePic
+      } = this.currentDate.institutionInfoAuditVO
+
+      if (Peace.validate.isEmpty(practiceLincensePic) && Peace.validate.isEmpty(netHospitalLicensePic) && Peace.validate.isEmpty(businessLicensePic) && Peace.validate.isEmpty(otherLincesePic)) {
+        return undefined
+      }
+
       return {
-        practiceLincensePic: practiceLincensePic,
-        netHospitalLicensePic: netHospitalLicensePic,
-        businessLicensePic: businessLicensePic,
-        otherLincesePic: otherLincesePic
+        practiceLincensePic: practiceLincensePic ?? undefined,
+        netHospitalLicensePic: netHospitalLicensePic ?? undefined,
+        businessLicensePic: businessLicensePic ?? undefined,
+        otherLincesePic: otherLincesePic ?? undefined
+      }
+    },
+    netHospital() {
+       if (Peace.validate.isEmpty(this.currentDate.institutionInfoAuditVO.isNetHosptial)) {
+          return ''
+       } else {
+         return this.currentDate.institutionInfoAuditVO.isNetHosptial ? '是' : '否'
+       }
+    },
+    shareHosptial() {
+      if (Peace.validate.isEmpty(this.currentDate.institutionInfoAuditVO.isShareHosptial)) {
+        return ''
+      } else {
+        return this.currentDate.institutionInfoAuditVO.isShareHosptial ? '是' : '否'
       }
     }
   },

@@ -24,7 +24,7 @@
             <PeaceSelect clearable
                          filterable
                          placeholder="全部"
-                         v-model="model.institutionType">
+                         v-model="model.institutionTypeCode">
               <el-option v-for="item in source.typeList"
                          v-bind:key="item.code"
                          v-bind:label="item.name"
@@ -38,7 +38,7 @@
             <PeaceSelect clearable
                          filterable
                          placeholder="全部"
-                         v-model="model.institutionWay">
+                         v-model="model.institutionWayCode">
               <el-option v-for="item in source.xinZhiList"
                          v-bind:key="item.code"
                          v-bind:label="item.name"
@@ -49,7 +49,7 @@
 
           <el-form-item label="更新时间">
             <PeaceDatePicker type="daterange"
-                             v-model="model.updateTime"
+                             v-model="updateTime"
                              value-format="yyyy-MM-dd"
                              start-placeholder="开始时间"
                              end-placeholder="结束时间"></PeaceDatePicker>
@@ -60,7 +60,7 @@
             <PeaceSelect clearable
                          filterable
                          placeholder="全部"
-                         v-model="model.channelSourceName">
+                         v-model="model.applicationCode">
               <el-option v-for="item in source.applicationList"
                          v-bind:key="item.channelSourceCode"
                          v-bind:label="item.channelSourceName"
@@ -130,12 +130,14 @@ export default {
   },
   data() {
     return {
+      updateTime: [],
       model: {
         institutionName: undefined,
-        institutionType: undefined,
-        institutionWay: undefined,
-        updateTime: undefined,
-        channelSourceName: undefined
+        institutionTypeCode: undefined,
+        institutionWayCode: undefined,
+        startTime: undefined,
+        endTime: undefined,
+        applicationCode: undefined
       },
       source: {
         typeList: [],
@@ -153,6 +155,13 @@ export default {
     this.fetch()
   },
 
+  watch: {
+    updateTime(val) {
+      this.model.startTime = val?.[0] ?? undefined
+      this.model.endTime = val?.[1] ?? undefined
+    }
+  },
+
   async mounted() {
 
     const typeList = await Service.getDictionary({ codeTableName: 'D0312004' })
@@ -166,13 +175,7 @@ export default {
 
   methods: {
     fetch() {
-      // const token = Peace.tools.queryUrlParam('token')
-
-      // if (Peace.validate.isEmpty(token)) {
-      //   return
-      // }
-
-      const params = {}
+      const params = Object.assign(this.model)
       const fetch = Service.getOrgList
       this.$refs.table.reloadData({ fetch, params }).then((res) => {
         console.log(res.data)
@@ -181,10 +184,11 @@ export default {
     reset() {
       const resetParams = {
         institutionName: undefined,
-        institutionType: undefined,
-        institutionWay: undefined,
-        updateTime: undefined,
-        channelSourceName: undefined
+        institutionTypeCode: undefined,
+        institutionWayCode: undefined,
+        startTime: undefined,
+        endTime: undefined,
+        applicationCode: undefined
       }
       this.model = Object.assign(resetParams)
     },

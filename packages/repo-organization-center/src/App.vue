@@ -8,7 +8,25 @@
 <script>
 export default {
   created() {
-    Peace.http.defaults.headers.common['token'] = 'd9cb0c6117884ba5aea5fdfdb9e7d77b'
+    const token = this.getCookie('ut')
+    Peace.http.defaults.headers.common['ut'] = Peace.validate.isEmpty(token) ? '96b7558d01804655a3401e26cfed7e01' : token
+  },
+  methods: {
+    //获取cookie
+    getCookie: function (cname) {
+      const name = cname + "=";
+      const ca = document.cookie.split(';');
+      console.log("获取cookie,现在循环")
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        console.log(c)
+        while (c.charAt(0) === ' ') c = c.substring(1);
+        if (c.indexOf(name) !== -1) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    },
   },
 
 }

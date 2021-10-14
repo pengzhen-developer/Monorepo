@@ -21,7 +21,7 @@
 
           <el-form-item label="审核类型">
 
-            <PeaceSelect v-model="model.auditType"
+            <PeaceSelect v-model="model.auditerType"
                          clearable
                          filterable
                          placeholder="全部">
@@ -48,7 +48,7 @@
           </el-form-item>
 
           <el-form-item label="更新时间">
-            <PeaceDatePicker v-model="model.updateTime"
+            <PeaceDatePicker v-model="updateTime"
                              end-placeholder="结束时间"
                              start-placeholder="开始时间"
                              type="daterange"
@@ -147,12 +147,14 @@ export default {
   },
   data() {
     return {
+      updateTime: [],
       model: {
         institutionName: undefined,
-        auditType: undefined,
+        auditerType: undefined,
         channelSourceName: undefined,
-        updateTime: undefined,
-        auditStatus: undefined
+        auditStatus: undefined,
+        startTime: undefined,
+        endTime: undefined,
       },
       source: {
         auditTypeList: [],
@@ -170,11 +172,9 @@ export default {
   },
 
   async mounted() {
-    debugger
     this.source.auditTypeList = await Peace.identity.dictionary.getList('auditer_type')
     this.source.auditStatusList = await Peace.identity.dictionary.getList('audit_status')
     const applicationList = await Service.getApplicationDictionary()
-    debugger
     this.source.applicationList = applicationList.data ?? []
 
     this.$nextTick().then(() => {
@@ -191,14 +191,15 @@ export default {
     }
   },
 
+  watch: {
+    updateTime(val) {
+      this.model.startTime = val?.[0] ?? undefined
+      this.model.endTime = val?.[1] ?? undefined
+    }
+  },
+
   methods: {
     fetch() {
-      // const token = Peace.tools.queryUrlParam('token')
-
-      // if (Peace.validate.isEmpty(token)) {
-      //   return
-      // }
-
       const params = Object.assign(this.model)
       const fetch = Service.getOrgList
       this.$refs.table.reloadData({fetch, params})
@@ -206,10 +207,11 @@ export default {
     reset() {
       const resetParams = {
         institutionName: undefined,
-        auditType: undefined,
+        auditerType: undefined,
         channelSourceName: undefined,
-        updateTime: undefined,
-        auditStatus: undefined
+        auditStatus: undefined,
+        startTime: undefined,
+        endTime: undefined,
       }
       this.model = Object.assign(resetParams)
     },
