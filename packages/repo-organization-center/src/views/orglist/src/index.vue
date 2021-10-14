@@ -166,6 +166,10 @@ export default {
 
   async mounted() {
 
+    this.$nextTick().then(() => {
+      this.fetch()
+    })
+
     const typeList = await Service.getDictionary({ codeTableName: 'D0312004' })
     const xinZhiList = await Service.getDictionary({ codeTableName: 'D0312016' })
     const applicationList = await Service.getApplicationDictionary()
@@ -174,9 +178,6 @@ export default {
     this.source.xinZhiList = xinZhiList.data ?? []
     this.source.applicationList = applicationList.data ?? []
 
-    this.$nextTick().then(() => {
-      this.fetch()
-    })
   },
 
   methods: {

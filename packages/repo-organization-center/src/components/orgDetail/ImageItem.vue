@@ -106,6 +106,7 @@ export default {
 }
 
 .el-image {
+  border: 1px solid #EEEEEE;
   border-radius: 4px;
 }
 
