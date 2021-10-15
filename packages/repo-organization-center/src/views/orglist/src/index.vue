@@ -151,7 +151,6 @@ export default {
         }
       },
       source: {
-        typeList: [],
         xinZhiList: [],
         applicationList: []
       },
@@ -175,11 +174,9 @@ export default {
       this.fetch()
     })
 
-    const typeList = await Service.getDictionary({codeTableName: 'D0312004'})
     const xinZhiList = await Service.getDictionary({codeTableName: 'D0312016'})
     const applicationList = await Service.getApplicationDictionary()
 
-    this.source.typeList = typeList.data ?? []
     this.source.xinZhiList = xinZhiList.data ?? []
     this.source.applicationList = applicationList.data ?? []
 
@@ -188,16 +185,14 @@ export default {
   methods: {
     fetch() {
       const params = Peace.util.deepClone(this.model)
-      const institutionTypeCode = this.model.institutionTypeCode
+      const { institutionTypeCode } = this.model
       if (institutionTypeCode && Array.isArray(institutionTypeCode) && institutionTypeCode.length === 3) {
         params.institutionTypeCode = institutionTypeCode[2]
       } else {
         params.institutionTypeCode = undefined
       }
       const fetch = Service.getOrgList
-      this.$refs.table.reloadData({fetch, params}).then((res) => {
-        console.log(res.data)
-      })
+      this.$refs.table.reloadData({fetch, params})
     },
     reset() {
       const resetParams = {
