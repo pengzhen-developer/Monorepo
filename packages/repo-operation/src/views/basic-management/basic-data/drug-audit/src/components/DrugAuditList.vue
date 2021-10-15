@@ -5,7 +5,7 @@
                label-width="auto"
                label-suffix="："
                v-bind:model="model">
-        <el-form-item label="平台药品编码">
+        <el-form-item label="主数据ID">
           <el-input placeholder="请输入"
                     v-model="model.DrugStandardCode"></el-input>
         </el-form-item>
@@ -49,7 +49,7 @@
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn label="平台药品编码"
+        <PeaceTableColumn label="主数据ID"
                           prop="DrugStandardCode"
                           min-width="180px"></PeaceTableColumn>
         <PeaceTableColumn label="药品名称"

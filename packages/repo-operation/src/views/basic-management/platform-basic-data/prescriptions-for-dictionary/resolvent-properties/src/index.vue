@@ -174,7 +174,7 @@
           <PeaceTableColumn type="selection"
                             width="55">
           </PeaceTableColumn>
-          <PeaceTableColumn label="平台药品编码"
+          <PeaceTableColumn label="主数据ID"
                             prop="platformDrugCode"
                             min-width="180"></PeaceTableColumn>
           <PeaceTableColumn label="药品名称"
@@ -208,7 +208,7 @@
                  v-bind:title="dialogMappingDetail.title">
       <div>
         <PeaceTable ref="mappingTableDetail">
-          <PeaceTableColumn label="平台药品编码"
+          <PeaceTableColumn label="主数据ID"
                             prop="platformDrugCode"
                             min-width="180"></PeaceTableColumn>
           <PeaceTableColumn label="药品名称"
@@ -357,7 +357,10 @@ export default {
       }
 
       if (relatedCount.length > 0) {
-        this.$confirm(`当前选中数据有${relatedCount.length}条已与其他溶媒关联，确定取消原有关联状态，关联现有溶媒？`, '关联确认').then(() => {
+        this.$confirm(
+          `当前选中数据有${relatedCount.length}条已与其他溶媒关联，确定取消原有关联状态，关联现有溶媒？`,
+          '关联确认'
+        ).then(() => {
           Service.platformDrugMenstruumDic
             .relatedPlatformDrugs({
               code: this.dialogMapping.model.code,

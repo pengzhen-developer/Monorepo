@@ -12,7 +12,7 @@
       <div class="q-mb-lg">
         <PeaceTable ref="table"
                     v-bind:data="list1">
-          <PeaceTableColumn label="平台药品编码"
+          <PeaceTableColumn label="主数据ID"
                             prop="DrugStandardCode"
                             min-width="180px"></PeaceTableColumn>
           <PeaceTableColumn label="药品名称"
@@ -80,7 +80,7 @@
       <div class="q-mb-lg">
         <PeaceTable ref="table"
                     v-bind:data="list2">
-          <PeaceTableColumn label="平台药品编码"
+          <PeaceTableColumn label="主数据ID"
                             prop="DrugStandardCode"
                             min-width="180px"></PeaceTableColumn>
           <PeaceTableColumn label="药品名称"

@@ -35,7 +35,7 @@
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
-        <PeaceTableColumn label="平台药品编码"
+        <PeaceTableColumn label="主数据ID"
                           min-width="150px"
                           prop="platformDrugCode">
         </PeaceTableColumn>

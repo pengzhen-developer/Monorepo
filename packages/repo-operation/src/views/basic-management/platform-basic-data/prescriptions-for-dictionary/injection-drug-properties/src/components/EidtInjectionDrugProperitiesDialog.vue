@@ -11,7 +11,7 @@
                v-bind:rules="rules">
         <div class="info-list">
 
-          <el-form-item label="平台药品编码">
+          <el-form-item label="主数据ID">
             <span>{{model.platformDrugCode}}</span>
           </el-form-item>
 

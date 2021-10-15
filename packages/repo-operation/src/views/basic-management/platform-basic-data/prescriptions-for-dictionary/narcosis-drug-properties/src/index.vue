@@ -56,7 +56,7 @@
               {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
             </template>
           </PeaceTableColumn>
-          <PeaceTableColumn label="平台药品编码"
+          <PeaceTableColumn label="主数据ID"
                             prop="platformDrugCode"
                             min-width="180"></PeaceTableColumn>
           <PeaceTableColumn label="药品名称"
@@ -96,7 +96,7 @@
                  v-on:submit.native.prevent
                  v-on:keyup.enter.native="save"
                  v-bind:model="dialog.model">
-          <el-form-item label="平台药品编码"
+          <el-form-item label="主数据ID"
                         prop="platformDrugCode">
             <span>{{ dialog.model.platformDrugCode }}</span>
           </el-form-item>
@@ -196,12 +196,14 @@ export default {
 
     save() {
       this.$refs.form.validate().then(() => {
-        Service.platformDrugBaseInfo.updatePlatformDrugExtInfo({ id: this.dialog.model.id, drugAttr: this.dialog.model.drugAttr }).then(() => {
-          Peace.util.success('保存成功')
+        Service.platformDrugBaseInfo
+          .updatePlatformDrugExtInfo({ id: this.dialog.model.id, drugAttr: this.dialog.model.drugAttr })
+          .then(() => {
+            Peace.util.success('保存成功')
 
-          this.cancel()
-          this.fetch()
-        })
+            this.cancel()
+            this.fetch()
+          })
       })
     },
 
