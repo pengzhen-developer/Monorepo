@@ -6,10 +6,10 @@
                    name="first">
         <div class="table-info">
           <div class="flex ">
-            <div>平台药品编码</div>
-            <div>{{BasicInformation.DrugStandardCode}}</div>
             <div>主数据ID</div>
-            <div>{{BasicInformation.MainDataID}}</div>
+            <div>{{BasicInformation.DrugStandardCode}}</div>
+            <div></div>
+            <div></div>
           </div>
           <div class="flex ">
             <div>通用名称</div>

@@ -130,6 +130,7 @@ export default {
   data() {
     return {
       activeName: '患者列表',
+      beforeActiveName: '患者列表',
       thumbStyle: {
         right: '2px',
         borderRadius: '5px',
@@ -394,11 +395,14 @@ export default {
     },
 
     tabClick(res) {
-      this.updateInfo()
-      if (res.name === '患者列表') {
+      if (res.name === '患者列表' && this.beforeActiveName != '患者列表') {
+        this.beforeActiveName = '患者列表'
+        this.updateInfo()
         mutations.setActivePatient({})
         this.getPatientList()
-      } else {
+      } else if (res.name === '挂号列表' && this.beforeActiveName != '挂号列表') {
+        this.beforeActiveName = '挂号列表'
+        this.updateInfo()
         mutations.setActiveRegisterPatient({})
         this.getRegisterPatientList()
       }
