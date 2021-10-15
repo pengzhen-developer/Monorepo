@@ -122,6 +122,7 @@
 
 <script>
 import Service from './service'
+import Empty from '@src/components/result/Empty'
 import InfoItem from '@src/components/orgDetail/InfoItem.vue'
 import ImageItem from "@src/components/orgDetail/ImageItem";
 import HonorInfoItem from "@src/components/orgDetail/HonorInfoItem";
@@ -136,6 +137,7 @@ export default {
     }
   },
   components: {
+    Empty,
     InfoItem,
     ImageItem,
     HonorInfoItem,
