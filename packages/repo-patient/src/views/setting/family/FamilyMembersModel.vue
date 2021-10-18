@@ -334,6 +334,7 @@ export default {
           this.model.guardianName &&
           this.model.guardianIdCard &&
           peace.validate.idCard(this.model.guardianIdCard) &&
+          this.getAgeByIdCard(this.model.guardianIdCard) >= 18 &&
           ((this.model.idcard && peace.validate.idCard(this.model.idcard)) || this.model.idcard == '')
         ) {
           result = true
@@ -456,7 +457,7 @@ export default {
         } else {
           let gardianAge = this.getAgeByIdCard(this.model.idcard)
           if ((this.from == 'addGuardian' || this.addGardian) && gardianAge < 18) {
-            this.error.idcard = '监护人年龄不得小于18岁'
+            this.error.idcard = '监护人年龄不能小于18岁'
           } else {
             this.error.idcard = ''
           }

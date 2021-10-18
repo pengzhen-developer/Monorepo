@@ -269,7 +269,7 @@ export default {
       if (this.addGardian) {
         let gardianAge = this.getAgeByIdCard(this.gardianId)
         if (gardianAge < 18) {
-          this.error.gardian = '监护人年龄不得小于18岁'
+          this.error.gardian = '监护人年龄不能小于18岁'
         } else {
           this.error.gardian = ''
         }

@@ -521,7 +521,7 @@ export default {
           this.error.guardianIdCard = '监护人身份证格式错误'
         } else {
           if (this.getAgeByIdCard(this.model.guardianIdCard) < 18) {
-            this.error.guardianIdCard = '监护人年龄不得小于18岁'
+            this.error.guardianIdCard = '监护人年龄不能小于18岁'
           } else {
             this.error.guardianIdCard = ''
           }

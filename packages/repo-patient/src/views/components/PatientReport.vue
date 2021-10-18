@@ -188,6 +188,7 @@ export default {
             this.model.guardianName &&
             this.model.guardianIdCard &&
             peace.validate.idCard(this.model.guardianIdCard) &&
+            this.getAgeByIdCard(this.model.guardianIdCard) >= 18 &&
             ((this.model.idcard && peace.validate.idCard(this.model.idcard)) || this.model.idcard == '')
           ) {
             result = true

@@ -93,7 +93,7 @@ export default {
           return false
         } else {
           if (this.model.isGuardian && this.getAgeByIdCard(this.model.idcard) < 18) {
-            this.error.idcard = '监护人年龄不得小于18岁'
+            this.error.idcard = '监护人年龄不能小于18岁'
             return true
           } else {
             this.error.idcard = ''
