@@ -211,6 +211,7 @@ export default {
         endTime: undefined,
       }
       this.model = Object.assign(resetParams)
+      this.updateTime = []
     },
     showDetail(row) {
       this.orgDetailOptions.orgCode = `${row.id}`
