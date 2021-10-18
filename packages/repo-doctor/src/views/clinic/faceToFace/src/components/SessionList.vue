@@ -85,7 +85,7 @@
               <img class="q-mb-md"
                    src="~@src/assets/images/inquiry/ic_no one.png"
                    alt="" />
-              <span class="text-grey-5">暂无会话</span>
+              <span class="text-grey-5">当天暂无挂号患者</span>
             </div>
           </template>
         </div>

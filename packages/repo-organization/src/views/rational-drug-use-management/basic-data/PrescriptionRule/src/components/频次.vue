@@ -151,24 +151,10 @@ export default {
 
     verificationResults() {
       const tmp = this.model.frequencyRuleList
-      if (
-        tmp.minFrequency &&
-        tmp.minFrequencyName &&
-        tmp.maxFrequency &&
-        tmp.maxFrequencyName &&
-        tmp.minFrequencyCode &&
-        tmp.maxFrequencyCode
-      ) {
+      if (tmp.minFrequencyName && tmp.maxFrequencyName && tmp.minFrequencyCode && tmp.maxFrequencyCode) {
         return CONSTANT.RULE_VALIDATION_RESULTS.已完成
       } else {
-        if (
-          tmp.minFrequency ||
-          tmp.minFrequencyName ||
-          tmp.maxFrequency ||
-          tmp.maxFrequencyName ||
-          tmp.minFrequencyCode ||
-          tmp.maxFrequencyCode
-        ) {
+        if (tmp.minFrequencyName || tmp.maxFrequencyName || tmp.minFrequencyCode || tmp.maxFrequencyCode) {
           return CONSTANT.RULE_VALIDATION_RESULTS.未完成
         } else {
           return CONSTANT.RULE_VALIDATION_RESULTS.未开始

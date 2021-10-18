@@ -44,6 +44,9 @@
         <peace-table-column label="系数	"
                             min-width="80px"
                             prop="coefficient">
+          <template slot-scope="scope">
+            {{ parseFloat(scope.row.coefficient) || '' }}
+          </template>
         </peace-table-column>
       </peace-table>
 
