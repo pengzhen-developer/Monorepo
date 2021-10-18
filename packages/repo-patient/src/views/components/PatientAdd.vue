@@ -120,8 +120,7 @@
     </van-popup>
     <!-- 监护人列表 -->
     <peace-dialog :title="gDialog.title"
-                  :visible.sync="gDialog.visible"
-                  @update:visible="checkguardianIdCard">
+                  :visible.sync="gDialog.visible">
       <GuardianList :data="gDialog.data"
                     :from="'selectGuardian'"
                     @setGardianInfo="setGardianInfo" />
@@ -233,7 +232,9 @@ export default {
   watch: {
     needIdCard(value) {
       if (!value) {
-        this.error.idcard = ''
+        if (this.model.idcard == '') {
+          this.error.idcard = ''
+        }
       } else {
         this.modol.guardianIdCard = ''
         this.model.guardianName = ''
@@ -263,6 +264,9 @@ export default {
             this.model.birthday = val.substr(6, 4) + '-' + val.substr(10, 2) + '-' + val.substr(12, 2)
           }
         }
+      }
+      if (val == '' && this.needIdCard == false) {
+        this.error.idcard == ''
       }
     },
     'model.birthday'(val) {
@@ -317,6 +321,7 @@ export default {
             } else {
               peace.util.alert(err.data.msg)
             }
+            resolve(false)
           })
       })
     },

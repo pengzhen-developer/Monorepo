@@ -187,7 +187,8 @@ export default {
             this.model.birthday &&
             this.model.guardianName &&
             this.model.guardianIdCard &&
-            peace.validate.idCard(this.model.guardianIdCard)
+            peace.validate.idCard(this.model.guardianIdCard) &&
+            ((this.model.idcard && peace.validate.idCard(this.model.idcard)) || this.model.idcard == '')
           ) {
             result = true
           } else {
