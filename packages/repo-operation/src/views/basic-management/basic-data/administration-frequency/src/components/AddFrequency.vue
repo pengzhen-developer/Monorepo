@@ -32,6 +32,7 @@
                              class="flex col"
                              placeholder="请输入"
                              maxlength="50"
+                             :precision="0"
                              controls-position="right"
                              :min="1"
                              :max="99999"
@@ -49,6 +50,7 @@
                              placeholder="请输入"
                              maxlength="50"
                              controls-position="right"
+                             :precision="0"
                              :min="1"
                              :max="99999"
                              clearable></el-input-number>
