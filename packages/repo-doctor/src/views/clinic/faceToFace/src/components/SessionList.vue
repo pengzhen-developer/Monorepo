@@ -299,7 +299,7 @@ export default {
     // 获取患者列表
     getPatientList() {
       return Service.getPatientList().then((res) => {
-        this.patientList = res.data.list
+        this.patientList = res.data.list || []
         if (this.patientList && this.patientList.length > 0) {
           // 刷新列表时，默认选中第一个患者
           mutations.setActivePatient(this.patientList[0])
@@ -310,7 +310,7 @@ export default {
     // 获取面诊患者挂号列表
     getRegisterPatientList(isChoiceFirst = true) {
       return Service.getRegisterPatientList().then((res) => {
-        this.registerPatientList = res.data
+        this.registerPatientList = res.data || []
         if (this.registerPatientList && this.registerPatientList.length > 0) {
           // 刷新列表时，默认选中第一个患者
           if (isChoiceFirst) {
