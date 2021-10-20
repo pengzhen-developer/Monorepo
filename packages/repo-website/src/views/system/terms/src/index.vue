@@ -116,7 +116,7 @@
       </span></h4>
     <p style="background-color:#ffffff; line-height:15pt; margin:0pt 0pt 7.5pt"><span style="background-color:#ffffff; color:#333333; font-family:宋体; font-size:10.5pt">●注册成功后，用户必须保护好自己的帐号和密码，因用户本人泄露而造成的任何损失由会员本人负责；</span>
     </p>
-    <p style="background-color:#ffffff; line-height:15pt; margin:0pt 0pt 7.5pt"><span style="background-color:#ffffff; color:#333333; font-family:宋体; font-size:10.5pt">●对智</span><span style="background-color:#ffffff; color:#333333; font-family:宋体; font-size:10.5pt">药云平台而言，您帐号和密码是唯一验证您真实性的依据，只要使用了正确的您帐号和密码无论是谁登录均视为已经得到注册您本人的授权；</span>
+    <p style="background-color:#ffffff; line-height:15pt; margin:0pt 0pt 7.5pt"><span style="background-color:#ffffff; color:#333333; font-family:宋体; font-size:10.5pt">●对幂</span><span style="background-color:#ffffff; color:#333333; font-family:宋体; font-size:10.5pt">药云平台而言，您帐号和密码是唯一验证您真实性的依据，只要使用了正确的您帐号和密码无论是谁登录均视为已经得到注册您本人的授权；</span>
     </p>
     <p style="background-color:#ffffff; line-height:15pt; margin:0pt 0pt 7.5pt"><span style="background-color:#ffffff; color:#333333; font-family:宋体; font-size:10.5pt">●不得盗用他人帐号，由此行为造成的后果自负；</span>
     </p>
