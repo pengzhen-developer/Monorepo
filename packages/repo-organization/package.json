@@ -1,6 +1,6 @@
 {
   "name": "repo-organization",
-  "version": "1.16.0",
+  "version": "1.16.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -12,9 +12,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "peace-identity": "^1.16.0",
-    "peace-library": "^1.16.0",
-    "peace-ui": "^1.16.0"
+    "peace-identity": "^null",
+    "peace-library": "^null",
+    "peace-ui": "^null"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
