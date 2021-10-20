@@ -278,6 +278,7 @@
                           width="120px"></PeaceTableColumn>
 
         <PeaceTableColumn prop="DrugName"
+                          label="药品名称"
                           align="center"
                           min-width="160px"></PeaceTableColumn>
 
