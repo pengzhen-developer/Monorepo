@@ -181,7 +181,7 @@ export default {
 
   filters: {
     checkStatus: function (value) {
-      return {success: '成功', fail: "失败", report: '待审核'}[value]
+      return {success: '已通过', fail: "未通过", report: '待审核'}[value]
     },
     auditName: function (value) {
       return value === 'save' ? '机构入驻' : '修改信息'
