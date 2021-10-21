@@ -487,7 +487,7 @@ export default {
         }
       } else {
         if (!peace.validate.idCard(this.model.idcard)) {
-          this.error.idcard = '身份证式错误'
+          this.error.idcard = '身份证格式错误'
         } else {
           this.error.idcard = ''
         }
