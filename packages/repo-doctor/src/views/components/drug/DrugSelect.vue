@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="flex justify-between q-my-md">
-      <el-form inline
+      <el-form space-none
+               inline
                v-bind:model="model">
         <el-form-item v-if="type !== `faceToFace`"
                       required
@@ -38,15 +39,15 @@
       </div>
     </div>
 
-    <el-card class="q-mb-md"
-             v-show="value && value.length > 0">
-      <el-table class="editable q-mb-sm"
-                size="medium"
-                v-bind:data="value">
+    <div class="q-mb-md"
+         v-show="value && value.length > 0">
+      <PeaceTable class="editable q-mb-sm"
+                  size="medium"
+                  v-bind:data="value">
         <PeaceTableColumn label="药品名称"
                           prop="drugName"
-                          min-width="140px">
-          <template slot-scope="{ row }">
+                          min-width="120px">
+          <template v-slot:default="{ row }">
             <div class="ellipsis">
               <el-tooltip effect="light"
                           placement="top-start">
@@ -78,19 +79,18 @@
         <PeaceTableColumn show-overflow-tooltip
                           label="药品规格"
                           prop="specification"
-                          min-width="70px">
-          <template slot-scope="{ row }">
+                          min-width="80px">
+          <template v-slot:default="{ row }">
             {{ row.specification }}
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn label="单次剂量"
-                          min-width="100px">
-          <template slot="header">
+        <PeaceTableColumn min-width="120px">
+          <template v-slot:header>
             <span class="text-red">*</span>
             <span>单次剂量</span>
           </template>
-          <template slot-scope="{ $index, row }">
+          <template v-slot:default="{ $index, row }">
             <el-form v-on:submit.native.prevent
                      v-bind:show-message="false"
                      v-bind:model="row">
@@ -115,13 +115,12 @@
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn label="用药频次"
-                          min-width="90px">
-          <template slot="header">
+        <PeaceTableColumn min-width="104px">
+          <template v-slot:header>
             <span class="text-red">*</span>
             <span>用药频次</span>
           </template>
-          <template slot-scope="{ row }">
+          <template v-slot:default="{ row }">
             <el-form v-on:submit.native.prevent
                      v-bind:show-message="false"
                      v-bind:model="row">
@@ -144,13 +143,12 @@
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn label="给药途径"
-                          min-width="90px">
-          <template slot="header">
+        <PeaceTableColumn min-width="104px">
+          <template v-slot:header>
             <span class="text-red">*</span>
             <span>给药途径</span>
           </template>
-          <template slot-scope="{ row }">
+          <template v-slot:default="{ row }">
             <el-form v-on:submit.native.prevent
                      v-bind:show-message="false"
                      v-bind:model="row">
@@ -172,13 +170,12 @@
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn label="用药天数"
-                          min-width="90px">
-          <template slot="header">
+        <PeaceTableColumn min-width="104px">
+          <template v-slot:header>
             <span class="text-red">*</span>
             <span>用药天数</span>
           </template>
-          <template slot-scope="{ row }">
+          <template v-slot:default="{ row }">
             <el-form v-on:submit.native.prevent
                      v-bind:show-message="false"
                      v-bind:model="row">
@@ -200,19 +197,19 @@
         </PeaceTableColumn>
 
         <PeaceTableColumn label="药品数量"
-                          width="160px">
-          <template slot="header">
+                          width="190px">
+          <template v-slot:header>
             <span class="text-red">*</span>
             <span>药品数量</span>
           </template>
-          <template slot-scope="{ row }">
+          <template v-slot:default="{ row }">
             <el-form v-on:submit.native.prevent
                      v-bind:show-message="false"
                      v-bind:model="row"
                      inline>
               <el-form-item required
                             prop="drugNum"
-                            style="margin: 0;">
+                            style="margin: 0 4px 0 0;">
                 <el-input-number class="editable"
                                  placeholder="请输入"
                                  controls-position="right"
@@ -226,7 +223,7 @@
                             prop="drugQuantityUnit"
                             style="margin: 0;">
                 <el-select v-model="row.drugQuantityUnit"
-                           style="width: 64px;"
+                           style="width: 80px;"
                            v-on:change="() => { 
                                                 calculateCount(row) 
                                                 changeDrugQuantityUnit(row)
@@ -242,20 +239,20 @@
         </PeaceTableColumn>
 
         <PeaceTableColumn label="操作"
-                          width="50px">
-          <template slot-scope="scope">
+                          width="55px">
+          <template v-slot:default="scope">
             <el-button type="text text-grey-333"
                        v-on:click="deleteDrugList(scope.row)">删除</el-button>
           </template>
         </PeaceTableColumn>
-      </el-table>
+      </PeaceTable>
 
       <el-alert v-if="isColdStorag"
                 type="warning"
                 show-icon=""
                 title="处方中有冷藏储存的药品，请提醒患者到店/院自提"
                 v-bind:closable="false"></el-alert>
-    </el-card>
+    </div>
 
     <el-autocomplete size="medium"
                      class="q-mb-md full-width"
@@ -265,25 +262,25 @@
                      v-model="queryDrugString"
                      v-bind:fetch-suggestions="getDrugList"
                      v-on:select="selectDrugList">
-      <template slot-scope="{ item }">
+      <template v-slot:default="{ item }">
         <div class="flex q-py-sm el-autocomplete-drug-item"
              v-bind:class="{ disabled: item.drugStock === 0 }">
           <div class="col q-mr-md ellipsis">
-            <span class="text-subtitle2 text-grey-333"
+            <span class="text-grey-333"
                   v-bind:title="item.drugName">{{ item.drugName }}</span>
           </div>
           <div class="q-mr-md ellipsis"
                style="width: 120px;">
-            <span class="text-grey-333 text-caption"
+            <span class="text-grey-333"
                   v-bind:title="item.specification">{{ item.specification }}</span>
           </div>
           <div class="col q-mr-md ellipsis">
-            <span class="text-grey-333 text-caption"
+            <span class="text-grey-333"
                   v-bind:title="item.companyName">{{ item.companyName }}</span>
           </div>
           <div style="width: 60px;">
             <span v-if="item.drugStock === 0"
-                  class="text-subtitle2 text-grey-333">暂无库存</span>
+                  class="text-grey-333">暂无库存</span>
           </div>
         </div>
       </template>
@@ -298,12 +295,12 @@
         <PeaceTableColumn label="疾病诊断"
                           min-width="160px"
                           prop="diagnosis">
-          <template slot-scope="scope">{{ scope.row.diagnoseList.map((item) => item.name).join(' | ') }}</template>
+          <template v-slot:default="scope">{{ scope.row.diagnoseList.map((item) => item.name).join(' | ') }}</template>
         </PeaceTableColumn>
         <PeaceTableColumn label="处方药品"
                           min-width="300px"
                           prop="drugjson">
-          <template slot-scope="scope">
+          <template v-slot:default="scope">
             <div v-for="drug in scope.row.drugList"
                  v-bind:key="drug.durgId"
                  class="q-mb-sm">
@@ -327,7 +324,7 @@
                           fixed="right"
                           label="操作"
                           width="80px">
-          <template slot-scope="scope">
+          <template v-slot:default="scope">
             <el-button type="text"
                        v-on:click="checkHistoryPrescription(scope.row)">选择</el-button>
           </template>
@@ -730,22 +727,14 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-::v-deep .el-table.editable {
-  td,
-  th {
-    padding: 4px 0;
-  }
+::v-deep .editable .el-table {
+  box-shadow: 0 0 7px 0 rgba(51, 51, 51, 0.1);
 
-  th {
-    background: initial;
+  th > .cell {
+    padding: 8px 12px;
   }
-
-  thead {
-    color: #000000;
-  }
-
-  .cell {
-    padding: 2px 4px;
+  td > .cell {
+    padding: 0 12px;
   }
 
   .el-input--suffix .el-input__inner {
@@ -769,15 +758,6 @@ export default {
 ::v-deep .editable.el-input-number .el-input__inner,
 ::v-deep .editable.el-select .el-input__inner {
   border-width: 1px;
-}
-
-::v-deep .editable.el-input .el-input__inner:hover,
-::v-deep .editable.el-input-number .el-input__inner:hover,
-::v-deep .el-select .el-input__inner:hover,
-::v-deep .editable.el-input .el-input__inner:focus,
-::v-deep .editable.el-input-number .el-input__inner:focus,
-::v-deep .el-select .el-input__inner:focus {
-  border-color: var(--q-color-primary);
 }
 
 .el-form .el-form-item--mini.el-form-item {

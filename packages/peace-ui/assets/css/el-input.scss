@@ -1,5 +1,9 @@
 .el-input {
   &:not(.element-ui-default) {
+    ::placeholder {
+      color: rgba(51, 51, 51, 0.4);
+    }
+
     &.el-input--mini {
       .el-input__inner {
         padding: 0 12px;
