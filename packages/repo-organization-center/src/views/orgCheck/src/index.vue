@@ -319,7 +319,7 @@ export default {
     },
 
     showNetHospitalInfo() {
-      const typeCode = this.newInstitutionInfoAuditDetails.institutionInfoAuditVO?.hospitalTypeCode ?? ""
+      const typeCode = this.newInstitutionInfoAuditDetails.institutionInfoAuditVO?.institutionTypeCode ?? ""
       if (Peace.validate.isEmpty(typeCode)) {
         return false
       } else {
@@ -329,7 +329,7 @@ export default {
     },
 
     showHasShop() {
-      const typeCode = this.newInstitutionInfoAuditDetails.institutionInfoAuditVO?.hospitalTypeCode ?? ""
+      const typeCode = this.newInstitutionInfoAuditDetails.institutionInfoAuditVO?.institutionTypeCode ?? ""
       if (Peace.validate.isEmpty(typeCode)) {
         return false
       } else {

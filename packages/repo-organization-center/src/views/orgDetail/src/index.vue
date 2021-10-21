@@ -192,7 +192,7 @@ export default {
       }
     },
     showNetHospitalInfo() {
-      const typeCode = this.currentDate.institutionInfoAuditVO?.hospitalTypeCode ?? ""
+      const typeCode = this.currentDate.institutionInfoAuditVO?.institutionTypeCode ?? ""
       if (Peace.validate.isEmpty(typeCode)) {
         return false
       } else {
@@ -201,7 +201,7 @@ export default {
 
     },
     showHasShop() {
-      const typeCode = this.currentDate.institutionInfoAuditVO?.hospitalTypeCode ?? ""
+      const typeCode = this.currentDate.institutionInfoAuditVO?.institutionTypeCode ?? ""
       if (Peace.validate.isEmpty(typeCode)) {
         return false
       } else {
