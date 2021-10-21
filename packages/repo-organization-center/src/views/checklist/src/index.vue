@@ -37,7 +37,7 @@
 
           <el-form-item label="应用来源">
 
-            <PeaceSelect v-model="model.channelSourceName"
+            <PeaceSelect v-model="model.channelSourceCode"
                          clearable
                          filterable
                          placeholder="全部">
@@ -152,7 +152,7 @@ export default {
       model: {
         institutionName: undefined,
         auditerType: undefined,
-        channelSourceName: undefined,
+        channelSourceCode: undefined,
         auditStatus: undefined,
         startTime: undefined,
         endTime: undefined,
@@ -205,7 +205,7 @@ export default {
       const resetParams = {
         institutionName: undefined,
         auditerType: undefined,
-        channelSourceName: undefined,
+        channelSourceCode: undefined,
         auditStatus: undefined,
         startTime: undefined,
         endTime: undefined,
