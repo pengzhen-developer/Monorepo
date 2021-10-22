@@ -187,7 +187,7 @@
           <van-field :disabled="isEdit"
                      @click="showPopupNations"
                      label="民族"
-                     placeholder="请输入"
+                     placeholder="请选择"
                      right-icon="arrow"
                      v-model="model.nationName" />
         </template>
@@ -203,7 +203,7 @@
                      v-model="model.guardianIdCard" />
         </template>
         <van-button @click="submit"
-                    :disabled="hasClick"
+                    :disabled="!canSubmit"
                     :loading="hasClick"
                     size="large"
                     round
@@ -318,7 +318,10 @@ export default {
     },
     canSubmit() {
       let result = false
-
+      //修改民族不用判断-直接通过
+      if (this.isEdit && !this.isNationExist) {
+        return true
+      }
       if (this.needIdCard) {
         if (this.model.name && this.model.idcard && this.model.relation && this.model.sex && this.model.birthday && peace.validate.idCard(this.model.idcard)) {
           result = true
@@ -645,17 +648,7 @@ export default {
       if (!this.canSubmit) {
         return
       }
-      if (this.from == 'addGuardian' || this.addGardian) {
-        let gardianAge = this.getAgeByIdCard(this.model.idcard)
-        if (gardianAge < 18) {
-          return
-        }
-      }
-      if (this.canShowGardian) {
-        if (!(this.gardianId && this.gardianName)) {
-          return
-        }
-      }
+
       if (this.hasClick) {
         return
       }
