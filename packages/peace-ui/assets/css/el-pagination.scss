@@ -1,5 +1,6 @@
 .el-pagination {
   &:not(.element-ui-default) {
+    padding: 2px 0;
     font-weight: 500;
 
     button,
@@ -15,6 +16,20 @@
       background-color: $--color-white;
       border: 1px solid $--border-color-base;
       min-width: 32px;
+    }
+
+    &.is-background .el-pager {
+      padding: 0 4px;
+
+      &li {
+        margin: 0 4px;
+      }
+    }
+    &.is-background .btn-prev {
+      margin: 0;
+    }
+    &.is-background .btn-next {
+      margin: 0;
     }
 
     &.is-background .el-pager li:not(.disabled).active {
