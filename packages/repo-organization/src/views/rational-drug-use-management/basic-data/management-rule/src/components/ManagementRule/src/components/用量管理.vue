@@ -47,7 +47,7 @@
       <div class="flex row items-center q-ml-8">
         <el-select v-model="model.timePeriod"
                    placeholder="请选择"
-                   style="width: 60px;">
+                   style="width: 50px;">
           <el-option v-for="item in periodType"
                      :key="item.value"
                      :label="item.label"

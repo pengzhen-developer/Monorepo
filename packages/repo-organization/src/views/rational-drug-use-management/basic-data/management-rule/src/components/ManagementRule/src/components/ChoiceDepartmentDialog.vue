@@ -7,7 +7,7 @@
 
       <div v-show="multipleSelection.length > 0"
            class="q-mb-40">
-        <span>已选科室：</span>
+        <span class="text-grey-333">已选科室：</span>
         <div class="q-mt-md">
           <el-tag v-for="item in multipleSelection"
                   v-bind:key="item.code"
@@ -187,5 +187,8 @@ export default {
   ::v-deep .el-icon-search {
     color: white !important;
   }
+}
+.el-dialog__footer {
+  padding: 32px 16px 16px !important;
 }
 </style>
