@@ -763,7 +763,7 @@ export default {
               peace.service.IM.initNIMS({ type: 'add', ...res.data })
               this.familyId = res.data.accid
               if (params.emit) {
-                $peace.$emit(params.emit, { res, status: true, familyInfo: { familyId: res.data.accid, name: this.model.name } })
+                $peace.$emit(params.emit, { res, status: true, success: true, familyInfo: { familyId: res.data.accid, name: this.model.name } })
                 this.$router.go(-1)
               } else {
                 this.getFamilyInfo({ id: res.data.accid, source: 2 })

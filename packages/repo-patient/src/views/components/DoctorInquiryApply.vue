@@ -717,7 +717,9 @@ export default {
 
       enter_time: '',
 
-      loading: false
+      loading: false,
+
+      hasGuardian: false
     }
   },
 
@@ -1144,7 +1146,8 @@ export default {
           item.label = item.name
           item.value = item.accid
         })
-
+        //家人列表是否有18以上的家人
+        this.hasGuardian = res.data.find((item) => item.intAge >= 18) ? true : false
         famliyQuestion.answerList = familyList
         if (type == '') {
           this.current.answerList = familyList
@@ -1468,7 +1471,8 @@ export default {
                   id: params[0].accid,
                   idcard: params[0].idcard,
                   emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY_GUARDIAN,
-                  canShowSelf: canShowSelf
+                  canShowSelf: canShowSelf,
+                  hasGuardian: this.hasGuardian
                 })
                 this.currentFamilyInfo = params[0]
                 this.$router.push({ path: `/setting/addGuardian/${json}` })
@@ -1491,10 +1495,12 @@ export default {
             })
           } else {
             let canShowSelf = !this.current.answerList.find((item) => item.relation === '本人') ? 1 : 2
+
             const json = peace.util.encode({
               type: 'add',
               emit: peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY,
-              canShowSelf: canShowSelf
+              canShowSelf: canShowSelf,
+              hasGuardian: this.hasGuardian
             })
             this.$router.push({ path: `/setting/familyMember/${json}` })
           }
