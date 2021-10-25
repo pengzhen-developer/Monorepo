@@ -108,7 +108,11 @@ export default {
         { text: '综合排序', textSelected: '', textSelecting: '', type: 'comprehensive', isSelect: false, isOpen: false },
         { text: '筛选', textSelected: '', textSelecting: '', type: 'screen', isSelect: false, isOpen: false }
       ],
-      comprehensiveList: [{ value: 'comprehensive', label: '综合排序' }, { value: 'visitsNum', label: '问诊量' }, { value: 'feedback', label: '好评率' }],
+      comprehensiveList: [
+        { value: 'comprehensive', label: '综合排序' },
+        { value: 'visitsNum', label: '问诊量' },
+        { value: 'feedback', label: '好评率' }
+      ],
       screenList: [
         {
           title: '问诊类型',
@@ -374,9 +378,9 @@ export default {
   background: #fff;
   z-index: 6666;
   border-bottom: 1px solid #e3e3e3;
-  &.no-border {
-    border-bottom: 1px solid #fff;
-  }
+  // &.no-border {
+  //   border-bottom: 1px solid #fff;
+  // }
   .search-row {
     height: 36px;
     display: flex;
@@ -407,6 +411,7 @@ export default {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          line-height: 16px;
         }
       }
     }
@@ -442,17 +447,33 @@ export default {
   background: #f6f6f6;
 }
 .van-tree-select__nav-item {
-  padding-right: 12px;
+  padding: 0 12px 0 24px;
+  height: 48px;
+  line-height: 48px;
 }
+
 .van-sidebar-item--select {
-  color: #00c6ae;
+  color: $primary;
+}
+.van-sidebar-item--select::before {
+  width: 16px;
+  height: 16px;
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAAXNSR0IArs4c6QAAAD9QTFRFAAAAAP//ANSqAMWvAMisAMawAMatAMeuAMmwAMewAMauAMauAMavAMavAMauAMeuAMeuAMauAMauAMauAMauUqfGHgAAABR0Uk5TAAIGIy46Wltnd36Hoq+wxNDz+PwG/1++AAAAV0lEQVQYGe3BRw6AIAAEwAUsFBWU/f9bNYYYC3Ay8eIMfh+RXS9RM5EjKjQ3GkVq5mZWKBCeOy+QZ5gYZDULk6VBhgw8BIknxxOHhzbyJLa4s8OFxe9lK9xUBxEOXJT3AAAAAElFTkSuQmCC);
+  transform: translateY(-50%) rotate(90deg);
+  border: none;
+  top: 50%;
+  left: 8px;
 }
 .van-tree-select__item {
-  font-weight: 500;
+  padding-left: 16px;
 }
 
 .van-tree-select__item--active {
-  color: #00c6ae;
+  color: $primary;
+  font-weight: bold;
   i {
     &::before {
       content: '';
@@ -490,7 +511,7 @@ export default {
       border: 1px solid rgba(51, 51, 51, 0.1);
       background: #fff;
       + .screen-btn {
-        margin-left: 18px;
+        margin-left: 16px;
       }
 
       &.active {
@@ -507,6 +528,7 @@ export default {
     justify-content: center;
     width: 100%;
     height: 48px;
+    font-size: 14px;
     > div {
       flex: 1;
       position: relative;

@@ -255,7 +255,7 @@ export default {
     width: 100%;
     display: flex;
     padding: 15px 15px 5px 15px;
-    border-bottom: 1px solid #e3e3e3;
+    border-bottom: 1px solid #e5e5e5;
 
     .avatar {
       width: 50px;
