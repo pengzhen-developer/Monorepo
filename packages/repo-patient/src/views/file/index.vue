@@ -104,7 +104,7 @@
                         :key="familyId"
                         :familyId="familyId"></FileRecord>
           </van-tab>
-          <van-tab title="其    他">
+          <van-tab title="其    它">
             <!-- <div class="none-page">
               <div class="icon icon_none_source"></div>
               <div class="none-text">暂无数据</div>
