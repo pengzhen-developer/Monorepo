@@ -189,7 +189,7 @@ export function isIDCard(code) {
     82: '澳门',
     91: '国外 '
   }
-  const idCardReg = /^[1-9]\d{5}(19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|[X])$/i // 身份证格式正则表达式
+  const idCardReg = pattern.idCard // 身份证格式正则表达式
 
   let isPass = true // 身份证验证是否通过（true通过、false未通过）
 
