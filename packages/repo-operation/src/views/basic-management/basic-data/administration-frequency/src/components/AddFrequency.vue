@@ -12,14 +12,14 @@
 
         <el-form-item label="频次名称："
                       prop="name">
-          <el-input v-model="model.name"
+          <el-input v-model.trim="model.name"
                     placeholder="请输入"
                     maxlength="50"
                     clearable></el-input>
         </el-form-item>
 
         <el-form-item label="频次名称缩写：">
-          <el-input v-model="model.abbreviation"
+          <el-input v-model.trim="model.abbreviation"
                     placeholder="请输入"
                     maxlength="50"
                     clearable></el-input>
@@ -60,7 +60,7 @@
 
         <el-form-item label="备注：">
 
-          <el-input v-model="model.remarks"
+          <el-input v-model.trim="model.remarks"
                     placeholder="请输入"
                     maxlength="50"
                     clearable></el-input>
