@@ -169,7 +169,8 @@
                      title="复诊订单详情"
                      v-if="orderDetailDialog.visible"
                      width="500px">
-          <return-visit-order-detail :info="orderDetailDialog.data"></return-visit-order-detail>
+          <PeaceOrderInquiryDetail v-bind:data="orderDetailDialog.data"
+                                   v-bind:type="'returnVisit'"></PeaceOrderInquiryDetail>
         </PeaceDialog>
         <PeaceDialog :visible.sync="dialogVisible"
                      class="inquiry scroll-body"
@@ -205,13 +206,13 @@
 import CONSTANT from './constant'
 import Service from './service'
 import ReturnVisitOpen from './components/ReturnVisitOpen'
-import ReturnVisitOrderDetail from './components/ReturnVisitOrderDetail'
 import MessageList from './components/MessageList'
 import ExportOrder from './components/ExportOrder'
+import { PeaceOrderInquiryDetail } from 'peace-components'
 
 export default {
   name: 'ReturnVisitOrder',
-  components: { ReturnVisitOpen, ReturnVisitOrderDetail, MessageList, ExportOrder },
+  components: { ReturnVisitOpen, PeaceOrderInquiryDetail, MessageList, ExportOrder },
   data() {
     return {
       returnVisitIsOpen: null,

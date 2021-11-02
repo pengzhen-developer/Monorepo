@@ -154,7 +154,8 @@
                  append-to-body
                  title="咨询订单详情"
                  width="500px">
-      <AdvisoryOrderInfo :info="currentInquiryAdvisoryInfo"></AdvisoryOrderInfo>
+      <PeaceOrderInquiryDetail v-bind:data="currentInquiryAdvisoryInfo"
+                               v-bind:type="'inquiry'"></PeaceOrderInquiryDetail>
     </PeaceDialog>
 
     <!-- 复诊订单详情 -->
@@ -165,7 +166,8 @@
                  title="复诊订单详情"
                  width="500px"
                  append-to-body>
-      <ReturnVisitOrderInfo v-bind:info="currentReturnVisitAdvisoryInfo"></ReturnVisitOrderInfo>
+      <PeaceOrderInquiryDetail v-bind:data="currentReturnVisitAdvisoryInfo"
+                               v-bind:type="'returnVisit'"></PeaceOrderInquiryDetail>
     </PeaceDialog>
 
     <!-- 购药订单详情 -->
@@ -222,18 +224,16 @@ import Service from '../service'
 import CONSTANT from '../constant'
 import RefundDetail from './RefundDetail'
 import PresInfo from './PresInfo'
-import AdvisoryOrderInfo from './AdvisoryOrderInfo'
-import ReturnVisitOrderInfo from './ReturnVisitOrderInfo'
 import PurchaseOrderInfo from './PurchaseOrderInfo'
 import ServicePackageOrderInfo from './ServicePackageOrderInfo'
+import { PeaceOrderInquiryDetail } from 'peace-components'
 
 export default {
   name: 'RefundSearch',
   components: {
     PresInfo,
     RefundDetail,
-    AdvisoryOrderInfo,
-    ReturnVisitOrderInfo,
+    PeaceOrderInquiryDetail,
     PurchaseOrderInfo,
     ServicePackageOrderInfo
   },

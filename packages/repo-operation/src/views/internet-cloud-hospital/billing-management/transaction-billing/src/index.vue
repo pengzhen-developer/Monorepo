@@ -8,7 +8,7 @@
                inline>
         <el-form-item label="完单日期">
           <PeaceDatePicker type="daterange"
-                           value-format="yyyy-MM-dd"
+                           value-toDate="yyyy-MM-dd"
                            v-model="model.time"
                            v-bind:picker-options="pickerOptions"></PeaceDatePicker>
         </el-form-item>
@@ -123,7 +123,8 @@
                  append-to-body
                  title="咨询订单详情"
                  width="500px">
-      <AdvisoryOrderInfo :info="currentInquiryAdvisoryInfo"></AdvisoryOrderInfo>
+      <PeaceOrderInquiryDetail v-bind:data="currentInquiryAdvisoryInfo"
+                               v-bind:type="'inquiry'"></PeaceOrderInquiryDetail>
     </PeaceDialog>
 
     <!-- 复诊订单详情 -->
@@ -134,7 +135,8 @@
                  title="复诊订单详情"
                  width="500px"
                  append-to-body>
-      <ReturnVisitOrderInfo v-bind:info="currentReturnVisitAdvisoryInfo"></ReturnVisitOrderInfo>
+      <PeaceOrderInquiryDetail v-bind:data="currentReturnVisitAdvisoryInfo"
+                               v-bind:type="'returnVisit'"></PeaceOrderInquiryDetail>
     </PeaceDialog>
 
     <!-- 购药订单详情 -->
@@ -177,19 +179,17 @@
 <script>
 import Service from './service'
 
-import AdvisoryOrderInfo from './components/AdvisoryOrderInfo'
-import ReturnVisitOrderInfo from './components/ReturnVisitOrderInfo'
 import PresInfo from './components/PresInfo'
 import PurchaseOrderInfo from './components/PurchaseOrderInfo'
 import ServicePackageOrderInfo from './components/ServicePackageOrderInfo'
+import { PeaceOrderInquiryDetail } from 'peace-components'
 
 export default {
   components: {
-    AdvisoryOrderInfo,
-    ReturnVisitOrderInfo,
     PresInfo,
     PurchaseOrderInfo,
-    ServicePackageOrderInfo
+    ServicePackageOrderInfo,
+    PeaceOrderInquiryDetail
   },
 
   data() {
@@ -221,12 +221,8 @@ export default {
           {
             text: '今天',
             onClick(picker) {
-              const s = Peace.dayjs()
-                .toDate()
-                .formatDate()
-              const e = Peace.dayjs()
-                .toDate()
-                .formatDate()
+              const s = Peace.dayjs().toDate()
+              const e = Peace.dayjs().toDate()
 
               picker.$emit('pick', [s, e])
             }
@@ -237,11 +233,9 @@ export default {
               const s = Peace.dayjs()
                 .add(-1, 'day')
                 .toDate()
-                .formatDate()
               const e = Peace.dayjs()
                 .add(-1, 'day')
                 .toDate()
-                .formatDate()
 
               picker.$emit('pick', [s, e])
             }
@@ -252,10 +246,7 @@ export default {
               const s = Peace.dayjs()
                 .startOf('month')
                 .toDate()
-                .formatDate()
-              const e = Peace.dayjs()
-                .toDate()
-                .formatDate()
+              const e = Peace.dayjs().toDate()
 
               picker.$emit('pick', [s, e])
             }
@@ -267,12 +258,10 @@ export default {
                 .add(-1, 'month')
                 .startOf('month')
                 .toDate()
-                .formatDate()
               const e = Peace.dayjs()
                 .add(-1, 'month')
                 .endOf('month')
                 .toDate()
-                .formatDate()
 
               picker.$emit('pick', [s, e])
             }
@@ -292,8 +281,8 @@ export default {
   created() {
     const s = Peace.dayjs()
       .startOf('month')
-      .format('YYYY-MM-DD')
-    const e = Peace.dayjs().format('YYYY-MM-DD')
+      .toDate()
+    const e = Peace.dayjs().toDate()
 
     this.model.time = [s, e]
   },

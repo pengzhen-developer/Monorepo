@@ -172,7 +172,8 @@
                   title="咨询订单详情"
                   v-if="infoDialogVisible"
                   width="500px">
-      <advisory-order-info :info="currentAdvisoryInfo"></advisory-order-info>
+      <PeaceOrderInquiryDetail :data="currentAdvisoryInfo"
+                               :type="'inquiry'"></PeaceOrderInquiryDetail>
     </peace-dialog>
     <!-- 问诊详情 -->
     <peace-dialog :close-on-click-modal="false"
@@ -207,6 +208,7 @@
       <export-order type="inquiry"
                     :query="search"></export-order>
     </peace-dialog>
+
   </div>
 </template>
 <script>
@@ -215,8 +217,8 @@ import Constant from './constant'
 
 import InquiryInfo from './components/MessageList'
 import RecordInfo from './components/RecordInfo'
-import AdvisoryOrderInfo from './components/AdvisoryOrderInfo'
 import ExportOrder from './components/ExportOrder'
+import { PeaceOrderInquiryDetail } from 'peace-components'
 
 export default {
   name: 'advisory-order',
@@ -277,10 +279,10 @@ export default {
     })
   },
   components: {
-    AdvisoryOrderInfo,
     InquiryInfo,
     RecordInfo,
-    ExportOrder
+    ExportOrder,
+    PeaceOrderInquiryDetail
   },
   methods: {
     fetch() {
@@ -304,6 +306,7 @@ export default {
         this.infoDialogVisible = true
       })
     },
+
     // 问诊记录（会话记录）
     getInquiry(id) {
       const params = { inquiryNo: id }

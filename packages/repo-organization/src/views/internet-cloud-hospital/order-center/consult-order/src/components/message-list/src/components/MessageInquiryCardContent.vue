@@ -24,7 +24,8 @@
                   :title="`${isAgain ? '复诊':'咨询'}订单详情`"
                   v-if="info.visible"
                   append-to-body>
-      <AdvisoryOrderInfo :info="info.data"></AdvisoryOrderInfo>
+      <PeaceOrderInquiryDetail v-bind:data="info.data"
+                               v-bind:type="isAgain?'returnVisit':'inquiry'"></PeaceOrderInquiryDetail>
     </peace-dialog>
   </div>
 </template>
@@ -33,7 +34,7 @@
 import MessageInquiryCard from './MessageInquiryCard'
 import InquiryPreliminary from './InquiryPreliminary'
 import Service from '../service'
-import AdvisoryOrderInfo from './AdvisoryOrderInfo'
+import { PeaceOrderInquiryDetail } from 'peace-components'
 export default {
   props: {
     message: {
@@ -44,7 +45,7 @@ export default {
   components: {
     MessageInquiryCard,
     InquiryPreliminary,
-    AdvisoryOrderInfo
+    PeaceOrderInquiryDetail
   },
   computed: {
     familyName() {

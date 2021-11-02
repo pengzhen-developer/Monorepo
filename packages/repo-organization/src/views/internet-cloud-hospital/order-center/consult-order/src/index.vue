@@ -175,7 +175,8 @@
                  title="咨询订单详情"
                  v-if="orderDetailDialog.visible"
                  width="500px">
-      <consult-order-detail :info="orderDetailDialog.data"></consult-order-detail>
+      <PeaceOrderInquiryDetail v-bind:data="orderDetailDialog.data"
+                               v-bind:type="'inquiry'"></PeaceOrderInquiryDetail>
     </PeaceDialog>
     <PeaceDialog :visible.sync="dialogVisible"
                  append-to-body
@@ -200,13 +201,13 @@
 <script>
 import CONSTANT from './constant'
 import Service from './service'
-import ConsultOrderDetail from './components/ConsultOrderDetail'
 import MessageList from './components/message-list'
 import ExportOrder from './components/ExportOrder'
+import { PeaceOrderInquiryDetail } from 'peace-components'
 
 export default {
   name: 'ConsultOrder',
-  components: { ConsultOrderDetail, MessageList, ExportOrder },
+  components: { PeaceOrderInquiryDetail, MessageList, ExportOrder },
   data() {
     return {
       model: {

@@ -92,16 +92,6 @@
         <peace-table-column label="机构名称"
                             min-width="180"
                             prop="netHospital_name"></peace-table-column>
-        <!-- <peace-table-column label="咨询类型"
-                            min-width="120">
-          <template slot-scope="scope">
-            <div class="private">
-              <span class="private-tag"
-                    v-if="scope.row.isPrivateDoctor">私</span>
-              <span>{{ scope.row.inquiry_type | getEnumLabel(source.orderInquiryType) }}</span>
-            </div>
-          </template>
-        </peace-table-column> -->
         <peace-table-column label="下单时间"
                             width="180"
                             prop="created_time"></peace-table-column>
@@ -169,7 +159,8 @@
                   title="复诊订单详情"
                   v-if="infoDialogVisible"
                   width="500px">
-      <return-visit-order-info :info="currentAdvisoryInfo"></return-visit-order-info>
+      <PeaceOrderInquiryDetail v-bind:data="currentAdvisoryInfo"
+                               v-bind:type="'returnVisit'"></PeaceOrderInquiryDetail>
     </peace-dialog>
     <!-- 问诊详情 -->
     <peace-dialog :close-on-click-modal="false"
@@ -204,16 +195,7 @@
       <pres-info :info="currentPres"
                  @viewPres="viewPres"></pres-info>
     </peace-dialog>
-    <!-- 购药订单详情 -->
-    <!-- <peace-dialog  :close-on-click-modal="false" :close-on-press-escape="false" :visible.sync="purchaseDialogVisible"
-               title="购药订单详情"
-               v-if="purchaseDialogVisible"
-               append-to-body
-               width="576px">
-      <purchase-order-info :info="currentPurchase"
-                           @viewPurchase="viewPurchase"
-                           @viewPres="viewPres"></purchase-order-info>
-    </peace-dialog> -->
+
     <!-- 导出 -->
     <peace-dialog :close-on-click-modal="false"
                   :close-on-press-escape="false"
@@ -225,6 +207,7 @@
       <export-order type="returnVisit"
                     :query="search"></export-order>
     </peace-dialog>
+
   </div>
 </template>
 <script>
@@ -234,8 +217,8 @@ import Constant from './constant'
 import InquiryInfo from './components/MessageList'
 import RecordInfo from './components/RecordInfo'
 import PresInfo from './components/PrescriptionOrderDetail'
-import ReturnVisitOrderInfo from './components/ReturnVisitOrderInfo'
 import ExportOrder from './components/ExportOrder'
+import { PeaceOrderInquiryDetail } from 'peace-components'
 
 export default {
   name: 'return-visit-order',
@@ -270,7 +253,6 @@ export default {
       inquiryDialogVisible: false,
       recordDialogVisible: false,
       presDialogVisible: false,
-      // purchaseDialogVisible: false,
       exportDialogVisible: false,
 
       source: {
@@ -300,7 +282,7 @@ export default {
     })
   },
   components: {
-    ReturnVisitOrderInfo,
+    PeaceOrderInquiryDetail,
     InquiryInfo,
     RecordInfo,
     PresInfo,
@@ -380,25 +362,7 @@ export default {
     viewPres(param) {
       return this.getPres(param.ids, param.idx, param.current)
     },
-    // //查看更多购药订单
-    // viewPurchase(param) {
-    //   return this.getPurchaseOrder(param.$data, param.orderIds, param.idx)
-    // },
-    // // 购药订单
-    // getPurchaseOrder(data, orderIds, index) {
-    //   index = index || 0
-    //   let orderNo = orderIds.split(',')[index]
-    //   Service.getPurchases( orderNo).then((res) => {
-    //     this.purchaseDialogVisible = true
-    //     this.currentPurchase = Object.assign({}, res.data, {
-    //       presIds: data.prescriptionIds,
-    //       prescribeIndex: index,
-    //       $data: data,
-    //       orderIds: orderIds,
-    //       total: orderIds.split(',').length
-    //     })
-    //   })
-    // },
+
     exportExcel() {
       this.exportDialogVisible = true
     }
