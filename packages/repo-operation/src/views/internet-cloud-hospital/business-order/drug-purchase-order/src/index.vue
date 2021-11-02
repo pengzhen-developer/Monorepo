@@ -332,7 +332,9 @@ export default {
 
     exportExcel() {
       this.exportLoading = true
-      let params = Object.assign({}, this.search, { type: 'drug' })
+      const params = Peace.util.deepClone(this.search)
+      params['time'] = undefined
+      params['type'] = 'drug'
       Service.checkOrder(params)
         .then(() => {
           Service.exportOrder(params).finally(() => {
