@@ -189,7 +189,7 @@
                      label="民族"
                      placeholder="请选择"
                      right-icon="arrow"
-                     v-model="model.nationName" />
+                     v-model="editModel.nationName" />
         </template>
         <template v-if="model.isGuardian">
           <van-field :disabled="isEdit"
@@ -248,6 +248,10 @@ export default {
         nationName: '',
         isReconfirm: '',
         isReconfirmGuardian: ''
+      },
+      editModel: {
+        nationCode: '',
+        nationName: ''
       },
       error: {
         name: '',
@@ -630,8 +634,8 @@ export default {
 
     setNations(val) {
       let code = this.getNationCodeByName(val)
-      this.model.nationCode = code
-      this.model.nationName = val
+      this.editModel.nationCode = code
+      this.editModel.nationName = val
       this.closeAllPopup()
     },
 
@@ -798,13 +802,15 @@ export default {
     },
     perfectInfo() {
       let familyId = this.model.id
-      let nationCode = this.model.nationCode
-      let nationName = this.model.nationName
+      let nationCode = this.editModel.nationCode
+      let nationName = this.editModel.nationName
       let params = { familyId, nationCode, nationName }
       peace.service.patient
         .perfectInfo(params)
         .then((res) => {
           peace.util.alert(res.msg)
+          this.model.nationCode = this.editModel.nationCode
+          this.model.nationName = this.editModel.nationName
           this.showUpdateInfo = false
         })
         .finally(() => {

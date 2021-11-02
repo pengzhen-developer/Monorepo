@@ -459,6 +459,12 @@
                        :message="invoiceDialog.data.message"></ApplyForInvoice>
     </template>
 
+    <!-- 取消原因 -->
+    <template>
+      <SelectCancelCause v-model="cancelCauseDialog.visible"
+                         :list="cancelCauseDialog.data.list"
+                         @onSuccess="cancelSubmit"></SelectCancelCause>
+    </template>
   </div>
 </template>
 
@@ -475,6 +481,7 @@ import RefundTip from '@src/views/components/RefundTip'
 import CallPhone from '@src/views/components/CallPhone'
 import PayCallback from '@src/views/components/PayCallback'
 import ApplyForInvoice from '@src/views/components/ApplyForInvoice'
+import SelectCancelCause from '@src/views/components/CancelCauseSelect.vue'
 const ENUM = {
   PAY_TYPE_TEXT: {
     wxpay: '自费支付微信',
@@ -510,6 +517,7 @@ export default {
     CallPhone,
     PayCallback,
     ApplyForInvoice,
+    SelectCancelCause,
 
     [Dialog.Component.name]: Dialog.Component
   },
@@ -568,6 +576,12 @@ export default {
         visible: false,
         data: {
           divisionId: ''
+        }
+      },
+      cancelCauseDialog: {
+        visible: false,
+        data: {
+          list: []
         }
       },
       imagePreview: {
@@ -740,6 +754,16 @@ export default {
     this.trackByLeave()
   },
   methods: {
+    getCancelCause() {
+      // payStatus 0：未支付 1：已支付 2：退款中 3：已退款
+      //订单支付状态(UNPAID未支付  PREPAID已支付)
+      const params = {
+        payStatus: this.internalData?.orderInfo?.payStatus > 0 ? 'PREPAID' : 'UNPAID'
+      }
+      peace.service.inquiry.getCancelCause(params).then((res) => {
+        this.cancelCauseDialog.data.list = res.data
+      })
+    },
     trackByLeave() {
       const params = {
         page_name: '问诊订单详情',
@@ -826,27 +850,32 @@ export default {
     cancelInquiryOrder(orderNo) {
       let params = {
         orderNo: orderNo,
-        cancelType: 2
+        cancelType: 2,
+        cancelCause: ''
       }
       peace.service.patient.cancel(params).finally(() => {
+        this.cancelCauseDialog.visible = false
         this.getConsultDetail()
       })
     },
     report(data) {
       const params = { inquiryNo: data.inquiryInfo.inquiryNo }
       peace.service.patient.report(params).then((res) => {
-        // this.goToPay(data)
         const data = res.data
-        const json = {
-          money: data.orderMoney, //总金额
-          moneyRecord: data.moneyRecord, //费用明细
-          orderNo: data.orderNo,
-          inquiryId: data.inquiryId,
-          orderType: 'inquiry',
-          isReport: true
+        if (data.totalMoney == '0.00') {
+          this.get()
+        } else {
+          const json = {
+            money: data.orderMoney, //总金额
+            moneyRecord: data.moneyRecord, //费用明细
+            orderNo: data.orderNo,
+            inquiryId: data.inquiryId,
+            orderType: 'inquiry',
+            isReport: true
+          }
+          this.dialog.visible = true
+          this.dialog.data = json
         }
-        this.dialog.visible = true
-        this.dialog.data = json
       })
     },
     goToPay(data) {
@@ -880,7 +909,9 @@ export default {
         if (res.data.inquiryInfo.serviceType == 'returnVisit') {
           await this.getFirstOptionList()
         }
-
+        if (!this.firstLoad) {
+          this.getCancelCause()
+        }
         this.firstLoad = true
       })
     },
@@ -962,36 +993,32 @@ export default {
       }
     },
 
-    showCancellPop(item) {
-      Dialog.confirm({
-        title: '温馨提示',
-        message: '是否确认取消问诊？'
-      })
-        .then(() => {
-          this.trackByCancelOrder()
-          const params = {
-            orderNo: item.orderInfo.orderNo
-          }
-          peace.service.patient
-            .cancel(params)
-            .then((res) => {
-              peace.util.alert(res.msg)
+    showCancellPop() {
+      this.cancelCauseDialog.visible = true
+    },
+    cancelSubmit(result) {
+      this.trackByCancelOrder()
+      const params = {
+        orderNo: this.internalData?.orderInfo?.orderNo,
+        cancelType: 1,
+        cancelCause: result?.cancelCause?.value
+      }
+      peace.service.patient
+        .cancel(params)
+        .then((res) => {
+          peace.util.alert(res.msg)
 
-              this.get()
-            })
-            .catch((res) => {
-              if (res.data.code == '202') {
-                this.invoiceDialog.visible = true
-                this.invoiceDialog.data.message = res.data.msg
-              } else {
-                setTimeout(() => {
-                  this.get()
-                }, 1500)
-              }
-            })
+          this.get()
         })
-        .catch(() => {
-          // on cancel
+        .catch((res) => {
+          if (res.data.code == '202') {
+            this.invoiceDialog.visible = true
+            this.invoiceDialog.data.message = res.data.msg
+          } else {
+            setTimeout(() => {
+              this.get()
+            }, 1500)
+          }
         })
     },
     viewImage(file, fileIndex, files) {

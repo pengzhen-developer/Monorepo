@@ -487,8 +487,7 @@
                justify="center"
                align="center"
                style="height:100vh;">
-        <van-loading type="spinner"
-                     size="20" />
+        <van-loading type="spinner" />
       </van-row>
 
     </template>

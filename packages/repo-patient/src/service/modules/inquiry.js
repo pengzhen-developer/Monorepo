@@ -255,6 +255,22 @@ export function cancelcheckOrder(params) {
   })
 }
 
+/**
+ *  获取问诊订单取消原因字典
+ *
+ * @export
+ * @param {*} params 参数列表
+ * @returns
+ */
+export function getCancelCause(params) {
+  const Submit = 'client/v1/inquiry/getCancelCause'
+
+  return peace.http.post(Submit, params, {
+    headers: {
+      post: { 'Content-Type': 'application/json' }
+    }
+  })
+}
 export default {
   /** 根据 session id 获取问诊状态 */
   getList,
@@ -298,5 +314,9 @@ export default {
   submitCheckOrder,
 
   /** 检验单 - 取消订单 */
-  cancelcheckOrder
+  cancelcheckOrder,
+
+  /** 获取问诊订单取消原因字典 */
+
+  getCancelCause
 }
