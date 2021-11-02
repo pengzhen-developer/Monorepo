@@ -6,6 +6,7 @@
                label-suffix="："
                label-width="auto"
                v-bind:model="model"
+               v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent>
         <el-form-item label="供应门店/仓"
                       required>
@@ -23,14 +24,30 @@
         <el-form-item label="商品名称"
                       required>
           <el-input v-model.trim="model.GoodName"
+                    clearable
                     placeholder="请输入"></el-input>
         </el-form-item>
 
         <el-form-item label="更新日期">
           <peace-date-picker value-format="yyyy-MM-dd"
                              type="daterange"
+                             end-placeholder="至今"
+                             start-placeholder="开始日期"
+                             clearable
                              v-model.trim="DateValue"></peace-date-picker>
         </el-form-item>
+
+        <el-form-item label="库存数量">
+
+          <el-input-number v-model.trim="model.Stock"
+                           style="width: 210px; text-align: left"
+                           :controls="false"
+                           :precision="0"
+                           :min="0"
+                           placeholder="请输入"></el-input-number>
+
+        </el-form-item>
+
         <el-form-item>
           <el-button type="primary"
                      v-on:click="fetch">查询</el-button>
@@ -83,7 +100,8 @@ export default {
         Code: '',
         GoodName: '',
         StartDate: '',
-        EndDate: ''
+        EndDate: '',
+        Stock: undefined
       },
       source: {
         Code: []
@@ -118,5 +136,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+::v-deep .el-input-number.is-without-controls .el-input__inner {
+  text-align: left;
+}
 </style>
