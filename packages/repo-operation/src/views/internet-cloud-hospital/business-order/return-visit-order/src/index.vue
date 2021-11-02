@@ -2,18 +2,20 @@
   <div class="layout-route">
     <div class="card card-search q-mb-md">
       <el-form :model="search"
+               inline
                label-width="auto"
                label-suffix="："
-               inline>
+               v-on:keyup.enter.native="fetch"
+               v-on:submit.native.prevent>
 
         <el-form-item label="机构名称">
-          <el-select v-model="search.orgName"
-                     clearable=""
+          <el-select v-model="search.orgId"
+                     clearable
                      placeholder="全部">
-            <el-option :key="index"
+            <el-option v-for="item in orgNameList"
+                       :key="item.orgId"
                        :label="item.orgName"
-                       :value="item.orgName"
-                       v-for="(item, index) in orgNameList"></el-option>
+                       :value="item.orgId"></el-option>
           </el-select>
         </el-form-item>
 
@@ -56,6 +58,18 @@
           </PeaceDatePicker>
         </el-form-item>
 
+        <el-form-item label="二级科室">
+          <el-select v-model="search.deptId"
+                     clearable
+                     :disabled="deptDisable"
+                     placeholder="全部">
+            <el-option v-for="item in deptList"
+                       :key="item.deptId"
+                       :label="item.netdeptChild"
+                       :value="item.deptId"></el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item class="search-btn">
           <el-button @click="fetch"
                      type="primary">查询</el-button>
@@ -65,6 +79,7 @@
     <div class="card">
       <div class="q-mb-lg">
         <el-button @click="exportExcel"
+                   :loading="exportLoading"
                    type="primary">导出</el-button>
       </div>
       <peace-table ref="table"
@@ -89,6 +104,11 @@
         <peace-table-column label="医生姓名"
                             min-width="100"
                             prop="doctor_name"></peace-table-column>
+
+        <peace-table-column label="二级科室"
+                            min-width="120"
+                            prop="netdeptChild"></peace-table-column>
+
         <peace-table-column label="机构名称"
                             min-width="180"
                             prop="netHospital_name"></peace-table-column>
@@ -196,18 +216,6 @@
                  @viewPres="viewPres"></pres-info>
     </peace-dialog>
 
-    <!-- 导出 -->
-    <peace-dialog :close-on-click-modal="false"
-                  :close-on-press-escape="false"
-                  :visible.sync="exportDialogVisible"
-                  append-to-body
-                  title="订单导出条件"
-                  v-if="exportDialogVisible"
-                  width="420px">
-      <export-order type="returnVisit"
-                    :query="search"></export-order>
-    </peace-dialog>
-
   </div>
 </template>
 <script>
@@ -217,7 +225,6 @@ import Constant from './constant'
 import InquiryInfo from './components/MessageList'
 import RecordInfo from './components/RecordInfo'
 import PresInfo from './components/PrescriptionOrderDetail'
-import ExportOrder from './components/ExportOrder'
 import { PeaceOrderInquiryDetail } from 'peace-components'
 
 export default {
@@ -226,7 +233,7 @@ export default {
     return {
       search: {
         orderNo: '',
-        orgName: '',
+        orgId: '',
         orderType: '',
         orderStatus: '',
         inquiryStatus: '',
@@ -234,10 +241,13 @@ export default {
         time: [],
         startTime: '',
         endTime: '',
+        deptId: '',
         p: 1,
         size: 10
       },
       orgNameList: [],
+      deptList: [],
+      exportLoading: false,
       pickerOptions: {
         disabledDate: (time) => {
           return time.getTime() > Date.now() || time.getTime() < new Date('2019-02-28')
@@ -253,7 +263,6 @@ export default {
       inquiryDialogVisible: false,
       recordDialogVisible: false,
       presDialogVisible: false,
-      exportDialogVisible: false,
 
       source: {
         orderStatus: Constant.ENUM_ORDER_PAY_STATUS,
@@ -266,6 +275,16 @@ export default {
     ['search.time']() {
       this.search.startTime = this.search.time ? this.search.time[0] : ''
       this.search.endTime = this.search.time ? this.search.time[1] : ''
+    },
+    'search.orgId': function(val, oldVal) {
+      if (val !== oldVal) {
+        if (Peace.validate.isEmpty(val)) {
+          this.search.deptId = ''
+          this.deptList = []
+        } else {
+          this.getDepartmentList()
+        }
+      }
     }
   },
   filters: {
@@ -285,8 +304,12 @@ export default {
     PeaceOrderInquiryDetail,
     InquiryInfo,
     RecordInfo,
-    PresInfo,
-    ExportOrder
+    PresInfo
+  },
+  computed: {
+    deptDisable() {
+      return Peace.validate.isEmpty(this.search.orgId)
+    }
   },
   methods: {
     fetch() {
@@ -302,6 +325,14 @@ export default {
         this.orgNameList = res.data || []
       })
     },
+
+    /// 获取机构下的二级科室列表接口
+    getDepartmentList() {
+      Service.getDeptList({ orgId: this.search.orgId }).then((res) => {
+        this.deptList = res.data?.list || []
+      })
+    },
+
     // 订单信息
     getOrderInfo(id) {
       const params = { inquiry_no: id }
@@ -364,7 +395,17 @@ export default {
     },
 
     exportExcel() {
-      this.exportDialogVisible = true
+      this.exportLoading = true
+      let params = Object.assign({}, this.search, { type: 'returnVisit' })
+      Service.checkOrder(params)
+        .then(() => {
+          Service.exportOrder(params).finally(() => {
+            this.exportLoading = false
+          })
+        })
+        .catch(() => {
+          this.exportLoading = false
+        })
     }
   }
 }

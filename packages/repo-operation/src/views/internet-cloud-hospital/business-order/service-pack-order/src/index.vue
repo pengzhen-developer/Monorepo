@@ -4,6 +4,8 @@
       <el-form :model="model"
                label-suffix="："
                label-width="auto"
+               v-on:keyup.enter.native="fetch"
+               v-on:submit.native.prevent
                inline>
         <el-form-item label="服务包名称">
           <el-input placeholder="请输入"
@@ -22,6 +24,8 @@
         </el-form-item>
         <el-form-item label="下单日期">
           <peace-date-picker type="daterange"
+                             end-placeholder="至今"
+                             start-placeholder="开始日期"
                              value-format="yyyy-MM-dd"
                              v-model="TimeRange"></peace-date-picker>
         </el-form-item>
@@ -74,16 +78,28 @@
           </el-select>
         </el-form-item>
 
+        <el-form-item label="二级科室">
+          <el-select v-model="model.deptId"
+                     clearable
+                     :disabled="deptDisable"
+                     placeholder="全部">
+            <el-option v-for="item in deptList"
+                       :key="item.deptId"
+                       :label="item.netdeptChild"
+                       :value="item.deptId"></el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item class="search-btn">
           <el-button v-on:click="fetch"
                      type="primary">查询</el-button>
-          <!-- <el-button v-on:click="resert">重置</el-button> -->
         </el-form-item>
       </el-form>
     </div>
     <div class="card">
       <div class="q-mb-lg">
         <el-button v-on:click="exportFile"
+                   :loading="exportLoading"
                    type="primary">导出</el-button>
       </div>
       <peace-table pagination
@@ -118,6 +134,11 @@
                           prop="mainPartName"
                           min-width="120px">
         </PeaceTableColumn>
+
+        <PeaceTableColumn label="二级科室"
+                          min-width="120"
+                          prop="deptName"></PeaceTableColumn>
+
         <PeaceTableColumn label="下单人"
                           min-width="120px">
           <template slot-scope="scope">
@@ -164,7 +185,7 @@
               <el-button type="text"
                          v-on:click="cancelOrder(scope.row,3)">拒绝退款</el-button>
             </div>
-            <div v-else>——</div>
+            <div v-else></div>
           </template>
         </PeaceTableColumn>
       </peace-table>
@@ -199,9 +220,12 @@ export default {
         afterSaleStatus: '',
         orderNo: '',
         hosId: '',
+        deptId: '',
         startDate: '',
         endDate: ''
       },
+      deptList: [],
+      exportLoading: false,
       source: {
         //订单状态；
         orderStatus: [],
@@ -222,6 +246,16 @@ export default {
     TimeRange(value) {
       this.model.startDate = value?.[0] ?? ''
       this.model.endDate = value?.[1] ?? ''
+    },
+    'model.hosId': function(val, oldVal) {
+      if (val !== oldVal) {
+        if (Peace.validate.isEmpty(val)) {
+          this.model.deptId = ''
+          this.deptList = []
+        } else {
+          this.getDepartmentList()
+        }
+      }
     }
   },
   created() {
@@ -234,6 +268,11 @@ export default {
     this.$nextTick().then(() => {
       this.fetch()
     })
+  },
+  computed: {
+    deptDisable() {
+      return Peace.validate.isEmpty(this.model.hosId)
+    }
   },
   methods: {
     fetch() {
@@ -248,9 +287,21 @@ export default {
         this.source.hosId = res.data.list || []
       })
     },
-    exportFile() {
-      Service.exportFile(this.model)
+
+    /// 获取机构下的二级科室列表接口
+    getDepartmentList() {
+      Service.getDeptList({ orgId: this.model.hosId }).then((res) => {
+        this.deptList = res.data?.list || []
+      })
     },
+
+    exportFile() {
+      this.exportLoading = true
+      Service.exportFile(this.model).finally(() => {
+        this.exportLoading = false
+      })
+    },
+
     showOrderDetail(row) {
       this.orderDetailDialog.data = row.orderNo
       this.orderDetailDialog.visible = true
@@ -266,22 +317,6 @@ export default {
         this.fetch()
       })
     }
-    // resert() {
-    //   this.TimeRange = []
-    //   this.model = {
-    //     servicePackageName: '',
-    //     tel: '',
-    //     mainPartName: '',
-    //     orderStatus: '',
-    //     payStatus: '',
-    //     afterSaleStatus: '',
-    //     orderNo: '',
-    //     hosId: '',
-    //     startDate: '',
-    //     endDate: ''
-    //   }
-    //   this.fetch()
-    // }
   }
 }
 </script>

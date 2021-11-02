@@ -4,6 +4,8 @@
       <el-form :model="search"
                label-suffix="："
                label-width="auto"
+               v-on:keyup.enter.native="fetch"
+               v-on:submit.native.prevent
                inline>
         <el-form-item label="机构名称">
           <el-select v-model="search.orgName"
@@ -80,16 +82,7 @@
                        v-for="item in source.orderPayStatus"></el-option>
           </el-select>
         </el-form-item>
-        <!-- <el-form-item label="支付类型">
-          <el-select v-model="search.payType">
-            <el-option label="全部"
-                       value=""></el-option>
-            <el-option :key="item.value"
-                       :label="item.label"
-                       :value="item.value"
-                       v-for="item in source.payTypeList"></el-option>
-          </el-select>
-        </el-form-item> -->
+
         <el-form-item label="订单编号">
           <el-input placeholder="输入订单编号"
                     v-model="search.orderNo"
@@ -113,6 +106,7 @@
     <div class="card">
       <div class="q-mb-lg">
         <el-button @click="exportExcel"
+                   :loading="exportLoading"
                    type="primary">导出</el-button>
       </div>
       <PeaceTable pagination
@@ -209,15 +203,6 @@
                            @viewPres="viewPres"></purchase-order-info>
     </peace-dialog>
 
-    <!-- 导出 -->
-    <el-dialog :visible.sync="exportDialogVisible"
-               title="订单导出条件"
-               v-if="exportDialogVisible"
-               width="420px">
-      <export-order type="drug"
-                    :query="search"></export-order>
-    </el-dialog>
-
   </div>
 </template>
 <script>
@@ -226,7 +211,6 @@ import Constant from './constant'
 
 import PresInfo from './components/PrescriptionOrderDetail'
 import PurchaseOrderInfo from './components/DrugPurchaseOrderDetail'
-import ExportOrder from './components/ExportOrder'
 
 export default {
   name: 'drug-purchase-order',
@@ -247,6 +231,7 @@ export default {
         p: 1,
         size: 10
       },
+      exportLoading: false,
       orgNameList: [],
       drugstoreList: [],
       pickerOptions: {
@@ -265,7 +250,6 @@ export default {
       recordDialogVisible: false,
       presDialogVisible: false,
       purchaseDialogVisible: false,
-      exportDialogVisible: false,
 
       source: {
         ShippingMethod: [],
@@ -347,7 +331,17 @@ export default {
     },
 
     exportExcel() {
-      this.exportDialogVisible = true
+      this.exportLoading = true
+      let params = Object.assign({}, this.search, { type: 'drug' })
+      Service.checkOrder(params)
+        .then(() => {
+          Service.exportOrder(params).finally(() => {
+            this.exportLoading = false
+          })
+        })
+        .catch(() => {
+          this.exportLoading = false
+        })
     }
   },
 
@@ -371,8 +365,7 @@ export default {
 
   components: {
     PresInfo,
-    PurchaseOrderInfo,
-    ExportOrder
+    PurchaseOrderInfo
   }
 }
 </script>

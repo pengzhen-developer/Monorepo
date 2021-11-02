@@ -18,6 +18,27 @@ export default {
       return res
     })
   },
+
+  /**
+   * 获取机构下的二级科室列表接口
+   *
+   * @param {*} params
+   * @returns {Object}
+   */
+  getDeptList(params) {
+    const isMock = false
+
+    const apiPath = 'nethospital/operate/order/getChildDeptByOrg'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
   /**
    * 获取订单详情
    *
