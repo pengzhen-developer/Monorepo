@@ -1,15 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"],
-      "@src/*": ["./src/*"],
-      "@public/*": ["./public/*"],
-      "@packages/*": ["./packages/*"],
-      "@views/*": ["./src/views/*"],
-      "@library/*": ["./src/library/*"],
-      "@service/*": ["./src/service/*"]
-    }
+    "baseUrl": "."
   },
-  "include": ["./src/**/*"]
+  "include": ["./**/*"]
 }

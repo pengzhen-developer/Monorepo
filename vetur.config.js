@@ -4,6 +4,7 @@ module.exports = {
     'vetur.useWorkspaceDependencies': true
   },
   projects: [
+    './packages/peace-components',
     './packages/peace-identity',
     './packages/peace-library',
     './packages/peace-ui',

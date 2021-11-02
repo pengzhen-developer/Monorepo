@@ -206,20 +206,20 @@
 
     <!-- 开发环境 -->
     <% if (process.env.NODE_ENV === 'development') { %>
-    <script src="https://static.holoalpha.com/libs/vue/2.6.12/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="https://static.holoalpha.com/libs/vuex/3.1.2/vuex.min.js"></script>
     <script src="https://static.holoalpha.com/libs/vue-router/3.1.3/vue-router.min.js"></script>
-    <script src="https://static.holoalpha.com/libs/element-ui/2.15.0/index.js"></script>
+    <script src="https://static.holoalpha.com/libs/element-ui/2.15.6/index.js"></script>
     <script src="/static/js/IM/NIM_Web_NIM_v7.0.0.js"></script>
     <script src="/static/js/IM/NIM_Web_WebRTC_v7.0.0.js"></script>
     <% } %>
 
     <!-- 生产环境 -->
     <% if (process.env.NODE_ENV === 'production') { %>
-    <script src="https://static.holoalpha.com/libs/vue/2.6.12/vue.min.js"></script>
+    <script src="https://static.holoalpha.com/libs/vue/2.6.14/vue.min.js"></script>
     <script src="https://static.holoalpha.com/libs/vuex/3.1.2/vuex.min.js"></script>
     <script src="https://static.holoalpha.com/libs/vue-router/3.1.3/vue-router.min.js"></script>
-    <script src="https://static.holoalpha.com/libs/element-ui/2.15.0/index.js"></script>
+    <script src="https://static.holoalpha.com/libs/element-ui/2.15.6/index.js"></script>
     <script src="<%= process.env.VUE_APP_RELEASE_FLODER_PATH %>static/js/IM/NIM_Web_NIM_v7.0.0.js"></script>
     <script src="<%= process.env.VUE_APP_RELEASE_FLODER_PATH %>static/js/IM/NIM_Web_WebRTC_v7.0.0.js"></script>
     <% } %>

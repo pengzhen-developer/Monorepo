@@ -1,62 +1,17 @@
 import platform from './platform'
 
-import { encode, decode } from './base64'
-import {
-  isNull,
-  isArray,
-  isSymbol,
-  isObject,
-  isNumber,
-  isString,
-  isBoolean,
-  isFunction,
-  isUndefined,
-  isType,
-  sign,
-  queryUrlParam,
-  arrayToTree,
-  deepClone,
-  deepCompare,
-  merge
-} from './tool'
-import { alert, warning, success, error } from './message'
-import { formatDate, formatTime } from './format'
-import { formatLabel, formatLabelFuzzy, formatValue, formatValueFuzzy } from './dictionary'
+import base64 from './base64'
+import tool from './tool'
+import message from './message'
+import format from './format'
+import dictionary from './dictionary'
 
 export default {
   platform,
 
-  isNull,
-  isArray,
-  isSymbol,
-  isObject,
-  isNumber,
-  isString,
-  isBoolean,
-  isFunction,
-  isUndefined,
-  isType,
-
-  sign,
-  queryUrlParam,
-  arrayToTree,
-  deepClone,
-  deepCompare,
-  merge,
-
-  encode,
-  decode,
-
-  alert,
-  warning,
-  success,
-  error,
-
-  formatDate,
-  formatTime,
-
-  formatLabel,
-  formatLabelFuzzy,
-  formatValue,
-  formatValueFuzzy
+  ...tool,
+  ...base64,
+  ...message,
+  ...format,
+  ...dictionary
 }

@@ -19,6 +19,14 @@ module.exports = {
     config.plugins.delete('prefetch')
     config.plugins.delete('preload')
 
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .tap((options) => {
+        options.compiler = require('vue-template-babel-compiler')
+        return options
+      })
+
     config.resolve.alias
       .set('@', path.join(__dirname, ''))
       .set('@src', path.join(__dirname, 'src'))

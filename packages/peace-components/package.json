@@ -1,0 +1,11 @@
+{
+  "name": "peace-components",
+  "version": "1.17.2",
+  "main": "index.js",
+  "license": "MIT",
+  "typings": "types/index.d.ts",
+  "sideEffects": [
+    "*.vue",
+    "*.css"
+  ]
+}

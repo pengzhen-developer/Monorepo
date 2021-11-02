@@ -1,7 +1,9 @@
-import force from './force'
+import drag from './drag.js'
+import focus from './focus.js'
+import force from './force.js'
 
 const createDirective = ({ Vue }) => {
-  const directive = [force]
+  const directive = [drag, focus, force]
 
   directive.map((directive) => {
     Vue.directive(directive.name, directive)
