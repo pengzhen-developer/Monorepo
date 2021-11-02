@@ -150,9 +150,9 @@
                  v-bind:orderInfo="order"
                  v-bind:nethospitalId="order.hospitalId"
                  v-bind:orderType="3"
-                 v-bind:disabled="this.order.source===3?false:true"
+                 v-bind:disabled="disabled"
                  v-on:update="updatePayInfo"></PayCard>
-        <!-- //source===3 面诊开方 需用户主动选择支付类型-->
+        <!-- //source===3 面诊开方 需用户主动选择支付类型  inHospital===2 外延需用户主动选择支付类型且默认选择医保（如开通医保） -->
       </div>
       <div class="tips-bottom">
         {{page.tabIndex == '0' ? '商家接单后将为您保留药品，请及时到店自提' : '商家接单后将在1-3个工作日内为您安排发货'}}
@@ -400,7 +400,10 @@ export default {
     isInquirySource() {
       return this.order.source === 4
     },
-
+    //inHospital  1院内，2院外
+    disabled() {
+      return this.order.source === 3 || this.order.inHospital === 2 ? false : true
+    },
     canShowYibao() {
       return this.order?.insuranceConfig?.medicalInsuranceConfig != null && this.order?.MedicalCardNo ? true : false
     },

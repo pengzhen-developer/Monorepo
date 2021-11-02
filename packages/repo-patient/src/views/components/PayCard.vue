@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-cell-group class="group"
-                    v-if="loading">
+                    v-if="!loading">
       <van-cell title="订单金额"
                 v-if="orderType!==3">
         <peace-price v-bind:price="innerPayInfo.orderMoney"
@@ -12,7 +12,8 @@
         <van-cell title="支付方式">
           <div class="pay-type"
                v-bind:class="innerPayType === 'wxpay' && 'active'"
-               v-on:click="selectPayType('wxpay')">全自费支付</div>
+               v-on:click="selectPayType('wxpay')"
+               v-if="paymentMethod === 'online'">全自费支付</div>
           <div class="pay-type"
                v-if="deduction.length>0"
                v-bind:class="innerPayType === 'deduction' && 'active'"
@@ -27,6 +28,7 @@
                v-else>全自费支付</div>
         </van-cell>
       </template>
+
       <template v-if="innerPayType === 'wxpay' && paymentMethod === 'online'">
         <van-cell title="支付类型">
           <van-image class="icon-wxpay"
@@ -341,7 +343,7 @@ export default {
       // 是否显示商保弹窗
       sbVisible: false,
 
-      loading: false
+      loading: true
     }
   },
   watch: {
@@ -399,6 +401,7 @@ export default {
   methods: {
     //获取权益抵扣列表
     getPermissionsDeduction() {
+      this.loading = true
       const params = {
         doctorId: this.doctorId,
         nethospitalId: this.nethospitalId,
@@ -418,13 +421,15 @@ export default {
           // 选择医保卡组件获取
           await this.geYibaotDicList()
         }
+
         if (shangbaopay) {
           // 商保配置从父组件传入
         }
         if (servicePackage) {
           await this.getServicePackageList()
-        } else {
-          this.loading = true
+        }
+        if (!yibaopay && !servicePackage) {
+          this.loading = false
         }
       })
     },
@@ -436,9 +441,18 @@ export default {
         .then((res) => {
           this.medicalTreatmentTypes = res.data.medicalTreatmentType
           this.diseases = res.data.diseases
+
+          //复诊，外延购药 有医保权益，就默认选中
+          if ((this.orderType === 3 && this.custCode) || this.orderType === 2) {
+            this.innerPayType = 'deduction'
+            this.deductionType = 'yibaopay'
+            this.deductionDialog.payType = 'yibaopay'
+            this.update()
+          }
         })
         .finally(() => {
           this.showYb = true
+          this.loading = false
         })
     },
 
@@ -494,7 +508,7 @@ export default {
           }
         })
         .finally(() => {
-          this.loading = true
+          this.loading = false
         })
     },
 
