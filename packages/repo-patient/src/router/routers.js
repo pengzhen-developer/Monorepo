@@ -277,17 +277,6 @@ const routers = [
     },
     component: () => import('@src/views/file/FileBloodSugarAddData.vue')
   },
-  {
-    path: '/file/fileConsultationDetail/:json',
-    name: '/file/fileConsultationDetail/:json',
-    meta: {
-      auth: false,
-      navbar: {
-        title: '健康档案-会诊单'
-      }
-    },
-    component: () => import('@src/views/file/FileConsultationDetail.vue')
-  },
   //检验检查单
   {
     path: '/file/fileRecordDetail/:json',
@@ -500,45 +489,6 @@ const routers = [
     },
     component: () => import('@src/views/components/TheCase.vue')
   },
-  // 检查单
-  {
-    path: '/components/theInspection/:json',
-    name: '/components/theInspection/:json',
-    meta: {
-      auth: true,
-      navbar: {
-        title: '检查单',
-        back: true
-      }
-    },
-    component: () => import('@src/views/components/TheInspection.vue')
-  },
-  // 转诊单
-  {
-    path: '/components/theTransfer/:json',
-    name: '/components/theTransfer/:json',
-    meta: {
-      auth: true,
-      navbar: {
-        title: '转诊详情',
-        back: true
-      }
-    },
-    component: () => import('@src/views/components/TheTransfer.vue')
-  },
-  // 会诊单
-  {
-    path: '/components/theConsultation/:json',
-    name: '/components/theConsultation/:json',
-    meta: {
-      auth: true,
-      navbar: {
-        title: '会诊详情',
-        back: true
-      }
-    },
-    component: () => import('@src/views/components/TheConsultation.vue')
-  },
   // 问诊表单
   {
     path: '/components/thePreliminaryForm/:json',
@@ -665,7 +615,6 @@ const routers = [
     meta: {
       auth: true
     },
-    // component: () => import('@src/views/components/MessageList.vue'),
     component: () => import('@src/views/message/messageList/index')
   },
   // 医生主页

@@ -106,26 +106,16 @@
     <template v-if="canShowFooter">
       <div class="footer">
         <div class="footer-item"
-             v-if="infoData.consultNo"
-             @click="gouserConsultationPage(infoData)">会诊单</div>
-        <div class="footer-item"
-             v-if="infoData.referralNo"
-             @click="gouserTranforPage(infoData)">转诊单</div>
-        <div class="footer-item"
              v-if="infoData.isCase"
              @click="gouserPrescripCasePage(infoData)">病历</div>
         <div class="footer-item"
              v-if="infoData.isPrescrip"
              @click="gouserPrescripListPage(infoData)">处方</div>
-        <div class="footer-item"
-             v-if="infoData.checkOrderNo"
-             @click="gouserInspectionPage(infoData)">检查单</div>
       </div>
     </template>
     <template v-if="loading">
       <div class="loading">
         <van-loading />
-        <!-- <el-loading></el-loading> -->
       </div>
     </template>
 
@@ -197,14 +187,10 @@ export default {
         710: true, // 接诊
         731: true, // 审核处方通过
         740: true, // 结束问诊
-        // 742: true, // 转诊
-        // 743: true, // 会诊
         750: true, // 退诊
         760: true, // 取消问诊
         780: true, // 服务提醒
         792: true //问诊卡片
-        // 900: true, // 接收随访
-        // 910: true, // 随访结束
       },
       params: {},
       hasSend: false,
@@ -291,11 +277,7 @@ export default {
 
         // 屏蔽部分自定义消息
         if (message.type === 'custom') {
-          // if (
-          //   message.content.code === Constant.INQUIRY_MESSAGE_TYPE.评价提示 ||
-          //   message.content.code === Constant.INQUIRY_MESSAGE_TYPE.转诊提示 ||
-          //   message.content.code === Constant.INQUIRY_MESSAGE_TYPE.会诊提示
-          // )
+          // if (message.content.code === Constant.INQUIRY_MESSAGE_TYPE.评价提示 )
           //   return false
         }
         //计算图片高度 -- 最大宽度200px
@@ -519,8 +501,6 @@ export default {
         Constant.INQUIRY_MESSAGE_TYPE.接诊,
         Constant.INQUIRY_MESSAGE_TYPE.结束问诊,
         Constant.INQUIRY_MESSAGE_TYPE.评价提示,
-        Constant.INQUIRY_MESSAGE_TYPE.转诊提示,
-        Constant.INQUIRY_MESSAGE_TYPE.会诊提示,
         Constant.INQUIRY_MESSAGE_TYPE.退诊,
         Constant.INQUIRY_MESSAGE_TYPE.取消问诊,
         Constant.INQUIRY_MESSAGE_TYPE.服务提醒,
@@ -631,30 +611,6 @@ export default {
       })
     },
 
-    //会诊列表
-    gouserConsultationPage(item) {
-      const params = peace.util.encode({
-        inquiryNo: item.inquiryNo
-      })
-
-      this.$router.push(`/components/theConsultation/${params}`)
-    },
-    //转诊列表
-    gouserTranforPage(item) {
-      const params = peace.util.encode({
-        inquiryNo: item.inquiryNo
-      })
-
-      this.$router.push(`/components/theTransfer/${params}`)
-    },
-    //检验单列表
-    gouserInspectionPage(item) {
-      const params = peace.util.encode({
-        inquiryNo: item.inquiryNo
-      })
-
-      this.$router.push(`/components/theInspection/${params}`)
-    },
     //病历
     gouserPrescripCasePage(item) {
       const params = peace.util.encode({

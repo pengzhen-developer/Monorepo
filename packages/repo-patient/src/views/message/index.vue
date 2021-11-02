@@ -153,10 +153,6 @@ export default {
           else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.视频通话) {
             return '[视频通话]'
           }
-          // 私人医生服务提醒
-          else if (session.lastMsg.content.code === peace.type.INQUIRY.INQUIRY_MESSAGE_TYPE.私人医生服务提醒) {
-            return '[自定义消息]'
-          }
           // 其它
           else if (session.lastMsg.content && session.lastMsg.content.data && session.lastMsg.content.data.showTextInfo) {
             return session.lastMsg.content.data.showTextInfo.patientClientText

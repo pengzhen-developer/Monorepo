@@ -608,16 +608,12 @@ export default {
   text-align: right;
 }
 /* color-x: 问诊单状态，
- * color-0x 转诊单状态 ↓
- *  01:转出待审核  02:转出已拒绝 03:转出已通过/转入待审核 04:转入已通过 05:转入已拒绝 06:转诊完成 07:转诊已关闭
  * color-ax 购药单状态
  * 1: 待接单 2:已接单 3:已发货 4:已完成
 */
 /*red*/
 .strip-eye.color-1,
 .strip-eye.color-2,
-.strip-eye.color-02,
-.strip-eye.color-05,
 .strip-eye.color-a0,
 .strip-eye.color-a1,
 .strip-eye.color-a2 {
@@ -625,9 +621,6 @@ export default {
 }
 /*blue*/
 .strip-eye.color-3,
-.strip-eye.color-01,
-.strip-eye.color-03,
-.strip-eye.color-04,
 .strip-eye.color-a3 {
   color: #00c6ae;
 }

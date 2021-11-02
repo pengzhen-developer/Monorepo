@@ -145,10 +145,6 @@ export default {
       else if (doctorConsultation.tag === 'video') {
         return peace.util.alert('H5版本暂不支持视频问诊')
       }
-      // 私人医生
-      else if (doctorConsultation.tag === 'private') {
-        return peace.util.alert('暂未开放，敬请期待')
-      }
       // 图文问诊
       else if (doctorConsultation.tag === 'image') {
         const json = peace.util.encode({

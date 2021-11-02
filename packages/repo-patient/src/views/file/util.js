@@ -72,23 +72,6 @@ export const goDetail = (type, data) => {
     }
   }
 
-  // 跳转转诊详情
-  else if (type === '转诊单') {
-    const json = peace.util.encode({
-      referralNo: data.referralNo
-    })
-
-    $peace.$router.push(`/components/theTransfer/${json}`)
-  }
-
-  // 跳转会诊单详情
-  else if (type === '会诊单') {
-    const json = peace.util.encode({
-      dataNo: data.dataNo
-    })
-    $peace.$router.push(`/file/fileConsultationDetail/${json}`)
-  }
-
   // 跳转检验检查详情
   else if (type === '检验检查') {
     const json = peace.util.encode({

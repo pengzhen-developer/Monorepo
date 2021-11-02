@@ -348,20 +348,12 @@ export function setInquirySessions(sessions, account) {
     return true
   }
   // 排序规则:
-  // 1. 按照私人医生排序
-  // 2. 按照会话时间排序
+  // 按照会话时间排序
   const sortMethod = (prev, next) => {
     if (prev.content && next.content) {
-      const prevIsPrivateDoctor = prev.content.inquiryInfo.isPrivateDoctor
-      const nextIsPrivateDoctor = next.content.inquiryInfo.isPrivateDoctor
       const prevTime = prev.updateTime
       const nextTime = next.updateTime
-
-      if (prevIsPrivateDoctor === nextIsPrivateDoctor) {
-        return nextTime - prevTime
-      } else {
-        return nextIsPrivateDoctor - prevIsPrivateDoctor
-      }
+      return nextTime - prevTime
     }
   }
   $peace.NIMS[account].sessions = deserializationSessions.filter(filterMethod).sort(sortMethod)

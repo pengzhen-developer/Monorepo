@@ -414,21 +414,6 @@
       </div>
     </template>
 
-    <peace-dialog :visible.sync="caseDetail.visible"
-                  title="问诊小结">
-      <TheCase :data="caseDetail.data"></TheCase>
-    </peace-dialog>
-
-    <peace-dialog :visible.sync="recipeList.visible"
-                  title="用药建议">
-      <TheRecipeList :data="recipeList.data"></TheRecipeList>
-    </peace-dialog>
-
-    <peace-dialog :visible.sync="chatingPage.visible"
-                  title="问诊记录">
-      <MessageList :data="chatingPage.data"></MessageList>
-    </peace-dialog>
-
     <van-image-preview v-model="imagePreview.visible"
                        :start-position="imagePreview.position"
                        :images="imagePreview.images">
@@ -484,9 +469,6 @@ import Vue from 'vue'
 import { Dialog, CountDown } from 'vant'
 Vue.use(CountDown)
 
-import TheCase from '@src/views/components/TheCase'
-import TheRecipeList from '@src/views/components/TheRecipeList'
-import MessageList from '@src/views/components/MessageList'
 import ExpenseDetail from '@src/views/components//ExpenseDetail'
 import InvoiceModel from '@src/views/components/InvoiceModel'
 import RefundTip from '@src/views/components/RefundTip'
@@ -522,9 +504,6 @@ const ENUM = {
 }
 export default {
   components: {
-    TheCase,
-    TheRecipeList,
-    MessageList,
     ExpenseDetail,
     InvoiceModel,
     RefundTip,
@@ -955,24 +934,6 @@ export default {
             : '订单已取消'
       }
       return dic[status]
-    },
-
-    gouserPrescripCasePage(item) {
-      const params = peace.util.encode({
-        familyId: item.inquiryInfo.familyId,
-        inquiryNo: item.inquiryInfo.inquiryNo
-      })
-
-      this.$router.push(`/components/theCase/${params}`)
-    },
-
-    gouserPrescripListPage(item) {
-      const params = peace.util.encode({
-        familyId: item.inquiryInfo.familyId,
-        inquiryNo: item.inquiryInfo.inquiryNo
-      })
-
-      this.$router.push(`/components/theRecipeList/${params}`)
     },
 
     goChatingPage(item) {

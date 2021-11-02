@@ -121,44 +121,6 @@
                   </div>
                 </div>
               </template>
-              <!-- 转诊单 -->
-              <template v-if="item.healthType === 'referral'">
-                <div class="note card case"
-                     @click="util.goDetail('转诊单', item)">
-                  <div class="case-left">
-                    <van-image class="case-left-logo"
-                               :src="require('@src/assets/images/file/ic_zhuanzhen.png')" />
-                  </div>
-                  <div class="case-right">
-                    <p class="case-right-title">
-                      转诊单
-                    </p>
-                    <p class="case-right-message">
-                      {{ item.netHospitalName }} | {{ item.netDeptName }}
-                    </p>
-                  </div>
-                </div>
-              </template>
-              <!-- 会诊单 -->
-              <template v-if="item.healthType === 'consult'">
-                <div class="note card case"
-                     @click="util.goDetail('会诊单', item)">
-                  <div class="case-left">
-                    <van-image class="case-left-logo"
-                               :src="require('@src/assets/images/file/ic_huizhen.png')" />
-                    <div class="small-dot"
-                         v-if="item.isExistRedDot==1"></div>
-                  </div>
-                  <div class="case-right">
-                    <p class="case-right-title">
-                      会诊单
-                    </p>
-                    <p class="case-right-message">
-                      {{ item.netHospitalName }} | {{ item.netDeptName }}
-                    </p>
-                  </div>
-                </div>
-              </template>
               <!-- 检验检查 -->
               <template v-if="item.healthType === 'check'">
                 <!-- 检查 -->

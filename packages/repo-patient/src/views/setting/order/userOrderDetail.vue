@@ -34,7 +34,6 @@
           <div class="card-small">
             {{info.doctorInfo.doctorTitle}}
             {{info.doctorInfo.deptName}}
-            <!--                        <div class="label label-private" wx:if="{{info.doctorInfo.isPrivateDoctor}}">私人医生</div>-->
           </div>
         </div>
         <div class="card-small">{{info.doctorInfo.hospitalName}}</div>

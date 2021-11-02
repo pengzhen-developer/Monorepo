@@ -5,15 +5,6 @@
       <div :key="index"
            class
            v-for="(doctor,index) in doctorList">
-        <div :class="['card-strip',doctor.isPrivateDoctor ?  '' : doctor.isPrivateDoctorOnce ? 'disabled' : '']"
-             v-if="doctor.isPrivateDoctor || doctor.isPrivateDoctorOnce">
-          <div class="strip-info">
-            <div class="label-jq">私人医生</div>
-          </div>
-          <div class="strip-eye">
-            {{ doctor.isPrivateDoctor ? doctor.endTime + '结束' : doctor.isPrivateDoctorOnce ? doctor.endTime + '已到期' : ''}}
-          </div>
-        </div>
         <div :id="doctor.doctorId"
              :index="index"
              @click="goHomeIndex(doctor)"

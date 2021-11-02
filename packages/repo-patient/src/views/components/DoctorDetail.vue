@@ -851,10 +851,6 @@ export default {
       else if (type === 'video') {
         return peace.util.alert('H5版本暂不支持视频问诊')
       }
-      // 私人医生
-      else if (type === 'private') {
-        return peace.util.alert('暂未开放，敬请期待')
-      }
     },
 
     goRegisterList(time) {

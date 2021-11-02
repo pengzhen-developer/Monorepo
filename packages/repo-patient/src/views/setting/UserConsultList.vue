@@ -1,25 +1,5 @@
 <template>
   <div class="userConsultList">
-    <!-- h5 v0.1 版本暂不开放   v-if="false"-->
-    <div class="box"
-         v-if="false">
-      <div class="box-tab">
-        <div @click="goReferrListPage"
-             class="tab-item"
-             data-index="0">
-          <div :class="{ red: unred_ZZ}"
-               class="span icon-referral">转诊申请</div>
-        </div>
-        <div @click="goConsultGroupPage"
-             class="tab-item"
-             data-index="1"
-             style="flex:1.15">
-          <div :class="{ red: unred_HZ}"
-               class="span icon-consultGroup">会诊申请</div>
-        </div>
-      </div>
-    </div>
-    <!-- :finished-text="consultList.length>0?'客服电话：400-902-0365':''" -->
     <van-list :loading="loading"
               v-model="loading"
               :finished="finished"
@@ -39,7 +19,6 @@
               </div>
               <div class="strip-info">
                 {{item.doctorInfo.name}} {{item.doctorInfo.deptName}}
-                <!-- <div class="label label-private" v-if="item.inquiryInfo.isPrivateDoctor">私人医生</div> -->
               </div>
               <div :class="{ [`color-i${item.inquiryInfo.inquiryStatus}`]: true }"
                    class="strip-eye">
@@ -85,16 +64,6 @@
                v-if="canShowPanelBottom(item)"
                style="justify-content: flex-end;">
             <div :data-index="index"
-                 @click="gouserConsultationPage(item)"
-                 class="label gary"
-                 data-tip="会诊"
-                 v-if="item.inquiryInfo.consultNo">会诊单</div>
-            <div :data-index="index"
-                 @click="gouserTranforPage(item)"
-                 class="label gary"
-                 data-tip="转诊"
-                 v-if="item.inquiryInfo.referralNo">转诊单</div>
-            <div :data-index="index"
                  @click="gouserPrescripCasePage(item)"
                  class="label gary"
                  data-tip="病历"
@@ -104,12 +73,6 @@
                  class="label gary"
                  data-tip="处方"
                  v-if="item.inquiryInfo.isPrescrip">处方</div>
-            <div :data-index="index"
-                 @click="gouserInspectionPage(item)"
-                 class="label gary"
-                 data-tip="检查单"
-                 v-if="item.inquiryInfo.checkOrderNo">检查单
-            </div>
           </div>
 
         </div>
@@ -133,14 +96,6 @@
       <TheRecipeList :data="recipeList.data"></TheRecipeList>
     </peace-dialog>
 
-    <peace-dialog :visible.sync="chatingPage.visible"
-                  title="问诊记录">
-      <MessageList :data="chatingPage.data"
-                   :doctorInfo="chatingPage.doctorInfo"
-                   :navBar="false">
-      </MessageList>
-    </peace-dialog>
-
   </div>
 </template>
 
@@ -151,7 +106,6 @@ import { Dialog } from 'vant'
 
 import TheCase from '@src/views/components/TheCase'
 import TheRecipeList from '@src/views/components/TheRecipeList'
-import MessageList from '@src/views/components/MessageList'
 import Vue from 'vue'
 import { CountDown } from 'vant'
 Vue.use(CountDown)
@@ -160,7 +114,6 @@ export default {
   components: {
     TheCase,
     TheRecipeList,
-    MessageList,
     [Dialog.Component.name]: Dialog.Component
   },
 
@@ -275,22 +228,6 @@ export default {
         }
       })
     },
-    //会诊
-    gouserConsultationPage(item) {
-      const params = peace.util.encode({
-        inquiryNo: item.inquiryInfo.inquiryNo
-      })
-
-      this.$router.push(`/components/theConsultation/${params}`)
-    },
-    //转诊
-    gouserTranforPage(item) {
-      const params = peace.util.encode({
-        inquiryNo: item.inquiryInfo.inquiryNo
-      })
-
-      this.$router.push(`/components/theTransfer/${params}`)
-    },
     //病历
     gouserPrescripCasePage(item) {
       const params = peace.util.encode({
@@ -299,14 +236,6 @@ export default {
       })
 
       this.$router.push(`/components/theCase/${params}`)
-    },
-    //检验单
-    gouserInspectionPage(item) {
-      const params = peace.util.encode({
-        inquiryNo: item.inquiryInfo.inquiryNo
-      })
-
-      this.$router.push(`/components/theInspection/${params}`)
     },
     //处方
     gouserPrescripListPage(item) {
@@ -521,16 +450,12 @@ export default {
 }
 /* color-x: 问诊单状态，
  * color-iX:问诊单状态新；i5 已完成 i4 已退诊 i3问诊中
- * color-0x 转诊单状态 ↓
- *  01:转出待审核  02:转出已拒绝 03:转出已通过/转入待审核 04:转入已通过 05:转入已拒绝 06:转诊完成 07:转诊已关闭
  * color-ax 购药单状态
  * 1: 待接单 2:已接单 3:已发货 4:已完成
 */
 /*red*/
 .strip-eye.color-1,
 .strip-eye.color-2,
-.strip-eye.color-02,
-.strip-eye.color-05,
 .strip-eye.color-a1,
 .strip-eye.color-a2 {
   color: #fb2828;
@@ -539,9 +464,6 @@ export default {
 .strip-eye.color-i3,
 .strip-eye.color-i5,
 .strip-eye.color-3,
-.strip-eye.color-01,
-.strip-eye.color-03,
-.strip-eye.color-04,
 .strip-eye.color-a3 {
   color: #00c6ae;
 }

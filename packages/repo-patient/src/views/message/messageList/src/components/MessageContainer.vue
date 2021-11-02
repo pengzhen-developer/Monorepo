@@ -53,10 +53,7 @@ import MessageImageContent from './MessageImageContent'
 import MessageSystemContent from './MessageSystemContent'
 import MessageCaseCardContent from './MessageCaseCardContent'
 import MessageInquiryCardContent from './MessageInquiryCardContent'
-import MessageConsultationCardContent from './MessageConsultationCardContent'
 import MessageRecipeCardContent from './MessageRecipeCardContent'
-import MessageReferralCardContent from './MessageReferralCardContent'
-import MessageCheckCardContent from './MessageCheckCardContent'
 import MessageInspectionCardContent from './MessageInspectionCardContent'
 import MessageInspectionRegistedCardContent from './MessageInspectionRegistedCardContent'
 import MessageVideoContent from './MessageVideoContent'
@@ -69,10 +66,7 @@ export default {
     MessageSystemContent,
     MessageCaseCardContent,
     MessageInquiryCardContent,
-    MessageConsultationCardContent,
     MessageRecipeCardContent,
-    MessageReferralCardContent,
-    MessageCheckCardContent,
     MessageInspectionCardContent,
     MessageInspectionRegistedCardContent,
     MessageVideoContent,
@@ -177,9 +171,7 @@ export default {
         [Constant.INQUIRY_MESSAGE_TYPE.发起问诊]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.接诊]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.结束问诊]: MessageSystemContent,
-        [Constant.INQUIRY_MESSAGE_TYPE.转诊提示]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.结束问诊]: MessageSystemContent,
-        [Constant.INQUIRY_MESSAGE_TYPE.会诊提示]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.退诊]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.取消问诊]: MessageSystemContent,
         [Constant.INQUIRY_MESSAGE_TYPE.评价提示]: MessageSystemContent,
@@ -191,10 +183,6 @@ export default {
         [Constant.INQUIRY_MESSAGE_TYPE.病历]: MessageCaseCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.处方]: MessageRecipeCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.问诊卡片]: MessageInquiryCardContent,
-        [Constant.INQUIRY_MESSAGE_TYPE.会诊单]: MessageConsultationCardContent,
-        [Constant.INQUIRY_MESSAGE_TYPE.转诊单]: MessageReferralCardContent,
-        [Constant.INQUIRY_MESSAGE_TYPE.转诊卡片]: MessageReferralCardContent,
-        [Constant.INQUIRY_MESSAGE_TYPE.检查单]: MessageCheckCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.检验单]: MessageInspectionCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.检验挂号单]: MessageInspectionRegistedCardContent,
         [Constant.INQUIRY_MESSAGE_TYPE.视频通话]: MessageVideoContent,
@@ -212,8 +200,6 @@ export default {
         Constant.INQUIRY_MESSAGE_TYPE.接诊,
         Constant.INQUIRY_MESSAGE_TYPE.结束问诊,
         Constant.INQUIRY_MESSAGE_TYPE.评价提示,
-        Constant.INQUIRY_MESSAGE_TYPE.转诊提示,
-        Constant.INQUIRY_MESSAGE_TYPE.会诊提示,
         Constant.INQUIRY_MESSAGE_TYPE.退诊,
         Constant.INQUIRY_MESSAGE_TYPE.取消问诊,
         Constant.INQUIRY_MESSAGE_TYPE.服务提醒,
