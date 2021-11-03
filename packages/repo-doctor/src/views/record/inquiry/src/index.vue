@@ -89,22 +89,28 @@
     <PeaceDialog title="问诊记录"
                  v-bind:visible.sync="dialog.visible"
                  v-if="dialog.visible">
-
-      <MessageList v-bind:data="dialog.data"
-                   v-bind:doctorInfo="dialog.doctorInfo"
-                   v-bind:patientInfo="dialog.patientInfo">
-      </MessageList>
-
+      <PeaceIMMessageHistory v-bind:data="dialog.data"
+                             v-bind:messageFlowIn="dialog.messageFlowIn"
+                             v-bind:messageFlowOut="dialog.messageFlowOut">
+        <template v-slot:prescription-operation="{ data, refetch }">
+          <PrescriptionDetailOperation v-bind:data="data"
+                                       v-on:accept="refetch"
+                                       v-on:reject="refetch"></PrescriptionDetailOperation>
+        </template>
+      </PeaceIMMessageHistory>
     </PeaceDialog>
   </div>
 </template>
 
 <script>
-import MessageList from '@src/views/components/inquiry/messageList/index'
+import PrescriptionDetailOperation from '@src/views/components/prescription/prescription-detail-operation/src/index.vue'
+import Service from './service/index.js'
+import { PeaceIMMessageHistory } from 'peace-components'
 
 export default {
   components: {
-    MessageList
+    PeaceIMMessageHistory,
+    PrescriptionDetailOperation
   },
 
   data() {
@@ -166,7 +172,7 @@ export default {
     get() {
       const doctorId = this.$store.state.user.userInfo.list.docInfo.doctor_id
 
-      const fetch = Peace.service.inquiry.recordList
+      const fetch = Service.recordList
       const params = { doctorId, ...this.view.model }
 
       this.$refs.table.loadData({ fetch, params })
@@ -177,29 +183,12 @@ export default {
         inquiryNo: row.inquiry_no
       }
 
-      Peace.service.patient.getOneInquiry(params).then((res) => {
-        const historyMessageFormatHandler = (messages) => {
-          if (messages && Array.isArray(messages)) {
-            messages.forEach((message) => {
-              const messageTypeMap = { 0: 'text', 1: 'image', 2: 'audio', 100: 'custom' }
-
-              message.time = message.sendtime
-              message.flow = row.doctor_id === message.from ? 'out' : 'in'
-              message.type = messageTypeMap[message.type]
-              message.text = message.body.msg
-              message.content = message.body
-              message.file = message.body
-            })
-          }
-        }
-
-        historyMessageFormatHandler(res.data.msgInfo)
-
+      Service.getOneInquiry(params).then((res) => {
         this.dialog.data = []
 
         this.dialog.data = res.data.msgInfo
-        this.dialog.patientInfo = Object.assign({}, this.dialog.patientInfo, res.data.patientInfo)
-        this.dialog.doctorInfo = Object.assign({}, this.dialog.doctorInfo, res.data.doctorInfo)
+        this.dialog.messageFlowIn = res.data.patientInfo
+        this.dialog.messageFlowOut = res.data.doctorInfo
         this.dialog.visible = true
       })
     },

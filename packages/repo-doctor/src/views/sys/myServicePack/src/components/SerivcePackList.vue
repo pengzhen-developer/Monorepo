@@ -71,7 +71,7 @@
 <script>
 import Service from './../service'
 
-import SerivcePackDetail from './SerivcePackDetail'
+import SerivcePackDetail from './SerivcePackDetail.vue'
 
 export default {
   components: {

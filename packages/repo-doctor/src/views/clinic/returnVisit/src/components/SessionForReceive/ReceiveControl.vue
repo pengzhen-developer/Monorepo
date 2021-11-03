@@ -43,11 +43,9 @@
 </template>
 
 <script>
-import RefuseInquiry from './RefuseInquiry'
-
 import Type from '@src/type'
-
 import Service from './../../service'
+import RefuseInquiry from './RefuseInquiry.vue'
 
 export default {
   components: {

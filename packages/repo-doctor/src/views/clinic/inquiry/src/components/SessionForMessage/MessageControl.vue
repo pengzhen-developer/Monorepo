@@ -87,29 +87,6 @@
               </div>
             </el-button>
           </div>
-          <div class="q-editor__toolbar-group">
-            <el-button type="text"
-                       v-on:click="sendTransfer">
-              <div class="flex items-center">
-                <img class="q-mr-xs"
-                     src="~@src/assets/images/inquiry/chat_icon_zhuanzhen.png"
-                     alt="" />
-                <span class="text-grey-6">申请转诊</span>
-              </div>
-            </el-button>
-          </div>
-          <div v-if="false"
-               class="q-editor__toolbar-group">
-            <el-button type="text"
-                       v-on:click="sendConsultation">
-              <div class="flex items-center">
-                <img class="q-mr-xs"
-                     src="~@src/assets/images/inquiry/yuanchenghuizhen1.png"
-                     alt="" />
-                <span class="text-grey-6">申请会诊</span>
-              </div>
-            </el-button>
-          </div>
         </div>
       </div>
       <div class="q-editor__content session-detail-input">
@@ -147,23 +124,24 @@
 
     <PeaceDialog append-to-body
                  title="病历详情"
+                 v-if="caseDetail.visible"
                  v-bind:visible.sync="caseDetail.visible">
-      <CaseDetail v-bind:data="caseDetail.data"></CaseDetail>
+      <PeaceCaseDetail v-bind:data="caseDetail.data"></PeaceCaseDetail>
     </PeaceDialog>
   </div>
 </template>
 
 <script>
-import Service from './../../service'
-
-import OverInquiry from './../SessionForHeader/OverInquiry'
-import CaseDetail from '@src/views/components/case/CaseDetail'
+import Type from '@src/type'
+import Service from './../../service/index.js'
+import OverInquiry from './../SessionForHeader/OverInquiry.vue'
+import { PeaceCaseDetail } from 'peace-components'
 
 export default {
   inject: ['provideCall'],
 
   components: {
-    CaseDetail,
+    PeaceCaseDetail,
     OverInquiry
   },
 
@@ -280,7 +258,7 @@ export default {
     sendVideo() {
       // sourcePatient
       // h5 / wx
-      if (this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.视频) {
+      if (this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryType === Type.INQUIRY.INQUIRY_TYPE.视频) {
         this.injectCall(this.$store.state.inquiry?.session, 'inquiry')
       } else {
         peace.util.warning('只有视频问诊才能进行发起视频邀请')
@@ -300,10 +278,8 @@ export default {
         } else if (res.data.caseStatus === 1) {
           this.$emit('control', '发病历')
         } else {
-          Service.getCase(params).then((res) => {
-            this.caseDetail.visible = true
-            this.caseDetail.data = res.data
-          })
+          this.caseDetail.visible = true
+          this.caseDetail.data = this.fetchCaseDetal
         }
       })
     },
@@ -351,34 +327,6 @@ export default {
       })
     },
 
-    sendTransfer() {
-      const params = {
-        inquiryNo: this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryNo
-      }
-
-      // 检查是否为有效会话
-      Service.checkOverInquiry(params).then((res) => {
-        // 非有效会话
-        if (res.data.status === 1) {
-          return Peace.util.warning('当前为无效会话，暂时无法申请转诊。请先与患者进行病情沟通')
-        }
-        // 未填写病历，提示填写病历
-        else if (res.data.caseStatus === 1) {
-          const message = '给用户发送病历后才能【申请转诊】，是否立即填写病历？'
-          const confirmOption = {
-            type: 'warning',
-            confirmButtonText: '去填写'
-          }
-
-          return Peace.util.confirm(message, undefined, confirmOption, () => {
-            this.sendCase()
-          })
-        }
-
-        this.$emit('control', '申请转诊')
-      })
-    },
-
     sendInspection() {
       const params = {
         inquiryNo: this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryNo
@@ -407,36 +355,15 @@ export default {
       })
     },
 
-    sendConsultation() {
-      const params = {
-        inquiryNo: this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryNo
-      }
-
-      // 检查是否为有效会话
-      Service.checkOverInquiry(params).then((res) => {
-        // 非有效会话
-        if (res.data.status === 1) {
-          return Peace.util.warning('当前为无效会话，暂时无法申请会诊。请先与患者进行病情沟通')
-        }
-        // 未填写病历，提示填写病历
-        else if (res.data.caseStatus === 1) {
-          const message = '给用户发送病历后才能【申请会诊】，是否立即填写病历？'
-          const confirmOption = {
-            type: 'warning',
-            confirmButtonText: '去填写'
-          }
-
-          return Peace.util.confirm(message, undefined, confirmOption, () => {
-            this.sendCase()
-          })
-        }
-
-        this.$emit('control', '申请会诊')
-      })
-    },
-
     overInquiry() {
       this.overInquiryVisible = true
+    },
+
+    async fetchCaseDetal() {
+      const params = { caseNo: this.$store.state.inquiry?.session?.content?.caseInfo?.caseId }
+      const res = await Service.getCaseDetail(params)
+
+      return res.data
     }
   }
 }

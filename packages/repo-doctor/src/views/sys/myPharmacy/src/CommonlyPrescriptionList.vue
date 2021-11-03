@@ -87,7 +87,7 @@
 <script>
 import Service from './../service'
 
-import CommonlyPrescriptionAdd from './CommonlyPrescriptionAdd'
+import CommonlyPrescriptionAdd from './CommonlyPrescriptionAdd.vue'
 
 export default {
   components: {

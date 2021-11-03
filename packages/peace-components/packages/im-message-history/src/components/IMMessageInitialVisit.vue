@@ -60,9 +60,9 @@ export default {
 
     async fetch() {
       const resFirstOptionList = await Service.getFirstOptionList({ inquiryNo: this.data.content.data.inquiryInfo.inquiryNo })
-      const resFirstOptionDetail = await Service.getFirstOptionDetail({ prescriptionCode: resFirstOptionList.data.firstOptionList?.[0]?.dataNo })
+      const resFirstOptionDetail = await Service.getFirstOptionDetail({ prescriptionCode: resFirstOptionList.data?.[0]?.dataNo })
 
-      return resFirstOptionDetail.data.prescriptionInfo
+      return resFirstOptionDetail.data
     }
   }
 }

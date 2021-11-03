@@ -14,18 +14,18 @@
       <p class="record-case-right-title">处方</p>
       <p class="record-case-right-text">{{ data.netHospitalName }} | {{ data.netDeptName }}</p>
     </div>
-    <PeaceDialog v-if="dialog.visible"
-                 :visible.sync="dialog.visible"
-                 append-to-body
-                 title="处方详情">
-      <FirstOptionDetail :prescriptionCode="dialog.data"></FirstOptionDetail>
+    <PeaceDialog append-to-body
+                 title="处方详情"
+                 v-if="dialog.visible"
+                 v-bind:visible.sync="dialog.visible">
+      <PeacePrescriptionDetailHIS v-bind:data="dialog.data"></PeacePrescriptionDetailHIS>
     </PeaceDialog>
   </div>
 </template>
 
 <script>
-//
-import FirstOptionDetail from '@src/views/patient/patientDetail/src/components/FirtstOptionDetail.vue'
+import Service from './../service/index.js'
+import { PeacePrescriptionDetailHIS } from 'peace-components'
 
 export default {
   props: {
@@ -33,7 +33,7 @@ export default {
   },
 
   components: {
-    FirstOptionDetail
+    PeacePrescriptionDetailHIS
   },
 
   data() {
@@ -47,15 +47,15 @@ export default {
 
   methods: {
     get() {
-      // const params = { dataNo: this.data.dataNo }
-      // // const params = { inquiryNo: 'WZ2722845337239667' }
-      // Peace.service.inquiry.getHealthCase(params).then((res) => {
-      //   this.caseDialog.visible = true
-      //   this.caseDialog.data = res.data
-      //   // console.log(this.caseDialog.data)
-      // })
       this.dialog.visible = true
-      this.dialog.data = this.data.dataNo
+      this.dialog.data = this.fetchInitialVisitDetail
+    },
+
+    async fetchInitialVisitDetail() {
+      const params = { prescriptionCode: this.data.dataNo }
+      const res = await Service.getFirstOptionDetail(params)
+
+      return res.data.prescriptionInfo
     }
   }
 }

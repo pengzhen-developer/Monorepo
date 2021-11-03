@@ -34,10 +34,9 @@
 </template>
 
 <script>
-import type from '@src/type'
-
+import Type from '@src/type'
 import Service from './../../service'
-import OverInquiry from './OverInquiry'
+import OverInquiry from './OverInquiry.vue'
 
 export default {
   components: {
@@ -68,7 +67,7 @@ export default {
     },
 
     canShowOver() {
-      return this.$store.state?.inquiry?.session?.content?.inquiryInfo?.inquiryStatus === type.INQUIRY.INQUIRY_STATUS.问诊中
+      return this.$store.state?.inquiry?.session?.content?.inquiryInfo?.inquiryStatus === Type.INQUIRY.INQUIRY_STATUS.问诊中
     }
   },
 

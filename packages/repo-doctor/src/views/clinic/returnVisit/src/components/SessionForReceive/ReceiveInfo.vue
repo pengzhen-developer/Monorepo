@@ -27,7 +27,7 @@
           <span class="label-4 q-mr-sm text-grey-7">性别：</span>
           <span>{{ inquiryOrderInfo.sex }}</span>
         </div>
-        <div v-if="showGuardian"
+        <div v-if="shouldVisibleGuardian"
              class="col">
           <span class="label-4 q-mr-sm text-grey-7">监护人：</span>
           <span>{{ inquiryOrderInfo.guardianName }} |
@@ -59,19 +59,15 @@
     </el-card>
     <!-- 诊疗记录 -->
     <el-card class="q-mb-lg bg-grey-2 no-shadow"
-             v-if="firstOptionInfo.length > 0">
+             v-if="firstOptionList.length > 0">
       <div class="q-mb-sm text-subtitle1 text-bold row justify-between">
         <span>诊疗记录</span>
-        <el-button type="text"
-                   style="color: #666; font-size:12px;"
-                   v-show="showMoreButton"
-                   v-on:click="showHealthRecode">查看更多<i class="el-icon-arrow-right el-icon--right"></i></el-button>
       </div>
 
       <div class="row  items-baseline">
 
         <div class="row q-mr-20 q-mb-10"
-             v-for="item in firstOptionInfo"
+             v-for="item in firstOptionList"
              v-bind:key="item.hisPatientId">
 
           <div class="time-line column q-mr-14 q-pl-20">
@@ -80,7 +76,7 @@
           </div>
 
           <div class="case-bg cursor-pointer"
-               v-on:click="showCaseInfo(item)">
+               v-on:click="getFirstOptionDetail(item)">
             <div class="row cursor-pointer">
               <img src="~@src/assets/images/inquiry/ic_option_record.png"
                    style="width: 40px; height:40px"
@@ -115,7 +111,7 @@
         <span class="q-mr-sm text-grey-7">复诊凭证：</span>
 
         <div class="col">
-          <template v-if="showImages">
+          <template v-if="shouldVisibleImages">
             <span>确认遗失</span>
           </template>
           <template v-else>
@@ -123,7 +119,7 @@
                       fit="fit"
                       v-bind:key="image"
                       v-bind:src="image"
-                      v-bind:preview-src-list="[image]"
+                      v-bind:preview-src-list="inquiryOrderInfo.imgs"
                       class="q-mr-md q-mb-sm"
                       style="max-width: 60px; max-height: 60px;" />
           </template>
@@ -136,7 +132,7 @@
     </el-card>
 
     <el-card class="bg-grey-2 no-shadow"
-             v-if="showAdditionalInfo">
+             v-if="shouldVisibleAdditionalInfo">
       <div class="q-mb-sm text-subtitle1 text-bold">
         <span>补充信息</span>
       </div>
@@ -149,7 +145,7 @@
                     fit="fit"
                     v-bind:key="image"
                     v-bind:src="image"
-                    v-bind:preview-src-list="[image]"
+                    v-bind:preview-src-list="inquiryOrderInfo.aImages"
                     class="q-mr-md q-mb-sm"
                     style="max-width: 60px; max-height: 60px;" />
         </div>
@@ -165,33 +161,20 @@
       </div>
     </el-card>
 
-    <PeaceDialog :visible.sync="caseDialog.visible"
-                 append-to-body
-                 title="病历详情">
-      <InquiryNewCaseDetail :data="caseDialog.data"></InquiryNewCaseDetail>
-    </PeaceDialog>
-
-    <PeaceDialog :visible.sync="optionDialog.visible"
-                 append-to-body
-                 title="诊疗记录">
-      <InquiryOptionRecord :data="optionDialog.data"></InquiryOptionRecord>
-    </PeaceDialog>
-
-    <PeaceDialog v-if="dialog.visible"
-                 :visible.sync="dialog.visible"
-                 append-to-body
-                 title="处方详情">
-      <FirstOptionDetail :prescriptionCode="dialog.data"></FirstOptionDetail>
+    <PeaceDialog append-to-body
+                 title="处方详情"
+                 v-if="dialog.visible"
+                 v-bind:visible.sync="dialog.visible">
+      <PeacePrescriptionDetailHIS v-bind:data="dialog.data"></PeacePrescriptionDetailHIS>
     </PeaceDialog>
 
   </div>
 </template>
 
 <script>
-import InquiryNewCaseDetail from '@src/views/components/inquiry/InquiryNewCaseDetail.vue'
-import InquiryOptionRecord from '@src/views/components/inquiry/InquiryOptionRecord.vue'
-import FirstOptionDetail from '@src/views/patient/patientDetail/src/components/FirtstOptionDetail.vue'
 import Type from '@src/type'
+import Service from './../../service/index.js'
+import { PeacePrescriptionDetailHIS } from 'peace-components'
 
 export default {
   data() {
@@ -213,16 +196,14 @@ export default {
   },
 
   components: {
-    InquiryNewCaseDetail,
-    InquiryOptionRecord,
-    FirstOptionDetail
+    PeacePrescriptionDetailHIS
   },
 
   watch: {
     inquiryNo: {
       handler(val) {
         if (val && val.length > 0) {
-          this.getOptionList(val)
+          this.getFirstOptionList(val)
         }
       },
       immediate: true
@@ -242,10 +223,6 @@ export default {
       return this.$store?.state?.inquiry?.sessionMessages?.[0]?.content?.data?.inquiryOrderInfo ?? {}
     },
 
-    showPayType() {
-      return this.inquiryInfo.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
-    },
-
     payTypeText() {
       if (this.inquiryInfo.paymentType === 1) {
         return '自费'
@@ -263,68 +240,43 @@ export default {
       return ''
     },
 
-    showImages() {
+    shouldVisiblePayType() {
+      return this.inquiryInfo.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
+    },
+
+    shouldVisibleImages() {
       return this.inquiryOrderInfo.imgs?.length === 0
     },
 
-    showGuardian() {
+    shouldVisibleGuardian() {
       return this.inquiryOrderInfo.guardianName && this.inquiryOrderInfo.guardianSex && this.inquiryOrderInfo.guardianAge
     },
 
-    showAdditionalInfo() {
+    shouldVisibleAdditionalInfo() {
       return this.inquiryOrderInfo.aImages?.length > 0 || this.inquiryOrderInfo.allergicHistory || this.inquiryOrderInfo.pregnancyText
     },
 
-    firstOptionInfo() {
-      return this.items.length > 2 ? this.items.slice(0, 2) : this.items
-    },
-
-    showMoreButton() {
-      return this.items.length > 2
+    firstOptionList() {
+      return this.items
     }
   },
 
   methods: {
-    get() {
-      const params = { dataNo: this.data.dataNo }
-      // const params = { inquiryNo: 'WZ2722845337239667' }
-      Peace.service.inquiry.getHealthCase(params).then((res) => {
-        this.caseDialog.visible = true
-        this.caseDialog.data = res.data
-        // console.log(this.caseDialog.data)
-      })
-    },
-    getOptionList(val) {
-      if (Peace.validate.isEmpty(val)) {
-        return
-      }
+    async getFirstOptionList(inquiryNo) {
+      const params = { inquiryNo: inquiryNo }
+      const res = await Service.getFirstOptionList(params)
 
-      const params = { inquiryNo: val }
-
-      Peace.service.inquiry.getFirstOptionList(params).then((res) => {
-        const tmpTimes = []
-        const tmp = res.data.firstOptionList.map(function(item) {
-          const tmpTime = item.createdTime.substring(0, 10)
-          if (tmpTimes.includes(tmpTime)) {
-            item.showTimeLabel = false
-          } else {
-            tmpTimes.push(tmpTime)
-            item.showTimeLabel = true
-          }
-          return item
-        })
-        this.items = tmp
-      })
+      this.items = res.data
     },
 
-    showHealthRecode() {
-      this.optionDialog.visible = true
-      this.optionDialog.data = Peace.util.deepClone(this.items)
-    },
-
-    showCaseInfo(info) {
+    async getFirstOptionDetail(info) {
       this.dialog.visible = true
-      this.dialog.data = info.dataNo
+      this.dialog.data = async () => {
+        const params = { prescriptionCode: info.dataNo }
+        const res = await Service.getFirstOptionDetail(params)
+
+        return res.data
+      }
     }
   }
 }

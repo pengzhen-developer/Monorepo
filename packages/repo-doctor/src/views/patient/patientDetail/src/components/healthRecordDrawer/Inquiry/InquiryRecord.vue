@@ -1,41 +1,21 @@
 <template>
   <div class="layout">
-    <div class="layout-header">
-      <el-radio-group v-model="selectIndex">
-        <el-radio-button label="inquiry">患者咨询</el-radio-button>
-        <el-radio-button label="followUp">我的问询</el-radio-button>
-      </el-radio-group>
-    </div>
-
     <div class="layout-content full-width">
       <RecordList :noDataText="noDataText"
                   :request-data="inquiryRequestData"
-                  v-slot="item"
-                  v-show="selectIndex === 'inquiry'">
+                  v-slot="item">
         <InquiryRecordListCell :item="item" />
       </RecordList>
-      <RecordList :noDataText="noDataText"
-                  :request-data="followRequestData"
-                  v-slot="item"
-                  v-show="selectIndex === 'followUp'">
-        <FollowRecordListCell :item="item" />
-      </RecordList>
-    </div>
-
-    <div class="layout-footer full-width"
-         v-show="selectIndex === 'inquiry'">
-      <q-separator inset
-                   class="q-mb-md bg-grey-3" />
-      <el-button @click="sendMessage"
-                 type="primary">发送信息 </el-button>
     </div>
   </div>
 </template>
 
 <script>
-import RecordList from '../RecordList'
-import InquiryRecordListCell from './InquiryRecordListCell'
-import FollowRecordListCell from './FollowRecordListCell'
+import Type from '@src/type'
+import RecordList from '../RecordList.vue'
+import InquiryRecordListCell from './InquiryRecordListCell.vue'
+import Service from './../../../service/index.js'
+
 export default {
   name: 'InquiryRecord',
   props: {
@@ -43,25 +23,15 @@ export default {
   },
   components: {
     RecordList,
-    InquiryRecordListCell,
-    FollowRecordListCell
+    InquiryRecordListCell
   },
   data() {
     return {
-      selectIndex: 'inquiry',
       inquiryRequestData: {
-        request: Peace.service.health.getPatientInquiryList,
+        request: Service.getPatientInquiryList,
         data: {
           // 请求列表参数
           tag: 'inquiry',
-          patientNo: this.params.id
-        }
-      },
-      followRequestData: {
-        request: Peace.service.health.getPatientInquiryList,
-        data: {
-          // 请求列表参数
-          tag: 'follow',
           patientNo: this.params.id
         }
       }
@@ -69,12 +39,7 @@ export default {
   },
   computed: {
     noDataText() {
-      return Peace.type.HEALTH_RECORD.EMPTY_TEXT[Peace.type.HEALTH_RECORD.ACTION_TYPE.咨询][this.selectIndex]
-    }
-  },
-  methods: {
-    sendMessage() {
-      Peace.util.alert('暂未开通')
+      return Type.HEALTH_RECORD.EMPTY_TEXT[Type.HEALTH_RECORD.ACTION_TYPE.咨询][this.selectIndex]
     }
   }
 }

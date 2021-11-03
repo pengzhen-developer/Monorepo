@@ -65,6 +65,7 @@
 
 <script>
 import Type from '@src/type'
+
 export default {
   computed: {
     inquiryOrderInfo() {

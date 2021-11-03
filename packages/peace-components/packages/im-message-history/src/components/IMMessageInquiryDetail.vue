@@ -74,7 +74,7 @@
             </div>
 
             <div class="case-bg cursor-pointer"
-                 v-on:click="showDialog(item)">
+                 v-on:click="getFirstOptionDetail(item)">
               <div class="row cursor-pointer">
                 <img src="./../assets/img/ic_option_record.png"
                      style="width: 40px; height:40px"
@@ -211,7 +211,7 @@ export default {
     data: {
       async handler() {
         this.loading = true
-        this.internalInitialVisitData = await this.fetchInitialVisit(this.data?.content?.data?.inquiryInfo?.inquiryNo)
+        this.internalInitialVisitData = await this.getFirstOptionList(this.data?.content?.data?.inquiryInfo?.inquiryNo)
         this.loading = false
       },
       immediate: true
@@ -291,38 +291,21 @@ export default {
       return typeof this.data === 'function' ? await this.data() : this.data
     },
 
-    async fetchInitialVisit(inquiryNo) {
+    async getFirstOptionList(inquiryNo) {
       const params = { inquiryNo: inquiryNo }
+      const res = await Service.getFirstOptionList(params)
 
-      return Service.getFirstOptionList(params).then((res) => {
-        const tmpTimes = []
-        const tmp = res.data.firstOptionList.map(function(item) {
-          const tmpTime = item.createdTime.substring(0, 10)
-          if (tmpTimes.includes(tmpTime)) {
-            item.showTimeLabel = false
-          } else {
-            tmpTimes.push(tmpTime)
-            item.showTimeLabel = true
-          }
-          return item
-        })
-        return tmp
-      })
+      return res.data
     },
 
-    async fetchInitialVisitDetail(dataNo) {
-      const params = {
-        prescriptionCode: dataNo
-      }
-
-      return Service.getFirstOptionDetail(params).then((res) => {
-        return res.data.prescriptionInfo
-      })
-    },
-
-    showDialog({ dataNo }) {
+    async getFirstOptionDetail({ dataNo }) {
       this.dialog.visible = true
-      this.dialog.data = () => this.fetchInitialVisitDetail(dataNo)
+      this.dialog.data = async () => {
+        const params = { prescriptionCode: dataNo }
+        const res = await Service.getFirstOptionDetail(params)
+
+        return res.data
+      }
     }
   }
 }

@@ -120,6 +120,8 @@
 </template>
 
 <script>
+import Service from './../service/index.js'
+
 export default {
   props: {
     type: {
@@ -250,7 +252,7 @@ export default {
 
   methods: {
     getNational() {
-      Peace.service.patient.getNationList().then((res) => {
+      Service.getNationList().then((res) => {
         this.nationals = res.data.list || []
       })
     },
@@ -272,8 +274,8 @@ export default {
           idCard: params.guardianIdCard
         }
       }
-      Peace.service.patient
-        .addPatient(params)
+
+      Service.addPatient(params)
         .then((res) => {
           Peace.util.success(res.msg)
           if (res.success) {

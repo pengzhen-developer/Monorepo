@@ -3,8 +3,7 @@
              :modal="false"
              :before-close="handleClose"
              :destroy-on-close="true"
-             size="400px"
-             style="margin-right: 90px;">
+             size="400px">
     <span class="title"
           slot="title">{{ titleStr }}</span>
     <Component ref="checkInput"
@@ -14,15 +13,8 @@
 </template>
 
 <script>
+import Type from '@src/type'
 import InquiryRecord from './Inquiry/InquiryRecord'
-import DiseaseRecord from './CourseOfDisease/DiseaseRecord'
-import AddDiseaseRecord from './CourseOfDisease/AddDiseaseRecord'
-import FollowUpRecord from './FollowUp/FollowUpRecord'
-import ReferralRecord from './Referral/ReferralRecord'
-import ApplyReferral from './Referral/ApplyReferral'
-import ConsultationRecord from './Consultation/ConsultationRecord'
-import ApplyConsultation from './Consultation/ApplyConsultation'
-import FollowUpScheme from './FollowUp/FollowUpScheme'
 
 export default {
   props: {
@@ -41,61 +33,10 @@ export default {
     show(parameter) {
       this.currentIndex = parameter.index
       switch (parameter.index) {
-        case Peace.type.HEALTH_RECORD.ACTION_TYPE.咨询:
+        case Type.HEALTH_RECORD.ACTION_TYPE.咨询:
           {
             this.ComponentInstance = InquiryRecord
             this.titleStr = '咨询记录'
-          }
-          break
-        case Peace.type.HEALTH_RECORD.ACTION_TYPE.病程:
-          {
-            this.ComponentInstance = DiseaseRecord
-            this.titleStr = '病程管理'
-          }
-          break
-        case Peace.type.HEALTH_RECORD.ACTION_TYPE.随访:
-          {
-            this.ComponentInstance = FollowUpRecord
-            this.titleStr = '随访记录'
-          }
-          break
-        case Peace.type.HEALTH_RECORD.ACTION_TYPE.转诊:
-          {
-            this.ComponentInstance = ReferralRecord
-            this.titleStr = '转诊记录'
-          }
-          break
-        case Peace.type.HEALTH_RECORD.ACTION_TYPE.会诊:
-          {
-            this.ComponentInstance = ConsultationRecord
-            this.titleStr = '会诊记录'
-          }
-          break
-        case Peace.type.HEALTH_RECORD.ACTION_TYPE.发起转诊:
-          {
-            this.ComponentInstance = ApplyReferral
-            this.titleStr = '发起转诊'
-          }
-          break
-        case Peace.type.HEALTH_RECORD.ACTION_TYPE.发起会诊:
-          {
-            this.ComponentInstance = ApplyConsultation
-            this.titleStr = '发起会诊'
-          }
-          break
-        case Peace.type.HEALTH_RECORD.ACTION_TYPE.添加随访方案:
-          {
-            this.ComponentInstance = FollowUpScheme
-            this.titleStr = '随访方案库'
-          }
-          break
-        case Peace.type.HEALTH_RECORD.ACTION_TYPE.添加病程:
-          {
-            if (!Peace.validate.isEmpty(parameter.item)) {
-              this.params.item = parameter.item
-            }
-            this.ComponentInstance = AddDiseaseRecord
-            this.titleStr = '添加病程'
           }
           break
       }
@@ -123,37 +64,8 @@ export default {
       return true
     },
     handleClose(done) {
-      if (this.ComponentInstance === ApplyReferral && !this.isAllEmpty(this.$refs.checkInput.view.model)) {
-        this.$confirm('关闭后将不保存当前内容，是否关闭？')
-          .then(() => {
-            Peace.$emit('hideDrawer', this.currentIndex)
-            done()
-          })
-          .catch(() => {
-            this.clearFocus()
-          })
-      } else if (this.ComponentInstance === ApplyConsultation && !this.isAllEmpty(this.$refs.checkInput.view.model)) {
-        this.$confirm('关闭后将不保存当前内容，是否关闭？')
-          .then(() => {
-            Peace.$emit('hideDrawer', this.currentIndex)
-            done()
-          })
-          .catch(() => {
-            this.clearFocus()
-          })
-      } else if (this.ComponentInstance === AddDiseaseRecord && !this.isAllEmpty(this.$refs.checkInput.model)) {
-        this.$confirm('关闭后将不保存当前内容，是否关闭？')
-          .then(() => {
-            Peace.$emit('hideDrawer', this.currentIndex)
-            done()
-          })
-          .catch(() => {
-            this.clearFocus()
-          })
-      } else {
-        Peace.$emit('hideDrawer', this.currentIndex)
-        done()
-      }
+      Peace.$emit('hideDrawer', this.currentIndex)
+      done()
     }
   }
 }
@@ -177,6 +89,7 @@ export default {
 .el-drawer__wrapper {
   height: calc(100vh - 113px);
   position: absolute;
+  right: 90px;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 4px;
 

@@ -7,16 +7,22 @@
       <div class="header-right">
         <el-dropdown @command="handleNotice">
           <div class="header-right-message">
-            <el-badge class="mark" v-bind:value="unread" v-bind:hidden="unread == 0">
+            <el-badge class="mark"
+                      v-bind:value="unread"
+                      v-bind:hidden="unread == 0">
               <img src="~@src/assets/images/layout/top_icon_message.png" />
             </el-badge>
             <span>消息</span>
           </div>
 
-          <el-dropdown-menu class="header-right-message-dropdown" slot="dropdown">
+          <el-dropdown-menu class="header-right-message-dropdown"
+                            slot="dropdown">
             <div class="header-right-message-dropdown-content">
               <h4 v-if="messageList.length == 0">暂无消息</h4>
-              <el-dropdown-item class="dropdown-item message" :command="item" v-for="(item, index) in messageList" :key="'item' + index">
+              <el-dropdown-item class="dropdown-item message"
+                                :command="item"
+                                v-for="(item, index) in messageList"
+                                :key="'item' + index">
                 <el-badge :is-dot="item.isRead == 0">
                   <div :class="'icon icon-' + item.tag"></div>
                 </el-badge>
@@ -36,33 +42,60 @@
 
         <el-dropdown>
           <div class="header-right-title">
-            <el-avatar class="q-mr-md" :size="30" :src="docInfo.avartor"></el-avatar>
+            <el-avatar class="q-mr-md"
+                       :size="30"
+                       :src="docInfo.avartor"></el-avatar>
 
-            <img v-if="workStatus" class="q-mr-md" style="width: 20px; height: 20px;" src="./../assets/img/icon_work_checked.svg" />
+            <img v-if="workStatus"
+                 class="q-mr-md"
+                 style="width: 20px; height: 20px;"
+                 src="./../assets/img/icon_work_checked.svg" />
 
-            <img v-if="!workStatus" class="q-mr-md" style="width: 20px; height: 20px;" src="./../assets/img/icon_rest_checked.svg" />
+            <img v-if="!workStatus"
+                 class="q-mr-md"
+                 style="width: 20px; height: 20px;"
+                 src="./../assets/img/icon_rest_checked.svg" />
 
             <span>欢迎您，</span>
             <span>{{ docInfo.name }}</span>
             <i class="el-icon-arrow-down el-icon--right q-mr-md"></i>
           </div>
 
-          <el-dropdown-menu class="header-right-title-dropdown" slot="dropdown">
+          <el-dropdown-menu class="header-right-title-dropdown"
+                            slot="dropdown">
             <div class="header-right-title-dropdown-content">
               <p class="text-h7 text-bold q-mb-sm">工作状态</p>
-              <el-dropdown-item @click.native="setWorkstatus(1)" class="dropdown-item">
-                <img v-if="workStatus" class="q-mr-md" style="width: 20px; height: 20px;" src="./../assets/img/icon_work_checked.svg" />
-                <img v-if="!workStatus" class="q-mr-md" style="width: 20px; height: 20px;" src="./../assets/img/icon_work_unchecked.svg" />
+              <el-dropdown-item @click.native="setWorkstatus(1)"
+                                class="dropdown-item">
+                <img v-if="workStatus"
+                     class="q-mr-md"
+                     style="width: 20px; height: 20px;"
+                     src="./../assets/img/icon_work_checked.svg" />
+                <img v-if="!workStatus"
+                     class="q-mr-md"
+                     style="width: 20px; height: 20px;"
+                     src="./../assets/img/icon_work_unchecked.svg" />
                 <span>工作中</span>
               </el-dropdown-item>
-              <el-dropdown-item @click.native="setWorkstatus(2)" class="dropdown-item">
-                <img v-if="!workStatus" class="q-mr-md" style="width: 20px; height: 20px;" src="./../assets/img/icon_rest_checked.svg" />
-                <img v-if="workStatus" class="q-mr-md" style="width: 20px; height: 20px;" src="./../assets/img/icon_rest_unchecked.svg" />
+              <el-dropdown-item @click.native="setWorkstatus(2)"
+                                class="dropdown-item">
+                <img v-if="!workStatus"
+                     class="q-mr-md"
+                     style="width: 20px; height: 20px;"
+                     src="./../assets/img/icon_rest_checked.svg" />
+                <img v-if="workStatus"
+                     class="q-mr-md"
+                     style="width: 20px; height: 20px;"
+                     src="./../assets/img/icon_rest_unchecked.svg" />
                 <span>休息中</span>
               </el-dropdown-item>
               <hr />
-              <el-dropdown-item @click.native="signOut" style="justify-content: center;" class="dropdown-item">
-                <img class="q-mr-md" style="width: 18px; height: 20px;" src="./../assets/img/ic_sign_out.svg" />
+              <el-dropdown-item @click.native="signOut"
+                                style="justify-content: center;"
+                                class="dropdown-item">
+                <img class="q-mr-md"
+                     style="width: 18px; height: 20px;"
+                     src="./../assets/img/ic_sign_out.svg" />
                 <span>退出登录</span>
               </el-dropdown-item>
             </div>
@@ -71,29 +104,30 @@
       </div>
     </div>
 
-    <PeaceDialog v-bind:append-to-body="true" v-bind:visible.sync="dialogHZ.visible" title="会诊详情">
-      <TheConsultationDetail :data="dialogHZ.data" @close="() => (dialogHZ.visible = false)"></TheConsultationDetail>
+    <PeaceDialog v-bind:append-to-body="true"
+                 v-bind:visible.sync="dialogNotice.visible"
+                 title="签名提醒">
+      <SignNotice :num="dialogNotice.num"
+                  @close="() => (dialogNotice.visible = false)"></SignNotice>
     </PeaceDialog>
 
-    <PeaceDialog v-bind:append-to-body="true" v-bind:visible.sync="dialogNotice.visible" title="签名提醒">
-      <SignNotice :num="dialogNotice.num" @close="() => (dialogNotice.visible = false)"></SignNotice>
-    </PeaceDialog>
-
-    <PeaceDialog v-bind:append-to-body="true" v-bind:visible.sync="dialogOrg.visible" title="详情">
-      <OrgNotice :data="dialogOrg.data" @close="() => (dialogOrg.visible = false)"></OrgNotice>
+    <PeaceDialog v-bind:append-to-body="true"
+                 v-bind:visible.sync="dialogOrg.visible"
+                 title="详情">
+      <OrgNotice :data="dialogOrg.data"
+                 @close="() => (dialogOrg.visible = false)"></OrgNotice>
     </PeaceDialog>
   </div>
 </template>
 
 <script>
+import Service from './../service/index.js'
 import Util from '@src/util'
-import TheConsultationDetail from '@src/views/components/consultation/ConsultationDetail'
 import SignNotice from '@src/views/components/SignNotice'
 import OrgNotice from '@src/views/components/OrgNotice'
 
 export default {
   components: {
-    TheConsultationDetail,
     SignNotice,
     OrgNotice
   },
@@ -146,14 +180,14 @@ export default {
     },
 
     get(params) {
-      Peace.service.personalCenter.getMsgList(params).then((res) => {
+      Service.getNoticeMsgList(params).then((res) => {
         this.messageList = res.data.list
         this.unread = res.data.unRead
       })
     },
 
     setWorkstatus(status) {
-      Peace.service.personalCenter.updateWorkStatus({ workStatus: status }).then(() => {
+      Service.updateWorkStatus({ workStatus: status }).then(() => {
         const userInfo = Util.user.getUserInfo()
         userInfo.list.docInfo.workStatus = status
 
@@ -168,8 +202,7 @@ export default {
       let tag = item.tag
       let sysId = item.sysId
       let params = { tag, sysId }
-      // this.interval && this.clearInterval();
-      Peace.service.personalCenter.getDetail(params).then((res) => {
+      Service.getNoticeMsgDetail(params).then((res) => {
         switch (item.tag) {
           case 'orgNotice':
             this.dialogOrg.visible = true

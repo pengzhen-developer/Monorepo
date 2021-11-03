@@ -23,7 +23,17 @@
             </div>
           </div>
         </el-alert>
-        <MessageList></MessageList>
+
+        <PeaceIMMessageHistory class="q-pa-md"
+                               v-bind:data="sessionMessagaes"
+                               v-bind:messageFlowIn="session.content.patientInfo"
+                               v-bind:messageFlowOut="session.content.doctorInfo">
+          <template v-slot:prescription-operation="{ data, refetch }">
+            <PrescriptionDetailOperation v-bind:data="data"
+                                         v-on:accept="refetch"
+                                         v-on:reject="refetch"></PrescriptionDetailOperation>
+          </template>
+        </PeaceIMMessageHistory>
       </q-scroll-area>
 
       <div class="footer">
@@ -46,30 +56,26 @@
 </template>
 
 <script>
-import MessageList from './MessageList'
-import MessageControl from './MessageControl'
-
-// 动态载入
-import MessageSendCase from './MessageSendCase'
-import MessageSendRecipe from './MessageSendRecipe'
-import MessageSendTransfer from './MessageSendTransfer'
-import MessageSendConsultation from './MessageSendConsultation'
-import MessageSendInspection from './MessageSendInspection'
+import MessageControl from './MessageControl.vue'
+import MessageCaseSend from '@src/views/components/case/send-case/src/index.vue'
+import MessageInspectionSend from '@src/views/components/inspection/send-inspection/src/index.vue'
+import MessagePrescriptionSend from '@src/views/components/prescription/send-prescription/src/index.vue'
+import PrescriptionDetailOperation from '@src/views/components/prescription/prescription-detail-operation/src/index.vue'
+import { PeaceIMMessageHistory } from 'peace-components'
 
 export default {
   components: {
-    MessageList,
-    MessageControl
+    PeaceIMMessageHistory,
+    MessageControl,
+    PrescriptionDetailOperation
   },
 
   data() {
     return {
       componentInstanceMap: {
-        ['发病历']: MessageSendCase,
-        ['发处方']: MessageSendRecipe,
-        ['申请转诊']: MessageSendTransfer,
-        ['申请会诊']: MessageSendConsultation,
-        ['开检验']: MessageSendInspection
+        ['发病历']: MessageCaseSend,
+        ['发处方']: MessagePrescriptionSend,
+        ['开检验']: MessageInspectionSend
       },
 
       componentType: 'MessageList'

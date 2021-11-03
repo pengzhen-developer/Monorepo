@@ -60,20 +60,29 @@
                           width="140"></PeaceTableColumn>
 
         <PeaceTableColumn label="疾病标签"
-                          min-width="340"
-                          show-overflow-tooltip>
+                          min-width="340">
           <template slot-scope="scope">
-            <span>{{ scope.row.diagnoseInfo.join(',') }}</span>
+            <el-popover placement="top-start"
+                        width="400"
+                        trigger="hover"
+                        v-bind:content="scope.row.diagnoseInfo.join(',')">
+              <div class="ellipsis"
+                   slot="reference">{{ scope.row.diagnoseInfo.join(',') }}</div>
+            </el-popover>
+
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn label="患者来源">
+        <PeaceTableColumn label="患者来源"
+                          min-width="120">
           <template slot-scope="scope">
             <span>{{ getSourceStr(scope.row.source) }}</span>
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn label="操作">
+        <PeaceTableColumn fixed="right"
+                          label="操作"
+                          width="120">
           <template slot-scope="scope">
             <el-button @click="showDetail(scope.row)"
                        type="text">查看详情</el-button>
@@ -96,7 +105,9 @@
 </template>
 
 <script>
-import AddPatient from './components/AddPatient'
+import AddPatient from './components/AddPatient.vue'
+import Service from './service/index.js'
+
 export default {
   components: {
     AddPatient
@@ -123,7 +134,7 @@ export default {
   },
 
   created() {
-    Peace.service.patient.getSource().then((res) => {
+    Service.getSource().then((res) => {
       this.source.group_name = res.data
     })
   },
@@ -140,7 +151,7 @@ export default {
     },
 
     get() {
-      const fetch = Peace.service.patient.patientListPc
+      const fetch = Service.patientListPc
       const params = Object.assign({}, this.view.model)
       this.$refs.table.loadData({ fetch, params })
     },
@@ -160,7 +171,7 @@ export default {
     },
 
     updateList() {
-      const fetch = Peace.service.patient.patientListPc
+      const fetch = Service.patientListPc
       const params = this.view.model
       this.$refs.table.reloadData({ fetch, params })
     },

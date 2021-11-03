@@ -64,23 +64,12 @@
                    class="hang-up"
                    type="primary"></el-button>
       </div>
-      <!-- 
-      <el-button  v-if="canShowCallButton"
-                 v-on:click="call('wwrihbgikw')"
-                 type="primary">A发起</el-button>
-      <el-button  v-if="canShowCallButton"
-                 v-on:click="call('unayuzpaar')"
-                 type="primary">B发起</el-button>
-
-      <el-button  v-if="canShowAcceptButton"
-                 v-on:click="accept"
-                 type="primary">接听</el-button>
-      -->
     </el-dialog>
   </div>
 </template>
 
 <script>
+import Service from './../service/index.js'
 import WebRTC from '@public/static/js/IM/NIM_Web_WebRTC_v7.0.0'
 
 export default {
@@ -192,21 +181,7 @@ export default {
 
       // 设定主叫 custom
       this.custom = { session, type }
-
-      let toAccount = ''
-
-      if (type === 'inquiry') {
-        toAccount = session?.content?.patientInfo?.familyId
-      } else if (type === 'consult') {
-        // 当前登陆人是会诊发起者
-        if (session?.content?.consultInfo?.receiveDoctor?.[0].doctorId === this.$store.state.user?.userInfo?.list?.docInfo?.doctor_id) {
-          toAccount = session.content.consultInfo.startDoctor[0].doctorId
-        }
-        // 当前登陆人是会诊受邀者
-        else if (session?.content?.consultInfo?.startDoctor?.[0].doctorId === this.$store.state.user?.userInfo?.list?.docInfo?.doctor_id) {
-          toAccount = session.content.consultInfo.receiveDoctor[0].doctorId
-        }
-      }
+      let toAccount = session?.content?.patientInfo?.familyId
 
       this.pushConfig.custom = JSON.stringify({
         id: this.$store.state.user?.userInfo?.list?.docInfo?.doctor_id,
@@ -695,16 +670,7 @@ export default {
           action: action
         }
 
-        Peace.service.video.process(params)
-      }
-      // 会诊
-      else if (this.custom.type === 'consult') {
-        const params = {
-          consultNo: this.custom?.session?.content?.consultInfo?.consultNo,
-          action: action
-        }
-
-        Peace.service.video.processConsult(params)
+        Service.processVideo(params)
       }
     },
 
@@ -757,66 +723,7 @@ export default {
           params.sponsor = 'doctor'
         }
 
-        Peace.service.video.process(params)
-      }
-      // 会诊
-      else if (this.custom.type === 'consult') {
-        const getRole = () => {
-          const doctorId = this.$store.state.user.userInfo.list.docInfo.doctor_id
-          const startDoctorList = this.custom.session.content.consultInfo.startDoctor
-          const receiveDoctorList = this.custom.session.content.consultInfo.receiveDoctor
-
-          if (startDoctorList.find((item) => item.doctorId === doctorId)) {
-            return 'from'
-          }
-
-          if (receiveDoctorList.find((item) => item.doctorId === doctorId)) {
-            return 'to'
-          }
-        }
-
-        const params = {}
-        params.consultNo = this.custom?.session?.content?.consultInfo?.consultNo
-        params.action = 'hangup'
-
-        // 发起者
-        if (getRole() === 'from') {
-          // state 1
-          if (this.beCalledRole === '主叫' && operator === 'doctor') {
-            params.sonAction = 'fromHangup'
-            params.role = 'from'
-          }
-          // state 3
-          else if (this.isCalling !== '主叫' && operator === 'doctor') {
-            params.sonAction = 'fromHangup'
-            params.role = 'to'
-          }
-          // state 5
-          else if (this.beCalledRole === '主叫' && operator === 'system') {
-            params.sonAction = 'systemHangup'
-            params.role = 'from'
-          }
-        }
-        // 受邀者
-        if (getRole() === 'to') {
-          // state 2
-          if (this.beCalledRole !== '主叫' && operator === 'doctor') {
-            params.sonAction = 'toHangup'
-            params.role = 'from'
-          }
-          // state 4
-          else if (this.beCalledRole === '主叫' && operator === 'doctor') {
-            params.sonAction = 'toHangup'
-            params.role = 'to'
-          }
-          // state 6
-          else if (this.beCalledRole === '主叫' && operator === 'system') {
-            params.sonAction = 'systemHangup'
-            params.role = 'to'
-          }
-        }
-
-        Peace.service.video.processConsult(params)
+        Service.processVideo(params)
       }
     }
   }

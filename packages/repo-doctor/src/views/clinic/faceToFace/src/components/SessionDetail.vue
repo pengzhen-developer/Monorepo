@@ -1,21 +1,21 @@
 <template>
   <div>
-    <SendRecipe v-if="showWriteRecipe"></SendRecipe>
+    <PrescriptionSend v-if="showWriteRecipe"></PrescriptionSend>
     <RegisterSendPrescription v-else-if="showRegister"></RegisterSendPrescription>
-    <RecipeList v-else></RecipeList>
+    <PrescriptionList v-else></PrescriptionList>
   </div>
 </template>
 
 <script>
-import SendRecipe from './SendRecipe'
-import RecipeList from './RecipeList'
-import RegisterSendPrescription from './RegisterSendPrescription'
+import RegisterSendPrescription from './RegisterSendPrescription.vue'
+import PrescriptionList from './PrescriptionList.vue'
+import PrescriptionSend from './PrescriptionSend.vue'
 import { store } from '../store'
 
 export default {
   components: {
-    SendRecipe,
-    RecipeList,
+    PrescriptionList,
+    PrescriptionSend,
     RegisterSendPrescription
   },
 

@@ -31,8 +31,8 @@
 <script>
 import Service from './service'
 
-import InquirySetting from './components/InquirySetting'
-import InquiryAgainSetting from './components/InquiryAgainSetting'
+import InquirySetting from './components/InquirySetting.vue'
+import InquiryAgainSetting from './components/InquiryAgainSetting.vue'
 
 export default {
   components: {

@@ -93,17 +93,6 @@ export default {
         menuAlias: 'ClinicfaceToFace',
         virtual: 0
       },
-      // {
-      //   id: '24',
-      //   closable: true,
-      //   menuName: '我的会诊',
-      //   menuRoute: '/clinic/consultation',
-      //   menuPath: 'views/clinic/consultation',
-      //   parentId: '2',
-      //   enable: true,
-      //   menuAlias: 'ClinicConsultation',
-      //   virtual: 0
-      // },
       {
         id: '3',
         closable: true,
@@ -127,19 +116,8 @@ export default {
         virtual: 0
       },
       {
-        id: '32',
-        closable: true,
-        menuName: '患者随访',
-        menuRoute: '/patient/follow',
-        menuPath: 'views/patient/follow',
-        parentId: '3',
-        enable: true,
-        menuAlias: 'Follow',
-        virtual: 0
-      },
-      {
         // 患者 - 患者详情
-        id: '34',
+        id: '32',
         closable: true,
         menuName: '患者详情',
         menuRoute: '/patient/patientDetail/:id',
@@ -147,6 +125,18 @@ export default {
         parentId: '3',
         enable: true,
         menuAlias: 'PatientDetail',
+        virtual: 1
+      },
+      {
+        // 患者 - 报告详情
+        id: '33',
+        closable: true,
+        menuName: '报告详情',
+        menuRoute: '/patient/patientDetail/report/:dataId/:idCard/:serviceId/:type',
+        menuPath: 'views/patient/patientDetailReport',
+        parentId: '3',
+        enable: true,
+        menuAlias: 'PatientDetailReport',
         virtual: 1
       },
       {
@@ -194,28 +184,6 @@ export default {
         virtual: 0
       },
       {
-        id: '44',
-        closable: true,
-        menuName: '转诊记录',
-        menuRoute: '/record/transfer',
-        menuPath: 'views/record/transfer',
-        parentId: '4',
-        enable: true,
-        menuAlias: 'Transfer',
-        virtual: 0
-      },
-      // {
-      //   id: '45',
-      //   closable: true,
-      //   menuName: '会诊记录',
-      //   menuRoute: '/record/consultation',
-      //   menuPath: 'views/record/consultation',
-      //   parentId: '4',
-      //   enable: true,
-      //   menuAlias: 'Consultation',
-      //   virtual: 0
-      // },
-      {
         id: '5',
         closable: true,
         menuIcon: 'icon_ic_my',
@@ -238,7 +206,7 @@ export default {
         virtual: 0
       },
       {
-        id: '53',
+        id: '52',
         closable: true,
         menuName: '出诊时间',
         menuRoute: '/sys/myServiceTime',
@@ -249,7 +217,7 @@ export default {
         virtual: 0
       },
       {
-        id: '54',
+        id: '53',
         closable: true,
         menuName: '服务设置',
         menuRoute: '/sys/myServiceSetting',
@@ -260,7 +228,7 @@ export default {
         virtual: 0
       },
       {
-        id: '55',
+        id: '54',
         closable: true,
         menuName: '我的药房',
         menuRoute: '/sys/myPharmacy',
@@ -271,18 +239,7 @@ export default {
         virtual: 0
       },
       {
-        id: '56',
-        closable: true,
-        menuName: '我的随访',
-        menuRoute: '/sys/myFollow',
-        menuPath: 'views/sys/myFollow',
-        parentId: '5',
-        enable: true,
-        menuAlias: 'MyFollow',
-        virtual: 0
-      },
-      {
-        id: '57',
+        id: '55',
         closable: true,
         menuName: '我的服务包',
         menuRoute: '/sys/myServicePack',

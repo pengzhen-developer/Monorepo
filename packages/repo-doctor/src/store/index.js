@@ -5,7 +5,6 @@ import user from './modules/user'
 import tabs from './modules/tabs'
 import layout from './modules/layout'
 import inquiry from './modules/inquiry'
-import consultation from './modules/consultation'
 import notification from './modules/notification'
 
 export default function() {
@@ -17,7 +16,6 @@ export default function() {
       tabs,
       layout,
       inquiry,
-      consultation,
       notification
     }
   })

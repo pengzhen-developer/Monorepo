@@ -62,12 +62,6 @@ export default {
           icon: require('./assets/img/ic_face to face@2x.png'),
           routePath: '/clinic/faceToFace'
         }
-        // {
-        //   name: 'consultation',
-        //   title: '我的会诊',
-        //   icon: require('./assets/img/ic_consultation@2x.png'),
-        //   routePath: '/clinic/consultation'
-        // }
       ]
     }
   },

@@ -13,16 +13,18 @@
       <p class="record-case-right-text">{{ data.netHospitalName }} | {{ data.netDeptName }}</p>
     </div>
 
-    <PeaceDialog :visible.sync="caseDialog.visible"
-                 append-to-body
-                 title="病历详情">
-      <InquiryNewCaseDetail :data="caseDialog.data"></InquiryNewCaseDetail>
+    <PeaceDialog append-to-body
+                 title="病历详情"
+                 v-if="caseDialog.visible"
+                 v-bind:visible.sync="caseDialog.visible">
+      <RecordCaseDetail v-bind:data="caseDialog.data"></RecordCaseDetail>
     </PeaceDialog>
   </div>
 </template>
 
 <script>
-import InquiryNewCaseDetail from '@src/views/components/inquiry/InquiryNewCaseDetail.vue'
+import RecordCaseDetail from './RecordCaseDetail.vue'
+import Service from './../service/index.js'
 
 export default {
   props: {
@@ -30,7 +32,7 @@ export default {
   },
 
   components: {
-    InquiryNewCaseDetail
+    RecordCaseDetail
   },
 
   data() {
@@ -45,11 +47,9 @@ export default {
   methods: {
     get() {
       const params = { dataNo: this.data.dataNo }
-      // const params = { inquiryNo: 'WZ2722845337239667' }
-      Peace.service.inquiry.getHealthCase(params).then((res) => {
+      Service.getHealthCase(params).then((res) => {
         this.caseDialog.visible = true
         this.caseDialog.data = res.data
-        // console.log(this.caseDialog.data)
       })
     }
   }

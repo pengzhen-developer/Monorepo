@@ -141,9 +141,10 @@
 </template>
 
 <script>
-import ChangePhoneNumber from './components/ChangePhoneNumber'
-import ChangePassword from '@src/views/system/login/src/components/ChangePassword'
-import Introduce from '@src/views/sys/myIntroduce'
+import Service from './service/index.js'
+import ChangePhoneNumber from './components/ChangePhoneNumber.vue'
+import ChangePassword from '@src/views/system/login/src/components/ChangePassword.vue'
+import Introduce from '@src/views/sys/myIntroduce/src/index.vue'
 
 export default {
   components: {
@@ -213,7 +214,7 @@ export default {
     get() {
       const params = this.extraUploadData
 
-      Peace.service.personalCenter.getDoctorInfo(params).then((res) => {
+      Service.getDoctorInfo(params).then((res) => {
         res.data.cert_file = JSON.parse(res.data.cert_file)
         res.data.cert_file = res.data.cert_file.map((item) => {
           return {
@@ -267,7 +268,7 @@ export default {
         cert_file: cert_file
       }
 
-      Peace.service.personalCenter.upDoctorInfo(params).then((res) => {
+      Service.upDoctorInfo(params).then((res) => {
         Peace.util.success(res.msg)
 
         this.get()

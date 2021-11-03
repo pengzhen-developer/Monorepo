@@ -12,15 +12,6 @@ import '@src/library/prototype/string'
 // helper
 import { formatDuration, getDuration, confirm } from '@src/library/helper/util'
 
-// directive
-import drag from '@src/library/directive/drag'
-import focus from '@src/library/directive/focus'
-
-// type
-import type from '@src/type'
-// service
-import service from '@src/service'
-
 // export boot install function
 // async is optional
 export default async ({ Vue }) => {
@@ -91,15 +82,7 @@ export default async ({ Vue }) => {
     }
   })
 
-  // 注册 directive
-  const directive = [drag, focus]
-  directive.map((directive) => {
-    Vue.directive(directive.name, directive)
-  })
-
   /* eslint-disable */
-  Peace.type = type
-  Peace.service = service
   Peace.util.formatDuration = formatDuration
   Peace.util.getDuration = getDuration
   Peace.util.confirm = confirm

@@ -84,7 +84,7 @@
 <script>
 import Service from './../service'
 
-import SerivcePackOrderDetail from './SerivcePackOrderDetail'
+import SerivcePackOrderDetail from './SerivcePackOrderDetail.vue'
 
 export default {
   components: {

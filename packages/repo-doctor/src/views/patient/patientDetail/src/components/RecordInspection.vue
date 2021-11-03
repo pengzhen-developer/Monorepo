@@ -19,7 +19,8 @@
 </template>
 
 <script>
-import RecordInspectionDetail from './RecordInspectionDetail'
+import Service from './../service/index.js'
+import RecordInspectionDetail from './RecordInspectionDetail.vue'
 
 export default {
   components: {
@@ -45,7 +46,7 @@ export default {
         checkId: this.data.id
       }
 
-      Peace.service.report.inspectionDetail(params).then((res) => {
+      Service.inspectionDetail(params).then((res) => {
         this.recordInspectionDetailDialog.visible = true
         this.recordInspectionDetailDialog.data = res.data
       })

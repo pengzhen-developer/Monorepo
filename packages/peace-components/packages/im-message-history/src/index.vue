@@ -65,7 +65,7 @@ export default {
 
           if (message.type === 'custom' && message.content.code && MESSAGE_TYPE_SYSTEM.includes(message.content.code)) {
             message.flow = 'system'
-          } else if (message.from === this.messageFlowOut?.doctorId) {
+          } else if (this.messageFlowOut?.doctorId === message.from || this.messageFlowOut?.familyId === message.from) {
             message.flow = 'out'
           } else {
             message.flow = 'in'

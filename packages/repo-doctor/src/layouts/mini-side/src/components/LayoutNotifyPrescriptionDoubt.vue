@@ -10,32 +10,38 @@
 
     <PeaceDialog append-to-body
                  title="处方详情"
-                 v-if="recipeDetail.visible"
-                 v-bind:visible.sync="recipeDetail.visible">
-      <RecipeDetail v-bind:data="recipeDetail.data"
-                    v-on:accept="() => { recipeDetail.visible = false }"
-                    v-on:reject="() => { recipeDetail.visible = false }"></RecipeDetail>
+                 v-if="dialog.visible"
+                 v-bind:visible.sync="dialog.visible">
+      <PeacePrescriptionDetail v-bind:data="dialog.data">
+        <template v-slot:footer="{ data }">
+          <PrescriptionDetailOperation v-on:accept="() => { dialog.visible = false }"
+                                       v-on:reject="() => { dialog.visible = false }"
+                                       v-bind:data="data"></PrescriptionDetailOperation>
+        </template>
+      </PeacePrescriptionDetail>
     </PeaceDialog>
   </div>
 </template>
 
 
 <script>
-import Service from './../service'
-import RecipeDetail from '@src/views/components/recipe/RecipeDetail'
+import Service from './../service/index.js'
+import PrescriptionDetailOperation from '@src/views/components/prescription/prescription-detail-operation/src/index.vue'
+import { PeacePrescriptionDetail } from 'peace-components'
 
 export default {
   inject: ['provideGetTab', 'provideAddTab'],
 
   components: {
-    RecipeDetail
+    PeacePrescriptionDetail,
+    PrescriptionDetailOperation
   },
 
   data() {
     return {
       orderVoiceRemind: undefined,
 
-      recipeDetail: {
+      dialog: {
         visible: false,
         data: {}
       }
@@ -95,14 +101,15 @@ export default {
       }
 
       message.onAccept = () => {
-        const params = {
-          prescriptionId: notifyObject.content.prescriptionId
+        const fetch = async () => {
+          const params = { prescriptionNo: notifyObject.content.prescriptionId }
+          const res = await Service.getPrescripDetail(params)
+
+          return res.data
         }
 
-        Peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
-          this.recipeDetail.visible = true
-          this.recipeDetail.data = res.data
-        })
+        this.dialog.visible = true
+        this.dialog.data = fetch
       }
 
       message.onReject = () => {

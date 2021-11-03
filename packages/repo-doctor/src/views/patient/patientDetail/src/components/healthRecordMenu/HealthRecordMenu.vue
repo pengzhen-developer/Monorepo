@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import Type from '@src/type'
+
 export default {
   mounted() {
     this.$nextTick().then(() => {
@@ -37,34 +39,10 @@ export default {
       menuList: [
         {
           name: '咨询',
-          index: Peace.type.HEALTH_RECORD.ACTION_TYPE.咨询,
+          index: Type.HEALTH_RECORD.ACTION_TYPE.咨询,
           disable: false,
           icon: require('@src/assets/images/health-record/health_records_talk.png')
-        },
-        {
-          name: '病程',
-          index: Peace.type.HEALTH_RECORD.ACTION_TYPE.病程,
-          disable: false,
-          icon: require('@src/assets/images/health-record/health_records_course.png')
-        },
-        {
-          name: '随访',
-          index: Peace.type.HEALTH_RECORD.ACTION_TYPE.随访,
-          disable: false,
-          icon: require('@src/assets/images/health-record/health_records_follow.png')
-        },
-        {
-          name: '转诊',
-          index: Peace.type.HEALTH_RECORD.ACTION_TYPE.转诊,
-          disable: false,
-          icon: require('@src/assets/images/health-record/health_records_referral.png')
         }
-        // {
-        //   name: '会诊',
-        //   index: Peace.type.HEALTH_RECORD.ACTION_TYPE.会诊,
-        //   disable: false,
-        //   icon: require('@src/assets/images/health-record/health_records_groupConsultation.png')
-        // }
       ],
       selectIndex: undefined
     }

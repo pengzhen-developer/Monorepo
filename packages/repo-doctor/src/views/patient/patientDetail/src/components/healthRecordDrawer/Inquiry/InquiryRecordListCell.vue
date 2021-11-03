@@ -16,12 +16,15 @@
         </div>
       </div>
 
-      <div v-for="(image, index) in item.imageList"
-           v-bind:key="index.toString()"
-           class="col-4 q-pr-sm q-pb-sm">
-        <el-image v-bind:src="image"
-                  v-bind:preview-src-list="[image]"
-                  class="fit" />
+      <div class="row">
+
+        <div v-for="(image, index) in item.imageList"
+             v-bind:key="index.toString()"
+             class="q-pr-sm q-pb-sm">
+          <el-image style="width: 64px; "
+                    v-bind:src="image"
+                    v-bind:preview-src-list="item.imageList" />
+        </div>
       </div>
 
       <div class="row items-center q-mb-md"
@@ -39,28 +42,39 @@
                     class="icon"></el-image>
           <span class="title">{{ tipsInfo.prescription.title }}</span>
         </div>
-
-        <div class="tag row items-center q-mr-sm"
-             v-if="item.referralCount && item.referralCount > 0">
-          <el-image v-bind:src="tipsInfo.consultation.icon"
-                    class="icon"></el-image>
-          <span class="title">{{ tipsInfo.consultation.title }}</span>
-        </div>
       </div>
     </div>
 
-    <PeaceDialog :visible.sync="dialog.visible"
-                 append-to-body
-                 title="问诊记录">
-      <InquirySessionMessageList :data="dialog.data"></InquirySessionMessageList>
+    <PeaceDialog append-to-body
+                 title="问诊记录"
+                 v-if="dialog.visible"
+                 v-bind:visible.sync="dialog.visible">
+      <PeaceIMMessageHistory v-bind:data="dialog.data"
+                             v-bind:messageFlowIn="dialog.messageFlowIn"
+                             v-bind:messageFlowOut="dialog.messageFlowOut">
+        <template v-slot:prescription-operation="{ data, refetch }">
+          <PrescriptionDetailOperation v-bind:data="data"
+                                       v-on:accept="refetch"
+                                       v-on:reject="refetch"></PrescriptionDetailOperation>
+        </template>
+      </PeaceIMMessageHistory>
     </PeaceDialog>
   </div>
 </template>
 
 <script>
-import InquirySessionMessageList from '@src/views/components/inquiry/messageList'
+import PrescriptionDetailOperation from '@src/views/components/prescription/prescription-detail-operation/src/index.vue'
+import Service from './../../../service/index.js'
+import { PeaceIMMessageHistory } from 'peace-components'
+
 export default {
   name: 'InquiryRecordListCell',
+
+  components: {
+    PeaceIMMessageHistory,
+    PrescriptionDetailOperation
+  },
+
   props: {
     item: {
       type: Object,
@@ -78,9 +92,7 @@ export default {
       }
     }
   },
-  components: {
-    InquirySessionMessageList
-  },
+
   data() {
     return {
       tipsInfo: {
@@ -91,10 +103,6 @@ export default {
         prescription: {
           title: '处方',
           icon: require('@src/assets/images/health-record/health_Record_Inquiry_rp.png')
-        },
-        consultation: {
-          title: '会诊单',
-          icon: require('@src/assets/images/health-record/health_Record_Inquiry_Consultation.png')
         }
       },
       dialog: {
@@ -103,34 +111,20 @@ export default {
       }
     }
   },
+
   methods: {
     stopEvent(e) {
       e.stopPropagation()
     },
+
     showDetail() {
       const params = {
         inquiryNo: this.item.inquiryNo
       }
-      Peace.service.patient.getOneInquiry(params).then((res) => {
-        const historyMessageFormatHandler = (messages) => {
-          if (messages && Array.isArray(messages)) {
-            messages.forEach((message) => {
-              const messageTypeMap = { 0: 'text', 1: 'image', 100: 'custom' }
-
-              message.time = message.sendtime
-              message.flow = this.$store.state.user.userInfo.list.docInfo.doctor_id === message.from ? 'out' : 'in'
-              message.type = messageTypeMap[message.type]
-              message.text = message.body.msg
-              message.content = message.body
-              message.file = message.body
-            })
-          }
-        }
-
-        historyMessageFormatHandler(res.data.msgInfo)
-
-        this.dialog.data = []
+      Service.getOneInquiry(params).then((res) => {
         this.dialog.data = res.data.msgInfo
+        this.dialog.messageFlowIn = res.data.patientInfo
+        this.dialog.messageFlowOut = res.data.doctorInfo
         this.dialog.visible = true
       })
     }

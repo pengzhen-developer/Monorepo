@@ -57,13 +57,13 @@
                           prop="age"
                           min-width="120"></PeaceTableColumn>
         <PeaceTableColumn label="复诊时间"
-                          min-width="180"
+                          min-width="220"
                           prop="returnVisitTime"></PeaceTableColumn>
         <PeaceTableColumn label="订单金额"
                           min-width="120"
                           prop="orderAmount"></PeaceTableColumn>
         <PeaceTableColumn label="订单时间"
-                          min-width="160"
+                          min-width="180"
                           prop="createdTime"></PeaceTableColumn>
         <PeaceTableColumn label="订单状态"
                           prop="orderStatusText"
@@ -84,24 +84,28 @@
     <PeaceDialog title="复诊续方记录"
                  v-bind:visible.sync="dialog.visible"
                  v-if="dialog.visible">
-
-      <MessageList v-bind:data="dialog.data"
-                   v-bind:doctorInfo="dialog.doctorInfo"
-                   v-bind:patientInfo="dialog.patientInfo">
-      </MessageList>
-
+      <PeaceIMMessageHistory v-bind:data="dialog.data"
+                             v-bind:messageFlowIn="dialog.messageFlowIn"
+                             v-bind:messageFlowOut="dialog.messageFlowOut">
+        <template v-slot:prescription-operation="{ data, refetch }">
+          <PrescriptionDetailOperation v-bind:data="data"
+                                       v-on:accept="refetch"
+                                       v-on:reject="refetch"></PrescriptionDetailOperation>
+        </template>
+      </PeaceIMMessageHistory>
     </PeaceDialog>
   </div>
 </template>
 
 <script>
-import MessageList from '@src/views/components/inquiry/messageList'
-
 import Service from './service'
+import PrescriptionDetailOperation from '@src/views/components/prescription/prescription-detail-operation/src/index.vue'
+import { PeaceIMMessageHistory } from 'peace-components'
 
 export default {
   components: {
-    MessageList
+    PeaceIMMessageHistory,
+    PrescriptionDetailOperation
   },
 
   data() {
@@ -181,28 +185,9 @@ export default {
       }
 
       Service.getReturnVisitDetail(params).then((res) => {
-        const IMMessageAdapter = (messages) => {
-          if (messages && Array.isArray(messages)) {
-            messages.forEach((message) => {
-              const messageTypeMap = { 0: 'text', 1: 'image', 2: 'audio', 100: 'custom' }
-
-              message.time = message.sendtime
-              message.flow = row.familyId === message.from ? 'in' : 'out'
-              message.type = messageTypeMap[message.type]
-              message.text = message.body.msg
-              message.content = message.body
-              message.file = message.body
-            })
-          }
-
-          return messages
-        }
-
-        const messages = IMMessageAdapter(res.data.msgInfo)
-
-        this.dialog.data = messages
-        this.dialog.patientInfo = res.data.patientInfo
-        this.dialog.doctorInfo = res.data.doctorInfo
+        this.dialog.data = res.data.msgInfo
+        this.dialog.messageFlowIn = res.data.patientInfo
+        this.dialog.messageFlowOut = res.data.doctorInfo
         this.dialog.visible = true
       })
     },

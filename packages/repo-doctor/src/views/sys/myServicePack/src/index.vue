@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import SerivcePackList from './components/SerivcePackList'
-import SerivcePackOrderList from './components/SerivcePackOrderList'
+import SerivcePackList from './components/SerivcePackList.vue'
+import SerivcePackOrderList from './components/SerivcePackOrderList.vue'
 
 export default {
   components: {

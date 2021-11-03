@@ -20,6 +20,7 @@
 
 <script>
 import RecordPACSDetail from './RecordPACSDetail'
+import Service from './../service/index.js'
 
 export default {
   components: {
@@ -45,7 +46,7 @@ export default {
         checkId: this.data.id
       }
 
-      Peace.service.report.pacsDetail(params).then((res) => {
+      Service.pacsDetail(params).then((res) => {
         this.recordPACSDetailDialog.visible = true
         this.recordPACSDetailDialog.data = res.data
       })

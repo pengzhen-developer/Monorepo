@@ -22,12 +22,24 @@
                            'q-ml-10': data.flow === 'out' 
                          }">
         <template v-if="data.flow === 'in'">
-          <el-avatar class="bg-primary"
-                     v-bind:size="36">{{ messageFlowIn.familyName.substring(messageFlowIn.familyName.length - 2) }}</el-avatar>
+          <template v-if="messageFlowIn.familyId">
+            <el-avatar class="bg-primary"
+                       v-bind:size="36">{{ messageFlowIn.familyName.substring(messageFlowIn.familyName.length - 2) }}</el-avatar>
+          </template>
+          <template v-if="messageFlowIn.doctorId">
+            <el-avatar class="bg-primary"
+                       v-bind:size="36"
+                       v-bind:src="messageFlowIn.doctorAvatar"></el-avatar>
+          </template>
         </template>
         <template v-if="data.flow === 'out'">
-          <el-avatar v-bind:size="36"
-                     v-bind:src="messageFlowOut.doctorAvatar"></el-avatar>
+          <template v-if="messageFlowOut.familyId">
+            <el-avatar v-bind:size="36">{{ messageFlowOut.familyName.substring(messageFlowOut.familyName.length - 2) }}</el-avatar>
+          </template>
+          <template v-if="messageFlowOut.doctorId">
+            <el-avatar v-bind:size="36"
+                       v-bind:src="messageFlowOut.doctorAvatar"></el-avatar>
+          </template>
         </template>
       </div>
 
@@ -36,7 +48,9 @@
                    v-bind="$attrs"
                    v-bind:is="IMMessageComponentAdapter"
                    v-bind:flow="data.flow"
-                   v-bind:data="data">
+                   v-bind:data="data"
+                   v-bind:messageFlowIn="messageFlowIn"
+                   v-bind:messageFlowOut="messageFlowOut">
           <template v-slot:prescription-operation="{ data, refetch, close }">
             <slot name="prescription-operation"
                   v-bind:data="data"

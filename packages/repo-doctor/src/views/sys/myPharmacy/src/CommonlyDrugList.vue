@@ -72,9 +72,9 @@
 <script>
 import Service from './../service'
 
-import CommonlyDrugAdd from './CommonlyDrugAdd'
-import DrugInstructions from './DrugInstructions'
-import DrugInstructionsList from './DrugInstructionsList'
+import CommonlyDrugAdd from './CommonlyDrugAdd.vue'
+import DrugInstructions from './DrugInstructions.vue'
+import DrugInstructionsList from './DrugInstructionsList.vue'
 
 export default {
   components: {

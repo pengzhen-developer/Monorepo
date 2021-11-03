@@ -58,13 +58,27 @@ export function getPrescripDetail(params) {
 export function getFirstOptionList(params) {
   const isMock = false
 
-  const apiPath = 'client/his/v060/record/getFirstOptionList'
+  const apiPath = 'ehospital/center/record/getFirstOptionList'
   const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-  const serverPath = process.env.VUE_APP_API_BASE + apiPath
+  const serverPath = process.env.VUE_APP_API_CONVERGE + apiPath
 
   const requestApi = isMock ? mockPath : serverPath
 
-  return Peace.http.post(requestApi, params)
+  // TODO:
+  // 聚合层不需要 token，移除所有 token
+  // 更好的办法是兼容 token
+  return Peace.http.post(requestApi, params, {
+    headers: {
+      'content-type': 'application/json'
+    },
+    transformRequest: [
+      function(data, headers) {
+        delete headers.accesstoken
+
+        return JSON.stringify(data)
+      }
+    ]
+  })
 }
 
 /**
@@ -75,13 +89,27 @@ export function getFirstOptionList(params) {
 export function getFirstOptionDetail(params) {
   const isMock = false
 
-  const apiPath = 'client/his/v060/record/getFirstOptionDetail'
+  const apiPath = 'ehospital/center/record/getFirstOptionDetail'
   const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-  const serverPath = process.env.VUE_APP_API_BASE + apiPath
+  const serverPath = process.env.VUE_APP_API_CONVERGE + apiPath
 
   const requestApi = isMock ? mockPath : serverPath
 
-  return Peace.http.post(requestApi, params)
+  // TODO:
+  // 聚合层不需要 token，移除所有 token
+  // 更好的办法是兼容 token
+  return Peace.http.post(requestApi, params, {
+    headers: {
+      'content-type': 'application/json'
+    },
+    transformRequest: [
+      function(data, headers) {
+        delete headers.accesstoken
+
+        return JSON.stringify(data)
+      }
+    ]
+  })
 }
 
 export default {

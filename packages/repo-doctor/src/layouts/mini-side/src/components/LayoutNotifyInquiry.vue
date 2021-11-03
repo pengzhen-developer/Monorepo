@@ -12,8 +12,9 @@
 
 
 <script>
+import Service from './../service/index.js'
+import Type from '@src/type'
 import Util from '@src/util'
-import Service from './../service'
 
 const notifyInquiryCacheKey = 'NOTIFY_INQUIRY'
 
@@ -58,7 +59,7 @@ export default {
       const inquiryStatus = session.content.inquiryInfo.inquiryStatus
       const inquiryNo = session.content.inquiryInfo.inquiryNo
 
-      return inquiryStatus === Peace.type.INQUIRY.INQUIRY_STATUS.待接诊 && !this.notifiedInquiryList.includes(inquiryNo)
+      return inquiryStatus === Type.INQUIRY.INQUIRY_STATUS.待接诊 && !this.notifiedInquiryList.includes(inquiryNo)
     },
 
     async notify(session) {
@@ -98,7 +99,7 @@ export default {
         message.onReject()
 
         // 在线咨询
-        if (inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.图文 || inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.视频) {
+        if (inquiryType === Type.INQUIRY.INQUIRY_TYPE.图文 || inquiryType === Type.INQUIRY.INQUIRY_TYPE.视频) {
           if (this.validSession(session)) {
             this.$router
               .push('/clinic/inquiry')
@@ -113,7 +114,7 @@ export default {
           }
         }
         // 复诊续方
-        else if (inquiryType === Peace.type.INQUIRY.INQUIRY_TYPE.复诊) {
+        else if (inquiryType === Type.INQUIRY.INQUIRY_TYPE.复诊) {
           if (this.validSession(session)) {
             this.$router
               .push('/clinic/returnVisit')

@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import HealthRecordDrawer from './components/healthRecordDrawer/HealthRecordDrawer'
-import HealthRecordMenu from './components/healthRecordMenu/HealthRecordMenu'
-
-import HealthRecordHeader from './components/healthRecordHeader/HeaderRecordHeader'
-import HealthRecordDetail from './components/healthRecordDetail/HealthRecordDetail'
+import HealthRecordDrawer from './components/healthRecordDrawer/HealthRecordDrawer.vue'
+import HealthRecordMenu from './components/healthRecordMenu/HealthRecordMenu.vue'
+import HealthRecordHeader from './components/healthRecordHeader/HeaderRecordHeader.vue'
+import HealthRecordDetail from './components/healthRecordDetail/HealthRecordDetail.vue'
+import Service from './service/index.js'
 
 export default {
   components: {
@@ -58,7 +58,7 @@ export default {
     getPatientInfo() {
       const params = { patientNo: this.id }
 
-      Peace.service.patient.getOneHealth(params).then((res) => {
+      Service.getOneHealth(params).then((res) => {
         const params = res.data
         params.id = this.id
         this.patientData = params

@@ -64,7 +64,11 @@
 </template>
 
 <script>
+import Type from '@src/type'
+
 export default {
+  inject: ['provideGetTab', 'provideAddTab'],
+
   props: {
     data: {
       type: Object,
@@ -109,11 +113,16 @@ export default {
 
       const dataId = this.type == 1 ? this.data.dataNo : this.data.id
       const idCard = this.data.idCard
-      const serviceId = Peace.type.HEALTH.SERVICE_ID.无
-      const type = Peace.type.HEALTH.TYPE.体脂
+      const serviceId = Type.HEALTH.SERVICE_ID.无
+      const type = Type.HEALTH.TYPE.体脂
       const path = `/patient/patientDetail/report/${dataId}/${idCard}/${serviceId}/${type}`
 
-      this.$router.push(path)
+      const currentMenu = this.provideGetTab('PatientDetailReport')
+      currentMenu.menuName = '体脂'
+      currentMenu.menuRoute = path
+
+      // 跳转当前路由
+      this.provideAddTab(currentMenu)
     }
   }
 }

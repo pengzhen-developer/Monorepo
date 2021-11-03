@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import Service from './../service'
+import Service from './../service/index.js'
 
 export default {
   props: {

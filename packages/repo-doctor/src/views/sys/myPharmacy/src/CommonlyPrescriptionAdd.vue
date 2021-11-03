@@ -139,9 +139,9 @@
 <script>
 import Service from './../service'
 
-import QuickSelectDiagnose from '@src/views/components/quick-select/src/components/QuickSelectDiagnose'
-import CommonlyPrescriptionDrugAdd from './CommonlyPrescriptionDrugAdd'
-import CommonlyPrescriptionDrugUsageAdd from './CommonlyPrescriptionDrugUsageAdd'
+import QuickSelectDiagnose from '@src/views/components/quick-select/quick-select-diagnose/src/index.vue'
+import CommonlyPrescriptionDrugAdd from './CommonlyPrescriptionDrugAdd.vue'
+import CommonlyPrescriptionDrugUsageAdd from './CommonlyPrescriptionDrugUsageAdd.vue'
 
 export default {
   props: {

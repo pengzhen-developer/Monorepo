@@ -92,7 +92,7 @@ const UniqueKey = 'ADD_COMMONLY_PRESCRIPTION_DRUG'
 
 import Service from './../service'
 
-import CommonlyPrescriptionDrugUsageAdd from './CommonlyPrescriptionDrugUsageAdd'
+import CommonlyPrescriptionDrugUsageAdd from './CommonlyPrescriptionDrugUsageAdd.vue'
 
 export default {
   components: {

@@ -12,7 +12,7 @@
     <div class="row q-col-gutter-x-lg q-mb-lg">
       <!-- 在线咨询卡片 -->
       <template v-if="inquiry.status === 1">
-        <div class="col-6">
+        <div class="col-xs-12 col-sm-12 col-md-6">
           <div class="q-mb-sm">
             <span class="text-subtitle2">在线咨询</span>
           </div>
@@ -56,7 +56,7 @@
 
       <!-- 复诊续方卡片 -->
       <template v-if="returnVisit.status === 1">
-        <div class="col-6">
+        <div class="col-xs-12 col-sm-12 col-md-6">
           <div class="q-mb-sm">
             <span class="text-subtitle2">复诊续方</span>
           </div>
@@ -111,48 +111,24 @@
     </div>
 
     <div class="row q-col-gutter-x-lg q-mb-lg">
-      <!-- 双向转诊卡片 -->
-      <template v-if="transfer.status === 1">
-        <div class="col-3">
-          <div class="q-mb-sm">
-            <span class="text-subtitle2">双向转诊</span>
-          </div>
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="q-mb-sm">
+          <span class="text-subtitle2">质疑处方</span>
+        </div>
 
-          <div class="card card-blue-half row"
-               v-on:click="goTransfer({ referral_type: 'in' })">
-            <div class="col-6 flex justify-center items-center">
-              <q-icon style="font-size: 48px"
-                      v-bind:name="`img:${ require('./assets/img/ic_change into@2x.png') }`"></q-icon>
-            </div>
-            <div class="col-6 flex column justify-center items-center q-pr-xl">
-              <span class="text-h4 text-bold q-mb-sm">{{ transfer.todoTransferInCount }}</span>
-              <span class="text-subtitle2">待转入患者</span>
-            </div>
+        <div class="card card-orange row"
+             v-on:click="goPrescription({ prescriptionStatus: '2' })">
+          <div class="col-6 flex justify-center items-center">
+            <q-icon style="font-size: 48px"
+                    v-bind:name="`img:${ require('./assets/img/ic_doubt@2x.png') }`"></q-icon>
+          </div>
+          <div class="col-6 flex column justify-center items-center q-pr-xl">
+            <span class="text-h4 text-bold q-mb-sm">{{ queryPrescription.todoPrescriptionCount }}</span>
+            <span class="text-subtitle2">质疑中处方</span>
           </div>
         </div>
-      </template>
-
-      <template>
-        <div class="col-3">
-          <div class="q-mb-sm">
-            <span class="text-subtitle2">质疑处方</span>
-          </div>
-
-          <div class="card card-orange row"
-               v-on:click="goPrescription({ prescriptionStatus: '2' })">
-            <div class="col-6 flex justify-center items-center">
-              <q-icon style="font-size: 48px"
-                      v-bind:name="`img:${ require('./assets/img/ic_doubt@2x.png') }`"></q-icon>
-            </div>
-            <div class="col-6 flex column justify-center items-center q-pr-xl">
-              <span class="text-h4 text-bold q-mb-sm">{{ queryPrescription.todoPrescriptionCount }}</span>
-              <span class="text-subtitle2">质疑中处方</span>
-            </div>
-          </div>
-        </div>
-      </template>
+      </div>
     </div>
-
   </div>
 </template>
 
@@ -174,18 +150,6 @@ export default {
 
     returnVisit() {
       return this.data?.returnVisit ?? {}
-    },
-
-    transfer() {
-      return this.data?.transfer ?? {}
-    },
-
-    priviteDoctor() {
-      return this.data?.priviteDoctor ?? {}
-    },
-
-    consultation() {
-      return this.data?.consultation ?? {}
     },
 
     queryPrescription() {
@@ -237,18 +201,6 @@ export default {
 
     goReturnVisit() {
       this.$router.push('/clinic/returnVisit')
-    },
-
-    goTransfer(params) {
-      this.$router.push({ name: 'Transfer', params })
-    },
-
-    goPrivateDoctor(params) {
-      this.$router.push({ name: 'PrivateDoctor', params })
-    },
-
-    goConsultation(params) {
-      this.$router.push({ name: 'Consultation', params })
     },
 
     goPrescription(params) {

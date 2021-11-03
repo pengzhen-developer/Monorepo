@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import Service from './service/index.js'
+
 export default {
   data() {
     return {
@@ -72,7 +74,7 @@ export default {
         doctorId: this.$store.state.user.userInfo.list.docInfo.doctor_id
       }
 
-      Peace.service.personalCenter.getDoctorInfo(params).then((res) => {
+      Service.getDoctorInfo(params).then((res) => {
         this.view.model = res.data
       })
     },
@@ -85,7 +87,7 @@ export default {
         special_skill: this.view.model.special_skill
       }
 
-      Peace.service.personalCenter.upDoctorIntroduce(params).then((res) => {
+      Service.upDoctorIntroduce(params).then((res) => {
         Peace.util.success(res.msg)
 
         this.get()

@@ -69,24 +69,32 @@
       </PeaceTable>
     </div>
 
-    <PeaceDialog append-to-body
+    <PeaceDialog v-drag
+                 append-to-body
                  title="处方详情"
                  v-if="dialog.visible"
                  v-bind:visible.sync="dialog.visible">
-      <RecipeDetail v-on:accept="() => { dialog.visible = false; get() }"
-                    v-on:reject="() => { dialog.visible = false; get() }"
-                    v-bind:data="dialog.data"></RecipeDetail>
+      <PeacePrescriptionDetail v-bind:data="dialog.data">
+        <template v-slot:footer="{ data }">
+          <PrescriptionDetailOperation v-on:accept="() => { dialog.visible = false; get() }"
+                                       v-on:reject="() => { dialog.visible = false; get() }"
+                                       v-bind:data="data"></PrescriptionDetailOperation>
+        </template>
+      </PeacePrescriptionDetail>
     </PeaceDialog>
 
   </div>
 </template>
 
 <script>
-import RecipeDetail from '@src/views/components/recipe/RecipeDetail'
+import Service from './service'
+import PrescriptionDetailOperation from '@src/views/components/prescription/prescription-detail-operation/src/index.vue'
+import { PeacePrescriptionDetail } from 'peace-components'
 
 export default {
   components: {
-    RecipeDetail
+    PeacePrescriptionDetail,
+    PrescriptionDetailOperation
   },
 
   inject: ['provideGetTab', 'provideAddTab'],
@@ -167,22 +175,22 @@ export default {
     },
 
     get() {
-      const fetch = Peace.service.prescribePrescrip.prescripList
+      const fetch = Service.getPrescripList
       const params = this.model
 
       this.$refs.table.loadData({ fetch, params })
     },
 
-    showDetail(row) {
+    async fetchPrescription(prescriptionNo) {
+      const params = { prescriptionNo: prescriptionNo }
+      const res = await Service.getPrescripDetail(params)
+
+      return res.data
+    },
+
+    showDetail({ id }) {
       this.dialog.visible = true
-
-      const params = {
-        prescriptionId: row.id
-      }
-
-      Peace.service.prescribePrescrip.getPrescripInfo(params).then((res) => {
-        this.dialog.data = res.data
-      })
+      this.dialog.data = () => this.fetchPrescription(id)
     }
   }
 }
