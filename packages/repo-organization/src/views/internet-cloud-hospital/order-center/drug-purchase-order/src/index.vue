@@ -2,6 +2,8 @@
   <div class="layout-route">
     <div class="card card-search q-mb-md">
       <el-form inline
+               v-on:keyup.enter.native="getList()"
+               v-on:submit.native.prevent
                label-width="auto"
                label-position="left">
 
@@ -10,7 +12,8 @@
             <span>患者姓名</span>
             <span>：</span>
           </span>
-          <el-input v-model="model.patientName"
+          <el-input v-model.trim="model.patientName"
+                    clearable
                     placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -19,7 +22,8 @@
             <span>意向药店</span>
             <span>：</span>
           </span>
-          <el-input v-model="model.drugstore"
+          <el-input v-model.trim="model.drugstore"
+                    clearable
                     placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -112,6 +116,8 @@
           <peace-date-picker type="daterange"
                              v-model="timeRange"
                              :picker-options="pickerOptions"
+                             start-placeholder="开始日期"
+                             end-placeholder="至今"
                              format="yyyy-MM-dd"
                              value-format="yyyy-MM-dd"></peace-date-picker>
         </el-form-item>
@@ -128,6 +134,7 @@
 
       <div class="top-menu">
         <el-button type="default"
+                   :loading="exportLoading"
                    @click="showExportModel">导出</el-button>
       </div>
 
@@ -160,12 +167,7 @@
             <span> ¥ {{ scope.row.orderMoney }}</span>
           </template>
         </PeaceTableColumn>
-        <!-- <PeaceTableColumn label="支付类型"
-                          min-width="120">
-          <template slot-scope="scope">
-            <span>{{ getPaymentStatus(scope.row.paymentType) }}</span>
-          </template>
-        </PeaceTableColumn> -->
+
         <PeaceTableColumn label="订单状态"
                           min-width="100">
           <template slot-scope="scope">
@@ -212,14 +214,6 @@
       <drug-purchase-detail :info="drugPurchaseOrder.data"
                             @viewPres="viewPres"></drug-purchase-detail>
     </PeaceDialog>
-    <!-- 导出 -->
-    <PeaceDialog :visible.sync="exportDialogVisible"
-                 append-to-body
-                 title="订单导出条件"
-                 v-if="exportDialogVisible"
-                 width="420px">
-      <export-order :query="model"></export-order>
-    </PeaceDialog>
 
   </div>
 </template>
@@ -229,11 +223,11 @@ import CONSTANT from './constant'
 import Service from './service'
 import PrescriptionInfo from './components/PrescriptionInfo.js'
 import DrugPurchaseDetail from './components/DrugPurchaseDetail'
-import ExportOrder from './components/ExportOrder'
+import Util from '@src/util'
 
 export default {
   name: 'DrugPurchaseOrder',
-  components: { PrescriptionInfo, DrugPurchaseDetail, ExportOrder },
+  components: { PrescriptionInfo, DrugPurchaseDetail },
   data() {
     return {
       model: {
@@ -246,6 +240,7 @@ export default {
         startTime: '',
         endTime: ''
       },
+      exportLoading: false,
       timeRange: [],
       pickerOptions: {
         disabledDate: (time) => {
@@ -315,7 +310,26 @@ export default {
       return result.join(',')
     },
     showExportModel() {
-      this.exportDialogVisible = true
+
+      const info = Util.user.getHospitalInfo() ?? {}
+
+      let params = Peace.util.deepClone(this.model)
+      params.type = "drug"
+      params.hospitalId = info.id
+      params.startTime = params.startTime ? params.startTime + ' 00:00:00' : ''
+      params.endTime = params.endTime ? params.endTime + ' 23:59:59' : ''
+
+      this.exportLoading = true
+      Service.isExistList(params)
+          .then(() => {
+            Service.exportOrder(params).finally(() => {
+              this.exportLoading = false
+            })
+          })
+          .catch(() => {
+            this.exportLoading = false
+          })
+
     },
     getList() {
       const fetch = Service.getDrugOrderList

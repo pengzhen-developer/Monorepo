@@ -2,15 +2,18 @@
   <div class="layout-route">
     <div class="card card-search q-mb-md">
       <el-form inline
+               label-position="left"
                label-width="auto"
-               label-position="left">
+               v-on:keyup.enter.native="getList()"
+               v-on:submit.native.prevent>
 
         <el-form-item>
           <span slot="label">
             <span>患者姓名</span>
             <span>：</span>
           </span>
-          <el-input v-model="model.patientname"
+          <el-input v-model.trim="model.patientName"
+                    clearable
                     placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -19,7 +22,8 @@
             <span>医生姓名</span>
             <span>：</span>
           </span>
-          <el-input v-model="model.doctorname"
+          <el-input v-model.trim="model.doctorName"
+                    clearable
                     placeholder="请输入"></el-input>
         </el-form-item>
 
@@ -31,10 +35,10 @@
           <el-select v-model="model.inquiryStatus"
                      clearable
                      placeholder="全部">
-            <el-option :key="item.label"
+            <el-option v-for="item in source.ENUM_CONSULT_STATUS"
+                       :key="item.label"
                        :label="item.label"
-                       :value="item.value"
-                       v-for="item in source.ENUM_CONSULT_STATUS"></el-option>
+                       :value="item.value"></el-option>
           </el-select>
         </el-form-item>
 
@@ -46,10 +50,10 @@
           <el-select v-model="model.orderStatus"
                      clearable
                      placeholder="请选择">
-            <el-option :key="item.label"
+            <el-option v-for="item in source.ENUM_ORDER_PAY_STATUS"
+                       :key="item.label"
                        :label="item.label"
-                       :value="item.value"
-                       v-for="item in source.ENUM_ORDER_PAY_STATUS"></el-option>
+                       :value="item.value"></el-option>
           </el-select>
         </el-form-item>
 
@@ -58,10 +62,12 @@
             <span>下单日期</span>
             <span>：</span>
           </span>
-          <peace-date-picker type="daterange"
-                             v-model="timeRange"
+          <peace-date-picker v-model="timeRange"
                              :picker-options="pickerOptions"
+                             end-placeholder="至今"
                              format="yyyy-MM-dd"
+                             start-placeholder="开始日期"
+                             type="daterange"
                              value-format="yyyy-MM-dd"></peace-date-picker>
         </el-form-item>
 
@@ -73,16 +79,17 @@
           <el-select v-model="model.deptName"
                      clearable
                      placeholder="请选择">
-            <el-option :key="item.deptId"
+            <el-option v-for="item in departmentList"
+                       :key="item.deptId"
                        :label="item.netdeptChild"
-                       :value="item.netdeptChild"
-                       v-for="item in departmentList"></el-option>
+                       :value="item.netdeptChild"></el-option>
           </el-select>
         </el-form-item>
 
         <el-form-item label="">
           <el-button type="primary"
-                     @click="getList()">查询</el-button>
+                     @click="getList()">查询
+          </el-button>
         </el-form-item>
 
       </el-form>
@@ -91,20 +98,23 @@
     <div class="card">
 
       <div class="top-menu">
-        <el-button type="default"
-                   @click="showExportModel">导出</el-button>
+        <el-button :loading="exportLoading"
+                   type="default"
+                   @click="showExportModel">导出
+        </el-button>
       </div>
 
       <PeaceTable ref="table"
-                  style="width: 100%"
-                  pagination>
+                  pagination
+                  style="width: 100%">
         <PeaceTableColumn label="问诊单号"
                           prop="inquiry_no"
                           width="200"></PeaceTableColumn>
-        <PeaceTableColumn label="患者姓名">
+        <PeaceTableColumn label="患者姓名"
+                          min-width="100">
           <template slot-scope="scope">
-            <span @click="toPatientPage(scope.row.id, scope.row.name, scope.row.patientNo)"
-                  class="primary">{{ scope.row.name }}</span>
+            <span class="primary"
+                  @click="toPatientPage(scope.row.id, scope.row.name, scope.row.patientNo)">{{ scope.row.name }}</span>
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="性别"
@@ -123,15 +133,15 @@
                           width="120">
           <template slot-scope="scope">
             <div class="private">
-              <span class="private-tag"
-                    v-if="scope.row.isPrivateDoctor">私</span>
+              <span v-if="scope.row.isPrivateDoctor"
+                    class="private-tag">私</span>
               <span>{{ scope.row.inquiry_type | getEnumLabel(source.ENUM_INQUIRY_TYPE) }}</span>
             </div>
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="订单金额（元）"
-                          width="125"
-                          prop="pay_money"></PeaceTableColumn>
+                          prop="pay_money"
+                          min-width="130"></PeaceTableColumn>
         <PeaceTableColumn label="问诊医生"
                           min-width="100"
                           prop="doctor"></PeaceTableColumn>
@@ -154,15 +164,17 @@
                           min-width="180"
                           prop="created_time"></PeaceTableColumn>
         <PeaceTableColumn fixed="right"
-                          width="200"
-                          label="操作">
+                          label="操作"
+                          width="200">
           <template slot-scope="scope">
             <div class="align-left">
-              <el-button @click="getConsultOrderDetail(scope.row.inquiry_no)"
-                         type="text">订单详情</el-button>
+              <el-button type="text"
+                         @click="getConsultOrderDetail(scope.row.inquiry_no)">订单详情
+              </el-button>
               <el-button v-if="[4, 5].includes(scope.row.inquiry_status)"
-                         @click="getConsulRecord(scope.row.inquiry_no)"
-                         type="text">问诊详情</el-button>
+                         type="text"
+                         @click="getConsulRecord(scope.row.inquiry_no)">问诊详情
+              </el-button>
             </div>
           </template>
         </PeaceTableColumn>
@@ -170,29 +182,21 @@
     </div>
 
     <!-- 咨询订单详情 -->
-    <PeaceDialog :visible.sync="orderDetailDialog.visible"
+    <PeaceDialog v-if="orderDetailDialog.visible"
+                 :visible.sync="orderDetailDialog.visible"
                  append-to-body
                  title="咨询订单详情"
-                 v-if="orderDetailDialog.visible"
                  width="500px">
       <PeaceOrderInquiryDetail v-bind:data="orderDetailDialog.data"
                                v-bind:type="'inquiry'"></PeaceOrderInquiryDetail>
     </PeaceDialog>
-    <PeaceDialog :visible.sync="dialogVisible"
+    <PeaceDialog v-if="dialogVisible"
+                 :visible.sync="dialogVisible"
                  append-to-body
                  class="inquiry scroll-body"
                  title="咨询记录"
-                 v-if="dialogVisible"
                  width="800px">
       <message-list :info="currentInquiry"></message-list>
-    </PeaceDialog>
-    <!-- 导出 -->
-    <PeaceDialog :visible.sync="exportDialogVisible"
-                 append-to-body
-                 title="订单导出条件"
-                 v-if="exportDialogVisible"
-                 width="420px">
-      <export-order :query="model"></export-order>
     </PeaceDialog>
 
   </div>
@@ -202,23 +206,23 @@
 import CONSTANT from './constant'
 import Service from './service'
 import MessageList from './components/message-list'
-import ExportOrder from './components/ExportOrder'
 import { PeaceOrderInquiryDetail } from 'peace-components'
-
+import Util from '@src/util'
 export default {
   name: 'ConsultOrder',
-  components: { PeaceOrderInquiryDetail, MessageList, ExportOrder },
+  components: { PeaceOrderInquiryDetail, MessageList },
   data() {
     return {
       model: {
-        patientname: '',
-        doctorname: '',
+        patientName: '',
+        doctorName: '',
         inquiryStatus: '',
         orderStatus: '',
-        startdate: '',
-        enddate: '',
+        startTime: '',
+        endTime: '',
         deptName: ''
       },
+      exportLoading: false,
       timeRange: [],
       departmentList: [],
       pickerOptions: {
@@ -248,17 +252,17 @@ export default {
   watch: {
     timeRange(timeRange) {
       if (Array.isArray(timeRange)) {
-        this.model.startdate = timeRange[0] ? timeRange[0] : ''
-        this.model.enddate = timeRange[1] ? timeRange[1] : ''
+        this.model.startTime = timeRange[0] ? timeRange[0] : ''
+        this.model.endTime = timeRange[1] ? timeRange[1] : ''
       } else {
-        this.model.startdate = ''
-        this.model.enddate = ''
+        this.model.startTime = ''
+        this.model.endTime = ''
       }
     }
   },
   filters: {
     getEnumLabel: function(value, ENUM) {
-      return ENUM.find((item) => item.value == value)?.label
+      return ENUM.find((item) => item.value === value)?.label
     }
   },
   created() {
@@ -273,8 +277,8 @@ export default {
     getList() {
       const fetch = Service.getConsultOrderList
       let params = Peace.util.deepClone(this.model)
-      params.startdate = params.startdate ? params.startdate + ' 00:00:00' : ''
-      params.enddate = params.enddate ? params.enddate + ' 23:59:59' : ''
+      params.startTime = params.startTime ? params.startTime + ' 00:00:00' : ''
+      params.endTime = params.endTime ? params.endTime + ' 23:59:59' : ''
 
       this.$refs.table.reloadData({ fetch, params })
     },
@@ -310,7 +314,24 @@ export default {
       })
     },
     showExportModel() {
-      this.exportDialogVisible = true
+      const info = Util.user.getHospitalInfo() ?? {}
+
+      let params = Peace.util.deepClone(this.model)
+      params.type = 'inquiry'
+      params.hospitalId = info.id
+      params.startTime = params.startTime ? params.startTime + ' 00:00:00' : ''
+      params.endTime = params.endTime ? params.endTime + ' 23:59:59' : ''
+
+      this.exportLoading = true
+      Service.isExistList(params)
+        .then(() => {
+          Service.exportOrder(params).finally(() => {
+            this.exportLoading = false
+          })
+        })
+        .catch(() => {
+          this.exportLoading = false
+        })
     }
   }
 }
@@ -320,26 +341,33 @@ export default {
 .top-menu {
   margin-bottom: 20px;
 }
+
 .primary {
   color: var(--q-color-primary);
   cursor: pointer;
 }
+
 .list {
   padding-top: 0;
+
   .align-left {
     width: 100%;
     text-align: left;
   }
+
   .el-button {
     margin-right: 10px;
   }
+
   span {
     vertical-align: middle;
   }
 }
+
 .private {
   position: relative;
   padding: 0 20px;
+
   &-tag {
     position: absolute;
     top: 3px;

@@ -4,6 +4,8 @@
       <template v-if="returnVisitIsOpen === true">
         <div class="card card-search q-mb-md">
           <el-form inline
+                   v-on:keyup.enter.native="getList()"
+                   v-on:submit.native.prevent
                    label-width="auto"
                    label-position="left">
 
@@ -12,7 +14,8 @@
                 <span>患者姓名</span>
                 <span>：</span>
               </span>
-              <el-input v-model="model.patientName"
+              <el-input v-model.trim="model.patientName"
+                        clearable
                         placeholder="请输入"></el-input>
             </el-form-item>
 
@@ -21,7 +24,8 @@
                 <span>医生姓名</span>
                 <span>：</span>
               </span>
-              <el-input v-model="model.doctorName"
+              <el-input v-model.trim="model.doctorName"
+                        clearable
                         placeholder="请输入"></el-input>
             </el-form-item>
 
@@ -62,6 +66,8 @@
               </span>
               <peace-date-picker type="daterange"
                                  v-model="timeRange"
+                                 start-placeholder="开始日期"
+                                 end-placeholder="至今"
                                  :picker-options="pickerOptions"
                                  format="yyyy-MM-dd"
                                  value-format="yyyy-MM-dd"></peace-date-picker>
@@ -73,6 +79,8 @@
                 <span>：</span>
               </span>
               <peace-date-picker type="daterange"
+                                 start-placeholder="开始日期"
+                                 end-placeholder="至今"
                                  v-model="bookTimeRange"
                                  :picker-options="bookPickerOptions"
                                  format="yyyy-MM-dd"
@@ -106,6 +114,7 @@
 
           <div class="top-menu">
             <el-button type="default"
+                       :loading="exportLoading"
                        @click="showExportModel">导出</el-button>
           </div>
 
@@ -116,7 +125,7 @@
                               width="200"
                               prop="inquiryNo"></PeaceTableColumn>
             <PeaceTableColumn label="患者姓名"
-                              min-width="80">
+                              min-width="100">
               <template slot-scope="scope">
                 <span @click="toPatientPage(scope.row.familyId, scope.row.name, scope.row.patientNo	)"
                       class="primary">{{ scope.row.name	 }}</span>
@@ -129,10 +138,10 @@
                               min-width="90"
                               prop="age"></PeaceTableColumn>
             <PeaceTableColumn label="复诊时间"
-                              min-width="180"
+                              min-width="185"
                               prop="returnVisitDate"></PeaceTableColumn>
             <PeaceTableColumn label="订单金额（元）"
-                              width="125"
+                              min-width="135"
                               prop="orderAmount"></PeaceTableColumn>
             <PeaceTableColumn label="预约医生"
                               min-width="100"
@@ -179,14 +188,7 @@
                      width="800px">
           <message-list :info="currentInquiry"></message-list>
         </PeaceDialog>
-        <!-- 导出 -->
-        <PeaceDialog :visible.sync="exportDialogVisible"
-                     append-to-body
-                     title="订单导出条件"
-                     v-if="exportDialogVisible"
-                     width="420px">
-          <export-order :query="model"></export-order>
-        </PeaceDialog>
+
       </template>
       <template v-else-if="returnVisitIsOpen === false">
         <div class="bg-white full-height q-pa-lg">
@@ -207,12 +209,12 @@ import CONSTANT from './constant'
 import Service from './service'
 import ReturnVisitOpen from './components/ReturnVisitOpen'
 import MessageList from './components/MessageList'
-import ExportOrder from './components/ExportOrder'
 import { PeaceOrderInquiryDetail } from 'peace-components'
+import Util from '@src/util'
 
 export default {
   name: 'ReturnVisitOrder',
-  components: { ReturnVisitOpen, PeaceOrderInquiryDetail, MessageList, ExportOrder },
+  components: { ReturnVisitOpen, PeaceOrderInquiryDetail, MessageList },
   data() {
     return {
       returnVisitIsOpen: null,
@@ -221,12 +223,13 @@ export default {
         doctorName: '',
         inquiryStatus: '',
         orderStatus: '',
-        startdate: '',
-        enddate: '',
+        startTime: '',
+        endTime: '',
         bookStart: '',
         bookEnd: '',
         deptName: ''
       },
+      exportLoading: false,
       departmentList: [],
       timeRange: [],
       pickerOptions: {
@@ -244,8 +247,6 @@ export default {
       currentInquiry: {},
       dialogVisible: false,
 
-      exportDialogVisible: false,
-
       // 订单详情
       orderDetailDialog: {
         visible: false,
@@ -262,20 +263,20 @@ export default {
   watch: {
     bookTimeRange(timeRange) {
       if (Array.isArray(timeRange)) {
-        this.model.startdate = timeRange[0] ? timeRange[0] : ''
-        this.model.enddate = timeRange[1] ? timeRange[1] : ''
-      } else {
-        this.model.startdate = ''
-        this.model.enddate = ''
-      }
-    },
-    timeRange(timeRange) {
-      if (Array.isArray(timeRange)) {
         this.model.bookStart = timeRange[0] ? timeRange[0] : ''
         this.model.bookEnd = timeRange[1] ? timeRange[1] : ''
       } else {
         this.model.bookStart = ''
         this.model.bookEnd = ''
+      }
+    },
+    timeRange(timeRange) {
+      if (Array.isArray(timeRange)) {
+        this.model.startTime = timeRange[0] ? timeRange[0] : ''
+        this.model.endTime = timeRange[1] ? timeRange[1] : ''
+      } else {
+        this.model.startTime = ''
+        this.model.endTime = ''
       }
     }
   },
@@ -299,7 +300,7 @@ export default {
     }
   },
   async activated() {
-    let checkReturnVisitOpen = await Service.checkReturnVisitOpen()
+    let checkReturnVisitOpen = await Service.checkReturnVisitOpen({})
     let returnVisitList = checkReturnVisitOpen.data.list
     this.returnVisitIsOpen = returnVisitList.isOpen == 1 ? true : false
 
@@ -313,8 +314,8 @@ export default {
     getList() {
       const fetch = Service.getReturnVisitOrderList
       let params = Peace.util.deepClone(this.model)
-      params.startdate = params.startdate ? params.startdate + ' 00:00:00' : ''
-      params.enddate = params.enddate ? params.enddate + ' 23:59:59' : ''
+      params.startTime = params.startTime ? params.startTime + ' 00:00:00' : ''
+      params.endTime = params.endTime ? params.endTime + ' 23:59:59' : ''
 
       params.bookStart = params.bookStart ? params.bookStart + ' 00:00:00' : ''
       params.bookEnd = params.bookEnd ? params.bookEnd + ' 23:59:59' : ''
@@ -353,7 +354,26 @@ export default {
       })
     },
     showExportModel() {
-      this.exportDialogVisible = true
+      const info = Util.user.getHospitalInfo() ?? {}
+
+      let params = Peace.util.deepClone(this.model)
+      params.type = 'returnVisit'
+      params.hospitalId = info.id
+      params.startTime = params.startTime ? params.startTime + ' 00:00:00' : ''
+      params.endTime = params.endTime ? params.endTime + ' 23:59:59' : ''
+      params.bookStart = params.bookStart ? params.bookStart + ' 00:00:00' : ''
+      params.bookEnd = params.bookEnd ? params.bookEnd + ' 23:59:59' : ''
+
+      this.exportLoading = true
+      Service.isExistList(params)
+        .then(() => {
+          Service.exportOrder(params).finally(() => {
+            this.exportLoading = false
+          })
+        })
+        .catch(() => {
+          this.exportLoading = false
+        })
     }
   }
 }
