@@ -24,31 +24,35 @@
                      class="checkbox-style col-4">{{ rule.name }}</el-checkbox>
       </el-checkbox-group>
     </div>
-    <div class="info-title title-color q-mb-28">中药审查规则项<span class="q-ml-12 span-color">建设中</span></div>
-    <div class="info-title q-mb-24">联合审方 <el-switch v-model="model.unionCheckStatusSel"
+    <div class="info-title title-color q-mb-28">中药审查规则项<span class="q-ml-12 span-color">(建设中)</span></div>
+    <div class="info-title q-mb-24">联合审方
+      <!-- <el-switch v-model="model.unionCheckStatusSel"
                  active-value="ON"
                  inactive-value="OFF"
-                 disabled></el-switch>
+                 disabled></el-switch> -->
     </div>
     <div class="q-ml-14">
-      <div class="q-mb-16 color-333">审查项：</div>
-      <el-checkbox-group v-model="model.unionCheckListSel"
+      <div class="row flex q-mb-md">
+        <div class="q-mb-16 color-333">审查内容：</div>
+        <!-- <el-checkbox-group v-model="model.unionCheckListSel"
                          class="q-mb-24">
         <el-checkbox v-for="item  in unionCheckList"
                      v-bind:label="item.id"
                      v-bind:key="item.id"
                      disabled>{{ item.name }}</el-checkbox>
-      </el-checkbox-group>
+      </el-checkbox-group> -->
+        <div class="color-333 "
+             style="flex:1">中成药/西药审查规则项勾选了适应症、禁忌症、相互作用、重复用药、用药疗程即进行联合审查。</div>
+      </div>
       <div class="checkGroup-style">
-        <div class="color-333">审查处方范围：</div>
+        <div class="color-333">审查范围：</div>
         <el-checkbox-group v-model="model.unionCheckRangeSel"
                            style="flex:1"
-                           class="q-ml-8">
+                           v-on:change="handleCheckedStatusChange">
           <el-checkbox v-for="item  in unionCheckRange"
                        v-bind:label="item.id"
                        v-bind:key="item.id"
-                       class="checkbox-style"
-                       disabled>{{ item.name }}</el-checkbox>
+                       class="checkbox-style">{{ item.name }}</el-checkbox>
         </el-checkbox-group>
       </div>
     </div>
@@ -110,11 +114,11 @@ export default {
       Service.getDrugRuleConfigDetails().then((res) => {
         this.drugCheckList = res.data.drugCheckList
         this.cdrugAndWDrugCheckList = res.data.cdrugAndWDrugCheckList
-        this.unionCheckList = res.data.unionCheckList
+        //this.unionCheckList = res.data.unionCheckList
         this.unionCheckRange = res.data.unionCheckRange
         this.model.drugCheckListSel = res.data.drugCheckListSel
         this.model.cdrugAndWDrugCheckListSel = res.data.cdrugAndWDrugCheckListSel
-        this.model.unionCheckListSel = res.data.unionCheckListSel
+        // this.model.unionCheckListSel = res.data.unionCheckListSel
         this.model.unionCheckRangeSel = res.data.unionCheckRangeSel
         this.model.unionCheckStatusSel = res.data.unionCheckStatusSel
         this.model.unionCheckId = res.data.unionCheckStatus.id
@@ -122,6 +126,13 @@ export default {
     },
     onCheckAllRules(value) {
       this.model.cdrugAndWDrugCheckListSel = value ? this.cdrugAndWDrugCheckList.map((item) => item.id) : []
+    },
+    handleCheckedStatusChange(value) {
+      if (value.length > 0) {
+        this.model.unionCheckStatusSel = 'ON'
+      } else {
+        this.model.unionCheckStatusSel = 'OFF'
+      }
     },
     cancel() {
       this.$emit('close')
@@ -199,7 +210,7 @@ export default {
 .checkGroup-style {
   display: flex;
   flex-direction: row;
-  margin-bottom: 48px;
+  margin-bottom: 20px;
 }
 .color-333 {
   color: #333;
