@@ -46,6 +46,9 @@
                    v-on:click="updateGoodsStatus('up')">上架</el-button>
         <el-button type="primary"
                    v-on:click="updateGoodsStatus('down')">下架</el-button>
+        <el-button type="primary"
+                   v-on:click="importDataForUpAndDown">批量上下架</el-button>
+
       </div>
 
       <PeaceTable ref="table"
@@ -99,6 +102,21 @@
       </PeaceTable>
     </div>
 
+    <!-- 批量上下架 -->
+    <PeaceDialog v-if="importDialogForUpAndDown.visible"
+                 :visible.sync="importDialogForUpAndDown.visible"
+                 title="批量上下架">
+      <peace-base-import-workflow :actions="importDialogForUpAndDown.actions"
+                                  :stepsList="importDialogForUpAndDown.stepsList"
+                                  :templateDownloadUrl="importDialogForUpAndDown.templateDownloadUrl"
+                                  :templateName="importDialogForUpAndDown.templateName"
+                                  :downloadErrorUrl="importDialogForUpAndDown.downloadErrorUrl"
+                                  :maxSize="importDialogForUpAndDown.maxSize"
+                                  :otherData="importDialogForUpAndDown.otherData"
+                                  @close="closeImportDialogForUpAndDown"
+                                  @success="importSuccessForUpAndDown" />
+    </PeaceDialog>
+
   </div>
 </template>
 
@@ -106,8 +124,10 @@
 import Observable from '../observable'
 import Service from '../service'
 import CONSTANT from '../constant'
+import { PeaceBaseImportWorkflow } from 'peace-components'
 
 export default {
+  components: { PeaceBaseImportWorkflow },
   data() {
     return {
       loading: true,
@@ -120,6 +140,15 @@ export default {
       multipleSelection: [],
       source: {
         DRUG_STATUS: CONSTANT.DRUG_STATUS
+      },
+      //批量上下架
+      importDialogForUpAndDown: {
+        visible: false,
+        actions: `${process.env.VUE_APP_API_BASE}psd/Excel/ImportExcelNew`,
+        templateDownloadUrl: `${process.env.VUE_APP_API_BASE}psd/Template/ImportOnShelves.xlsx`,
+        downloadErrorUrl: `${process.env.VUE_APP_API_BASE}psd/Excel/Downloaderror?key=`,
+        templateName: '批量上下架',
+        otherData: {}
       }
     }
   },
@@ -211,6 +240,24 @@ export default {
 
     back() {
       Observable.mutations.changeView(Observable.constants.view.LIST)
+    },
+
+    //批量上下架
+    importDataForUpAndDown() {
+      this.importDialogForUpAndDown.otherData = {
+        billType: '19',
+        customer: this.model.PharmacyCode
+      }
+      this.importDialogForUpAndDown.visible = true
+    },
+    //批量上下架关闭
+    closeImportDialogForUpAndDown() {
+      this.importDialogForUpAndDown.visible = false
+    },
+    //批量上下架成功
+    importSuccessForUpAndDown() {
+      this.importDialogForUpAndDown.visible = false
+      this.fetch()
     }
   }
 }

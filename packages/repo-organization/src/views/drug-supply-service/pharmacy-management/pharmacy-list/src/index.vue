@@ -179,8 +179,6 @@ export default {
     })
   },
 
-  computed: {},
-
   methods: {
     fetch() {
       const fetch = Service.getStoreList
@@ -265,9 +263,9 @@ export default {
       this.id = row.UserID
     },
     commodityManage(row) {
-      const name = '商品管理'
-      const query = { custcode: row.Code }
-      this.$router.push({ name, query })
+      const name = 'CommodityManage'
+      Peace.cache.sessionStorage.set('Code', row.Code)
+      this.$router.push({ name })
     },
     operationManage(row) {
       this.listVisible = false
