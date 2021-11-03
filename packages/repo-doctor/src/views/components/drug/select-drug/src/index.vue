@@ -51,13 +51,24 @@
             <div class="ellipsis">
               <el-tooltip effect="light"
                           placement="top-start">
-                <span>{{ row.drugName }}</span>
+
+                <div>
+                  <span class="disable_tags"
+                        v-if="row.drugStatus === 'disable'">停用</span>
+                  <span class="medical_tags"
+                        v-if="row.isMedical === 1">医保</span>
+                  <span>{{ row.drugName }}</span>
+                </div>
 
                 <div style="max-width: 200px;"
                      slot="content">
                   <div class="flex q-mb-sm">
                     <span class="text-black"
                           style="width: 60px;">药品名称：</span>
+                    <span class="disable_tags"
+                          v-if="row.drugStatus === 'disable'">停用</span>
+                    <span class="medical_tags"
+                          v-if="row.isMedical === 1">医保</span>
                     <span class="col">{{ row.drugName }}</span>
                   </div>
                   <div class="flex q-mb-sm">
@@ -224,8 +235,8 @@
                             style="margin: 0;">
                 <el-select v-model="row.drugQuantityUnit"
                            style="width: 80px;"
-                           v-on:change="() => { 
-                                                calculateCount(row) 
+                           v-on:change="() => {
+                                                calculateCount(row)
                                                 changeDrugQuantityUnit(row)
                                               }">
                   <el-option v-for="item in row.splitZeroList"
@@ -266,6 +277,10 @@
         <div class="flex q-py-sm el-autocomplete-drug-item"
              v-bind:class="{ disabled: item.drugStock === 0 }">
           <div class="col q-mr-md ellipsis">
+            <span class="disable_tags"
+                  v-if="item.drugStatus === 'disable'">停用</span>
+            <span class="medical_tags"
+                  v-if="item.isMedical === 1">医保</span>
             <span class="text-grey-333"
                   v-bind:title="item.drugName">{{ item.drugName }}</span>
           </div>
@@ -305,10 +320,11 @@
                  v-bind:key="drug.durgId"
                  class="q-mb-sm">
               <div>
-                <el-tag class="q-mr-sm"
-                        effect="dark"
-                        type="warning"
-                        v-if="drug.drugStatus === 'disable'">停用</el-tag>
+
+                <span class="disable_tags"
+                      v-if="drug.drugStatus === 'disable'">停用</span>
+                <span class="medical_tags"
+                      v-if="drug.isMedical === 1">医保</span>
                 <span class="text-weight-bold q-mr-md">{{ drug.drugName }}</span>
                 <span class="text-caption">{{ drug.specification }}</span>
               </div>
@@ -727,6 +743,28 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+.medical_tags {
+  font-size: 12px;
+  color: #ffffff;
+  padding: 1px 4px;
+  background: #3099a6;
+  border-radius: 2px;
+  text-align: center;
+  margin-right: 8px;
+  max-height: 16px;
+}
+
+.disable_tags {
+  font-size: 12px;
+  color: #ffffff;
+  padding: 1px 4px;
+  background: #ffa00c;
+  border-radius: 2px;
+  text-align: center;
+  margin-right: 8px;
+  max-height: 16px;
+}
+
 ::v-deep .editable .el-table {
   box-shadow: 0 0 7px 0 rgba(51, 51, 51, 0.1);
 

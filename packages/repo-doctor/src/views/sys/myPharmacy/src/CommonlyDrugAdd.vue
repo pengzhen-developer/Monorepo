@@ -48,7 +48,13 @@
                   ref="table"
                   pagination
                   v-bind:show-header="false">
-        <PeaceTableColumn prop="drugName"></PeaceTableColumn>
+        <PeaceTableColumn>
+          <template slot-scope="scope">
+            <span class="medical_tags"
+                  v-if="scope.row.isMedical === 1">医保</span>
+            <span class="text-grey-333">{{ scope.row.drugName }}</span>
+          </template>
+        </PeaceTableColumn>
         <PeaceTableColumn prop="specification"></PeaceTableColumn>
         <PeaceTableColumn prop="companyName"></PeaceTableColumn>
         <PeaceTableColumn width="60">
@@ -149,5 +155,15 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.medical_tags {
+  font-size: 12px;
+  color: #ffffff;
+  padding: 1px 4px;
+  background: #3099a6;
+  border-radius: 2px;
+  text-align: center;
+  margin-right: 8px;
+  max-height: 16px;
+}
 </style>

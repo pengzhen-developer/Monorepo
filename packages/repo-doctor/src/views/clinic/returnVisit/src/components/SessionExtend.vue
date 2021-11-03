@@ -28,6 +28,10 @@
 
       </q-scroll-area>
     </div>
+
+    <el-button type="primary"
+               class="q-mx-40 q-mb-md"
+               v-on:click="showPatientDetail">查看更多</el-button>
   </div>
 </template>
 
@@ -36,6 +40,8 @@ import HealthRecord from './SessionForExtend/HealthRecord'
 import MedicalRecord from './SessionForExtend/MedicalRecord'
 
 export default {
+  inject: ['provideGetTab', 'provideAddTab'],
+
   components: {
     HealthRecord,
     MedicalRecord
@@ -56,6 +62,28 @@ export default {
         width: '5px',
         opacity: 0.75
       }
+    },
+
+    patientInfo() {
+      return this.$store.state.inquiry.session.content.patientInfo
+    },
+
+    getTab() {
+      return this.provideGetTab
+    },
+
+    addTab() {
+      return this.provideAddTab
+    }
+  },
+
+  methods: {
+    showPatientDetail() {
+      const currentMenu = this.getTab('PatientDetail')
+      currentMenu.menuName = this.patientInfo.familyName
+      currentMenu.menuRoute = '/patient/patientDetail/' + this.patientInfo.patientNo
+      // 跳转当前路由
+      this.addTab(currentMenu)
     }
   }
 }

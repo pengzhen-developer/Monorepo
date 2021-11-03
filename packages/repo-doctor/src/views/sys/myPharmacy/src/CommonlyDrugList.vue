@@ -15,16 +15,16 @@
       <PeaceTableColumn type="index"
                         width="60px"
                         label="序号"></PeaceTableColumn>
-      <PeaceTableColumn width="60px">
-        <template slot-scope="scope">
-          <el-tag effect="dark"
-                  type="warning"
-                  v-if="scope.row.drugStatus === 'disable'">停用</el-tag>
+      <PeaceTableColumn label="药品名称"
+                        min-width="200">
+        <template scope="scope">
+          <span class="disable_tags"
+                v-if="scope.row.drugStatus === 'disable'">停用</span>
+          <span class="medical_tags"
+                v-if="scope.row.isMedical === 1">医保</span>
+          <span> {{ scope.row.drugName }}</span>
         </template>
       </PeaceTableColumn>
-      <PeaceTableColumn label="药品名称"
-                        min-width="200"
-                        prop="drugName"> </PeaceTableColumn>
       <PeaceTableColumn label="药品规格"
                         prop="specification"
                         min-width="200"></PeaceTableColumn>
@@ -72,9 +72,9 @@
 <script>
 import Service from './../service'
 
-import CommonlyDrugAdd from './CommonlyDrugAdd.vue'
-import DrugInstructions from './DrugInstructions.vue'
-import DrugInstructionsList from './DrugInstructionsList.vue'
+import CommonlyDrugAdd from './CommonlyDrugAdd'
+import DrugInstructions from './DrugInstructions'
+import DrugInstructionsList from './DrugInstructionsList'
 
 export default {
   components: {
@@ -173,5 +173,26 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.medical_tags {
+  font-size: 12px;
+  color: #ffffff;
+  padding: 1px 4px;
+  background: #3099a6;
+  border-radius: 2px;
+  text-align: center;
+  margin-right: 8px;
+  max-height: 16px;
+}
+
+.disable_tags {
+  font-size: 12px;
+  color: #ffffff;
+  padding: 1px 4px;
+  background: #ffa00c;
+  border-radius: 2px;
+  text-align: center;
+  margin-right: 8px;
+  max-height: 16px;
+}
 </style>
