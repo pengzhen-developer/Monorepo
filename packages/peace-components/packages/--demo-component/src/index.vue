@@ -50,4 +50,4 @@ span {
 }
 </style>
 
-<style scoped lang="scss" src="./index.scss">
+
