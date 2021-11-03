@@ -16,7 +16,7 @@
         <div class="item-text ">
           <el-input-number v-model.trim="model.Price"
                            placeholder="请输入"
-                           controls-position="right"
+                           :controls="false"
                            :max="999999.9999"
                            :precision="4"
                            :min="0"
@@ -56,10 +56,7 @@ export default {
         Price: undefined
       },
       rules: {
-        Price: [
-          { required: true, message: '请输入新库存数量', trigger: 'change' },
-          { required: true, message: '请输入新库存数量', trigger: 'blur' }
-        ]
+        Price: [{ required: true, message: '请输入新库存数量', trigger: 'blur' }]
       }
     }
   },
@@ -108,5 +105,9 @@ export default {
   &.is-error {
     margin-bottom: 24px;
   }
+}
+
+::v-deep .el-input-number.is-without-controls .el-input__inner {
+  text-align: left;
 }
 </style>
