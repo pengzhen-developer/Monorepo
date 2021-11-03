@@ -17,7 +17,7 @@
                         label="序号"></PeaceTableColumn>
       <PeaceTableColumn label="药品名称"
                         min-width="200">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span class="disable_tags"
                 v-if="scope.row.drugStatus === 'disable'">停用</span>
           <span class="medical_tags"
