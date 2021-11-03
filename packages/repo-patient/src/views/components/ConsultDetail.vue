@@ -860,23 +860,38 @@ export default {
     },
     report(data) {
       const params = { inquiryNo: data.inquiryInfo.inquiryNo }
-      peace.service.patient.report(params).then((res) => {
-        const data = res.data
-        if (data.totalMoney == '0.00') {
-          this.get()
-        } else {
-          const json = {
-            money: data.orderMoney, //总金额
-            moneyRecord: data.moneyRecord, //费用明细
-            orderNo: data.orderNo,
-            inquiryId: data.inquiryId,
-            orderType: 'inquiry',
-            isReport: true
+      peace.service.patient
+        .report(params)
+        .then((res) => {
+          const data = res.data
+          if (data.totalMoney == '0.00') {
+            this.get()
+          } else {
+            const json = {
+              money: data.orderMoney, //总金额
+              moneyRecord: data.moneyRecord, //费用明细
+              orderNo: data.orderNo,
+              inquiryId: data.inquiryId,
+              orderType: 'inquiry',
+              isReport: true
+            }
+            this.dialog.visible = true
+            this.dialog.data = json
           }
-          this.dialog.visible = true
-          this.dialog.data = json
-        }
-      })
+        })
+        .catch((res) => {
+          //205 医保不可用
+          if (res.data.code == '205') {
+            return Dialog.confirm({
+              title: '温馨提示',
+              message: res.data.msg,
+              confirmButtonText: '确定',
+              showCancelButton: false
+            })
+          } else {
+            peace.util.alert(res.data.msg)
+          }
+        })
     },
     goToPay(data) {
       let order = data.orderInfo
