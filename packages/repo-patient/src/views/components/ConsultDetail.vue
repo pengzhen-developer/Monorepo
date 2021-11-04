@@ -721,8 +721,7 @@ export default {
       return this.internalData?.inquiryInfo?.inquiryStatus == ENUM.INQUIRY_STATUS.问诊中
     },
     canReport() {
-      return false
-      // return this.internalData?.inquiryInfo?.reportButton != 1
+      return this.internalData?.inquiryInfo?.reportButton != 1
     },
     canShowInvoiceBtn() {
       return (
