@@ -29,9 +29,11 @@
       </q-scroll-area>
     </div>
 
-    <el-button type="primary"
-               class="q-mx-40 q-mb-md"
-               v-on:click="showPatientDetail">查看更多</el-button>
+    <div class="q-mx-40 q-mb-md">
+      <el-button type="primary"
+                 class="full-width"
+                 v-on:click="showPatientDetail">查看更多</el-button>
+    </div>
   </div>
 </template>
 
