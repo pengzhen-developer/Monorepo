@@ -12,8 +12,7 @@
         <van-cell title="支付方式">
           <div class="pay-type"
                v-bind:class="innerPayType === 'wxpay' && 'active'"
-               v-on:click="selectPayType('wxpay')"
-               v-if="paymentMethod === 'online'">全自费支付</div>
+               v-on:click="selectPayType('wxpay')">全自费支付</div>
           <div class="pay-type"
                v-if="deduction.length>0"
                v-bind:class="innerPayType === 'deduction' && 'active'"
