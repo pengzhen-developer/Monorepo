@@ -8,7 +8,7 @@
                v-bind:model="model">
 
         <el-form-item label="主数据ID">
-          <span>{{model.platformDrugCode}}</span>
+          <span>{{model.skuId}}</span>
         </el-form-item>
 
         <el-form-item label="药品名称">
@@ -94,6 +94,7 @@ export default {
         enterpriseCnName: '',
         id: '',
         platformDrugCode: '',
+        skuId: '',
         ingredientCode: ''
       },
       ingredientList: [], //药品成分数据集合
@@ -117,6 +118,7 @@ export default {
         this.model.drugSpecifications = res.data.drugSpecifications
         this.model.enterpriseCnName = res.data.enterpriseCnName
         this.model.platformDrugCode = res.data.platformDrugCode
+        this.model.skuId = res.data.skuId
         this.model.ingredientCode = res.data.ingredientCode
         this.getListNameByCodes()
       })
@@ -154,9 +156,7 @@ export default {
     //选择成分确定
     choiceConfirm(data) {
       this.choiceDialog.visible = false
-      const aa = this.ingredientList.concat(
-        data.filter((v) => !this.ingredientList.some((item) => item.code === v.code))
-      )
+      const aa = this.ingredientList.concat(data.filter((v) => !this.ingredientList.some((item) => item.code === v.code)))
       this.ingredientList = aa
     }
   }

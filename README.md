@@ -24,6 +24,6 @@ cd packages\repo-doctor
 # 开发
 yarn serve
 
-# 开发
+# 打包
 yarn build
 ```

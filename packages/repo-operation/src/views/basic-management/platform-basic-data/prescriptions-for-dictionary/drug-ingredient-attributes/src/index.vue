@@ -37,7 +37,7 @@
                   pagination>
         <PeaceTableColumn label="主数据ID"
                           min-width="150px"
-                          prop="platformDrugCode">
+                          prop="skuId">
         </PeaceTableColumn>
         <PeaceTableColumn label="药品名称"
                           min-width="150px"
