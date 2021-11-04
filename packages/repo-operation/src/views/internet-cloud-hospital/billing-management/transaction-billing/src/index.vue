@@ -8,7 +8,7 @@
                inline>
         <el-form-item label="完单日期">
           <PeaceDatePicker type="daterange"
-                           value-toDate="yyyy-MM-dd"
+                           value-format="yyyy-MM-dd"
                            v-model="model.time"
                            v-bind:picker-options="pickerOptions"></PeaceDatePicker>
         </el-form-item>
@@ -268,9 +268,14 @@ export default {
   },
 
   watch: {
-    ['model.time']() {
-      this.model.startTime = this.model.time ? this.model.time[0] : ''
-      this.model.endTime = this.model.time ? this.model.time[1] : ''
+    ['model.time'](value) {
+      if (Peace.util.isArray(value) && value.length === 2) {
+        this.model.startTime = Peace.dayjs(value[0]).format('YYYY-MM-DD')
+        this.model.endTime = Peace.dayjs(value[1]).format('YYYY-MM-DD')
+      } else {
+        this.model.startTime = ''
+        this.model.endTime = ''
+      }
     }
   },
 
@@ -294,7 +299,6 @@ export default {
     fetch() {
       const fetch = Service.getBillsList
       const params = Peace.util.deepClone(this.model)
-
       this.$refs.table.reloadData({ fetch, params }).then((res) => (this.tableData = res.data))
     },
 
