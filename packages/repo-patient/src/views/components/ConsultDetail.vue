@@ -1040,6 +1040,9 @@ export default {
             }, 1500)
           }
         })
+        .finally(() => {
+          this.cancelCauseDialog.visible = false
+        })
     },
     viewImage(file, fileIndex, files) {
       this.imagePreview.visible = true

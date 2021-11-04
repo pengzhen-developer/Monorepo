@@ -58,13 +58,14 @@ export default {
   watch: {
     showModel: {
       handler(val) {
+        this.show = val
         if (val) {
-          this.show = val
           if (val && this.list.length > 0) {
             this.model.label = this.list[0].label
             this.model.value = this.list[0].value
           }
         }
+        this.isSend = val == false && false
       },
       immediate: true
     }
@@ -72,6 +73,7 @@ export default {
   data() {
     return {
       show: false,
+      isSend: false,
       model: {
         label: '',
         value: ''
@@ -86,14 +88,20 @@ export default {
       this.model.value = item.value
     },
     cancel() {
+      if (this.isSend) {
+        return false
+      }
       this.show = false
       this.$emit('changeCancelCauseSelectDialog', false)
       this.$emit('onCancel')
     },
     submit() {
+      if (this.isSend) {
+        return false
+      }
+      this.isSend = true
       const cancelCause = peace.util.deepClone(this.model)
-      this.show = false
-      this.$emit('changeCancelCauseSelectDialog', false)
+      //提交的时候 弹框关闭由父组件控制
       this.$emit('onSuccess', { cancelCause: cancelCause })
     }
   }
