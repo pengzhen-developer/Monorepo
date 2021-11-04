@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="consult-detatil"
-         :style="{'margin-bottom':marginBottom,'padding-bottom':canShowReportBottom?reportHeight:'10px'}"
+         :style="{'margin-bottom':marginBottom,'padding-bottom':'10px'}"
          v-if="canShowInfo">
       <!--TOP-->
       <div class="module top">
@@ -538,6 +538,7 @@ export default {
       firstVisitData: null,
       canSeeMoreCase: false,
       firstLoad: false,
+      load: false,
       hasFirstVisitInfo: false,
       caseDetail: {
         visible: false,
@@ -604,12 +605,14 @@ export default {
       },
       immediate: true
     },
-    firstLoad: {
+    load: {
       handler() {
         this.$nextTick(() => {
           const element = document.querySelector('.fixedBottom')
           if (element) {
             this.marginBottom = element.clientHeight + 'px'
+          } else {
+            this.marginBottom = '0px'
           }
         })
       },
@@ -718,7 +721,8 @@ export default {
       return this.internalData?.inquiryInfo?.inquiryStatus == ENUM.INQUIRY_STATUS.问诊中
     },
     canReport() {
-      return this.internalData?.inquiryInfo?.reportButton != 1
+      return false
+      // return this.internalData?.inquiryInfo?.reportButton != 1
     },
     canShowInvoiceBtn() {
       return (
@@ -912,6 +916,7 @@ export default {
       if (type == 'hideLoad') {
         params.hideLoad = true
       }
+      this.load = false
       peace.service.patient.inquiryDetail(params).then(async (res) => {
         let inquiryInfo = res.data.inquiryInfo
         let expireTime = inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
@@ -928,6 +933,7 @@ export default {
           this.getCancelCause()
         }
         this.firstLoad = true
+        this.load = true
       })
     },
     getFirstOptionList() {
