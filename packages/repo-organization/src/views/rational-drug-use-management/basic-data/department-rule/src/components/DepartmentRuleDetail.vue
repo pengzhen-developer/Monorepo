@@ -14,7 +14,7 @@
     </div>
 
     <div class="card"
-         style="margin-bottom: 72px">
+         style="padding: 24px;">
       <RulesDetail ref="ruleView"
                    style="padding: 0;"
                    v-bind:id="data.drugCscCode"
@@ -22,7 +22,8 @@
                    v-bind:departmentCode="department.value"></RulesDetail>
     </div>
 
-    <div class="fixed-bottom card text-right">
+    <div class="fixed-bottom card text-right"
+         style="box-shadow: 0px 1px 8px 0px #e0e0e0; ">
       <el-button v-on:click="back">关闭窗口</el-button>
     </div>
   </div>

@@ -52,17 +52,14 @@
     </div>
 
     <div class="q-pl-lg sticky">
-      <q-tabs v-model="tabSelectedIndex"
-              active-color="primary"
-              class="text-grey-333"
-              style="border-left: 1px solid #EAEAEA; width: 112px;"
-              switch-indicator
-              vertical>
-        <q-tab v-for="(item, index) in rules"
-               v-bind:key="item.key"
-               :label="item.name"
-               :name="index" />
-      </q-tabs>
+      <el-tabs class="element-ui-default"
+               v-model="tabSelectedIndex"
+               tab-position="right">
+        <el-tab-pane v-for="(item, index) in rules"
+                     v-bind:key="item.key"
+                     :label="item.name"
+                     :name="index.toString()" />
+      </el-tabs>
     </div>
 
   </div>
@@ -98,7 +95,7 @@ export default {
       rules: [],
       loading: false,
       // 导航栏当前Index
-      tabSelectedIndex: 0,
+      tabSelectedIndex: '0',
       // 前置条件Dialog
       dialog: {
         visible: false,

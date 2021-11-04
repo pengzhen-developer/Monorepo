@@ -57,16 +57,14 @@
       </div>
 
       <div class="col-1 q-pl-lg sticky">
-        <q-tabs v-model="tabSelectedIndex"
-                class="text-primary"
-                style="border-left: 1px solid #EAEAEA"
-                switch-indicator
-                vertical>
-          <q-tab v-for="(item, index) in rules"
-                 v-bind:key="item.key"
-                 :label="item.name"
-                 :name="index" />
-        </q-tabs>
+        <el-tabs class="element-ui-default"
+                 v-model="tabSelectedIndex"
+                 tab-position="right">
+          <el-tab-pane v-for="(item, index) in rules"
+                       v-bind:key="item.key"
+                       :label="item.name"
+                       :name="index.toString()" />
+        </el-tabs>
       </div>
 
     </div>
@@ -90,7 +88,7 @@ export default {
   name: 'RulesDetail',
   props: {
     id: {
-      required: true,
+      required: true
     }
   },
 
@@ -102,7 +100,7 @@ export default {
     ContextMenu: () => import('./packages/ContextMenu'),
     PromptLevel: () => import('./packages/PromptLevel'),
     PromptMessage: () => import('./packages/PromptMessage'),
-    ValidateMessage: () => import('./packages/ValidateMessage'),
+    ValidateMessage: () => import('./packages/ValidateMessage')
   },
 
   data() {
@@ -111,7 +109,7 @@ export default {
       rules: [],
       loading: false,
       // 导航栏当前Index
-      tabSelectedIndex: 0
+      tabSelectedIndex: '0'
     }
   },
 
@@ -122,7 +120,6 @@ export default {
   },
 
   async mounted() {
-
     const compareList = await Peace.identity.dictionary.getList('compare')
     const prescriptionTypeList = await Peace.identity.dictionary.getList('prescription_type_rule')
     const warningLevelList = await Peace.identity.dictionary.getList('warning_level')
@@ -151,7 +148,7 @@ export default {
     fetch() {
       this.loading = true
       Service.getRulesDetail({
-        id: this.id,
+        id: this.id
       })
         .then((res) => {
           const orginRules = res.data
@@ -207,6 +204,11 @@ export default {
   .q-tab__label {
     font-weight: 400;
   }
+}
+
+::v-deep .el-tabs__item {
+  height: 38px;
+  line-height: 38px;
 }
 
 .preconditions-style {

@@ -36,7 +36,10 @@
 
     <div class="card">
 
-      <el-button class="q-mb-md" type="primary" v-on:click="addRule">新增规则</el-button>
+      <div class="q-mb-lg">
+        <el-button type="primary"
+                   v-on:click="addRule">新增规则</el-button>
+      </div>
 
       <PeaceTable ref="table"
                   pagination
@@ -86,7 +89,6 @@
       </PeaceTable>
     </div>
 
-
     <modify-management-rule v-if="dialog.visible"
                             v-model="dialog.visible"
                             v-bind:data="dialog.data"
@@ -101,10 +103,10 @@
 import Service from '../service/index'
 import Util from '@src/util'
 import CONSTANT from '../constant'
-import ModifyManagementRule from "./ModifyManagementRule";
+import ModifyManagementRule from './ModifyManagementRule'
 
 export default {
-  components: {ModifyManagementRule},
+  components: { ModifyManagementRule },
   name: 'ManagementRulesList',
   comments: {
     ModifyManagementRule

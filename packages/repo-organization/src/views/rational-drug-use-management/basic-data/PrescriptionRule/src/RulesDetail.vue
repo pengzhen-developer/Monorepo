@@ -64,16 +64,14 @@
       </div>
 
       <div class="col-1 q-pl-lg sticky">
-        <q-tabs v-model="tabSelectedIndex"
-                class="text-primary"
-                style="border-left: 1px solid #EAEAEA"
-                switch-indicator
-                vertical>
-          <q-tab v-for="(item, index) in rules"
-                 v-bind:key="item.key"
-                 :label="item.name"
-                 :name="index" />
-        </q-tabs>
+        <el-tabs class="element-ui-default"
+                 v-model="tabSelectedIndex"
+                 tab-position="right">
+          <el-tab-pane v-for="(item, index) in rules"
+                       v-bind:key="item.key"
+                       :label="item.name"
+                       :name="index.toString()" />
+        </el-tabs>
       </div>
 
     </div>

@@ -15,13 +15,14 @@
     </div>
 
     <div class="card"
-         style="margin-bottom: 72px">
+         style="margin-bottom: 68px; padding: 24px;">
       <management-rule ref="ruleView"
-                style="padding: 0;"
-                v-bind:id="data.id"></management-rule>
+                       style="padding: 0;"
+                       v-bind:id="data.id"></management-rule>
     </div>
 
-    <div class="fixed-bottom card text-right" style="box-shadow: 0px 1px 8px 0px #e0e0e0;">
+    <div class="fixed-bottom card text-right"
+         style="box-shadow: 0px 1px 8px 0px #e0e0e0; padding: 16px;">
       <el-button v-on:click="back">退出编辑</el-button>
       <el-button type="primary"
                  v-bind:loading="loading"
@@ -74,18 +75,18 @@ export default {
         this.$refs.ruleView.loading = true
         const params = Object.assign({}, data)
         Service.saveRules(params)
-            .then(() => {
-              Peace.util.success('保存成功')
-              this.loading = false
-              this.$refs.ruleView.loading = false
-              this.back()
-            })
-            .catch(() => {
-              this.loading = false
-              this.$refs.ruleView.loading = false
-            })
+          .then(() => {
+            Peace.util.success('保存成功')
+            this.loading = false
+            this.$refs.ruleView.loading = false
+            this.back()
+          })
+          .catch(() => {
+            this.loading = false
+            this.$refs.ruleView.loading = false
+          })
       })
-    },
+    }
   }
 }
 </script>

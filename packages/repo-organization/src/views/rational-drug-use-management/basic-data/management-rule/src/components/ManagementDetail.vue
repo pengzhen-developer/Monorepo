@@ -15,17 +15,16 @@
     </div>
 
     <div class="card"
-         style="margin-bottom: 72px">
+         style="padding: 24px;">
       <management-rule-detail ref="ruleView"
-                       style="padding: 0;"
-                       v-bind:id="data.id"></management-rule-detail>
+                              style="padding: 0;"
+                              v-bind:id="data.id"></management-rule-detail>
     </div>
 
   </div>
 </template>
 
 <script>
-
 export default {
   props: {
     data: Object,
@@ -59,7 +58,7 @@ export default {
       this.internalVisible = false
 
       this.$emit('fetch')
-    },
+    }
   }
 }
 </script>
