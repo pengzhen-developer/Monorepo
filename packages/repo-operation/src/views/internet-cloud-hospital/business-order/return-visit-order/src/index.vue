@@ -19,6 +19,18 @@
           </el-select>
         </el-form-item>
 
+        <el-form-item label="二级科室">
+          <el-select v-model="search.deptId"
+                     clearable
+                     :disabled="deptDisable"
+                     placeholder="全部">
+            <el-option v-for="item in deptList"
+                       :key="item.deptId"
+                       :label="item.netdeptChild"
+                       :value="item.deptId"></el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="订单编号">
           <el-input placeholder="输入订单编号"
                     v-model="search.orderNo"
@@ -56,18 +68,6 @@
                            value-format="yyyy-MM-dd"
                            :picker-options="pickerOptions">
           </PeaceDatePicker>
-        </el-form-item>
-
-        <el-form-item label="二级科室">
-          <el-select v-model="search.deptId"
-                     clearable
-                     :disabled="deptDisable"
-                     placeholder="全部">
-            <el-option v-for="item in deptList"
-                       :key="item.deptId"
-                       :label="item.netdeptChild"
-                       :value="item.deptId"></el-option>
-          </el-select>
         </el-form-item>
 
         <el-form-item class="search-btn">
