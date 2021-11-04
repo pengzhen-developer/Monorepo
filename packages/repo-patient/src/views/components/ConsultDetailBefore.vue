@@ -580,6 +580,7 @@ export default {
         params.cardno = ''
         params.diseasesCode = ''
         params.diseasesName = ''
+        params.medicalTreatmentType = ''
       }
       if (this.payType === '') {
         params.medCardNo = ''
@@ -587,6 +588,7 @@ export default {
         params.patientEquitiesId = ''
         params.diseasesCode = ''
         params.diseasesName = ''
+        params.medicalTreatmentType = ''
       }
       if (this.payType === 'yibaopay') {
         params.cardno = ''
@@ -601,6 +603,7 @@ export default {
         params.medCardNo = ''
         params.diseasesCode = ''
         params.diseasesName = ''
+        params.medicalTreatmentType = ''
       }
       this.trackByCommit('apply')
       this.isSend = true

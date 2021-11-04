@@ -619,19 +619,6 @@ export default {
       }
 
       this.hasSubmitOrder = false
-      if (this.payType === '') {
-        this.payInfo.medCardNo = ''
-        this.payInfo.cardno = ''
-        this.payInfo.diseasesCode = ''
-        this.payInfo.diseasesName = ''
-      }
-      if (this.payType === 'yibaopay') {
-        this.payInfo.cardno = ''
-        if (this.payInfo.medicalTreatmentType === 1) {
-          this.payInfo.diseasesCode = ''
-          this.payInfo.diseasesName = ''
-        }
-      }
 
       let params = {
         jztClaimNo: this.order.jztClaimNo,
@@ -648,11 +635,11 @@ export default {
         payMode: this.page.payIndex,
         deductionType: this.payType,
         paymentType: this.page.payIndex == 2 && this.page.tabIndex == 0 ? '' : this.paymentType,
-        medicalTreatmentType: this.payInfo.medicalTreatmentType,
-        medCardNo: this.payInfo.medCardNo,
-        diseasesCode: this.payInfo.diseasesCode,
-        diseasesName: this.payInfo.diseasesName,
-        cardNo: this.payInfo.cardno
+        medicalTreatmentType: this.payType === 'yibaopay' ? this.payInfo.medicalTreatmentType : '',
+        medCardNo: this.payType === 'yibaopay' ? this.payInfo.medCardNo : '',
+        diseasesCode: this.payType === 'yibaopay' && this.payInfo.medicalTreatmentType === 2 ? this.payInfo.diseasesCode : '',
+        diseasesName: this.payType === 'yibaopay' && this.payInfo.medicalTreatmentType === 2 ? this.payInfo.diseasesName : '',
+        cardNo: this.payType === 'shangbaopay' ? this.payInfo.cardno : ''
       }
       peace.service.patient
         .submitOrder(params)
