@@ -283,10 +283,9 @@ export default {
     },
     'search.orgId': function(val, oldVal) {
       if (val !== oldVal) {
-        if (Peace.validate.isEmpty(val)) {
-          this.search.deptId = ''
-          this.deptList = []
-        } else {
+        this.search.deptId = ''
+        this.deptList = []
+        if (!Peace.validate.isEmpty(val)) {
           this.getDepartmentList()
         }
       }

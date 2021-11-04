@@ -249,10 +249,9 @@ export default {
     },
     'model.hosId': function(val, oldVal) {
       if (val !== oldVal) {
-        if (Peace.validate.isEmpty(val)) {
-          this.model.deptId = ''
-          this.deptList = []
-        } else {
+        this.model.deptId = ''
+        this.deptList = []
+        if (!Peace.validate.isEmpty(val)) {
           this.getDepartmentList()
         }
       }
