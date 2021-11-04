@@ -27,7 +27,7 @@
     </div>
     <div class="footWrap">
       <van-button round
-                  @click="submit">取消</van-button>
+                  @click="cancel">取消</van-button>
       <van-button round
                   class="is__dialog is__dialog--primary"
                   type="primary"
