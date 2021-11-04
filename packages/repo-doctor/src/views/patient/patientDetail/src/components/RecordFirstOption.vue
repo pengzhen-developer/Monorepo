@@ -55,7 +55,7 @@ export default {
       const params = { prescriptionCode: this.data.dataNo }
       const res = await Service.getFirstOptionDetail(params)
 
-      return res.data.prescriptionInfo
+      return res.data
     }
   }
 }
