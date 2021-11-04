@@ -246,7 +246,7 @@ export default {
     importDataForUpAndDown() {
       this.importDialogForUpAndDown.otherData = {
         billType: '19',
-        customer: this.model.PharmacyCode
+        customer: this.props.PharmacyCode
       }
       this.importDialogForUpAndDown.visible = true
     },
