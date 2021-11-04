@@ -33,3 +33,8 @@ export declare class PeacePrescriptionAuditResult extends PeaceComponents {}
  * @description: 消息记录
  */
 export declare class PeaceIMMessageHistory extends PeaceComponents {}
+
+/**
+ * @description: 消息记录
+ */
+ export declare class PeaceOrderInquiryDetail extends PeaceComponents {}

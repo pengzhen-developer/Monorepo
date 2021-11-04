@@ -6,7 +6,7 @@ import PeacePrescriptionDetailHIS from './packages/prescription-detail-his/index
 import PeacePrescriptionAuditResult from './packages/prescription-audit-result/index.js'
 import PeaceBaseImportWorkflow from './packages/base-import-workflow/index.js'
 import PeaceIMMessageHistory from './packages/im-message-history/index.js'
-import PeaceOrderInquiryDetail from './packages/order-inquiry-detail'
+import PeaceOrderInquiryDetail from './packages/order-inquiry-detail/index.js'
 
 const components = [
   PeaceCaseDetail,
