@@ -181,12 +181,12 @@
           <PeaceOrderInquiryDetail v-bind:data="orderDetailDialog.data"
                                    v-bind:type="'returnVisit'"></PeaceOrderInquiryDetail>
         </PeaceDialog>
-        <PeaceDialog :visible.sync="dialogVisible"
-                     class="inquiry scroll-body"
-                     title="复诊记录"
+        <PeaceDialog title="复诊记录"
                      v-if="dialogVisible"
-                     width="800px">
-          <message-list :info="currentInquiry"></message-list>
+                     v-bind:visible.sync="dialogVisible">
+          <PeaceIMMessageHistory v-bind:data="currentInquiry.msgInfo"
+                                 v-bind:messageFlowIn="currentInquiry.doctorInfo"
+                                 v-bind:messageFlowOut="currentInquiry.patientInfo"></PeaceIMMessageHistory>
         </PeaceDialog>
 
       </template>
@@ -208,13 +208,12 @@
 import CONSTANT from './constant'
 import Service from './service'
 import ReturnVisitOpen from './components/ReturnVisitOpen'
-import MessageList from './components/MessageList'
-import { PeaceOrderInquiryDetail } from 'peace-components'
+import { PeaceIMMessageHistory, PeaceOrderInquiryDetail } from 'peace-components'
 import Util from '@src/util'
 
 export default {
   name: 'ReturnVisitOrder',
-  components: { ReturnVisitOpen, PeaceOrderInquiryDetail, MessageList },
+  components: { ReturnVisitOpen, PeaceOrderInquiryDetail, PeaceIMMessageHistory },
   data() {
     return {
       returnVisitIsOpen: null,

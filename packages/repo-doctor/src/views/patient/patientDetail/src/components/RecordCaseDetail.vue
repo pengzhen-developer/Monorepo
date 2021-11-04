@@ -114,7 +114,7 @@ export default {
 
     async fetchPrescriptionDetail(prescriptionNo) {
       const params = { prescriptionNo: prescriptionNo }
-      const res = await Service.getPrescripDetail(params)
+      const res = await Service.getPrescriptionDetail(params)
 
       return res.data
     },
@@ -299,7 +299,6 @@ export default {
     }
   }
   .tips {
-    width: 530px;
     height: 37px;
     font-size: 14px;
     line-height: 37px;

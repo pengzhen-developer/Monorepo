@@ -3,6 +3,9 @@
   "version": "1.17.3",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": ">= 14.0.0"
+  },
   "workspaces": [
     "packages/*"
   ],

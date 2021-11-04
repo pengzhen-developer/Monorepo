@@ -209,23 +209,20 @@
       </el-tabs>
     </div>
 
-    <peace-dialog :close-on-click-modal="false"
-                  :close-on-press-escape="false"
-                  :visible.sync="inquiryDialog.visible"
-                  class="scroll-body"
-                  :title="inquiryDialog.title"
-                  append-to-body
-                  width="800">
-      <InquiryInfo :info="inquiryDialog.data"></InquiryInfo>
+    <peace-dialog append-to-body
+                  v-if="inquiryDialog.visible"
+                  v-bind:title="inquiryDialog.title"
+                  v-bind:visible.sync="inquiryDialog.visible">
+      <PeaceIMMessageHistory v-bind:data="inquiryDialog.data.msgInfo"
+                             v-bind:messageFlowIn="inquiryDialog.data.doctorInfo"
+                             v-bind:messageFlowOut="inquiryDialog.data.patientInfo"></PeaceIMMessageHistory>
     </peace-dialog>
 
-    <peace-dialog :close-on-click-modal="false"
-                  :close-on-press-escape="false"
-                  :visible.sync="prescriptionDialog.visible"
+    <peace-dialog append-to-body
                   title="处方详情"
-                  append-to-body
-                  width="800">
-      <PresInfo :info="prescriptionDialog.data"></PresInfo>
+                  v-if="prescriptionDialog.visible"
+                  v-bind:visible.sync="prescriptionDialog.visible">
+      <PeacePrescriptionDetail v-bind:data="prescriptionDialog.data"></PeacePrescriptionDetail>
     </peace-dialog>
   </div>
 </template>
@@ -233,8 +230,8 @@
 <script>
 import Service from '../service'
 import CONSTANT from '../constant'
-import InquiryInfo from '@/src/views/internet-cloud-hospital/business-order/message-list'
-import PresInfo from '@/src/views/internet-cloud-hospital/diagnosis-and-treatment-record/prescription-records/src/components/PrescriptionOrderDetail'
+
+import { PeaceIMMessageHistory, PeacePrescriptionDetail } from 'peace-components'
 
 export default {
   name: 'Detail',
@@ -242,8 +239,8 @@ export default {
     data: Object
   },
   components: {
-    InquiryInfo,
-    PresInfo
+    PeaceIMMessageHistory,
+    PeacePrescriptionDetail
   },
 
   data() {
@@ -289,7 +286,7 @@ export default {
       },
       prescriptionDialog: {
         visible: false,
-        prescriptionNo: ''
+        data: {}
       },
       source: {}
     }
@@ -372,12 +369,15 @@ export default {
     },
 
     showPrescriptionDetail(row) {
-      Service.getPresInfo({ prescribeId: row.id }).then((res) => {
-        const rs = res.data
-        this.prescriptionDialog.data = rs
-        this.prescriptionDialog.visible = true
-        this.prescriptionDialog.data.prescriptionId = row.id
-      })
+      const fetch = async () => {
+        const params = { prescriptionNo: row.id }
+        const res = await Service.getPrescriptionDetail(params)
+
+        return res.data
+      }
+
+      this.prescriptionDialog.visible = true
+      this.prescriptionDialog.data = fetch
     },
     back() {
       this.$emit('onBack')

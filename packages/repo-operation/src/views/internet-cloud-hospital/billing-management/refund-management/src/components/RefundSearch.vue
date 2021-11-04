@@ -147,73 +147,59 @@
     </PeaceDialog>
 
     <!-- 咨询订单详情 -->
-    <PeaceDialog v-if="infoDialogInquiryVisible"
-                 v-bind:close-on-click-modal="false"
-                 v-bind:close-on-press-escape="false"
-                 v-bind:visible.sync="infoDialogInquiryVisible"
-                 append-to-body
+    <PeaceDialog append-to-body
                  title="咨询订单详情"
-                 width="500px">
+                 v-if="infoDialogInquiryVisible"
+                 v-bind:visible.sync="infoDialogInquiryVisible">
       <PeaceOrderInquiryDetail v-bind:data="currentInquiryAdvisoryInfo"
                                v-bind:type="'inquiry'"></PeaceOrderInquiryDetail>
     </PeaceDialog>
 
     <!-- 复诊订单详情 -->
-    <PeaceDialog v-if="infoDialogReturnVisitVisible"
-                 v-bind:close-on-click-modal="false"
-                 v-bind:close-on-press-escape="false"
-                 v-bind:visible.sync="infoDialogReturnVisitVisible"
+    <PeaceDialog append-to-body
                  title="复诊订单详情"
-                 width="500px"
-                 append-to-body>
+                 v-if="infoDialogReturnVisitVisible"
+                 v-bind:visible.sync="infoDialogReturnVisitVisible">
       <PeaceOrderInquiryDetail v-bind:data="currentReturnVisitAdvisoryInfo"
                                v-bind:type="'returnVisit'"></PeaceOrderInquiryDetail>
     </PeaceDialog>
 
     <!-- 购药订单详情 -->
-    <PeaceDialog v-if="purchaseDialogVisible"
-                 v-bind:visible.sync="purchaseDialogVisible"
-                 v-bind:close-on-click-modal="false"
-                 v-bind:close-on-press-escape="false"
+    <PeaceDialog append-to-body
                  title="购药订单详情"
-                 width="576px"
-                 append-to-body>
+                 v-if="purchaseDialogVisible"
+                 v-bind:visible.sync="purchaseDialogVisible">
       <PurchaseOrderInfo v-bind:info="currentPurchase"
                          v-on:viewPres="viewPres"></PurchaseOrderInfo>
     </PeaceDialog>
 
     <!-- 挂号订单详情 -->
-    <PeaceDialog v-if="servicePackageDialogVisible"
-                 v-bind:visible.sync="servicePackageDialogVisible"
-                 v-bind:close-on-click-modal="false"
-                 v-bind:close-on-press-escape="false"
+    <PeaceDialog append-to-body
                  title="挂号订单详情"
                  width="636px"
-                 append-to-body>
+                 v-if="servicePackageDialogVisible"
+                 v-bind:visible.sync="servicePackageDialogVisible"
+                 v-bind:close-on-click-modal="false"
+                 v-bind:close-on-press-escape="false">
       <RegisterOrderInfo></RegisterOrderInfo>
 
     </PeaceDialog>
 
     <!-- 服务包订单详情 -->
-    <PeaceDialog v-if="servicePackageDialogVisible"
-                 v-bind:visible.sync="servicePackageDialogVisible"
-                 v-bind:close-on-click-modal="false"
-                 v-bind:close-on-press-escape="false"
+    <PeaceDialog append-to-body
                  title="服务包订单详情"
                  width="636px"
-                 append-to-body>
+                 v-if="servicePackageDialogVisible"
+                 v-bind:visible.sync="servicePackageDialogVisible">
       <ServicePackageOrderInfo v-bind:data="currentServicePackage"></ServicePackageOrderInfo>
     </PeaceDialog>
 
     <!-- 处方详情 -->
-    <PeaceDialog v-if="presDialogVisible"
-                 v-bind:visible.sync="presDialogVisible"
-                 v-bind:close-on-click-modal="false"
-                 v-bind:close-on-press-escape="false"
+    <PeaceDialog append-to-body
                  title="处方详情"
-                 width="580px"
-                 append-to-body>
-      <PresInfo v-bind:info="currentPres"></PresInfo>
+                 v-if="presDialogVisible"
+                 v-bind:visible.sync="presDialogVisible">
+      <PeacePrescriptionDetail v-bind:data="currentPres"></PeacePrescriptionDetail>
     </PeaceDialog>
 
   </div>
@@ -222,16 +208,15 @@
 <script>
 import Service from '../service'
 import CONSTANT from '../constant'
-import RefundDetail from './RefundDetail'
-import PresInfo from './PresInfo'
-import PurchaseOrderInfo from './PurchaseOrderInfo'
-import ServicePackageOrderInfo from './ServicePackageOrderInfo'
-import { PeaceOrderInquiryDetail } from 'peace-components'
+import RefundDetail from './RefundDetail.vue'
+import PurchaseOrderInfo from '@src/views/internet-cloud-hospital/business-order/drug-purchase-order/src/components/DrugPurchaseOrderDetail.vue'
+import ServicePackageOrderInfo from '@src/views/internet-cloud-hospital/business-order/service-pack-order/src/components/OrderDetail.vue'
+import { PeacePrescriptionDetail, PeaceOrderInquiryDetail } from 'peace-components'
 
 export default {
   name: 'RefundSearch',
   components: {
-    PresInfo,
+    PeacePrescriptionDetail,
     RefundDetail,
     PeaceOrderInquiryDetail,
     PurchaseOrderInfo,
@@ -339,17 +324,15 @@ export default {
 
     // 用药建议（处方）
     getPres(id) {
-      const params = { prescribeId: id }
-      Service.getPresInfo(params)
-        .then((res) => {
-          this.presDialogVisible = true
-          this.currentPres = res.data
-          this.currentPres.prescriptionId = id
-        })
-        .catch((res) => {
-          this.$message.error(res.msg)
-          this.presDialogVisible = false
-        })
+      const fetch = async () => {
+        const params = { prescriptionNo: id }
+        const res = await Service.getPrescriptionDetail(params)
+
+        return res.data
+      }
+
+      this.presDialogVisible = true
+      this.currentPres = fetch
     },
 
     // 查看处方（购药订单子组件触发）

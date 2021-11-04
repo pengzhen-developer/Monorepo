@@ -34,10 +34,12 @@
         </template>
         <template v-if="data.flow === 'out'">
           <template v-if="messageFlowOut.familyId">
-            <el-avatar v-bind:size="36">{{ messageFlowOut.familyName.substring(messageFlowOut.familyName.length - 2) }}</el-avatar>
+            <el-avatar class="bg-primary"
+                       v-bind:size="36">{{ messageFlowOut.familyName.substring(messageFlowOut.familyName.length - 2) }}</el-avatar>
           </template>
           <template v-if="messageFlowOut.doctorId">
-            <el-avatar v-bind:size="36"
+            <el-avatar class="bg-primary"
+                       v-bind:size="36"
                        v-bind:src="messageFlowOut.doctorAvatar"></el-avatar>
           </template>
         </template>

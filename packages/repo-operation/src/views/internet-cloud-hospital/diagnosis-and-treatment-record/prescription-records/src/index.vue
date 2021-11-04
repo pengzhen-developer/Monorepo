@@ -129,12 +129,11 @@
     </div>
 
     <!-- 处方详情 -->
-    <peace-dialog :visible.sync="presDialogVisible"
-                  append-to-body
+    <peace-dialog append-to-body
                   title="处方详情"
                   v-if="presDialogVisible"
-                  width="580px">
-      <pres-info :info="currentPres"></pres-info>
+                  v-bind:visible.sync="presDialogVisible">
+      <PeacePrescriptionDetail v-bind:data="currentPres"></PeacePrescriptionDetail>
     </peace-dialog>
 
   </div>
@@ -143,12 +142,13 @@
 <script>
 import CONSTANT from './constant'
 import Service from './service'
-import PresInfo from './components/PrescriptionOrderDetail'
+
+import { PeacePrescriptionDetail } from 'peace-components'
 
 export default {
   name: 'prescription-records',
   components: {
-    PresInfo
+    PeacePrescriptionDetail
   },
 
   data() {
@@ -205,12 +205,15 @@ export default {
       this.$refs.table.reloadData({ fetch, params })
     },
     viewRpInfo(data) {
-      const params = { prescribeId: data.prescribeId }
-      Service.getPresInfo(params).then((res) => {
-        this.currentPres = res.data
-        this.currentPres.prescriptionId = data.prescribeId
-        this.presDialogVisible = true
-      })
+      const fetch = async () => {
+        const params = { prescriptionNo: data.prescribeId }
+        const res = await Service.getPrescriptionDetail(params)
+
+        return res.data
+      }
+
+      this.presDialogVisible = true
+      this.currentPres = fetch
     }
   }
 }

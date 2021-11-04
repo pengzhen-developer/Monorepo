@@ -3,140 +3,35 @@
     <div class="tips"
          v-if="!info.current&&info.total > 1">
       <span>共{{ info.total }}张，当前第{{ info.prescribeIndex+1 }}张（{{ info.prescribeIndex+1 }}/{{ info.total }}）</span>
-      <div @click="goToNext()"
-           class="next">
-        <span>下一张</span>
-        <i class="arrow"></i>
+
+      <div class="flex next">
+        <div class="q-mr-sm"
+             @click="goToPrev()">
+          <i class="arrow q-mr-sm"
+             style="transform: rotate(180deg);"></i>
+          <span>上一张</span>
+        </div>
+        <div @click="goToNext()">
+          <span>下一张</span>
+          <i class="arrow q-ml-sm"></i>
+        </div>
       </div>
     </div>
-    <div class="pres">
-      <div class="pres-no">No.{{ info.prescriptionNo }} <span @click="showDialog"
-              v-if="dialog.data.pngUrl">查看原始处方</span></div>
-      <div class="pres-title">
-        <span>{{ info.medicalInstitutionName }}</span>
-        <br />
-        <span>处方笺</span>
-      </div>
-      <div class="pres-info">
-        <div class="info-row two-cols">
-          <div class="info-row-label">
-            <span>姓名</span>
-          </div>
-          <div class="info-row-content">{{ info.patientName }}</div>
-          <div class="info-row-label">
-            <span>性别</span>
-          </div>
-          <div class="info-row-content">{{ info.patientGender }}</div>
-        </div>
-        <div class="info-row two-cols">
-          <div class="info-row-label">
-            <span>年龄</span>
-          </div>
-          <div class="info-row-content">{{ info.age }}</div>
-          <div class="info-row-label">
-            <span>科别</span>
-          </div>
-          <div class="info-row-content">{{ info.medicalDepartmentName }}</div>
-        </div>
-        <div class="info-row two-cols">
-          <div class="info-row-label">
-            <span>体重</span>
-          </div>
-          <div class="info-row-content">{{ info.weight ?  info.weight + 'kg':'无'}}</div>
-          <div class="info-row-label">
-            <span>过敏史</span>
-          </div>
-          <div class="info-row-content">{{ info.anaphylaxis || '无' }}</div>
-        </div>
-        <div class="info-row two-cols">
-          <div class="info-row-label">
-            <span>开具时间</span>
-          </div>
-          <div class="info-row-content">{{ info.prescriptionTime }}</div>
-          <div class="info-row-label">
-            <span>病历号</span>
-          </div>
-          <div class="info-row-content">{{ info.caseNo }}</div>
-        </div>
-        <div class="info-row">
-          <div class="info-row-label">
-            <span>处方诊断</span>
-          </div>
-          <div class="info-row-content">
-            <span :key="d.DiagnosisName"
-                  v-for="d in info.diagnosisInfos">{{ d.DiagnosisName }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="rp-title">Rp</div>
-      <div class="pres-rp">
-        <div>
-          <div :key="drug.drugCode"
-               class="rp-item"
-               v-for="drug in drugs">
-            <div>
-              <strong>
-                <span>{{ drug.drugName }}</span>
-                <span>{{ drug.drugSpecifications }}</span>
-                <span class="ft">x{{ drug.drugQty }}</span>
-              </strong>
-            </div>
-            <div>
-              <span>{{ drug.drugUse }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="info-row two-cols">
-          <div class="info-row-label">
-            <span>医师</span>
-          </div>
-          <div class="info-row-content">
-            <span>{{ info.doctorName}}</span>
-          </div>
-          <div class="info-row-label">
-            <span>审方药师</span>
-          </div>
-          <div class="info-row-content">
-            <span>{{ info.prescriptionPharmacistName}}</span>
-          </div>
-        </div>
-        <div class="info-row two-cols">
-          <div class="info-row-label">
-            <span>调配药师</span>
-          </div>
-          <div class="info-row-content"></div>
-          <div class="info-row-label">
-            <span>核对发药</span>
-          </div>
-          <div class="info-row-content"></div>
-        </div>
-      </div>
-      <div class="ft info-row two-cols">
-        <div class="info-row-label t-6">
-          <span>药师审方结果</span>
-        </div>
-        <div class="info-row-content">{{ info.prescriptionExamMemo }}</div>
-        <div class="info-row-label t-6">
-          <span>系统审方结果</span>
-        </div>
-        <div class="info-row-content"></div>
-      </div>
-    </div>
-    <!-- 原始处方 -->
-    <template>
-      <peace-dialog :visible.sync="dialog.visible"
-                    append-to-body
-                    v-show="dialog.visible&&dialog.data.show">
-        <el-image :src="dialog.data.pngUrl"
-                  @load="onLoad"></el-image>
-      </peace-dialog>
-    </template>
+
+    <PeacePrescriptionDetail v-bind:data="internalData"></PeacePrescriptionDetail>
   </div>
 </template>
 <script>
-import Service from '../service'
+import Service from './../service/index.js'
+import { PeacePrescriptionDetail } from 'peace-components'
+
 export default {
   name: 'prescription-order-detail',
+
+  components: {
+    PeacePrescriptionDetail
+  },
+
   props: {
     info: {
       type: Object
@@ -145,43 +40,36 @@ export default {
       type: Object
     }
   },
-  data() {
-    return {
-      imgSrc: '',
-      dialog: {
-        visible: false,
-        data: {
-          pngUrl: '',
-          show: false
-        }
-      }
-    }
-  },
-
-  computed: {
-    drugs() {
-      if (this.info.drugCode) {
-        return this.info.drugCode.filter((drug) => drug.drugName)
-      }
-      return []
-    },
-    ImgSrc() {
-      return require(`../assets/images/presStatus/${this.info.prescriptionStatus}.jpg`)
-    }
-  },
 
   watch: {
     info: {
-      handler(val) {
-        if (val && val.prescriptionId) {
-          this.getPrescriptionImage(val.prescriptionId)
-        }
+      handler() {
+        this.internalData = () => this.getPrescriptionDetail(this?.info?.prescriptionNo)
       },
       immediate: true
     }
   },
 
+  data() {
+    return {
+      internalData: undefined
+    }
+  },
+
   methods: {
+    goToPrev() {
+      if (this.info.prescribeIndex == 0) {
+        this.info.prescribeIndex = this.info.total - 1
+      } else {
+        this.info.prescribeIndex--
+      }
+      const param = {
+        ids: this.info.presIds,
+        idx: this.info.prescribeIndex
+      }
+      this.$emit('viewPres', param)
+    },
+
     goToNext() {
       if (this.info.prescribeIndex == this.info.total - 1) {
         this.info.prescribeIndex = 0
@@ -194,24 +82,18 @@ export default {
       }
       this.$emit('viewPres', param)
     },
-    getPrescriptionImage(prescriptionId) {
-      const param = { prescriptionId }
-      Service.getPrescriptionImage(param).then((res) => {
-        this.dialog.data.pngUrl = res.data.pngUrl
-      })
-    },
-    showDialog() {
-      this.dialog.visible = !this.dialog.visible
-    },
-    onLoad() {
-      this.dialog.data.show = true
+
+    async getPrescriptionDetail(prescriptionNo) {
+      const params = { prescriptionNo: prescriptionNo }
+      const res = await Service.getPrescriptionDetail(params)
+
+      return res.data
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 .tips {
-  width: 530px;
   height: 37px;
   font-size: 14px;
   line-height: 37px;
@@ -225,6 +107,7 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
   .next {
     cursor: pointer;
     i.arrow {

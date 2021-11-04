@@ -183,7 +183,7 @@
             <template v-if="scope.row.case_no">
               <el-button size="mini"
                          type="text"
-                         @click="getRecordInfo(scope.row.inquiry_no)">病历
+                         @click="getRecordInfo(scope.row.case_no)">病历
               </el-button>
             </template>
           </template>
@@ -192,37 +192,28 @@
 
     </div>
     <!-- 咨询订单详情 -->
-    <peace-dialog v-if="infoDialogVisible"
-                  :close-on-click-modal="false"
-                  :close-on-press-escape="false"
-                  :visible.sync="infoDialogVisible"
-                  append-to-body
+    <peace-dialog append-to-body
                   title="咨询订单详情"
-                  width="500px">
-      <PeaceOrderInquiryDetail :data="currentAdvisoryInfo"
-                               :type="'inquiry'"></PeaceOrderInquiryDetail>
+                  v-if="infoDialogVisible"
+                  v-bind:visible.sync="infoDialogVisible">
+      <PeaceOrderInquiryDetail v-bind:data="currentAdvisoryInfo"
+                               v-bind:type="'inquiry'"></PeaceOrderInquiryDetail>
     </peace-dialog>
     <!-- 问诊详情 -->
-    <peace-dialog v-if="inquiryDialogVisible"
-                  :close-on-click-modal="false"
-                  :close-on-press-escape="false"
-                  :visible.sync="inquiryDialogVisible"
-                  append-to-body
-                  class="scroll-body"
+    <peace-dialog append-to-body
                   title="咨询记录"
-                  width="800px">
-      <inquiry-info :info="currentInquiry"></inquiry-info>
+                  v-if="inquiryDialogVisible"
+                  v-bind:visible.sync="inquiryDialogVisible">
+      <PeaceIMMessageHistory v-bind:data="currentInquiry.msgInfo"
+                             v-bind:messageFlowIn="currentInquiry.doctorInfo"
+                             v-bind:messageFlowOut="currentInquiry.patientInfo"></PeaceIMMessageHistory>
     </peace-dialog>
     <!-- 病历详情 -->
-    <peace-dialog v-if="recordDialogVisible"
-                  :close-on-click-modal="false"
-                  :close-on-press-escape="false"
-                  :visible.sync="recordDialogVisible"
-                  append-to-body
+    <peace-dialog append-to-body
                   title="病历详情"
-                  width="580px">
-      <slot name="header"></slot>
-      <record-info :info="currentRecord"></record-info>
+                  v-if="recordDialogVisible"
+                  v-bind:visible.sync="recordDialogVisible">
+      <PeaceCaseDetail v-bind:data="currentRecord"></PeaceCaseDetail>
     </peace-dialog>
 
   </div>
@@ -231,9 +222,7 @@
 import Service from './service'
 import Constant from './constant'
 
-import InquiryInfo from './components/MessageList'
-import RecordInfo from './components/RecordInfo'
-import { PeaceOrderInquiryDetail } from 'peace-components'
+import { PeaceIMMessageHistory, PeaceCaseDetail, PeaceOrderInquiryDetail } from 'peace-components'
 
 export default {
   name: 'advisory-order',
@@ -305,8 +294,8 @@ export default {
     })
   },
   components: {
-    InquiryInfo,
-    RecordInfo,
+    PeaceIMMessageHistory,
+    PeaceCaseDetail,
     PeaceOrderInquiryDetail
   },
   computed: {
@@ -359,13 +348,17 @@ export default {
         }
       })
     },
+
     // 问诊小结（病历）
-    getRecordInfo(id) {
-      const params = { inquiryNo: id }
-      Service.getRecordInfo(params).then((res) => {
-        this.currentRecord = res.data
-        this.recordDialogVisible = true
-      })
+    getRecordInfo(caseNo) {
+      const params = { caseNo: caseNo }
+      const fetch = async () => {
+        const res = await Service.getCaseDetail(params)
+        return res.data
+      }
+
+      this.recordDialogVisible = true
+      this.currentRecord = fetch
     },
     exportExcel() {
       this.exportLoading = true

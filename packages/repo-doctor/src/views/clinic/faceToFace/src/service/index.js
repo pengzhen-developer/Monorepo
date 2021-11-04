@@ -94,7 +94,7 @@ export default {
     })
   },
 
-  getPrescripDetail(params) {
+  getPrescriptionDetail(params) {
     const isMock = false
 
     const apiPath = 'ehospital/center/prescription/getDetail'

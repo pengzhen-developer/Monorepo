@@ -121,7 +121,7 @@
                           min-width="60"
                           prop="sex"></PeaceTableColumn>
         <PeaceTableColumn label="年龄"
-                          min-width="60"
+                          min-width="70"
                           prop="age"></PeaceTableColumn>
         <PeaceTableColumn label="身份证号"
                           width="140">
@@ -182,21 +182,20 @@
     </div>
 
     <!-- 咨询订单详情 -->
-    <PeaceDialog v-if="orderDetailDialog.visible"
-                 :visible.sync="orderDetailDialog.visible"
-                 append-to-body
+    <PeaceDialog append-to-body
                  title="咨询订单详情"
-                 width="500px">
+                 v-if="orderDetailDialog.visible"
+                 v-bind:visible.sync="orderDetailDialog.visible">
       <PeaceOrderInquiryDetail v-bind:data="orderDetailDialog.data"
                                v-bind:type="'inquiry'"></PeaceOrderInquiryDetail>
     </PeaceDialog>
-    <PeaceDialog v-if="dialogVisible"
-                 :visible.sync="dialogVisible"
-                 append-to-body
-                 class="inquiry scroll-body"
+    <PeaceDialog append-to-body
                  title="咨询记录"
-                 width="800px">
-      <message-list :info="currentInquiry"></message-list>
+                 v-if="dialogVisible"
+                 v-bind:visible.sync="dialogVisible">
+      <PeaceIMMessageHistory v-bind:data="currentInquiry.msgInfo"
+                             v-bind:messageFlowIn="currentInquiry.doctorInfo"
+                             v-bind:messageFlowOut="currentInquiry.patientInfo"></PeaceIMMessageHistory>
     </PeaceDialog>
 
   </div>
@@ -205,12 +204,11 @@
 <script>
 import CONSTANT from './constant'
 import Service from './service'
-import MessageList from './components/message-list'
-import { PeaceOrderInquiryDetail } from 'peace-components'
+import { PeaceIMMessageHistory, PeaceOrderInquiryDetail } from 'peace-components'
 import Util from '@src/util'
 export default {
   name: 'ConsultOrder',
-  components: { PeaceOrderInquiryDetail, MessageList },
+  components: { PeaceOrderInquiryDetail, PeaceIMMessageHistory },
   data() {
     return {
       model: {

@@ -208,20 +208,19 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-    <PeaceDialog :visible.sync="presDialogVisible"
-                 append-to-body
+    <PeaceDialog append-to-body
                  title="处方详情"
                  v-if="presDialogVisible"
-                 width="580px">
-      <prescription-info :id="currentPres"></prescription-info>
+                 v-bind:visible.sync="presDialogVisible">
+      <PeacePrescriptionDetail v-bind:data="currentPres"></PeacePrescriptionDetail>
     </PeaceDialog>
-    <PeaceDialog :visible.sync="inquiryDialogVisible"
-                 append-to-body
-                 class="inquiry scroll-body"
-                 :title="detailTitle"
+    <PeaceDialog append-to-body
                  v-if="inquiryDialogVisible"
-                 width="800px">
-      <message-list :info="currentInquiry"></message-list>
+                 v-bind:title="detailTitle"
+                 v-bind:visible.sync="inquiryDialogVisible">
+      <PeaceIMMessageHistory v-bind:data="currentInquiry.msgInfo"
+                             v-bind:messageFlowIn="currentInquiry.doctorInfo"
+                             v-bind:messageFlowOut="currentInquiry.patientInfo"></PeaceIMMessageHistory>
     </PeaceDialog>
 
   </div>
@@ -230,12 +229,11 @@
 <script>
 import CONSTANT from './constant'
 import Service from './service'
-import PrescriptionInfo from './components/PrescriptionInfo.js'
-import MessageList from './components/MessageList.js'
+import { PeaceIMMessageHistory, PeacePrescriptionDetail } from 'peace-components'
 
 export default {
   name: 'PatientDetail',
-  components: { PrescriptionInfo, MessageList },
+  components: { PeaceIMMessageHistory, PeacePrescriptionDetail },
   data() {
     return {
       source: {
@@ -306,8 +304,15 @@ export default {
       })
     },
     getPresInfo(id) {
-      this.currentPres = id
+      const fetch = async () => {
+        const params = { prescriptionNo: id }
+        const res = await Service.getPrescriptionDetail(params)
+
+        return res.data
+      }
+
       this.presDialogVisible = true
+      this.currentPres = fetch
     },
     getInfo(patientNo) {
       this.activeName = this.$route.query.type ? this.$route.query.type : 'inquiry'

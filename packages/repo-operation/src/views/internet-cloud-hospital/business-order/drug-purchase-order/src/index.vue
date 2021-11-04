@@ -182,23 +182,17 @@
       </PeaceTable>
     </div>
     <!-- 处方详情 -->
-    <peace-dialog :close-on-click-modal="false"
-                  :close-on-press-escape="false"
-                  :visible.sync="presDialogVisible"
+    <peace-dialog append-to-body
                   title="处方详情"
                   v-if="presDialogVisible"
-                  append-to-body
-                  width="580px">
-      <pres-info :info="currentPres"></pres-info>
+                  v-bind:visible.sync="presDialogVisible">
+      <PeacePrescriptionDetail v-bind:data="currentPres"></PeacePrescriptionDetail>
     </peace-dialog>
     <!-- 购药订单详情 -->
-    <peace-dialog :close-on-click-modal="false"
-                  :close-on-press-escape="false"
-                  :visible.sync="purchaseDialogVisible"
+    <peace-dialog append-to-body
                   title="购药订单详情"
                   v-if="purchaseDialogVisible"
-                  append-to-body
-                  width="576px">
+                  v-bind:visible.sync="purchaseDialogVisible">
       <purchase-order-info :info="currentPurchase"
                            @viewPres="viewPres"></purchase-order-info>
     </peace-dialog>
@@ -209,8 +203,8 @@
 import Service from './service'
 import Constant from './constant'
 
-import PresInfo from './components/PrescriptionOrderDetail'
 import PurchaseOrderInfo from './components/DrugPurchaseOrderDetail'
+import { PeacePrescriptionDetail } from 'peace-components'
 
 export default {
   name: 'drug-purchase-order',
@@ -301,21 +295,19 @@ export default {
     },
     // 用药建议（处方）
     getPres(id) {
-      const params = { prescribeId: id }
-      Service.getPresInfo(params)
-        .then((res) => {
-          this.presDialogVisible = true
-          this.currentPres = res.data
-          this.currentPres.prescriptionId = id
-        })
-        .catch((res) => {
-          this.$message.error(res.msg)
-          this.presDialogVisible = false
-        })
+      const fetch = async () => {
+        const params = { prescriptionNo: id }
+        const res = await Service.getPrescriptionDetail(params)
+
+        return res.data
+      }
+
+      this.presDialogVisible = true
+      this.currentPres = fetch
     },
     // 查看处方（购药订单子组件触发）
     viewPres(param) {
-      return this.getPres(param.ids, param.idx)
+      return this.getPres(param.ids)
     },
     // 购药订单
     getPurchaseOrder(data, orderNo, index) {
@@ -366,7 +358,7 @@ export default {
   },
 
   components: {
-    PresInfo,
+    PeacePrescriptionDetail,
     PurchaseOrderInfo
   }
 }

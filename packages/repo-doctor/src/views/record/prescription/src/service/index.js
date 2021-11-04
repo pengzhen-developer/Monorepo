@@ -20,7 +20,7 @@ export function getPrescripList(params) {
  * @param {*}
  * @return {*}
  */
-export function getPrescripDetail(params) {
+export function getPrescriptionDetail(params) {
   const isMock = false
 
   const apiPath = 'ehospital/center/prescription/getDetail'
@@ -43,5 +43,5 @@ export function getPrescripDetail(params) {
 
 export default {
   getPrescripList,
-  getPrescripDetail
+  getPrescriptionDetail
 }

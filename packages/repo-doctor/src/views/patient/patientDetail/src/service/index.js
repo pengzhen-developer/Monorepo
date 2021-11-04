@@ -29,7 +29,7 @@ export function getCaseDetail(params) {
  * @param {*}
  * @return {*}
  */
-export function getPrescripDetail(params) {
+export function getPrescriptionDetail(params) {
   const isMock = false
 
   const apiPath = 'ehospital/center/prescription/getDetail'
@@ -171,14 +171,46 @@ export function getOneInquiry(params) {
   return Peace.http.get(requestApi, { params })
 }
 
+/**
+ * @description: 获取首次诊疗记录详情
+ * @param {*} params
+ * @return {*}
+ */
+export function getFirstOptionDetail(params) {
+  const isMock = false
+
+  const apiPath = 'ehospital/center/record/getFirstOptionDetail'
+  const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+  const serverPath = process.env.VUE_APP_API_CONVERGE + apiPath
+
+  const requestApi = isMock ? mockPath : serverPath
+
+  // TODO:
+  // 聚合层不需要 token，移除所有 token
+  // 更好的办法是兼容 token
+  return Peace.http.post(requestApi, params, {
+    headers: {
+      'content-type': 'application/json'
+    },
+    transformRequest: [
+      function(data, headers) {
+        delete headers.accesstoken
+
+        return JSON.stringify(data)
+      }
+    ]
+  })
+}
+
 export default {
   inspectionDetail,
   pacsDetail,
   getCaseDetail,
-  getPrescripDetail,
+  getPrescriptionDetail,
   getAllHealthList,
   getOneHealth,
   getHealthCase,
   getPatientInquiryList,
-  getOneInquiry
+  getOneInquiry,
+  getFirstOptionDetail
 }

@@ -97,7 +97,7 @@ export default {
 
     async fetch() {
       const params = { prescriptionNo: this.data.content.data.recipeInfo.recipeId }
-      const res = await Service.getPrescripDetail(params)
+      const res = await Service.getPrescriptionDetail(params)
 
       return res.data
     }

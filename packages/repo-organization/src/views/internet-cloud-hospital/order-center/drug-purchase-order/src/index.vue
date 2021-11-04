@@ -203,8 +203,7 @@
                  title="处方详情"
                  v-if="prescriptionDialogVisible"
                  width="580px">
-      <prescription-info :id="currentPrescription"
-                         @viewPres="viewPres"></prescription-info>
+      <PeacePrescriptionDetail v-bind:data="currentPrescription"></PeacePrescriptionDetail>
     </PeaceDialog>
     <PeaceDialog :visible.sync="drugPurchaseOrder.visible"
                  append-to-body
@@ -221,13 +220,13 @@
 <script>
 import CONSTANT from './constant'
 import Service from './service'
-import PrescriptionInfo from './components/PrescriptionInfo.js'
 import DrugPurchaseDetail from './components/DrugPurchaseDetail'
 import Util from '@src/util'
+import { PeacePrescriptionDetail } from 'peace-components'
 
 export default {
   name: 'DrugPurchaseOrder',
-  components: { PrescriptionInfo, DrugPurchaseDetail },
+  components: { PeacePrescriptionDetail, DrugPurchaseDetail },
   data() {
     return {
       model: {
@@ -310,26 +309,24 @@ export default {
       return result.join(',')
     },
     showExportModel() {
-
       const info = Util.user.getHospitalInfo() ?? {}
 
       let params = Peace.util.deepClone(this.model)
-      params.type = "drug"
+      params.type = 'drug'
       params.hospitalId = info.id
       params.startTime = params.startTime ? params.startTime + ' 00:00:00' : ''
       params.endTime = params.endTime ? params.endTime + ' 23:59:59' : ''
 
       this.exportLoading = true
       Service.isExistList(params)
-          .then(() => {
-            Service.exportOrder(params).finally(() => {
-              this.exportLoading = false
-            })
-          })
-          .catch(() => {
+        .then(() => {
+          Service.exportOrder(params).finally(() => {
             this.exportLoading = false
           })
-
+        })
+        .catch(() => {
+          this.exportLoading = false
+        })
     },
     getList() {
       const fetch = Service.getDrugOrderList
@@ -346,8 +343,15 @@ export default {
       })
     },
     getPrescriptionDetail(id) {
-      this.currentPrescription = id
+      const fetch = async () => {
+        const params = { prescriptionNo: id }
+        const res = await Service.getPrescriptionDetail(params)
+
+        return res.data
+      }
+
       this.prescriptionDialogVisible = true
+      this.currentPrescription = fetch
     },
     // 查看处方（购药订单子组件触发,处方详情子组件触发）
     viewPres(param) {

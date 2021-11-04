@@ -183,7 +183,7 @@ export default {
 
     async fetchPrescription(prescriptionNo) {
       const params = { prescriptionNo: prescriptionNo }
-      const res = await Service.getPrescripDetail(params)
+      const res = await Service.getPrescriptionDetail(params)
 
       return res.data
     },

@@ -103,7 +103,7 @@ export default {
       message.onAccept = () => {
         const fetch = async () => {
           const params = { prescriptionNo: notifyObject.content.prescriptionId }
-          const res = await Service.getPrescripDetail(params)
+          const res = await Service.getPrescriptionDetail(params)
 
           return res.data
         }
