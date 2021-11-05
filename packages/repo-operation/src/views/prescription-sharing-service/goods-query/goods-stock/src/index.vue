@@ -21,8 +21,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="商品名称"
-                      required>
+        <el-form-item label="商品名称">
           <el-input v-model.trim="model.GoodName"
                     clearable
                     placeholder="请输入"></el-input>
@@ -121,8 +120,8 @@ export default {
   methods: {
     fetch() {
       const params = Object.assign({}, this.model)
-      if (!(params.Code && params.GoodName)) {
-        return Peace.util.error('选择供应门店/仓和商品名称才能支持查询')
+      if (!params.Code) {
+        return Peace.util.error('选择供应门店/仓才能支持查询')
       }
       const fetch = Service.GetStockByDrugStoreId
       this.$refs.table.reloadData({ fetch, params })
