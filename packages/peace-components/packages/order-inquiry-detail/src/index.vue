@@ -71,8 +71,8 @@
           </div>
           <div class="info-row-content">
             {{ internalData.guardianName }} |
-            {{ ininternalDatafo.guardianSex }} |
-            {{ ininternalDatafo.guardianAge }}
+            {{ internalData.guardianSex }} |
+            {{ internalData.guardianAge }}
           </div>
         </div>
       </div>
