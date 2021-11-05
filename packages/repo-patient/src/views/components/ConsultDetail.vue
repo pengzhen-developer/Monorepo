@@ -916,24 +916,31 @@ export default {
         params.hideLoad = true
       }
       this.load = false
-      peace.service.patient.inquiryDetail(params).then(async (res) => {
-        let inquiryInfo = res.data.inquiryInfo
-        let expireTime = inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
-        if (expireTime > inquiryInfo.currentTime) {
-          res.data.inquiryInfo.time = (expireTime - inquiryInfo.currentTime) * 1000
-        }
-        this.internalData = Object.assign({}, res.data)
-        this.phoneDialog.data.phone = this.internalData.orderInfo.serviceTel
-        this.cbDialog.data.money = this.internalData.orderInfo.orderMoney
-        if (res.data.inquiryInfo.serviceType == 'returnVisit') {
-          await this.getFirstOptionList()
-        }
-        if (!this.firstLoad) {
-          this.getCancelCause()
-        }
-        this.firstLoad = true
-        this.load = true
-      })
+      peace.service.patient
+        .inquiryDetail(params)
+        .then(async (res) => {
+          let inquiryInfo = res.data.inquiryInfo
+          let expireTime = inquiryInfo.inquiryStatus == 1 ? inquiryInfo.orderExpireTime : inquiryInfo.orderReceptTime
+          if (expireTime > inquiryInfo.currentTime) {
+            res.data.inquiryInfo.time = (expireTime - inquiryInfo.currentTime) * 1000
+          }
+          this.internalData = Object.assign({}, res.data)
+          this.phoneDialog.data.phone = this.internalData.orderInfo.serviceTel
+          this.cbDialog.data.money = this.internalData.orderInfo.orderMoney
+          if (res.data.inquiryInfo.serviceType == 'returnVisit') {
+            await this.getFirstOptionList()
+          }
+          if (!this.firstLoad) {
+            this.getCancelCause()
+          }
+          this.firstLoad = true
+          this.load = true
+        })
+        .finally(() => {
+          if (type === 'refresh-cancel') {
+            this.cancelCauseDialog.visible = false
+          }
+        })
     },
     getFirstOptionList() {
       const params = {
@@ -1028,20 +1035,18 @@ export default {
         .then((res) => {
           peace.util.alert(res.msg)
 
-          this.get()
+          this.getConsultDetail('refresh-cancel')
         })
         .catch((res) => {
           if (res.data.code == '202') {
             this.invoiceDialog.visible = true
             this.invoiceDialog.data.message = res.data.msg
+            this.cancelCauseDialog.visible = false
           } else {
             setTimeout(() => {
-              this.get()
+              this.getConsultDetail('refresh-cancel')
             }, 1500)
           }
-        })
-        .finally(() => {
-          this.cancelCauseDialog.visible = false
         })
     },
     viewImage(file, fileIndex, files) {
