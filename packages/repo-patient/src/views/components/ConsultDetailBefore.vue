@@ -942,6 +942,9 @@ export default {
   .module-item-label {
     color: rgba(51, 51, 51, 0.6);
     margin-right: 5px;
+    &.start {
+      min-width: 5em;
+    }
   }
   .module-item-value {
     color: #333333;

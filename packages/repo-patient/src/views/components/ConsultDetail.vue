@@ -1572,9 +1572,9 @@ export default {
     margin-left: 5px;
     &.zx {
       background-color: #00c6ae;
-      &.fz {
-        background-color: #fa8c16;
-      }
+    }
+    &.fz {
+      background-color: #fa8c16;
     }
   }
 
