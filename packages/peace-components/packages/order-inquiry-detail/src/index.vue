@@ -27,7 +27,8 @@
     </div>
     <div>
 
-      <div class="info-block">
+      <div class="info-block"
+           v-if="internalData.appointmentDate">
         <div class="info-row">
           <div class="info-row-label label-title">
             <span>复诊时间</span>
@@ -35,7 +36,49 @@
           <div class="info-row-content">{{ internalData.appointmentDate }}</div>
         </div>
       </div>
-      <div class="info-block">
+
+      <div class="info-block"
+           v-if="type === 'inquiry'">
+        <div class="info-title">个人信息</div>
+        <div class="info-row half">
+          <div class="info-row-label">
+            <span>姓名：</span>
+          </div>
+          <div class="info-row-content">
+            <span>{{ internalData.patient_name }}</span>
+          </div>
+        </div>
+        <div class="info-row half">
+          <div class="info-row-label">
+            <span>年龄：</span>
+          </div>
+          <div class="info-row-content">
+            <span v-if="internalData.age">{{ internalData.age }}</span>
+          </div>
+        </div>
+        <div class="info-row half">
+          <div class="info-row-label">
+            <span>性别：</span>
+          </div>
+          <div class="info-row-content">
+            <span>{{ internalData.sex }}</span>
+          </div>
+        </div>
+        <div class="info-row half"
+             v-if="hasGurdian">
+          <div class="info-row-label">
+            <span>监护人：</span>
+          </div>
+          <div class="info-row-content">
+            {{ internalData.guardianName }} |
+            {{ ininternalDatafo.guardianSex }} |
+            {{ ininternalDatafo.guardianAge }}
+          </div>
+        </div>
+      </div>
+
+      <div class="info-block"
+           v-else-if="type === 'returnVisit'">
         <div class="info-row">
           <div class="info-row-label label-title">
             <span>个人信息</span>
@@ -441,7 +484,7 @@ $border-color: #eee;
     vertical-align: middle;
   }
   .info-row-label {
-    color: #778899;
+    color: rgba(51, 51, 51, 0.6);
     white-space: nowrap;
     & > span {
       min-width: 4em;
@@ -523,7 +566,7 @@ $border-color: #eee;
 }
 .spec-row {
   padding: 5px 12px;
-  margin: 10px 0;
+  margin: 10px 0 0 0;
   border-radius: 8px;
   background-color: #f5f5f5;
   font-size: 13px;
@@ -608,6 +651,14 @@ $border-color: #eee;
   width: 100%;
   &.half {
     width: 50%;
+    .info-row-label {
+      & > span {
+        min-width: 2em;
+      }
+    }
+    .info-row-content {
+      padding-left: 0;
+    }
   }
 }
 
