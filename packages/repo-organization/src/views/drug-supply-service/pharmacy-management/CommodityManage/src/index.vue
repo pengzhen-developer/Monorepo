@@ -266,6 +266,15 @@ export default {
     }
   },
 
+  watch: {
+    $route(to) {
+      console.log(to)
+      if (to.name === this.$options.name) {
+        this.refreshData()
+      }
+    }
+  },
+
   created() {
     this.model.PharmacyCode = Peace.cache.sessionStorage.get('Code')
   },
@@ -286,6 +295,15 @@ export default {
   },
 
   methods: {
+    async refreshData() {
+      this.model.PharmacyCode = Peace.cache.sessionStorage.get('Code')
+      this.source.DRUG_STATUS = await Peace.identity.dictionary.getList('IsShelves')
+      await this.getServiceInfo()
+      this.$nextTick().then(() => {
+        this.fetch()
+      })
+    },
+
     fetch() {
       this.loading = true
       const fetch = Service.getGoodsList
