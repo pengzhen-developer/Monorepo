@@ -96,10 +96,7 @@ export default {
   name: 'PeacePrescriptionAuditResult',
 
   props: {
-    data: {
-      type: [Object, Function],
-      required: false
-    }
+    data: [Object, Function]
   },
 
   data() {
