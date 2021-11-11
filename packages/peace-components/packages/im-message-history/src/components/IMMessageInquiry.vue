@@ -25,7 +25,7 @@
           <el-tag v-if="showPayType"
                   class="q-mr-32"
                   style="transform: scale(0.8);"
-                  type="warning">{{ payTypeText }} 1</el-tag>
+                  type="warning">{{ payTypeText }}</el-tag>
 
           <el-image fit="fill"
                     class="inquriy-type-tag"
