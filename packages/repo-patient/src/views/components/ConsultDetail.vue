@@ -889,8 +889,13 @@ export default {
               title: '温馨提示',
               message: res.data.msg,
               confirmButtonText: '确定',
-              showCancelButton: false
+              cancelButtonText: '联系客服'
             })
+              .then(() => {})
+              .catch(() => {
+                //医保卡不可用 请联系客服
+                this.callPhone()
+              })
           } else {
             peace.util.alert(res.data.msg)
           }
