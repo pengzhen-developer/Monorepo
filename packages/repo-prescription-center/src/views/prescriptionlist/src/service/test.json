@@ -1,0 +1,39 @@
+{
+  "success": true,
+  "code": 200,
+  "data": {
+    "records": [
+      {
+        "jztClaimNo": "16900887899002",
+        "prescriptionImageUrl": "https://devzyy.holoalpha.com/doctor/static/img/logo.75266271.png",
+        "prescriptionNo": "99890002",
+        "bussinessChannel": "幂药云",
+        "application": "幂药云",
+        "channel": "快手",
+        "hosName": "天津市北辰医院",
+        "updateTime": "2021-04-08 12:00:100"
+      },
+      {
+        "jztClaimNo": "169008878990112",
+        "prescriptionImageUrl": "https://devzyy.holoalpha.com/doctor/static/img/logo.75266271.png",
+        "prescriptionNo": "99891302",
+        "bussinessChannel": "幂药云",
+        "application": "幂药云",
+        "channel": "快手",
+        "hosName": "天津市北辰医院",
+        "updateTime": "2021-04-08 12:00:100"
+      },
+      {
+        "jztClaimNo": "23500887899002",
+        "prescriptionImageUrl": "",
+        "prescriptionNo": "99893302",
+        "bussinessChannel": "幂药云",
+        "application": "幂药云",
+        "channel": "快手",
+        "hosName": "上海市朱泾社区卫生服务中心",
+        "updateTime": "2021-04-08 12:00:100"
+      }
+    ],
+    "total": 3
+  }
+}

@@ -14,6 +14,7 @@ module.exports = {
     './packages/repo-operation',
     './packages/repo-organization',
     './packages/repo-organization-center',
+    './packages/repo-prescription-center',
     './packages/repo-patient',
     './packages/repo-pharmacist',
     './packages/repo-website'
