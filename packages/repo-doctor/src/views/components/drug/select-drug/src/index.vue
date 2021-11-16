@@ -1,33 +1,16 @@
 <template>
   <div>
     <div class="flex justify-between q-my-md">
-      <el-form space-none
-               inline
+      <el-form inline
+               space-none
                v-bind:model="model">
-        <el-form-item v-if="type !== `faceToFace`"
-                      required
-                      label="Rp 类型：">
+        <el-form-item label="Rp 类型："
+                      required>
           <el-radio-group v-model="model.prescriptionTag">
             <el-radio v-for="item in source.prescriptionTag"
                       v-bind:key="item.value"
-                      v-bind:label="item.value"
-                      v-bind:disabled="disabledInsideDrug(item)">
-              <template v-if="disabledInsideDrug(item)">
-                <el-tooltip content=""
-                            placement="top"
-                            effect="light">
-                  <div class="flex items-center justify-center"
-                       slot="content">
-                    <i style="color: #EA940FFF;"
-                       class="el-alert__icon el-icon-warning q-mr-sm"></i>
-                    <span>该就诊人在 HIS无建档信息，不能开具院内处方</span>
-                  </div>
-                  <span>{{ item.label }}</span>
-                </el-tooltip>
-              </template>
-              <template v-else>
+                      v-bind:label="Number(item.value)">
                 <span>{{ item.label }}</span>
-              </template>
             </el-radio>
           </el-radio-group>
         </el-form-item>
@@ -35,40 +18,41 @@
 
       <div>
         <el-button plain
-                   v-on:click="showHistoryPrescription">历史处方</el-button>
+                   v-on:click="showHistoryPrescription">历史处方
+        </el-button>
       </div>
     </div>
 
-    <div class="q-mb-md"
-         v-show="value && value.length > 0">
+    <div v-show="value && value.length > 0"
+         class="q-mb-md">
       <PeaceTable class="editable q-mb-sm"
                   size="medium"
                   v-bind:data="value">
         <PeaceTableColumn label="药品名称"
-                          prop="drugName"
-                          min-width="120px">
+                          min-width="120px"
+                          prop="drugName">
           <template v-slot:default="{ row }">
             <div class="ellipsis">
               <el-tooltip effect="light"
                           placement="top-start">
 
                 <div>
-                  <span class="disable_tags"
-                        v-if="row.drugStatus === 'disable'">停用</span>
-                  <span class="medical_tags"
-                        v-if="row.isMedical === 1">医保</span>
+                  <span v-if="row.drugStatus === 'disable'"
+                        class="disable_tags">停用</span>
+                  <span v-if="row.isMedical === 1"
+                        class="medical_tags">医保</span>
                   <span>{{ row.drugName }}</span>
                 </div>
 
-                <div style="max-width: 200px;"
-                     slot="content">
+                <div slot="content"
+                     style="max-width: 200px;">
                   <div class="flex q-mb-sm">
                     <span class="text-black"
                           style="width: 60px;">药品名称：</span>
-                    <span class="disable_tags"
-                          v-if="row.drugStatus === 'disable'">停用</span>
-                    <span class="medical_tags"
-                          v-if="row.isMedical === 1">医保</span>
+                    <span v-if="row.drugStatus === 'disable'"
+                          class="disable_tags">停用</span>
+                    <span v-if="row.isMedical === 1"
+                          class="medical_tags">医保</span>
                     <span class="col">{{ row.drugName }}</span>
                   </div>
                   <div class="flex q-mb-sm">
@@ -87,10 +71,10 @@
           </template>
         </PeaceTableColumn>
 
-        <PeaceTableColumn show-overflow-tooltip
-                          label="药品规格"
+        <PeaceTableColumn label="药品规格"
+                          min-width="80px"
                           prop="specification"
-                          min-width="80px">
+                          show-overflow-tooltip>
           <template v-slot:default="{ row }">
             {{ row.specification }}
           </template>
@@ -102,21 +86,21 @@
             <span>单次剂量</span>
           </template>
           <template v-slot:default="{ $index, row }">
-            <el-form v-on:submit.native.prevent
+            <el-form v-bind:model="row"
                      v-bind:show-message="false"
-                     v-bind:model="row">
-              <el-form-item required
-                            prop="singleDose">
+                     v-on:submit.native.prevent>
+              <el-form-item prop="singleDose"
+                            required>
                 <div class="flex justify-center items-center">
-                  <el-input-number class="editable col"
-                                   style="width: 90px"
-                                   placeholder="请输入"
+                  <el-input-number v-bind:id="`row-${$index}-component`"
+                                   v-model="row.singleDose"
+                                   class="editable col"
                                    controls-position="right"
-                                   v-on:change="calculateCount(row)"
-                                   v-on:blur="formatNumeral(row, 'singleDose', '0.000')"
-                                   v-bind:id="`row-${$index}-component`"
+                                   placeholder="请输入"
+                                   style="width: 90px"
                                    v-bind:min="0.001"
-                                   v-model="row.singleDose"></el-input-number>
+                                   v-on:blur="formatNumeral(row, 'singleDose', '0.000')"
+                                   v-on:change="calculateCount(row)"></el-input-number>
                   <span class="text-caption ellipsis text-grey-666 q-mx-xs"
                         style="max-width: 50px;"
                         v-bind:title="row.drugUnit">{{ row.drugUnit }}</span>
@@ -132,18 +116,18 @@
             <span>用药频次</span>
           </template>
           <template v-slot:default="{ row }">
-            <el-form v-on:submit.native.prevent
+            <el-form v-bind:model="row"
                      v-bind:show-message="false"
-                     v-bind:model="row">
-              <el-form-item required
-                            inline-message
-                            prop="drugFrequencyId">
-                <el-select clearable
-                           filterable
+                     v-on:submit.native.prevent>
+              <el-form-item inline-message
+                            prop="drugFrequencyId"
+                            required>
+                <el-select v-model="row.drugFrequencyId"
                            class="editable"
+                           clearable
+                           filterable
                            placeholder="请选择"
-                           v-on:change="calculateCount(row)"
-                           v-model="row.drugFrequencyId">
+                           v-on:change="calculateCount(row)">
                   <el-option v-for="item in source.drugFrequencyList"
                              v-bind:key="item.id"
                              v-bind:label="item.drugtimes_name"
@@ -160,17 +144,17 @@
             <span>给药途径</span>
           </template>
           <template v-slot:default="{ row }">
-            <el-form v-on:submit.native.prevent
+            <el-form v-bind:model="row"
                      v-bind:show-message="false"
-                     v-bind:model="row">
-              <el-form-item required
-                            inline-message
-                            prop="drugRouteId">
-                <el-select clearable
-                           filterable
+                     v-on:submit.native.prevent>
+              <el-form-item inline-message
+                            prop="drugRouteId"
+                            required>
+                <el-select v-model="row.drugRouteId"
                            class="editable"
-                           placeholder="请选择"
-                           v-model="row.drugRouteId">
+                           clearable
+                           filterable
+                           placeholder="请选择">
                   <el-option v-for="item in source.drugRouteList"
                              v-bind:key="item.id"
                              v-bind:label="item.drugway_name"
@@ -187,20 +171,20 @@
             <span>用药天数</span>
           </template>
           <template v-slot:default="{ row }">
-            <el-form v-on:submit.native.prevent
+            <el-form v-bind:model="row"
                      v-bind:show-message="false"
-                     v-bind:model="row">
-              <el-form-item required
-                            inline-message
-                            prop="useDrugDays">
+                     v-on:submit.native.prevent>
+              <el-form-item inline-message
+                            prop="useDrugDays"
+                            required>
                 <div class="flex justify-center items-center">
-                  <el-input-number class="editable col"
+                  <el-input-number v-model="row.useDrugDays"
+                                   class="editable col"
                                    controls-position="right"
                                    placeholder="请输入"
-                                   v-bind:min="1"
                                    v-bind:max="60"
-                                   v-on:change="calculateCount(row)"
-                                   v-model="row.useDrugDays"></el-input-number>
+                                   v-bind:min="1"
+                                   v-on:change="calculateCount(row)"></el-input-number>
                 </div>
               </el-form-item>
             </el-form>
@@ -214,24 +198,24 @@
             <span>药品数量</span>
           </template>
           <template v-slot:default="{ row }">
-            <el-form v-on:submit.native.prevent
-                     v-bind:show-message="false"
+            <el-form inline
                      v-bind:model="row"
-                     inline>
-              <el-form-item required
-                            prop="drugNum"
+                     v-bind:show-message="false"
+                     v-on:submit.native.prevent>
+              <el-form-item prop="drugNum"
+                            required
                             style="margin: 0 4px 0 0;">
-                <el-input-number class="editable"
-                                 placeholder="请输入"
+                <el-input-number v-model="row.drugNum"
+                                 class="editable"
                                  controls-position="right"
+                                 placeholder="请输入"
+                                 style="width: 80px"
                                  v-bind:min="1"
-                                 v-bind:precision="0"
-                                 v-model="row.drugNum"
-                                 style="width: 80px"></el-input-number>
+                                 v-bind:precision="0"></el-input-number>
               </el-form-item>
 
-              <el-form-item required
-                            prop="drugQuantityUnit"
+              <el-form-item prop="drugQuantityUnit"
+                            required
                             style="margin: 0;">
                 <el-select v-model="row.drugQuantityUnit"
                            style="width: 80px;"
@@ -253,34 +237,35 @@
                           width="55px">
           <template v-slot:default="scope">
             <el-button type="text text-grey-333"
-                       v-on:click="deleteDrugList(scope.row)">删除</el-button>
+                       v-on:click="deleteDrugList(scope.row)">删除
+            </el-button>
           </template>
         </PeaceTableColumn>
       </PeaceTable>
 
       <el-alert v-if="isColdStorag"
-                type="warning"
                 show-icon=""
                 title="处方中有冷藏储存的药品，请提醒患者到店/院自提"
+                type="warning"
                 v-bind:closable="false"></el-alert>
     </div>
 
-    <el-autocomplete size="medium"
+    <el-autocomplete v-model="queryDrugString"
                      class="q-mb-md full-width"
-                     suffix-icon="el-icon-search"
-                     popper-class="el-autocomplete-drug"
                      placeholder="+ 添加药品（最多可添加 5 种药品）"
-                     v-model="queryDrugString"
+                     popper-class="el-autocomplete-drug"
+                     size="medium"
+                     suffix-icon="el-icon-search"
                      v-bind:fetch-suggestions="getDrugList"
                      v-on:select="selectDrugList">
       <template v-slot:default="{ item }">
         <div class="flex q-py-sm el-autocomplete-drug-item"
              v-bind:class="{ disabled: item.drugStock === 0 }">
           <div class="col q-mr-md ellipsis">
-            <span class="disable_tags"
-                  v-if="item.drugStatus === 'disable'">停用</span>
-            <span class="medical_tags"
-                  v-if="item.isMedical === 1">医保</span>
+            <span v-if="item.drugStatus === 'disable'"
+                  class="disable_tags">停用</span>
+            <span v-if="item.isMedical === 1"
+                  class="medical_tags">医保</span>
             <span class="text-grey-333"
                   v-bind:title="item.drugName">{{ item.drugName }}</span>
           </div>
@@ -302,11 +287,11 @@
     </el-autocomplete>
 
     <PeaceDialog v-if="historyPrescriptionDialog.visible"
-                 v-bind:visible.sync="historyPrescriptionDialog.visible"
                  title="历史处方"
+                 v-bind:visible.sync="historyPrescriptionDialog.visible"
                  width="800px">
-      <PeaceTable pagination
-                  ref="table">
+      <PeaceTable ref="table"
+                  pagination>
         <PeaceTableColumn label="疾病诊断"
                           min-width="160px"
                           prop="diagnosis">
@@ -321,10 +306,10 @@
                  class="q-mb-sm">
               <div>
 
-                <span class="disable_tags"
-                      v-if="drug.drugStatus === 'disable'">停用</span>
-                <span class="medical_tags"
-                      v-if="drug.isMedical === 1">医保</span>
+                <span v-if="drug.drugStatus === 'disable'"
+                      class="disable_tags">停用</span>
+                <span v-if="drug.isMedical === 1"
+                      class="medical_tags">医保</span>
                 <span class="text-weight-bold q-mr-md">{{ drug.drugName }}</span>
                 <span class="text-caption">{{ drug.specification }}</span>
               </div>
@@ -336,13 +321,14 @@
             </div>
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn v-bind:show-overflow-tooltip="false"
-                          fixed="right"
+        <PeaceTableColumn fixed="right"
                           label="操作"
+                          v-bind:show-overflow-tooltip="false"
                           width="80px">
           <template v-slot:default="scope">
             <el-button type="text"
-                       v-on:click="checkHistoryPrescription(scope.row)">选择</el-button>
+                       v-on:click="checkHistoryPrescription(scope.row)">选择
+            </el-button>
           </template>
         </PeaceTableColumn>
       </PeaceTable>
@@ -355,7 +341,6 @@ import Service from './service'
 
 export default {
   props: {
-    isBuilding: Boolean,
 
     value: {
       type: Array,
@@ -364,16 +349,19 @@ export default {
       }
     },
 
-    prescriptionTag: {
-      type: Number,
-      default() {
-        return 1
-      }
-    },
+    prescriptionTag: Number,
 
     type: String,
-    scene: String,
-    patientNo: String
+    scene: {
+      type: String,
+      required: true
+    },
+    patientNo: String,
+    inquiryNo: String,
+    familyId: {
+      type: String,
+      required: true
+    }
   },
 
   data() {
@@ -383,16 +371,13 @@ export default {
       isColdStorag: false,
 
       model: {
-        prescriptionTag: 1
+        prescriptionTag: undefined
       },
 
       source: {
         drugFrequencyList: [],
         drugRouteList: [],
-        prescriptionTag: [
-          { label: '院内处方', value: 1 },
-          { label: '外延处方', value: 2 }
-        ]
+        prescriptionTag: []
       },
 
       commonlyPrescriptionDialog: {
@@ -434,19 +419,19 @@ export default {
       }
 
       if (this.value.length) {
-        this.$confirm('一张处方中只可开具同类药品目录，更换类型则已添加药品将清空，请确认', '提示', { center: true })
-          .then(() => {
-            this.value.splice(0, this.value.length)
+        this.$confirm('一张处方中只可开具同类药品目录，更换类型则已添加药品将清空，请确认', '提示', {center: true})
+            .then(() => {
+              this.value.splice(0, this.value.length)
 
-            this.$emit('update:prescriptionTag', newValue)
-          })
-          .catch(() => {
-            // 设定互斥锁
-            this.__lockRpCheck = oldValue
-            this.model.prescriptionTag = oldValue
+              this.$emit('update:prescriptionTag', newValue)
+            })
+            .catch(() => {
+              // 设定互斥锁
+              this.__lockRpCheck = oldValue
+              this.model.prescriptionTag = oldValue
 
-            this.$emit('update:prescriptionTag', oldValue)
-          })
+              this.$emit('update:prescriptionTag', oldValue)
+            })
       } else {
         this.$emit('update:prescriptionTag', newValue)
       }
@@ -457,16 +442,24 @@ export default {
     this.getDictionary()
   },
 
-  methods: {
-    disabledInsideDrug(item) {
-      const config = Peace.cache.sessionStorage.get('config')
+  async mounted() {
+    this.source.prescriptionTag = await Service.getPrescriptionSourceType({
+      source: this.scene,
+      inquiryNo: this.inquiryNo,
+      familyId: this.familyId
+    })
 
-      if (this.isBuilding === false && item.label === '院内处方' && config.hospitalTag === 'beichen') {
-        return true
-      } else {
-        return false
-      }
-    },
+    if (this.prescriptionTag) {
+      this.model.prescriptionTag = this.prescriptionTag
+    } else {
+      const tmp = this.source.prescriptionTag.filter((item) => `${item.selected}` === "1")
+      this.model.prescriptionTag = tmp.value ?? 1
+    }
+
+
+  },
+
+  methods: {
 
     getDictionary() {
       const userInfo = this.$store.state.user?.userInfo
@@ -518,20 +511,20 @@ export default {
     },
 
     getDrugList(queryString, cb) {
-      const params = { drugName: queryString, prescriptionTag: this.model.prescriptionTag }
+      const params = {drugName: queryString, prescriptionTag: this.model.prescriptionTag}
       const fetch = params.drugName ? Service.getDrugList : Service.getCommonlyDrugList
 
       fetch(params)
-        .then((res) => cb(res.data.list))
-        .finally(() => {
-          const popperPanel = document.body.querySelectorAll('.el-autocomplete-drug-item.disabled')
+          .then((res) => cb(res.data.list))
+          .finally(() => {
+            const popperPanel = document.body.querySelectorAll('.el-autocomplete-drug-item.disabled')
 
-          // 禁用点击事件
-          popperPanel.forEach((dom) => {
-            dom.parentElement.style.pointerEvents = 'none'
-            dom.parentElement.style.cursor = 'not-allowed'
+            // 禁用点击事件
+            popperPanel.forEach((dom) => {
+              dom.parentElement.style.pointerEvents = 'none'
+              dom.parentElement.style.cursor = 'not-allowed'
+            })
           })
-        })
     },
 
     async selectDrugList(drug) {
@@ -575,7 +568,7 @@ export default {
     },
 
     deleteDrugList(drug) {
-      this.$confirm(`确定从处方中删除【${drug.drugName}】`, '提示', { center: true }).then(() => {
+      this.$confirm(`确定从处方中删除【${drug.drugName}】`, '提示', {center: true}).then(() => {
         const drugIndex = this.value.findIndex((item) => item.drugId === drug.drugId)
 
         this.value.splice(drugIndex, 1)
@@ -708,8 +701,8 @@ export default {
       // 1， 提醒选择 - 来源不符
       // 2， 选择药品
       notifyAlreadySelect()
-        .then(notifyDrguSource)
-        .then(mergeDrug)
+          .then(notifyDrguSource)
+          .then(mergeDrug)
     },
 
     getHistoryPrescriptionList() {
@@ -718,7 +711,7 @@ export default {
       params.scene = this.scene
       params.patientNo = this.patientNo
 
-      this.$refs.table.loadData({ fetch, params })
+      this.$refs.table.loadData({fetch, params})
     },
 
     showHistoryPrescription() {
@@ -771,6 +764,7 @@ export default {
   th > .cell {
     padding: 8px 12px;
   }
+
   td > .cell {
     padding: 0 12px;
   }

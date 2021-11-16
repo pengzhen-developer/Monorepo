@@ -130,5 +130,25 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
+  },
+
+  /**
+   * 开方类型接口
+   *
+   * @param params
+   * @returns {*}
+   */
+  getPrescriptionSourceType(params) {
+    const isMock = true
+
+    const apiPath = 'webapp/prescription/Prescribeprescrip/getCate'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res.data ?? []
+    })
   }
 }

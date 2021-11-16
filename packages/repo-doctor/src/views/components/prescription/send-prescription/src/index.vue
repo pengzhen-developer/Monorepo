@@ -81,7 +81,7 @@
 
         <div class="row">
           <div class="col">
-            <el-form-item required=""
+            <el-form-item required
                           v-bind:show-message="false"
                           label="初步诊断：">
               <QuickSelectDiagnose style="width: 400px;"
@@ -111,8 +111,9 @@
         <DrugSelect ref="drugSelect"
                     v-bind:scene="`returnVisit`"
                     v-bind:patientNo="patientInfo.patientNo"
+                    v-bind:inquiryNo="inquiryNo"
+                    v-bind:familyId="patientInfo.familyId"
                     v-model="model.drugList"
-                    v-bind:isBuilding="isBuilding"
                     v-bind:prescriptionTag.sync="model.prescriptionTag"
                     v-bind:max-count="5"></DrugSelect>
       </div>
@@ -201,8 +202,6 @@ export default {
     return {
       // 病历详情
       caseInfo: {},
-      // 是否建档
-      isBuilding: undefined,
 
       model: {
         // 体重
@@ -254,7 +253,7 @@ export default {
     },
 
     showPayType() {
-      return this.inquiryNo && this.session?.content?.inquiryInfo?.paymentType != Type.INQUIRY.INQUIRY_PAY_TYPE.自费
+      return this.inquiryNo && this.session?.content?.inquiryInfo?.paymentType !== Type.INQUIRY.INQUIRY_PAY_TYPE.自费
     },
 
     payTypeText() {
@@ -276,9 +275,6 @@ export default {
   },
 
   async created() {
-    // 验证是否建档
-    // 北辰医院非建档用户，无法开具院内处方
-    await this.checkIsBuilding()
 
     // 带入病历信息
     await this.getCase()
@@ -298,7 +294,8 @@ export default {
         height: this.model.height,
         diagnoseList: this.model.diagnoseList,
         allergyHistoryList: this.model.allergyHistoryList,
-        drugList: this.model.drugList
+        drugList: this.model.drugList,
+        prescriptionTag: this.model.prescriptionTag
       }
 
       this.cacheKey && Peace.cache.sessionStorage.set(this.cacheKey, recipeCache)
@@ -341,27 +338,7 @@ export default {
 
         this.model.allergyHistoryList = recipeCache.allergyHistoryList
         this.model.diagnoseList = recipeCache.diagnoseList
-      }
-    },
-
-    // 北辰医院流程
-    // 检查是否建档
-    checkIsBuilding() {
-      const config = Peace.cache.sessionStorage.get('config')
-      const params = {
-        familyId: this.session.content.patientInfo.familyId
-      }
-
-      if (config.hospitalTag !== 'beichen') {
-        return Promise.resolve()
-      } else {
-        return Service.checkIsBuilding(params).then((res) => {
-          if (res.data.status === 2) {
-            // 未建档，默认选择外延处方
-            this.isBuilding = false
-            this.model.prescriptionTag = 2
-          }
-        })
+        this.model.prescriptionTag = recipeCache.prescriptionTag
       }
     },
 

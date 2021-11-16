@@ -132,6 +132,7 @@
                     v-bind:type="`faceToFace`"
                     v-bind:scene="`face`"
                     v-bind:patientNo="patientInfo.patientNo"
+                    v-bind:familyId="patientInfo.familyId"
                     v-bind:prescriptionTag.sync="model.prescriptionTag"
                     v-bind:max-count="5"></DrugSelect>
       </div>
