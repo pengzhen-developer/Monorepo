@@ -429,7 +429,6 @@ export default {
       familyId: this.familyId
     })
 
-    debugger
     if (this.prescriptionTag) {
       this.$nextTick(() => {
         this.model.prescriptionTag = this.prescriptionTag
