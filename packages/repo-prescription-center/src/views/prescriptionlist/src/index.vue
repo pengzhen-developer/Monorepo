@@ -124,14 +124,26 @@
 
     </div>
 
+    <peace-dialog append-to-body
+                  title="处方详情"
+                  v-if="dialog.visible"
+                  v-bind:visible.sync="dialog.visible">
+      <prescription-detail v-bind:data="dialog.data"></prescription-detail>
+    </peace-dialog>
+
   </div>
 </template>
 
 <script>
 import Service from './service'
+import PrescriptionDetail from './components/PrescriptionDetail'
 
 export default {
   name: 'orgList',
+
+  components: {
+    PrescriptionDetail
+  },
 
   data() {
     return {
@@ -147,9 +159,10 @@ export default {
         endTime: undefined
       },
       loading: false,
-      orgDetailOptions: {
-        show: false,
-        orgCode: undefined
+      dialog: {
+        visible: false,
+        jztClaimNo: undefined,
+        data: undefined
       }
     }
   },
@@ -191,13 +204,24 @@ export default {
       this.updateTime = []
     },
     showDetail(row) {
-      this.orgDetailOptions.orgCode = row.institutionCode
-      this.orgDetailOptions.show = true
+      this.dialog.jztClaimNo = row.jztClaimNo
+      this.dialog.visible = true
+      const tmp = this.fetchDetail.bind(this)
+      debugger
+      this.dialog.data = tmp
     },
+
+    async fetchDetail() {
+      const params = { jztClaimNo: this.dialog.jztClaimNo }
+      const res = await Service.getPrescription(params)
+      return res?.data
+    },
+
     close() {
-      this.orgDetailOptions = {
-        show: false,
-        orgCode: undefined
+      this.dialog = {
+        visible: false,
+        jztClaimNo: undefined,
+        data: undefined
       }
     }
   }
@@ -205,7 +229,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-//::v-deep .el-pagination.is-background .el-pager li:not(.disabled).active {
-//  background-color: #1890ff !important;
-//}
 </style>
