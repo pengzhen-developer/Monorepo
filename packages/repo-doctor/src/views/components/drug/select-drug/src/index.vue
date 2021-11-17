@@ -10,7 +10,7 @@
             <el-radio v-for="item in source.prescriptionTag"
                       v-bind:key="item.value"
                       v-bind:label="Number(item.value)">
-                <span>{{ item.label }}</span>
+              <span>{{ item.label }}</span>
             </el-radio>
           </el-radio-group>
         </el-form-item>
@@ -341,7 +341,6 @@ import Service from './service'
 
 export default {
   props: {
-
     value: {
       type: Array,
       default() {
@@ -402,36 +401,17 @@ export default {
       this.$emit('input', value)
     },
 
-    prescriptionTag: {
-      handler() {
-        // 由 props 传递的处方类型, 设定互斥锁
-        this.__lockRpCheck = this.prescriptionTag
-        this.model.prescriptionTag = this.prescriptionTag
-      },
-      immediate: true
-    },
-
     'model.prescriptionTag'(newValue, oldValue) {
-      // 验证互斥锁
-      if (this.__lockRpCheck !== undefined && this.__lockRpCheck === newValue) {
-        this.__lockRpCheck = undefined
-        return
-      }
-
       if (this.value.length) {
-        this.$confirm('一张处方中只可开具同类药品目录，更换类型则已添加药品将清空，请确认', '提示', {center: true})
-            .then(() => {
-              this.value.splice(0, this.value.length)
-
-              this.$emit('update:prescriptionTag', newValue)
-            })
-            .catch(() => {
-              // 设定互斥锁
-              this.__lockRpCheck = oldValue
-              this.model.prescriptionTag = oldValue
-
-              this.$emit('update:prescriptionTag', oldValue)
-            })
+        this.$confirm('一张处方中只可开具同类药品目录，更换类型则已添加药品将清空，请确认', '提示', { center: true })
+          .then(() => {
+            this.value.splice(0, this.value.length)
+            this.$emit('update:prescriptionTag', newValue)
+          })
+          .catch(() => {
+            this.model.prescriptionTag = oldValue
+            this.$emit('update:prescriptionTag', oldValue)
+          })
       } else {
         this.$emit('update:prescriptionTag', newValue)
       }
@@ -449,18 +429,20 @@ export default {
       familyId: this.familyId
     })
 
+    debugger
     if (this.prescriptionTag) {
-      this.model.prescriptionTag = this.prescriptionTag
+      this.$nextTick(() => {
+        this.model.prescriptionTag = this.prescriptionTag
+      })
     } else {
-      const tmp = this.source.prescriptionTag.filter((item) => `${item.selected}` === "1")
-      this.model.prescriptionTag = tmp.value ?? 1
+      const tmp = this.source.prescriptionTag.find((item) => `${item.selected}` === '1')
+      this.$nextTick(() => {
+        this.model.prescriptionTag = Number(tmp?.value ?? 1)
+      })
     }
-
-
   },
 
   methods: {
-
     getDictionary() {
       const userInfo = this.$store.state.user?.userInfo
       const params = {
@@ -511,20 +493,20 @@ export default {
     },
 
     getDrugList(queryString, cb) {
-      const params = {drugName: queryString, prescriptionTag: this.model.prescriptionTag}
+      const params = { drugName: queryString, prescriptionTag: this.model.prescriptionTag }
       const fetch = params.drugName ? Service.getDrugList : Service.getCommonlyDrugList
 
       fetch(params)
-          .then((res) => cb(res.data.list))
-          .finally(() => {
-            const popperPanel = document.body.querySelectorAll('.el-autocomplete-drug-item.disabled')
+        .then((res) => cb(res.data.list))
+        .finally(() => {
+          const popperPanel = document.body.querySelectorAll('.el-autocomplete-drug-item.disabled')
 
-            // 禁用点击事件
-            popperPanel.forEach((dom) => {
-              dom.parentElement.style.pointerEvents = 'none'
-              dom.parentElement.style.cursor = 'not-allowed'
-            })
+          // 禁用点击事件
+          popperPanel.forEach((dom) => {
+            dom.parentElement.style.pointerEvents = 'none'
+            dom.parentElement.style.cursor = 'not-allowed'
           })
+        })
     },
 
     async selectDrugList(drug) {
@@ -568,7 +550,7 @@ export default {
     },
 
     deleteDrugList(drug) {
-      this.$confirm(`确定从处方中删除【${drug.drugName}】`, '提示', {center: true}).then(() => {
+      this.$confirm(`确定从处方中删除【${drug.drugName}】`, '提示', { center: true }).then(() => {
         const drugIndex = this.value.findIndex((item) => item.drugId === drug.drugId)
 
         this.value.splice(drugIndex, 1)
@@ -701,8 +683,8 @@ export default {
       // 1， 提醒选择 - 来源不符
       // 2， 选择药品
       notifyAlreadySelect()
-          .then(notifyDrguSource)
-          .then(mergeDrug)
+        .then(notifyDrguSource)
+        .then(mergeDrug)
     },
 
     getHistoryPrescriptionList() {
@@ -711,7 +693,7 @@ export default {
       params.scene = this.scene
       params.patientNo = this.patientNo
 
-      this.$refs.table.loadData({fetch, params})
+      this.$refs.table.loadData({ fetch, params })
     },
 
     showHistoryPrescription() {

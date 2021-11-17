@@ -109,6 +109,7 @@
 
       <div class="q-mb-sm">
         <DrugSelect ref="drugSelect"
+                    v-if="caseInfo.id"
                     v-bind:scene="`returnVisit`"
                     v-bind:patientNo="patientInfo.patientNo"
                     v-bind:inquiryNo="inquiryNo"
@@ -275,7 +276,6 @@ export default {
   },
 
   async created() {
-
     // 带入病历信息
     await this.getCase()
 
