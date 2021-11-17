@@ -56,7 +56,8 @@
                round
                dense
                icon="arrow_drop_down">
-          <q-popup-proxy>
+          <q-popup-proxy v-model="isShow"
+                         v-on:toggle="toggle">
             <q-list dense
                     bordered
                     padding
@@ -119,6 +120,7 @@ import Service from './../service'
 export default {
   data() {
     return {
+      isShow: false,
       configuration: window.configuration,
       accountInfo: {},
       custName: '',
@@ -126,13 +128,24 @@ export default {
       userId: ''
     }
   },
-
+  watch: {
+    '$store.state.pharmacist.status': {
+      handler(status) {
+        this.status = status && status
+      },
+      immediate: true
+    }
+  },
   async beforeCreate() {
-    const custInfo = await Service.getCustName()
-    const accountInfo = await Peace.identity.auth.getAccountInfo()
+    try {
+      const custInfo = await Service.getCustName()
+      const accountInfo = await Peace.identity.auth.getAccountInfo()
 
-    this.accountInfo = accountInfo
-    this.custName = custInfo.data
+      this.accountInfo = accountInfo
+      this.custName = custInfo.data
+    } catch (error) {
+      console.log(error)
+    }
     this.getUserStatus()
   },
 
@@ -155,7 +168,11 @@ export default {
       Service.getUserStatus().then((res) => {
         this.userId = res.data.userId
         this.status = res.data.status
+        this.setStatus()
       })
+    },
+    setStatus() {
+      Peace.$store.commit('pharmacist/setStatus', this.status)
     },
     //更新用户状态
     updateUserStatus() {
@@ -177,10 +194,16 @@ export default {
           this.status = params.status == '1' ? '0' : '1'
         })
         .finally(() => {
-          setTimeout(() => {
-            window.location.reload()
-          }, 500)
+          this.setStatus()
+
+          // setTimeout(() => {
+          //   window.location.reload()
+          // }, 500)
+          this.toggle()
         })
+    },
+    toggle() {
+      this.isShow = !this.isShow
     }
   }
 }

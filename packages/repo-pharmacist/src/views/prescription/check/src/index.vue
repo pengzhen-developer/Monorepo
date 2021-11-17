@@ -1,37 +1,93 @@
 <template>
-  <PeaceIframe v-if="show"
-               full
-               v-bind:src="src"></PeaceIframe>
+  <div>
+    <!-- 无数据显示空态页 -->
+    <template>
+      <NoDataVIew v-if="noDataView"></NoDataVIew>
+    </template>
+
+    <!-- 药师工作状态 -->
+    <template>
+      <WorkStatusView v-if="statusView"></WorkStatusView>
+    </template>
+
+    <!-- 药师医网信签名设置 -->
+    <template>
+      <SignStatusView v-if="signStatusView"></SignStatusView>
+    </template>
+
+    <!-- 审方-处方详情 -->
+
+  </div>
 </template>
 
 <script>
-import PeaceIframe from '@src/views/peace-iframe'
-
+import Observable from '../observable'
+import NoDataVIew from './components/NoDataVIew'
+import SignStatusView from './components/SignStatusView'
+import WorkStatusView from './components/WorkStatusView'
+import Service from './service/index'
 export default {
   name: 'PrescriptionCheck',
 
   components: {
-    PeaceIframe
+    NoDataVIew,
+    SignStatusView,
+    WorkStatusView
   },
+  watch: {
+    '$store.state.pharmacist.status': {
+      handler(value) {
+        if (value === '0') {
+          Observable.mutations.changeView(Observable.constants.view.STATUS)
+        }
+        // if (value) {
+        // this.getUserStatus()
 
+        // }
+      },
+      immediate: true
+    }
+  },
   data() {
     return {
-      show: false,
-      src: ''
+      // info: {
+      //   userId: '',
+      //   status: ''
+      // }
+    }
+  },
+  computed: {
+    view() {
+      console.log(Observable.state.view)
+      return Observable.state.view
+    },
+    noDataView() {
+      return this.view === Observable.constants.view.NODATA
+    },
+    statusView() {
+      return this.view === Observable.constants.view.STATUS
+    },
+    signStatusView() {
+      return this.view === Observable.constants.view.SIGNSTATUS
+    },
+    detailView() {
+      return this.view === Observable.constants.view.DETAIL
     }
   },
 
-  created() {},
-  activated() {
-    this.show = true
-    let JZTClaimNo = this.$route.query.JZTClaimNo || ''
-    Peace.identity.auth.getAuth().then((res) => {
-      // 参数 Num 要写在首位，否则.net后端接收不到参数
-      this.src = `${process.env.VUE_APP_SITE_PHARMACIST}PharmacistPrescription/startPrescription?Num=${JZTClaimNo}&token=${res.access_token}`
-    })
+  created() {
+    // this.getUserStatus()
   },
-  deactivated() {
-    this.show = false
+  methods: {
+    getUserStatus() {
+      Service.getUserStatus().then((res) => {
+        // this.info.userId = res.data.userId
+        // this.info.status = res.data.status
+        if (res.data.status === '0') {
+          Observable.mutations.changeView(Observable.constants.view.STATUS)
+        }
+      })
+    }
   }
 }
 </script>
