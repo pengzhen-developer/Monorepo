@@ -5,7 +5,7 @@ export default {
    * @param {*} params
    */
   getPrescriptionList(params) {
-    const isMock = true
+    const isMock = false
 
     const apiPath = 'prescriptionCenter/getPrescriptionList'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
@@ -26,7 +26,7 @@ export default {
   getPrescription(params) {
     const isMock = false
 
-    const apiPath = 'prescriptionCenter/getPrescription'
+    const apiPath = 'prescriptionCenter/getPrescriptionInfo'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 

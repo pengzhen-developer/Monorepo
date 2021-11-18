@@ -81,12 +81,20 @@
           <PeaceTableColumn label="处方编号"
                             min-width="140">
             <template slot-scope="scope">
-              <div class="flex align-items-centerr">
-                <span style="height: 20px">{{scope.row.jztClaimNo}}</span>
-                <el-image class="q-ml-sm"
-                          style="width: 20px; height: 20px"
-                          :src="require('@src/assets/img/icon_pdf.png')"
-                          v-if="scope.row.prescriptionImageUrl"></el-image>
+              <div class="flex align-items-center"
+                   style="flex-wrap: nowrap">
+
+                <el-tooltip class="item"
+                            effect="dark"
+                            :content="scope.row.jztClaimNo"
+                            placement="top">
+                  <span style="height: 20px">{{scope.row.jztClaimNo}}</span>
+                </el-tooltip>
+
+                <img class="q-ml-sm"
+                     style="width: 20px; height: 20px"
+                     :src="require('@src/assets/img/icon_pdf.png')"
+                     v-if="scope.row.prescriptionImageUrl" />
               </div>
             </template>
           </PeaceTableColumn>
@@ -107,7 +115,7 @@
                             prop="hosName"></PeaceTableColumn>
           <PeaceTableColumn label="存储时间"
                             min-width="180"
-                            prop="updateTime"></PeaceTableColumn>
+                            prop="createTime"></PeaceTableColumn>
 
           <PeaceTableColumn label="操作"
                             min-width="100">
@@ -126,6 +134,7 @@
 
     <peace-dialog append-to-body
                   title="处方详情"
+                  width="580px"
                   v-if="dialog.visible"
                   v-bind:visible.sync="dialog.visible">
       <prescription-detail v-bind:data="dialog.data"></prescription-detail>
@@ -207,7 +216,6 @@ export default {
       this.dialog.jztClaimNo = row.jztClaimNo
       this.dialog.visible = true
       const tmp = this.fetchDetail.bind(this)
-      debugger
       this.dialog.data = tmp
     },
 

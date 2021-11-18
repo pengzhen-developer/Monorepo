@@ -12,6 +12,10 @@ module.exports = {
   // https://cli.vuejs.org/config/#productionSourceMap
   productionSourceMap: false,
 
+  // devServer: {
+  //   proxy: 'http://10.4.9.100:29502'
+  // },
+
   // https://cli.vuejs.org/config/#chainwebpack
   chainWebpack: (config) => {
     // 移除 prefetch、preload 插件

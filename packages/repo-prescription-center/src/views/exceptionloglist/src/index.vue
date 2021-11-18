@@ -72,18 +72,26 @@
                     style="width: 100%">
 
           <PeaceTableColumn label="时间"
-                            min-width="140"
+                            width="166"
                             prop="updateTime" />
 
           <PeaceTableColumn label="处方编号"
                             min-width="140">
             <template slot-scope="scope">
-              <div class="flex align-items-center">
-                <span style="height: 20px">{{scope.row.jztClaimNo}}</span>
-                <el-image class="q-ml-sm"
-                          style="width: 20px; height: 20px"
-                          :src="require('@src/assets/img/icon_pdf.png')"
-                          v-if="Number(scope.row.isPrescriptionImage ?? 0) === 1"></el-image>
+              <div class="flex align-items-center"
+                   style="flex-wrap: nowrap">
+
+                <el-tooltip class="item"
+                            effect="dark"
+                            :content="scope.row.jztClaimNo"
+                            placement="top">
+                  <span style="height: 20px">{{scope.row.jztClaimNo}}</span>
+                </el-tooltip>
+
+                <img class="q-ml-sm"
+                     style="width: 20px; height: 20px"
+                     :src="require('@src/assets/img/icon_pdf.png')"
+                     v-if="Number(scope.row.isPrescriptionImage ?? 0) === 1" />
               </div>
             </template>
           </PeaceTableColumn>
@@ -98,8 +106,12 @@
                             prop="channel"></PeaceTableColumn>
 
           <PeaceTableColumn label="异常类型"
-                            min-width="100"
-                            prop="errorType"></PeaceTableColumn>
+                            min-width="100">
+            <template slot-scope="scope">
+              <span>{{ scope.row.errorType | filterDictionary(source.errorTypeList,'--')  }}</span>
+            </template>
+
+          </PeaceTableColumn>
 
           <PeaceTableColumn label="操作"
                             min-width="100">
