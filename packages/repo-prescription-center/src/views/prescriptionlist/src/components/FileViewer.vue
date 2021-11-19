@@ -49,7 +49,8 @@
              :key="url">
 
           <pdf v-if="url.indexOf('pdf') != -1"
-               ref="pdf"
+               ref="img"
+               :style="imgStyle"
                :src="url">
           </pdf>
 
@@ -73,7 +74,7 @@
 import { on, off } from 'element-ui/src/utils/dom'
 import { rafThrottle, isFirefox } from 'element-ui/src/utils/util'
 import { PopupManager } from 'element-ui/src/utils/popup'
-
+import pdf from 'vue-pdf'
 const Mode = {
   CONTAIN: {
     name: 'contain',
@@ -86,7 +87,7 @@ const Mode = {
 }
 
 const mousewheelEventName = isFirefox() ? 'DOMMouseScroll' : 'mousewheel'
-import pdf from 'vue-pdf'
+
 export default {
   name: 'FileViewer',
   components: {
