@@ -50,7 +50,7 @@
 
           <pdf v-if="url.indexOf('pdf') != -1"
                ref="img"
-               :style="imgStyle"
+               :style="pdfStyle"
                :src="url">
           </pdf>
 
@@ -156,6 +156,20 @@ export default {
     imgStyle() {
       const { scale, deg, offsetX, offsetY, enableTransition } = this.transform
       const style = {
+        transform: `scale(${scale}) rotate(${deg}deg)`,
+        transition: enableTransition ? 'transform .3s' : '',
+        'margin-left': `${offsetX}px`,
+        'margin-top': `${offsetY}px`
+      }
+      if (this.mode === Mode.CONTAIN) {
+        style.maxWidth = style.maxHeight = '100%'
+      }
+      return style
+    },
+    pdfStyle() {
+      const { scale, deg, offsetX, offsetY, enableTransition } = this.transform
+      const style = {
+        width: '100%',
         transform: `scale(${scale}) rotate(${deg}deg)`,
         transition: enableTransition ? 'transform .3s' : '',
         'margin-left': `${offsetX}px`,
