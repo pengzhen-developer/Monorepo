@@ -19,11 +19,12 @@
                          style="width: 100%;"
                          class="org-type"
                          :disabled="!!model.accountId">
-                <el-option v-for="(value, label) in CONSTANT.ENUM_ORGANIZATION_TYPE"
-                           v-bind:key="value"
-                           v-bind:label="label"
-                           v-bind:value="value"></el-option>
+                <el-option :key="item.label"
+                           :label="item.label"
+                           :value="item.value"
+                           v-for="item in source.ENUM_ORGANIZATION_TYPE"></el-option>
               </el-select>
+
             </el-form-item>
             <el-form-item label="机构名称"
                           prop="hospitalName">
@@ -41,41 +42,42 @@
             </el-form-item>
             <el-form-item label="医疗机构执业许可证登记号"
                           prop="licenseNumber"
-                          v-if="model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构 || model.role === ''">
+                          v-if="model.role.toString() === '1' || model.role.toString() === ''">
               <el-input v-model.trim="model.licenseNumber"
                         placeholder="请输入登记号"
                         maxlength="30"
                         show-word-limit></el-input>
             </el-form-item>
-            <el-form-item label="医院属性"
+            <el-form-item label="医院类型"
                           class="is-required"
                           style="margin-bottom: 0;"
-                          v-if="model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构 || model.role === ''">
+                          v-if="model.role.toString() === '1' || model.role.toString() === ''">
               <div class="inline-form">
                 <el-form-item class="inline-item"
                               label-width="0px"
-                              prop="hospitalLabel">
+                              prop="hosTypeCode">
                   <el-select clearable
-                             v-model="model.hospitalLabel"
+                             v-model="model.hosTypeCode"
                              placeholder="请选择"
                              style="width: 100%;">
-                    <el-option v-for="(value, label) in CONSTANT.ENUM_HOSPITAL_LABEL"
-                               v-bind:key="value"
-                               v-bind:label="label"
-                               v-bind:value="value"></el-option>
+                    <el-option :key="item.hosTypeName"
+                               :label="item.hosTypeName"
+                               :value="item.hosTypeCode"
+                               v-for="item in source.ENUM_HOS_TYPE"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item class="inline-item"
                               label-width="0px"
-                              prop="hospitalTypeLabel">
+                              prop="hosChildCode">
                   <el-select clearable
-                             v-model="model.hospitalTypeLabel"
+                             :disabled="hosChildCodeDisable"
+                             v-model="model.hosChildCode"
                              placeholder="请选择"
                              style="width: 100%;">
-                    <el-option v-for="(value, label) in CONSTANT.ENUM_HOSPITAL_TYPE_LABEL"
-                               v-bind:key="value"
-                               v-bind:label="label"
-                               v-bind:value="value"></el-option>
+                    <el-option :key="item.hosTypeChildName"
+                               :label="item.hosTypeChildName"
+                               :value="item.hosTypeChildCode"
+                               v-for="item in source.ENUM_HOS_TYPE_CHILD"></el-option>
                   </el-select>
                 </el-form-item>
               </div>
@@ -101,35 +103,35 @@
                 <el-form-item class="inline-item"
                               label-width="0px"
                               prop="address">
-                  <el-input v-if="model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构 || model.role === ''"
+                  <el-input v-if="model.role.toString() === '1' || model.role.toString() === ''"
                             @click.native="openMapDialogVisible"
                             @focus="openMapDialogVisible"
                             readonly
                             suffix-icon="el-icon-location"
                             v-model="model.address"
                             placeholder="请输入详细地址"></el-input>
-                  <el-input v-if="model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.店配机构 || model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.仓配机构"
+                  <el-input v-if="model.role.toString() === '2' || model.role.toString() === '3'"
                             v-model="model.address"
                             placeholder="请输入详细地址"></el-input>
                 </el-form-item>
               </div>
             </el-form-item>
             <el-form-item label="医院等级"
-                          prop="hospitalLevel"
-                          v-if="model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构 || model.role === ''">
+                          prop="hosLevelCode"
+                          v-if="model.role.toString() === '1' || model.role.toString() === ''">
               <el-select clearable
-                         v-model="model.hospitalLevel"
+                         v-model="model.hosLevelCode"
                          placeholder="请选择"
                          style="width: 100%;">
-                <el-option v-for="(value, label) in CONSTANT.ENUM_HOSPITAL_LEVEL"
-                           v-bind:key="value"
-                           v-bind:label="label"
-                           v-bind:value="value"></el-option>
+                <el-option :key="item.hosLevelName"
+                           :label="item.hosLevelName"
+                           :value="item.hosLevelCode"
+                           v-for="item in source.ENUM_HOSPITAL_LEVEL"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="资质证明">
               <div class="upload-list"
-                   v-if="model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构 || model.role === ''">
+                   v-if="model.role.toString() === '1' || model.role.toString() === ''">
                 <div class="upload-item">
                   <el-upload action
                              :http-request="uploadMedicalStructureLicense"
@@ -161,7 +163,7 @@
               </div>
 
               <div class="upload-list"
-                   v-if="model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.店配机构">
+                   v-if="model.role.toString() === '2'">
                 <div class="upload-item">
                   <el-upload action
                              :http-request="uploadBusinessLicense"
@@ -191,7 +193,7 @@
               </div>
 
               <div class="upload-list"
-                   v-if="model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.仓配机构">
+                   v-if="model.role.toString() === '3'">
                 <div class="upload-item">
                   <el-upload action
                              :http-request="uploadBusinessLicense"
@@ -321,15 +323,15 @@ export default {
         hospitalName: '', // 机构名称
         socialCreditCode: '', // 统一社会信用代码
         licenseNumber: '', // 医疗机构执业许可证登记号
-        hospitalLabel: '', // 医院属性
-        hospitalTypeLabel: '', // 医院类型
+        hosTypeCode: '', // 医院类型code
+        hosChildCode: '', // 医院类型二级code
         province: '', //  省
         city: '', //  市
         district: '', // 区
         address: '', // 地址
         latitude: '',
         longitude: '',
-        hospitalLevel: '', // 医院等级
+        hosLevelCode: '', // 医院等级
         medicalStructureLicense: '', // 医疗机构执业许可证
         internetHospitalLicense: '', // 互联网医院牌照
         businessLicense: '', //  营业执照
@@ -338,7 +340,12 @@ export default {
         tel: '', // 电话号码
         email: '' // 邮箱
       },
-
+      source: {
+        ENUM_ORGANIZATION_TYPE: [], //机构类型
+        ENUM_HOSPITAL_LEVEL: [], //医院等级
+        ENUM_HOS_TYPE: [], //医院类型
+        ENUM_HOS_TYPE_CHILD: [] //医院类型子类
+      },
       rules: {
         role: [
           {
@@ -385,21 +392,21 @@ export default {
             trigger: 'blur'
           }
         ],
-        hospitalLabel: [
-          {
-            required: true,
-            message: '请选择医院属性',
-            trigger: 'change'
-          }
-        ],
-        hospitalTypeLabel: [
+        hosTypeCode: [
           {
             required: true,
             message: '请选择医院类型',
             trigger: 'change'
           }
         ],
-        hospitalLevel: [
+        hosChildCode: [
+          {
+            required: true,
+            message: '请选择医院类型',
+            trigger: 'change'
+          }
+        ],
+        hosLevelCode: [
           {
             required: true,
             message: '请选择医院等级',
@@ -455,16 +462,23 @@ export default {
     }
   },
 
+  async created() {
+    this.source.ENUM_ORGANIZATION_TYPE = await Peace.identity.dictionary.getList('hos_role_type')
+    this.getHosLevelList()
+    this.getHosTypeList()
+  },
+
   computed: {
     showRegion() {
       return (
-        this.model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构 ||
-        this.model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.店配机构 ||
-        this.model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.仓配机构
+        this.model.role.toString() === '1' || this.model.role.toString() === '2' || this.model.role.toString() === '3'
       )
     },
     defaultRegion() {
       return [this.model.province, this.model.city, this.model.district]
+    },
+    hosChildCodeDisable() {
+      return Peace.validate.isEmpty(this.model.hosTypeCode)
     }
   },
 
@@ -472,26 +486,54 @@ export default {
     'model.role'(newVal, oldVal) {
       if (!this.model.accountId) {
         switch (newVal) {
-          case CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构:
-            if (
-              oldVal === CONSTANT.ENUM_ORGANIZATION_TYPE.店配机构 ||
-              oldVal === CONSTANT.ENUM_ORGANIZATION_TYPE.仓配机构
-            ) {
-              this.resetForm(CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构)
+          case '1': //医院
+            if (oldVal === '2' || oldVal === '3') {
+              this.resetForm('1')
             }
             break
-          case CONSTANT.ENUM_ORGANIZATION_TYPE.店配机构:
-            this.resetForm(CONSTANT.ENUM_ORGANIZATION_TYPE.店配机构)
+          case '2': //店配机构
+            this.resetForm('2')
             break
-          case CONSTANT.ENUM_ORGANIZATION_TYPE.仓配机构:
-            this.resetForm(CONSTANT.ENUM_ORGANIZATION_TYPE.仓配机构)
+          case '3': //仓配机构
+            this.resetForm('3')
             break
+        }
+      }
+    },
+    'model.hosTypeCode': function(val, oldVal) {
+      if (val !== oldVal) {
+        this.model.hosChildCode = ''
+        this.source.ENUM_HOS_TYPE_CHILD = []
+        if (!Peace.validate.isEmpty(val)) {
+          this.getHosTypeChildrenList()
         }
       }
     }
   },
 
   methods: {
+    //获取医院登记
+    getHosLevelList() {
+      return Service.getHosLevelList().then((res) => {
+        this.source.ENUM_HOSPITAL_LEVEL = res.data.list || []
+      })
+    },
+
+    //获取医院类型一级列表
+    getHosTypeList() {
+      return Service.getHosTypeList().then((res) => {
+        this.source.ENUM_HOS_TYPE = res.data.list || []
+      })
+    },
+
+    //获取医院类型子集列表接口
+    getHosTypeChildrenList() {
+      const params = { parentRangeCode: this.model.hosTypeCode }
+      return Service.getHosTypeChildrenList(params).then((res) => {
+        this.source.ENUM_HOS_TYPE_CHILD = res.data.list || []
+      })
+    },
+
     init(id) {
       this.model.accountId = id || 0
       this.$nextTick(() => {
@@ -506,19 +548,17 @@ export default {
         if (this.model.accountId) {
           Service.getOrganizationInfo({ accountId: this.model.accountId })
             .then((res) => {
-              this.model.role = res.data.role
+              this.model.role = res.data.role?.toString()
               this.model.hospitalName = res.data.hospitalName
               this.model.socialCreditCode = res.data.socialCreditCode
               this.model.licenseNumber = res.data.licenseNumber
-              this.model.hospitalLabel = res.data.hospitalLabel
-              this.model.hospitalTypeLabel = res.data.hospitalTypeLabel
               this.model.province = res.data.provinceId
               this.model.city = res.data.cityId
               this.model.district = res.data.areaId
               this.model.address = res.data.address
               this.model.latitude = res.data.latitude
               this.model.longitude = res.data.longitude
-              this.model.hospitalLevel = res.data.hospitalLevel
+              this.model.hosLevelCode = res.data.hosLevelCode?.toString()
               this.model.medicalStructureLicense = res.data.medicalStructureLicense || ''
               this.model.internetHospitalLicense = res.data.internetHospitalLicense || ''
               this.model.businessLicense = res.data.businessLicense || ''
@@ -528,7 +568,7 @@ export default {
               this.model.email = res.data.email
 
               // 编辑医疗机构信息时默认不能直接修改省市区
-              if (this.model.role === CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构) {
+              if (this.model.role.toString() === '1') {
                 this.lock = true
                 this.defaultDetail = {
                   province: this.model.province,
@@ -538,6 +578,12 @@ export default {
                   latitude: this.model.latitude,
                   longitude: this.model.longitude
                 }
+              }
+              this.model.hosTypeCode = res.data.hosTypeCode
+              if (!Peace.validate.isEmpty(this.model.hosTypeCode)) {
+                this.getHosTypeChildrenList().then(() => {
+                  this.model.hosChildCode = res.data.hosChildCode
+                })
               }
             })
             .finally(() => {
@@ -714,10 +760,10 @@ export default {
       this.model.medicalStructureLicense = '' // 医疗机构执业许可证
       this.model.internetHospitalLicense = '' // 互联网医院牌照
 
-      if (role === CONSTANT.ENUM_ORGANIZATION_TYPE.店配机构 || role === CONSTANT.ENUM_ORGANIZATION_TYPE.仓配机构) {
-        this.model.hospitalLabel = ''
-        this.model.hospitalTypeLabel = ''
-        this.model.hospitalLevel = ''
+      if (role.toString() === '2' || role.toString() === '3') {
+        this.model.hosTypeCode = ''
+        this.model.hosChildCode = ''
+        this.model.hosLevelCode = ''
 
         this.lock = false
 

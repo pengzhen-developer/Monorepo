@@ -104,7 +104,7 @@ export default {
         {
           id: 4,
           icon: require('../assets/img/ic_yljg.png'),
-          title: '医疗机构',
+          title: '医院',
           count: 0
         },
         {
@@ -124,7 +124,7 @@ export default {
         backgroundColor: 'transparent',
         tooltip: {
           trigger: 'item',
-          formatter: function (params) {
+          formatter: function(params) {
             const { name, value } = params
             return `
                     ${name} <br/>
@@ -191,13 +191,31 @@ export default {
 }
 
 .border-out {
-  clip-path: polygon(0% 8px, 8px 0%, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px));
+  clip-path: polygon(
+    0% 8px,
+    8px 0%,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0 calc(100% - 8px)
+  );
   background: #1a3f81;
   padding: 1px;
 }
 .border-inner {
   padding: 4% 6%;
-  clip-path: polygon(0% 8px, 8px 0%, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px));
+  clip-path: polygon(
+    0% 8px,
+    8px 0%,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0 calc(100% - 8px)
+  );
   background: #000a3b;
   flex: 1;
 }

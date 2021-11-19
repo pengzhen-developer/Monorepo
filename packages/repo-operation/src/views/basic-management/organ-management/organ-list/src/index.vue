@@ -17,10 +17,10 @@
             <el-select clearable
                        v-model.trim="model.orgType"
                        placeholder="全部">
-              <el-option v-for="(value, label) in CONSTANT.ENUM_ORGANIZATION_TYPE"
-                         v-bind:key="value"
-                         v-bind:label="label"
-                         v-bind:value="value"></el-option>
+              <el-option :key="item.label"
+                         :label="item.label"
+                         :value="item.value"
+                         v-for="item in source.ENUM_ORGANIZATION_TYPE"></el-option>
             </el-select>
           </el-form-item>
 
@@ -171,6 +171,9 @@ export default {
         orgType: '',
         serviceType: []
       },
+      source: {
+        ENUM_ORGANIZATION_TYPE: [] //机构类型
+      },
 
       detailDialog: {
         visible: false,
@@ -194,6 +197,7 @@ export default {
   },
 
   async mounted() {
+    this.source.ENUM_ORGANIZATION_TYPE = await Peace.identity.dictionary.getList('hos_role_type')
     this.$nextTick().then(() => {
       this.get()
     })

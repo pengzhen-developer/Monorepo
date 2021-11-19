@@ -14,7 +14,7 @@
           <span>{{data.hospitalName}}</span>
         </el-form-item>
         <el-form-item label="机构类型">
-          <span>{{data.role | getEnumLabel(source.ENUM_ORGANIZATION_TYPE)}}</span>
+          <span>{{data.roleName}}</span>
         </el-form-item>
         <el-form-item label="服务名称">
           <span>{{data.serviceName}}</span>
@@ -65,7 +65,7 @@
             <span>{{data.hospitalName}}</span>
           </el-form-item>
           <el-form-item label="机构类型">
-            <span>{{data.role | getEnumLabel(source.ENUM_ORGANIZATION_TYPE)}}</span>
+            <span>{{data.roleName}}</span>
           </el-form-item>
           <el-form-item label="服务名称">
             <span>{{data.serviceName}}</span>
@@ -146,7 +146,6 @@ export default {
       visible: this.value,
 
       source: {
-        ENUM_ORGANIZATION_TYPE: CONSTANT.ENUM_ORGANIZATION_TYPE,
         ENUM_APPLY_STATUS: CONSTANT.ENUM_APPLY_STATUS
       },
 
@@ -185,7 +184,9 @@ export default {
       this.$emit('input', value)
 
       this.$nextTick(() => {
-        this.$refs.form.resetFields()
+        if (this.data.checkStatus === CONSTANT.ENUM_APPLY_STATUS.待审核) {
+          this.$refs.form.resetFields()
+        }
       })
 
       if (this.data.checkStatus === CONSTANT.ENUM_APPLY_STATUS.未通过) {

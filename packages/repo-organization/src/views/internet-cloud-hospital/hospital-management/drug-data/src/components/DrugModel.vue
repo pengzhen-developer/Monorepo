@@ -3,7 +3,7 @@
     <div class="drug-tip"
          v-if="drugInfo.drugType=='update'">
       <i class="el-icon-warning"></i>
-      <span>若修改了【药品通用名称】、【药品规格】、【药品剂型】、【生产厂家】一个或多个对应的内容，需要重新配码后患者才能进行处方购药。</span>
+      <span>若修改了【药品通用名称】、【药品规格】、【生产厂家】一个或多个对应的内容，需要重新配码后患者才能进行处方购药。</span>
     </div>
     <el-form :model="drug"
              :rules="rules"
@@ -200,6 +200,13 @@
                   placeholder="请输入"></el-input>
       </el-form-item>
 
+      <el-form-item label="助记码："
+                    prop="initials">
+        <el-input v-model="drug.initials"
+                  maxlength="50"
+                  placeholder="请输入"></el-input>
+      </el-form-item>
+
       <el-form-item style="width: 100%;margin: 32px 0 16px 0;text-align: right;">
         <el-button @click="cancel"
                    type="default">取消</el-button>
@@ -354,7 +361,8 @@ export default {
         recommendFrequencyId: '',
         drugUnitType: '',
         otcDrug: '',
-        drugMedicalCode: ''
+        drugMedicalCode: '',
+        initials: ''
       },
       rules: {
         drug_number: [
@@ -445,6 +453,13 @@ export default {
           {
             validator: checkDisconnect,
             trigger: 'change'
+          }
+        ],
+        initials: [
+          {
+            required: true,
+            message: '请输入药品助记码',
+            trigger: 'blur'
           }
         ]
       }

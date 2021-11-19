@@ -16,7 +16,7 @@
 import CONSTANT from '../constant'
 
 export default {
-  name: 'DrugInfo',
+  name: 'DrugView',
   props: {
     drug: {
       type: Object

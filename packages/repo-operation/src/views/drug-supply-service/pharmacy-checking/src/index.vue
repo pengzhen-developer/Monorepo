@@ -88,7 +88,7 @@ sequence <template>
                           prop="CustomerType"
                           min-width="120px">
           <template slot-scope="scope">
-            {{ scope.row.CustomerType == 0 ? '医疗机构' : '店配机构' }}
+            {{ scope.row.CustomerType == 0 ? '医院' : '店配机构' }}
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn label="申请时间"
@@ -195,7 +195,9 @@ export default {
       this.$refs.table.reloadData({ fetch, params }).then((res) => {
         res?.data?.list?.forEach((row) => {
           row.CustName = Peace.validate.isEmpty(row.CustName) ? '——' : row.CustName
-          row.CommitExamineDateTime = Peace.validate.isEmpty(row.CommitExamineDateTime) ? '——' : row.CommitExamineDateTime
+          row.CommitExamineDateTime = Peace.validate.isEmpty(row.CommitExamineDateTime)
+            ? '——'
+            : row.CommitExamineDateTime
         })
         return res
       })

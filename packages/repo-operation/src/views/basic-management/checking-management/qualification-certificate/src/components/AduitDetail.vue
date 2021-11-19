@@ -24,15 +24,15 @@
                             label="机构类型">
                 <span>{{ detail.hosInfo.role }}</span>
               </el-form-item>
-              <el-form-item v-if="detail.hosInfo.hospitalAttribute"
+              <el-form-item v-if="detail.hosInfo.hosTypeName || detail.hosInfo.hosChildName"
                             class="inline-half"
-                            label="医院属性">
-                <span>{{ detail.hosInfo.hospitalAttribute }}</span>
+                            label="医院类型">
+                <span>{{ detail.hosInfo.hosTypeName }} {{ detail.hosInfo.hosChildName }}</span>
               </el-form-item>
-              <el-form-item v-if="detail.hosInfo.level"
+              <el-form-item v-if="detail.hosInfo.hosLevelName"
                             class="inline-half"
                             label="医院等级">
-                <span>{{ detail.hosInfo.level }}</span>
+                <span>{{ detail.hosInfo.hosLevelName }}</span>
               </el-form-item>
               <el-form-item label="统一社会信用代码">
                 <span>{{ detail.hosInfo.socialCreditCode }}</span>
@@ -160,15 +160,15 @@
                             label="机构类型">
                 <span>{{ detail.hosInfo.role }}</span>
               </el-form-item>
-              <el-form-item v-if="detail.hosInfo.hospitalAttribute"
+              <el-form-item v-if="detail.hosInfo.hosTypeName || detail.hosInfo.hosChildName"
                             class="inline-half"
-                            label="医院属性">
-                <span>{{ detail.hosInfo.hospitalAttribute }}</span>
+                            label="医院类型">
+                <span>{{ detail.hosInfo.hosTypeName }} {{ detail.hosInfo.hosChildName }}</span>
               </el-form-item>
-              <el-form-item v-if="detail.hosInfo.level"
+              <el-form-item v-if="detail.hosInfo.hosLevelName"
                             class="inline-half"
                             label="医院等级">
-                <span>{{ detail.hosInfo.level }}</span>
+                <span>{{ detail.hosInfo.hosLevelName }}</span>
               </el-form-item>
               <el-form-item label="统一社会信用代码">
                 <span>{{ detail.hosInfo.socialCreditCode }}</span>
@@ -389,7 +389,9 @@ export default {
       }
 
       this.$nextTick(() => {
-        this.$refs.form.resetFields()
+        if (this.data.checkStatus === 2) {
+          this.$refs.form.resetFields()
+        }
       })
     }
   },

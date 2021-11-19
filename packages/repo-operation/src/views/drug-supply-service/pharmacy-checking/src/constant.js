@@ -10,7 +10,7 @@ export default {
    * 机构类型
    */
   ORGANIZATION_TYPE: {
-    医疗机构: 0,
+    医院: 0,
     店配机构: 30
   },
   /**

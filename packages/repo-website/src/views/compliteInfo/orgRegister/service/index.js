@@ -75,5 +75,62 @@ export default {
     return Peace.http.post(requestApi).then((res) => {
       return res
     })
+  },
+
+  /**
+   * 获取医院等级列表接口
+   *
+   * @param {*} params
+   */
+  getHosLevelList(params) {
+    const isMock = false
+
+    const apiPath = 'hospital/v070/account/getHosLevelList'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 获取医院类型一级列表
+   *
+   * @param {*} params
+   */
+  getHosTypeList(params) {
+    const isMock = false
+
+    const apiPath = 'hospital/v070/account/getHosTypeList'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 获取医院类型子集列表接口
+   *
+   * @param {*} params
+   */
+  getHosTypeChildrenList(params) {
+    const isMock = false
+
+    const apiPath = 'hospital/v070/account/getHosTypeChildrenList'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
   }
 }

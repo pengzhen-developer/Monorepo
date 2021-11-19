@@ -53,13 +53,13 @@ export default {
           title: '提交审核'
         }
       ],
-      /**角色（1医疗机构 2店配机构 3仓配机构） */
+      /**医院 2店配机构 3仓配机构） */
 
       orgList: [
         {
           id: 1,
           bg: require('../assets/images/ic_org_yl.png'),
-          title: '医疗机构',
+          title: '医院',
           msg: '适用于实体医院或线上医疗机构'
         },
         {

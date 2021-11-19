@@ -12,7 +12,7 @@
           <div class="info-title">机构信息</div>
           <div class="info-content">
             <el-form-item label="机构类型">
-              <span>{{ data.role | getEnumLabel(CONSTANT.ENUM_ORGANIZATION_TYPE) }}</span>
+              <span>{{ data.roleName }}</span>
             </el-form-item>
             <el-form-item label="机构名称">
               <span>{{ data.hospitalName }}</span>
@@ -22,21 +22,21 @@
                           label-width="150px">
               <span>{{ data.socialCreditCode }}</span>
             </el-form-item>
-            <el-form-item v-if="data.role == CONSTANT.ENUM_ORGANIZATION_TYPE.医疗机构"
+            <el-form-item v-if="data.role == '1'"
                           label="医疗机构执业许可证登记号"
                           label-width="210px">
               <span>{{ data.licenseNumber }}</span>
             </el-form-item>
-            <el-form-item v-if="data.hospitalLabel || data.hospitalTypeLabel"
-                          label="医院属性">
-              <span>{{ data.hospitalLabel | getEnumLabel(CONSTANT.ENUM_HOSPITAL_LABEL) }} {{ data.hospitalTypeLabel | getEnumLabel(CONSTANT.ENUM_HOSPITAL_TYPE_LABEL) }}</span>
+            <el-form-item v-if="data.hosTypeName || data.hosChildName"
+                          label="医院类型">
+              <span>{{ data.hosTypeName }} {{ data.hosChildName }}</span>
             </el-form-item>
             <el-form-item label="详细地址">
               <span>{{ data.provinceName }}{{ data.cityName }}{{ data.areaName }}{{ data.address }}</span>
             </el-form-item>
-            <el-form-item v-if="data.hospitalLevel"
+            <el-form-item v-if="data.hosLevelName"
                           label="医院等级">
-              <span>{{ data.hospitalLevel | getEnumLabel(CONSTANT.ENUM_HOSPITAL_LEVEL) }}</span>
+              <span>{{ data.hosLevelName }}</span>
             </el-form-item>
             <el-form-item v-if="imgList.length > 0"
                           label="资质证明">
@@ -113,7 +113,6 @@
 <script>
 import OrganizationModel from './OrganizationModel'
 
-import CONSTANT from '../constant'
 //
 import Service from '../service'
 
@@ -130,12 +129,9 @@ export default {
 
   data() {
     return {
-      CONSTANT,
-
       isLoading: false,
       id: '',
       data: {},
-
       editVisible: false
     }
   },
@@ -169,6 +165,7 @@ export default {
       this.$nextTick(() => {
         Service.getOrganizationInfo({ accountId: this.id }).then((res) => {
           this.data = res.data
+          this.data.role = this.data.role?.toString() || ''
         })
       })
     },

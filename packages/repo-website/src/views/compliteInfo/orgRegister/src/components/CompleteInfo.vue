@@ -2,9 +2,9 @@
   <div class="form-info">
 
     <div class="content">
-      <el-form :model="modal"
+      <el-form :model="model"
                :rules="rules"
-               ref="modal"
+               ref="model"
                :label-width="role ==1 ? '210px':'150px'">
         <el-form-item label="机构类型："
                       prop="roleName">
@@ -16,14 +16,14 @@
         </el-form-item>
         <el-form-item label="机构名称："
                       prop="hospitalName">
-          <el-input v-model="modal.hospitalName"
+          <el-input v-model="model.hospitalName"
                     :minlength="1"
                     :maxlength="30"
                     placeholder="请输入机构登记名称"></el-input>
         </el-form-item>
         <el-form-item label="统一社会信用代码："
                       prop="socialCreditCode">
-          <el-input v-model.trim="modal.socialCreditCode"
+          <el-input v-model.trim="model.socialCreditCode"
                     :minlength="18"
                     :maxlength="18"
                     placeholder="请输入医疗机构统一社会信用代码"></el-input>
@@ -31,7 +31,7 @@
         <el-form-item label="医疗机构执业许可证登记号："
                       v-if="role==1"
                       prop="licenseNumber">
-          <el-input v-model.trim="modal.licenseNumber"
+          <el-input v-model.trim="model.licenseNumber"
                     :minlength="1"
                     :maxlength="30"
                     placeholder="请输入登记号"></el-input>
@@ -41,9 +41,9 @@
                       class="area"
                       required>
           <el-form-item prop="area_id">
-            <region-selector :defaultArea="modal.area_id"
-                             :defaultCity="modal.city_id"
-                             :defaultProvince="modal.province_id"
+            <region-selector :defaultArea="model.area_id"
+                             :defaultCity="model.city_id"
+                             :defaultProvince="model.province_id"
                              @provinceChange="handleProvinceChange"
                              @cityChange="handleCityChange"
                              @areaChange="handleAreaChange"
@@ -54,40 +54,49 @@
           </el-form-item>
           <el-form-item prop="address">
             <el-input placeholder="请输入详情地址"
-                      v-model="modal.address"></el-input>
+                      v-model="model.address"></el-input>
           </el-form-item>
         </el-form-item>
         <template v-if="role==1">
-          <el-form-item label="医院属性："
-                        class="sec"
-                        prop="hospitalValid">
+          <el-form-item label="医院类型："
+                        class="sec">
 
-            <el-form-item prop="hospitalLabel"
+            <el-form-item prop="hosTypeCode"
                           class="sec-item">
-              <el-select v-model="modal.hospitalLabel">
-                <el-option :key="item.label"
-                           :label="item.label"
-                           :value="item.value"
-                           v-for="item in hospitalLabel"></el-option>
+
+              <el-select clearable
+                         v-model="model.hosTypeCode"
+                         placeholder="请选择"
+                         style="width: 100%;">
+                <el-option :key="item.hosTypeName"
+                           :label="item.hosTypeName"
+                           :value="item.hosTypeCode"
+                           v-for="item in source.ENUM_HOS_TYPE"></el-option>
               </el-select>
+
             </el-form-item>
-            <el-form-item prop="hospitalTypeLabel"
+            <el-form-item prop="hosChildCode"
                           class="sec-item">
-              <el-select v-model="modal.hospitalTypeLabel">
-                <el-option :key="item.label"
-                           :label="item.label"
-                           :value="item.value"
-                           v-for="item in hospitalTypeLabel"></el-option>
+
+              <el-select clearable
+                         :disabled="hosChildCodeDisable"
+                         v-model="model.hosChildCode"
+                         placeholder="请选择"
+                         style="width: 100%;">
+                <el-option :key="item.hosTypeChildName"
+                           :label="item.hosTypeChildName"
+                           :value="item.hosTypeChildCode"
+                           v-for="item in source.ENUM_HOS_TYPE_CHILD"></el-option>
               </el-select>
             </el-form-item>
           </el-form-item>
           <el-form-item label="所属辖区："
-                        v-show="modal.address"
+                        v-show="model.address"
                         class="district"
                         required>
-            <region-selector :defaultArea="modal.area_id"
-                             :defaultCity="modal.city_id"
-                             :defaultProvince="modal.province_id"
+            <region-selector :defaultArea="model.area_id"
+                             :defaultCity="model.city_id"
+                             :defaultProvince="model.province_id"
                              :defaultText="false"
                              :disabled="lock"
                              :selected="false"
@@ -101,16 +110,19 @@
                       readonly
                       placeholder="请输入医院详细地址"
                       suffix-icon="el-icon-location"
-                      v-model="modal.address"></el-input>
+                      v-model="model.address"></el-input>
           </el-form-item>
           <el-form-item label="医院等级："
-                        prop="hospitalLevel">
-            <el-select v-model="modal.hospitalLevel"
-                       placeholder="请选择医院等级">
-              <el-option :key="'lavel_' + item.label"
-                         :label="item.label"
-                         :value="item.value"
-                         v-for="item in hospitalLevel"></el-option>
+                        prop="hosLevelCode">
+
+            <el-select clearable
+                       v-model="model.hosLevelCode"
+                       placeholder="请选择"
+                       style="width: 100%;">
+              <el-option :key="item.hosLevelName"
+                         :label="item.hosLevelName"
+                         :value="item.hosLevelCode"
+                         v-for="item in source.ENUM_HOSPITAL_LEVEL"></el-option>
             </el-select>
           </el-form-item>
         </template>
@@ -122,8 +134,8 @@
                          :http-request="uploadBusinessLicenseImg"
                          :show-file-list="false"
                          :before-upload="beforeAvatarUpload">
-                <img v-if="modal.businessLicense||modal.medicalStructureLicense"
-                     :src="modal.businessLicense||modal.medicalStructureLicense"
+                <img v-if="model.businessLicense||model.medicalStructureLicense"
+                     :src="model.businessLicense||model.medicalStructureLicense"
                      class="avatar">
                 <img v-else
                      :src='require("../assets/images/add.png")'>
@@ -136,8 +148,8 @@
                          :http-request="uploadmanagementLicenseImg"
                          :show-file-list="false"
                          :before-upload="beforeAvatarUpload">
-                <img v-if="modal.managementLicense||modal.internetHospitalLicense"
-                     :src="modal.managementLicense||modal.internetHospitalLicense"
+                <img v-if="model.managementLicense||model.internetHospitalLicense"
+                     :src="model.managementLicense||model.internetHospitalLicense"
                      class="avatar">
                 <img v-else
                      :src='require("../assets/images/add.png")'>
@@ -178,7 +190,6 @@
 
 <script>
 import Service from '../../service'
-import Constant from '../../constant'
 import RegionSelector from './RegionSelector'
 import TMap from './Map'
 const DEFAULT_MODAL = {
@@ -198,9 +209,9 @@ const DEFAULT_MODAL = {
   area_id: '',
   address: '',
   totalAddree: '',
-  hospitalLabel: '',
-  hospitalTypeLabel: '',
-  hospitalLevel: '',
+  hosTypeCode: '',
+  hosChildCode: '',
+  hosLevelCode: '',
   latitude: '',
   longitude: ''
 }
@@ -220,11 +231,8 @@ export default {
     return {
       isSend: false,
       mapDialogVisible: false,
-      hospitalLabel: Constant.HospitalLabel,
-      hospitalTypeLabel: Constant.HospitalTypeLabel,
-      hospitalLevel: Constant.HospitalLevel,
       lock: false,
-      modal: {
+      model: {
         hospitalName: '',
         socialCreditCode: '',
         licenseNumber: '',
@@ -241,13 +249,17 @@ export default {
         area_id: '',
         address: '',
         totalAddree: '',
-        hospitalLabel: '',
-        hospitalTypeLabel: '',
-        hospitalLevel: '',
+        hosTypeCode: '',
+        hosChildCode: '',
+        hosLevelCode: '',
         latitude: '',
         longitude: ''
       },
-
+      source: {
+        ENUM_HOSPITAL_LEVEL: [], //医院等级
+        ENUM_HOS_TYPE: [], //医院类型
+        ENUM_HOS_TYPE_CHILD: [] //医院类型子类
+      },
       defaultDetail: {
         province: '',
         city: '',
@@ -305,32 +317,23 @@ export default {
             trigger: 'blur'
           }
         ],
-        hospitalLabel: [
+        hosTypeCode: [
           {
             required: true,
-            message: '请选择医院属性',
+            message: '请选择医院类型',
             trigger: 'change'
           }
         ],
-        hospitalTypeLabel: [
+        hosChildCode: [
           {
             required: true,
-            message: '请选择医院性质',
+            message: '请选择医院类型',
             trigger: 'change'
-          },
-          {
-            validator: (rule, value, cb) => {
-              if (value.length == 0) {
-                cb(new Error('请选择医院性质'))
-              }
-              cb()
-            },
-            trigger: 'blur'
           }
         ],
         area_id: [{ required: true, message: '请选择省市区', trigger: 'change' }],
         address: [{ required: true, message: '请输入详情地址' }],
-        hospitalLevel: [{ required: true, message: '请选择医院等级' }],
+        hosLevelCode: [{ required: true, message: '请选择医院等级' }],
         medicalStructureLicense: [{ required: true, message: '请上传医疗机构执业许可证！' }]
       },
       data: {},
@@ -338,26 +341,59 @@ export default {
     }
   },
   mounted() {
-    this.modal.role = this.role
+    this.model.role = this.role
   },
-  watch: {
-    'modal.hospitalLabel'() {
-      this.modal.hospitalValid = this.modal.hospitalLabel + this.modal.hospitalTypeLabel
-    },
-    'modal.hospitalTypeLabel'() {
-      this.modal.hospitalValid = this.modal.hospitalLabel + this.modal.hospitalTypeLabel
+
+  async created() {
+    this.getHosLevelList()
+    this.getHosTypeList()
+  },
+  computed: {
+    hosChildCodeDisable() {
+      return Peace.validate.isEmpty(this.model.hosTypeCode)
     }
   },
 
+  watch: {
+    'model.hosTypeCode': function(val, oldVal) {
+      if (val !== oldVal) {
+        this.model.hosChildCode = ''
+        this.source.ENUM_HOS_TYPE_CHILD = []
+        if (!Peace.validate.isEmpty(val)) {
+          this.getHosTypeChildrenList()
+        }
+      }
+    }
+  },
   methods: {
+    //获取医院登记
+    getHosLevelList() {
+      return Service.getHosLevelList().then((res) => {
+        this.source.ENUM_HOSPITAL_LEVEL = res.data.list || []
+      })
+    },
+
+    //获取医院类型一级列表
+    getHosTypeList() {
+      return Service.getHosTypeList().then((res) => {
+        this.source.ENUM_HOS_TYPE = res.data.list || []
+      })
+    },
+    //获取医院类型子集列表接口
+    getHosTypeChildrenList() {
+      const params = { parentRangeCode: this.model.hosTypeCode }
+      return Service.getHosTypeChildrenList(params).then((res) => {
+        this.source.ENUM_HOS_TYPE_CHILD = res.data.list || []
+      })
+    },
     handleProvinceChange(val) {
-      this.modal.province_id = val
+      this.model.province_id = val
     },
     handleCityChange(val) {
-      this.modal.city_id = val
+      this.model.city_id = val
     },
     handleAreaChange(val) {
-      this.modal.area_id = val
+      this.model.area_id = val
     },
     beforeAvatarUpload(file) {
       const uploadType = 'image/jpg,image/jpeg,image/bmp,,image/gif,,image/png'
@@ -380,9 +416,9 @@ export default {
       formData.append('image', data.file)
       Service.uploadImage(formData).then((res) => {
         if (this.role == 1) {
-          this.modal.medicalStructureLicense = res.data.filePath
+          this.model.medicalStructureLicense = res.data.filePath
         } else {
-          this.modal.businessLicense = res.data.filePath
+          this.model.businessLicense = res.data.filePath
         }
         Peace.util.success(res.msg)
       })
@@ -392,15 +428,15 @@ export default {
       formData.append('image', data.file)
       Service.uploadImage(formData).then((res) => {
         if (this.role == 1) {
-          this.modal.internetHospitalLicense = res.data.filePath
+          this.model.internetHospitalLicense = res.data.filePath
         } else {
-          this.modal.managementLicense = res.data.filePath
+          this.model.managementLicense = res.data.filePath
         }
         Peace.util.success(res.msg)
       })
     },
     back() {
-      this.modal = Object.assign({}, this.modal, DEFAULT_MODAL)
+      this.model = Object.assign({}, this.model, DEFAULT_MODAL)
       this.$emit('back', true)
     },
     // 打开地图选点
@@ -411,7 +447,7 @@ export default {
         province,
         city,
         area,
-        address: this.modal.address
+        address: this.model.address
       }
       this.mapDialogVisible = true
     },
@@ -419,24 +455,24 @@ export default {
     getAddressData(param) {
       // console.log(param)
       this.defaultDetail = param
-      const modal = this.modal
-      this.modal = Object.assign({}, modal, param)
+      const model = this.model
+      this.model = Object.assign({}, model, param)
       this.mapDialogVisible = false
     },
     submit() {
-      this.modal.province = this.modal.province_id
-      this.modal.city = this.modal.city_id
-      this.modal.district = this.modal.area_id
+      this.model.province = this.model.province_id
+      this.model.city = this.model.city_id
+      this.model.district = this.model.area_id
       if (this.role !== 1) {
         const { province, city, area } = this.$refs.regionSelector.getSelected()
-        this.modal.province = province
-        this.modal.city = city
-        this.modal.district = area
+        this.model.province = province
+        this.model.city = city
+        this.model.district = area
       }
 
-      this.$refs.modal.validate((valid) => {
+      this.$refs.model.validate((valid) => {
         if (valid) {
-          const params = Peace.util.deepClone(this.modal)
+          const params = Peace.util.deepClone(this.model)
           if (this.isSend) {
             return
           }

@@ -14,10 +14,10 @@
           <el-select v-model="model.role"
                      placeholder="全部"
                      clearable>
-            <el-option v-for="(value, label) in source.ENUM_ORGANIZATION_TYPE"
-                       v-bind:key="value"
-                       v-bind:label="label"
-                       v-bind:value="value"></el-option>
+            <el-option :key="item.label"
+                       :label="item.label"
+                       :value="item.value"
+                       v-for="item in source.ENUM_ORGANIZATION_TYPE"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="认证状态">
@@ -53,8 +53,7 @@
                           prop="hospitalName"></PeaceTableColumn>
         <PeaceTableColumn min-width="120px"
                           label="机构类型"
-                          prop="role">
-          <template slot-scope="scope">{{ scope.row.role | getEnumLabel(source.ENUM_ORGANIZATION_TYPE) }}</template>
+                          prop="roleName">
         </PeaceTableColumn>
         <PeaceTableColumn min-width="100px"
                           label="联系人"
@@ -135,12 +134,13 @@ export default {
 
       source: {
         ENUM_CHECK_STATUS: CONSTANT.ENUM_CHECK_STATUS,
-        ENUM_ORGANIZATION_TYPE: CONSTANT.ENUM_ORGANIZATION_TYPE
+        ENUM_ORGANIZATION_TYPE: []
       }
     }
   },
 
-  mounted() {
+  async mounted() {
+    this.source.ENUM_ORGANIZATION_TYPE = await Peace.identity.dictionary.getList('hos_role_type')
     this.$nextTick().then(() => {
       this.get()
     })
@@ -164,7 +164,9 @@ export default {
     },
 
     canShowDetail(row) {
-      return row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.已通过 || row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.未通过
+      return (
+        row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.已通过 || row.checkStatus === CONSTANT.ENUM_CHECK_STATUS.未通过
+      )
     },
 
     aduit(row) {
