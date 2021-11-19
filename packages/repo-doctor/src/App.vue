@@ -5,6 +5,7 @@
 </template>
 
 <script>
+ga
 export default {
   created() {}
 }

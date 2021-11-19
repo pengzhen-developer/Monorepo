@@ -49,11 +49,11 @@
              style="width: 100%"
              :key="url">
 
-          <pdf v-if="url.indexOf('pdf') != -1"
-               ref="img"
-               :style="imgStyle"
-               :src="url">
-          </pdf>
+          <PDFViewer ref="img"
+                     v-bind:urlStr="url"
+                     v-if="url.indexOf('pdf') != -1"
+                     :style="imgStyle">
+          </PDFViewer>
 
           <img v-else
                ref="img"
@@ -75,7 +75,7 @@
 import { on, off } from 'element-ui/src/utils/dom'
 import { rafThrottle, isFirefox } from 'element-ui/src/utils/util'
 import { PopupManager } from 'element-ui/src/utils/popup'
-import pdf from 'vue-pdf'
+import PDFViewer from './PDFViewer'
 const Mode = {
   CONTAIN: {
     name: 'contain',
@@ -92,7 +92,7 @@ const mousewheelEventName = isFirefox() ? 'DOMMouseScroll' : 'mousewheel'
 export default {
   name: 'FileViewer',
   components: {
-    pdf
+    PDFViewer
   },
   props: {
     urlList: {
@@ -133,7 +133,7 @@ export default {
       loading: false,
       mode: Mode.CONTAIN,
       transform: {
-        scale: 1,
+        scale: 0.5,
         deg: 0,
         offsetX: 0,
         offsetY: 0,
@@ -278,7 +278,7 @@ export default {
     },
     reset() {
       this.transform = {
-        scale: 1,
+        scale: 0.5,
         deg: 0,
         offsetX: 0,
         offsetY: 0,
