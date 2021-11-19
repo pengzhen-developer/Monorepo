@@ -103,23 +103,6 @@ export function checkOverInquiry(params) {
 }
 
 /**
- * @description: 检查当前咨询能否发送处方
- * @param {*} params
- * @return {*}
- */
-export function checkSendPRStatus(params) {
-  const isMock = false
-
-  const apiPath = 'client/prescription/patient/getHistoryRegisteringInfo'
-  const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-  const serverPath = process.env.VUE_APP_API_BASE + apiPath
-
-  const requestApi = isMock ? mockPath : serverPath
-
-  return Peace.http.post(requestApi, params)
-}
-
-/**
  * @description: 获取病历详情
  * @param {*} params
  * @return {*}
@@ -169,7 +152,6 @@ export default {
   overInquiry,
   quitInquiry,
   checkOverInquiry,
-  checkSendPRStatus,
   getCaseDetail,
   getOneHealth
 }

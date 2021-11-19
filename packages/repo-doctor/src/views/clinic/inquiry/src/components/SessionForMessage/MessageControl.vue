@@ -308,22 +308,7 @@ export default {
           })
         }
 
-        this.checkStatus()
-      })
-    },
-
-    checkStatus() {
-      const params = {
-        familyId: this.$store.state.inquiry?.session?.content?.patientInfo?.familyId,
-        patientId: this.$store.state.inquiry?.session?.content?.patientInfo?.patientId,
-        inquiryNo: this.$store.state.inquiry?.session?.content?.inquiryInfo?.inquiryNo
-      }
-
-      // 检查当前咨询能否发送处方
-      Service.checkSendPRStatus(params).then((res) => {
-        if (res.data.status === 'yes') {
-          this.$emit('control', '发处方')
-        }
+        this.$emit('control', '发处方')
       })
     },
 
