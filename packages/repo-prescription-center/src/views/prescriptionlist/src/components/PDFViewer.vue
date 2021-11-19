@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 100%">
     <template v-if="numPages">
       <pdf v-for="i in numPages"
            :key="i"

@@ -46,7 +46,6 @@
 
         <div v-for="(url, i) in urlList"
              v-show="i === index"
-             style="width: 100%"
              :key="url">
 
           <PDFViewer ref="img"
