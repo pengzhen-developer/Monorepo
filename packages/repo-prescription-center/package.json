@@ -15,7 +15,8 @@
     "peace-components": "^1.18.0",
     "peace-identity": "^1.18.0",
     "peace-library": "^1.18.0",
-    "peace-ui": "^1.18.0"
+    "peace-ui": "^1.18.0",
+    "vue-pdf": "^4.3.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

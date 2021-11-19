@@ -72,7 +72,7 @@
                     style="width: 100%">
 
           <PeaceTableColumn label="时间"
-                            width="166"
+                            width="168"
                             prop="updateTime" />
 
           <PeaceTableColumn label="处方编号"

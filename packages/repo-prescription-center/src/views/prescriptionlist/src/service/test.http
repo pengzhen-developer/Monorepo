@@ -1,5 +1,5 @@
 ### 处方列表
-POST https://prescription-center.dev.jk.com/prescriptionCenter/getPrescriptionList
+POST http://10.2.45.240:9503/prescriptionCenter/getPrescriptionList
 Content-Type: application/json
 
 {

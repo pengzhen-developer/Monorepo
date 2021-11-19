@@ -23,9 +23,9 @@
       <span>处方号：</span>
       <span class="q-mr-sm">No.{{ internalData?.prescriptionNo }}</span>
 
-      <el-image-viewer v-if="visiableImg"
-                       v-bind:on-close="() => { visiableImg = false }"
-                       v-bind:url-list="prescriptionImageList" />
+      <file-viewer v-if="visiableImg"
+                   v-bind:on-close="() => { visiableImg = false }"
+                   v-bind:url-list="prescriptionImageList" />
 
       <el-button v-if="prescriptionImageList.length > 0"
                  round
@@ -198,13 +198,13 @@ const PRESCRIPTION_AUDIT_RESULT_CONFIG = {
   ['SERVER_ERR']: { color: 'rgba(255, 58, 48, 1)' }
 }
 
-import ElImageViewer from 'element-ui/packages/image/src/image-viewer.vue'
+import FileViewer from './FileViewer.vue'
 
 export default {
   name: 'PrescriptionDetail',
 
   components: {
-    ElImageViewer
+    FileViewer
   },
 
   props: {
