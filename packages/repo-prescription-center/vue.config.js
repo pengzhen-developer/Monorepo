@@ -12,6 +12,10 @@ module.exports = {
   // https://cli.vuejs.org/config/#productionSourceMap
   productionSourceMap: false,
 
+  // devServer: {
+  //   proxy: 'https://admin-mall.dev.jk.com/api/prescription-center/'
+  // },
+
   // https://cli.vuejs.org/config/#chainwebpack
   chainWebpack: (config) => {
     // 移除 prefetch、preload 插件
