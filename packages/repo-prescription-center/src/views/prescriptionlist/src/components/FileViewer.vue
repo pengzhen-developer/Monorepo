@@ -46,6 +46,7 @@
 
         <div v-for="(url, i) in urlList"
              v-show="i === index"
+             :class="{pdfWidth : url.indexOf('pdf') != -1}"
              :key="url">
 
           <PDFViewer ref="img"
@@ -349,3 +350,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.pdfWidth {
+  width: 100%;
+}
+</style>
