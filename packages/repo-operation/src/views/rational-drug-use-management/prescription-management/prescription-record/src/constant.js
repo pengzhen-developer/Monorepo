@@ -35,9 +35,9 @@ export default {
     },
     ERR: {
       label: '暂无结果',
-      color: 'rgba(51, 51, 51, 0.2)',
-      borderColor: 'rgba(51, 51, 51, 0.6)',
-      bgColor: 'rgba(240, 152, 21, 0.1)'
+      color: 'rgba(51, 51, 51, 0.6)',
+      borderColor: 'rgba(51, 51, 51, 0.2)',
+      bgColor: 'rgba(51, 51, 51, 0.05)'
     },
     OK: {
       label: '通过',
@@ -47,9 +47,9 @@ export default {
     },
     I: {
       label: '提示',
-      color: 'rgba(240, 152, 21, 1)',
-      borderColor: 'rgba(240, 152, 21, 1)',
-      bgColor: 'rgba(240, 152, 21, 0.1)'
+      color: 'rgba(48, 153, 166, 1)',
+      borderColor: 'rgba(48, 153, 166, 1)',
+      bgColor: 'rgba(48, 153, 166, 0.1)'
     },
     D: {
       label: '禁用',

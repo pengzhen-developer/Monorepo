@@ -6,28 +6,23 @@
 import Service from '../service/index'
 
 export default {
-  // props: {
-  //   info: Object
-  // },
   data() {
     return {
-      status: ''
+      status: '1'
     }
   },
   created() {
-    console.log('created', 312322131221212121212121212121212121)
     this.showTip()
   },
   methods: {
     showTip() {
       this.$confirm('您尚未开启工作状态，是否现在开启？', '提示', {
-        showClose: false,
+        showClose: true,
         closeOnClickModal: false,
         showCancelButton: false,
         confirmButtonText: '开始工作'
       }).then(async () => {
         //更新用户状态
-        this.status = '1'
         const userinfo = await Peace.identity.auth.getAccountInfo()
 
         const params = {
@@ -49,9 +44,6 @@ export default {
           })
           .finally(() => {
             this.setStatus()
-            // setTimeout(() => {
-            //   window.location.reload()
-            // }, 500)
           })
       })
     },

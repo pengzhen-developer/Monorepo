@@ -1,6 +1,5 @@
 <template>
-  <div class="layout-route bg-grey-2"
-       v-loading="loading">
+  <div class="layout-route bg-grey-2">
     <!-- 基本信息 -->
     <div class="personal bg-white  q-mb-20 q-pb-44">
       <div class="personal-item row justify-between q-mb-26">
@@ -224,7 +223,7 @@ export default {
           content: '下载【医网信】APP'
         },
         {
-          content: '使用账号登录APP'
+          content: '使用账号登录【医网信】APP'
         },
         {
           content: '下载证书并设置签名'
