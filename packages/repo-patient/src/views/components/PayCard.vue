@@ -405,7 +405,8 @@ export default {
         doctorId: this.doctorId,
         nethospitalId: this.nethospitalId,
         custCode: this.custCode,
-        orderType: this.orderType // 问诊 2复诊 3购药 4挂号 5服务包 6检验挂号订单 7检验单
+        orderType: this.orderType, // 问诊 2复诊 3购药 4挂号 5服务包 6检验挂号订单 7检验单
+        prescriptionNo: this.orderInfo?.prescriptionNo ?? '' //处方No  购药时需传
       }
       peace.service.inquiry.getPermissionsDeduction(params).then(async (res) => {
         const deduction = res.data || []

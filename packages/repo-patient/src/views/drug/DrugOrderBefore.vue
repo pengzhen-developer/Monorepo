@@ -220,14 +220,7 @@
                          :informedConsent="informedConsentDialog.informedConsent"
                          @onCancel="onCancelCallback"
                          @onSubmit="onSubmitCallback"></DrugInformedConsent>
-    <!-- 医保 -->
-    <template v-if="order!=null">
-      <YibaoCaedSelect v-model="showCard"
-                       ref='yibaoCardSelect'
-                       :info="info"
-                       @onSuccess="onSuccess"></YibaoCaedSelect>
 
-    </template>
     <!-- 确认支付弹框 -->
     <template>
       <ExpenseDetail v-model="dialog.visible"
@@ -243,7 +236,6 @@
 
 <script>
 import PayCard from '@src/views/components/PayCard.vue'
-import YibaoCaedSelect from '@src/views/components/YibaoCardSelect'
 import DrugInformedConsent from '@src/views/components/DrugInformedConsent'
 import ExpenseDetail from '@src/views/components//ExpenseDetail'
 import CallPhone from '@src/views/components/CallPhone'
@@ -253,7 +245,7 @@ import peace from '@src/library'
 import { Dialog } from 'vant'
 export default {
   name: 'DrugOrderBefore',
-  components: { [Dialog.Component.name]: Dialog.Component, YibaoCaedSelect, ExpenseDetail, DrugInformedConsent, PayCard, CallPhone },
+  components: { [Dialog.Component.name]: Dialog.Component, ExpenseDetail, DrugInformedConsent, PayCard, CallPhone },
   data() {
     return {
       payList: [],
@@ -283,10 +275,6 @@ export default {
       userAddr: {},
       order: null,
       CustomerType: '',
-      showCard: false,
-      yibaoText: '请选择',
-      yibaoChecked: false,
-      shangbaoChecked: false,
       yibaoInfo: {},
       dialog: {
         visible: false,
@@ -397,22 +385,10 @@ export default {
       }
     },
     // source 处方来源：1 复诊  2 会诊 3 面诊 4 问诊 5 转诊
-    isInquirySource() {
-      return this.order.source === 4
-    },
+
     //inHospital  1院内，2院外
     disabled() {
       return this.order.source === 3 || this.order.inHospital === 2 ? false : true
-    },
-    canShowYibao() {
-      return this.order?.insuranceConfig?.medicalInsuranceConfig != null && this.order?.MedicalCardNo ? true : false
-    },
-
-    // insureTypeCode 0自费 11医保
-    // payMode 1 在线支付  2 到店支付  3 货到付款
-    //咨询购药 单独处理
-    cnaShowYibaoByInquiry() {
-      return this.order.insureTypeCode === 11 && this.order?.insuranceConfig?.medicalInsuranceConfig != null && this.page.payIndex == 1
     },
 
     canShowShangbao() {
@@ -537,33 +513,7 @@ export default {
     getPayName() {
       this.payName = this.payList.find((item) => item.Value == this.page.payIndex)?.Label
     },
-    onReset() {
-      /** 重置医保相关信息*/
-      this.$refs.yibaoCardSelect.selected = false
-      this.$refs.yibaoCardSelect.checked = false
-      this.$refs.yibaoInfo = {}
-      this.yibaoText = ''
-      this.yibaoInfo = {}
-      this.yibaoChecked = false
-    },
-    onSuccess(result) {
-      this.yibaoChecked = result.checked
-      this.yibaoText = result.yibaoInfo.medCardNo
-      this.yibaoInfo = result.yibaoInfo
-    },
-    chooseYibao() {
-      // source 处方来源：1 复诊  2 会诊 3 面诊 4 问诊 5 转诊
-      if (this.isInquirySource) {
-        // insureTypeCode 0自费 11医保 12门特
-        if (this.order.insureTypeCode === 11 && !this.order.MedicalCardNo) {
-          this.showCard = true
-        }
-      } else {
-        if (!this.order.MedicalCardNo) {
-          this.showCard = true
-        }
-      }
-    },
+
     selectAddressCallback(json) {
       if (json) {
         this.initData(json)
