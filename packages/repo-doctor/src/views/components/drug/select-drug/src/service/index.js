@@ -139,7 +139,7 @@ export default {
    * @returns {*}
    */
   getPrescriptionSourceType(params) {
-    const isMock = true
+    const isMock = false
 
     const apiPath = 'webapp/prescription/Prescribeprescrip/getCate'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
