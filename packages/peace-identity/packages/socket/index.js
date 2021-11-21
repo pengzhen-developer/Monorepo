@@ -14,7 +14,7 @@ export default class Socket {
     Logger.debug = config.debug
 
     this.opts = {
-      pingTimeout: config.pingTimeout || 5000,
+      pingTimeout: config.pingTimeout || 10000,
       pongTimeout: config.pongTimeout || 5000,
       reconnectTimeout: config.reconnectTimeout || 5000,
       pingRequest: config.pingRequest || 'ping',
