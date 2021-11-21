@@ -52,13 +52,16 @@
                              :selected="false"
                              ref="regionSelector"></region-selector>
           </el-form-item>
+
           <el-form-item prop="address">
             <el-input placeholder="请输入详情地址"
                       v-model="model.address"></el-input>
           </el-form-item>
         </el-form-item>
+
         <template v-if="role==1">
           <el-form-item label="医院类型："
+                        prop="hosTypeCode"
                         class="sec">
 
             <el-form-item prop="hosTypeCode"
