@@ -32,6 +32,19 @@ const options = {
         return '600px'
       }
     }
+  },
+
+  mounted() {
+    // 模拟 footer 插槽，优化 dialog 组件内的 footer 交互
+    this.$nextTick(() => {
+      const dialog = this.$el.querySelector('.el-dialog')
+      const oldBody = dialog.querySelector('.el-dialog__body')
+      const newBody = dialog.querySelector('.el-dialog__body .el-dialog__body')
+      const footer = dialog.querySelector('.el-dialog__body .el-dialog__footer')
+
+      dialog.append(footer)
+      dialog.replaceChild(newBody, oldBody)
+    })
   }
 }
 
