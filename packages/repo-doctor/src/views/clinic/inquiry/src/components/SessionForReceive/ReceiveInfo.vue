@@ -8,7 +8,7 @@
              slot="title">
           <q-icon class="q-mr-md text-h6"
                   v-bind:name="`img:${require('@src/assets/images/warning@2x.png')}`"></q-icon>
-          <span class="text-grey-8">患者选择在线咨询，请确认患者<span class="text-warning">复诊</span>后再开具处方</span>
+          <span class="text-grey-8">患者选择在线咨询，请确认患者为<span class="text-warning">复诊</span>后再开具处方</span>
         </div>
       </el-alert>
     </div>

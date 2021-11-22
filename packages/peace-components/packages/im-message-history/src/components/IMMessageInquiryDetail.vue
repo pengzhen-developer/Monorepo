@@ -9,8 +9,9 @@
          style="background: rgba(255,251,230,1);"
          v-if="shouldVisiblePrescriptionWarning">
       <img style="width: 20px; height: 20px; margin: 0 14px 0 0;"
-           v-bind:src="require('./../assets/img/warning@2x.png')" alt="">
-      <span class="text-grey-8">患者选择在线咨询，请确认患者<span class="text-warning">复诊</span>后再开具处方</span>
+           v-bind:src="require('./../assets/img/warning@2x.png')"
+           alt="">
+      <span class="text-grey-8">患者选择在线咨询，请确认患者为<span class="text-warning">复诊</span>后再开具处方</span>
     </div>
 
     <div>
