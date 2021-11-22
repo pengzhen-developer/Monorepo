@@ -11,7 +11,7 @@
           <span style="height: 22px;
                    font-size: 18px;
                    color: #333333;
-                   line-height: 22px;">{{ data?.SourceHospitalName }}</span>
+                   line-height: 22px;">{{ data?.SourceHospitalName }}药师审方设置</span>
         </div>
 
         <div class="q-mb-md">
