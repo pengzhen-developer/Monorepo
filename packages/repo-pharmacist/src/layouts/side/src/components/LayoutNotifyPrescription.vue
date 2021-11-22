@@ -86,27 +86,26 @@ export default {
       message.onAccept = () => {
         message.onReject()
 
-        Service.lockPrescription({ JZTClaimNo: notifyObject.data.JZTClaimNo })
-          .then(() => {
-            const menu = this.menuList.find((item) => item.menuRoute === '/prescription/check')
+        Service.lockPrescription({ claimNo: notifyObject.data.JZTClaimNo }).then(() => {
+          const menu = this.menuList.find((item) => item.menuRoute === '/prescription/check')
 
-            Observable_Layout.mutations.addTab(menu)
-            Observable_Layout.mutations.setTab(menu)
+          Observable_Layout.mutations.addTab(menu)
+          Observable_Layout.mutations.setTab(menu)
 
-            Peace.$router.push({
-              path: '/prescription/check',
-              query: {
-                JZTClaimNo: notifyObject.data.JZTClaimNo,
-                t: new Date().getTime() // 参数增加时间戳，防止路由重复push报错
-              }
-            })
-          })
-          .catch((err) => {
-            // 该处方正在被其他药师审核
-            if (err?.data?.code === -1) {
-              Peace.util.error(err.data.msg)
+          Peace.$router.push({
+            path: '/prescription/check',
+            query: {
+              JZTClaimNo: notifyObject.data.JZTClaimNo,
+              t: new Date().getTime() // 参数增加时间戳，防止路由重复push报错
             }
           })
+        })
+        //.catch((err) => {
+        // 该处方正在被其他药师审核
+        //   if (err?.data?.code === -1) {
+        //     Peace.util.error(err.data.msg)
+        //   }
+        // })
       }
 
       message.onReject = () => {

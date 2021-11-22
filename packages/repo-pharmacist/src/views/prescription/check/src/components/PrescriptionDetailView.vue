@@ -29,8 +29,8 @@
 
           <div class="template-style">
             <template v-if="templateList.length>0">
-              <div v-for="(item) in templateList"
-                   v-bind:key="item.templateCode"
+              <div v-for="(item,index) in templateList"
+                   v-bind:key="index"
                    class=" template-item"
                    v-on:click="getTemplateValue(item.templateContent)">
                 {{item.templateContent}}
@@ -168,7 +168,7 @@ export default {
         organCode: this.organCode
       }
       Service.getAuditingTemplatesList(params).then((res) => {
-        this.templateList = res.data.list.list
+        this.templateList = res.data.list
       })
     },
     showUnCheckList() {
