@@ -17,7 +17,7 @@ export default (url, param, method = 'get') => {
     const contentDisposition = response.headers['content-disposition']
     if (contentDisposition.indexOf('fileName') !== -1 || contentDisposition.indexOf('filename') !== -1) {
       // 获取文件名
-      const fileName = decodeURIComponent(contentDisposition.split('fileName=')[1]) || decodeURIComponent(contentDisposition.split('filename=')[1])
+      const fileName = decodeURIComponent(contentDisposition.split('fileName=')[1] || contentDisposition.split('filename=')[1])
 
       // 根据 blob 创建 object url
       const blobURL = window.URL.createObjectURL(new Blob([response.data]))

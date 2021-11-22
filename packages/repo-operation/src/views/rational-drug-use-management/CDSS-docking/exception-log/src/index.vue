@@ -19,6 +19,12 @@
                        v-bind:value="item.value"></el-option>
           </peace-select>
         </el-form-item>
+        <el-form-item label="所属机构">
+          <el-input v-model="model.organName"
+                    placeholder="请输入">
+          </el-input>
+        </el-form-item>
+
         <el-form-item label="异常类型">
           <peace-select v-model="model.exceptionType"
                         placeholder="全部">
@@ -40,6 +46,10 @@
       </el-form>
     </div>
     <div class="card">
+      <div class="q-mb-lg">
+        <el-button v-on:click="exportFile">导出</el-button>
+      </div>
+
       <PeaceTable ref="table"
                   pagination>
         <PeaceTableColumn label="序号"
@@ -93,6 +103,7 @@ export default {
     return {
       model: {
         wordName: '',
+        organName: '',
         exceptionWay: '',
         exceptionType: '',
         startDate: '',
@@ -125,6 +136,10 @@ export default {
       const fetch = Service.getExceptionList
       const params = Peace.util.deepClone(this.model)
       this.$refs.table.reloadData({ fetch, params })
+    },
+
+    exportFile() {
+      Service.queryExcel(this.model)
     }
   }
 }

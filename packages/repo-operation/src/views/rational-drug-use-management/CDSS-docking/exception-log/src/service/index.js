@@ -16,5 +16,22 @@ export default {
     return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
+  },
+
+  /**
+   * 通用药品规则列表
+   * @param params
+   * @returns {*}
+   */
+  queryExcel(params) {
+    const isMock = false
+
+    const apiPath = 'idic/cdss/exception/queryExcel'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.download(requestApi, params, 'post')
   }
 }
