@@ -12,10 +12,10 @@
         <p class="title-style q-mb-30 text-weight-bolder">处方笺</p>
 
         <!-- 处方状态 -->
-        <el-image v-if="prescriptionStatusImage"
-                  class="absolute"
-                  style="width: 88px; height: 88px; right: -20px; top: 64px;"
-                  v-bind:src="prescriptionStatusImage"></el-image>
+        <img v-if="prescriptionStatusImage"
+             class="absolute"
+             style="width: 88px; height: 88px; right: -20px; top: 64px;"
+             v-bind:src="prescriptionStatusImage" />
       </div>
     </div>
 
