@@ -66,6 +66,7 @@ export default {
                 let JZTClaimNo = this.$route.query.JZTClaimNo
                 if (JZTClaimNo) {
                   Observable.mutations.changeJztClaimNo(JZTClaimNo)
+                  Observable.mutations.changeView(Observable.constants.view.DETAIL)
                   this.getNotCheckedPreCount()
                 } else {
                   this.getNotCheckedPrescription()
@@ -98,7 +99,10 @@ export default {
       return this.view === Observable.constants.view.DETAIL
     }
   },
-  created() {},
+  mounted() {},
+  destroyed() {
+    Observable.mutations.reset()
+  },
   methods: {
     getNotCheckedPreCount() {
       Service.getNotCheckedPrenCount({}).then((res) => {

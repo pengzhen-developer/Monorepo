@@ -52,6 +52,18 @@ const mutations = {
    */
   changeNotCheckedCount(count) {
     state.notCheckedCount = count
+  },
+  /**
+   * 清空数据
+   *
+   * @param {*}
+   */
+  reset() {
+    state.forceUpdate = false
+
+    state.view = undefined
+    state.jztClaimNo = undefined
+    state.notCheckedCount = 0
   }
 }
 
