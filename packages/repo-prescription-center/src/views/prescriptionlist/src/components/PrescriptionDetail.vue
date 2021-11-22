@@ -111,7 +111,7 @@
            style="background: #F5F5F5; border-radius: 4px; padding-bottom: 90px;">
         <template v-for="(drug, index) in internalData?.prescriptionDrugsList">
           <div v-bind:key="index"
-               class="q-py-md">
+               class="q-pb-md">
             <div class="flex justify-between q-mb-sm text-subtitle1 text-weight-bold">
               <div>
                 <span class="q-mr-sm">{{ drug.drugName }}</span>
