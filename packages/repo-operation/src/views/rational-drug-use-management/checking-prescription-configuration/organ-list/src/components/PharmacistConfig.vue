@@ -168,15 +168,17 @@ export default {
     },
 
     sort() {
-      this.loading = true
+      if(this.prioritySolutionList.length > 0){
+        this.loading = true
 
-      const params = this.prioritySolutionList.map((item) => item.ID)
+        const params = this.prioritySolutionList.map((item) => item.ID)
 
-      return Service.Sortscriptionsteam(params)
-        .then(this.fetch)
-        .finally(() => {
-          this.loading = false
-        })
+        return Service.Sortscriptionsteam(params)
+          .then(this.fetch)
+          .finally(() => {
+            this.loading = false
+          })
+      }
     },
 
     handleAdd() {
