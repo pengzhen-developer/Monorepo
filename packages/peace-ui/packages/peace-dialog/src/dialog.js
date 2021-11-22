@@ -42,8 +42,12 @@ const options = {
       const newBody = dialog.querySelector('.el-dialog__body .el-dialog__body')
       const footer = dialog.querySelector('.el-dialog__body .el-dialog__footer')
 
-      dialog.append(footer)
-      dialog.replaceChild(newBody, oldBody)
+      if (footer) {
+        dialog.append(footer)
+      }
+      if (newBody) {
+        dialog.replaceChild(newBody, oldBody)
+      }
     })
   }
 }
