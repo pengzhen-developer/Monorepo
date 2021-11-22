@@ -77,7 +77,7 @@
     <PeaceDialog title="知识库"
                  :visible.sync="modelDialog.visible"
                  append-to-body
-                 width="900px"
+                 width="920px"
                  :modal="false"
                  v-show="modelDialog.visible">
       <KnowledgeButton v-bind:drugCscCode="platformDrugCode"></KnowledgeButton>

@@ -181,7 +181,7 @@ export default {
       const token = auth.access_token
       /// 历史用药
       window.open(
-        `${process.env.VUE_APP_SITE_PRESCRIPTION}Engine/WebParams?uri=medicationHistory/viewHistoricalRecipe.html?id=${this.seeClientCardCode}&token=${token}`
+        `${process.env.VUE_APP_SITE_PHARMACIST}Engine/WebParams?uri=medicationHistory/viewHistoricalRecipe.html?id=${this.seeClientCardCode}&token=${token}`
       )
     },
     closeImage() {
