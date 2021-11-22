@@ -2,8 +2,8 @@
   <div class="layout-route full-width flex">
     <!-- 无数据显示空态页 -->
     <template>
-      <NoDataView v-if="noDataView"
-                  v-loading="loading"></NoDataView>
+      <NoDatasView v-if="noDataView"
+                   v-loading="loading"></NoDatasView>
     </template>
 
     <!-- 药师工作状态 -->
@@ -34,7 +34,7 @@
 <script>
 import Service from './service/index'
 import Observable from '../observable'
-import NoDataView from './components/NoDataView'
+import NoDatasView from './components/NoDatasView'
 import SignStatusView from './components/SignStatusView'
 import WorkStatusView from './components/WorkStatusView'
 import StratCheckView from './components/StratCheckView'
@@ -46,7 +46,7 @@ export default {
     }
   },
   components: {
-    NoDataView,
+    NoDatasView,
     SignStatusView,
     WorkStatusView,
     StratCheckView
