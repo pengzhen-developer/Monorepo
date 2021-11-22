@@ -43,7 +43,6 @@ export default {
    */
   getPrescriptionInfo(params) {
     const isMock = false
-
     const apiPath = 'durprescription/v2/pharmacist/getPrescriptionDetail'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
@@ -51,44 +50,6 @@ export default {
     const requestApi = isMock ? mockPath : serverPath
 
     return Peace.http.get(requestApi, { params }).then((res) => {
-      return res
-    })
-  },
-  /**
-   * 获取科室
-   *
-   * @param {*} params
-   * @returns {Object}
-   */
-  getDepartment(params) {
-    const isMock = false
-
-    const apiPath = 'webapi/api/ApothecaryPrescription/GetDepartment'
-    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-    const serverPath = process.env.VUE_APP_API_BASE + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
-      return res
-    })
-  },
-  /**
-   * 获取机构
-   *
-   * @param {*} params
-   * @returns {Object}
-   */
-  getCustomerTeamRelaction(params) {
-    const isMock = false
-
-    const apiPath = 'webapi/api/ApothecaryPrescription/GetCustomerTeamRelaction'
-    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
-    const serverPath = process.env.VUE_APP_API_BASE + apiPath
-
-    const requestApi = isMock ? mockPath : serverPath
-
-    return Peace.http.post(requestApi, params).then((res) => {
       return res
     })
   },
@@ -137,7 +98,26 @@ export default {
    */
   getActionDetail(params) {
     const isMock = false
+
     const apiPath = 'durprescription/Phrams/ActionDetail'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.get(requestApi, { params }).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 获审方记录
+   * @param { string } jztClaimNo 平台处方编号
+   * @returns { Object }
+   */
+  getPrescriptionLog(params) {
+    const isMock = false
+
+    const apiPath = 'durprescription/GetLog/PrescriptionLog'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
@@ -154,6 +134,7 @@ export default {
    */
   getUnhandledPrescriptions(params) {
     const isMock = false
+
     const apiPath = 'durprescription/v2/pharmacist/unhandledPrescriptions'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
@@ -169,9 +150,10 @@ export default {
    * @param { string } jztClaimNo 平台处方编号
    * @returns { Object }
    */
-  lockPre(params) {
+  lockPrescription(params) {
     const isMock = false
-    const apiPath = 'durprescription/v2/pharmacist/lockPre'
+
+    const apiPath = 'durprescription/v2/pharmacist/lockPrescription'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
@@ -191,6 +173,63 @@ export default {
     const isMock = false
 
     const apiPath = 'prescription-comment/api/v1/prescription-comment/getAuditingTemplatesList'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 通过、质疑、不通过
+   *
+   * @param {*} params
+   * @returns {Object}
+   */
+  queryPrescription(params) {
+    const isMock = false
+
+    const apiPath = 'durprescription/v2/pharmacist/queryPrescription'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 获取下一张处方
+   *
+   * @param {*} params
+   * @returns {Object}
+   */
+  nextPrescription(params) {
+    const isMock = false
+
+    const apiPath = 'durprescription/v2/pharmacist/nextPrescription'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+  /**
+   * 获取未审处方数
+   *
+   * @param {*} params
+   * @returns {Object}
+   */
+  getNotCheckedPrenCount(params) {
+    const isMock = false
+
+    const apiPath = 'durprescription/v2/pharmacist/notCheckedPrescriptionCount'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 

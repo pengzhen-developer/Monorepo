@@ -25,9 +25,8 @@
     </template>
     <!-- 审方-处方详情 -->
     <template>
-      <StratCheckView v-if="stratCheckView"
-                      v-bind:jztClaimNo="JZTClaimNo"
-                      v-bind:notCheckedCount="notCheckedCount"></StratCheckView>
+      <StratCheckView v-if="stratCheckView&&jztClaimNo"
+                      v-on:onGetNotCheckPre="getNotCheckPre"></StratCheckView>
     </template>
   </div>
 </template>
@@ -40,13 +39,10 @@ import SignStatusView from './components/SignStatusView'
 import WorkStatusView from './components/WorkStatusView'
 import StratCheckView from './components/StratCheckView'
 export default {
-  // name: 'PrescriptionCheck',
   data() {
     return {
-      JZTClaimNo: '',
       signStatusVisible: false,
-      loading: false,
-      notCheckedCount: undefined
+      loading: false
     }
   },
   components: {
@@ -67,7 +63,13 @@ export default {
                 Observable.mutations.changeView(Observable.constants.view.SIGNSTATUS)
                 this.signStatusVisible = true
               } else {
-                this.getNotCheckedPrescription()
+                let JZTClaimNo = this.$route.query.JZTClaimNo
+                if (JZTClaimNo) {
+                  Observable.mutations.changeJztClaimNo(JZTClaimNo)
+                  this.getNotCheckedPreCount()
+                } else {
+                  this.getNotCheckedPrescription()
+                }
               }
             })
           }
@@ -79,6 +81,9 @@ export default {
   computed: {
     view() {
       return Observable.state.view
+    },
+    jztClaimNo() {
+      return Observable.state.jztClaimNo
     },
     noDataView() {
       return this.view === Observable.constants.view.NODATA
@@ -96,19 +101,23 @@ export default {
 
   created() {},
   methods: {
+    getNotCheckedPreCount() {
+      Service.getNotCheckedPrenCount({}).then((res) => {
+        Observable.mutations.changeNotCheckedCount(res.data.notCheckedCount)
+      })
+    },
     getNotCheckedPrescription() {
       Service.getNotCheckedPrescription()
         .then((res) => {
           this.loading = false
-          this.JZTClaimNo = res.data.jztClaimNo
-          console.log(this.JZTClaimNo)
-          this.notCheckedCount = res.data.notCheckedCount
-          if (this.JZTClaimNo) {
+          Observable.mutations.changeJztClaimNo(res.data.jztClaimNo)
+          Observable.mutations.changeNotCheckedCount(res.data.notCheckedCount)
+          if (this.jztClaimNo !== '' && this.jztClaimNo !== null) {
             Observable.mutations.changeView(Observable.constants.view.DETAIL)
-            clearTimeout()
+            clearTimeout(this.timeId)
           } else {
             Observable.mutations.changeView(Observable.constants.view.NODATA)
-            setTimeout(() => {
+            this.timeId = setTimeout(() => {
               this.loading = true
               this.getNotCheckedPrescription()
             }, 15000)
@@ -117,6 +126,9 @@ export default {
         .catch(() => {
           this.loading = false
         })
+    },
+    getNotCheckPre() {
+      this.getNotCheckedPrescription()
     }
   }
 }

@@ -41,6 +41,10 @@ import Service from './service'
 export default {
   name: 'PrescriptionCheckRecode',
   props: {
+    data: {
+      type: Array,
+      required: false
+    },
     id: {
       type: String,
       required: false
@@ -50,20 +54,47 @@ export default {
   components: {
     TimeLineItem
   },
-
-  mounted() {
-    if (!Peace.validate.isEmpty(this.id)) {
-      this.getResultInfo()
-    } else {
-      this.propsError = true
+  watch: {
+    data: {
+      handler: function(val, oldVal) {
+        if (JSON.stringify(val) !== JSON.stringify(oldVal)) {
+          if (val && Object.keys(val).length > 0) {
+            this.propsError = false
+            this.rulestData = val
+          } else {
+            this.propsError = true
+          }
+        }
+      },
+      immediate: true
+    },
+    id: {
+      handler: function(val, oldVal) {
+        if (val !== oldVal) {
+          if (!Peace.validate.isEmpty(val)) {
+            this.propsError = false
+            this.getResultInfo()
+          } else {
+            this.propsError = true
+          }
+        }
+      },
+      immediate: true
     }
   },
+  // mounted() {
+  //   if (!Peace.validate.isEmpty(this.id)) {
+  //     this.getResultInfo()
+  //   } else {
+  //     this.propsError = true
+  //   }
+  // },
 
   data() {
     return {
       propsError: false,
       loading: false,
-      rulestData: {},
+      rulestData: [],
       source: {
         PRESCRIPTION_CHECK_RESULT: CONSTANT.PRESCRIPTION_CHECK_RESULT
       }

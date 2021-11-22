@@ -10,5 +10,11 @@ export default {
     { label: '暂无结果', value: 'FAIL' },
     { label: '暂无结果', value: 'ERR' },
     { label: '服务调用失败', value: 'SERVER_ERR' }
+  ],
+  PRESCRIPTION_EXAM_RESULTS_TYPE: [
+    { label: '', value: 0 },
+    { label: '禁用', value: 1 },
+    { label: '慎用', value: 2 },
+    { label: '提示', value: 3 }
   ]
 }

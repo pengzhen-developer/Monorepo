@@ -39,8 +39,9 @@
 
           <div class="flex items-center q-py-14 q-px-md"
                style="background: #F9F9F9;">
-            <span class="q-mr-md text-weight-Medium"
-                  style="font-size: 18px;">{{ checkItem.title }}</span>
+            <span class="q-mr-md text-weight-Medium cursor-pointer"
+                  style="font-size: 18px;"
+                  v-on:click="viewInstructions(checkItem.list[index].productCode)">{{ checkItem.title }}</span>
             <!-- <span class="text-grey-6"> 50mg*6袋 </span> -->
           </div>
 
@@ -73,13 +74,21 @@
         </div>
       </div>
     </div>
-
+    <PeaceDialog title="知识库"
+                 :visible.sync="modelDialog.visible"
+                 append-to-body
+                 width="900px"
+                 :modal="false"
+                 v-show="modelDialog.visible">
+      <KnowledgeButton v-bind:drugCscCode="platformDrugCode"></KnowledgeButton>
+    </PeaceDialog>
   </div>
 </template>
 
 <script>
 import CONSTANT from './constant'
 import Service from './service'
+import KnowledgeButton from './components/KnowledgeButton'
 export default {
   name: 'PrescriptionAudit',
   props: {
@@ -92,6 +101,30 @@ export default {
       required: false
     }
   },
+  components: {
+    KnowledgeButton
+  },
+  data() {
+    return {
+      propsError: false,
+      loading: false,
+      checkedResult: {
+        engineCode: '',
+        actionCode: '',
+        actionMsg: '',
+        presTranscodingResult: [],
+        transFormArray: []
+      },
+      source: {
+        PRESCRIPTION_CHECK_RESULT: CONSTANT.PRESCRIPTION_CHECK_RESULT
+      },
+      modelDialog: {
+        visible: false
+      },
+      platformDrugCode: ''
+    }
+  },
+
   watch: {
     data: {
       handler: function(val, oldVal) {
@@ -110,31 +143,18 @@ export default {
     id: {
       handler: function(val, oldVal) {
         if (val !== oldVal) {
-          this.propsError = false
-          this.getResultInfo()
+          if (!Peace.validate.isEmpty(val)) {
+            this.propsError = false
+            this.getResultInfo()
+          } else {
+            this.propsError = true
+          }
         }
       },
       immediate: true
     }
   },
   created() {},
-
-  data() {
-    return {
-      propsError: false,
-      loading: false,
-      checkedResult: {
-        engineCode: '',
-        actionCode: '',
-        actionMsg: '',
-        presTranscodingResult: [],
-        transFormArray: []
-      },
-      source: {
-        PRESCRIPTION_CHECK_RESULT: CONSTANT.PRESCRIPTION_CHECK_RESULT
-      }
-    }
-  },
 
   computed: {
     showDrugRules() {
@@ -173,6 +193,7 @@ export default {
 
         data.transFormArray = tmpArray
         this.checkedResult = data
+        console.log(this.checkedResult)
       } else {
         data.transFormArray = []
         this.checkedResult = data
@@ -212,6 +233,11 @@ export default {
         .finally(() => {
           this.loading = false
         })
+    },
+    viewInstructions(data) {
+      console.log(data)
+      this.platformDrugCode = data
+      this.modelDialog.visible = true
     }
   }
 }

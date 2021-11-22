@@ -6,8 +6,9 @@
 
       <!-- 处方标题 -->
       <div class="relative-position text-center q-mb-18 q-mt-28">
-        <el-image v-bind:src="require('./assets/img/img1.png')"
-                  class="status-pic"></el-image>
+        <el-image v-bind:src="getIcon()"
+                  class="status-pic"
+                  v-if="data.Prescription===1||data.Prescription===2||data.Prescription===3||data.Prescription===4||data.Prescription===5"></el-image>
         <div class="title-style text-weight-bolder">
           {{ data.MedicalInstitutionName }}
         </div>
@@ -200,6 +201,7 @@ export default {
         visible: false
       },
       data: {
+        Prescription: undefined,
         PrescriptionNo: '',
         MedicalInstitutionName: '',
         prescriptionImageUrl: '',
@@ -227,6 +229,14 @@ export default {
     }
   },
   methods: {
+    getIcon() {
+      const code = this.data?.Prescription
+      if (code && [1, 2, 3, 4, 5].includes(code)) {
+        return require(`./assets/img/status${code}.png`)
+      } else {
+        return ''
+      }
+    },
     showImage() {
       this.dialog.visible = true
     },

@@ -2,7 +2,7 @@
   <div>
     <el-form inline
              label-suffix="："
-             v-on:keyup.enter.native="fetch"
+             v-on:keyup.enter.native="getUnhandledPrescriptions"
              v-on:submit.native.prevent
              v-bind:model="model"
              label-width="auto">
@@ -51,7 +51,7 @@
                            v-model="timeRange"></peace-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button v-on:click="fetch"
+        <el-button v-on:click="getUnhandledPrescriptions"
                    type="primary">查询</el-button>
       </el-form-item>
     </el-form>
@@ -59,33 +59,40 @@
                 pagination>
       <PeaceTableColumn label="处方编号"
                         prop="prescriptionNo"
-                        min-width="180px"></PeaceTableColumn>
-      <PeaceTableColumn label="系统审方结果"
-                        min-width="160px">
+                        min-width="180px">
         <template slot-scope="scope">
-          {{ scope.row.actionCode | getEnumLabel(source.actionCode)}}
+          <div class="preNo-color cursor-pointer"
+               v-on:click="viewPre(scope.row.jztclaimNo)">
+            {{ scope.row.prescriptionNo}}
+          </div>
+        </template>
+      </PeaceTableColumn>
+      <PeaceTableColumn label="系统审方结果"
+                        min-width="120px">
+        <template slot-scope="scope">
+          {{ scope.row.actionCode | filterDictionary(source.actionCode,'--')}}
         </template>
       </PeaceTableColumn>
       <PeaceTableColumn label="提交方式"
                         prop="submitMode"
-                        min-width="200px"></PeaceTableColumn>
+                        min-width="100px"></PeaceTableColumn>
       <PeaceTableColumn label="患者姓名"
                         prop="patientName"
-                        min-width="200px"></PeaceTableColumn>
+                        min-width="100px"></PeaceTableColumn>
       <PeaceTableColumn label="开具科室"
                         prop="medicalDepartmentName"
-                        min-width="200px"></PeaceTableColumn>
+                        min-width="110px"></PeaceTableColumn>
       <PeaceTableColumn label="开具机构"
                         prop="medicalInstitutionName"
-                        min-width="200px"></PeaceTableColumn>
+                        min-width="180px"></PeaceTableColumn>
       <PeaceTableColumn label="处方来源"
                         prop="prescriptionSource"
-                        min-width="200px"></PeaceTableColumn>
+                        min-width="100px"></PeaceTableColumn>
       <PeaceTableColumn label="开具时间"
                         prop="prescriptionTime"
-                        min-width="200px"></PeaceTableColumn>
+                        min-width="180px"></PeaceTableColumn>
       <PeaceTableColumn label="操作"
-                        min-width="160px"
+                        min-width="110px"
                         fixed="right">
         <template slot-scope="scope">
           <el-button class="q-px-none"
@@ -94,15 +101,35 @@
         </template>
       </PeaceTableColumn>
     </PeaceTable>
+
+    <!-- 查看详情 -->
+    <PeaceDialog :close-on-click-modal="false"
+                 :close-on-press-escape="false"
+                 :visible.sync="detailDialog.visible"
+                 title="查看详情"
+                 v-if="detailDialog.visible"
+                 append-to-body
+                 width="1280px">
+      <ViewPrescriptionDetail v-bind:jztClaimNo="detailDialog.jztclaimNo"
+                              v-if="detailDialog.jztclaimNo"></ViewPrescriptionDetail>
+    </PeaceDialog>
+
   </div>
 </template>
 
 <script>
 import CONSTANT from '../constant'
 import Service from '../service/index'
+import Observable from '../../observable'
+import ViewPrescriptionDetail from '@views/prescription/view-prescription-detail'
+
 export default {
+  components: {
+    ViewPrescriptionDetail
+  },
   data() {
     return {
+      timeRange: [],
       model: {
         patientName: '',
         deptName: '',
@@ -113,16 +140,13 @@ export default {
         prescriptionNo: ''
       },
       source: {
-        // prescriptionHospital: [],
-        // dept: [],
         prescriptionSource: [],
         actionCode: CONSTANT.SYSTEM_AUDIT_RESULTS_TYPE
+      },
+      detailDialog: {
+        visible: false,
+        jztclaimNo: ''
       }
-    }
-  },
-  filters: {
-    getEnumLabel: function(value, ENUM) {
-      return Object.keys(ENUM).find((key) => ENUM[key] === value)
     }
   },
   watch: {
@@ -132,8 +156,6 @@ export default {
     }
   },
   async created() {
-    // this.getDept()
-    // this.getOrgan()
     this.source.prescriptionSource = await Peace.identity.dictionary.getList('prescription_source')
     this.getUnhandledPrescriptions()
   },
@@ -143,27 +165,30 @@ export default {
       const fetch = Service.getUnhandledPrescriptions
       this.$refs.table.reloadData({ fetch, params })
     },
+    getNotCheckedPreCount() {
+      Service.getNotCheckedPrenCount({}).then((res) => {
+        Observable.mutations.changeNotCheckedCount(res.data.notCheckedCount)
+      })
+    },
     checkPre(jztclaimNo) {
-      this.$emit('close')
-      Service.lockPre({ jztclaimNo: jztclaimNo }).then(() => {})
+      Service.lockPrescription({ claimNo: jztclaimNo })
+        .then(() => {
+          Observable.mutations.changeJztClaimNo(jztclaimNo)
+          this.getNotCheckedPreCount()
+          this.$emit('close')
+        })
+        .catch(() => {})
+    },
+    viewPre(row) {
+      this.detailDialog.visible = true
+      this.detailDialog.jztclaimNo = row
     }
-    // getDept() {
-    //   let formData = new FormData()
-    //   formData.append('json', '')
-    //   Service.getDepartment(formData).then((res) => {
-    //     this.source.dept = res.data.list
-    //   })
-    // },
-    // getOrgan() {
-    //   let formData = new FormData()
-    //   formData.append('json', '')
-    //   Service.getCustomerTeamRelaction(formData).then((res) => {
-    //     this.source.prescriptionHospital = res.data.list
-    //   })
-    // }
   }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.preNo-color {
+  color: var(--q-color-primary);
+}
 </style>

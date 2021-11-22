@@ -1,5 +1,6 @@
 <template>
-  <div v-loading="loading">
+  <div v-loading="loading"
+       class="q-pb-24">
     <div class="header-style row">
       <div class="row">
         <div class="q-mr-xs">自动刷新</div>
@@ -8,11 +9,10 @@
                    inactive-value="1"></el-switch>
       </div>
       <div class="row cursor-pointer"
-           v-on:click="showUnCheckList">
+           v-on:click="showUnCheckList"
+           v-if="notCheckedCount>0">
         <div>未审处方</div>
-        <div class="num-style"
-             v-if="notCheckedCount">{{notCheckedCount}}</div>
-        <div v-else>:0</div>
+        <div class="num-style">{{notCheckedCount}}</div>
       </div>
     </div>
 
@@ -25,21 +25,25 @@
       <div class="q-pr-28">
         <el-popover placement="bottom"
                     trigger="click"
-                    width="600">
+                    v-bind:width="inputWidth">
 
           <div class="template-style">
-            <div v-for="(item) in new Array(4).fill().map((item, index) => { return { label: `xx-${index}`, value: index } })"
-                 v-bind:key="item.value"
-                 class="q-mb-8 template-item"
-                 v-on:click="getTemplateValue(item)">
-              花费的时间开发环境的是飞机迪斯科活动结束访华的精神康复后的数据库很多技术开发和大家说
-            </div>
+            <template v-if="templateList.length>0">
+              <div v-for="(item) in templateList"
+                   v-bind:key="item.templateCode"
+                   class=" template-item"
+                   v-on:click="getTemplateValue(item.templateContent)">
+                {{item.templateContent}}
+              </div>
+            </template>
+            <div v-else>暂无审方模板可引用</div>
           </div>
 
           <peace-input placeholder="质疑或审核不通过时，需输入原因"
+                       class="input"
                        type="textarea"
                        slot="reference"
-                       v-model="remark"
+                       v-model="Note"
                        resize="none"
                        v-bind:autosize="{
                            minRows: 3, maxRows: 6
@@ -50,10 +54,16 @@
     </div>
 
     <div class="flex justify-center full-width q-pt-36">
-      <el-button type="primary">通过</el-button>
-      <el-button>质疑</el-button>
-      <el-button>不通过</el-button>
-      <el-button>下一张</el-button>
+      <el-button type="primary"
+                 v-on:click="operatePre(2)"
+                 v-if="[0, 1, 4].includes(prescriptionInfo.Prescription)">通过</el-button>
+      <el-button v-on:click="operatePre(1)"
+                 class="zy-style"
+                 v-if="[0, 1, 4].includes(prescriptionInfo.Prescription)">质疑</el-button>
+      <el-button v-on:click="operatePre(3)"
+                 class="noPass-style"
+                 v-if="[0, 1, 4].includes(prescriptionInfo.Prescription)">不通过</el-button>
+      <el-button v-on:click="getNextPre">下一张</el-button>
     </div>
 
     <!-- 未审列表弹框 -->
@@ -64,7 +74,8 @@
                  v-if="listDialog.visible"
                  append-to-body
                  width="1280px">
-      <UnCheckList v-on:close="closeDialog"></UnCheckList>
+      <UnCheckList v-on:close="closeDialog"
+                   v-on:onGetPreNo="getPreNo"></UnCheckList>
     </PeaceDialog>
 
   </div>
@@ -72,6 +83,7 @@
 
 <script>
 import Service from '../service'
+import Observable from '../../observable'
 import PrescriptionDetail from '@views/prescription/prescription-detail'
 import UnCheckList from './UnCheckList.vue'
 export default {
@@ -79,28 +91,64 @@ export default {
     return {
       autoRefresh: '0',
       prescriptionInfo: {},
-      remark: '',
+      Note: '',
       loading: false,
       listDialog: {
         visible: false
-      }
+      },
+      templateList: [],
+
+      inputWidth: 0
     }
   },
-  props: {
-    jztClaimNo: String,
-    notCheckedCount: Number
+  computed: {
+    jztClaimNo() {
+      return Observable.state.jztClaimNo
+    },
+
+    forceUpdate() {
+      return Observable.state.forceUpdate
+    },
+    notCheckedCount() {
+      return Observable.state.notCheckedCount
+    }
+  },
+  watch: {
+    forceUpdate(value) {
+      if (value) {
+        this.getPrescriptionInfo()
+      }
+    },
+
+    jztClaimNo: {
+      handler: function(val, oldVal) {
+        if (val !== oldVal && val) {
+          this.getPrescriptionInfo()
+        }
+      },
+      immediate: true
+    }
   },
   components: {
     PrescriptionDetail,
     UnCheckList
   },
   async created() {
-    this.getPrescriptionInfo()
-
     const userinfo = await Peace.identity.auth.getAccountInfo()
     this.organCode = userinfo.organCode
     this.getAuditingTemplatesList()
   },
+
+  mounted() {
+    this.$nextTick().then(() => {
+      this.inputWidth = this.$el.querySelector('.input').clientWidth
+
+      window.onresize = () => {
+        this.inputWidth = this.$el.querySelector('.input').clientWidth
+      }
+    })
+  },
+
   methods: {
     //处方信息
     getPrescriptionInfo() {
@@ -108,6 +156,8 @@ export default {
       Service.getPrescriptionInfo({ jztClaimNo: this.jztClaimNo })
         .then((res) => {
           this.prescriptionInfo = Object.assign({}, res.data)
+          this.Note = ''
+          Observable.mutations.forceUpdate(false)
         })
         .finally(() => {
           this.loading = false
@@ -117,16 +167,65 @@ export default {
       const params = {
         organCode: this.organCode
       }
-      Service.getAuditingTemplatesList(params).then(() => {})
+      Service.getAuditingTemplatesList(params).then((res) => {
+        this.templateList = res.data.list.list
+      })
     },
     showUnCheckList() {
       this.listDialog.visible = true
     },
     getTemplateValue(item) {
-      alert(item)
+      this.Note += item
     },
     closeDialog() {
       this.listDialog.visible = false
+    },
+    operatePre(type) {
+      if (type === 1 || type === 3) {
+        if (!this.Note) {
+          return Peace.util.error('请填写药师审核意见')
+        }
+      }
+
+      let array = [
+        { type: 2, value: '通过' },
+        { type: 1, value: '质疑' },
+        { type: 3, value: '不通过' }
+      ]
+      const message = array.filter((item) => type === item.type)[0].value
+      this.$confirm(`是否确定${message}该处方`, '提示')
+        .then(() => {
+          const params = {
+            Note: this.Note,
+            type: type,
+            JZTClaimNo: this.jztClaimNo
+          }
+          Service.queryPrescription(params).then(() => {
+            if (this.autoRefresh === '0') {
+              Peace.util.success('操作成功')
+              this.getNextPre()
+            } else {
+              Observable.mutations.forceUpdate(true)
+            }
+          })
+        })
+        .catch(() => {})
+    },
+    getNextPre() {
+      Service.nextPrescription({ jztClaimNo: this.jztClaimNo }).then((res) => {
+        if (res.data.jztClaimNo !== '' && res.data.jztClaimNo !== null) {
+          Observable.mutations.changeJztClaimNo(res.data.jztClaimNo)
+          Observable.mutations.changeNotCheckedCount(res.data.notCheckedCount)
+        } else {
+          Observable.mutations.changeView(Observable.constants.view.NODATA)
+          this.$emit('onFreshGetPre')
+        }
+      })
+    },
+    getPreNo(No) {
+      this.currentJztClaimNo = No
+      this.getPrescriptionInfo(this.currentJztClaimNo)
+      this.$emit('onFreshPre', this.currentJztClaimNo)
     }
   }
 }
@@ -172,9 +271,28 @@ export default {
 }
 .template-item {
   color: #333;
+  line-height: 25px;
   cursor: pointer;
+  word-break: break-all;
 }
 .template-item:hover {
   background: #e2e2e2;
+}
+.noPass-style {
+  border-color: #ff3a30;
+  color: #ff3a30 !important;
+}
+.noPass-style:hover,
+.noPass-style:focus {
+  background: rgba(255, 58, 48, 0.1);
+}
+
+.zy-style {
+  border-color: #ffa00c;
+  color: #ffa00c !important;
+}
+.zy-style:hover,
+.zy-style:focus {
+  background: rgba(255, 160, 12, 0.1);
 }
 </style>

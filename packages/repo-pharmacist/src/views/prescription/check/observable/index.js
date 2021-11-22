@@ -17,10 +17,18 @@ const constants = {
 }
 
 const state = Vue.observable({
-  view: undefined
+  forceUpdate: false,
+
+  view: undefined,
+  jztClaimNo: undefined,
+  notCheckedCount: 0
 })
 
 const mutations = {
+  forceUpdate(params) {
+    state.forceUpdate = params
+  },
+
   /**
    * 改变视图状态
    *
@@ -28,7 +36,22 @@ const mutations = {
    */
   changeView(view) {
     state.view = view
-    console.log('ewqeqwe', state.view)
+  },
+  /**
+   * 改变处方编号
+   *
+   * @param {*}
+   */
+  changeJztClaimNo(jztClaimNo) {
+    state.jztClaimNo = jztClaimNo
+  },
+  /**
+   * 改变处方总数
+   *
+   * @param {*}
+   */
+  changeNotCheckedCount(count) {
+    state.notCheckedCount = count
   }
 }
 

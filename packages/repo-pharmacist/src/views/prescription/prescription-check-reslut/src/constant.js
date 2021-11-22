@@ -67,7 +67,7 @@ export default {
       label: '已作废',
       color: 'rgba(51, 51, 51, 0.2)',
       borderColor: 'rgba(51, 51, 51, 0.6)',
-      bgColor: 'rgba(240, 152, 21, 0.1)'
+      bgColor: 'rgba(51, 51, 51, 0.05)'
     },
     '5': {
       label: '通过',

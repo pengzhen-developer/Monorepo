@@ -56,22 +56,22 @@ export default {
       return res
     })
   },
+
   /**
-   * 锁定处方
-   *
-   * @param {*} params
-   * @returns {Object}
+   * 锁方
+   * @param { string } jztClaimNo 平台处方编号
+   * @returns { Object }
    */
   lockPrescription(params) {
     const isMock = false
 
-    const apiPath = 'webapi/api/ApothecaryPrescription/LockPrescriptionReleaseOther'
-    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const apiPath = 'durprescription/v2/pharmacist/lockPrescription'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_API_BASE + apiPath
 
     const requestApi = isMock ? mockPath : serverPath
 
-    return Peace.http.post(requestApi, params).then((res) => {
+    return Peace.http.get(requestApi, { params }).then((res) => {
       return res
     })
   },

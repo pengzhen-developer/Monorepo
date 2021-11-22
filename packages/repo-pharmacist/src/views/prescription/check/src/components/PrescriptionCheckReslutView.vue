@@ -12,9 +12,10 @@
     </el-radio-group>
     <!-- 审方记录 -->
     <div v-show="active===0"
-         class="full-width">
+         class="full-width"
+         v-loading="isShowPreRecord">
 
-      <PrescriptionCheckRecord v-bind:id="jztClaimNo"></PrescriptionCheckRecord>
+      <PrescriptionCheckRecord v-bind:data="recordInfo"></PrescriptionCheckRecord>
     </div>
     <!-- 系统审方结果 -->
     <div class="full-width relative-position"
@@ -46,22 +47,43 @@
 
 <script>
 import Service from '../service'
+import Observable from '../../observable'
 import PrescriptionCheckReslut from '@views/prescription/prescription-check-reslut'
 import PrescriptionCheckRecord from '@views/prescription/prescription-check-record'
 export default {
   name: 'PrescriptionReviewReslut',
-  props: {
-    jztClaimNo: {
-      type: String,
-      required: true
-    }
-  },
   components: {
     PrescriptionCheckReslut,
     PrescriptionCheckRecord
   },
+
+  computed: {
+    jztClaimNo() {
+      return Observable.state.jztClaimNo
+    },
+    forceUpdate() {
+      return Observable.state.forceUpdate
+    }
+  },
+  watch: {
+    forceUpdate(value) {
+      if (value) {
+        this.getPrescriptionInfo()
+      }
+    },
+
+    jztClaimNo: {
+      handler: function(val, oldVal) {
+        if (val !== oldVal && val) {
+          this.getPrescriptionInfo()
+        }
+      },
+      immediate: true
+    }
+  },
   data() {
     return {
+      isShowPreRecord: false,
       isShowPreResult: false,
       tabs: [
         { label: '审方记录', value: 0, checked: true },
@@ -69,16 +91,14 @@ export default {
         { label: '查看检验或检查单', value: 2, checked: false },
         { label: '历史用药', value: 3, checked: false }
       ],
-      active: 0,
+      active: undefined,
       showCheckImage: false,
       seeClientCardCode: '',
-      preInfo: undefined
+      preInfo: undefined,
+      recordInfo: undefined
     }
   },
-  created() {
-    this.getPrescriptionInfo()
-    this.getResultInfo()
-  },
+  created() {},
   methods: {
     // 再次审方
     againCheck() {
@@ -95,7 +115,6 @@ export default {
         })
     },
     getResultInfo() {
-      console.log(this.jztClaimNo)
       this.isShowPreResult = true
       Service.getActionDetail({ jztClaimNo: this.jztClaimNo })
         .then((res) => {
@@ -107,6 +126,26 @@ export default {
         })
         .finally(() => {
           this.isShowPreResult = false
+        })
+    },
+    getRecordInfo() {
+      this.isShowPreRecord = true
+      Service.getPrescriptionLog({ jztClaimNo: this.jztClaimNo })
+        .then((result) => {
+          const list = result.data.map((item) => {
+            let tmp = item
+            let time = tmp.CreateTime
+            item.timestamp = time.substring(0, 10)
+            item.timestampSpan = time.substring(11, 19)
+            return tmp
+          })
+          this.recordInfo = list
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+        .finally(() => {
+          this.isShowPreRecord = false
         })
     },
     handleChange(value) {
@@ -127,7 +166,14 @@ export default {
     //处方信息
     getPrescriptionInfo() {
       Service.getPrescriptionInfo({ jztClaimNo: this.jztClaimNo }).then((res) => {
-        this.seeClientCardCode = res.data.ClientCardCode || 'fjdgjfd'
+        this.seeClientCardCode = res.data.ClientCardCode
+        if (res.data.doubleSign) {
+          this.active = 0
+        } else {
+          this.active = 1
+        }
+        this.getResultInfo()
+        this.getRecordInfo()
       })
     },
     async openHistoryDrugView() {

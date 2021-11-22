@@ -1,11 +1,10 @@
 <template>
   <div class="row  full-width">
     <div class="col bg-white">
-      <PrescriptionDetailView v-bind:jztClaimNo="jztClaimNo"
-                              v-bind:notCheckedCount="notCheckedCount"></PrescriptionDetailView>
+      <PrescriptionDetailView v-on:onFreshGetPre="freshGetPre"></PrescriptionDetailView>
     </div>
     <div class="col bg-white q-ml-sm">
-      <PrescriptionCheckReslutView v-bind:jztClaimNo="jztClaimNo"></PrescriptionCheckReslutView>
+      <PrescriptionCheckReslutView></PrescriptionCheckReslutView>
     </div>
   </div>
 
@@ -19,14 +18,15 @@ export default {
     PrescriptionDetailView,
     PrescriptionCheckReslutView
   },
-  props: {
-    jztClaimNo: String,
-    notCheckedCount: Number
-  },
   data() {
     return {}
   },
-  created() {}
+  created() {},
+  methods: {
+    freshGetPre() {
+      this.$emit('onGetNotCheckPre')
+    }
+  }
 }
 </script>
 
