@@ -55,6 +55,7 @@
       color: rgba(51, 51, 51, 0.4);
     }
 
+    &.is-without-controls,
     &.is-controls-right {
       .el-input__inner {
         text-align: left;
