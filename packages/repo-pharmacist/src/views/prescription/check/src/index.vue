@@ -98,7 +98,6 @@ export default {
       return this.view === Observable.constants.view.DETAIL
     }
   },
-
   created() {},
   methods: {
     getNotCheckedPreCount() {
