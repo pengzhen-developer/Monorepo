@@ -402,7 +402,7 @@ export default {
     },
 
     'model.prescriptionTag'(newValue, oldValue) {
-      if (this.value.length) {
+      if (this.shouldShowChangeTypeAlert) {
         this.$confirm('一张处方中只可开具同类药品目录，更换类型则已添加药品将清空，请确认', '提示', { center: true })
           .then(() => {
             this.value.splice(0, this.value.length)
@@ -438,6 +438,16 @@ export default {
       this.$nextTick(() => {
         this.model.prescriptionTag = Number(tmp?.value ?? 1)
       })
+    }
+  },
+
+  computed: {
+    shouldShowChangeTypeAlert() {
+      if (this.value && this.value.length > 0) {
+        return this.value.some((item) => Number(item.drugSource) !== this.model.prescriptionTag)
+      } else {
+        return false
+      }
     }
   },
 
