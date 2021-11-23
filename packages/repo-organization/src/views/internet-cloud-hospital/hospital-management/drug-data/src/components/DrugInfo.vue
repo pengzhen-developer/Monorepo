@@ -190,7 +190,7 @@ $border-color: #cecece;
       flex: 2;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
+      // white-space: nowrap;
       &:last-of-type {
         border-right: 1px solid $border-color;
       }
