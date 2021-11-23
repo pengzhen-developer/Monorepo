@@ -711,11 +711,6 @@ export default {
       }
       this.showPopup = !this.showPopup
       if (!this.showPopup) {
-        //仅 在线支付可用医保抵扣
-        //故 重置选择医保
-        if (this.page.payIndex != this.json.payIndex || this.page.tabIndex != this.json.tabIndex) {
-          this.onReset()
-        }
         this.page.tabIndex = this.json.tabIndex
         this.page.payIndex = this.json.payIndex
         this.getPayName()
