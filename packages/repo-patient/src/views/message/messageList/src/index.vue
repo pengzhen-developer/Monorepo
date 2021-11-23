@@ -185,7 +185,7 @@ export default {
       Constant: Constant,
       showTimeDic: {
         710: true, // 接诊
-        731: true, // 审核处方通过
+        // 731: true, // 审核处方通过
         740: true, // 结束问诊
         750: true, // 退诊
         760: true, // 取消问诊
