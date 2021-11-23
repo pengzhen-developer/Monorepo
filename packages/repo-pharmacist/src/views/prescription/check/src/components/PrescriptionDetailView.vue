@@ -98,7 +98,9 @@ export default {
       },
       templateList: [],
 
-      inputWidth: 0
+      inputWidth: 0,
+
+      isConfrim: false
     }
   },
   computed: {
@@ -193,23 +195,35 @@ export default {
         { type: 3, value: '不通过' }
       ]
       const message = array.filter((item) => type === item.type)[0].value
-      this.$confirm(`是否确定${message}该处方`, '提示')
-        .then(() => {
-          const params = {
-            Note: this.Note,
-            type: type,
-            JZTClaimNo: this.jztClaimNo
-          }
-          Service.queryPrescription(params).then(() => {
-            if (this.autoRefresh === '0') {
-              Peace.util.success('操作成功')
-              this.getNextPre()
-            } else {
-              Observable.mutations.forceUpdate(true)
+      this.$confirm(`是否确定${message}该处方`, '提示', {
+        beforeClose: (action, instance, done) => {
+          if (action === 'confirm') {
+            instance.confirmButtonLoading = true
+            this.isConfrim = true
+            const params = {
+              Note: this.Note,
+              type: type,
+              JZTClaimNo: this.jztClaimNo
             }
-          })
-        })
-        .catch(() => {})
+
+            Service.queryPrescription(params).then(() => {
+              if (this.autoRefresh === '0') {
+                Peace.util.success('操作成功')
+                this.getNextPre()
+              } else {
+                Observable.mutations.forceUpdate(true)
+              }
+              done()
+              instance.confirmButtonLoading = false
+              this.isConfrim = false
+            })
+          } else {
+            if (!this.isConfrim) {
+              done()
+            }
+          }
+        }
+      })
     },
     getNextPre() {
       Service.nextPrescription({ jztClaimNo: this.jztClaimNo }).then((res) => {
