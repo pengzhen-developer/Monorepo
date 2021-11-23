@@ -101,10 +101,8 @@ export default {
       return this.view === Observable.constants.view.DETAIL
     }
   },
-  mounted() {
-    clearTimeout(this.timeId)
-  },
   destroyed() {
+    clearTimeout(this.timeId)
     Observable.mutations.reset()
   },
   methods: {
