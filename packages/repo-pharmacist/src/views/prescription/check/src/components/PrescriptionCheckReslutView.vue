@@ -11,7 +11,7 @@
 
     </el-radio-group>
     <!-- 审方记录 -->
-    <div v-show="active===0"
+    <div v-if="active===0"
          class="full-width"
          v-loading="isShowPreRecord">
 
@@ -19,7 +19,7 @@
     </div>
     <!-- 系统审方结果 -->
     <div class="full-width relative-position"
-         v-show="active===1"
+         v-if="active===1"
          v-loading="isShowPreResult">
       <el-button style="position:absolute;right:0;top:0"
                  v-on:click="againCheck">再次审方</el-button>
@@ -150,6 +150,12 @@ export default {
     },
     handleChange(value) {
       switch (value) {
+        case 0:
+          this.getRecordInfo()
+          break
+        case 1:
+          this.getResultInfo()
+          break
         case 2:
           /// 查看检验单
           this.showCheckImage = true
@@ -169,11 +175,11 @@ export default {
         this.seeClientCardCode = res.data.ClientCardCode
         if (res.data.doubleSign) {
           this.active = 0
+          this.getRecordInfo()
         } else {
           this.active = 1
+          this.getResultInfo()
         }
-        this.getResultInfo()
-        this.getRecordInfo()
       })
     },
     async openHistoryDrugView() {
