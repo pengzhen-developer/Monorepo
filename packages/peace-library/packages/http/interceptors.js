@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 import retry from './retry'
 import { warning } from './../tools/util/message'
 
@@ -39,30 +41,35 @@ export const responseInterceptor = {
   },
 
   catch: function(error) {
+    // Cancel error
+    if (axios.isCancel(error)) {
+      return Promise.reject(error)
+    }
+
+    // Network error
+    if (!error.status) {
+      warning('网络异常，请稍后再试', 'error')
+
+      return Promise.reject(error)
+    }
+
     // 放弃拦截器，自行处理请求
-    if (error.response.config.isInterceptor === false) {
+    if (error?.response?.config?.isInterceptor === false) {
       return Promise.reject(error)
     }
 
     // Timeout and retry
-    if (error.code === 'ECONNABORTED') {
-      if (!error.config.__isRetryComplete) {
+    if (error?.code === 'ECONNABORTED') {
+      if (!error?.config?.__isRetryComplete) {
         return retry(error)
       } else {
         return Promise.reject(error)
       }
     }
 
-    // Network error
-    if (error.toString() === 'Error: Network Error') {
-      warning('网络异常，请稍后再试', 'error')
-
-      return Promise.reject(error)
-    }
-
     // 已知错误
     if (error.response) {
-      switch (error.response.status) {
+      switch (error?.response?.status) {
         // 鉴权问题，由 websocket 处理
         case 401:
         case 403:
