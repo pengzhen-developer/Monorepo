@@ -206,17 +206,20 @@ export default {
               JZTClaimNo: this.jztClaimNo
             }
 
-            Service.queryPrescription(params).then(() => {
-              if (this.autoRefresh === '0') {
-                Peace.util.success('操作成功')
-                this.getNextPre()
-              } else {
-                Observable.mutations.forceUpdate(true)
-              }
-              done()
-              instance.confirmButtonLoading = false
-              this.isConfrim = false
-            })
+            Service.queryPrescription(params)
+              .then(() => {
+                if (this.autoRefresh === '0') {
+                  Peace.util.success('操作成功')
+                  this.getNextPre()
+                } else {
+                  Observable.mutations.forceUpdate(true)
+                }
+              })
+              .finally(() => {
+                done()
+                instance.confirmButtonLoading = false
+                this.isConfrim = false
+              })
           } else {
             if (!this.isConfrim) {
               done()
