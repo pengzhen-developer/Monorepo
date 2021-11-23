@@ -60,16 +60,23 @@ export default {
     Service.getControlledMenuList(controlledParams).then((res) => {
       this.controlledMenuList = res.data
     })
+    const iterable = [Service.getCheckedPrenCount({}), Service.getNotCheckedPrenCount({})]
 
-    const userinfo = await Peace.identity.auth.getAccountInfo()
-    this.model.hosCode = userinfo.organCode
-    this.model.phaUserId = userinfo.id
-    this.load = true
-    const params = Peace.util.deepClone(this.model)
-    Service.phaPreCountsByCust(params).then((res) => {
-      this.prescripStatis.checkedCount = Peace.numeral(res.data.list.checkedCount).format('0,0')
-      this.prescripStatis.uncheckedCount = Peace.numeral(res.data.list.uncheckedCount).format('0,0')
+    Promise.all(iterable).then((values) => {
+      this.load = true
+      this.prescripStatis.checkedCount = Peace.numeral(values[0].data.checkedCount).format('0,0')
+      this.prescripStatis.uncheckedCount = Peace.numeral(values[1].data.notCheckedCount).format('0,0')
     })
+
+    // const userinfo = await Peace.identity.auth.getAccountInfo()
+    // this.model.hosCode = userinfo.organCode
+    // this.model.phaUserId = userinfo.id
+    //this.load = true
+    //const params = Peace.util.deepClone(this.model)
+    // Service.phaPreCountsByCust(params).then((res) => {
+    //   this.prescripStatis.checkedCount = Peace.numeral(res.data.list.checkedCount).format('0,0')
+    //   this.prescripStatis.uncheckedCount = Peace.numeral(res.data.list.uncheckedCount).format('0,0')
+    // })
   }
 }
 </script>
