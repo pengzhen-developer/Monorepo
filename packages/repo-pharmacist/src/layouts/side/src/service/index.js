@@ -76,6 +76,24 @@ export default {
     })
   },
   /**
+   * 解锁
+   * @param { string } jztClaimNo 平台处方编号
+   * @returns { Object }
+   */
+  unlockPrescription() {
+    const isMock = false
+
+    const apiPath = 'durprescription/v2/pharmacist/unlock'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.get(requestApi).then((res) => {
+      return res
+    })
+  },
+  /**
    * 获取处方审核声音状态
    *
    * @param {*} params

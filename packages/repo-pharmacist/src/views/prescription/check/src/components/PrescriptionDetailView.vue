@@ -20,7 +20,8 @@
     <PrescriptionDetail v-bind:prescriptionInfo="prescriptionInfo"></PrescriptionDetail>
 
     <!-- 药师审核意见 -->
-    <div class="q-px-24">
+    <div class="q-px-24"
+         v-show="[0, 1, 4].includes(prescriptionInfo.Prescription)">
       <p class="q-mb-8">药师审核意见：</p>
       <div class="q-pr-28">
         <el-popover placement="bottom"
@@ -138,20 +139,21 @@ export default {
   async created() {
     const userinfo = await Peace.identity.auth.getAccountInfo()
     this.organCode = userinfo.organCode
-    this.getAuditingTemplatesList()
   },
 
-  mounted() {
-    this.$nextTick().then(() => {
-      this.inputWidth = this.$el.querySelector('.input').clientWidth
-
-      window.onresize = () => {
-        this.inputWidth = this.$el.querySelector('.input').clientWidth
-      }
-    })
-  },
+  mounted() {},
 
   methods: {
+    //审核模板弹框宽度计算
+    getInputWidth() {
+      this.$nextTick().then(() => {
+        this.inputWidth = this.$el.querySelector('.input').clientWidth
+
+        window.onresize = () => {
+          this.inputWidth = this.$el.querySelector('.input').clientWidth
+        }
+      })
+    },
     //处方信息
     getPrescriptionInfo() {
       this.loading = true
@@ -159,6 +161,10 @@ export default {
         .then((res) => {
           this.prescriptionInfo = Object.assign({}, res.data)
           this.Note = ''
+          if ([0, 1, 4].includes(this.prescriptionInfo.Prescription)) {
+            this.getInputWidth()
+            this.getAuditingTemplatesList()
+          }
           Observable.mutations.forceUpdate(false)
         })
         .finally(() => {

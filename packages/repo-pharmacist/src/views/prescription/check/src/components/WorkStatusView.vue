@@ -41,6 +41,10 @@ export default {
           .catch((res) => {
             Peace.util.alert(res.msg)
             this.status = this.status == '1' ? '0' : '1'
+            if (this.status == '0') {
+              //药师休息中解锁处方
+              Service.unlockPrescription()
+            }
           })
           .finally(() => {
             this.setStatus()

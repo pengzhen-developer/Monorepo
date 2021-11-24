@@ -158,9 +158,12 @@ export default {
       this.updateUserStatus()
     },
     logout() {
-      Peace.identity.auth.logout().then(() => {
-        Util.user.removeUserInfo()
-        Util.location.redirectToLogin()
+      //药师退出登录前解锁处方
+      Service.unlockPrescription().finally(() => {
+        Peace.identity.auth.logout().then(() => {
+          Util.user.removeUserInfo()
+          Util.location.redirectToLogin()
+        })
       })
     },
     //获取用户状态
@@ -188,6 +191,10 @@ export default {
         .then(() => {
           const message = this.status == '1' ? '您已切换为工作中，可以审核处方啦~' : '您已切换为休息中，不可进行处方审核工作'
           Peace.util.success(message)
+          if (this.status == '0') {
+            //药师休息中解锁处方
+            Service.unlockPrescription()
+          }
         })
         .catch((res) => {
           Peace.util.alert(res.msg)
