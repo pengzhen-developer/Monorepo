@@ -156,6 +156,9 @@ export default {
     this.params = peace.util.decode(this.$route.params.json)
     this.formData.hsp = this.params.hsp || {}
   },
+  activated() {
+    this.showFamily = false
+  },
   methods: {
     hasFixed(e) {
       this.isFixed = e.isFixed
