@@ -82,12 +82,13 @@ export default {
       immediate: true
     }
   },
-  mounted() {
+  activated() {
     this.getFamilyList()
   },
   created() {
     $peace.$on(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY_GUARDIAN, this.addFamilyCallback)
   },
+
   destroyed() {
     $peace.$off(peace.type.EMIT.DOCTOR_INQUIRY_APPLY_FAMLIY_GUARDIAN)
   },
@@ -134,6 +135,10 @@ export default {
               this.checkId = index
             }
           })
+        } else {
+          if (this.showFamily) {
+            this.changeFlag({ flag: false })
+          }
         }
       })
     },
