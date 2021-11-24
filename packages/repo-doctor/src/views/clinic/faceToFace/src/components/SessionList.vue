@@ -73,9 +73,9 @@
                            id="scrollViewRegister"
                            v-bind:thumb-style="thumbStyle">
               <SessionRegisterListItem v-for="patient in registerPatientList"
-                                       v-bind:key="patient.patientNo"
+                                       v-bind:key="patient.hisPatientId"
                                        v-on:click.native="selectPatient(patient)"
-                                       v-bind:active="patient.patientNo === activeRegisterPatient.patientNo"
+                                       v-bind:active="patient.hisPatientId === activeRegisterPatient.hisPatientId"
                                        v-bind:patient="patient"></SessionRegisterListItem>
             </q-scroll-area>
           </template>
@@ -169,11 +169,12 @@ export default {
       immediate: true
     },
 
+    //挂号的患者
     activeRegisterPatient: {
       handler(val) {
         this.$nextTick(function() {
           const activePatient = function(el) {
-            return el.patientNo === val.patientNo
+            return el.hisPatientId === val.hisPatientId
           }
           const index = this.registerPatientList.findIndex(activePatient)
           const position = index > 0 ? index : 0
