@@ -13,8 +13,8 @@ export default {
   ],
   PRESCRIPTION_EXAM_RESULTS_TYPE: [
     { label: '', value: 0 },
-    { label: '禁用', value: 1 },
-    { label: '慎用', value: 2 },
-    { label: '提示', value: 3 }
+    { label: '质疑', value: 1 },
+    { label: '通过', value: 2 },
+    { label: '未通过', value: 3 }
   ]
 }
