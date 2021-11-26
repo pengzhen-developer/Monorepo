@@ -49,21 +49,21 @@
       <div>{{!isOpen?'点击展开':'收起'}}</div>
       <van-image :src="!isOpen?require('@src/assets/images/ic_arrow_down.png'):require('@src/assets/images/ic_arrow_up.png')"></van-image>
     </div>
+
     <div v-if="!showMore"
          style="height:8px;background:#f5f5f5;width:calc(100% + 32px);margin-left:-16px;"></div>
-    <div class="moeny"
-         v-for="(item,index) in info.moneyRecord"
-         v-bind:key="index">
-      <div>{{item.name}}</div>
-      <div>
-        <span>{{item.value}}</span>
-        <!-- <span v-if="isNaN(item.value.substring(1))">{{item.value}}</span>
-        <peace-price v-bind:price="item.value.substring(1)"
-                     v-bind:transformOrigin="'right'"
-                     v-bind:size="16"
-                     v-else></peace-price> -->
+
+    <template v-if="info.moneyRecord&&info.moneyRecord.length>1">
+      <div class="moeny"
+           v-for="(item,index) in info.moneyRecord"
+           v-bind:key="index">
+        <div>{{item.name}}</div>
+        <div>
+          <span>{{item.value}}</span>
+        </div>
       </div>
-    </div>
+    </template>
+
     <!-- 实付金额 -->
     <div class="moeny"
          v-if="canShowMoney">
