@@ -90,10 +90,7 @@
                   <van-image :src="require('@src/assets/images/ic_wenhao.png')"></van-image>
                 </div>
                 <div class="other-price">
-                  <peace-price class="price"
-                               v-bind:price="item.Price"
-                               v-bind:transformOrigin="'right'"
-                               v-bind:size="14"></peace-price>
+                  <span class="price">¥{{item.Price}}</span>
                   <span style="margin-left:2px;">x{{item.DrugQty}}{{item.DrugQtyUnit}}</span>
                 </div>
               </div>
