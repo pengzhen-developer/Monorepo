@@ -46,6 +46,8 @@
                        slot="reference"
                        v-model="Note"
                        resize="none"
+                       show-word-limit
+                       maxlength="100"
                        v-bind:autosize="{
                            minRows: 3, maxRows: 6
                         }"></peace-input>
@@ -121,6 +123,14 @@ export default {
       if (value) {
         this.getPrescriptionInfo()
       }
+    },
+    Note: {
+      handler(value) {
+        if (value && value.trim().length >= 100) {
+          return (this.Note = this.Note.trim().substring(0, 100))
+        }
+      },
+      immediate: true
     },
 
     jztClaimNo: {
@@ -317,5 +327,8 @@ export default {
 .zy-style:hover,
 .zy-style:focus {
   background: rgba(255, 160, 12, 0.1);
+}
+.input {
+  word-break: break-all;
 }
 </style>
