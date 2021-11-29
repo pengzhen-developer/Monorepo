@@ -23,7 +23,7 @@
     <div class="q-px-24"
          v-show="[0, 1, 4].includes(prescriptionInfo.Prescription)">
       <p class="q-mb-8">药师审核意见：</p>
-      <div class="q-pr-28">
+      <div>
         <el-popover placement="bottom"
                     trigger="click"
                     v-bind:width="inputWidth">
