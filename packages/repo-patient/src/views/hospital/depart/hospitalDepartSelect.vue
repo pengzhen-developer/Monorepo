@@ -18,7 +18,7 @@
           <div class="block">
             <div :key="item"
                  class="card-label"
-                 v-for="item in hospitalInfo.tags">{{item}}</div>
+                 v-for="item in hospitalTags ">{{item}}</div>
           </div>
         </div>
       </div>
@@ -64,6 +64,12 @@ export default {
       activeId: '',
       deptParent: [],
       deptChild: []
+    }
+  },
+  computed: {
+    hospitalTags() {
+      let arr = this.hospitalInfo?.tags ?? []
+      return Array.from(new Set(arr))
     }
   },
   mounted() {

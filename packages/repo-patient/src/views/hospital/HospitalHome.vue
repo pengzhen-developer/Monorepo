@@ -19,7 +19,7 @@
           <div class="w">
             <span class="name">{{ hospitalInfo.nethospitalInfo.name }}</span>
             <div class="tags">
-              <span v-for="item in hospitalInfo.nethospitalInfo.tags"
+              <span v-for="item in hospitalTags"
                     :key="item">{{ item }}</span>
             </div>
           </div>
@@ -187,6 +187,10 @@ export default {
   },
 
   computed: {
+    hospitalTags() {
+      let arr = this.hospitalInfo?.nethospitalInfo?.tags ?? []
+      return Array.from(new Set(arr))
+    },
     noticeBarText() {
       if (this.hospitalInfo?.notices?.length > 0) {
         return `【${this.hospitalInfo.notices[0].title} 】${this.hospitalInfo.notices[0].content}`
