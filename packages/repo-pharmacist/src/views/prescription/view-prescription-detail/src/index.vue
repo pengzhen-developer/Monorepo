@@ -8,21 +8,22 @@
       <div class="q-pa-24 flex">
 
         <el-radio-group v-model="active"
-                        class="q-mt-4 q-mb-32 q-ml-auto q-mr-auto">
+                        class="q-mt-4 q-mb-32 q-ml-auto q-mr-auto"
+                        v-on:change="handleChange">
           <el-radio-button :label="tab.value"
                            v-for="(tab,index) in tabs"
                            :key="index">{{tab.label}}</el-radio-button>
 
         </el-radio-group>
         <!-- 审方记录 -->
-        <div v-show="active===0"
+        <div v-if="active===0"
              class="full-width">
 
           <PrescriptionCheckRecord v-bind:id="jztClaimNo"></PrescriptionCheckRecord>
         </div>
         <!-- 系统审方结果 -->
         <div class="full-width"
-             v-show="active===1"
+             v-if="active===1"
              v-loading="isShowPreResult">
 
           <PrescriptionCheckReslut v-bind:data="preInfo"></PrescriptionCheckReslut>
@@ -66,6 +67,13 @@ export default {
     this.getPrescriptionInfo()
   },
   methods: {
+    handleChange(value) {
+      switch (value) {
+        case 1:
+          this.getResultInfo()
+          break
+      }
+    },
     //处方信息
     getPrescriptionInfo() {
       this.loading = true
