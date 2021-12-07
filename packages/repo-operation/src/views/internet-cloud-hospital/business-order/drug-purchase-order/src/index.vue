@@ -193,8 +193,8 @@
                   title="购药订单详情"
                   v-if="purchaseDialogVisible"
                   v-bind:visible.sync="purchaseDialogVisible">
-      <purchase-order-info :info="currentPurchase"
-                           @viewPres="viewPres"></purchase-order-info>
+      <PeaceOrderDrugPruchase :data="currentPurchase"
+                              @viewPres="viewPres"></PeaceOrderDrugPruchase>
     </peace-dialog>
 
   </div>
@@ -203,8 +203,7 @@
 import Service from './service'
 import Constant from './constant'
 
-import PurchaseOrderInfo from './components/DrugPurchaseOrderDetail'
-import { PeacePrescriptionDetail } from 'peace-components'
+import { PeacePrescriptionDetail, PeaceOrderDrugPruchase } from 'peace-components'
 
 export default {
   name: 'drug-purchase-order',
@@ -359,7 +358,7 @@ export default {
 
   components: {
     PeacePrescriptionDetail,
-    PurchaseOrderInfo
+    PeaceOrderDrugPruchase
   }
 }
 </script>

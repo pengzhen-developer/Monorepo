@@ -260,6 +260,23 @@ export function getCaseDetail(params) {
   })
 }
 
+/**
+ * 获取健康档案
+ *
+ * @param {*} params
+ */
+export function getBeforeUrl(params) {
+  const isMock = false
+
+  const apiPath = 'client/v1/Beforehand/getBeforeUrl'
+  const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+  const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+  const requestApi = isMock ? mockPath : serverPath
+
+  return Peace.http.post(requestApi, params)
+}
+
 export default {
   sendSubscribeMsg,
   getExtDllInfo,
@@ -273,5 +290,6 @@ export default {
   getCaseDetail,
   getOneHealth,
   getFirstOptionList,
-  getFirstOptionDetail
+  getFirstOptionDetail,
+  getBeforeUrl
 }

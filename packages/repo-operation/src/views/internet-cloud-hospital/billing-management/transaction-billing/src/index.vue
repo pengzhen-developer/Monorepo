@@ -147,8 +147,8 @@
                  title="购药订单详情"
                  width="576px"
                  append-to-body>
-      <PurchaseOrderInfo v-bind:info="currentPurchase"
-                         v-on:viewPres="viewPres"></PurchaseOrderInfo>
+      <PeaceOrderDrugPruchase v-bind:data="currentPurchase"
+                              v-on:viewPres="viewPres"></PeaceOrderDrugPruchase>
     </PeaceDialog>
 
     <!-- 服务包订单详情 -->
@@ -176,13 +176,12 @@
 <script>
 import Service from './service'
 
-import PurchaseOrderInfo from '@src/views/internet-cloud-hospital/business-order/drug-purchase-order/src/components/DrugPurchaseOrderDetail.vue'
 import ServicePackageOrderInfo from '@src/views/internet-cloud-hospital/business-order/service-pack-order/src/components/OrderDetail.vue'
-import { PeacePrescriptionDetail, PeaceOrderInquiryDetail } from 'peace-components'
+import { PeacePrescriptionDetail, PeaceOrderInquiryDetail, PeaceOrderDrugPruchase } from 'peace-components'
 
 export default {
   components: {
-    PurchaseOrderInfo,
+    PeaceOrderDrugPruchase,
     ServicePackageOrderInfo,
     PeacePrescriptionDetail,
     PeaceOrderInquiryDetail

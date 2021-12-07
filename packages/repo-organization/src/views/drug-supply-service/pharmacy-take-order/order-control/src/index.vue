@@ -216,7 +216,10 @@ export default {
   watch: {
     'model.ShippingMethod': {
       handler() {
-        if (this.model.ShippingMethod?.toString() === this.source.ShippingMethod.find((item) => item.label === '自提订单')?.value?.toString()) {
+        if (
+          this.model.ShippingMethod?.toString() ===
+          this.source.ShippingMethod.find((item) => item.label === '自提订单')?.value?.toString()
+        ) {
           this.source.OrderStatus = [
             { label: '全部', value: '', unprocessCount: 0 },
             { label: '等待接单', value: 1, unprocessCount: 0 },
@@ -252,49 +255,74 @@ export default {
 
     // 是否显示【备药】
     canShowPrepareMedicine() {
-      const ShippingMethodValue = this.source.ShippingMethod.find((item) => item.label === '自提订单')?.value?.toString()
+      const ShippingMethodValue = this.source.ShippingMethod.find(
+        (item) => item.label === '自提订单'
+      )?.value?.toString()
       const OrderStatusValue = this.source.OrderStatus.find((item) => item.label === '已接单')?.value?.toString()
 
-      return this.model.ShippingMethod?.toString() === ShippingMethodValue && this.model.OrderStatus?.toString() === OrderStatusValue
+      return (
+        this.model.ShippingMethod?.toString() === ShippingMethodValue &&
+        this.model.OrderStatus?.toString() === OrderStatusValue
+      )
     },
 
     // 是否显示【发药】
     canShowDispensingMedicine() {
-      const ShippingMethodValue = this.source.ShippingMethod.find((item) => item.label === '自提订单')?.value?.toString()
+      const ShippingMethodValue = this.source.ShippingMethod.find(
+        (item) => item.label === '自提订单'
+      )?.value?.toString()
       const OrderStatusValue = this.source.OrderStatus.find((item) => item.label === '已备药')?.value?.toString()
 
-      return this.model.ShippingMethod?.toString() === ShippingMethodValue && this.model.OrderStatus?.toString() === OrderStatusValue
+      return (
+        this.model.ShippingMethod?.toString() === ShippingMethodValue &&
+        this.model.OrderStatus?.toString() === OrderStatusValue
+      )
     },
 
     // 是否显示【确认发货】
     canShowConfirmDelivery() {
-      const ShippingMethodValue = this.source.ShippingMethod.find((item) => item.label === '配送订单')?.value?.toString()
+      const ShippingMethodValue = this.source.ShippingMethod.find(
+        (item) => item.label === '配送订单'
+      )?.value?.toString()
       const OrderStatusValue = this.source.OrderStatus.find((item) => item.label === '已接单')?.value?.toString()
 
-      return this.model.ShippingMethod?.toString() === ShippingMethodValue && this.model.OrderStatus?.toString() === OrderStatusValue
+      return (
+        this.model.ShippingMethod?.toString() === ShippingMethodValue &&
+        this.model.OrderStatus?.toString() === OrderStatusValue
+      )
     },
 
     // 是否显示【已签收】
     canShowConfirmReceipt() {
-      const ShippingMethodValue = this.source.ShippingMethod.find((item) => item.label === '配送订单')?.value?.toString()
+      const ShippingMethodValue = this.source.ShippingMethod.find(
+        (item) => item.label === '配送订单'
+      )?.value?.toString()
       const OrderStatusValue = this.source.OrderStatus.find((item) => item.label === '已发货')?.value?.toString()
       const CourierName = this.model.CourierName
       const CourierPhone = this.model.CourierPhone
 
       return (
-        this.model.ShippingMethod?.toString() === ShippingMethodValue && this.model.OrderStatus?.toString() === OrderStatusValue && CourierName && CourierPhone
+        this.model.ShippingMethod?.toString() === ShippingMethodValue &&
+        this.model.OrderStatus?.toString() === OrderStatusValue &&
+        CourierName &&
+        CourierPhone
       )
     },
 
     // 是否显示【修改单号】
     canShowEditPickUpCode() {
-      const ShippingMethodValue = this.source.ShippingMethod.find((item) => item.label === '配送订单')?.value?.toString()
+      const ShippingMethodValue = this.source.ShippingMethod.find(
+        (item) => item.label === '配送订单'
+      )?.value?.toString()
       const OrderStatusValue = this.source.OrderStatus.find((item) => item.label === '已发货')?.value?.toString()
       const ExpressName = this.model.ExpressName
       const PickUpCode = this.model.PickUpCode
 
       return (
-        this.model.ShippingMethod?.toString() === ShippingMethodValue && this.model.OrderStatus?.toString() === OrderStatusValue && ExpressName && PickUpCode
+        this.model.ShippingMethod?.toString() === ShippingMethodValue &&
+        this.model.OrderStatus?.toString() === OrderStatusValue &&
+        ExpressName &&
+        PickUpCode
       )
     },
 

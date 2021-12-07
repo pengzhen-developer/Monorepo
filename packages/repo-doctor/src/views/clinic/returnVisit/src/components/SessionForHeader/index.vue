@@ -14,7 +14,7 @@
       <OverInquiry v-on:close="overInquiryVisible = false"></OverInquiry>
     </PeaceDialog>
 
-    <PeaceDialog width="440px"
+    <!-- <PeaceDialog width="440px"
                  title="异常提示"
                  v-bind:visible.sync="invoke.visible">
       <div class="q-pa-md">
@@ -29,7 +29,8 @@
                      v-on:click="invoke.visible = false">知道了</el-button>
         </div>
       </div>
-    </PeaceDialog>
+    </PeaceDialog> -->
+
   </div>
 </template>
 
@@ -37,7 +38,6 @@
 import Type from '@src/type'
 import Service from './../../service'
 import OverInquiry from './OverInquiry.vue'
-
 export default {
   components: {
     OverInquiry
@@ -46,8 +46,6 @@ export default {
   data() {
     return {
       invoke: {
-        visible: false,
-
         showInvokeExtDLL: false,
         canInvokeExtDLL: false,
         invokeExtDLLInfo: {}
@@ -67,7 +65,9 @@ export default {
     },
 
     canShowOver() {
-      return this.$store.state?.inquiry?.session?.content?.inquiryInfo?.inquiryStatus === Type.INQUIRY.INQUIRY_STATUS.问诊中
+      return (
+        this.$store.state?.inquiry?.session?.content?.inquiryInfo?.inquiryStatus === Type.INQUIRY.INQUIRY_STATUS.问诊中
+      )
     }
   },
 
@@ -96,25 +96,30 @@ export default {
       if (!this.invoke.canInvokeExtDLL) {
         return Peace.util.warning('该就诊人为自费支付，不需要核查医保用药记录')
       }
+      const inquiryNo = this.$store.state.inquiry.session.content.inquiryInfo.inquiryNo
+      const patientNo = this.$store.state.inquiry.session.content.patientInfo.patientNo
+      const params = { inquiryNo: inquiryNo, patientNo: patientNo }
+      Service.getBeforeUrl(params).then((res) => {
+        window.open(res.data.beforeUrl, '_blank')
+      })
+      // // 获取调用地址，并调用本地应用程序
+      // const invokeExtDLLUrlList = await Peace.identity.dictionary.getList('ext_url')
+      // const invokeExtDLLOrigin = invokeExtDLLUrlList.find((item) => item.label === 'dll_invoke_url_yh')?.value
+      // const invokeExtDLLAPI = `${invokeExtDLLOrigin}/`
 
-      // 获取调用地址，并调用本地应用程序
-      const invokeExtDLLUrlList = await Peace.identity.dictionary.getList('ext_url')
-      const invokeExtDLLOrigin = invokeExtDLLUrlList.find((item) => item.label === 'dll_invoke_url_yh')?.value
-      const invokeExtDLLAPI = `${invokeExtDLLOrigin}/`
+      // Peace.http
+      //   .create()
+      //   .get(invokeExtDLLAPI, { params: { ...this.invoke.invokeExtDLLInfo }, timeout: 5000 })
+      //   .then((res) => {
+      //     if (res.data.Code !== 200) {
+      //       Peace.util.alert(res.data.Msg)
 
-      Peace.http
-        .create()
-        .get(invokeExtDLLAPI, { params: { ...this.invoke.invokeExtDLLInfo }, timeout: 5000 })
-        .then((res) => {
-          if (res.data.Code !== 200) {
-            Peace.util.alert(res.data.Msg)
-
-            this.invoke.visible = true
-          }
-        })
-        .catch(() => {
-          this.invoke.visible = true
-        })
+      //       this.invoke.visible = true
+      //     }
+      //   })
+      //   .catch(() => {
+      //     this.invoke.visible = true
+      //   })
     }
   }
 }

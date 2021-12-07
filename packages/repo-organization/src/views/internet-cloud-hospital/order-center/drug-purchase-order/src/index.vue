@@ -210,8 +210,8 @@
                  title="购药订单详情"
                  v-if="drugPurchaseOrder.visible"
                  width="580px">
-      <drug-purchase-detail :info="drugPurchaseOrder.data"
-                            @viewPres="viewPres"></drug-purchase-detail>
+      <PeaceOrderDrugPruchase :data="drugPurchaseOrder.data"
+                              @viewPres="viewPres"></PeaceOrderDrugPruchase>
     </PeaceDialog>
 
   </div>
@@ -220,13 +220,12 @@
 <script>
 import CONSTANT from './constant'
 import Service from './service'
-import DrugPurchaseDetail from './components/DrugPurchaseDetail'
 import Util from '@src/util'
-import { PeacePrescriptionDetail } from 'peace-components'
+import { PeacePrescriptionDetail, PeaceOrderDrugPruchase } from 'peace-components'
 
 export default {
   name: 'DrugPurchaseOrder',
-  components: { PeacePrescriptionDetail, DrugPurchaseDetail },
+  components: { PeacePrescriptionDetail, PeaceOrderDrugPruchase },
   data() {
     return {
       model: {
@@ -355,7 +354,7 @@ export default {
     },
     // 查看处方（购药订单子组件触发,处方详情子组件触发）
     viewPres(param) {
-      return this.getPrescriptionDetail(param.presIds)
+      return this.getPrescriptionDetail(param.ids)
     },
 
     toPatientPage(id, name, patientNo) {

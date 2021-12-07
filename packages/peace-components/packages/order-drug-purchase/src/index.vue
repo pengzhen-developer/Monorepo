@@ -1,7 +1,13 @@
+<!--
+ * @Description: 购药订单详情
+-->
+
 <template>
   <div>
 
-    <div class="purchase-info">
+    <div class="purchase-info"
+         v-if="info"
+         v-loading="loading">
       <div class="store">
         <div class="store-pic">
           <el-image :src="info.drugStoreLogo"></el-image>
@@ -15,7 +21,7 @@
         </div>
         <div class="order-type"
              :class="!isToStore&&'to-home'">{{info.shippingMethodTxt}}</div>
-        <div class="order-type store"> {{info.payInfo.payModeTxt}} </div>
+        <div class="order-type store"> {{info.payInfo?.payModeTxt}} </div>
 
       </div>
       <div class="address">
@@ -69,7 +75,7 @@
             </div>
           </div>
           <div class="flex column total-info">
-            <template v-if="info.moneyRecord&&info.moneyRecord.length>0">
+            <template v-if="info.moneyRecord&&info.moneyRecord?.length>0">
               <div class="flex row justify-between"
                    v-for="(money,index) in info.moneyRecord"
                    :key="index">
@@ -107,9 +113,9 @@
               <el-timeline>
                 <el-timeline-item v-for="(item, index) in cancelList"
                                   :key="index">
-                  <div class="title">{{getCancelText(item.cancelStatus)}} {{item.createdTime}}</div>
+                  <div class="title">{{item.remark}} {{item.createdTime}}</div>
                   <div class="content"
-                       v-if="item.cancelStatus==1||item.cancelStatus==3">{{item.reason}}</div>
+                       v-if="item.reason">{{item.reason}}</div>
                 </el-timeline-item>
               </el-timeline>
             </div>
@@ -124,7 +130,7 @@
 
         <div>
           <span>下单时间</span>
-          <span>{{info.purchaseDrugOrderStreams.length > 0?info.purchaseDrugOrderStreams[0].createdTime: info.createdTime }}</span>
+          <span>{{info.purchaseDrugOrderStreams?.length > 0?info.purchaseDrugOrderStreams[0].createdTime: info.createdTime }}</span>
         </div>
         <template v-if="showTrackingNumber">
           <div v-for="(item,index) in info.expressNo"
@@ -137,24 +143,24 @@
           <span>发票号</span>
           <span>{{ info.divisionId }}</span>
         </div>
-        <div v-if="info.payInfo.deductionTypeTxt">
+        <div v-if="info.payInfo?.deductionTypeTxt">
           <span>抵扣类型</span>
-          <span>{{ info.payInfo.deductionTypeTxt }}</span>
+          <span>{{ info.payInfo?.deductionTypeTxt }}</span>
         </div>
-        <template v-if="info.payInfo.deductionType==='yibaopay'">
-          <div v-if="info.payInfo.medicalTreatmentTypetxt">
+        <template v-if="info.payInfo?.deductionType==='yibaopay'">
+          <div v-if="info.payInfo?.medicalTreatmentTypetxt">
             <span>医保类型</span>
-            <span>{{ info.payInfo.medicalTreatmentTypetxt }}</span>
+            <span>{{ info.payInfo?.medicalTreatmentTypetxt }}</span>
           </div>
-          <div v-if="info.payInfo.diseasesTxt&&info.payInfo.medicalTreatmentType === 2">
+          <div v-if="info.payInfo?.diseasesTxt&&info.payInfo?.medicalTreatmentType === 2">
             <span>病种</span>
-            <span>{{ info.payInfo.diseasesTxt }}</span>
+            <span>{{ info.payInfo?.diseasesTxt }}</span>
           </div>
         </template>
 
-        <div v-if="info.payInfo.payModeTxt&&info.payTime">
+        <div v-if="info.payInfo?.payModeTxt&&info.payTime">
           <span>支付方式</span>
-          <span>{{info.payInfo.paymentTypeTxt? info.payInfo.payModeTxt + ' - ' + info.payInfo.paymentTypeTxt: info.payInfo.payModeTxt }}</span>
+          <span>{{info.payInfo?.paymentTypeTxt? info.payInfo?.payModeTxt + ' - ' + info.payInfo?.paymentTypeTxt: info.payInfo?.payModeTxt }}</span>
         </div>
         <template v-for="item in info.purchaseDrugOrderStreams">
           <div :key="item.status"
@@ -174,16 +180,18 @@
 
 </template>
 <script>
-import CONSTANT from '../constant'
+import CONSTANT from './constant'
 export default {
-  name: 'drug-purchase-order-info',
+  name: 'PeaceOrderDrugPruchase',
   props: {
-    info: Object
+    data: [Object, Function]
   },
 
   data() {
     return {
-      defaultImage: require('../assets/images/ic_none_drug.png'),
+      loading: false,
+      defaultImage: require('./assets/images/ic_none_drug.png'),
+      info: {},
       source: {
         ENUM_PAYMENT: CONSTANT.ENUM_PAYMENT,
         ShippingMethod: [],
@@ -194,24 +202,36 @@ export default {
     }
   },
 
+  watch: {
+    data: {
+      async handler() {
+        this.loading = true
+        this.info = await this.fetch()
+        this.loading = false
+      },
+      immediate: true
+    }
+  },
+
   computed: {
     cancelList() {
       let list = []
-      list = this.info.cancelList
-      if (list.length > 0) {
-        if (list.length == 1) {
-          //仅用户端取消需添加‘等待审核’节点，供应方取消不需要；
-          //目前运营端不会展示供应方取消的取消时间列表；
-          //故暂时如此处理；
-          //如需展示供应方需调整接口
-          list.unshift({ cancelStatusText: '等待审核', cancelStatus: 0 })
-        } else {
-          list.reverse()
-        }
-        return list
-      } else {
-        return []
-      }
+      list = this.info.cancelList || []
+      return list.reverse()
+      // if (list.length > 0) {
+      //   if (list.length == 1) {
+      //     //仅用户端取消需添加‘等待审核’节点，供应方取消不需要；
+      //     //目前运营端不会展示供应方取消的取消时间列表；
+      //     //故暂时如此处理；
+      //     //如需展示供应方需调整接口
+      //     list.unshift({ cancelStatusText: '等待审核', cancelStatus: 0 })
+      //   } else {
+      //     list.reverse()
+      //   }
+      //   return list
+      // } else {
+      //   return []
+      // }
     },
     isToStore() {
       return !this.info.shippingMethod
@@ -244,10 +264,10 @@ export default {
       )
     },
     orderStatusText() {
-      if (this.info.shippingMethod.toString() === '0') {
-        return this.source.SelfOrderStatus.find((item) => item.value === this.info.callOrderStatus.toString())?.label
+      if (this.info?.shippingMethod?.toString() === '0') {
+        return this.source.SelfOrderStatus.find((item) => item.value === this.info?.callOrderStatus?.toString())?.label
       } else {
-        return this.source.DistributionOrderStatus.find((item) => item.value === this.info.callOrderStatus.toString())
+        return this.source.DistributionOrderStatus.find((item) => item.value === this.info?.callOrderStatus?.toString())
           ?.label
       }
     }
@@ -278,12 +298,14 @@ export default {
     this.source.DistributionOrderStatus = await Peace.identity.dictionary.getList('distribution_order_status')
     this.source.SelfOrderStatus = await Peace.identity.dictionary.getList('self_extraction_order_status')
   },
+
   methods: {
+    async fetch() {
+      return typeof this.data === 'function' ? await this.data() : this.data
+    },
     viewRpInfo() {
       const param = {
-        ids: this.info.prescribeId || this.info.presIds,
-        idx: 0,
-        current: true
+        ids: this.info.prescribeId
       }
       this.$emit('viewPres', param)
     },
@@ -331,7 +353,7 @@ $border-color: #eaeaea;
   color: #333333;
   padding-left: 40px;
   padding-right: 13px;
-  background: rgba(249, 249, 249, 1) url('../assets/images/ic_tixing.png') no-repeat;
+  background: rgba(249, 249, 249, 1) url('./assets/images/ic_tixing.png') no-repeat;
   background-position: 13px 11px;
   display: flex;
   flex-direction: row;
@@ -342,7 +364,7 @@ $border-color: #eaeaea;
       width: 4px;
       height: 8px;
       display: inline-block;
-      background: rgba(249, 249, 249, 1) url('../assets/images/systen-Triangle.png') no-repeat;
+      background: rgba(249, 249, 249, 1) url('./assets/images/systen-Triangle.png') no-repeat;
       margin-left: 10px;
     }
   }

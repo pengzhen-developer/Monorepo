@@ -32,10 +32,20 @@
               </span>
             </div>
 
-            <div style="width: 166px">
-              <PharmacyOrderControl v-bind:model="model"
-                                    v-on:success="fetch"></PharmacyOrderControl>
+            <div class="flex item-center">
+              <div style="width: 166px">
+                <PharmacyOrderControl v-bind:model="model"
+                                      v-on:success="fetch"></PharmacyOrderControl>
+              </div>
+              <el-button size="medium"
+                         class="q-ml-20"
+                         v-if="canShowCancelOrder()"
+                         v-on:click="cancelOrder"
+                         style="width: 166px">
+                取消订单
+              </el-button>
             </div>
+
           </div>
         </div>
       </div>
@@ -53,11 +63,11 @@
                                                  opacity: 0.75
                                                }"
                            v-bind:style="{ height: '120px' }">
-              <div class="q-mb-xs"
-                   v-for="timeline in model.Timeline"
+              <div class="q-mb-xs flex item-center"
+                   v-for="timeline in model.TimeLines"
                    v-bind:key="timeline.key">
-                <span class="text-grey-666 q-mr-lg">{{ timeline.time }}</span>
-                <span class="text-grey-333">{{ timeline.label }}</span>
+                <div class="text-grey-666 q-mr-lg">{{ timeline.Time }}</div>
+                <div class="col text-grey-333 text_hide">{{ timeline.Text }}</div>
               </div>
             </q-scroll-area>
           </div>
@@ -237,6 +247,32 @@
         </li>
       </ul>
     </div>
+
+    <PeaceDialog title="取消订单"
+                 width="420px"
+                 v-if="cancelDialog.visible"
+                 v-bind:visible.sync="cancelDialog.visible">
+      <el-form ref="form"
+               v-bind:model="cancelDialog.model"
+               v-bind:rules="cancelDialog.rules">
+        <el-form-item prop="inputText">
+          <el-input v-model="cancelDialog.model.inputText"
+                    type="textarea"
+                    maxlength="200"
+                    rows="5"
+                    show-word-limit
+                    placeholder="请填写取消原因，该内容将在用户端展示，尽量如实描述，如：客户长时间未到店，超期取消"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <div class="el-dialog__footer">
+        <el-button v-on:click="cancelDialog.visible = false">取消</el-button>
+        <el-button type="primary"
+                   v-on:click="submitCancelDialog">提交</el-button>
+
+      </div>
+    </PeaceDialog>
+
   </div>
 </template>
 
@@ -278,7 +314,7 @@ export default {
         DrugStoreName: '',
         ShippingMethod: '',
 
-        Timeline: []
+        TimeLines: []
       },
 
       LogisticsTimeline: {
@@ -297,6 +333,15 @@ export default {
         OrderStatus: [],
         PayMode: [],
         PayStatus: []
+      },
+      cancelDialog: {
+        visible: false,
+        model: {
+          inputText: ''
+        },
+        rules: {
+          inputText: [{ required: true, message: '请先输入取消原因', trigger: 'blur' }]
+        }
       }
     }
   },
@@ -304,7 +349,10 @@ export default {
   watch: {
     'model.ShippingMethod': {
       handler() {
-        if (this.model.ShippingMethod?.toString() === this.source.ShippingMethod.find((item) => item.label === '自提订单')?.value?.toString()) {
+        if (
+          this.model.ShippingMethod?.toString() ===
+          this.source.ShippingMethod.find((item) => item.label === '自提订单')?.value?.toString()
+        ) {
           this.source.OrderStatus = [
             { label: '全部', value: '', unprocessCount: 0 },
             { label: '等待接单', value: 1, unprocessCount: 0 },
@@ -327,6 +375,21 @@ export default {
         }
       },
       immediate: true
+    },
+
+    'model.TimeLines': {
+      handler() {
+        this.$nextTick().then(() => {
+          const doms = this.$el.querySelectorAll('.text_hide')
+          doms.forEach((dom) => {
+            if (dom.offsetHeight >= 25) {
+              dom.classList.add('ellipsis')
+              dom.title = dom.innerText
+            }
+          })
+        })
+      },
+      immediate: true
     }
   },
 
@@ -346,8 +409,9 @@ export default {
 
       Service.getOrderInfo(params)
         .then((res) => {
-          res.data.Timeline = this.setDataToTimeline(res.data)
-
+          //流水之前前端写死 现在改成后端返回
+          // res.data.Timeline = this.setDataToTimeline(res.data)
+          res.data.TimeLines.reverse()
           this.model = res.data
 
           return res
@@ -369,93 +433,102 @@ export default {
       return this.model.OrderStatus === this.source.OrderStatus.find((item) => item.label === '已备药')?.value
     },
 
-    setDataToTimeline(model) {
-      // 1， 系统已完成 / 客户手动完成
-      // 2， 客户已签收
-      // 3， 门店已发货，等待客户验收
-      // 4， 门店已接单，等待发货
-      // 5， 订单下单成功，等待接单
-      // 6， 已取消
-      const timelineDictionary = [
-        {
-          field: 'CreateOrderTime',
-          description: '下单时间',
-          label: (/** model */) => {
-            return '订单下单成功，等待接单'
-          }
-        },
-        {
-          field: 'ReceiptOrderTime',
-          description: '接单时间',
-          label: (model) => {
-            if (model.ShippingMethod?.toString() === this.source.ShippingMethod.find((item) => item.label === '自提订单')?.value?.toString()) {
-              return '门店已接单，等待备货'
-            } else {
-              return '门店已接单，等待发货'
-            }
-          }
-        },
-        {
-          field: 'DeliverGoodsTime',
-          description: '已备药时间/已发货时间',
-          label: (model) => {
-            if (model.ShippingMethod?.toString() === this.source.ShippingMethod.find((item) => item.label === '自提订单')?.value?.toString()) {
-              return '门店已备药，等待客户自提'
-            } else {
-              return '门店已发货，等待客户签收'
-            }
-          }
-        },
-        {
-          field: 'ReceiptGoodsTime',
-          description: '已自提时间/已签收时间',
-          label: (model) => {
-            if (model.ShippingMethod?.toString() === this.source.ShippingMethod.find((item) => item.label === '自提订单')?.value?.toString()) {
-              return '门店已发药，客户完成自提'
-            } else {
-              return '客户已签收'
-            }
-          }
-        },
-        {
-          field: 'CancelTime',
-          description: '取消时间',
-          label: (/** model */) => {
-            return '客户已取消订单'
-          }
-        },
-        {
-          field: 'CompleteTime',
-          description: '确认收货时间/已完成时间',
-          label: (model) => {
-            if (model.IsSysAutoComplete) {
-              return '系统自动完成订单'
-            } else {
-              return '客户已完成订单'
-            }
-          }
-        }
-      ]
-      const timelineList = []
+    // setDataToTimeline(model) {
+    //   // 1， 系统已完成 / 客户手动完成
+    //   // 2， 客户已签收
+    //   // 3， 门店已发货，等待客户验收
+    //   // 4， 门店已接单，等待发货
+    //   // 5， 订单下单成功，等待接单
+    //   // 6， 已取消
+    //   const timelineDictionary = [
+    //     {
+    //       field: 'CreateOrderTime',
+    //       description: '下单时间',
+    //       label: (/** model */) => {
+    //         return '订单下单成功，等待接单'
+    //       }
+    //     },
+    //     {
+    //       field: 'ReceiptOrderTime',
+    //       description: '接单时间',
+    //       label: (model) => {
+    //         if (
+    //           model.ShippingMethod?.toString() ===
+    //           this.source.ShippingMethod.find((item) => item.label === '自提订单')?.value?.toString()
+    //         ) {
+    //           return '门店已接单，等待备货'
+    //         } else {
+    //           return '门店已接单，等待发货'
+    //         }
+    //       }
+    //     },
+    //     {
+    //       field: 'DeliverGoodsTime',
+    //       description: '已备药时间/已发货时间',
+    //       label: (model) => {
+    //         if (
+    //           model.ShippingMethod?.toString() ===
+    //           this.source.ShippingMethod.find((item) => item.label === '自提订单')?.value?.toString()
+    //         ) {
+    //           return '门店已备药，等待客户自提'
+    //         } else {
+    //           return '门店已发货，等待客户签收'
+    //         }
+    //       }
+    //     },
+    //     {
+    //       field: 'ReceiptGoodsTime',
+    //       description: '已自提时间/已签收时间',
+    //       label: (model) => {
+    //         if (
+    //           model.ShippingMethod?.toString() ===
+    //           this.source.ShippingMethod.find((item) => item.label === '自提订单')?.value?.toString()
+    //         ) {
+    //           return '门店已发药，客户完成自提'
+    //         } else {
+    //           return '客户已签收'
+    //         }
+    //       }
+    //     },
+    //     {
+    //       field: 'CancelTime',
+    //       description: '取消时间',
+    //       label: (/** model */) => {
+    //         return '客户已取消订单'
+    //       }
+    //     },
+    //     {
+    //       field: 'CompleteTime',
+    //       description: '确认收货时间/已完成时间',
+    //       label: (model) => {
+    //         if (model.IsSysAutoComplete) {
+    //           return '系统自动完成订单'
+    //         } else {
+    //           return '客户已完成订单'
+    //         }
+    //       }
+    //     }
+    //   ]
+    //   const timelineList = []
 
-      timelineDictionary.forEach((timeline, index) => {
-        const time = model[timeline.field]
+    //   timelineDictionary.forEach((timeline, index) => {
+    //     const time = model[timeline.field]
 
-        if (!Peace.validate.isEmpty(time)) {
-          timelineList.push({ key: index, time: time, label: timeline.label(model) })
-        }
-      })
+    //     if (!Peace.validate.isEmpty(time)) {
+    //       timelineList.push({ key: index, time: time, label: timeline.label(model) })
+    //     }
+    //   })
 
-      timelineList.sort((a, b) => {
-        if (a.time < b.time) {
-          return 1
-        } else {
-          return -1
-        }
-      })
+    //   timelineList.sort((a, b) => {
+    //     if (a.time < b.time) {
+    //       return 1
+    //     } else {
+    //       return -1
+    //     }
+    //   })
 
-      return timelineList
-    },
+    //   return timelineList
+    // },
 
     setDataToLogisticsTimeline(model) {
       model?.Stream.forEach((item) => {
@@ -475,12 +548,69 @@ export default {
         const query = { OrderId: this.model.OrderId }
         this.$router.push({ name, query })
       }
+    },
+
+    // 是否显示【取消订单】
+    canShowCancelOrder() {
+      //自提订单   等待接单  已接单  已备药 支持取消
+      if (
+        this.model.ShippingMethod?.toString() ===
+        this.source.ShippingMethod.find((item) => item.label === '自提订单')?.value?.toString()
+      ) {
+        return (
+          this.model.OrderStatus?.toString() ===
+            this.source.OrderStatus.find((item) => item.label === '等待接单')?.value?.toString() ||
+          this.model.OrderStatus?.toString() ===
+            this.source.OrderStatus.find((item) => item.label === '已接单')?.value?.toString() ||
+          this.model.OrderStatus?.toString() ===
+            this.source.OrderStatus.find((item) => item.label === '已备药')?.value?.toString()
+        )
+      } else {
+        //配送订单   等待接单  已接单  支持取消
+        return (
+          this.model.OrderStatus?.toString() ===
+            this.source.OrderStatus.find((item) => item.label === '等待接单')?.value?.toString() ||
+          this.model.OrderStatus?.toString() ===
+            this.source.OrderStatus.find((item) => item.label === '已接单')?.value?.toString()
+        )
+      }
+    },
+
+    //取消订单
+    cancelOrder() {
+      this.cancelDialog.model.inputText = ''
+      this.cancelDialog.visible = true
+    },
+    submitCancelDialog() {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          const params = {
+            list: [{ OrderID: this.model.OrderId, CancelReason: this.cancelDialog.model.inputText }]
+          }
+          Service.CancelOrderV2(params).then(() => {
+            this.cancelDialog.visible = false
+            Peace.util.success('取消成功')
+            this.fetch()
+          })
+        }
+      })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.text-hide {
+  max-width: 20em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
+  &:hover {
+    text-overflow: inherit;
+    overflow: visible;
+  }
+}
 .card-title {
   margin: 0 0 16px 0;
 

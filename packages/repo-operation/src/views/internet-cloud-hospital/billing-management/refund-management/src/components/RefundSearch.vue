@@ -169,8 +169,8 @@
                  title="购药订单详情"
                  v-if="purchaseDialogVisible"
                  v-bind:visible.sync="purchaseDialogVisible">
-      <PurchaseOrderInfo v-bind:info="currentPurchase"
-                         v-on:viewPres="viewPres"></PurchaseOrderInfo>
+      <PeaceOrderDrugPruchase v-bind:data="currentPurchase"
+                              v-on:viewPres="viewPres"></PeaceOrderDrugPruchase>
     </PeaceDialog>
 
     <!-- 挂号订单详情 -->
@@ -209,9 +209,8 @@
 import Service from '../service'
 import CONSTANT from '../constant'
 import RefundDetail from './RefundDetail.vue'
-import PurchaseOrderInfo from '@src/views/internet-cloud-hospital/business-order/drug-purchase-order/src/components/DrugPurchaseOrderDetail.vue'
 import ServicePackageOrderInfo from '@src/views/internet-cloud-hospital/business-order/service-pack-order/src/components/OrderDetail.vue'
-import { PeacePrescriptionDetail, PeaceOrderInquiryDetail } from 'peace-components'
+import { PeacePrescriptionDetail, PeaceOrderInquiryDetail, PeaceOrderDrugPruchase } from 'peace-components'
 
 export default {
   name: 'RefundSearch',
@@ -219,7 +218,7 @@ export default {
     PeacePrescriptionDetail,
     RefundDetail,
     PeaceOrderInquiryDetail,
-    PurchaseOrderInfo,
+    PeaceOrderDrugPruchase,
     ServicePackageOrderInfo
   },
   data() {
