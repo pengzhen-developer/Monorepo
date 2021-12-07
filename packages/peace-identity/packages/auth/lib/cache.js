@@ -13,7 +13,7 @@ class Cache {
    * @returns
    */
   setAuth(auth) {
-    return peace.cache.localStorage.set(CONSTANT.AUTH, auth)
+    return peace.cache.sessionStorage.set(CONSTANT.AUTH, auth)
   }
 
   /**
@@ -22,7 +22,7 @@ class Cache {
    * @returns
    */
   getAuth() {
-    return peace.cache.localStorage.get(CONSTANT.AUTH)
+    return peace.cache.sessionStorage.get(CONSTANT.AUTH)
   }
 
   /**
@@ -30,7 +30,7 @@ class Cache {
    *
    */
   removeAuth() {
-    peace.cache.localStorage.remove(CONSTANT.AUTH)
+    peace.cache.sessionStorage.remove(CONSTANT.AUTH)
   }
 
   /**
@@ -40,7 +40,7 @@ class Cache {
    * @returns
    */
   setAccountInfo(accountInfo) {
-    return peace.cache.localStorage.set(CONSTANT.ACCOUNT_INFO, accountInfo)
+    return peace.cache.sessionStorage.set(CONSTANT.ACCOUNT_INFO, accountInfo)
   }
 
   /**
@@ -49,7 +49,7 @@ class Cache {
    * @returns
    */
   getAccountInfo() {
-    return peace.cache.localStorage.get(CONSTANT.ACCOUNT_INFO)
+    return peace.cache.sessionStorage.get(CONSTANT.ACCOUNT_INFO)
   }
 
   /**
@@ -57,7 +57,7 @@ class Cache {
    *
    */
   removeAccountInfo() {
-    peace.cache.localStorage.remove(CONSTANT.ACCOUNT_INFO)
+    peace.cache.sessionStorage.remove(CONSTANT.ACCOUNT_INFO)
   }
 
   /**
@@ -65,9 +65,9 @@ class Cache {
    *
    */
   removeAllAccountInfo() {
-    peace.cache.localStorage.remove(CONSTANT.AUTH)
+    peace.cache.sessionStorage.remove(CONSTANT.AUTH)
 
-    peace.cache.localStorage.remove(CONSTANT.ACCOUNT_INFO)
+    peace.cache.sessionStorage.remove(CONSTANT.ACCOUNT_INFO)
     peace.cache.sessionStorage.remove(CONSTANT.ACCOUNT_MENU)
     peace.cache.sessionStorage.remove(CONSTANT.ACCOUNT_ROUTE)
   }

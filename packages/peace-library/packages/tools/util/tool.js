@@ -7,13 +7,13 @@
  * @returns
  */
 export function sign(key) {
-  const appName = peace.config && peace.config.appName
-  const appVersion = peace.config && peace.config.appVersion
+  const name = Peace?.config?.name
+  const version = Peace?.config?.version
 
   if (key) {
-    return `[${appName}]-[${appVersion}]:${key}`
+    return `[${name}]-[${version}]:${key}`
   } else {
-    return `[${appName}]-[${appVersion}]:`
+    return `[${name}]-[${version}]:`
   }
 }
 

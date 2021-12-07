@@ -2,14 +2,14 @@
   <div class="layout-route ">
     <div class="full-width flex no-wrap bg-white">
       <MenuAside class="aside"></MenuAside>
-      <MenuMain class="main "></MenuMain>
+      <MenuMain class="main"></MenuMain>
     </div>
   </div>
 </template>
 
 <script>
-import MenuMain from './components/MenuMain'
-import MenuAside from './components/MenuAside'
+import MenuMain from './components/MenuMain.vue'
+import MenuAside from './components/MenuAside.vue'
 export default {
   name: 'Menu',
   components: { MenuMain, MenuAside }

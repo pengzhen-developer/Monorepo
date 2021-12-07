@@ -163,7 +163,7 @@ export default {
       this.validateForm().then(() => {
         this.isLoading = true
 
-        this.model.organCodes = this.model.organCodes.toString()
+        this.model.organCodes = this.model?.organCodes?.toString()
 
         let params = Object.assign({}, this.model, {
           clientId: this.$store.state.info.role.clientId,

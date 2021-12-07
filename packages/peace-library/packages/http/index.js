@@ -5,12 +5,14 @@
 
 import Axios from 'axios'
 import download from './download'
-import { requestInterceptor, responseInterceptor } from './interceptors'
+import { createInterceptor } from './interceptors'
 
 const createHttp = ({ options }) => {
   // get interceptor
-  let _requestInterceptor = options.http.interceptors.requestInterceptor || requestInterceptor
-  let _responseInterceptor = options.http.interceptors.responseInterceptor || responseInterceptor
+  const interceptor = createInterceptor(options)
+
+  let _requestInterceptor = options?.axiosRequestInterceptor || interceptor.requestInterceptor
+  let _responseInterceptor = options?.axiosResponseInterceptor || interceptor.responseInterceptor
 
   // use interceptor
   Axios.interceptors.request.use(_requestInterceptor.then, _requestInterceptor.catch)

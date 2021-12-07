@@ -1,10 +1,10 @@
 <template>
-  <el-menu v-bind:default-active="defaultActive">
-    <el-menu-item v-for="(item,index) in list"
-                  v-on:click="setInfo(item)"
-                  v-bind:index="item.id.toString()"
-                  v-bind:key="index">{{item.clientName}}</el-menu-item>
-  </el-menu>
+  <el-tree :data="list"
+           :props="{ label: 'clientName'}"
+           ref="tree"
+           highlight-current
+           node-key="treeId"
+           @node-click="setInfo"></el-tree>
 </template>
 
 <script>

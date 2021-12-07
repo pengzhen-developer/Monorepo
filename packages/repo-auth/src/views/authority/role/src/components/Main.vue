@@ -34,11 +34,8 @@
                           prop="createTime"></PeaceTableColumn>
         <PeaceTableColumn label="操作"
                           align="left"
-                          min-width="150px">
+                          width="160px">
           <template slot-scope="scope">
-            <el-button class="q-px-none"
-                       type="text"
-                       v-on:click="cmdModel('detail', scope.row)">查看</el-button>
             <el-button class="q-px-none"
                        type="text"
                        v-on:click="cmdModel('edit', scope.row)">编辑</el-button>
@@ -54,24 +51,24 @@
     </div>
 
     <!-- 角色 -->
-    <el-dialog width="720px"
-               v-bind:visible.sync="modelDialog.visible"
-               :title="modelDialog.title">
-      <Model v-if="modelDialog.visible"
-             ref="model"
+    <PeaceDialog width="720px"
+                 v-if="modelDialog.visible"
+                 v-bind:visible.sync="modelDialog.visible"
+                 :title="modelDialog.title">
+      <Model ref="model"
              v-on:close="modelDialog.visible = false"
              v-on:refresh="get"></Model>
-    </el-dialog>
+    </PeaceDialog>
 
     <!-- 权限 -->
-    <el-dialog width="720px"
-               v-bind:visible.sync="authDialog.visible"
-               title="分配权限">
-      <Auth v-if="authDialog.visible"
-            ref="auth"
+    <PeaceDialog width="1200px"
+                 v-if="authDialog.visible"
+                 v-bind:visible.sync="authDialog.visible"
+                 title="分配权限">
+      <Auth ref="auth"
             v-on:close="authDialog.visible = false"
             v-on:refresh="get"></Auth>
-    </el-dialog>
+    </PeaceDialog>
 
   </div>
 </template>

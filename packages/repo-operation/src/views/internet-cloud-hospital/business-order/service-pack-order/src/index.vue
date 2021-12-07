@@ -98,7 +98,8 @@
     </div>
     <div class="card">
       <div class="q-mb-lg">
-        <el-button v-on:click="exportFile"
+        <el-button v-permission="`export`"
+                   v-on:click="exportFile"
                    :loading="exportLoading"
                    type="primary">导出</el-button>
       </div>

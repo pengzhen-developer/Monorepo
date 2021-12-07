@@ -84,6 +84,7 @@
                           label="操作">
           <template slot-scope="scope">
             <el-button type="text"
+                       v-permission="`audit`"
                        v-if="canShowCheck(scope.row)"
                        v-on:click="check(scope.row)">审核</el-button>
             <el-button type="text"
@@ -179,9 +180,7 @@ export default {
     },
 
     canShowDetail(row) {
-      return (
-        row.checkStatus === CONSTANT.ENUM_APPLY_STATUS.未通过 || row.checkStatus === CONSTANT.ENUM_APPLY_STATUS.已通过
-      )
+      return row.checkStatus === CONSTANT.ENUM_APPLY_STATUS.未通过 || row.checkStatus === CONSTANT.ENUM_APPLY_STATUS.已通过
     },
 
     check(row) {

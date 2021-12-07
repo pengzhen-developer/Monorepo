@@ -23,34 +23,24 @@ import createHttp from './packages/http/index'
  */
 const initOptions = (options) => {
   const defaultOptions = {
-    // config
-    config: {
-      appName: '',
-      appVersion: ''
-    },
+    // base config
+    name: '',
+    version: '',
 
-    // http config
-    http: {
-      // .e.g
-      // requestInterceptor: { then: function() {}, catch: function() {} }
-      // responseInterceptor: { then: function() {}, catch: function() {} }
-      interceptors: {
-        requestInterceptor: undefined,
-        responseInterceptor: undefined
-      }
-    }
+    // axios config
+    axiosHandleLoading: false,
+    axiosRequestInterceptor: undefined,
+    axiosResponseInterceptor: undefined
   }
 
   options = Object.assign(defaultOptions, options)
 
-  if (!options.config.appName || !options.config.appVersion) {
+  if (!options.name || !options.version) {
     return console.error(`
 Check config：
 Vue.use(PeaceLibrary, {
-  config: {
-    appName: 'appName',
-    appVersion: 'appVersion'
-  }
+  name: 'name',
+  version: 'version'
 })`)
   }
 
@@ -78,7 +68,7 @@ const install = (Vue, options) => {
   // 创建 directive 过滤器
   createDirective({ Vue, options })
 
-  peace.config = options.config
+  peace.config = options
   peace.util = util
   peace.validate = validate
   peace.cache = cache

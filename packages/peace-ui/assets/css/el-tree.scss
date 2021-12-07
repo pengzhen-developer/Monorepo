@@ -14,7 +14,8 @@
       border-bottom: 1px solid #eeeeee;
     }
 
-    > .el-tree-node > .el-tree-node__content {
+    > .el-tree-node > .el-tree-node__content,
+    > .el-tree-node > .el-tree-node__children {
       background-color: #fafafa;
       font-weight: 500;
       color: #333333;

@@ -44,7 +44,8 @@
 
       <div class="card">
         <div class="q-mb-lg">
-          <el-button type="primary"
+          <el-button v-permission="`add`"
+                     type="primary"
                      v-on:click="addOrganization">新增</el-button>
         </div>
 

@@ -9,7 +9,8 @@
       <div class="info-content">
         <el-form-item label="菜单类型"
                       prop="type">
-          <el-select v-model="query.type"
+          <el-select disabled=""
+                     v-model="query.type"
                      placeholder="请选择菜单类型">
             <el-option v-for="item in menuTypes"
                        :key="item.value"
@@ -89,8 +90,8 @@ export default {
         icon: '',
         //排序值 	integer($int32)
         sort: '',
-        //菜单类型,0:菜单 1:按钮 2:顶菜单
-        type: '',
+        //菜单类型,0:菜单 1:元素 2:顶菜单
+        type: '0',
         isDisplay: '1'
       },
       loading: false,
@@ -169,8 +170,8 @@ export default {
       })
     },
     validateForm() {
-      return new Promise((resolve) => {
-        this.$refs.form.validate((valid) => {
+      return new Promise(resolve => {
+        this.$refs.form.validate(valid => {
           if (valid) {
             resolve()
           }

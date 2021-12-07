@@ -141,7 +141,6 @@ export default {
     deleteItem(row) {
       this.$confirm('确定删除吗？', { closeOnClickModal: false, closeOnPressEscape: false }).then(() => {
         const params = { id: row.Id }
-        debugger
         Service.DeletePriceAuthority(params).then((res) => {
           Peace.util.success(res.msg)
           this.fetch()

@@ -6,9 +6,7 @@ import PeaceLibrary from 'peace-library'
 // async is optional
 export default async ({ Vue }) => {
   Vue.use(PeaceLibrary, {
-    config: {
-      appName: name,
-      appVersion: version
-    }
+    name: name,
+    version: version
   })
 }

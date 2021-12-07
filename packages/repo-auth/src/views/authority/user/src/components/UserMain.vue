@@ -2,6 +2,7 @@
   <div>
     <div class="card">
       <el-form inline
+               label-suffix="："
                :model="query">
         <el-form-item label="登录账号">
           <el-input v-model="query.username"
@@ -32,27 +33,27 @@
         </PeaceTableColumn>
         <PeaceTableColumn show-overflow-tooltip
                           label="登录账号"
-                          min-width="120px"
+                          width="120px"
                           prop="username"
                           align="left">
 
         </PeaceTableColumn>
         <PeaceTableColumn show-overflow-tooltip
                           label="角色"
-                          min-width="220px"
+                          width="120px"
                           prop="roleList">
           <template slot-scope="scope">
             <span>{{getRoleNames(scope.row.roleList)}}</span>
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn label=""
-                          min-width="220px"
+        <PeaceTableColumn label="电话"
+                          width="120px"
                           prop="phone"></PeaceTableColumn>
         <PeaceTableColumn label="密码"
-                          min-width="220px"
+                          min-width="120px"
                           prop="password"></PeaceTableColumn>
         <PeaceTableColumn label="创建时间"
-                          min-width="220px"
+                          width="170px"
                           prop="createTime"></PeaceTableColumn>
       </PeaceTable>
     </div>

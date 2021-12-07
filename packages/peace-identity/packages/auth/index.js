@@ -321,6 +321,7 @@ export default class Auth {
                     menuStruct.menuAlias = route.routeName
                     menuStruct.menuPath = route.realPath
                     menuStruct.menuRoute = route.routePath
+                    menuStruct.menuElements = menu.menuElements
 
                     menuStruct.virtual = route.routeType === 1 ? 0 : 1
 

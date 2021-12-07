@@ -76,7 +76,9 @@
 
     <div class="card">
       <div class="q-mb-lg">
-        <el-button v-on:click="exportFile">导出</el-button>
+        <el-button type="primary"
+                   v-permission="`export`"
+                   v-on:click="exportFile">导出</el-button>
       </div>
 
       <peace-table pagination
@@ -260,8 +262,7 @@ export default {
         // DistributionOrderStatus  配送订单状态    1
         // SelfOrderStatus  自提订单状态  0
         this.model.OrderStatus = ''
-        this.remoteSource.OrderStatus =
-          this.model.ShippingMethod == 0 ? this.remoteSource.SelfOrderStatus : this.remoteSource.DistributionOrderStatus
+        this.remoteSource.OrderStatus = this.model.ShippingMethod == 0 ? this.remoteSource.SelfOrderStatus : this.remoteSource.DistributionOrderStatus
       }
     }
   },

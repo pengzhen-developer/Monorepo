@@ -127,7 +127,6 @@ export default {
       })
     },
     goPasswordSubmitPage() {
-      debugger
       let bool = this.isSetPwd,
         order = this.setOrder(this.type)
       this.$router.push({

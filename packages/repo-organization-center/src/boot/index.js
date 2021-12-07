@@ -53,7 +53,6 @@ const install = async () => {
         configuration
       })
     } catch (error) {
-      debugger
       console.error(`[${boot}] boot error:`, error)
     }
   }

@@ -1,42 +1,48 @@
 <template>
   <div>
-    <el-card class="q-mb-md">
+    <el-card class="q-mb-md"
+             v-bind:header="`路由列表`">
       <el-table :data="menuRoutes">
         <PeaceTableColumn label="ID"
                           align="left"
-                          width="90px"
+                          width="70px"
                           prop="routeId">
         </PeaceTableColumn>
         <PeaceTableColumn label="路由类别"
                           align="left"
                           width="90px"
-                          prop="routeType">
+                          prop="routeType"
+                          show-overflow-tooltip>
           <template slot-scope="scope">
             {{scope.row.routeType == 1 ?'主路由':'子路由'}}
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn label="路由名称"
-                          align="left"
-                          width="90px"
-                          prop="routeName">
-        </PeaceTableColumn>
         <PeaceTableColumn label="标签名称"
                           align="left"
                           width="100px"
-                          prop="name">
+                          prop="name"
+                          show-overflow-tooltip>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="路由名称"
+                          align="left"
+                          width="120px"
+                          prop="routeName"
+                          show-overflow-tooltip>
         </PeaceTableColumn>
         <PeaceTableColumn label="路由地址"
                           align="left"
                           min-width="140px"
-                          prop="routePath">
+                          prop="routePath"
+                          show-overflow-tooltip>
         </PeaceTableColumn>
         <PeaceTableColumn label="实际地址"
                           align="left"
                           min-width="180px"
-                          prop="realPath">
+                          prop="realPath"
+                          show-overflow-tooltip>
         </PeaceTableColumn>
         <PeaceTableColumn label="操作"
-                          min-width="120px">
+                          width="120px">
           <template slot-scope="scope">
             <el-button class="q-px-none"
                        type="text"
@@ -49,7 +55,8 @@
       </el-table>
     </el-card>
 
-    <el-card v-bind:header="query.routeId ? `修改路由 - 当前修改项 : 【${query.routeId}】` : '新增路由'">
+    <el-card class="q-mb-md"
+             v-bind:header="query.routeId ? `修改路由 - 当前修改项 : 【${query.routeId}】` : '新增路由'">
       <el-form ref="form"
                label-position="right"
                label-width="auto"
@@ -134,7 +141,7 @@
                      class="large hasmargin "
                      v-if="query.routeId"
                      v-bind:disabled="loading"
-                     v-on:click="cancel">重 置</el-button>
+                     v-on:click="cancel">重置初始状态</el-button>
         </div>
       </el-form>
     </el-card>
@@ -254,6 +261,7 @@ export default {
               })
             })
             .finally(() => {
+              this.cancel()
               this.loading = false
             })
         } else {
@@ -268,6 +276,7 @@ export default {
               // this.cancelDialog()
             })
             .finally(() => {
+              this.cancel()
               this.loading = false
             })
         }

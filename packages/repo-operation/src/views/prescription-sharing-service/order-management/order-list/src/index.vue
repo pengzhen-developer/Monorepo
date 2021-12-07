@@ -128,12 +128,12 @@
     <div class="card">
       <div class="q-mb-lg">
         <el-button type="primary"
+                   v-permission="`export_order`"
                    v-on:click="exportFile">导出订单详情</el-button>
         <el-button type="primary"
-                   class="q-ml-md"
+                   v-permission="`export_logistics`"
                    v-on:click="exportDeliveryFile">导出发货详情</el-button>
-        <el-button class="q-ml-md"
-                   v-on:click="showSetting">异常提醒设置</el-button>
+        <el-button v-on:click="showSetting">异常提醒设置</el-button>
       </div>
 
       <PeaceTable pagination
@@ -457,9 +457,7 @@ export default {
     this.remoteSource.PayStatus = await peace.identity.dictionary.getList('PayStatus')
     this.remoteSource.SelfOrderStatus = await peace.identity.dictionary.getList('SelfOrderStatus')
     this.remoteSource.DistributionOrderStatus = await peace.identity.dictionary.getList('DistributionOrderStatus')
-    this.settingDialog.data.Code = (await peace.identity.dictionary.getList('SmsRemind')).find(
-      (item) => item.value == 'Code'
-    ).label
+    this.settingDialog.data.Code = (await peace.identity.dictionary.getList('SmsRemind')).find((item) => item.value == 'Code').label
     this.$nextTick().then(() => {
       this.fetch()
     })
@@ -478,8 +476,7 @@ export default {
         // DistributionOrderStatus  配送订单状态    1
         // SelfOrderStatus  自提订单状态  0
         this.model.OrderStatus = ''
-        this.remoteSource.OrderStatus =
-          this.model.OrderMethod == 0 ? this.remoteSource.SelfOrderStatus : this.remoteSource.DistributionOrderStatus
+        this.remoteSource.OrderStatus = this.model.OrderMethod == 0 ? this.remoteSource.SelfOrderStatus : this.remoteSource.DistributionOrderStatus
       }
     }
   },

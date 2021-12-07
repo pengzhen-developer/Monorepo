@@ -135,10 +135,6 @@ export default {
       const fetch = Service.recordList
       const params = Peace.util.deepClone(this.model)
       this.$refs.table.reloadData({ fetch, params })
-    },
-
-    tt() {
-      debugger
     }
   }
 }

@@ -82,5 +82,73 @@ export default {
         return Peace.http.get(requestApi, { params })
       }
     }
+  },
+
+  /**
+   * @description: 获取菜单元素列表
+   * @param {*} params
+   * @return {*}
+   */
+  getMenuElements(params) {
+    const isMock = false
+
+    const apiPath = 'admin/menuElement/list'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params)
+  },
+
+  /**
+   * @description: 新增菜单元素
+   * @param {*} params
+   * @return {*}
+   */
+  saveMenuElements(params) {
+    const isMock = false
+
+    const apiPath = 'admin/menuElement/save'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params)
+  },
+
+  /**
+   * @description: 修改菜单元素
+   * @param {*} params
+   * @return {*}
+   */
+  modifyMenuElements(params) {
+    const isMock = false
+
+    const apiPath = 'admin/menuElement/modify'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params)
+  },
+
+  /**
+   * @description: 修改菜单元素
+   * @param {*} params
+   * @return {*}
+   */
+  removeMenuElements(params) {
+    const isMock = false
+
+    const apiPath = 'admin/menuElement/remove'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_BASE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params)
   }
 }
