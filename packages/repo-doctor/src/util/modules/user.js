@@ -3,24 +3,6 @@ const USER_INFO = 'USER_INFO'
 const USER_PHONE = 'USER_PHONE'
 
 /**
- * 获取用户信息（缓存）
- *
- * @returns
- */
-export const getUserPhone = () => {
-  return Peace.cache.localStorage.get(USER_PHONE)
-}
-
-/**
- * 获取用户信息（缓存）
- *
- * @returns
- */
-export const getUserInfo = () => {
-  return Peace.cache.localStorage.get(USER_INFO)
-}
-
-/**
  * 缓存用户手机号
  *
  * @param {*} userInfo
@@ -31,13 +13,31 @@ export const setUserPhone = (userPhone) => {
 }
 
 /**
+ * 获取用户信息（缓存）
+ *
+ * @returns
+ */
+export const getUserPhone = () => {
+  return Peace.cache.localStorage.get(USER_PHONE)
+}
+
+/**
  * 缓存用户信息
  *
  * @param {*} userInfo 用户信息
  * @returns
  */
 export const setUserInfo = (userInfo) => {
-  Peace.cache.localStorage.set(USER_INFO, userInfo)
+  Peace.cache.sessionStorage.set(USER_INFO, userInfo)
+}
+
+/**
+ * 获取用户信息（缓存）
+ *
+ * @returns
+ */
+export const getUserInfo = () => {
+  return Peace.cache.sessionStorage.get(USER_INFO)
 }
 
 /**
@@ -47,7 +47,7 @@ export const setUserInfo = (userInfo) => {
 export const removeUserInfo = () => {
   Peace.$store.commit('user/removeUserInfo')
 
-  Peace.cache.localStorage.remove(USER_INFO)
+  Peace.cache.sessionStorage.remove(USER_INFO)
 }
 
 /**
@@ -116,7 +116,7 @@ export const replaceToRoot = () => {
  *
  */
 export const isSignIn = () => {
-  return !!Peace.cache.localStorage.get(USER_INFO)
+  return !!Peace.cache.sessionStorage.get(USER_INFO)
 }
 
 export default {
