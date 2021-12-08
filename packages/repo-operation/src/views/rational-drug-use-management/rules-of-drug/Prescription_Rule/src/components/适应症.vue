@@ -2,7 +2,21 @@
   <div class="rule-item__content flex items-center q-pa-sm q-mr-md">
     <div class="flex  items-center"
          v-if="isEditing">
+
+      <el-select v-model="type"
+                 placeholder="请选择"
+                 @change="typeChange"
+                 class="q-mr-md"
+                 style="width: 100px;">
+        <el-option v-for="item in DiagnosisType"
+                   :key="item.value"
+                   :label="item.label"
+                   :value="item.value">
+        </el-option>
+      </el-select>
+
       <span class="q-mr-md text-red">不属于</span>
+
       <div class="col"
            v-on:click="addTag">
         <span v-if="model.diagnosisItemList.length === 0"
@@ -37,7 +51,14 @@
                          v-model="dialogThree.visible"
                          v-bind:model="dialogThree.data"
                          v-on:onSuccess="editIndication"></IndicationThreeView>
-
+    <IcdIndicationView v-if="icdDialog.visible"
+                       v-model="icdDialog.visible"
+                       v-bind:model="icdDialog.data"
+                       v-on:onSuccess="editIndication"></IcdIndicationView>
+    <IcdIndicationThreeView v-if="icdDialogThree.visible"
+                            v-model="icdDialogThree.visible"
+                            v-bind:model="icdDialogThree.data"
+                            v-on:onSuccess="editIndication"></IcdIndicationThreeView>
   </div>
 </template>
 
@@ -45,7 +66,9 @@
 import CONSTANT from '../constant'
 import IndicationView from './IndicationView'
 import IndicationThreeView from './IndicationThreeView'
-
+import IcdIndicationView from './IcdIndicationView.vue'
+import IcdIndicationThreeView from './IcdIndicationThreeView.vue'
+import obPreconditionDic from '../observable/ob-precondition-dic'
 export default {
   props: {
     model: Object,
@@ -65,15 +88,28 @@ export default {
 
   components: {
     IndicationView,
-    IndicationThreeView
+    IndicationThreeView,
+    IcdIndicationView,
+    IcdIndicationThreeView
   },
   data() {
     return {
+      type: '2',
+      cacheData: [], //疾病的缓存数据
+      IcdCacheData: [], //ICD的缓存数据
       dialog: {
         visible: false,
         data: []
       },
       dialogThree: {
+        visible: false,
+        data: []
+      },
+      icdDialog: {
+        visible: false,
+        data: []
+      },
+      icdDialogThree: {
         visible: false,
         data: []
       }
@@ -88,25 +124,66 @@ export default {
     ) {
       this.model.diagnosisItemList = []
     }
+    if (this.model.diagnosisItemList?.length > 0) {
+      if (this.model.diagnosisItemList[0]?.type === '2') {
+        this.type = '2'
+      } else {
+        this.type = '1'
+      }
+    }
+  },
+
+  computed: {
+    DiagnosisType: () => obPreconditionDic.state.diagnosisType
   },
 
   methods: {
     addTag() {
       if (this.drugType === 'platform') {
-        this.dialog.visible = true
-        this.dialog.data = [...this.model.diagnosisItemList]
+        if (this.type === '1') {
+          //疾病
+          this.dialog.visible = true
+          this.dialog.data = [...this.model.diagnosisItemList]
+        } else if (this.type === '2') {
+          //ICD
+          this.icdDialog.visible = true
+          this.icdDialog.data = [...this.model.diagnosisItemList]
+        }
       } else if (this.drugType === 'org' || this.drugType === 'department') {
-        this.dialogThree.visible = true
-        this.dialogThree.data = [...this.model.diagnosisItemList]
+        if (this.type === '1') {
+          //疾病
+          this.dialogThree.visible = true
+          this.dialogThree.data = [...this.model.diagnosisItemList]
+        } else if (this.type === '2') {
+          //ICD
+          this.icdDialogThree.visible = true
+          this.icdDialogThree.data = [...this.model.diagnosisItemList]
+        }
       }
     },
     editIndication(data) {
-      if (this.drugType === 'platform') {
-        this.dialog.visible = false
-      } else if (this.drugType === 'org' || this.drugType === 'department') {
-        this.dialogThree.visible = false
-      }
       this.model.diagnosisItemList = data
+      if (this.drugType === 'platform') {
+        if (this.type === '1') {
+          //疾病
+          this.dialog.visible = false
+          this.model.diagnosisItemList.map((item) => ((item.type = '1'), (item.value = item.icd10Code)))
+        } else if (this.type === '2') {
+          //ICD
+          this.icdDialog.visible = false
+          this.model.diagnosisItemList.map((item) => ((item.type = '2'), (item.value = item.icd10Code)))
+        }
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
+        if (this.type === '1') {
+          //疾病
+          this.dialogThree.visible = false
+          this.model.diagnosisItemList.map((item) => ((item.type = '1'), (item.value = item.icd10Code)))
+        } else if (this.type === '2') {
+          //ICD
+          this.icdDialogThree.visible = false
+          this.model.diagnosisItemList.map((item) => ((item.type = '2'), (item.value = item.icd10Code)))
+        }
+      }
     },
 
     verificationResults() {
@@ -114,6 +191,17 @@ export default {
         return CONSTANT.RULE_VALIDATION_RESULTS.已完成
       } else {
         return CONSTANT.RULE_VALIDATION_RESULTS.未开始
+      }
+    },
+
+    typeChange(value) {
+      if (Number(value) === 1) {
+        //切换成疾病
+        this.IcdCacheData = this.model.diagnosisItemList
+        this.model.diagnosisItemList = this.cacheData
+      } else if (Number(value) === 2) {
+        this.cacheData = this.model.diagnosisItemList
+        this.model.diagnosisItemList = this.IcdCacheData
       }
     }
   }

@@ -9,7 +9,9 @@ const state = Vue.observable({
 
   sexList: [],
 
-  warningLevelList: []
+  warningLevelList: [],
+
+  diagnosisType: []
 })
 
 const mutations = {

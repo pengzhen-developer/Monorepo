@@ -9,13 +9,15 @@ const state = Vue.observable({
 
   sexList: [],
 
-  warningLevelList: []
+  warningLevelList: [],
+
+  diagnosisType: []
 })
 
 const mutations = {
   async set(key, value) {
     state[key] = value
-  },
+  }
 }
 
 export default {

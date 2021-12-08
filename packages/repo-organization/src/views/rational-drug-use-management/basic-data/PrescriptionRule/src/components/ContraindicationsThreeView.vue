@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PeaceDialog title="添加条件"
+    <PeaceDialog title="添加条件：疾病诊断"
                  append-to-body
                  v-bind:visible.sync="visible"
                  width="715px">
@@ -39,13 +39,11 @@
         <peace-table-column width="50px">
           <template #header>
             <el-checkbox v-model="checkAll"
-                         :disabled="isAllDisable"
                          v-bind:indeterminate="isIndeterminate"
                          v-on:change="handleCheckAllChange"></el-checkbox>
           </template>
           <template slot-scope="scope">
             <el-checkbox v-bind:label="scope.row.code"
-                         :disabled="isSelect(scope.row)"
                          v-bind:value="multipleSelection.some(item => item.code === scope.row.code)"
                          v-on:change="e => handleCheckedItemChange(e, scope.row)"><span></span></el-checkbox>
           </template>
@@ -59,20 +57,7 @@
                             min-width="120px"
                             prop="name">
         </peace-table-column>
-        <peace-table-column label="配码状态"
-                            min-width="120px"
-                            prop="mapperStatus">
-          <template slot-scope="scope">
-            {{scope.row.mapperStatus | filterDictionary(source.MapperStatus,'--')}}
-          </template>
-        </peace-table-column>
-        <peace-table-column label="审核状态"
-                            min-width="120px"
-                            prop="auditStatus">
-          <template slot-scope="scope">
-            {{scope.row.auditStatus | filterDictionary(source.AuditStatus,'--')}}
-          </template>
-        </peace-table-column>
+
       </peace-table>
 
       <div class="el-dialog__footer">
@@ -111,12 +96,7 @@ export default {
       searchWord: '',
       multipleSelection: [],
       isIndeterminate: false,
-      checkAll: false,
-      isAllDisable: false,
-      source: {
-        MapperStatus: [],
-        AuditStatus: []
-      }
+      checkAll: false
     }
   },
 
@@ -128,11 +108,6 @@ export default {
     this.$nextTick(() => {
       this.fetch()
     })
-  },
-
-  async mounted() {
-    this.source.MapperStatus = await Peace.identity.dictionary.getList('mapper_status')
-    this.source.AuditStatus = await Peace.identity.dictionary.getList('mapper_audit_status')
   },
 
   computed: {},
@@ -163,16 +138,10 @@ export default {
       })
     },
 
-    isSelect(row) {
-      return row.mapperStatus != 'success' || row.auditStatus != 'pass'
-    },
-
     handleCheckAllChange(val) {
-      this.$refs.table.internalData
-        .filter((item) => !this.isSelect(item))
-        .forEach((item) => {
-          this.handleCheckedItemChange(val, item)
-        })
+      this.$refs.table.internalData.forEach((item) => {
+        this.handleCheckedItemChange(val, item)
+      })
       this.isIndeterminate = false
     },
 
@@ -191,23 +160,17 @@ export default {
     },
 
     setCheckAllState() {
-      this.isAllDisable = !this.$refs.table.internalData.some((aa) => !this.isSelect(aa))
-
       this.checkAll =
-        this.$refs.table.internalData
-          .filter((item) => !this.isSelect(item))
-          .every((item) => {
-            return this.multipleSelection.some((aa) => aa.code === item.code)
-          }) &&
+        this.$refs.table.internalData.every((item) => {
+          return this.multipleSelection.some((aa) => aa.code === item.code)
+        }) &&
         this.multipleSelection.length > 0 &&
-        this.$refs.table.internalData.filter((item) => !this.isSelect(item)).length > 0
+        this.$refs.table.internalData.length > 0
 
       this.isIndeterminate =
-        this.$refs.table.internalData
-          .filter((item) => !this.isSelect(item))
-          .some((item) => {
-            return this.multipleSelection.some((aa) => aa.code === item.code)
-          }) && !this.checkAll
+        this.$refs.table.internalData.some((item) => {
+          return this.multipleSelection.some((aa) => aa.code === item.code)
+        }) && !this.checkAll
     },
     cancel() {
       this.visible = false

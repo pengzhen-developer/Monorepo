@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PeaceDialog title="添加条件"
+    <PeaceDialog title="添加条件：疾病诊断"
                  append-to-body
                  v-bind:visible.sync="visible"
                  width="715px">

@@ -152,7 +152,7 @@ export default {
       rules: [],
       loading: false,
       // 导航栏当前Index
-      tabSelectedIndex: 0,
+      tabSelectedIndex: '0',
       source: {
         utilList: [],
         weightList: [],
@@ -196,7 +196,7 @@ export default {
     // 描点
     tabSelectedIndex(value) {
       let offsetPre = 0
-      if (value > 0) {
+      if (Number(value) > 0) {
         offsetPre = this.$refs[`ruleItem_ref_1`][0].$el.offsetTop
       }
       const offsetTop = this.$refs[`ruleItem_ref_${value}`][0].$el.offsetTop
@@ -240,7 +240,11 @@ export default {
             // 如果服务端返回的对象有对应的Key，需要对 `前置条件` 数据进行转换
             if (models) {
               models.map((temp) => {
-                if (temp.conditionExpression && temp.conditionExpression.ceList && temp.conditionExpression.ceList.length > 0) {
+                if (
+                  temp.conditionExpression &&
+                  temp.conditionExpression.ceList &&
+                  temp.conditionExpression.ceList.length > 0
+                ) {
                   let tmp = temp.conditionExpression.ceList ?? []
                   let ceListDic = {}
                   for (let condition of tmp) {

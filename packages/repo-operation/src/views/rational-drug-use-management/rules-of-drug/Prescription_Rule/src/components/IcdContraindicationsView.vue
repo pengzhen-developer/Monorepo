@@ -1,13 +1,13 @@
 <template>
   <div>
-    <PeaceDialog title="添加条件：疾病诊断"
+    <PeaceDialog title="添加条件：ICD诊断"
                  append-to-body
                  v-bind:visible.sync="visible"
                  width="715px">
 
       <div v-show="multipleSelection.length > 0"
            class="q-mb-40">
-        <span>已选适应症：</span>
+        <span>已选禁忌症：</span>
         <div class="q-mt-md">
           <el-tag v-for="item in multipleSelection"
                   v-bind:key="item.code"
@@ -19,7 +19,6 @@
           </el-tag>
         </div>
       </div>
-
       <el-input v-model.trim="searchWord"
                 class="q-mb-md"
                 placeholder="请输入内容"
@@ -49,11 +48,18 @@
           </template>
         </peace-table-column>
 
-        <peace-table-column label="疾病编码"
+        <peace-table-column label="主要编码"
                             min-width="120px"
-                            prop="code">
+                            prop="icd10Code">
         </peace-table-column>
-        <peace-table-column label="疾病名称"
+        <peace-table-column label="附加编码"
+                            min-width="120px"
+                            prop="extCode">
+          <template slot-scope="scope">
+            {{scope.row.extCode || '--'}}
+          </template>
+        </peace-table-column>
+        <peace-table-column label="诊断名称"
                             min-width="120px"
                             prop="name">
         </peace-table-column>
@@ -121,9 +127,9 @@ export default {
 
   methods: {
     fetch() {
-      const fetch = Service.getPageContainsDiagnosis
+      const fetch = Service.getPlatformDiagnosis
       const params = {
-        name: this.searchWord
+        searchWord: this.searchWord
       }
       this.$refs.table.reloadData({
         fetch,

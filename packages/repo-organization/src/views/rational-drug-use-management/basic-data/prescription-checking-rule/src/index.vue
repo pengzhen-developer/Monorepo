@@ -3,11 +3,6 @@
 
     <el-tabs type="card"
              v-model="checkPos">
-      <el-tab-pane label="基础规则"
-                   name="基础规则"
-                   lazy>
-        <IframeView checkNum="基础规则"></IframeView>
-      </el-tab-pane>
       <el-tab-pane label="TNA规则"
                    name="TNA规则"
                    lazy>
@@ -23,8 +18,8 @@
       </el-tab-pane>
 
       <el-tab-pane label="管理规则"
-                 name="管理规则"
-                 lazy>
+                   name="管理规则"
+                   lazy>
 
       </el-tab-pane>
 
@@ -53,13 +48,13 @@ export default {
 
   data() {
     return {
-      checkPos: '基础规则'
+      checkPos: 'TNA规则'
     }
   },
   created() {
-    const index = Number(this.$route.query.checkPos);
+    const index = Number(this.$route.query.checkPos)
     if (index) {
-      this.checkPos =  ["基础规则","TNA规则", "药品规则","科室规则", "管理规则"][index]
+      this.checkPos = ['TNA规则', '药品规则', '科室规则', '管理规则'][index]
     }
   }
 }

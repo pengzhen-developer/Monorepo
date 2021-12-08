@@ -3,7 +3,7 @@
     <PeaceDialog title="请设置规则审查条件"
                  append-to-body
                  v-bind:visible.sync="visible"
-                 width="540px">
+                 width="620px">
 
       <div v-if="ignoreType!=='ageRuleItemList'"
            class="item-style">
@@ -97,6 +97,19 @@
         <el-checkbox v-model="models.Indication.checked"
                      @click.native="stopDefault($event)" />
         <span class="item-title">适应症</span>
+
+        <el-select v-model="IndicationCacheData.type"
+                   placeholder="请选择"
+                   @change="typeChange"
+                   class="q-mr-md"
+                   style="width: 100px;">
+          <el-option v-for="item in DiagnosisType"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
+
         <span class="q-mr-md">属于</span>
         <span v-if="models.Indication.listValue.length === 0"
               class="text-primary">请选择</span>
@@ -194,6 +207,14 @@
                          v-model="indicationDialogOptionsThree.visible"
                          v-bind:model="indicationDialogOptionsThree.data"
                          v-on:onSuccess="editIndication"></IndicationThreeView>
+    <IcdIndicationView v-if="icdDialog.visible"
+                       v-model="icdDialog.visible"
+                       v-bind:model="icdDialog.data"
+                       v-on:onSuccess="editIndication"></IcdIndicationView>
+    <IcdIndicationThreeView v-if="icdDialogThree.visible"
+                            v-model="icdDialogThree.visible"
+                            v-bind:model="icdDialogThree.data"
+                            v-on:onSuccess="editIndication"></IcdIndicationThreeView>
 
     <choice-crowd-dialog v-if="choiceCrowdDialogOptions.visible"
                          v-model="choiceCrowdDialogOptions.visible"
@@ -219,6 +240,8 @@
 import Service from '../service/index'
 import IndicationView from './IndicationView'
 import IndicationThreeView from './IndicationThreeView'
+import IcdIndicationView from './IcdIndicationView.vue'
+import IcdIndicationThreeView from './IcdIndicationThreeView.vue'
 
 import ChoiceCrowdDialog from './ChoiceCrowdDialog'
 import ChoiceCrowdThreeDialog from './ChoiceCrowdThreeDialog'
@@ -255,6 +278,8 @@ export default {
   components: {
     IndicationView,
     IndicationThreeView,
+    IcdIndicationView,
+    IcdIndicationThreeView,
     ChoiceCrowdDialog,
     ChoiceCrowdThreeDialog,
     DeliveryWayDialog,
@@ -317,6 +342,12 @@ export default {
           name: '性别'
         }
       },
+      IndicationCacheData: {
+        //适应症数据的临时data
+        type: '2',
+        cacheData: [], //疾病的缓存数据
+        IcdCacheData: [] //ICD的缓存数据
+      },
       indicationDialogOptions: {
         visible: false,
         data: undefined
@@ -324,6 +355,14 @@ export default {
       indicationDialogOptionsThree: {
         visible: false,
         data: undefined
+      },
+      icdDialog: {
+        visible: false,
+        data: []
+      },
+      icdDialogThree: {
+        visible: false,
+        data: []
       },
       choiceCrowdDialogOptions: {
         visible: false,
@@ -348,6 +387,21 @@ export default {
     if (Object.keys(this.model).length > 0) {
       const models = Object.assign({}, this.models, this.model)
       this.models = Peace.util.deepClone(models)
+
+      if (
+        Peace.util.isUndefined(this.model.Indication.listValue) ||
+        Peace.util.isNull(this.model.Indication.listValue) ||
+        !Peace.util.isArray(this.model.Indication.listValue)
+      ) {
+        this.model.Indication.listValue = []
+      }
+      if (this.model.Indication.listValue?.length > 0) {
+        if (this.model.Indication.listValue[0]?.type === '2') {
+          this.IndicationCacheData.type = '2'
+        } else {
+          this.IndicationCacheData.type = '1'
+        }
+      }
     }
     this.$nextTick(() => {
       this.getPlatformAgeClass()
@@ -364,7 +418,8 @@ export default {
     },
     minAge() {
       return this.models.Age.value1 === undefined ? 1 : 0
-    }
+    },
+    DiagnosisType: () => obPreconditionDic.state.diagnosisType
   },
 
   watch: {
@@ -482,21 +537,62 @@ export default {
 
     addIndication() {
       if (this.drugType === 'platform') {
-        this.indicationDialogOptions.data = [...this.models.Indication.listValue]
-        this.indicationDialogOptions.visible = true
+        if (this.IndicationCacheData.type === '1') {
+          //疾病
+          this.indicationDialogOptions.data = [...this.models.Indication.listValue]
+          this.indicationDialogOptions.visible = true
+        } else if (this.IndicationCacheData.type === '2') {
+          //ICD
+          this.icdDialog.visible = true
+          this.icdDialog.data = [...this.models.Indication.listValue]
+        }
       } else if (this.drugType === 'org' || this.drugType === 'department') {
-        this.indicationDialogOptionsThree.data = [...this.models.Indication.listValue]
-        this.indicationDialogOptionsThree.visible = true
+        if (this.IndicationCacheData.type === '1') {
+          //疾病
+          this.indicationDialogOptionsThree.data = [...this.models.Indication.listValue]
+          this.indicationDialogOptionsThree.visible = true
+        } else if (this.IndicationCacheData.type === '2') {
+          //ICD
+          this.icdDialogThree.visible = true
+          this.icdDialogThree.data = [...this.models.Indication.listValue]
+        }
       }
     },
 
     editIndication(data) {
-      if (this.drugType === 'platform') {
-        this.indicationDialogOptions.visible = false
-      } else if (this.drugType === 'org' || this.drugType === 'department') {
-        this.indicationDialogOptionsThree.visible = false
-      }
       this.models.Indication.listValue = data
+      if (this.drugType === 'platform') {
+        if (this.IndicationCacheData.type === '1') {
+          //疾病
+          this.indicationDialogOptions.visible = false
+          this.models.Indication.listValue.map((item) => ((item.type = '1'), (item.value = item.icd10Code)))
+        } else if (this.IndicationCacheData.type === '2') {
+          //ICD
+          this.icdDialog.visible = false
+          this.models.Indication.listValue.map((item) => ((item.type = '2'), (item.value = item.icd10Code)))
+        }
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
+        if (this.IndicationCacheData.type === '1') {
+          //疾病
+          this.indicationDialogOptionsThree.visible = false
+          this.models.Indication.listValue.map((item) => ((item.type = '1'), (item.value = item.icd10Code)))
+        } else if (this.IndicationCacheData.type === '2') {
+          //ICD
+          this.icdDialogThree.visible = false
+          this.models.Indication.listValue.map((item) => ((item.type = '2'), (item.value = item.icd10Code)))
+        }
+      }
+    },
+
+    typeChange(value) {
+      if (Number(value) === 1) {
+        //切换成疾病
+        this.IndicationCacheData.IcdCacheData = this.models.Indication.listValue
+        this.models.Indication.listValue = this.IndicationCacheData.cacheData
+      } else if (Number(value) === 2) {
+        this.IndicationCacheData.cacheData = this.models.Indication.listValue
+        this.models.Indication.listValue = this.IndicationCacheData.IcdCacheData
+      }
     },
 
     addHumanClassify() {
@@ -540,7 +636,12 @@ export default {
     checked(item) {
       switch (item.ceType) {
         case 'Age':
-          return (item.humanCode || item.humanCode === '') && (item.value1 || item.value1 === 0) && item.value2 && item.value3
+          return (
+            (item.humanCode || item.humanCode === '') &&
+            (item.value1 || item.value1 === 0) &&
+            item.value2 &&
+            item.value3
+          )
         case 'Weight':
           return (item.value1 || item.value1 === 0) && (item.value2 || item.value2 === 0)
         case 'WeightSize':
@@ -594,5 +695,12 @@ export default {
 
 .start {
   align-items: start;
+}
+::v-deep .el-tag.el-tag--info {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
 }
 </style>

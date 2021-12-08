@@ -2,7 +2,21 @@
   <div class="rule-item__content flex items-center q-pa-sm q-mr-md">
     <div v-if="isEditing"
          class="flex  items-center">
+
+      <el-select v-model="type"
+                 placeholder="请选择"
+                 @change="typeChange"
+                 class="q-mr-md"
+                 style="width: 100px;">
+        <el-option v-for="item in DiagnosisType"
+                   :key="item.value"
+                   :label="item.label"
+                   :value="item.value">
+        </el-option>
+      </el-select>
+
       <span class="q-mr-md text-red">属于</span>
+
       <div class="col"
            v-on:click="addTag">
         <span v-if="model.contraindicationItemList.length === 0"
@@ -38,6 +52,14 @@
                                 v-model="dialogThree.visible"
                                 v-bind:model="dialogThree.data"
                                 v-on:onSuccess="editIndication"></ContraindicationsThreeView>
+    <IcdContraindicationsView v-if="icdDialog.visible"
+                              v-model="icdDialog.visible"
+                              v-bind:model="icdDialog.data"
+                              v-on:onSuccess="editIndication"></IcdContraindicationsView>
+    <IcdContraindicationsThreeView v-if="icdDialogThree.visible"
+                                   v-model="icdDialogThree.visible"
+                                   v-bind:model="icdDialogThree.data"
+                                   v-on:onSuccess="editIndication"></IcdContraindicationsThreeView>
   </div>
 </template>
 
@@ -45,6 +67,9 @@
 import CONSTANT from '../constant'
 import ContraindicationsView from './ContraindicationsView'
 import ContraindicationsThreeView from './ContraindicationsThreeView'
+import IcdContraindicationsView from './IcdContraindicationsView.vue'
+import IcdContraindicationsThreeView from './IcdContraindicationsThreeView.vue'
+import obPreconditionDic from '../observable/ob-precondition-dic'
 
 export default {
   props: {
@@ -65,10 +90,15 @@ export default {
 
   components: {
     ContraindicationsView,
-    ContraindicationsThreeView
+    ContraindicationsThreeView,
+    IcdContraindicationsView,
+    IcdContraindicationsThreeView
   },
   data() {
     return {
+      type: '2',
+      cacheData: [], //疾病的缓存数据
+      IcdCacheData: [], //ICD的缓存数据
       dialog: {
         visible: false,
         data: []
@@ -76,33 +106,102 @@ export default {
       dialogThree: {
         visible: false,
         data: []
+      },
+      icdDialog: {
+        visible: false,
+        data: []
+      },
+      icdDialogThree: {
+        visible: false,
+        data: []
       }
     }
+  },
+  created() {
+    if (
+      Peace.util.isUndefined(this.model.contraindicationItemList) ||
+      Peace.util.isNull(this.model.contraindicationItemList) ||
+      !Peace.util.isArray(this.model.contraindicationItemList)
+    ) {
+      this.model.contraindicationItemList = []
+    }
+    if (this.model.contraindicationItemList?.length > 0) {
+      if (this.model.contraindicationItemList[0]?.type === '2') {
+        this.type = '2'
+      } else {
+        this.type = '1'
+      }
+    }
+  },
+
+  computed: {
+    DiagnosisType: () => obPreconditionDic.state.diagnosisType
   },
 
   methods: {
     addTag() {
       if (this.drugType === 'platform') {
-        this.dialog.visible = true
-        this.dialog.data = [...this.model.contraindicationItemList]
+        if (this.type === '1') {
+          //疾病
+          this.dialog.visible = true
+          this.dialog.data = [...this.model.contraindicationItemList]
+        } else if (this.type === '2') {
+          //ICD
+          this.icdDialog.visible = true
+          this.icdDialog.data = [...this.model.contraindicationItemList]
+        }
       } else if (this.drugType === 'org' || this.drugType === 'department') {
-        this.dialogThree.visible = true
-        this.dialogThree.data = [...this.model.contraindicationItemList]
+        if (this.type === '1') {
+          //疾病
+          this.dialogThree.visible = true
+          this.dialogThree.data = [...this.model.contraindicationItemList]
+        } else if (this.type === '2') {
+          //ICD
+          this.icdDialogThree.visible = true
+          this.icdDialogThree.data = [...this.model.contraindicationItemList]
+        }
       }
     },
     editIndication(data) {
-      if (this.drugType === 'platform') {
-        this.dialog.visible = false
-      } else if (this.drugType === 'org' || this.drugType === 'department') {
-        this.dialogThree.visible = false
-      }
       this.model.contraindicationItemList = data
+      if (this.drugType === 'platform') {
+        if (this.type === '1') {
+          //疾病
+          this.dialog.visible = false
+          this.model.contraindicationItemList.map((item) => ((item.type = '1'), (item.value = item.icd10Code)))
+        } else if (this.type === '2') {
+          //ICD
+          this.icdDialog.visible = false
+          this.model.contraindicationItemList.map((item) => ((item.type = '2'), (item.value = item.icd10Code)))
+        }
+      } else if (this.drugType === 'org' || this.drugType === 'department') {
+        if (this.type === '1') {
+          //疾病
+          this.dialogThree.visible = false
+          this.model.contraindicationItemList.map((item) => ((item.type = '1'), (item.value = item.icd10Code)))
+        } else if (this.type === '2') {
+          //ICD
+          this.icdDialogThree.visible = false
+          this.model.contraindicationItemList.map((item) => ((item.type = '2'), (item.value = item.icd10Code)))
+        }
+      }
     },
     verificationResults() {
       if (this.model.contraindicationItemList.length > 0) {
         return CONSTANT.RULE_VALIDATION_RESULTS.已完成
       } else {
         return CONSTANT.RULE_VALIDATION_RESULTS.未开始
+      }
+    },
+
+    typeChange(value) {
+      if (Number(value) === 1) {
+        //切换成疾病
+        this.IcdCacheData = this.model.contraindicationItemList
+        this.model.contraindicationItemList = this.cacheData
+      } else if (Number(value) === 2) {
+        this.cacheData = this.model.contraindicationItemList
+        this.model.contraindicationItemList = this.IcdCacheData
       }
     }
   }

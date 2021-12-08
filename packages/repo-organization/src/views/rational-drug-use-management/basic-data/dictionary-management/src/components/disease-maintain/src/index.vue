@@ -14,24 +14,7 @@
           <peace-input placeholder="请输入"
                        v-model.trim="model.name"></peace-input>
         </el-form-item>
-        <el-form-item label="配码状态">
-          <peace-select v-model="model.mapperStatus"
-                        placeholder="全部">
-            <el-option v-for="item in source.MapperStatus"
-                       v-bind:key="item.value"
-                       v-bind:label="item.label"
-                       v-bind:value="item.value"></el-option>
-          </peace-select>
-        </el-form-item>
-        <el-form-item label="审核状态">
-          <peace-select v-model="model.auditStatus"
-                        placeholder="全部">
-            <el-option v-for="item in source.MapperAuditStatus"
-                       v-bind:key="item.value"
-                       v-bind:label="item.label"
-                       v-bind:value="item.value"></el-option>
-          </peace-select>
-        </el-form-item>
+
         <el-form-item>
           <el-button v-on:click="fetch"
                      type="primary">查询</el-button>
@@ -56,20 +39,7 @@
         <PeaceTableColumn label="诊断名称"
                           prop="name"
                           min-width="160px"></PeaceTableColumn>
-        <PeaceTableColumn label="配码状态"
-                          prop="mapperStatus"
-                          min-width="100px">
-          <template slot-scope="scope">
-            {{scope.row.mapperStatus | filterDictionary(source.MapperStatus,'--')}}
-          </template>
-        </PeaceTableColumn>
-        <PeaceTableColumn label="审核状态"
-                          prop="auditStatus"
-                          min-width="100px">
-          <template slot-scope="scope">
-            {{scope.row.auditStatus | filterDictionary(source.MapperAuditStatus,'--')}}
-          </template>
-        </PeaceTableColumn>
+
         <PeaceTableColumn label="操作"
                           min-width="160px"
                           fixed="right">
@@ -110,25 +80,17 @@ export default {
     return {
       model: {
         name: '',
-        code: '',
-        mapperStatus: '',
-        auditStatus: ''
+        code: ''
       },
       editModelDialog: {
         visible: false,
         data: {},
         type: ''
-      },
-      source: {
-        MapperStatus: [],
-        MapperAuditStatus: []
       }
     }
   },
 
   async mounted() {
-    this.source.MapperStatus = await Peace.identity.dictionary.getList('mapper_status')
-    this.source.MapperAuditStatus = await Peace.identity.dictionary.getList('mapper_audit_status')
     this.$nextTick().then(() => {
       this.fetch()
     })

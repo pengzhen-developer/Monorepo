@@ -62,17 +62,14 @@
     </div>
 
     <div class="q-pl-lg sticky">
-      <q-tabs v-model="tabSelectedIndex"
-              active-color="primary"
-              class="text-grey-333"
-              style="border-left: 1px solid #EAEAEA; width: 112px;"
-              switch-indicator
-              vertical>
-        <q-tab v-for="(item, index) in rules"
-               v-bind:key="item.key"
-               :label="item.name"
-               :name="index" />
-      </q-tabs>
+      <el-tabs class="element-ui-default"
+               v-model="tabSelectedIndex"
+               tab-position="right">
+        <el-tab-pane v-for="(item, index) in rules"
+                     v-bind:key="item.key"
+                     :label="item.name"
+                     :name="index.toString()" />
+      </el-tabs>
     </div>
 
     <precondition-view v-if="dialog.visible"
@@ -155,7 +152,7 @@ export default {
       rules: [],
       loading: false,
       // 导航栏当前Index
-      tabSelectedIndex: 0,
+      tabSelectedIndex: '0',
       // 前置条件Dialog
       dialog: {
         visible: false,
@@ -190,12 +187,14 @@ export default {
     const containList = await Peace.identity.dictionary.getList('belonged_type')
     const sexList = await Peace.identity.dictionary.getList('rule_gender')
     const warningLevelList = await Peace.identity.dictionary.getList('warning_level')
+    const diagnosisType = await Peace.identity.dictionary.getList('diagnosisType')
 
     await obPreconditionDic.mutations.set('utilList', utilList)
     await obPreconditionDic.mutations.set('weightList', weightList)
     await obPreconditionDic.mutations.set('containList', containList)
     await obPreconditionDic.mutations.set('sexList', sexList)
     await obPreconditionDic.mutations.set('warningLevelList', warningLevelList)
+    await obPreconditionDic.mutations.set('diagnosisType', diagnosisType)
 
     this.$nextTick(() => {
       this.fetch()
@@ -206,7 +205,7 @@ export default {
     // 描点
     tabSelectedIndex(value) {
       let offsetPre = 0
-      if (value > 0) {
+      if (Number(value) > 0) {
         offsetPre = this.$refs[`ruleItem_ref_1`][0].$el.offsetTop
       }
       const offsetTop = this.$refs[`ruleItem_ref_${value}`][0].$el.offsetTop
@@ -249,7 +248,11 @@ export default {
             // 其中前置条件需要做转换
             if (models) {
               models.map((temp) => {
-                if (temp.conditionExpression && temp.conditionExpression.ceList && temp.conditionExpression.ceList.length > 0) {
+                if (
+                  temp.conditionExpression &&
+                  temp.conditionExpression.ceList &&
+                  temp.conditionExpression.ceList.length > 0
+                ) {
                   let tmp = temp.conditionExpression.ceList ?? []
                   let ceListDic = {}
                   for (let condition of tmp) {
@@ -288,7 +291,9 @@ export default {
       // key: 'ddiRuleItemList',
       // key: 'duplicatetherapyRuleItemList',
       // 过滤 相互作用 | 重复用药
-      const tmpResult = this.rules.filter((item) => item.key !== 'ddiRuleItemList' && item.key !== 'duplicatetherapyRuleItemList')
+      const tmpResult = this.rules.filter(
+        (item) => item.key !== 'ddiRuleItemList' && item.key !== 'duplicatetherapyRuleItemList'
+      )
 
       tmpResult.forEach((rules) => {
         // 遍历17个规则数组
@@ -410,6 +415,7 @@ export default {
     onCheckSpecialRules() {
       this.dupRuleModelDialog.visible = true
     },
+
     /**
      * 规则操作
      * @param type 操作类型
@@ -455,7 +461,8 @@ export default {
     addPreconditionInfo(params) {
       const { IndexParams, data } = params
       this.rules[IndexParams.patientIndex].models[IndexParams.Index].conditionExpressionString.ceList = data
-      this.rules[IndexParams.patientIndex].models[IndexParams.Index].conditionExpressionString.hasPrecondition = JSON.stringify(data) !== '{}'
+      this.rules[IndexParams.patientIndex].models[IndexParams.Index].conditionExpressionString.hasPrecondition =
+        JSON.stringify(data) !== '{}'
       this.dialog.visible = false
     }
   }

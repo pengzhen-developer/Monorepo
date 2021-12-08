@@ -193,6 +193,20 @@ export default {
     })
   },
 
+  /**
+   * ICD列表
+   */
+  getPlatformDiagnosis(params) {
+    const isMock = false
+    const apiPath = 'idic/platformDiagnosis/page'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
+    const requestApi = isMock ? mockPath : serverPath
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
   /** 三方数据的接口**/
 
   /**
@@ -274,6 +288,23 @@ export default {
     const apiPath = 'idic/orgHumanClass/page'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
     const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
+    const requestApi = isMock ? mockPath : serverPath
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
+  },
+
+  /**
+   * 获取ICD10列表（三方）
+   *
+   * @param {*} params
+   */
+  getICDList(params) {
+    params.orgCode = Peace.cache.localStorage.get('user_info')?.custCode
+    const isMock = false
+    const apiPath = 'orgDiagnosis/page'
+    const mockPath = process.env.VUE_APP_API_MOCK + apiPath
+    const serverPath = process.env.VUE_APP_API_IDIC + apiPath
     const requestApi = isMock ? mockPath : serverPath
     return Peace.http.post(requestApi, params).then((res) => {
       return res
