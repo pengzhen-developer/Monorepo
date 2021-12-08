@@ -124,5 +124,23 @@ export default {
     return Peace.http.get(requestApi, { params }).then((res) => {
       return res
     })
+  },
+  /**
+   * 机构配置的ICD版本详情
+   * @param params
+   * @returns {*}
+   */
+  getIcdVersionByCode(params) {
+    const isMock = false
+
+    const apiPath = 'idic/organ/getIcdVersionByCode'
+    const mockPath = process.env.VUE_APP_MOCK_API + apiPath
+    const serverPath = process.env.VUE_APP_SITE_AUDITENGINE + apiPath
+
+    const requestApi = isMock ? mockPath : serverPath
+
+    return Peace.http.post(requestApi, params).then((res) => {
+      return res
+    })
   }
 }

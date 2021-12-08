@@ -50,7 +50,8 @@
         <peace-select v-model="organSelected"
                       style="width: 100%;"
                       value-key="code"
-                      placeholder="请选择">
+                      placeholder="请选择"
+                      v-on:change="changeOrgan">
           <el-option v-for="item in organList"
                      v-bind:key="item.code"
                      v-bind:label="item.name"
@@ -148,8 +149,20 @@ export default {
     },
     getSuggestWord(query = '') {
       Service.getSuggestWord({ keyWord: query, page: 1, size: 500 }).then((res) => {
-        this.suggestWordList = res.data.pageData
+        this.suggestWordList = res.data?.pageData
       })
+    },
+    changeOrgan(value) {
+      if (value.code) {
+        const params = { code: value.code }
+        Service.getIcdVersionByCode(params).then((res) => {
+          if (res.data.icdVersion) {
+            this.icdVersionSelected = {}
+            this.icdVersionSelected.icdVersionName = res.data.icdVersionName
+            this.icdVersionSelected.icdVersion = res.data.icdVersion
+          }
+        })
+      }
     },
     submit() {
       this.$refs['ruleForm'].validate((valid) => {
@@ -198,4 +211,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep .el-input:not(.element-ui-default).el-input--mini .el-input__inner {
+  padding: 0 24px 0 12px;
+}
 </style>

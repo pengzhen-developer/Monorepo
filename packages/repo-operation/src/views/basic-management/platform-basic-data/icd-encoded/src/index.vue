@@ -1,6 +1,13 @@
 <template>
   <div class="layout-route">
-    <div class="card card-search q-mb-md">
+    <div class="card-style q-mb-md">
+      <div class="icdVersion-style">
+        <span>ICD版本：</span>
+        <span class="q-mr-8"
+              v-if="icdInfo.icdVersionName">{{icdInfo.icdVersionName}}</span>
+        <i class="zyy-icon zyy-xiugai1 "
+           v-on:click="addIcdVersion"></i>
+      </div>
       <el-form v-bind:model="model"
                inline="inline"
                label-suffix="："
@@ -111,6 +118,15 @@
                           v-bind:data="modifyDialog.data"
                           v-on:refresh="search"></modify-i-c-d-encoded>
 
+    <peace-dialog v-bind:visible.sync="editModelDialog.visible"
+                  title="请选择ICD版本"
+                  v-if="editModelDialog.visible"
+                  append-to-body
+                  width="416px">
+      <EditModel v-on:close="close"
+                 v-on:finish="finish"
+                 v-bind:data="editModelDialog.data" />
+    </peace-dialog>
   </div>
 </template>
 
@@ -118,14 +134,20 @@
 import Service from './service/index'
 import AddICDEncoded from './components/AddICDEncoded'
 import ModifyICDEncoded from './components/ModifyICDEncoded'
+import EditModel from './components/EditModel'
 export default {
   name: 'platform_icd_encode',
   components: {
     AddICDEncoded,
-    ModifyICDEncoded
+    ModifyICDEncoded,
+    EditModel
   },
   data() {
     return {
+      icdInfo: {
+        icdVersionName: '',
+        icdVersion: ''
+      },
       addDialog: {
         visible: false
       },
@@ -134,7 +156,10 @@ export default {
         visible: false,
         data: undefined
       },
-
+      editModelDialog: {
+        visible: false,
+        data: {}
+      },
       model: {
         icd10Code: undefined,
         name: undefined,
@@ -151,9 +176,16 @@ export default {
     this.source.drugCodingStatus = await Peace.identity.dictionary.getList('MappingStatus')
     this.$nextTick().then(() => {
       this.search()
+      this.getPlatIcd()
     })
   },
   methods: {
+    getPlatIcd() {
+      Service.getPlatIcdVersion().then((res) => {
+        this.icdInfo.icdVersionName = res.data.icdVersionName
+        this.icdInfo.icdVersion = res.data.icdVersion
+      })
+    },
     search() {
       const fetch = Service.getList
       const params = Peace.util.deepClone(this.model)
@@ -174,10 +206,34 @@ export default {
       } else {
         return code
       }
+    },
+    addIcdVersion() {
+      this.editModelDialog.data.icdInfo = this.icdInfo
+      this.editModelDialog.visible = true
+    },
+    finish() {
+      this.editModelDialog.visible = false
+      this.getPlatIcd()
+    },
+    close() {
+      this.editModelDialog.visible = false
     }
   }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.card-style {
+  padding: 0px 24px;
+  background: #fff;
+}
+.icdVersion-style {
+  padding: 16px 0;
+  border-bottom: 1px dashed #eaeaea;
+  margin-bottom: 24px;
+}
+.zyy-icon {
+  cursor: pointer;
+  color: rgba(51, 51, 51, 0.4) !important;
+}
 </style>

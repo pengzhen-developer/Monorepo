@@ -4,11 +4,19 @@
   <div class="full-width bg-white"
        v-loading="loading">
     <div class="card card-search">
-      <div class="q-mb-md">
+      <div class="q-mb-lg">
         <el-button icon="el-icon-arrow-left"
                    v-on:click="back">返回上一页</el-button>
       </div>
-      <div class="title q-mb-lg">编码管理-{{props.orgName}}</div>
+      <div class="title q-mb-12">编码管理-{{props.orgName}}</div>
+      <div class="icdVersion-style">
+        <span>ICD版本：</span>
+        <span class="q-mr-8"
+              v-if="icdInfo.icdVersionName">{{icdInfo.icdVersionName}}</span>
+        <i class="zyy-icon zyy-xiugai1 "
+           v-on:click="addIcdVersion"></i>
+      </div>
+
       <el-form inline
                label-suffix="："
                v-on:keyup.enter.native="fetch"
@@ -80,6 +88,16 @@
                  v-on:refresh="refresh" />
     </peace-dialog>
 
+    <peace-dialog v-bind:visible.sync="addModelDialog.visible"
+                  title="请选择ICD版本"
+                  v-if="addModelDialog.visible"
+                  append-to-body
+                  width="416px">
+      <AddModel v-on:close="close"
+                v-on:finish="finish"
+                v-bind:info="addModelDialog.data" />
+    </peace-dialog>
+
   </div>
 </template>
 
@@ -88,12 +106,17 @@ import Observable from '../observable'
 import Service from '../service'
 
 import EditModel from './EditModel'
+import AddModel from './AddModel'
 export default {
   name: 'SubList',
-  components: { EditModel },
+  components: { EditModel, AddModel },
   data() {
     return {
       loading: true,
+      icdInfo: {
+        icdVersionName: '',
+        icdVersion: ''
+      },
       model: {
         icd10Code: '',
         name: ''
@@ -103,6 +126,10 @@ export default {
         visible: false,
         data: {},
         type: ''
+      },
+      addModelDialog: {
+        visible: false,
+        data: {}
       }
     }
   },
@@ -127,6 +154,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.fetch()
+      this.getIcdVersion()
     })
   },
 
@@ -137,6 +165,13 @@ export default {
       const fetch = Service.getListByOrganizationId
       this.$refs.table.reloadData({ fetch, params }).finally(() => {
         this.loading = false
+      })
+    },
+    getIcdVersion() {
+      const params = { code: this.props.orgCode }
+      Service.getIcdVersionByCode(params).then((res) => {
+        this.icdInfo.icdVersionName = res.data.icdVersionName
+        this.icdInfo.icdVersion = res.data.icdVersion
       })
     },
     openEditlDialog(data, type = 'add') {
@@ -158,6 +193,18 @@ export default {
     },
     refresh() {
       this.fetch()
+    },
+    addIcdVersion() {
+      this.addModelDialog.data.orgCode = this.props.orgCode
+      this.addModelDialog.data.icdInfo = this.icdInfo
+      this.addModelDialog.visible = true
+    },
+    finish() {
+      this.addModelDialog.visible = false
+      this.getIcdVersion()
+    },
+    close() {
+      this.addModelDialog.visible = false
     }
   }
 }
@@ -170,5 +217,15 @@ export default {
   font-weight: bold;
   color: #333333;
   line-height: 28px;
+}
+
+.icdVersion-style {
+  padding-bottom: 16px;
+  border-bottom: 1px dashed #eaeaea;
+  margin-bottom: 24px;
+}
+.zyy-icon {
+  cursor: pointer;
+  color: rgba(51, 51, 51, 0.4) !important;
 }
 </style>
