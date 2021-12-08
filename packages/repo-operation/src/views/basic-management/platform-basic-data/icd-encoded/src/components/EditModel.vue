@@ -50,8 +50,16 @@ export default {
         this.icdVersionList = res.data
         if (this.data.icdInfo.icdVersion) {
           this.model.icdVersionSelected = {}
-          this.model.icdVersionSelected.icdVersion = this.data.icdInfo.icdVersion
-          this.model.icdVersionSelected.icdVersionName = this.data.icdInfo.icdVersionName
+          const flag = this.icdVersionList.some((item) => {
+            return item.icdVersion === this.data.icdInfo.icdVersion
+          })
+          if (flag) {
+            this.model.icdVersionSelected.icdVersion = this.data.icdInfo.icdVersion
+            this.model.icdVersionSelected.icdVersionName = this.data.icdInfo.icdVersionName
+          } else {
+            this.model.icdVersionSelected.icdVersion = ''
+            this.model.icdVersionSelected.icdVersionName = ''
+          }
         }
       })
     },
