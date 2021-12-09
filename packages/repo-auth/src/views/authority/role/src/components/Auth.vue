@@ -119,7 +119,7 @@ export default {
         }
 
         this.roleElement.forEach((roleElementValue) => {
-          if (roleMenuValue.toString() === roleElementValue?.split('-')?.[0]?.toString()) {
+          if (roleElementValue.split('-')?.[1] && roleMenuValue.toString() === roleElementValue?.split('-')?.[0]?.toString()) {
             temp.elementIds.push(roleElementValue.split('-')?.[1].toString())
           }
         })
