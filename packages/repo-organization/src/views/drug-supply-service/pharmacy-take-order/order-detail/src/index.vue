@@ -268,6 +268,7 @@
       <div class="el-dialog__footer">
         <el-button v-on:click="cancelDialog.visible = false">取消</el-button>
         <el-button type="primary"
+                   :loading="cancelDialog.loading"
                    v-on:click="submitCancelDialog">提交</el-button>
 
       </div>
@@ -336,6 +337,7 @@ export default {
       },
       cancelDialog: {
         visible: false,
+        loading: false,
         model: {
           inputText: ''
         },
@@ -587,11 +589,16 @@ export default {
           const params = {
             list: [{ OrderID: this.model.OrderId, CancelReason: this.cancelDialog.model.inputText }]
           }
-          Service.CancelOrderV2(params).then(() => {
-            this.cancelDialog.visible = false
-            Peace.util.success('取消成功')
-            this.fetch()
-          })
+          this.cancelDialog.loading = true
+          Service.CancelOrderV2(params)
+            .then(() => {
+              this.cancelDialog.visible = false
+              Peace.util.success('取消成功')
+              this.fetch()
+            })
+            .finally(() => {
+              this.cancelDialog.loading = false
+            })
         }
       })
     }
