@@ -565,21 +565,31 @@ export default {
         if (this.IndicationCacheData.type === '1') {
           //疾病
           this.indicationDialogOptions.visible = false
-          this.models.Indication.listValue.map((item) => ((item.type = '1'), (item.value = item.icd10Code)))
+          this.models.Indication.listValue.forEach((item) => {
+            item.type = '1'
+          })
         } else if (this.IndicationCacheData.type === '2') {
           //ICD
           this.icdDialog.visible = false
-          this.models.Indication.listValue.map((item) => ((item.type = '2'), (item.value = item.icd10Code)))
+          this.models.Indication.listValue.forEach((item) => {
+            item.type = '2'
+            item.value = item.icd10Code
+          })
         }
       } else if (this.drugType === 'org' || this.drugType === 'department') {
         if (this.IndicationCacheData.type === '1') {
           //疾病
           this.indicationDialogOptionsThree.visible = false
-          this.models.Indication.listValue.map((item) => ((item.type = '1'), (item.value = item.icd10Code)))
+          this.models.Indication.listValue.forEach((item) => {
+            item.type = '1'
+          })
         } else if (this.IndicationCacheData.type === '2') {
           //ICD
           this.icdDialogThree.visible = false
-          this.models.Indication.listValue.map((item) => ((item.type = '2'), (item.value = item.icd10Code)))
+          this.models.Indication.listValue.forEach((item) => {
+            item.type = '2'
+            item.value = item.icd10Code
+          })
         }
       }
     },
