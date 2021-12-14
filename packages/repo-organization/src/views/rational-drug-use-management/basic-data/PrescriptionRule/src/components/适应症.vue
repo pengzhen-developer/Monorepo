@@ -175,7 +175,7 @@ export default {
           this.icdDialog.visible = false
           this.model.diagnosisItemList.forEach((item) => {
             item.type = '2'
-            item.value = item.icd10Code
+           item.value = item.value || item.icd10Code
           })
         }
       } else if (this.drugType === 'org' || this.drugType === 'department') {
@@ -190,7 +190,7 @@ export default {
           this.icdDialogThree.visible = false
           this.model.diagnosisItemList.forEach((item) => {
             item.type = '2'
-            item.value = item.icd10Code
+          item.value = item.value || item.icd10Code
           })
         }
       }
