@@ -8,8 +8,8 @@
       <el-form-item label="客服电话"
                     prop="serviceTel">
         <peace-input v-model.trim="model.serviceTel"
-                     placeholder="请输入11位电话"
-                     maxlength="11"></peace-input>
+                     maxlength="50"
+                     placeholder="请输入电话"></peace-input>
       </el-form-item>
     </el-form>
     <div class="flex justify-end full-width q-pt-32">
@@ -30,11 +30,7 @@ export default {
   data() {
     let checkPhone = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('请输入11位电话'))
-      }
-
-      if (value.length != 11) {
-        callback(new Error('电话号码不正确'))
+        return callback(new Error('请输入电话'))
       }
 
       callback()
