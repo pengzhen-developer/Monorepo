@@ -102,9 +102,35 @@ export default {
       return Service.menu()
         .roleMenu({ roleId: this.roleId })
         .then((res) => {
-          this.roleMenu = res.data.map((item) => item.menuId)
+          this.roleMenu = this.resolveAllEunuchNodeId(this.allMenu, res.data, [])
+            .flat()
+            .map((item) => item.menuId)
+
           this.roleElement = res.data.map((item1) => item1.elementIds?.split(',').map((item2) => item1.menuId + '-' + item2)).flat()
         })
+    },
+
+    /**
+     * 解析出所有的太监节点id
+     * @param json 待解析的json串
+     * @param idArr 原始节点数组
+     * @param temp 临时存放节点id的数组
+     * @return 太监节点id数组
+     */
+    resolveAllEunuchNodeId(json, idArr, temp) {
+      for (let i = 0; i < json.length; i++) {
+        const item = json[i]
+        // 存在子节点，递归遍历;不存在子节点，将json的id添加到临时数组中
+        if (item.children && item.children.length !== 0) {
+          this.resolveAllEunuchNodeId(item.children, idArr, temp)
+        } else {
+          const checked = idArr.filter((temp) => temp.menuId === item.id)
+          if (checked.length) {
+            temp.push(checked)
+          }
+        }
+      }
+      return temp
     },
 
     async submit() {
@@ -140,7 +166,7 @@ export default {
     },
 
     checkChange() {
-      this.roleMenu = this.$refs.tree.getCheckedKeys()
+      this.roleMenu = this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys())
     }
   }
 }
