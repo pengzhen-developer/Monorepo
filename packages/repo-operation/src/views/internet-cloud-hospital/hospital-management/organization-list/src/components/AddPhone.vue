@@ -8,7 +8,7 @@
       <el-form-item label="客服电话"
                     prop="serviceTel">
         <peace-input v-model.trim="model.serviceTel"
-                     maxlength="50"
+                     maxlength="25"
                      placeholder="请输入电话"></peace-input>
       </el-form-item>
     </el-form>
