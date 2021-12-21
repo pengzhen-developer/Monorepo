@@ -11,7 +11,8 @@
     </el-alert>
 
     <div class="col q-pa-lg q-mb-md overflow-auto">
-      <el-input v-model="filterText"
+      <el-input v-show="false"
+                v-model="filterText"
                 clearable
                 placeholder="输入关键字进行过滤"></el-input>
 

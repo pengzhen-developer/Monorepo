@@ -25,7 +25,8 @@
       <div class="select-menu">
         <div class="title">可选菜单</div>
         <div class="menu-tree">
-          <el-input size="larger"
+          <el-input v-show="false"
+                    size="larger"
                     placeholder="输入关键字进行过滤"
                     v-model="filterText">
           </el-input>
@@ -162,7 +163,7 @@ export default {
       let params = {
         lazy: false,
         clientId: process.env.VUE_APP_AUTH_CLIENT_ID,
-        isDisplay:0
+        isDisplay: 0
       }
       return Service.menu()
         .menuTree(params)

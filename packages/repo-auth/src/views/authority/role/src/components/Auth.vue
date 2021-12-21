@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="el-dialog__body custom-tree-container">
-      <el-input placeholder="输入关键字进行过滤"
+      <el-input v-show="false"
+                placeholder="输入关键字进行过滤"
                 v-model="filterText">
       </el-input>
 

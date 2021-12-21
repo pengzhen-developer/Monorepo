@@ -31,7 +31,8 @@
           </div>
 
           <div v-else>
-            <el-input class="q-mb-sm"
+            <el-input v-show="false"
+                      class="q-mb-sm"
                       placeholder="输入关键字进行过滤"
                       v-model="filterText">
             </el-input>
