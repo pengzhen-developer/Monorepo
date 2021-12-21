@@ -53,7 +53,7 @@ export const removeUserInfo = () => {
  * @returns
  */
 export const setHospitalInfo = (hospitalInfo) => {
-  return Peace.cache.localStorage.set(HOSPITAL_INFO, hospitalInfo)
+  return Peace.cache.sessionStorage.set(HOSPITAL_INFO, hospitalInfo)
 }
 
 /**
