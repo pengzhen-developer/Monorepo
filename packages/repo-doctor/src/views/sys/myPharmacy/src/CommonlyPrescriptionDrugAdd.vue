@@ -209,7 +209,7 @@ export default {
     },
 
     getCacheHistory() {
-      return Peace.cache.localStorage.get(UniqueKey) ?? []
+      return Peace.cache.sessionStorage.get(UniqueKey) ?? []
     },
 
     addCacheHistory(queryString) {
@@ -217,12 +217,12 @@ export default {
 
       this.historyList = [...new Set(this.historyList)]
 
-      Peace.cache.localStorage.set(UniqueKey, this.historyList)
+      Peace.cache.sessionStorage.set(UniqueKey, this.historyList)
     },
 
     removeCacheHistory() {
       this.historyList = []
-      Peace.cache.localStorage.remove(UniqueKey)
+      Peace.cache.sessionStorage.remove(UniqueKey)
     }
   }
 }

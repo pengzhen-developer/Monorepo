@@ -10,7 +10,7 @@ const ACCOUNT_MENU_LIST = 'account_menu_list'
  * @returns
  */
 export const setUserCDKey = (cdkey) => {
-  return Peace.cache.localStorage.set(USER_CD_KEY, cdkey)
+  return Peace.cache.sessionStorage.set(USER_CD_KEY, cdkey)
 }
 /**
  * 获取用户 cdkey
@@ -18,7 +18,7 @@ export const setUserCDKey = (cdkey) => {
  * @returns
  */
 export const getUserCDKey = () => {
-  return Peace.cache.localStorage.get(USER_CD_KEY)
+  return Peace.cache.sessionStorage.get(USER_CD_KEY)
 }
 
 /**
@@ -26,7 +26,7 @@ export const getUserCDKey = () => {
  *
  */
 export const removeUserCDKey = () => {
-  return Peace.cache.localStorage.remove(USER_CD_KEY)
+  return Peace.cache.sessionStorage.remove(USER_CD_KEY)
 }
 
 /**
@@ -36,7 +36,7 @@ export const removeUserCDKey = () => {
  * @returns
  */
 export const setAccountMenuList = (accountMenuList) => {
-  return Peace.cache.localStorage.set(ACCOUNT_MENU_LIST, accountMenuList)
+  return Peace.cache.sessionStorage.set(ACCOUNT_MENU_LIST, accountMenuList)
 }
 /**
  * 获取账户菜单信息（缓存）
@@ -44,14 +44,14 @@ export const setAccountMenuList = (accountMenuList) => {
  * @returns
  */
 export const getAccountMenuList = () => {
-  return Peace.cache.localStorage.get(ACCOUNT_MENU_LIST)
+  return Peace.cache.sessionStorage.get(ACCOUNT_MENU_LIST)
 }
 /**
  * 清空账户菜单信息（缓存）
  *
  */
 export const removeAccountMenuList = () => {
-  Peace.cache.localStorage.remove(ACCOUNT_MENU_LIST)
+  Peace.cache.sessionStorage.remove(ACCOUNT_MENU_LIST)
 }
 
 /**
@@ -61,7 +61,7 @@ export const removeAccountMenuList = () => {
  * @returns
  */
 export const setUserInfo = (userInfo) => {
-  return Peace.cache.localStorage.set(USER_INFO, userInfo)
+  return Peace.cache.sessionStorage.set(USER_INFO, userInfo)
 }
 /**
  * 获取用户信息（缓存）
@@ -69,7 +69,7 @@ export const setUserInfo = (userInfo) => {
  * @returns
  */
 export const getUserInfo = () => {
-  return Peace.cache.localStorage.get(USER_INFO)?.user_info
+  return Peace.cache.sessionStorage.get(USER_INFO)?.user_info
 }
 /**
  * 获取全量用户信息（缓存）
@@ -77,7 +77,7 @@ export const getUserInfo = () => {
  * @returns
  */
 export const getAllUserInfo = () => {
-  return Peace.cache.localStorage.get(USER_INFO)
+  return Peace.cache.sessionStorage.get(USER_INFO)
 }
 /**
  * 清空用户信息（缓存）

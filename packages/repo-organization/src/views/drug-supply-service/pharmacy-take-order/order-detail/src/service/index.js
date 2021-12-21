@@ -43,7 +43,7 @@ export default {
    * @param {*} params
    */
   CancelOrderV2(params) {
-    params.Operator = Peace.cache.localStorage.get('user_info')?.custCode
+    params.Operator = Peace.cache.sessionStorage.get('user_info')?.custCode
     const isMock = false
 
     const apiPath = 'psd/Order/CancelOrderV2'

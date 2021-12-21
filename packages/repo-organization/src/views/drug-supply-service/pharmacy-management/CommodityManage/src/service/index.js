@@ -43,7 +43,7 @@ export default {
    * @param {*} params
    */
   getServiceInfo(params) {
-    params.custCode = Peace.cache.localStorage.get('user_info')?.custCode
+    params.custCode = Peace.cache.sessionStorage.get('user_info')?.custCode
     const isMock = false
 
     const apiPath = 'zyyconsole/external/service/getServiceInfo'

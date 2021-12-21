@@ -19,7 +19,7 @@ export default {
    * @param {*} params
    */
   custDoctorListByFilter(params) {
-    params.custCode = Peace.cache.localStorage.get('user_info')?.custCode
+    params.custCode = Peace.cache.sessionStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'quake/manageRule/doctorListByFilter'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
@@ -36,7 +36,7 @@ export default {
    * @param {*} params
    */
   custDeptListByFilter(params) {
-    params.custCode = Peace.cache.localStorage.get('user_info')?.custCode
+    params.custCode = Peace.cache.sessionStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'quake/manageRule/deptListByFilter'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
@@ -53,7 +53,7 @@ export default {
    * @param {*} params
    */
   commonDictDoctorTitleList(params) {
-    params.custCode = Peace.cache.localStorage.get('user_info')?.custCode
+    params.custCode = Peace.cache.sessionStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'quake/manageRule/doctorTitleList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
@@ -70,7 +70,7 @@ export default {
    * @param {*} params
    */
   commonDictPrescriptionSourceList(params) {
-    params.custCode = Peace.cache.localStorage.get('user_info')?.custCode
+    params.custCode = Peace.cache.sessionStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'quake/manageRule/prescriptionSourceList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
@@ -87,7 +87,7 @@ export default {
    * @param {*} params
    */
   drugDictListByFilter(params) {
-    params.custCode = Peace.cache.localStorage.get('user_info')?.custCode
+    params.custCode = Peace.cache.sessionStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'quake/manageRule/drugDicList'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath

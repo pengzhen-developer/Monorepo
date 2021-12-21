@@ -213,7 +213,7 @@ export default {
    * 年龄列表（三方）
    */
   getOrgAgeClass(params = {}) {
-    params.orgCode = Peace.cache.localStorage.get('user_info')?.custCode
+    params.orgCode = Peace.cache.sessionStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'idic/orgAgeClass/page'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
@@ -227,7 +227,7 @@ export default {
    * 禁忌症列表（三方）
    */
   getPageContainsDiagnosis(params = {}) {
-    params.orgCode = Peace.cache.localStorage.get('user_info')?.custCode
+    params.orgCode = Peace.cache.sessionStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'idic/orgDisease/pageContainsDiagnosis'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
@@ -241,7 +241,7 @@ export default {
    * 频次列表（三方）
    */
   getPageByCondition(params = {}) {
-    params.orgCode = Peace.cache.localStorage.get('user_info')?.custCode
+    params.orgCode = Peace.cache.sessionStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'idic/orgUseDrugFrequency/page'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
@@ -255,7 +255,7 @@ export default {
    * 给药途径列表（三方）
    */
   getOrgUseDrugRoute(params = {}) {
-    params.orgCode = Peace.cache.localStorage.get('user_info')?.custCode
+    params.orgCode = Peace.cache.sessionStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'idic/orgUseDrugRoute/page'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
@@ -269,7 +269,7 @@ export default {
    * 过敏列表（三方）
    */
   getOrgAllergyInfo(params = {}) {
-    params.orgCode = Peace.cache.localStorage.get('user_info')?.custCode
+    params.orgCode = Peace.cache.sessionStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'idic/orgAllergyInfo/page'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
@@ -283,7 +283,7 @@ export default {
    * 人群列表（三方）
    */
   getOrgHumanClass(params = {}) {
-    params.orgCode = Peace.cache.localStorage.get('user_info')?.custCode
+    params.orgCode = Peace.cache.sessionStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'idic/orgHumanClass/page'
     const mockPath = process.env.VUE_APP_MOCK_API + apiPath
@@ -300,7 +300,7 @@ export default {
    * @param {*} params
    */
   getICDList(params) {
-    params.orgCode = Peace.cache.localStorage.get('user_info')?.custCode
+    params.orgCode = Peace.cache.sessionStorage.get('user_info')?.custCode
     const isMock = false
     const apiPath = 'orgDiagnosis/page'
     const mockPath = process.env.VUE_APP_API_MOCK + apiPath

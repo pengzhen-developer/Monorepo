@@ -10,7 +10,7 @@ const ACCOUNT_MENU_LIST = 'account_menu_list'
  * @returns
  */
 export const setUserInfo = (userInfo) => {
-  return Peace.cache.localStorage.set(USER_INFO, userInfo)
+  return Peace.cache.sessionStorage.set(USER_INFO, userInfo)
 }
 
 /**
@@ -19,7 +19,7 @@ export const setUserInfo = (userInfo) => {
  * @returns
  */
 export const getUserInfo = () => {
-  return Peace.cache.localStorage.get(USER_INFO)
+  return Peace.cache.sessionStorage.get(USER_INFO)
 }
 
 /**
@@ -62,7 +62,7 @@ export const setHospitalInfo = (hospitalInfo) => {
  * @returns
  */
 export const getHospitalInfo = () => {
-  return Peace.cache.localStorage.get(HOSPITAL_INFO)
+  return Peace.cache.sessionStorage.get(HOSPITAL_INFO)
 }
 
 /**

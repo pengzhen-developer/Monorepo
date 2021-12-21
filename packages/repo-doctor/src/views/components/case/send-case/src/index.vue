@@ -253,7 +253,7 @@ export default {
 
     changeTemplate(key) {
       if (key) {
-        const templateKey = Peace.cache.localStorage.get(this.template.key)
+        const templateKey = Peace.cache.sessionStorage.get(this.template.key)
 
         if (templateKey !== key) {
           const template = this.template.list.find((item) => item.templateId === key)
@@ -262,7 +262,7 @@ export default {
             confirmButtonText: '知道了'
           })
 
-          Peace.cache.localStorage.set(this.template.key, key)
+          Peace.cache.sessionStorage.set(this.template.key, key)
         }
       }
     },
