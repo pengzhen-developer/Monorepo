@@ -46,7 +46,7 @@
           <li><a href="#about-lists">产品服务</a></li>
           <li><a href="#portfolio">解决方案</a></li>
 
-          <li class="drop-down"><a>开放赋能</a>
+          <!-- <li class="drop-down"><a>开放赋能</a>
             <ul>
               <li><a href="https://docs.qq.com/doc/DZkp4dWZUTWV1TFZJ"
                    target="blank">处方审核服务接口</a></li>
@@ -57,10 +57,11 @@
               <li><a href="https://docs.qq.com/doc/DZnNqTmdMb2JwZHdo"
                    target="blank">药品供应服务接口</a></li>
             </ul>
-          </li>
+          </li> -->
           <li><a href="#services">合作案例</a></li>
           <li><a href="#team">新闻动态</a></li>
           <li><a href="#myfooter">关于我们</a></li>
+          <li><a href="#open-service">开放赋能</a></li>
         </ul>
       </nav><!-- .nav-menu -->
 

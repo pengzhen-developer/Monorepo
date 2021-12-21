@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div style="background: rgba(242,242,242,1);"
+       id="container">
     <!-- ======= Top Bar ======= -->
     <TopBar></TopBar>
 
@@ -7,7 +8,7 @@
     <Header></Header>
 
     <!-- ======= Hero Section ======= -->
-    <Banner></Banner>
+
     <!-- End Hero -->
 
     <!-- ======= Main ======= -->
@@ -15,6 +16,7 @@
       <!-- ======= 平台数据开始 ======= -->
       <!-- <PlatformData></PlatformData> -->
       <!-- ======= 平台数据结束 ======= -->
+      <Banner></Banner>
 
       <!-- ======= 平台服务开始  ======= -->
       <PlatformService></PlatformService>
@@ -32,14 +34,30 @@
       <News></News>
       <!-- ======= 新闻动态结束 ======= -->
 
+      <Footer></Footer>
+
     </main><!-- End Main -->
 
     <!-- ======= Footer ======= -->
-    <Footer></Footer>
+
     <!-- End Footer -->
 
     <a href="#"
        class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+    <div id="open-service"
+         class="html-style"
+         style="width: 1202px !important; margin: 10px auto; background: rgba(242,242,242,1); display: none;"
+         ref="frame"
+         frameborder="0">
+      <iframe class="full-width full-height"
+              ref="frame"
+              style="padding: 24px; background: white;"
+              frameborder="0"
+              :src="html">
+      </iframe>
+
+    </div>
 
   </div>
 </template>
@@ -68,6 +86,12 @@ export default {
     CooperationCase
   },
 
+  data() {
+    return {
+      html: 'static/open.html'
+    }
+  },
+
   created() {},
 
   mounted() {
@@ -81,5 +105,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang='scss' scoped>
+#openService {
+  display: none;
+  position: absolute;
+}
+
+.html-style {
+  height: calc(100vh - 141px);
+}
 </style>

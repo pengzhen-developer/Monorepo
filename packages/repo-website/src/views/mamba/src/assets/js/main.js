@@ -30,20 +30,22 @@ var scrolltoOffset = $('#header').outerHeight() - 2
 $(document).on('click', '.nav-menu a, .mobile-nav a, .scrollto', function(e) {
   if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
     var target = $(this.hash)
-    if (target.length) {
+
+    if ($(this).attr('href') === '#open-service') {
       e.preventDefault()
 
-      var scrollto = target.offset().top - scrolltoOffset
-
-      if ($(this).attr('href') == '#header') {
-        scrollto = 0
+      if ($('#main')[0].style.display !== 'none') {
+        $('#main').css('display', 'none')
       }
+
+      $('#open-service').css('display', '')
+      $('#container').css('height', '100vh')
 
       $('html, body').animate(
         {
-          scrollTop: scrollto
+          scrollTop: 0
         },
-        1500,
+        600,
         'easeInOutExpo'
       )
 
@@ -59,7 +61,47 @@ $(document).on('click', '.nav-menu a, .mobile-nav a, .scrollto', function(e) {
         $('.mobile-nav-toggle i').toggleClass('icofont-navigation-menu icofont-close')
         $('.mobile-nav-overly').fadeOut()
       }
+
       return false
+    } else {
+      if (target.length) {
+        e.preventDefault()
+
+        if ($('#main')[0].style.display === 'none') {
+          $('#main').css('display', 'block')
+        }
+
+        $('#open-service').css('display', 'none')
+        $('#container').css('height', '')
+
+        var scrollto = target.offset().top - scrolltoOffset
+
+        if ($(this).attr('href') == '#header') {
+          scrollto = 0
+        }
+
+        $('html, body').animate(
+          {
+            scrollTop: scrollto
+          },
+          1500,
+          'easeInOutExpo'
+        )
+
+        if ($(this).parents('.nav-menu, .mobile-nav').length) {
+          $('.nav-menu .active, .mobile-nav .active').removeClass('active')
+          $(this)
+            .closest('li')
+            .addClass('active')
+        }
+
+        if ($('body').hasClass('mobile-nav-active')) {
+          $('body').removeClass('mobile-nav-active')
+          $('.mobile-nav-toggle i').toggleClass('icofont-navigation-menu icofont-close')
+          $('.mobile-nav-overly').fadeOut()
+        }
+        return false
+      }
     }
   }
 })
@@ -127,6 +169,10 @@ var nav_sections = $('section')
 var main_nav = $('.nav-menu, .mobile-nav')
 
 $(window).on('scroll', function() {
+  if ($('#main')[0].style.display === 'none') {
+    return
+  }
+
   var cur_pos = $(this).scrollTop() + 200
 
   nav_sections.each(function() {
