@@ -8,7 +8,7 @@ const USER_INFO = 'user_info'
  * @returns
  */
 export const setUserInfo = (userInfo) => {
-  return Peace.cache.localStorage.set(USER_INFO, userInfo)
+  return Peace.cache.sessionStorage.set(USER_INFO, userInfo)
 }
 
 /**
@@ -32,7 +32,7 @@ export const updateUserInfo = (userInfo) => {
  * @returns
  */
 export const getUserInfo = () => {
-  return Peace.cache.localStorage.get(USER_INFO)
+  return Peace.cache.sessionStorage.get(USER_INFO)
 }
 
 /**
@@ -55,7 +55,7 @@ export const removeUserInfo = () => {
  *
  */
 export const isSignIn = () => {
-  return !!Peace.cache.localStorage.get(USER_INFO)
+  return !!Peace.cache.sessionStorage.get(USER_INFO)
 }
 
 export default {
