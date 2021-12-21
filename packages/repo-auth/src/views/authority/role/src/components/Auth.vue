@@ -139,7 +139,7 @@ export default {
     },
 
     checkChange() {
-      this.roleMenu = this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys())
+      this.roleMenu = this.$refs.tree.getCheckedKeys()
     }
   }
 }
