@@ -1,8 +1,11 @@
 <template>
-  <div v-loading="loading" class="layout-card">
+  <div v-loading="loading"
+       class="layout-card">
 
-    <empty v-if="isError" description="抱歉，请求错误请稍后再试">
-      <el-button type="primary" v-on:click="back">返回</el-button>
+    <empty v-if="isError"
+           description="抱歉，请求错误请稍后再试">
+      <el-button type="primary"
+                 v-on:click="back">返回</el-button>
     </empty>
 
     <div v-else>
@@ -12,7 +15,7 @@
         <div class="bg-white">
 
           <div class="q-pl-md q-pt-24">
-            <el-button  v-on:click="back">返回上一页</el-button>
+            <el-button v-on:click="back">返回上一页</el-button>
           </div>
 
           <div class="header">
@@ -25,69 +28,81 @@
             <div class="row col q-mb-12">
               <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionName"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionName"
-                         label="机构名称"/>
+                         label="机构名称" />
               <info-item :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionCode"
-                         label="机构编码"/>
+                         label="机构编码" />
               <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.serviceLicenceNo"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.serviceLicenceNo"
-                         label="执业许可证登记号"/>
+                         label="执业许可证登记号" />
             </div>
 
             <div class="row col q-mb-12">
               <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.socialNo"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.socialNo"
-                         label="统一社会信用代码"/>
+                         label="统一社会信用代码" />
               <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionTypeName"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionTypeName"
-                         label="机构类型"/>
+                         label="机构类型" />
               <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.hospitalTypeName"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.hospitalTypeName"
-                         label="医院类型"/>
+                         label="医院类型" />
             </div>
 
             <div class="row col q-mb-12">
               <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.hospitalLevelName"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.hospitalLevelName"
-                         label="医院等级"/>
+                         label="医院等级" />
               <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.fromTypeName"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.fromTypeName"
-                         label="所有制形式"/>
+                         label="所有制形式" />
               <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.servicerTypeName"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.servicerTypeName"
-                         label="服务对象"/>
+                         label="服务对象" />
             </div>
 
             <div class="row col q-mb-12">
               <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionWayName"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionWayName"
-                         label="机构性质"/>
+                         label="机构性质" />
               <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.relationTypeName"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.relationTypeName"
-                         label="录属关系"/>
+                         label="录属关系" />
               <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.address"
                          :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.address"
-                         label="地址"/>
+                         label="地址" />
             </div>
 
-            <div class="row col q-mb-12" v-if="showNetHospitalInfo">
-              <info-item :preValue="oldNetHospital"
+            <div class="row col q-mb-12">
+
+              <info-item v-if="showNetHospitalInfo"
+                         :preValue="oldNetHospital"
                          :value="netHospital"
-                         label="是否分院"/>
+                         label="是否分院" />
               <info-item :preValue="oldShareHosptial"
                          :value="shareHosptial"
-                         label="是否互联网医院"/>
-              <div class="col"></div>
+                         v-if="showNetHospitalInfo"
+                         label="是否互联网医院" />
+
+              <info-item v-if="!showCheckBar"
+                         :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.isTest | orgTypeName"
+                         :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.isTest | orgTypeName"
+                         label="数据性质" />
+              <div class="col"
+                   v-else></div>
             </div>
 
-            <div class="row col q-mb-12" v-if="showHasShop">
+            <div class="row col q-mb-12"
+                 v-if="showHasShop">
               <info-item :preValue="oldHasShop"
                          :value="hasShop"
-                         label="是否门店"/>
+                         label="是否门店" />
               <div class="col"></div>
               <div class="col"></div>
             </div>
 
-            <image-item v-if="imageData" :preValue="preImageData" :value="imageData"/>
+            <image-item v-if="imageData"
+                        :preValue="preImageData"
+                        :value="imageData" />
 
           </div>
 
@@ -105,21 +120,37 @@
             <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionDescribe"
                        :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionDescribe"
                        class="q-mb-12"
-                       label="机构简介"/>
+                       label="机构简介" />
+
+            <info-item label="机构别称/简称"
+                       class="q-mb-12"
+                       :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionNickName"
+                       :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionNickName" />
+
+            <info-item label="经营范围"
+                       class="q-mb-12"
+                       :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.bussinessSpace"
+                       :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.bussinessSpace" />
+
+            <info-item label="医生团队介绍"
+                       class="q-mb-12"
+                       :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.doctorTeamIntroduce"
+                       :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.doctorTeamIntroduce" />
+
             <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionWeb"
                        :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.institutionWeb"
                        class="q-mb-12"
-                       label="机构官网"/>
+                       label="机构官网" />
 
             <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.tel"
                        :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.tel"
                        class="q-mb-12"
-                       label="联系电话"/>
+                       label="联系电话" />
 
             <info-item :preValue="oldInstitutionInfoAuditDetails.institutionInfoAuditVO.carWay"
                        :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.carWay"
                        class="q-mb-12"
-                       label="乘车路线"/>
+                       label="乘车路线" />
 
             <honor-info-item v-if="newInstitutionInfoAuditDetails.institutionHonorAuditVOList"
                              :preValue="oldInstitutionInfoAuditDetails.institutionHonorAuditVOList"
@@ -146,18 +177,19 @@
 
             <div class="row col q-mb-12">
               <info-item :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.channelSourceName"
-                         label="应用来源"/>
+                         label="应用来源" />
               <info-item :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.auditerType | auditerName"
-                         label="审核类型"/>
+                         label="审核类型" />
               <info-item :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.updateTime"
-                         label="提交时间"/>
+                         label="提交时间" />
             </div>
 
           </div>
 
         </div>
 
-        <div class="bg-white q-mt-md" v-if="newInstitutionInfoAuditDetails.institutionInfoAuditVO.auditStatus !== 'report'">
+        <div class="bg-white q-mt-md"
+             v-if="newInstitutionInfoAuditDetails.institutionInfoAuditVO.auditStatus !== 'report'">
 
           <div class="header">
             <div class="header-line q-mr-sm"></div>
@@ -168,16 +200,17 @@
 
             <div class="row col q-mb-12">
               <info-item :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.auditStatus | checkStatus"
-                         label="审核结果"/>
+                         label="审核结果" />
               <info-item :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.auditerName"
-                         label="审核人"/>
+                         label="审核人" />
               <info-item :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.checkTime"
-                         label="审核时间"/>
+                         label="审核时间" />
             </div>
 
-            <div class="row col q-mb-12" v-if="newInstitutionInfoAuditDetails.institutionInfoAuditVO.remark">
+            <div class="row col q-mb-12"
+                 v-if="newInstitutionInfoAuditDetails.institutionInfoAuditVO.remark">
               <info-item :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.remark"
-                         label="备      注"/>
+                         label="备      注" />
             </div>
 
           </div>
@@ -186,20 +219,42 @@
 
       </div>
 
-      <div v-if="newInstitutionInfoAuditDetails.institutionInfoAuditVO && newInstitutionInfoAuditDetails.institutionInfoAuditVO.auditStatus === 'report'"
+      <div v-if="showCheckBar"
            class="bg-white q-my-md q-py-md q-pr-md">
-        <el-form ref="form" :model="form" :rules="rules" label-width="90px">
-          <el-form-item label="审核结果：" prop="auditStatus">
+        <el-form ref="form"
+                 :model="form"
+                 :rules="rules"
+                 label-width="90px">
+
+          <el-form-item label="数据性质："
+                        prop="isTest">
+            <el-radio-group v-model="form.isTest">
+              <el-radio :label="0">真实机构</el-radio>
+              <el-radio :label="1">测试机构</el-radio>
+            </el-radio-group>
+          </el-form-item>
+
+          <el-form-item label="审核结果："
+                        prop="auditStatus">
             <el-radio-group v-model="form.auditStatus">
               <el-radio label="通过"></el-radio>
               <el-radio label="不通过"></el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="备      注：" prop="remark" v-if="form.auditStatus !== '通过'">
-            <el-input v-model="form.remark" :rows="4" resize="none" type="textarea" maxlength="500" show-word-limit></el-input>
+          <el-form-item label="备      注："
+                        prop="remark"
+                        v-if="form.auditStatus !== '通过'">
+            <el-input v-model="form.remark"
+                      :rows="4"
+                      resize="none"
+                      type="textarea"
+                      maxlength="500"
+                      show-word-limit></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" v-on:click="onSubmit" v-bind:loading="submitLoading">确定</el-button>
+            <el-button type="primary"
+                       v-on:click="onSubmit"
+                       v-bind:loading="submitLoading">确定</el-button>
             <el-button v-on:click="back">取消</el-button>
           </el-form-item>
         </el-form>
@@ -214,16 +269,16 @@
 import Service from './service'
 import Empty from '@src/components/result/Empty'
 import InfoItem from '@src/components/orgDetail/InfoItem.vue'
-import ImageItem from "@src/components/orgDetail/ImageItem"
-import HonorInfoItem from "@src/components/orgDetail/HonorInfoItem"
-import SpecialInfoItem from "@src/components/orgDetail/SpecialInfoItem"
+import ImageItem from '@src/components/orgDetail/ImageItem'
+import HonorInfoItem from '@src/components/orgDetail/HonorInfoItem'
+import SpecialInfoItem from '@src/components/orgDetail/SpecialInfoItem'
 const shopStoreIds = ['P', 'P1', 'P4', 'P9', 'P110', 'P120', 'P300', 'P410', 'P420', 'P430', 'P440', 'P490', 'P500', 'P600']
 export default {
   name: 'orgCheck',
   props: {
     orgCode: {
       required: true,
-      type: String,
+      type: String
     }
   },
   components: {
@@ -250,15 +305,13 @@ export default {
       },
       form: {
         auditStatus: '',
-        remark: undefined,
+        isTest: 0,
+        remark: undefined
       },
       rules: {
-        remark: [
-          {required: true, message: '请输入备注', trigger: 'blur'},
-        ],
-        auditStatus: [
-          { required: true, message: '请选择活动资源', trigger: 'change' }
-        ],
+        remark: [{ required: true, message: '请输入备注', trigger: 'blur' }],
+        isTest: [{ required: true, message: '请选择数据类型', trigger: 'blur' }],
+        auditStatus: [{ required: true, message: '请选择活动资源', trigger: 'change' }]
       },
       loading: false,
       submitLoading: false,
@@ -266,27 +319,38 @@ export default {
     }
   },
   filters: {
-    checkStatus: function (value) {
+    checkStatus: function(value) {
       if (Peace.validate.isEmpty(value)) {
         return '--'
       }
-      return {success: '已通过', fail: "未通过", report: '待审核'}[value] ?? '--'
+      return { success: '已通过', fail: '未通过', report: '待审核' }[value] ?? '--'
     },
-    auditerName: function (value) {
+    auditerName: function(value) {
       return value === 'save' ? '机构入驻' : '修改信息'
+    },
+
+    orgTypeName: function(value) {
+      if (Peace.validate.isEmpty(value)) {
+        return ''
+      }
+      return Number(value) === 1 ? '测试机构' : '真实机构'
     }
   },
   computed: {
+    showCheckBar() {
+      return (
+        this.newInstitutionInfoAuditDetails?.institutionInfoAuditVO && this.newInstitutionInfoAuditDetails?.institutionInfoAuditVO?.auditStatus === 'report'
+      )
+    },
     imageData() {
+      const { practiceLincensePic, netHospitalLicensePic, businessLicensePic, otherLincesePic } = this.newInstitutionInfoAuditDetails.institutionInfoAuditVO
 
-      const {
-        practiceLincensePic,
-        netHospitalLicensePic,
-        businessLicensePic,
-        otherLincesePic
-      } = this.newInstitutionInfoAuditDetails.institutionInfoAuditVO
-
-      if (Peace.validate.isEmpty(practiceLincensePic) && Peace.validate.isEmpty(netHospitalLicensePic) && Peace.validate.isEmpty(businessLicensePic) && Peace.validate.isEmpty(otherLincesePic)) {
+      if (
+        Peace.validate.isEmpty(practiceLincensePic) &&
+        Peace.validate.isEmpty(netHospitalLicensePic) &&
+        Peace.validate.isEmpty(businessLicensePic) &&
+        Peace.validate.isEmpty(otherLincesePic)
+      ) {
         return undefined
       }
 
@@ -299,14 +363,14 @@ export default {
     },
 
     preImageData() {
-      const {
-        practiceLincensePic,
-        netHospitalLicensePic,
-        businessLicensePic,
-        otherLincesePic
-      } = this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO
+      const { practiceLincensePic, netHospitalLicensePic, businessLicensePic, otherLincesePic } = this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO
 
-      if (Peace.validate.isEmpty(practiceLincensePic) && Peace.validate.isEmpty(netHospitalLicensePic) && Peace.validate.isEmpty(businessLicensePic) && Peace.validate.isEmpty(otherLincesePic)) {
+      if (
+        Peace.validate.isEmpty(practiceLincensePic) &&
+        Peace.validate.isEmpty(netHospitalLicensePic) &&
+        Peace.validate.isEmpty(businessLicensePic) &&
+        Peace.validate.isEmpty(otherLincesePic)
+      ) {
         return undefined
       }
 
@@ -319,23 +383,21 @@ export default {
     },
 
     showNetHospitalInfo() {
-      const typeCode = this.newInstitutionInfoAuditDetails.institutionInfoAuditVO?.institutionTypeCode ?? ""
+      const typeCode = this.newInstitutionInfoAuditDetails?.institutionInfoAuditVO?.institutionTypeCode ?? ''
       if (Peace.validate.isEmpty(typeCode)) {
         return false
       } else {
-        return typeCode.startsWith("A")
+        return typeCode.startsWith('A')
       }
-
     },
 
     showHasShop() {
-      const typeCode = this.newInstitutionInfoAuditDetails.institutionInfoAuditVO?.institutionTypeCode ?? ""
+      const typeCode = this.newInstitutionInfoAuditDetails.institutionInfoAuditVO?.institutionTypeCode ?? ''
       if (Peace.validate.isEmpty(typeCode)) {
         return false
       } else {
         return shopStoreIds.some((item) => item === typeCode)
       }
-
     },
 
     hasShop() {
@@ -383,27 +445,28 @@ export default {
         return this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO.isShareHosptial ? '是' : '否'
       }
     }
-
   },
   methods: {
     fetch() {
       this.loading = true
-      const params = {institutionId: this.orgCode}
-      Service.getOrgDetail(params).then((res) => {
+      const params = { institutionId: this.orgCode }
+      Service.getOrgDetail(params)
+        .then((res) => {
+          this.newInstitutionInfoAuditDetails.institutionInfoAuditVO = res.data?.newInstitutionInfoAuditDetails?.institutionInfoAuditVO ?? {}
+          this.newInstitutionInfoAuditDetails.institutionDepartmentAuditVOList =
+            res.data?.newInstitutionInfoAuditDetails?.institutionDepartmentAuditVOList ?? []
+          this.newInstitutionInfoAuditDetails.institutionHonorAuditVOList = res.data?.newInstitutionInfoAuditDetails?.institutionHonorAuditVOList ?? []
 
-        this.newInstitutionInfoAuditDetails.institutionInfoAuditVO = res.data?.newInstitutionInfoAuditDetails?.institutionInfoAuditVO ?? {}
-        this.newInstitutionInfoAuditDetails.institutionDepartmentAuditVOList = res.data?.newInstitutionInfoAuditDetails?.institutionDepartmentAuditVOList ?? []
-        this.newInstitutionInfoAuditDetails.institutionHonorAuditVOList = res.data?.newInstitutionInfoAuditDetails?.institutionHonorAuditVOList ?? []
-
-        this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO = res.data?.oldInstitutionInfoDetail?.institutionInfoAuditVO ?? {}
-        this.oldInstitutionInfoAuditDetails.institutionDepartmentAuditVOList = res.data?.oldInstitutionInfoDetail?.institutionDepartmentAuditVOList ?? []
-        this.oldInstitutionInfoAuditDetails.institutionHonorAuditVOList = res.data?.oldInstitutionInfoDetail?.institutionHonorAuditVOList ?? []
-
-      }).catch(() => {
-        this.isError = true
-      }).finally(() => {
-        this.loading = false
-      })
+          this.oldInstitutionInfoAuditDetails.institutionInfoAuditVO = res.data?.oldInstitutionInfoDetail?.institutionInfoAuditVO ?? {}
+          this.oldInstitutionInfoAuditDetails.institutionDepartmentAuditVOList = res.data?.oldInstitutionInfoDetail?.institutionDepartmentAuditVOList ?? []
+          this.oldInstitutionInfoAuditDetails.institutionHonorAuditVOList = res.data?.oldInstitutionInfoDetail?.institutionHonorAuditVOList ?? []
+        })
+        .catch(() => {
+          this.isError = true
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
 
     onSubmit() {
@@ -411,35 +474,35 @@ export default {
         if (valid) {
           this.submit()
         }
-      });
+      })
     },
 
     submit() {
-
       const params = {
-        id:  this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.auditId,
-        remark: this.form.auditStatus === "通过" ? undefined : this.form.remark,
-        auditStatus: this.form.auditStatus === "通过" ? 'success' : 'fail'
+        id: this.newInstitutionInfoAuditDetails.institutionInfoAuditVO.auditId,
+        remark: this.form.auditStatus === '通过' ? undefined : this.form.remark,
+        auditStatus: this.form.auditStatus === '通过' ? 'success' : 'fail',
+        isTest: this.form.isTest
       }
 
       this.submitLoading = true
-      Service.checkOrg(params).then(() => {
-        this.$emit('refresh')
-      }).finally(() => {
-        this.submitLoading = false
-      })
-
+      Service.checkOrg(params)
+        .then(() => {
+          this.$emit('refresh')
+        })
+        .finally(() => {
+          this.submitLoading = false
+        })
     },
 
     back() {
       this.$emit('close')
-    },
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
 ::v-deep .el-form-item--mini .el-form-item__label {
   text-align: justify-all !important;
 }

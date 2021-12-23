@@ -170,9 +170,9 @@
 
     <!-- 药师审核信息 -->
     <div class="column q-mb-sm">
-      <span v-if="internalData?.prescriptionTime"
+      <span v-if="internalData?.prescriptionEffectiveTime"
             class="q-mb-2"
-            style="font-size: 12px; rgba(51,51,51,0.80);">处方失效时间：{{ internalData?.prescriptionTime }}</span>
+            style="font-size: 12px; rgba(51,51,51,0.80);">处方失效时间：{{ internalData?.prescriptionEffectiveTime }}</span>
       <span v-if="internalData?.prescriptionNote"
             style="font-size: 12px; rgba(51,51,51,0.80);">处方备注信息：{{ internalData?.prescriptionNote }}</span>
     </div>
