@@ -215,3 +215,42 @@
     }
   }
 }
+
+/* Element - Popover Panel
+ -------------------------- */
+.el-popover {
+  &:not(.element-ui-default) {
+    background: #ffffff;
+    box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.1);
+    color: #333;
+    padding: 8px;
+
+    &.top-start,
+    &.bottom-start {
+      .popper__arrow {
+        left: 8px !important;
+      }
+    }
+
+    &.top-end,
+    &.bottom-end {
+      .popper__arrow {
+        right: 8px !important;
+      }
+    }
+
+    &.left-start,
+    &.right-start {
+      .popper__arrow {
+        top: 8px !important;
+      }
+    }
+
+    &.left-end,
+    &.right-end {
+      .popper__arrow {
+        bottom: 8px !important;
+      }
+    }
+  }
+}

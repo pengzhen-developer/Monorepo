@@ -118,8 +118,9 @@
           <template slot-scope="scope">
 
             <template v-if="scope.row.secondLevelError">
-              <el-popover placement="top"
-                          width="200"
+              <el-popover popper-class="bottom-start"
+                          placement="bottom-start"
+                          width="165"
                           trigger="hover">
                 <div>{{ scope.row.secondLevelError }}</div>
                 <div class="ellipsis"
