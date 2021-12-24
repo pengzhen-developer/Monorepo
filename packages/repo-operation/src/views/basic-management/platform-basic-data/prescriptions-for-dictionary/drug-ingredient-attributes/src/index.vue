@@ -39,6 +39,10 @@
                           min-width="150px"
                           prop="skuId">
         </PeaceTableColumn>
+        <PeaceTableColumn label="本位码"
+                          min-width="150px"
+                          prop="drugStandardCode">
+        </PeaceTableColumn>
         <PeaceTableColumn label="药品名称"
                           min-width="150px"
                           prop="drugName">
@@ -70,7 +74,7 @@
                           prop="updateTime">
         </PeaceTableColumn>
 
-        <PeaceTableColumn width="150px"
+        <PeaceTableColumn width="100px"
                           fixed="right"
                           label="操作">
           <template slot-scope="scope">

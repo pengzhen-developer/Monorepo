@@ -41,6 +41,14 @@
                              type="daterange"
                              v-model.trim="DateValue"></peace-date-picker>
         </el-form-item>
+        <el-form-item label="错误类型：">
+          <el-cascader placeholder="全部"
+                       ref='cascader'
+                       collapse-tags
+                       clearable
+                       v-bind:options="source.INVOKE_LOG_LEVEL_DIC"
+                       v-bind:props="{ value: 'code', label: 'name', multiple: true }"></el-cascader>
+        </el-form-item>
         <el-form-item label
                       label-width="0">
           <el-button type="primary"
@@ -70,20 +78,20 @@
         <el-table-column min-width="220px"
                          label="平台处方编号"
                          prop="jztClaimNo"></el-table-column>
-        <el-table-column min-width="140px"
+        <el-table-column min-width="160px"
                          label="原始处方编号">
           <template slot-scope="scope">
             {{scope.row.hisEpCode ||  '--' }}
           </template>
         </el-table-column>
-        <el-table-column min-width="100px"
+        <el-table-column min-width="160px"
                          label="开方应用">
           <template slot-scope="scope">
             {{scope.row.preAppName ||  '--' }}
           </template>
         </el-table-column>
 
-        <el-table-column min-width="160px"
+        <el-table-column min-width="170px"
                          label="调用时间"
                          prop="createTime"></el-table-column>
         <el-table-column min-width="90px"
@@ -93,10 +101,35 @@
             {{scope.row.invokeResult ||  '--' }}
           </template>
         </el-table-column>
-        <el-table-column min-width="90px"
+        <el-table-column min-width="120px"
                          label="审方结果">
           <template slot-scope="scope">
             {{scope.row.checkResult ||  '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column min-width="120px"
+                         label="一级错误类型">
+          <template slot-scope="scope">
+            {{scope.row.firstLevelError ||  '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column min-width="120px"
+                         label="二级错误类型">
+          <template slot-scope="scope">
+
+            <template v-if="scope.row.secondLevelError">
+              <el-popover placement="top"
+                          width="200"
+                          trigger="hover">
+                <div>{{ scope.row.secondLevelError }}</div>
+                <div class="ellipsis"
+                     slot="reference">{{ scope.row.secondLevelError }}</div>
+              </el-popover>
+            </template>
+            <template v-else>
+              <span>--</span>
+            </template>
+
           </template>
         </el-table-column>
         <el-table-column min-width="100px"
@@ -136,10 +169,12 @@ export default {
   data() {
     return {
       DateValue: [],
+
       source: {
         SOURCE_STATUS: CONSTANT.SOURCE_STATUS,
         INVOKE_RESULTY_TYPE: [],
-        CHECK_RESULTY_TYPE: []
+        CHECK_RESULTY_TYPE: [],
+        INVOKE_LOG_LEVEL_DIC: []
       },
       statistic: {},
       model: {
@@ -165,10 +200,12 @@ export default {
   async created() {
     this.source.INVOKE_RESULTY_TYPE = await Peace.identity.dictionary.getList('invoke_result_type')
     this.source.CHECK_RESULTY_TYPE = await Peace.identity.dictionary.getList('check_result_type')
+    this.source.INVOKE_LOG_LEVEL_DIC = (await Service.getInvokeLogLevelDic()).data
   },
+
   mounted() {
-    this.$nextTick().then(() => {
-      //获取处方列表 处方统计
+    this.$nextTick().then(async () => {
+      // 获取处方列表 处方统计
       this.get()
     })
   },
@@ -178,6 +215,16 @@ export default {
       //获取调用日志列表
       const fetch = Service.getInvokeLogs
       const params = Peace.util.deepClone(this.model)
+      const checksNodes = this.$refs.cascader.getCheckedNodes()
+      params.firstLevelError = checksNodes
+        .filter((item) => item.level === 1)
+        .map((item) => item.value)
+        .join(',')
+      params.secondLevelError = checksNodes
+        .filter((item) => item.level === 2)
+        .map((item) => item.value)
+        .join(',')
+
       this.$refs.table.reloadData({ fetch, params })
 
       //调用统计

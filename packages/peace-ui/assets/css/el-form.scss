@@ -47,6 +47,10 @@ $SPACE: view 8, none 0, xs 4, sm 8, md 16, lg 24, xl 48;
           width: $--form-component-width-base;
         }
 
+        > .el-form-item__content > .el-cascader {
+          width: $--form-component-width-base;
+        }
+
         margin-right: 24px;
       }
     }

@@ -3,3 +3,11 @@
     margin-right: 24px;
   }
 }
+
+.el-cascader-panel {
+  &:not(.element-ui-default) {
+    .el-checkbox {
+      margin-right: 0;
+    }
+  }
+}
