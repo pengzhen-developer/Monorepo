@@ -6,16 +6,18 @@
              label-width="auto"
              label-position="right">
       <div class="q-mb-36">
-        <el-form-item label="开方应用">
-          <span>{{callInfo.preAppName}}</span>
+        <el-form-item label="调用渠道ID">
+          <span>{{callInfo.businesschannelId}}</span>
         </el-form-item>
-
-        <el-form-item label="原始处方编号">
-          <span>{{callInfo.hisEpCode}}</span>
+        <el-form-item label="调用渠道">
+          <span>{{callInfo.businesschannel}}</span>
         </el-form-item>
-
         <el-form-item label="平台处方编号">
           <span>{{callInfo.jztClaimNo}}</span>
+        </el-form-item>
+
+        <el-form-item label="智能审方编号">
+          <span>{{callInfo.code}}</span>
         </el-form-item>
 
         <el-form-item label="调用时间">
@@ -97,7 +99,7 @@
 </template>
 
 <script>
-import PrescriptionAudit from '@views/rational-drug-use-management/prescription-record/src/components/prescription-audit'
+import PrescriptionAudit from '@views/rational-drug-use-management/prescription-management/prescription-record/src/components/prescription-audit'
 import Service from '../service'
 export default {
   components: { PrescriptionAudit },

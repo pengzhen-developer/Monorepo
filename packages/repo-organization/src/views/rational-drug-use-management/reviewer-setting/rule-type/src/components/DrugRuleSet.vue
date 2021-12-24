@@ -198,6 +198,7 @@ export default {
 .checkbox-style {
   margin-right: 0;
   margin-bottom: 8px;
+  display: block;
 }
 .title-color {
   color: rgba(51, 51, 51, 0.6);

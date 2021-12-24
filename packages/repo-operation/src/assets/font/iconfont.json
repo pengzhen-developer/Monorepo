@@ -1,10 +1,17 @@
 {
   "id": "1924446",
-  "name": "幂药云运营后台菜单",
+  "name": "智药云运营后台菜单",
   "font_family": "zyy-icon",
   "css_prefix_text": "zyy-",
   "description": "",
   "glyphs": [
+    {
+      "icon_id": "26624766",
+      "name": "药师审核",
+      "font_class": "yaoshishenhe",
+      "unicode": "e6aa",
+      "unicode_decimal": 59050
+    },
     {
       "icon_id": "24243073",
       "name": "成分规则",

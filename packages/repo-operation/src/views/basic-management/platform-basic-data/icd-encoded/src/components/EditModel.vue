@@ -87,6 +87,6 @@ export default {
 
 <style lang="scss" scoped>
 ::v-deep .el-input:not(.element-ui-default).el-input--mini .el-input__inner {
-  padding: 0 24px 0 12px;
+  padding: 0 32px 0 12px;
 }
 </style>

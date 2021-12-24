@@ -1,6 +1,6 @@
 
 <template>
-  <div class="flex items-center column"
+  <div class="q-mx-16"
        v-loading="loading">
     <el-form v-bind:model="model"
              v-bind:rules="rules"

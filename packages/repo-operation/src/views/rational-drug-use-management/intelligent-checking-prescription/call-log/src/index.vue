@@ -7,15 +7,27 @@
                label-position="right"
                label-suffix
                size="mini">
-        <el-form-item label="处方号：">
-          <el-input v-model.trim="model.hisEpCode"
-                    placeholder="请输入"></el-input>
+        <el-form-item label="原始处方编号：">
+          <peace-input v-model.trim="model.hisEpCode"
+                       placeholder="请输入"></peace-input>
         </el-form-item>
-        <el-form-item label="开方应用：">
-          <el-input v-model.trim="model.preAppName"
-                    placeholder="请输入"></el-input>
+        <el-form-item label="审方编号：">
+          <peace-input v-model.trim="model.code"
+                       placeholder="请输入"></peace-input>
         </el-form-item>
-
+        <el-form-item label="调用渠道：">
+          <peace-input v-model.trim="model.businessChannel"
+                       placeholder="请输入"></peace-input>
+        </el-form-item>
+        <el-form-item label="开方机构：">
+          <peace-input v-model.trim="model.hospitalName"
+                       placeholder="请输入"></peace-input>
+        </el-form-item>
+        <el-form-item label="调用时间：">
+          <peace-date-picker value-format="yyyy-MM-dd"
+                             type="daterange"
+                             v-model.trim="DateValue"></peace-date-picker>
+        </el-form-item>
         <el-form-item label="调用结果：">
           <el-select v-model="model.invokeResult"
                      placeholder="全部"
@@ -26,7 +38,7 @@
                        v-bind:value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="智能审方结果：">
+        <el-form-item label="审方结果：">
           <el-select v-model="model.checkResult"
                      placeholder="全部"
                      clearable>
@@ -36,33 +48,25 @@
                        v-bind:value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="调用时间：">
-          <peace-date-picker value-format="yyyy-MM-dd"
-                             type="daterange"
-                             v-model.trim="DateValue"></peace-date-picker>
-        </el-form-item>
         <el-form-item label="错误类型：">
-          <el-cascader placeholder="全部"
-                       ref='cascader'
+          <el-cascader :options="options"
+                       :props="props"
                        collapse-tags
                        clearable
-                       v-bind:options="source.INVOKE_LOG_LEVEL_DIC"
-                       v-bind:props="{ value: 'code', label: 'name', multiple: true }"></el-cascader>
+                       style="width:210px"
+                       ref="myCascader"
+                       popper-class="popperClass"></el-cascader>
         </el-form-item>
         <el-form-item label
                       label-width="0">
           <el-button type="primary"
-                     v-on:click="get">查询</el-button>
+                     v-on:click="get"
+                     v-bind:loading="loading">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
 
     <div class="card">
-      <div class="info row q-mb-10">
-        <p>调用次数：{{statistic.invokeNums}}</p>
-        <p>调用成功：{{statistic.invokeSuccessNums}}</p>
-        <p>调用失败：{{statistic.invokeFailNums}}</p>
-      </div>
       <PeaceTable ref="table"
                   size="mini"
                   pagination>
@@ -74,24 +78,36 @@
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
         </el-table-column>
-
-        <el-table-column min-width="220px"
+        <el-table-column min-width="260px"
+                         label="审方编号">
+          <template slot-scope="scope">
+            <el-button type="text"
+                       v-on:click="detail(scope.row)">{{ scope.row.code  }}</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column min-width="240px"
                          label="平台处方编号"
                          prop="jztClaimNo"></el-table-column>
-        <el-table-column min-width="160px"
+        <el-table-column min-width="180px"
                          label="原始处方编号">
           <template slot-scope="scope">
             {{scope.row.hisEpCode ||  '--' }}
           </template>
         </el-table-column>
-        <el-table-column min-width="160px"
-                         label="开方应用">
+        <el-table-column min-width="120px"
+                         label="调用渠道">
           <template slot-scope="scope">
-            {{scope.row.preAppName ||  '--' }}
+            {{scope.row.businessChannel ||  '--' }}
+          </template>
+        </el-table-column>
+        <el-table-column min-width="100px"
+                         label="开方机构">
+          <template slot-scope="scope">
+            {{scope.row.name ||  '--' }}
           </template>
         </el-table-column>
 
-        <el-table-column min-width="170px"
+        <el-table-column min-width="180px"
                          label="调用时间"
                          prop="createTime"></el-table-column>
         <el-table-column min-width="90px"
@@ -101,7 +117,7 @@
             {{scope.row.invokeResult ||  '--' }}
           </template>
         </el-table-column>
-        <el-table-column min-width="120px"
+        <el-table-column min-width="90px"
                          label="审方结果">
           <template slot-scope="scope">
             {{scope.row.checkResult ||  '--' }}
@@ -113,34 +129,24 @@
             {{scope.row.firstLevelError ||  '--' }}
           </template>
         </el-table-column>
+
         <el-table-column min-width="120px"
                          label="二级错误类型">
           <template slot-scope="scope">
 
-            <template v-if="scope.row.secondLevelError">
-              <el-popover placement="top"
-                          width="200"
-                          trigger="hover">
-                <div>{{ scope.row.secondLevelError }}</div>
-                <div class="ellipsis"
-                     slot="reference">{{ scope.row.secondLevelError }}</div>
-              </el-popover>
-            </template>
-            <template v-else>
-              <span>--</span>
-            </template>
+            <el-popover placement="bottom-start"
+                        popper-class="bottom-start"
+                        width="165"
+                        trigger="hover"
+                        v-if="scope.row.secondLevelError">
+              <div>{{ scope.row.secondLevelError}}</div>
+              <div class="ellipsis"
+                   slot="reference">{{scope.row.secondLevelError}}</div>
+            </el-popover>
+            <div v-else>--</div>
+          </template>
+        </el-table-column>
 
-          </template>
-        </el-table-column>
-        <el-table-column min-width="100px"
-                         align="center"
-                         fixed="right"
-                         label="操作">
-          <template slot-scope="scope">
-            <el-button type="text"
-                       v-on:click="detail(scope.row)">查看详情</el-button>
-          </template>
-        </el-table-column>
       </PeaceTable>
     </div>
 
@@ -159,7 +165,6 @@
 </template>
 
 <script>
-import CONSTANT from './constant'
 import Service from './service'
 import CallDetail from './components/CallDetail'
 export default {
@@ -168,19 +173,18 @@ export default {
 
   data() {
     return {
+      loading: false,
       DateValue: [],
-
       source: {
-        SOURCE_STATUS: CONSTANT.SOURCE_STATUS,
         INVOKE_RESULTY_TYPE: [],
-        CHECK_RESULTY_TYPE: [],
-        INVOKE_LOG_LEVEL_DIC: []
+        CHECK_RESULTY_TYPE: []
       },
-      statistic: {},
       model: {
         startTime: '',
         endTime: '',
-        preAppName: '',
+        code: '',
+        businessChannel: '',
+        hospitalName: '',
         hisEpCode: '',
         checkResult: '',
         invokeResult: ''
@@ -188,7 +192,9 @@ export default {
       modelVisible: {
         visible: false,
         data: {}
-      }
+      },
+      props: { multiple: true, value: 'code', label: 'name' },
+      options: []
     }
   },
   watch: {
@@ -200,22 +206,22 @@ export default {
   async created() {
     this.source.INVOKE_RESULTY_TYPE = await Peace.identity.dictionary.getList('invoke_result_type')
     this.source.CHECK_RESULTY_TYPE = await Peace.identity.dictionary.getList('check_result_type')
-    this.source.INVOKE_LOG_LEVEL_DIC = (await Service.getInvokeLogLevelDic()).data
   },
-
   mounted() {
-    this.$nextTick().then(async () => {
-      // 获取处方列表 处方统计
+    this.$nextTick().then(() => {
+      //获取错误类型
+      this.getInvokeLogLevelDic()
+      //获取列表
       this.get()
     })
   },
-
   methods: {
     get() {
       //获取调用日志列表
+      this.loading = true
       const fetch = Service.getInvokeLogs
       const params = Peace.util.deepClone(this.model)
-      const checksNodes = this.$refs.cascader.getCheckedNodes()
+      const checksNodes = this.$refs.myCascader.getCheckedNodes()
       params.firstLevelError = checksNodes
         .filter((item) => item.level === 1)
         .map((item) => item.value)
@@ -224,13 +230,13 @@ export default {
         .filter((item) => item.level === 2)
         .map((item) => item.value)
         .join(',')
-
-      this.$refs.table.reloadData({ fetch, params })
-
-      //调用统计
-      const params2 = Peace.util.deepClone(this.model)
-      Service.getInvokeStatistic(params2).then((res) => {
-        this.statistic = res.data
+      this.$refs.table.reloadData({ fetch, params }).finally(() => {
+        this.loading = false
+      })
+    },
+    getInvokeLogLevelDic() {
+      Service.getInvokeLogLevelDic().then((res) => {
+        this.options = res.data
       })
     },
     detail(row) {
@@ -244,12 +250,11 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-p {
-  margin: 0;
-  padding: 0;
-}
-.info p {
-  margin-right: 30px;
+
+<style lang="scss" >
+.popperClass {
+  .el-checkbox {
+    margin-right: 0 !important;
+  }
 }
 </style>

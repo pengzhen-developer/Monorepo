@@ -8,13 +8,13 @@
                v-on:keyup.enter.native="fetch"
                v-on:submit.native.prevent
                v-bind:model="model">
-        <el-form-item label="处方来源机构">
-          <el-input v-model.trim="model.SourceHospitalName"
-                    placeholder="请输入"></el-input>
+        <el-form-item label="机构名称">
+          <peace-input v-model.trim="model.SourceHospitalName"
+                       placeholder="请输入"></peace-input>
         </el-form-item>
-        <el-form-item label="药师审方团队">
-          <el-input v-model.trim="model.CheckHospitalName"
-                    placeholder="请输入"></el-input>
+        <el-form-item label="审方团队">
+          <peace-input v-model.trim="model.CheckHospitalName"
+                       placeholder="请输入"></peace-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary"
@@ -35,18 +35,25 @@
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
         </PeaceTableColumn>
-        <PeaceTableColumn width="240px"
-                          label="处方来源机构"
+        <PeaceTableColumn min-width="200px"
+                          label="机构名称"
                           prop="SourceHospitalName"></PeaceTableColumn>
-        <PeaceTableColumn label="药师审方团队"
-                          prop="CheckHospitalNames"></PeaceTableColumn>
-        <PeaceTableColumn width="240px"
+        <PeaceTableColumn min-width="100px"
+                          label="服务状态">
+          <template slot-scope="scope">
+            {{ scope.row.IsSmartReviewer?"启用":"禁用"}}
+          </template>
+        </PeaceTableColumn>
+        <PeaceTableColumn label="审方团队"
+                          prop="CheckHospitalNames"
+                          min-width="200px"></PeaceTableColumn>
+        <PeaceTableColumn width="140px"
                           fixed="right"
                           label="操作">
           <template slot-scope="{ row }">
-            <el-button type="text"
+            <!-- <el-button type="text"
                        v-bind:disabled="row.IsSmartReviewer !== true"
-                       v-on:click="$emit('showIntelligenceConfig', row)">智能审方设置</el-button>
+                       v-on:click="$emit('showIntelligenceConfig', row)">智能审方设置</el-button> -->
             <el-button type="text"
                        v-bind:disabled="row.IsPrescriptionReview !== true"
                        v-on:click="$emit('showPharmacistConfig', row)">药师审方设置</el-button>
