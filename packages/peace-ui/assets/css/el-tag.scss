@@ -2,6 +2,11 @@
   &:not(.element-ui-default) {
     &.el-tag--mini {
       padding: 0 8px;
+      line-height: 20px;
+    }
+
+    .el-icon-close {
+      top: 0px;
     }
   }
 }
