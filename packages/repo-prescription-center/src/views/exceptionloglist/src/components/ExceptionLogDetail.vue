@@ -8,7 +8,7 @@
              size="mini">
 
       <el-form-item label="调用渠道">
-        <span>{{ model.channel }}</span>
+        <span>{{ model.bussinessChannel }}</span>
       </el-form-item>
 
       <el-form-item label="处方编号">
@@ -61,7 +61,7 @@ export default {
         errorMsg: undefined,
         prescriptionNo: undefined,
         errorType: undefined,
-        channel: undefined,
+        bussinessChannel: undefined,
         updateTime: undefined
       },
       loading: true,

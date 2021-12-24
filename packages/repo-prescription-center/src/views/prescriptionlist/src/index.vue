@@ -26,7 +26,7 @@
                         placeholder="请输入"></PeaceInput>
           </el-form-item>
 
-          <el-form-item label="存储产品线">
+          <el-form-item label="内部来源">
             <PeaceInput v-model.trim="model.bussinessChannel"
                         clearable
                         maxlength="50"
@@ -81,14 +81,15 @@
           <PeaceTableColumn label="处方编号"
                             min-width="140">
             <template slot-scope="scope">
-              <div class="flex align-items-center"
+              <div class="flex align-items-center "
                    style="flex-wrap: nowrap">
 
                 <el-tooltip class="item"
                             effect="dark"
                             :content="scope.row.jztClaimNo"
                             placement="top">
-                  <span style="height: 20px">{{scope.row.jztClaimNo}}</span>
+                  <div class="ellipsis"
+                       style="height: 20px">{{scope.row.jztClaimNo}}</div>
                 </el-tooltip>
 
                 <img class="q-ml-sm"
@@ -99,9 +100,9 @@
             </template>
           </PeaceTableColumn>
           <PeaceTableColumn label="原始处方编号"
-                            min-width="100"
+                            min-width="180"
                             prop="prescriptionNo"></PeaceTableColumn>
-          <PeaceTableColumn label="存储产品线"
+          <PeaceTableColumn label="内部来源"
                             prop="bussinessChannel"
                             width="120"></PeaceTableColumn>
           <PeaceTableColumn label="开方渠道"
@@ -111,13 +112,41 @@
                             min-width="100"
                             prop="application"></PeaceTableColumn>
           <PeaceTableColumn label="开方机构"
-                            min-width="160"
+                            min-width="180"
                             prop="hosName"></PeaceTableColumn>
           <PeaceTableColumn label="存储时间"
                             min-width="180"
                             prop="createTime"></PeaceTableColumn>
-
+          <PeaceTableColumn label="审核状态"
+                            min-width="100"
+                            prop="pharmacistCheckResult">
+            <template slot-scope="scope">
+              {{ scope.row.pharmacistCheckResult | filterDictionaryFuzzy(source.pharmacist_check_result) }}
+            </template>
+          </PeaceTableColumn>
+          <PeaceTableColumn label="购药有效状态"
+                            min-width="120"
+                            prop="validState">
+            <template slot-scope="scope">
+              {{ scope.row.validState | filterDictionaryFuzzy(source.valid_state) }}
+            </template>
+          </PeaceTableColumn>
+          <PeaceTableColumn label="订单状态"
+                            min-width="100"
+                            prop="orderState">
+            <template slot-scope="scope">
+              {{ scope.row.orderState | filterDictionaryFuzzy(source.order_state) }}
+            </template>
+          </PeaceTableColumn>
+          <PeaceTableColumn label="缴费状态"
+                            min-width="100"
+                            prop="paymentStatus">
+            <template slot-scope="scope">
+              {{ scope.row.paymentStatus | filterDictionaryFuzzy(source.payment_status) }}
+            </template>
+          </PeaceTableColumn>
           <PeaceTableColumn label="操作"
+                            fixed="right"
                             min-width="100">
             <template slot-scope="scope">
               <el-button type="text"
@@ -167,6 +196,12 @@ export default {
         startTime: undefined,
         endTime: undefined
       },
+      source: {
+        payment_status: [],
+        order_state: [],
+        valid_state: [],
+        pharmacist_check_result: []
+      },
       loading: false,
       dialog: {
         visible: false,
@@ -184,7 +219,12 @@ export default {
   },
 
   async mounted() {
-    this.$nextTick().then(() => {
+    this.$nextTick().then(async () => {
+      this.source.payment_status = await Peace.identity.dictionary.getList('payment_status')
+      this.source.order_state = await Peace.identity.dictionary.getList('order_state')
+      this.source.valid_state = await Peace.identity.dictionary.getList('valid_state')
+      this.source.pharmacist_check_result = await Peace.identity.dictionary.getList('pharmacist_check_result')
+
       this.fetch()
     })
   },

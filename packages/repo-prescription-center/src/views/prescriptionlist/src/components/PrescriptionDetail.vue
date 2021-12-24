@@ -23,9 +23,9 @@
       <span>处方号：</span>
       <span class="q-mr-sm">No.{{ internalData?.prescriptionNo }}</span>
 
-      <file-viewer v-if="visiableImg"
-                   v-bind:on-close="() => { visiableImg = false }"
-                   v-bind:url-list="prescriptionImageList" />
+      <FileViewer v-if="visiableImg"
+                  v-on:on-close="() => { visiableImg = false }"
+                  v-bind:fileList="prescriptionImageList" />
 
       <el-button v-if="prescriptionImageList.length > 0"
                  round

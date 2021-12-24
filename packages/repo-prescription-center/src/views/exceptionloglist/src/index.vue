@@ -27,7 +27,7 @@
           </el-form-item>
 
           <el-form-item label="调用渠道">
-            <PeaceInput v-model.trim="model.channel"
+            <PeaceInput v-model.trim="model.bussinessChannel"
                         clearable
                         maxlength="50"
                         placeholder="请输入"></PeaceInput>
@@ -103,7 +103,7 @@
 
           <PeaceTableColumn label="调用渠道"
                             min-width="100"
-                            prop="channel"></PeaceTableColumn>
+                            prop="bussinessChannel"></PeaceTableColumn>
 
           <PeaceTableColumn label="异常类型"
                             min-width="100">
@@ -152,7 +152,7 @@ export default {
       model: {
         jztClaimNo: undefined,
         prescriptionNo: undefined,
-        channel: undefined,
+        bussinessChannel: undefined,
         errorType: undefined,
         startTime: undefined,
         endTime: undefined
@@ -201,7 +201,7 @@ export default {
       const resetParams = {
         jztClaimNo: undefined,
         prescriptionNo: undefined,
-        channel: undefined,
+        bussinessChannel: undefined,
         errorType: undefined,
         startTime: undefined,
         endTime: undefined
