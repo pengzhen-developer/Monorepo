@@ -100,7 +100,7 @@
             {{scope.row.businessChannel ||  '--' }}
           </template>
         </el-table-column>
-        <el-table-column min-width="100px"
+        <el-table-column min-width="160px"
                          label="开方机构">
           <template slot-scope="scope">
             {{scope.row.name ||  '--' }}

@@ -37,7 +37,7 @@
         <PeaceTableColumn min-width="100px"
                           label="服务状态">
           <template slot-scope="scope">
-            {{ scope.row.IsSmartReviewer?"启用":"禁用"}}
+            {{ scope.row.IsSmartReviewer !== true?"禁用":"启用"}}
           </template>
         </PeaceTableColumn>
         <PeaceTableColumn min-width="180px"

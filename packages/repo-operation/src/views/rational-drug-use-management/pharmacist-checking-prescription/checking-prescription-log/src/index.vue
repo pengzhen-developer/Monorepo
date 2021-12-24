@@ -158,12 +158,10 @@ export default {
         endTime: '',
         code: '',
         businessChannel: '',
-        hospitalName: '',
+        organName: '',
         hisEpCode: '',
-        checkResult: '',
         invokeResult: '',
-        firstLevelError: '',
-        secondLevelError: ''
+        submitType: ''
       },
       modelVisible: {
         visible: false,
