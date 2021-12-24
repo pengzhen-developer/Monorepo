@@ -78,7 +78,7 @@
             {{ (_self.Pagination.internalCurrentPage - 1) * (_self.Pagination.internalPageSize) + $index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column min-width="260px"
+        <el-table-column min-width="280px"
                          label="审方编号">
           <template slot-scope="scope">
             <el-button type="text"
