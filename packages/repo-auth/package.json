@@ -1,6 +1,6 @@
 {
   "name": "repo-auth",
-  "version": "1.20.7",
+  "version": "1.21.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -13,10 +13,10 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "peace-components": "^1.20.7",
-    "peace-identity": "^1.20.7",
-    "peace-library": "^1.20.7",
-    "peace-ui": "^1.20.7"
+    "peace-components": "^1.21.0",
+    "peace-identity": "^1.21.0",
+    "peace-library": "^1.21.0",
+    "peace-ui": "^1.21.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
