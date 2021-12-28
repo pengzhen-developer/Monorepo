@@ -15,6 +15,12 @@
                       placeholder="请输入"></PeaceInput>
         </el-form-item>
 
+        <el-form-item label="本位码">
+          <PeaceInput v-model.trim="model.drugStandardCode"
+                      maxlength="50"
+                      placeholder="请输入"></PeaceInput>
+        </el-form-item>
+
         <el-form-item label="更新日期">
           <PeaceDatePicker type="daterange"
                            v-model="pickDate"
@@ -112,6 +118,7 @@ export default {
     return {
       model: {
         drugName: '',
+        drugStandardCode: '',
         beginTime: '',
         endTime: ''
       },
