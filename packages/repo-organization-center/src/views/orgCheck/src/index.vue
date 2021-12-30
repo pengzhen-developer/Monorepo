@@ -177,7 +177,7 @@
 
             <div class="row col q-mb-12">
               <info-item :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.channelSourceName"
-                         label="应用来源" />
+                         label="来源" />
               <info-item :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.auditerType | auditerName"
                          label="审核类型" />
               <info-item :value="newInstitutionInfoAuditDetails.institutionInfoAuditVO.updateTime"
