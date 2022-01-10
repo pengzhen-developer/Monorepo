@@ -231,7 +231,9 @@ export default {
 
       // 传递了加载方法，使用加载方法加载
       if (this.config.fetch) {
-        this.internalLoading = true
+        if (Peace.config.axiosHandleLoading !== true) {
+          this.internalLoading = true
+        }
 
         return this.config
           .fetch(this.config.params)

@@ -5,18 +5,22 @@ import { warning } from './../tools/util/message'
 import { Loading } from 'element-ui'
 
 let loadingInstance
+let loadingInstanceCount = 0
 
 export function createInterceptor(options) {
   const requestInterceptor = {
     then: function(config) {
-      if (options?.axiosHandleLoading || config.axiosHandleLoading) {
-        loadingInstance = Loading.service({ background: 'rgba(0, 0, 0, 0.3)' })
+      // 处理 Loading
+      if (options?.axiosHandleLoading || config?.axiosHandleLoading) {
+        loadingInstanceCount += 1
+        loadingInstance = Loading.service({ background: 'rgba(0, 0, 0, 0.1)' })
       }
 
       return Promise.resolve(config)
     },
 
     catch: function(error) {
+      loadingInstanceCount = 0
       loadingInstance && loadingInstance.close()
 
       return Promise.reject(error)
@@ -25,7 +29,13 @@ export function createInterceptor(options) {
 
   const responseInterceptor = {
     then: function(response) {
-      loadingInstance && loadingInstance.close()
+      // 处理 Loading
+      if (options?.axiosHandleLoading || response?.config?.axiosHandleLoading) {
+        loadingInstanceCount -= 1
+        if (loadingInstanceCount <= 0) {
+          loadingInstance && loadingInstance.close()
+        }
+      }
 
       // 放弃拦截器，自行处理请求
       if (response.config.isInterceptor === false) {
@@ -53,6 +63,7 @@ export function createInterceptor(options) {
     },
 
     catch: function(error) {
+      loadingInstanceCount = 0
       loadingInstance && loadingInstance.close()
 
       // Cancel error
