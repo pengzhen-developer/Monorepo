@@ -7,6 +7,8 @@ import PeaceLibrary from 'peace-library'
 export default async ({ Vue }) => {
   Vue.use(PeaceLibrary, {
     name: name,
-    version: version
+    version: version,
+
+    axiosHandleLoading: true
   })
 }
