@@ -52,6 +52,27 @@ export default function() {
       name: 'OrganizationICD',
       component: () => import('@src/views/organization/icd'),
       children: []
+    },
+    // 机构字典 - 疾病名称
+    {
+      path: '/organization/diseaseName',
+      name: 'OrganizationDiseaseName',
+      component: () => import('@src/views/organization/diseaseName'),
+      children: []
+    },
+    // 机构字典 - 人群分类
+    {
+      path: '/organization/crowdClassification',
+      name: 'OrganizationCrowdClassification',
+      component: () => import('@src/views/organization/crowdClassification'),
+      children: []
+    },
+    // 机构字典 - 过敏信息
+    {
+      path: '/organization/allergy',
+      name: 'OrganizationAllergy',
+      component: () => import('@src/views/organization/allergy'),
+      children: []
     }
   ]
 }
