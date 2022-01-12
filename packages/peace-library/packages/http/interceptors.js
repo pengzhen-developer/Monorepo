@@ -4,14 +4,16 @@ import retry from './retry'
 import { warning } from './../tools/util/message'
 import { Loading } from 'element-ui'
 
+let loadingStatus
 let loadingInstance
 let loadingInstanceCount = 0
 
 export function createInterceptor(options) {
   const requestInterceptor = {
     then: function(config) {
-      // 处理 Loading
-      if (options?.axiosHandleLoading || config?.axiosHandleLoading) {
+      // 处理 Loading，局部配置 > 全局配置
+      loadingStatus = config?.axiosHandleLoading ?? options?.axiosHandleLoading
+      if (loadingStatus) {
         loadingInstanceCount += 1
         loadingInstance = Loading.service({ background: 'rgba(0, 0, 0, 0.1)' })
       }
@@ -29,8 +31,9 @@ export function createInterceptor(options) {
 
   const responseInterceptor = {
     then: function(response) {
-      // 处理 Loading
-      if (options?.axiosHandleLoading || response?.config?.axiosHandleLoading) {
+      // 处理 Loading，局部配置 > 全局配置
+      loadingStatus = response?.config?.axiosHandleLoading ?? options?.axiosHandleLoading
+      if (loadingStatus) {
         loadingInstanceCount -= 1
         if (loadingInstanceCount <= 0) {
           loadingInstance && loadingInstance.close()

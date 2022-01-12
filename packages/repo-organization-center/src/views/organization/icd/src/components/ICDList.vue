@@ -44,6 +44,9 @@
         <PeaceTableColumn label="使用状态"
                           prop="status"
                           width="120"></PeaceTableColumn>
+        <PeaceTableColumn label="最近更新时间"
+                          prop="updateTime"
+                          width="180"></PeaceTableColumn>
         <PeaceTableColumn label="操作"
                           width="120"
                           fixed="right">

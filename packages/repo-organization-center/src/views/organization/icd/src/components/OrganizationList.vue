@@ -35,7 +35,11 @@
                           min-width="180"></PeaceTableColumn>
         <PeaceTableColumn label="诊断库版本"
                           prop="icdVersionCodeName"
-                          min-width="180"></PeaceTableColumn>
+                          min-width="320">
+          <template slot-scope="scope">
+            {{ `【${ scope.row.icdVersionCode }】${ scope.row.icdVersionCodeName }` }}
+          </template>
+        </PeaceTableColumn>
         <PeaceTableColumn label="来源"
                           prop="applicationName"
                           min-width="180"></PeaceTableColumn>
@@ -44,7 +48,7 @@
                           fixed="right">
           <template slot-scope="scope">
             <PeaceButton type="text"
-                         v-on:click="gotoDepartmentList(scope.row)">查看详情</PeaceButton>
+                         v-on:click="gotoICDList(scope.row)">查看详情</PeaceButton>
           </template>
         </PeaceTableColumn>
       </PeaceTable>
@@ -82,7 +86,7 @@ export default {
       this.$refs.table.reloadData({ fetch, params })
     },
 
-    gotoDepartmentList(row) {
+    gotoICDList(row) {
       obState.mutations.setInstitution(row)
       obState.mutations.setView('ICDList')
     }

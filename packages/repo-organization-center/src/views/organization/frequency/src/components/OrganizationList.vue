@@ -44,7 +44,7 @@
                           fixed="right">
           <template slot-scope="scope">
             <PeaceButton type="text"
-                         v-on:click="gotoDepartmentList(scope.row)">查看详情</PeaceButton>
+                         v-on:click="gotoFrequencyList(scope.row)">查看详情</PeaceButton>
           </template>
         </PeaceTableColumn>
       </PeaceTable>
@@ -82,7 +82,7 @@ export default {
       this.$refs.table.reloadData({ fetch, params })
     },
 
-    gotoDepartmentList(row) {
+    gotoFrequencyList(row) {
       obState.mutations.setInstitution(row)
       obState.mutations.setView('FrequencyList')
     }

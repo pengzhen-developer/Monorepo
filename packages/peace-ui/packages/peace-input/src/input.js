@@ -5,6 +5,13 @@ const options = {
   name: 'PeaceInput',
 
   props: {
+    clearable: {
+      type: Boolean,
+      default() {
+        return true
+      }
+    },
+
     maxlength: {
       type: [String, Number],
       default() {
